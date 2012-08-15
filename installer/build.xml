@@ -1,0 +1,380 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="MakeApacheFlexForFlashBuilder" basedir="." default="build">
+
+    <!--load environment variables prefixed with env -->
+    <property environment="env"/>
+	
+    <!--location of property file -->
+    <property file="${basedir}/build.properties" description="Properties for MakeApacheFlexForFlashBuilder project" />
+    <property file="${basedir}/build.number"/>
+
+    <property name="installer.version" value="${release.version}.${build.number}"/>
+    <property name="kit.prefix" value="apache-flex-sdk-installer-${installer.version}-incubating"/>
+    <property name="source.kit" value="${kit.prefix}-src"/>
+    <property name="binary.kit" value="${kit.prefix}-bin"/>
+
+    <!-- properties are immutable so value frozen first time property is set -->
+    <condition property="FLEX_HOME" value="${FLEX_HOME_WIN}">
+        <os family="windows"/>
+    </condition>
+    <property name="FLEX_HOME" value="${FLEX_HOME_MAC}"/>
+
+    <condition property="env.AIR_HOME" value="${AIR_HOME_WIN}">
+        <os family="windows"/>
+    </condition>
+    <property name="env.AIR_HOME" value="${AIR_HOME_MAC}"/>
+    
+    <!-- compilers -->
+    <property name="ADL" value="${env.AIR_HOME}/bin/adl"/>
+    <property name="ADT" value="${env.AIR_HOME}/lib/adt.jar"/>
+
+    <!-- additional tasks - mxmlc tag -->
+    <path id="flexTasks.path">
+        <fileset dir="${FLEX_HOME}">
+            <include name="lib/flexTasks.jar" />
+            <include name="ant/lib/flexTasks.jar" />
+        </fileset>
+    </path>
+    <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
+
+    <!-- 
+        Optional jars but should be in place for a real release build.
+        
+        For <rat> apache-rat-0.8.jar and apache-rat-tasks-0.8.jar should be in classpath.
+        See rat-check.
+    -->
+    <path id="anttask.classpath">
+        <fileset dir="${env.ANT_HOME}/lib">
+           <include name="**/apache-rat*.jar"/>
+        </fileset>
+        <fileset dir="${user.home}">
+           <include name=".ant/lib/**/apache-rat*.jar"/>
+        </fileset>
+    </path>
+    
+    <condition property="unsupportedOS">
+        <and>   
+            <os family="unix" />
+            <not>
+                <os family="mac" />
+            </not>
+       </and>
+    </condition>
+    
+    <!-- AIR package extension -->
+    <condition property="extension" value="exe">
+        <os family="windows" />
+    </condition>
+    <property name="extension" value="dmg"/>
+
+    <target name="build" depends="init,compile,packagenative,cleanup" 
+        description="Compiles and packages application"/>
+
+    <target name="release" depends="clean,build,source-package,binary-package,rat-check"
+        description="Build the application and package up the distros for release."/>
+        
+    <target name="init" depends="clean,createDirs,update-app-xml,create-version-xml" 
+        description="Creates the deploy folders and sets app extension"/>
+        
+    <target name="clean" description="Cleans up old files.">
+        <delete dir="${BUILD_DIR}" failOnError="false" includeEmptyDirs="true" />
+        <delete dir="${RELEASE_DIR}" failOnError="false" includeEmptyDirs="true" />
+        <delete file="${basedir}/rat.report" failOnError="false"/>
+    </target>
+
+    <target name="cleanup" description="Cleans up old files.">
+        <delete dir="${BUILD_DIR}" failOnError="false" includeEmptyDirs="true" />
+    </target>
+
+    <target name="createDirs">
+        <echo>
+        ************************************************************************************
+        Execute the update-version target once, and only once, when you modifiy this app.
+        This will increment the version number to allow the app to be updated by the AIR installer.
+        ************************************************************************************
+        </echo>
+        <mkdir dir="${BUILD_DIR}"/>
+        <mkdir dir="${RELEASE_DIR}"/>
+    </target>
+
+    <!-- Make sure version, esp, build.number, in APP_NAME-app.xml is in sync.  -->
+    <target name="update-app-xml" description="Update version in APP_NAME-app.xml.">
+        <echo message="version in ${APP_NAME}-app.xml will be ${installer.version}"/>
+        <replaceregexp byline="true">
+            <regexp pattern="&lt;versionNumber&gt;(\d+\.)?(\d+\.)?(\d+)&lt;/versionNumber&gt;"/>
+            <substitution expression="&lt;versionNumber&gt;${installer.version}&lt;/versionNumber&gt;"/>
+            <fileset dir="${SOURCE_DIR}">
+                <include name="${APP_NAME}-app.xml"/>
+            </fileset>
+        </replaceregexp>
+    </target>
+    
+    <!-- 
+        Run this target once, and then rebuild, when you make a change to this app 
+        so that the AIR Installer will allow the app to be updated. The build.number 
+        property in the file build.property will be read and then incremented and the 
+        nano version number in the <version> tag in InstallApacheFlex-app.xml will be 
+        updated.
+    -->
+    <target name="update-version" description="Update the app version number so the installer will be updated.">
+         <tstamp>
+            <format property="touch.year" pattern="yyyy"/>
+        </tstamp>
+
+        <propertyfile file="build.number" 
+            comment="Copyright ${touch.year} The Apache Software Foundation.">
+            <entry key="build.number" type="int" default="0" operation="+"/>
+        </propertyfile>
+
+    </target>
+    
+    <target name="packagenative" depends="certificate,packageair"
+       description="Packages the AIR file from the build directory to create a native installer (exe/dmg) file">
+
+       <java jar="${ADT}" fork="true"
+           failonerror="true"
+           maxmemory="512m">
+           <arg value="-package"/>
+           <arg value="-target"/>
+           <arg value="native"/>
+           <arg value="${RELEASE_DIR}/${APP_NAME}.${extension}"/>
+           <arg value="${RELEASE_DIR}/${APP_NAME}.air"/>
+       </java>
+   </target>
+    
+    <target name="abortBuild" if="unsupportedOS">
+        <fail>
+            Unable to create a .exe or a .dmg file on this operating system.
+            You must use ADT on the same operating system as that of the native installer file you want to generate. 
+            So, to create an EXE file for Windows, run this build on Windows. To create a DMG file for Mac OS, run this 
+            build on Mac OS.
+        </fail>
+    </target>
+
+    <target name="compile"
+        description="Compiles the AIR application to a SWF file and places SWF in a temp directory to be packaged.">
+        <mxmlc file="${SOURCE_DIR}/${APP_NAME}.${APP_EXTENSION}"
+            output="${BUILD_DIR}/${APP_NAME}.swf"
+            static-rsls="true"
+            accessible="true"
+            configname="air"
+            debug="${DEBUG_FLAG}"
+            failonerror="true"
+            fork="true"
+            maxmemory="512m">
+            <source-path path-element="${SOURCE_DIR}"/>
+            <source-path path-element="${COMMON_SOURCE_DIR}"/>
+            <external-library-path file="${FLEX_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
+            <library-path dir="${LIBRARY_DIR}" includes="*.swc" append="true"/>
+            <define name="INSTALLER::releaseVersion" value="${release.version}"/> 
+            <define name="INSTALLER::buildNumber" value="${build.number}"/> 
+        </mxmlc>
+    </target>
+
+    <!-- Make sure to use the same certificate each time so we can update the app. -->
+    <target name="certificate">
+        <available file="${KEYSTORE}" property="certificate.exists"/>
+        <antcall target="generate-certificate"/>
+    </target>
+
+    <target name="generate-certificate" depends="abortBuild" unless="certificate.exists">
+        <java jar="${ADT}" fork="true"
+            failonerror="true">
+            <arg value="-certificate"/>
+            <arg value="-cn"/>
+            <arg value="${CERT_NAME}"/>
+            <arg value="-ou"/>
+            <arg value="${CERT_ORG_UNIT}"/>
+            <arg value="-o"/>
+            <arg value="${CERT_ORG_NAME}"/>
+            <arg value="-c"/>
+            <arg value="${CERT_COUNTRY}"/>
+            <arg value="${CERT_KEY_TYPE}"/>
+            <arg value="${KEYSTORE}"/>
+            <arg value="${CERT_PASSWORD}"/>
+        </java>
+    </target>
+
+    <target name="packageair" depends="abortBuild"
+        description="Packages the build SWF file from a temp directory to create an AIR file">
+        <java jar="${ADT}" fork="true"
+            failonerror="true"
+            maxmemory="512m">
+            <arg value="-package"/>
+            <arg value="-storetype"/>
+            <arg value="${STORETYPE}"/>
+            <arg value="-keystore"/>
+            <arg value="${KEYSTORE}"/>
+            <arg value="-storepass"/>
+            <arg value="${CERT_PASSWORD}"/>
+            <arg value="${RELEASE_DIR}/${APP_NAME}.air"/>
+            <arg value="${SOURCE_DIR}/${APP_NAME}-app.xml"/>
+            <arg value="-C"/>
+            <arg value="${BUILD_DIR}"/>
+            <arg value="${BUILD_DIR}/${APP_NAME}.swf"/>
+            <arg value="-C"/>
+            <arg value="${SOURCE_DIR}"/>
+            <arg value="${SOURCE_DIR}/${APP_CONFIG_XML_NAME}.xml"/>
+            <arg value="${ASSETS_DIR}"/>
+        </java>
+    </target>
+    
+    <target name="create-version-xml" description="Creates version.xml file for update">
+        <echo message="version in version.xml will be ${installer.version}"/>
+        <echo file="${RELEASE_DIR}/version.xml">&lt;?xml version="1.0"?&gt;
+&lt;!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+--&gt;
+&lt;update&gt;
+    &lt;!-- The URL to download the Windows installer from --&gt;
+    &lt;urlWindows&gt;${installer.url.win}&lt;/urlWindows&gt;
+    &lt;!-- The URL to download the Mac installer from --&gt;
+    &lt;urlMac&gt;${installer.url.mac}&lt;/urlMac&gt;
+    &lt;!-- The version from ${APP_NAME}-app.xml --&gt;
+    &lt;version&gt;${installer.version}&lt;/version&gt;
+    &lt;description&gt;Latest release&lt;/description&gt;
+    &lt;required&gt;true&lt;/required&gt;
+&lt;/update&gt;
+        </echo>
+    </target>
+
+    <!-- 
+        Packages the source distribution with ZIP and TAR_GZIP.
+        The source file line endings match the package type.
+    -->
+    <target name="source-package" description="Package source files.">
+        
+        <mkdir dir="${BUILD_DIR}/temp"/>
+        <copy todir="${BUILD_DIR}/temp" includeEmptyDirs="false">
+            <fileset dir="${basedir}">
+                <exclude name="rat.report"/>
+                <exclude name="release/**"/>
+            </fileset>
+        </copy>
+        
+        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf"/>
+
+        <mkdir dir="${RELEASE_DIR}"/>
+        <zip destfile="${RELEASE_DIR}/${source.kit}.zip" 
+            basedir="${BUILD_DIR}/temp"/>
+        
+        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="unix"/>
+
+        <tar destfile="${RELEASE_DIR}/${source.kit}.tar.gz" 
+            compression="gzip"
+            basedir="${BUILD_DIR}/temp"/>
+        
+        <delete dir="${BUILD_DIR}/temp"/>
+    </target>
+
+    <!-- 
+        Packages the binary distribution with ZIP and TAR_GZIP.
+    -->
+    <target name="binary-package" description="Package binary files.">      
+        <mkdir dir="${RELEASE_DIR}"/>
+        
+        <zip destfile="${RELEASE_DIR}/${binary.kit}.zip">
+            <fileset dir="${basedir}/release">
+                <exclude name="**/*.zip"/>
+                <exclude name="**/*.tar*"/>
+            </fileset>
+        </zip>
+
+        <tar destfile="${RELEASE_DIR}/${binary.kit}.tar.gz" compression="gzip">
+          <zipfileset src="${RELEASE_DIR}/${binary.kit}.zip"/>
+        </tar>
+    </target>
+
+	<!--
+	    Run the Apache Rat audit tool against the source in the source kit.
+	    The report is written to rat.report.
+	    
+	    You need to place apache-rat-tasks-0.8.jar and apache-rat-0.8.jar in the 
+	    anttask.classpath in order to do this.  If the jar isn't found, the report
+	    will not be generated.
+	--> 
+    <target name="rat-check" depends="rat-taskdef" if="have.rattasks"
+        description="Report on licenses in source kit.">
+    
+        <!-- Unzip the source kit -->
+        <unzip src="${RELEASE_DIR}/${source.kit}.zip" dest="${RELEASE_DIR}/temp"/>
+        
+        <property name="rat.dir" value="${RELEASE_DIR}/temp"/>
+
+        <echo message="Checking files at ${rat.dir}, report is ${basedir}/rat.report"/>
+
+        <rat:report xmlns:rat="antlib:org.apache.rat.anttasks" 
+            reportFile="${basedir}/rat.report">
+            <fileset dir="${rat.dir}">
+                <exclude name="**/Apache License Version 2.txt"/>
+                <!-- generated source files -->
+                <exclude name="build.number"/>
+                <exclude name="**/.fxpProperties"/>
+                <exclude name="**/.settings/**"/>
+                <exclude name="rat.report"/>
+                <!-- generated binary files -->
+                <exclude name="release/**"/>
+            </fileset>
+            <fileset dir="${COMMON_SOURCE_DIR}">
+                <exclude name="**/Apache License Version 2.txt"/>
+            </fileset>
+        </rat:report>
+        
+        <delete dir="${RELEASE_DIR}/temp" failOnError="false"/>
+    </target>
+
+    <target name="rat-taskdef" description="Rat taskdef"> 
+        <available property="have.rattasks" 
+            resource="org/apache/rat/anttasks/antlib.xml" 
+            classpathref="anttask.classpath"/>
+
+        <antcall target="have-rattasks"/>
+        <antcall target="no-rattasks"/>
+    </target>
+
+    <target name="have-rattasks" if="have.rattasks">
+        <typedef resource="org/apache/rat/anttasks/antlib.xml"
+                 uri="antlib:org.apache.rat.anttasks"
+                 classpathref="anttask.classpath"/>                 
+    </target>
+    
+    <target name="no-rattasks" unless="have.rattasks">
+        <echo message="Rat report not generated."/>
+        <echo message="rat jars (apache-rat-*.jar, apache-rat-tasks-*.jar)"/>
+        <echo message="not found in anttask.classpath"/>
+    </target>   
+</project>

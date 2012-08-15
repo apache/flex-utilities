@@ -1,0 +1,9 @@
+Apache Flex
+Copyright 2012 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+The classes, /com/adobe/crypto/MD5Stream.as and src/com/adobe/utils/IntUtil.as, are
+    from the as3corelib licensed under the BSD license.  The source code was copied from
+    here: https://github.com/mikechambers/as3corelib
