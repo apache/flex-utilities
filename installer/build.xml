@@ -18,7 +18,7 @@
 
 -->
 
-<project name="MakeApacheFlexForFlashBuilder" basedir="." default="build">
+<project name="Installer" basedir="." default="build">
 
     <!--load environment variables prefixed with env -->
     <property environment="env"/>
@@ -39,7 +39,7 @@
     <property name="FLEX_HOME" value="${FLEX_HOME_MAC}"/>
 
     <condition property="env.AIR_HOME" value="${AIR_HOME_WIN}">
-        <os family="windows"/>
+        <os family="windows"/> 
     </condition>
     <property name="env.AIR_HOME" value="${AIR_HOME_MAC}"/>
     
@@ -97,6 +97,7 @@
         
     <target name="clean" description="Cleans up old files.">
         <delete dir="${BUILD_DIR}" failOnError="false" includeEmptyDirs="true" />
+        <delete dir="${LIBRARY_DIR}" failOnError="false" includeEmptyDirs="true" />
         <delete dir="${RELEASE_DIR}" failOnError="false" includeEmptyDirs="true" />
         <delete file="${basedir}/rat.report" failOnError="false"/>
     </target>
@@ -170,7 +171,30 @@
         </fail>
     </target>
 
-    <target name="compile"
+    <target name="check-as3commons.swc">
+        <available file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc" property="as3commons.swc.present"/>
+    </target>
+
+    <!-- This has a BSD license which is a reciprocal license with the Apache v2 license.  -->
+    <target name="get-as3commons.swc" depends="check-as3commons.swc" unless="as3commons.swc.present"
+        description="Download as3commons.swc and fail if checksum mismatch.">
+        <mkdir dir="${LIBRARY_DIR}"/>
+        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc" 
+            dest="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc" 
+            verbose="true"/>
+        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc.md5" 
+            dest="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc.md5" 
+            verbose="true"/>
+        <checksum file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc" algorithm="MD5" verifyProperty="isMD5ok"/>
+        <delete file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc.md5" failOnError="false"/>
+        <fail message="Checksum failure for ${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc">
+            <condition>
+                <isfalse value="${isMD5ok}"/>
+            </condition>
+        </fail>
+    </target>
+    
+    <target name="compile" depends="get-as3commons.swc"
         description="Compiles the AIR application to a SWF file and places SWF in a temp directory to be packaged.">
         <mxmlc file="${SOURCE_DIR}/${APP_NAME}.${APP_EXTENSION}"
             output="${BUILD_DIR}/${APP_NAME}.swf"
