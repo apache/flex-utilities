@@ -60,7 +60,7 @@
         Optional jars but should be in place for a real release build.
         
         For <rat> apache-rat-0.8.jar and apache-rat-tasks-0.8.jar should be in classpath.
-        See rat-check.
+        See rat-report.
     -->
     <path id="anttask.classpath">
         <fileset dir="${env.ANT_HOME}/lib">
@@ -89,7 +89,7 @@
     <target name="build" depends="init,compile,packagenative,cleanup" 
         description="Compiles and packages application"/>
 
-    <target name="release" depends="clean,build,source-package,binary-package,rat-check"
+    <target name="release" depends="clean,build,source-package,binary-package,rat-report"
         description="Build the application and package up the distros for release."/>
         
     <target name="init" depends="clean,createDirs,update-app-xml,create-version-xml" 
@@ -305,7 +305,9 @@
         <mkdir dir="${BUILD_DIR}/temp"/>
         <copy todir="${BUILD_DIR}/temp" includeEmptyDirs="false">
             <fileset dir="${basedir}">
+                <exclude name="certificate.p12"/>
                 <exclude name="rat.report"/>
+                <exclude name="libs/**"/>
                 <exclude name="release/**"/>
             </fileset>
         </copy>
@@ -351,7 +353,7 @@
 	    anttask.classpath in order to do this.  If the jar isn't found, the report
 	    will not be generated.
 	--> 
-    <target name="rat-check" depends="rat-taskdef" if="have.rattasks"
+    <target name="rat-report" depends="rat-taskdef" if="have.rattasks"
         description="Report on licenses in source kit.">
     
         <!-- Unzip the source kit -->
@@ -365,13 +367,14 @@
             reportFile="${basedir}/rat.report">
             <fileset dir="${rat.dir}">
                 <exclude name="**/Apache License Version 2.txt"/>
-                <!-- generated source files -->
+                <!-- generated source files that don't have Apache v2 license header -->
                 <exclude name="build.number"/>
+                <exclude name="**/.actionScriptProperties"/>
+                <exclude name="**/.flexProperties"/>
+                <exclude name="**/.project"/>
                 <exclude name="**/.fxpProperties"/>
                 <exclude name="**/.settings/**"/>
                 <exclude name="rat.report"/>
-                <!-- generated binary files -->
-                <exclude name="release/**"/>
             </fileset>
             <fileset dir="${COMMON_SOURCE_DIR}">
                 <exclude name="**/Apache License Version 2.txt"/>
