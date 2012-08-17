@@ -22,13 +22,13 @@ limitations under the License.
 
 
 @font-face {
-	src: url("assets/fonts/open-sans/OpenSans-Bold.ttf");
+	src: url("/assets/fonts/open-sans/OpenSans-Bold.ttf");
 	fontFamily: openSansBold;
 	advancedAntiAliasing: true;
 }
 
 @font-face {
-	src: url("assets/fonts/open-sans/OpenSans-Semibold.ttf");
+	src: url("/assets/fonts/open-sans/OpenSans-Semibold.ttf");
 	fontFamily: openSansSemibold;
 	advancedAntiAliasing: true;
 }

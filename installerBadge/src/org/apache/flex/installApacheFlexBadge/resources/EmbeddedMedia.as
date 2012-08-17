@@ -32,7 +32,7 @@ public final class EmbeddedMedia
 	//    imageBackground
 	//----------------------------------
 	
-	[Embed(source="assets/images/background.png")]
+	[Embed(source="/assets/images/background.png")]
 	[Bindable]
 	public static var background:Class;
 	
@@ -40,7 +40,7 @@ public final class EmbeddedMedia
 	//    imageHeader
 	//----------------------------------
 	
-	[Embed(source="assets/images/header.png")]
+	[Embed(source="/assets/images/header.png")]
 	[Bindable]
 	public static var header:Class;
 	
@@ -48,7 +48,7 @@ public final class EmbeddedMedia
 	//    imageLogo
 	//----------------------------------
 	
-	[Embed(source="assets/images/logo.png")]
+	[Embed(source="/assets/images/logo.png")]
 	[Bindable]
 	public static var logo:Class;
 	
