@@ -20,6 +20,11 @@ limitations under the License.
 @namespace mx "library://ns.adobe.com/flex/mx";
 @namespace st "ws.tink.spark.controls.*";
 
+@font-face {
+	src: url("/assets/fonts/open-sans/OpenSans-LightItalic.ttf");
+	fontFamily: openSansLightItalic;
+	advancedAntiAliasing: true;
+}
 
 @font-face {
 	src: url("/assets/fonts/open-sans/OpenSans-Bold.ttf");

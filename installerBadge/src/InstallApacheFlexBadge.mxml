@@ -26,10 +26,13 @@ limitations under the License.
 			   width="300" 
 			   creationComplete="creationCompleteHandler(event)">
 	
-	<fx:Style source="assets/styles/ApacheFlexToolsStyle.css" />
+	<fx:Style source="/assets/styles/ApacheFlexToolsStyle.css" />
 	
 	<fx:Script><![CDATA[
+		
 		import flash.net.navigateToURL;
+		
+		import flashx.textLayout.elements.TextFlow;
 		
 		import mx.controls.Alert;
 		import mx.core.FlexGlobals;
@@ -37,6 +40,8 @@ limitations under the License.
 		
 		import org.apache.flex.installApacheFlexBadge.resources.EmbeddedMedia;
 		import org.apache.flex.installApacheFlexBadge.utils.InternetUtil;
+		
+		import spark.utils.TextFlowUtil;
 		
 		//----------------------------------------------------------------------
 		//
@@ -49,9 +54,29 @@ limitations under the License.
 		private const APPLICATION_EXTENSION_MAC:String = ".dmg";
 		private const APPLICATION_EXTENSION_WIN:String = ".exe";
 		
+		private const ID_FILE_NODE:String = "ApacheFlexSDK";
+		
+		private const INFO_DISCLAIMER_XML:XML = 
+			<TextFlow xmlns="http://ns.adobe.com/textLayout/2008" fontFamily="openSansSemiBold">
+				<p>
+					Apache Flex is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator.
+				</p>
+				<br />
+				<p>
+					Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects.
+				</p>
+				<br />
+				<p>
+					While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.
+				</p>
+			</TextFlow>;
 		private const INFO_ERROR_OPERATING_SYSTEM:String = "The Apache Flex SDK Installer application\nis not supported on your operating system.";
 		private const INFO_ERROR_RETRIEVE_CONFIG:String = "The application was unable to retrieve\nthe configuration file.";
 		private const INFO_FOR_IDE:String = "for Adobe Flash Builder";
+		
+		private const LABEL_BACK:String = "Close";
+		private const LABEL_DISCLAIMER:String = "( disclaimer )";
+		private const LABEL_DOWNLOAD:String = "DOWNLOAD";
 		
 		private const PLATFORM_MAC:String = "Mac";
 		private const PLATFORM_WIN:String = "Windows";
@@ -134,9 +159,9 @@ limitations under the License.
 			_internetUtil = InternetUtil.instance;
 			
 			_internetUtil.fetch(
-				_installerConfigFile, 
+				_installerDownloadURL + _installerConfigFile, 
 				internetFetchResultHandler
-				);
+			);
 		}
 		
 		//----------------------------------
@@ -151,7 +176,7 @@ limitations under the License.
 			{
 				configXML = XML(_internetUtil.result);
 				
-				var fileName:String = configXML.files.file.(@name == 'ApacheFlexSDK').@file.toString();
+				var fileName:String = configXML.files.file.(@name == ID_FILE_NODE).@file.toString();
 				
 				parseSDKVersionNumber(fileName);
 			}
@@ -188,7 +213,6 @@ limitations under the License.
 	<s:states>
 		<s:State name="normal" />
 		<s:State name="disclaimerState" />
-		
 	</s:states>
 
 	<s:Image id="imgBackground" source="{EmbeddedMedia.background}"
@@ -196,29 +220,38 @@ limitations under the License.
 	
 	<s:Image id="imgLogo" source="{EmbeddedMedia.logo}"
 			 height="165" width="164"
-			 top="17"
+			 top="5"
 			 horizontalCenter="0" />
 	
 	<s:Image id="imgHeader" source="{EmbeddedMedia.header}"
 			 height="37" width="106"
-			 top="193"
+			 top="181"
 			 left="75" />
-	
-	<s:Label text="{INFO_FOR_IDE}"
-			 fontFamily="openSansSemibold"
-			 color="0x717C91" fontSize="13"
-			 textAlign="center"
-			 width="250"
-			 left="25" top="239" />
 	
 	<s:Label text="{_sdkVersionString}"
 			 fontFamily="openSansBold"
 			 color="0x162545" fontSize="32"
 			 trackingLeft="-1" trackingRight="-1"
 			 width="137"
-			 left="163" top="202" />
+			 left="163" top="190" />
 	
-	<s:Button id="btnDownload" label="DOWNLOAD"
+	<s:Label text="{INFO_FOR_IDE}"
+			 fontFamily="openSansSemibold"
+			 color="0x717C91" fontSize="13"
+			 textAlign="center"
+			 width="250"
+			 left="25" top="227" />
+	
+	<s:Label text="{LABEL_DISCLAIMER}"
+			 width="250"
+			 left="25" top="245"
+			 color="0x717C91"
+			 fontFamily="openSansLightItalic" fontSize="11"
+			 textAlign="center"
+			 buttonMode="true"
+			 click="{currentState = 'disclaimerState'}" />
+	
+	<s:Button id="btnDownload" label="{LABEL_DOWNLOAD}"
 			  bottom="8"
 			  enabled="false"
 			  height="30"
@@ -228,36 +261,27 @@ limitations under the License.
 			  click="btnDownload_clickHandler(event)"
 			  styleName="mainBtnStyle"/>
 
-	<s:Button id="btnDisclaimer" 
-			  label.normal="DISCLAIMER"
-			  label.disclaimerState="BACK"
-			  top="5"
-			  left="5"
+	<s:Graphic visible.normal="false">    
+		<s:Rect width="300" height="300">
+			<s:fill>
+				<s:SolidColor color="0x000000" alpha="0.5"/>
+			</s:fill>
+		</s:Rect>
+	</s:Graphic>
+	
+	<s:Button id="btnBack" label="{LABEL_BACK}"
 			  height="15"
+			  right="15" top="10"
 			  fontSize="10"
 			  buttonMode="true"
-			  useHandCursor="true"
-			  click.normal="{currentState = 'disclaimerState'}"
-			  click.disclaimerState="{currentState = 'normal'}"
+			  click="{currentState = 'normal'}"
+			  visible.normal="false"
 			  styleName="genericBtnStyle"/>
 	
 	<s:TextArea id="disclaimerTxtArea"
-				visible="false"
-				visible.disclaimerState="true"
-				right="5" 
-				top="35"
-				bottom="5"
-				left="5"
-				editable="false"
+				bottom="10" left="10" right="10" top="25"
 				fontFamily="openSansSemibold"
-				text="Apache Flex is an effort undergoing incubation at The Apache 
-				Software Foundation (ASF), sponsored by the Apache Incubator. 
-				Incubation is required of all newly accepted projects until a further 
-				review indicates that the infrastructure, communications, and decision 
-				making process have stabilized in a manner consistent with other 
-				successful ASF projects. While incubation status is not necessarily a 
-				reflection of the completeness or stability of the code, it does indicate 
-				that the project has yet to be fully endorsed by the ASF."
-				horizontalCenter="0"
-				verticalCenter="0" />
+				editable="false"
+				textFlow="{TextFlowUtil.importFromXML(INFO_DISCLAIMER_XML)}"
+				visible.normal="false" />
 </s:Application>
