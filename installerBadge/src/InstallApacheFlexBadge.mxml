@@ -30,16 +30,14 @@ limitations under the License.
 	
 	<fx:Script><![CDATA[
 		
-		import flash.net.navigateToURL;
-		
-		import flashx.textLayout.elements.TextFlow;
-		
 		import mx.controls.Alert;
-		import mx.core.FlexGlobals;
 		import mx.events.FlexEvent;
 		
 		import org.apache.flex.installApacheFlexBadge.resources.EmbeddedMedia;
-		import org.apache.flex.installApacheFlexBadge.utils.InternetUtil;
+		import org.apache.flex.utilities.common.Constants;
+		import org.apache.flex.utilities.common.InternetUtil;
+		import org.apache.flex.utilities.common.MirrorURLUtil;
+		import org.apache.flex.utilities.common.Tools;
 		
 		import spark.utils.TextFlowUtil;
 		
@@ -48,13 +46,6 @@ limitations under the License.
 		//    Constants
 		//
 		//----------------------------------------------------------------------
-		
-		private const AIR_SWF_URL:String = "http://airdownload.adobe.com/air/browserapi/air.swf";
-
-		private const APPLICATION_EXTENSION_MAC:String = ".dmg";
-		private const APPLICATION_EXTENSION_WIN:String = ".exe";
-		
-		private const ID_FILE_NODE:String = "ApacheFlexSDK";
 		
 		private const INFO_DISCLAIMER_XML:XML = 
 			<TextFlow xmlns="http://ns.adobe.com/textLayout/2008" fontFamily="openSansSemiBold">
@@ -69,17 +60,18 @@ limitations under the License.
 				<p>
 					While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.
 				</p>
+				<br />
+				<p>
+					Notice: Apache and Apache Flex are trademarks of The Apache Software Foundation. Other names may be trademarks of their respective owners.
+				</p>
 			</TextFlow>;
 		private const INFO_ERROR_OPERATING_SYSTEM:String = "The Apache Flex SDK Installer application\nis not supported on your operating system.";
 		private const INFO_ERROR_RETRIEVE_CONFIG:String = "The application was unable to retrieve\nthe configuration file.";
-		private const INFO_FOR_IDE:String = "for Adobe Flash Builder";
+		private const INFO_FOR_IDE:String = "SDK Installation App";
 		
 		private const LABEL_BACK:String = "Close";
 		private const LABEL_DISCLAIMER:String = "( disclaimer )";
 		private const LABEL_DOWNLOAD:String = "DOWNLOAD";
-		
-		private const PLATFORM_MAC:String = "Mac";
-		private const PLATFORM_WIN:String = "Windows";
 		
 		private const TITLE_ERROR_INTERNET:String = "Internet Error";
 		private const TITLE_ERROR_PLATFORM:String = "Platform Error";
@@ -92,16 +84,16 @@ limitations under the License.
 		
 		private var _applicationExtension:String;
 		
-		private var _fileNamePrefix:String;
+		private var _sdkBinaryFileName:String;
 		
-		private var _installerConfigFile:String;
-		
-		private var _installerDownloadURL:String;
+		private var _installerDownloadPath:String;
 		
 		private var _installerFileName:String;
 		
 		private var _internetUtil:InternetUtil;
 		
+		private var _mirrorURLUtil:MirrorURLUtil = MirrorURLUtil.instance;
+
 		[Bindable]
 		private var _sdkVersionString:String = "";
 		
@@ -117,12 +109,19 @@ limitations under the License.
 		
 		private function btnDownload_clickHandler(event:MouseEvent):void
 		{
-			btnDownload.enabled = false;
-			
-			var request:URLRequest = new URLRequest(
-				_installerDownloadURL + _installerFileName + _applicationExtension);
-			
-			navigateToURL(request, "_blank");
+			try
+			{
+				_applicationExtension = Tools.getApplicationExtension();
+
+				var request:URLRequest = new URLRequest(
+					_installerDownloadPath + _installerFileName + _applicationExtension);
+				
+				navigateToURL(request, "_blank");
+			}
+			catch (error:Error)
+			{
+				Alert.show(INFO_ERROR_OPERATING_SYSTEM, TITLE_ERROR_PLATFORM);
+			}
 		}
 		
 		//----------------------------------
@@ -131,37 +130,21 @@ limitations under the License.
 		
 		private function creationCompleteHandler(event:FlexEvent):void
 		{
-			if (FlexGlobals.topLevelApplication.parameters)
-			{
-				var parameters:Object = FlexGlobals.topLevelApplication.parameters;
-				
-				if (parameters.fileNamePrefix)
-					_fileNamePrefix = parameters.fileNamePrefix;
-				
-				if (parameters.installerConfigFile)
-					_installerConfigFile = parameters.installerConfigFile;
-				
-				if (parameters.installerFileName)
-					_installerFileName = parameters.installerFileName;
-				
-				if (parameters.installerDownloadURL)
-					_installerDownloadURL = parameters.installerDownloadURL;
-			}
-			
-			var platform:String = Capabilities.os.split(" ")[0];
-			if (platform == PLATFORM_WIN)
-				_applicationExtension = APPLICATION_EXTENSION_WIN;
-			else if (platform == PLATFORM_MAC)
-				_applicationExtension = APPLICATION_EXTENSION_MAC;
-			else
-				warnPlatformNotSupported();
-			
 			_internetUtil = InternetUtil.instance;
 			
 			_internetUtil.fetch(
-				_installerDownloadURL + _installerConfigFile, 
-				internetFetchResultHandler
-			);
+				Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME, internetFetchResultHandler);
+		}
+		
+		//----------------------------------
+		//    getMirrorURLResultHandler
+		//----------------------------------
+		
+		private function getMirrorURLResultHandler():void
+		{
+			_installerDownloadPath = _mirrorURLUtil.mirrorURL + _installerDownloadPath;
+			
+			parseSDKVersionNumber();
 		}
 		
 		//----------------------------------
@@ -170,15 +153,28 @@ limitations under the License.
 		
 		private function internetFetchResultHandler():void
 		{
-			var configXML:XML
-			
 			if (!_internetUtil.errorOccurred)
 			{
-				configXML = XML(_internetUtil.result);
+				var configXML:XML = XML(_internetUtil.result);
+				var files:XMLList = configXML.files.file;
 				
-				var fileName:String = configXML.files.file.(@name == ID_FILE_NODE).@file.toString();
+				_sdkBinaryFileName = files.(@name == "ApacheFlexSDK").@file.toString();
 				
-				parseSDKVersionNumber(fileName);
+				_installerFileName = files.(@name == 'SDKInstallerApp').@file.toString();
+				_installerDownloadPath = files.(@name == 'SDKInstallerApp').@path.toString();
+
+				if (_installerDownloadPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX)
+				{
+					var mirrorURLCGI:String = files.(@name == 'MirrorURLCGI').@file.toString();
+					
+					_mirrorURLUtil.getMirrorURL(
+						Constants.APACHE_FLEX_URL + mirrorURLCGI,
+						getMirrorURLResultHandler);
+				}
+				else
+				{
+					parseSDKVersionNumber();
+				}
 			}
 			else
 			{
@@ -190,20 +186,11 @@ limitations under the License.
 		//    parseSDKVersionNumber
 		//----------------------------------
 		
-		private function parseSDKVersionNumber(fileName:String):void
+		private function parseSDKVersionNumber():void
 		{
-			_sdkVersionString = fileName.substr(_fileNamePrefix.length).split("-")[0];
+			_sdkVersionString = _sdkBinaryFileName.substr(Constants.SDK_BINARY_FILE_NAME_PREFIX.length).split("-")[0];
 			
 			btnDownload.enabled = true;
-		}
-		
-		//----------------------------------
-		//    warnPlatformNotSupported
-		//----------------------------------
-		
-		private function warnPlatformNotSupported():void
-		{
-			Alert.show(INFO_ERROR_OPERATING_SYSTEM, TITLE_ERROR_PLATFORM);
 		}
 		
 	]]></fx:Script>
@@ -220,12 +207,12 @@ limitations under the License.
 	
 	<s:Image id="imgLogo" source="{EmbeddedMedia.logo}"
 			 height="165" width="164"
-			 top="5"
+			 top="10"
 			 horizontalCenter="0" />
 	
 	<s:Image id="imgHeader" source="{EmbeddedMedia.header}"
-			 height="37" width="106"
-			 top="181"
+			 height="37" width="136"
+			 top="185"
 			 left="75" />
 	
 	<s:Label text="{_sdkVersionString}"
@@ -233,18 +220,18 @@ limitations under the License.
 			 color="0x162545" fontSize="32"
 			 trackingLeft="-1" trackingRight="-1"
 			 width="137"
-			 left="163" top="190" />
+			 left="163" top="194" />
 	
 	<s:Label text="{INFO_FOR_IDE}"
-			 fontFamily="openSansSemibold"
-			 color="0x717C91" fontSize="13"
-			 textAlign="center"
-			 width="250"
-			 left="25" top="227" />
+			 width="190"
+			 left="25" top="235"
+			 color="0x162545" 
+			 fontFamily="openSansSemibold" fontSize="13"
+			 textAlign="center" />
 	
 	<s:Label text="{LABEL_DISCLAIMER}"
-			 width="250"
-			 left="25" top="245"
+			 width="60"
+			 left="190" top="236"
 			 color="0x717C91"
 			 fontFamily="openSansLightItalic" fontSize="11"
 			 textAlign="center"
@@ -252,7 +239,7 @@ limitations under the License.
 			 click="{currentState = 'disclaimerState'}" />
 	
 	<s:Button id="btnDownload" label="{LABEL_DOWNLOAD}"
-			  bottom="8"
+			  bottom="10"
 			  enabled="false"
 			  height="30"
 			  horizontalCenter="0"

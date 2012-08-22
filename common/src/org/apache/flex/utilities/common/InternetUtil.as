@@ -17,7 +17,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.apache.flex.packageflexsdk.util
+package org.apache.flex.utilities.common
 {
 
 import flash.events.Event;

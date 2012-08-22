@@ -66,6 +66,6 @@ limitations under the License.
 	<s:HGroup width="100%" >
 		<s:Button label="COPY LOG" click="handleCopyBtnClick(event)" styleName="genericBtnStyle"  />
 		<s:Spacer width="100%" />
-		<s:Button label="{ViewResourceConstants.getInstance().CLOSE_BTN_LABEL}" click="closeWindow(event)" styleName="genericBtnStyle"  />
+		<s:Button label="{ViewResourceConstants.instance.BTN_LABEL_CLOSE}" click="closeWindow(event)" styleName="genericBtnStyle"  />
 	</s:HGroup>
 </s:Window>

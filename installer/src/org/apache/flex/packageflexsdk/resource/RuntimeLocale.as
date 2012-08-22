@@ -1,451 +1,450 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//  Licensed to the Apache Software Foundation (ASF) under one or more
-//  contributor license agreements.  See the NOTICE file distributed with
-//  this work for additional information regarding copyright ownership.
-//  The ASF licenses this file to You under the Apache License, Version 2.0
-//  (the "License"); you may not use this file except in compliance with
-//  the License.  You may obtain a copy of the License at
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements. See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to You under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License. You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
 
 package org.apache.flex.packageflexsdk.resource
 {
-	import mx.collections.ArrayCollection;
-	import mx.resources.IResourceManager;
-	import mx.resources.ResourceBundle;
-	import mx.resources.ResourceManager;
 
-	public class RuntimeLocale
-	{
-		
-		private var _supportedLanguage:ArrayCollection;
-		
-		public function get supportedLanguage():ArrayCollection
-		{
-			return _supportedLanguage;
-		}
-		public function set supportedLanguage(value:ArrayCollection):void
-		{
-			_supportedLanguage = value;
-		}	
-		
-		
-		private var _defaultLanguage:String;
+import mx.resources.IResourceManager;
+import mx.resources.ResourceBundle;
+import mx.resources.ResourceManager;
 
-		public function get defaultLanguage():String
-		{
-			return _defaultLanguage;
-		}
-
-		public function set defaultLanguage(value:String):void
-		{
-			_defaultLanguage = value;
-		}
-		
-		
-		public function RuntimeLocale()
-		{
-			_defaultLanguage = "en_US";
-			_supportedLanguage = new ArrayCollection;
-			_supportedLanguage.addItem({label:"English(United States)", data:"en_US"});
-			_supportedLanguage.addItem({label:"English(United Kingdom)", data:"en_GB"});
-			_supportedLanguage.addItem({label:"English(Australia)", data:"en_AU"});
-			_supportedLanguage.addItem({label:"Dutch", data:"nl_NL"});
-			_supportedLanguage.addItem({label:"Greek", data:"el_GR"});
-			
-			installResourcers_en_US();
-			installResourcers_el_GR();
-			installResourcers_en_AU();
-			installResourcers_el_GR();
-			installResourcers_nl_NL();
-		}
-		public function enumerateBundles():void 
-		{
-			trace ("");
-			trace ("");
-			var _resourceManager:IResourceManager = ResourceManager.getInstance();
-			var bundleName:String = "messagestrings";
-			{
-				var bundle:ResourceBundle = ResourceBundle(_resourceManager.getResourceBundle("en_US", bundleName));
-				for (var key:String in bundle.content) 
-				{
-					trace ('_resource.content["' + key +'"]=' + '"' +bundle.content[key]+'";');
-				}
-			}
-		}
-
-		protected function installResourcers_en_US():void
-		{
-			var _resourceManager:IResourceManager = ResourceManager.getInstance();
-			var _resource:ResourceBundle = new ResourceBundle("en_US", "messagestrings");
-			
-			_resource.content["ERROR_VERIFY_FLEX_SDK"]="The Apache Flex SDK MD5 Signature of the downloaded files doesn not match the reference value. The file is invalid, installation is aborted.";
-			_resource.content["ERROR_MIRROR_FETCH"]="Error while trying to fetch a mirror for downloading the Apache Flex SDK binaries: ";
+public class RuntimeLocale
+{
 	
-			_resource.content["FETCH_GEO_IP"]="Trying to fetch the user's country code from the GeoIP service...";
-			_resource.content["FETCH_GEO_IP_DONE"]="Fetched the user's country code from the GeoIP service.";
-			_resource.content["FETCH_GEO_IP_ERROR"]="An error occurred while fetching the user's country code from the GeoIP service.";
-			_resource.content["FETCH_MIRROR_CGI"]="Trying to fetch the SDK download mirror URL from the CGI...";
-			_resource.content["FETCH_MIRROR_CGI_DONE"]="Fetched the SDK download mirror URL from the CGI.";
-			_resource.content["FETCH_MIRROR_CGI_ERROR"]="Could not fetch the SDK download mirror URL from the CGI. Going to try the GeoIP route.";
-			_resource.content["FETCH_MIRROR_LIST"]="Trying to fetch the mirror list from Apache.org...";
-			_resource.content["FETCH_MIRROR_LIST_DONE"]="Fetched the mirror list from Apache.org.";
-			_resource.content["FETCH_MIRROR_LIST_PARSED"]="Parsed the mirror list using the country code and got this domain: ";
-
-			_resource.content["INFO_VERIFY_FLEX_SDK_DONE"]="The Apache Flex SDK MD5 Signature of the downloaded files matches the reference. The file is valid.";
-			
-			_resource.content["STEP_VERIFY_FLEX_SDK"]="Verifying Apache Flex SDK MD5 Signature";
-			
-			_resource.content["browse_btn_label"]="BROWSE";
-			_resource.content["install_log_btn_label"]="INSTALL LOG";
-			_resource.content["install_btn_label"]="INSTALL";
-			_resource.content["close_btn_label"]="CLOSE";
-			_resource.content["select_path_prompt"]="Where do you want to install the Apache Flex SDK?";
-			_resource.content["next_btn_label"]="NEXT";
-			_resource.content["show_mpl_license_btn_label"]="SHOW MPL LICENSE";
-			_resource.content["show_adobe_license_btn_label"]="SHOW ADOBE LICENSE";
-			_resource.content["open_apache_flex_folder_btn_label"]="OPEN APACHE FLEX FOLDER";
-
-			_resource.content["info_dowloading_air_runtime_kit_mac"]="Downloading Adobe AIR Runtime Kit for Mac from: ";
-			_resource.content["info_finished_untaring"]="Finished untaring: ";
-			_resource.content["info_dowloading_air_runtime_kit_windows"]="Downloading Adobe AIR Runtime Kit for Windows from: ";
-			_resource.content["info_invoked_gui_mode"]="invoked in GUI mode";
-			_resource.content["info_enter_valid_flex_sdk_path"]="Please enter valid directory path for the Flex SDK";
-			_resource.content["info_select_directory"]="Select the directory where you want to install the Flex SDK";
-			_resource.content["info_app_invoked"]="Invoked in command line mode with the following arguments: ";
-			_resource.content["info_downloaded"]="Download complete ";
-			_resource.content["info_abort_installation"]="Installation aborted";
-			_resource.content["info_unzipping"]="Uncompressing: ";
-			_resource.content["info_installing_playerglobal_swc"]="Installing Adobe Flash Player playerglobal.swc from: ";
-			_resource.content["info_installing_config_files"]="Installing frameworks configuration files configured for use with an IDE";
-			_resource.content["info_creating_temp_dir"]="Creating temporary directory";
-			_resource.content["info_installation_complete"]="Installation complete";
-			_resource.content["info_finished_unzipping"]="Finished uncompressing: ";
-			_resource.content["info_dowloading_flex_sdk"]="Downloading Apache Flex SDK from: ";
-			_resource.content["info_dowloading_adobe_flex_sdk"]="Downloading Adobe Flex SDK from: ";
-			_resource.content["info_dowloading_file_from"]="Downloading {0} from: {1}";
-			_resource.content["info_need_to_read_and_agree_to_license"]="These components have license agrements other than the Apache License.  " +
-																		"Please click on each item on the left, read the license and confirm that you agree " +
-																		"to the terms of each license.";
-			_resource.content["info_installing"]="Installing...";
-			
-			_resource.content["error_unable_to_copy_file"]="Unable to copy file ";
-			_resource.content["error_config_xml_load"]="Error while trying to load XML configuration file: ";
-			_resource.content["error_unable_to_download_flash_player_swc"]="Unable to download Flash Player swc";
-			_resource.content["error_unable_to_delete_temp_directory"]="Unable to clean up temporary installation directories";
-			_resource.content["error_unable_to_download_air_sdk"]="Unable to download Adobe AIR Runtime Kit";
-			_resource.content["error_invalid_flash_player_swc_url"]="Flash Player swc URL invalid in configuration file";
-			_resource.content["error_unsupported_operating_system"]="Unsupported operating system";
-			_resource.content["error_invalid_sdk_url"]="Apache Flex SDK URL invalid in configuration file";
-			_resource.content["error_invalid_air_sdk_url_mac"]="Adobe AIR SDK URL for Mac invalid in configuration file";
-			_resource.content["info_creating_flex_home"]="Creating Apache Flex home";
-			_resource.content["error_native_process_error"]="Native Process error unable to untar Adobe AIR SDK";
-			_resource.content["error_invalid_air_sdk_url_windows"]="Adobe AIR SDK URL for Windows invalid in configuration file";
-			_resource.content["error_unable_to_download_flex_sdk"]="Unable to download Apache Flex SDK";
-			_resource.content["error_native_process_not_supported"]="Native Process not supported.  Unable to untar Adobe AIR SDK";
-			_resource.content["error_unable_to_create_temp_directory"]="Unable to create temporary directory";
-			_resource.content["error_invalid_flex_sdk_directory"]="Invalid Flex SDK directory selected";
-			_resource.content["error_unable_to_install_config_files"]="Unable to install configuration files";
-			_resource.content["error_unable_to_download_file"]="Unable to download {0}";
-			_resource.content["error_unable_to_unzip"]="Unable to unzip file: ";
-			_resource.content["error_dir_not_empty"]="The selected directory is not empty";
-			
-			
-			_resource.content["config_url"]="http://people.apache.org/~bigosmallm/installapacheflex/ApacheFlexConfig.xml";
-			_resource.content["apache_flex_url"]="http://incubator.apache.org/flex/";
-			_resource.content["adobe_flex_sdk_license_url"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf"
-
-			_resource.content["step_download_air_runtime_kit"]="Download Adobe AIR Runtime Kit";
-			_resource.content["step_unzip_air_runtime_kit"]="Uncompress Adobe AIR Runtime Kit";
-			_resource.content["step_unzip_flex_sdk"]="Uncompress Apache Flex SDK";
-			_resource.content["step_download_flashplayer_swc"]="Download Flash Player swc";
-			_resource.content["step_download_flex_sdk"]="Download Apache Flex SDK";
-			_resource.content["step_install_config_files"]="Install Framework Configuration Files";
-			_resource.content["step_create_directories"]="Create Directories";
-			_resource.content["step_optional_install_FontSwf"]="Adobe Fontswf Utility (Optional)";
-			_resource.content["step_optional_install_BlazeDS"]="BlazeDS (Optional)";
-			_resource.content["step_optional_install_TLF"]="Adobe Text Layout Framework (Required)";
-			_resource.content["step_optional_install_OSMF"]="OSMF (Required)";
-			
-			//Optional install prompts
-			_resource.content["install"] = "I Agree, Install"
-			_resource.content["dont_install"] = "I Disagree, Don't Install"
-			_resource.content["ask_osmf"]="The Open Source Media Framework (OSMF) used by the video components is licensed under the Mozilla Public License Version 1.1.";
-			_resource.content["ask_tlf"]="The Adobe Text Layout Framework (TLF) used by the Spark text components is licensed under the Mozilla Public License Version 1.1.";
-			_resource.content["ask_fontswf"]="Apache Flex can optionally integrate with Adobe's embedded font support.  " +
-											"This feature requires a few font jars from the Adobe Flex SDK.  " +
-											"The Adobe SDK license agreement for Adobe Flex 4.6 applies to these jars.  " +
-											"This license is not compatible with the Apache v2 license.  " +
-											"Do you want to install these jars from the Adobe Flex SDK?";
-
-			_resource.content["ask_blazeds"]="Apache Flex can optionally integrate with Adobe BlazeDS.  " +
-												"This feature requires flex-messaging-common.jar from the Adobe Flex SDK.  " +
-												"The Adobe SDK license agreement for Adobe Flex 4.6 applies to this jar.  " +
-												"This license is not compatible with the Apache v2 license.  " +
-												"Do you want to install this jar from the Adobe Flex SDK?"
-			
-			_resourceManager.addResourceBundle(_resource);
-			_resourceManager.update();
-		}
+	//--------------------------------------------------------------------------
+	//
+	// Class constants
+	//
+	//--------------------------------------------------------------------------
+	
+	public static const EL_GR:String = "el_GR";
+	public static const EN_AU:String = "en_AU";
+	public static const EN_GB:String = "en_GB";
+	public static const EN_US:String = "en_US";
+	public static const NL_NL:String = "nl_NL";
+	
+	//--------------------------------------------------------------------------
+	//
+	// Class properties
+	//
+	//--------------------------------------------------------------------------
+	
+	//----------------------------------
+	// instance
+	//----------------------------------
+	
+	private static var _instance:RuntimeLocale;
+	
+	public static function get instance():RuntimeLocale
+	{
+		if (!_instance)
+			_instance = new RuntimeLocale(new SE());
 		
-		protected function installResourcers_el_GR():void
-		{
-			var _resourceManager:IResourceManager = ResourceManager.getInstance();
-			var _resource:ResourceBundle = new ResourceBundle("el_GR", "messagestrings");
-
-			_resource.content["browse_btn_label"]="Αναζήτηση";
-			_resource.content["install_log_btn_label"]="αρχείο καταγραφής εγκατάστασης";
-			_resource.content["install_btn_label"]="Εγκατάσταση";
-			_resource.content["close_btn_label"]="Έξοδος";
-			_resource.content["select_path_prompt"]="Πληκτρολογήστε η επιλέξτε μια έγκυρη διαδρομή για το Flex SDK";
-			
-			_resource.content["info_dowloading_air_runtime_kit_mac"]="Λήψη Adobe AIR Runtime Kit για Mac από:";
-			_resource.content["info_finished_untaring"]="Η αποσυμπίεση τελείωσε:";
-			_resource.content["info_dowloading_air_runtime_kit_windows"]="Λήψη Adobe AIR Runtime Kit για Windows από:";
-			_resource.content["info_invoked_gui_mode"]="Κλήση με λειτουργία γραφικού περιβάλλοντος";
-			_resource.content["info_enter_valid_flex_sdk_path"]="Παρακαλώ εισάγετε μια έγκυρη διαδρομή καταλόγου για το the Flex SDK";
-			_resource.content["info_installing_playerglobal_swc"]="Εγκατάσταση Adobe Flash Player playerglobal.swc από:";
-			_resource.content["info_installation_complete"]="Η εγκατάσταση ολοκληρώθηκε.";
-			_resource.content["info_creating_temp_dir"]="Δημιουργία προσωρινού καταλόγου";
-			_resource.content["info_dowloading_flex_sdk"]="Λήψη Apache Flex SDK από:";
-			_resource.content["info_creating_flex_home"]="Δημιουργία αρχικού καταλόγου για Apache Flex";
-			_resource.content["info_finished_unzipping"]="Η αποσυμπίεση τελείωσε:";
-			_resource.content["info_downloaded"]="Η λήψη ολοκληρώθηκε";
-			_resource.content["info_select_directory"]="Επιλέξτε ένα κατάλογο";
-			_resource.content["info_app_invoked"]="Κλήση με λειτουργία γραμμής εντολών με τα ακόλουθα ορίσματα:";
-			_resource.content["info_abort_installation"]="Ματαίωση εγκατάστασης";
-			_resource.content["info_installing_config_files"]="Εγκατάσταση αρχείων ρυθμίσεων για  frameworks ρυθμισμένα για χρήση IDE";
-			_resource.content["info_unzipping"]="Ααποσυμπίεση: ";
-			
-			_resource.content["error_unable_to_download_flash_player_swc"]="Δεν είναι δυνατή η λήψη του Flash Player swc";
-			_resource.content["error_native_process_error"]="Λάθος στο Native Process Δεν είναι δυνατή η αποσυμπίεση (untar) του Adobe AIR SDK";
-			_resource.content["error_unsupported_operating_system"]="Δεν υποστηρίζεται το λειτουργικό σύστημα";
-			_resource.content["error_invalid_air_sdk_url_mac"]="Άκυρο Adobe AIR SDK URL για Mac στο αρχείο ρυθμίσεων";
-			_resource.content["error_invalid_sdk_url"]="Ακυρο Apache Flex SDK URL στο αρχείο ρυθμίσεων.";
-			_resource.content["error_unable_to_download_flex_sdk"]="Δεν είναι δυνατή η λήψη του Apache Flex SDK";
-			_resource.content["error_native_process_not_supported"]="Native Process δεν υποστηρίζεται.  Δεν είναι δυνατή η αποσυμπίεση(untar)του Adobe AIR SDK";
-			_resource.content["error_invalid_air_sdk_url_windows"]="Άκυρο Adobe AIR SDK URL για Windows στο αρχείο ρυθμίσεων";
-			_resource.content["error_invalid_flash_player_swc_url"]="Άκυρο Flash Player swc URL στο αρχείο ρυθμίσεων";
-			_resource.content["error_config_xml_load"]="Πρόεκυψε σφάλμα στην προσπάθεια φόρτωσης του αρχείου ρυθμίσεων XML:";
-			_resource.content["error_unable_to_delete_temp_directory"]="Δεν είναι δυνατή η εκκαθάριση των προσωρινών καταλόγων εγκατάστασης";
-			_resource.content["error_unable_to_copy_file"]="Δεν είναι δυνατή η αντιγραφή του αρχείου ";
-			_resource.content["error_unable_to_download_air_sdk"]="Δεν είναι δυνατή η λήψη του Adobe AIR Runtime Kit";
-			_resource.content["error_unable_to_create_temp_directory"]="Δεν είναι δυνατή η δημιουργία προσωρινού καταλόγου";
-			_resource.content["error_invalid_flex_sdk_directory"]="Έχετε επιλέξει άκυρο κατάλογο για το Flex SDK ";
-			_resource.content["error_unable_to_install_config_files"]="Δεν είναι δυνατή η εγκατάσταση των αρχείων ρυθμίσεων";
-			
-			
-			_resource.content["apache_flex_url"]="http://incubator.apache.org/flex/";
-			_resource.content["config_url"]="ApacheFlexConfig.xml";
-			
-			_resource.content["step_download_flashplayer_swc"]="Λήψη Flash Player swc";
-			_resource.content["step_download_flex_sdk"]="Λήψη Apache Flex SDK";
-			_resource.content["step_download_air_runtime_kit"]="Λήψη Adobe AIR Runtime Kit";
-			_resource.content["step_install_config_files"]="Εγκατάσταση αρχείων ρυθμίσεων του Framework";
-			_resource.content["step_create_directories"]="Δημιουργία Καταλόγων";
-			_resource.content["step_unzip_flex_sdk"]="Ααποσυμπίεση Apache Flex SDK";
-			_resource.content["step_unzip_air_runtime_kit"]="Ααποσυμπίεση Adobe AIR Runtime Kit";
-			
-			
-			_resourceManager.addResourceBundle(_resource);
-			_resourceManager.update();
-			
-		}
-		
-		protected function installResourcers_nl_NL():void
-		{
-			var _resourceManager:IResourceManager = ResourceManager.getInstance();
-			var _resource:ResourceBundle = new ResourceBundle("nl_NL", "messagestrings");
-
-			_resource.content["browse_btn_label"]="Bladeren...";
-			_resource.content["install_log_btn_label"]="Installatie Log";
-			_resource.content["install_btn_label"]="Installeren";
-			_resource.content["close_btn_label"]="Sluiten";
-			_resource.content["select_path_prompt"]="Geef Flex SDK pad in of blader naar het pad";
-			
-			_resource.content["info_installation_complete"]="Installatie gereed.";
-			_resource.content["info_creating_temp_dir"]="Maakt tijdelijke map aan";
-			_resource.content["info_installing_config_files"]="Framework configuratie bestanden voor gebruik met IDE worden geinstalleerd";
-			_resource.content["info_dowloading_air_runtime_kit_mac"]="Adobe AIR Runtime Kit voor Mac wordt gedownload van: ";
-			_resource.content["info_dowloading_flex_sdk"]="Apache Flex SDK wordt gedownload van: ";
-			_resource.content["info_creating_flex_home"]="Maakt flex home aan";
-			_resource.content["info_finished_untaring"]="Klaar met uitpakken:";
-			_resource.content["info_dowloading_air_runtime_kit_windows"]="Adobe AIR Runtime Kit voor Windows wordt gedownload van: ";
-			_resource.content["info_downloaded"]="Gedownload ";
-			_resource.content["info_enter_valid_flex_sdk_path"]="Geef een geldig Flex SDK pad in";
-			_resource.content["info_finished_unzipping"]="Klaar met uitpakken: ";
-			_resource.content["info_select_directory"]="Kies een map";
-			_resource.content["info_unzipping"]="Uitpakken: ";
-			_resource.content["info_app_invoked"]="Opgestart in command line modus met de volgende argumenten: ";
-			_resource.content["info_installing_playerglobal_swc"]="Adobe Flash Player playerglobal.swc wordt geinstalleerd van:";
-			_resource.content["info_invoked_gui_mode"]="Opgestart in visuele modus";
-			
-			_resource.content["error_unable_to_copy_file"]="Kan bestand niet kopieeren ";
-			_resource.content["error_config_xml_load"]="Fout tijdens het laden van het XML configuratie bestand: ";
-			_resource.content["error_native_process_error"]="Native Process fout kan Adobe AIR SDK niet uitpakken";
-			_resource.content["error_unsupported_operating_system"]="Besturingsysteem is niet ondersteund";
-			_resource.content["error_invalid_air_sdk_url_mac"]="Adobe AIR SDK URL voor Mac is ongeldig in configuratie bestand";
-			_resource.content["error_invalid_sdk_url"]="Apache Flex SDK URL ongeldig in configuratie bestand";
-			_resource.content["error_native_process_not_supported"]="Native Process niet ondersteund.  Kan Adobe AIR SDK niet uitpakken";
-			_resource.content["error_invalid_air_sdk_url_windows"]="Adobe AIR SDK URL voor Windows is ongeldig in configuratie bestand";
-			_resource.content["error_invalid_flash_player_swc_url"]="Flash Player swc URL is ongeldig in configuratie bestand";
-			_resource.content["error_unable_to_download_flex_sdk"]="Downloaden Apache Flex SDK mislukt";
-			_resource.content["error_unable_to_download_air_sdk"]="Downloaden Adobe AIR Runtime Kit mislukt";
-			_resource.content["error_unable_to_download_flash_player_swc"]="Downloaden Flash Player swc mislukt";
-			_resource.content["info_abort_installation"]="Installatie wordt afgebroken";
-			_resource.content["error_unable_to_delete_temp_directory"]="Opruimen van tijdelijke installatie bestanden mislukt";
-			_resource.content["error_unable_to_create_temp_directory"]="Unable to create temporary directory";
-			_resource.content["error_invalid_flex_sdk_directory"]="Invalid Flex SDK directory selected";
-			_resource.content["error_unable_to_install_config_files"]="Unable to install configuration files";
-
-			
-			_resource.content["config_url"]="ApacheFlexConfig.xml";
-			_resource.content["apache_flex_url"]="http://incubator.apache.org/flex/";
-			
-			_resource.content["step_download_flex_sdk"]="Apache Flex SDK Downloaden";
-			_resource.content["step_unzip_flex_sdk"]="Apache Flex SDK uitpakken";
-			_resource.content["step_download_air_runtime_kit"]="Adobe AIR Runtime Kit Downloaden";
-			_resource.content["step_unzip_air_runtime_kit"]="Adobe AIR Runtime Kit Uitpakken";
-			_resource.content["step_download_flashplayer_swc"]="Flash Player swc Downloaden";
-			_resource.content["step_install_config_files"]="Framework Configuratie Bestanden Installeren";
-			_resource.content["step_create_directories"]="Mappen aanmaken";
-			
-			_resourceManager.addResourceBundle(_resource);
-			_resourceManager.update();
-
-		}
-		protected function installResourcers_en_AU():void
-		{
-			var _resourceManager:IResourceManager = ResourceManager.getInstance();
-			var _resource:ResourceBundle = new ResourceBundle("en_AU", "messagestrings");
-			
-			_resource.content["browse_btn_label"]="BROWSE";
-			_resource.content["install_log_btn_label"]="INSTALL LOG";
-			_resource.content["install_btn_label"]="INSTALL";
-			_resource.content["close_btn_label"]="CLOSE";
-			_resource.content["select_path_prompt"]="Enter Flex SDK path or browse to select a path";
-			
-			_resource.content["info_dowloading_air_runtime_kit_mac"]="Downloading Adobe AIR Runtime Kit for Mac from: ";
-			_resource.content["info_finished_untaring"]="Finished untaring: ";
-			_resource.content["info_dowloading_air_runtime_kit_windows"]="Downloading Adobe AIR Runtime Kit for Windows from: ";
-			_resource.content["info_invoked_gui_mode"]="invoked in GUI mode";
-			_resource.content["info_enter_valid_flex_sdk_path"]="Please enter valid directory path for the Flex SDK";
-			_resource.content["info_select_directory"]="Select a directory";
-			_resource.content["info_app_invoked"]="Invoked in command line mode with the following arguments: ";
-			_resource.content["info_downloaded"]="Download complete ";
-			_resource.content["info_abort_installation"]="Aborting Installation";
-			_resource.content["info_unzipping"]="Unzipping: ";
-			_resource.content["info_installing_playerglobal_swc"]="Installing Adobe Flash Player playerglobal.swc from: ";
-			_resource.content["info_installing_config_files"]="Installing frameworks configuration files configured for use with an IDE";
-			_resource.content["info_installation_complete"]="Installation complete.";
-			_resource.content["info_creating_temp_dir"]="Creating temporary directory";
-			_resource.content["info_creating_flex_home"]="Creating Apache Flex home";
-			_resource.content["info_finished_unzipping"]="Finished unzipping: ";
-			_resource.content["info_dowloading_flex_sdk"]="Downloading Apache Flex SDK from: ";
-
-			_resource.content["error_unable_to_copy_file"]="Unable to copy file ";
-			_resource.content["error_config_xml_load"]="Error while trying to load XML configuration file: ";
-			_resource.content["error_unable_to_download_flash_player_swc"]="Unable to download Flash Player swc";
-			_resource.content["error_unable_to_delete_temp_directory"]="Unable to clean up temporary installation directories";
-			_resource.content["error_unable_to_download_air_sdk"]="Unable to download Adobe AIR Runtime Kit";
-			_resource.content["error_invalid_flash_player_swc_url"]="Flash Player swc URL invalid in configuration file";
-			_resource.content["error_unsupported_operating_system"]="Unsupported operating system";
-			_resource.content["error_invalid_sdk_url"]="Apache Flex SDK URL invalid in configuration file";
-			_resource.content["error_invalid_air_sdk_url_mac"]="Adobe AIR SDK URL for Mac invalid in configuration file";
-			_resource.content["error_native_process_error"]="Native Process error unable to untar Adobe AIR SDK";
-			_resource.content["error_invalid_air_sdk_url_windows"]="Adobe AIR SDK URL for Windows invalid in configuration file";
-			_resource.content["error_unable_to_download_flex_sdk"]="Unable to download Apache Flex SDK";
-			_resource.content["error_native_process_not_supported"]="Native Process not supported.  Unable to untar Adobe AIR SDK";
-			_resource.content["error_unable_to_create_temp_directory"]="Unable to create temporary directory";
-			_resource.content["error_invalid_flex_sdk_directory"]="Invalid Flex SDK directory selected";
-			_resource.content["error_unable_to_install_config_files"]="Unable to install configuration files";
-
-			_resource.content["config_url"]="ApacheFlexConfig.xml";
-			_resource.content["apache_flex_url"]="http://incubator.apache.org/flex/";
-			
-			_resource.content["step_install_config_files"]="Install Framework Configuration Files";
-			_resource.content["step_unzip_flex_sdk"]="Unzip Apache Flex SDK";
-			_resource.content["step_unzip_air_runtime_kit"]="Unzip Adobe AIR Runtime Kit";
-			_resource.content["step_download_flashplayer_swc"]="Download Flash Player swc";
-			_resource.content["step_download_flex_sdk"]="Download Apache Flex SDK";
-			_resource.content["step_download_air_runtime_kit"]="Download Adobe AIR Runtime Kit";
-			_resource.content["step_create_directories"]="Create Directories";
-			
-			_resourceManager.addResourceBundle(_resource);
-			_resourceManager.update();
-		}
-		
-		protected function installResourcers_en_GB():void
-		{
-			var _resourceManager:IResourceManager = ResourceManager.getInstance();
-			var _resource:ResourceBundle = new ResourceBundle("en_AU", "messagestrings");
-			
-			_resource.content["browse_btn_label"]="BROWSE";
-			_resource.content["install_log_btn_label"]="INSTALL LOG";
-			_resource.content["install_btn_label"]="INSTALL";
-			_resource.content["close_btn_label"]="CLOSE";
-			_resource.content["select_path_prompt"]="Enter Flex SDK path or browse to select a path";
-			
-			_resource.content["info_dowloading_air_runtime_kit_mac"]="Downloading Adobe AIR Runtime Kit for Mac from: ";
-			_resource.content["info_finished_untaring"]="Finished untaring: ";
-			_resource.content["info_dowloading_air_runtime_kit_windows"]="Downloading Adobe AIR Runtime Kit for Windows from: ";
-			_resource.content["info_invoked_gui_mode"]="invoked in GUI mode";
-			_resource.content["info_enter_valid_flex_sdk_path"]="Please enter valid directory path for the Flex SDK";
-			_resource.content["info_select_directory"]="Select a directory";
-			_resource.content["info_app_invoked"]="Invoked in command line mode with the following arguments: ";
-			_resource.content["info_downloaded"]="Download complete ";
-			_resource.content["info_abort_installation"]="Aborting Installation";
-			_resource.content["info_unzipping"]="Unzipping: ";
-			_resource.content["info_installing_playerglobal_swc"]="Installing Adobe Flash Player playerglobal.swc from: ";
-			_resource.content["info_installing_config_files"]="Installing frameworks configuration files configured for use with an IDE";
-			_resource.content["info_installation_complete"]="Installation complete.";
-			_resource.content["info_creating_temp_dir"]="Creating temporary directory";
-			_resource.content["info_creating_flex_home"]="Creating Apache Flex home";
-			_resource.content["info_finished_unzipping"]="Finished unzipping: ";
-			_resource.content["info_dowloading_flex_sdk"]="Downloading Apache Flex SDK from: ";
-
-			_resource.content["error_unable_to_copy_file"]="Unable to copy file ";
-			_resource.content["error_config_xml_load"]="Error while trying to load XML configuration file: ";
-			_resource.content["step_unzip_flex_sdk"]="Unzip Apache Flex SDK";
-			_resource.content["error_unable_to_download_flash_player_swc"]="Unable to download Flash Player swc";
-			_resource.content["error_unable_to_delete_temp_directory"]="Unable to clean up temporary installation directories";
-			_resource.content["error_unable_to_download_air_sdk"]="Unable to download Adobe AIR Runtime Kit";
-			_resource.content["error_invalid_flash_player_swc_url"]="Flash Player swc URL invalid in configuration file";
-			_resource.content["error_unsupported_operating_system"]="Unsupported operating system";
-			_resource.content["error_invalid_sdk_url"]="Apache Flex SDK URL invalid in configuration file";
-			_resource.content["error_invalid_air_sdk_url_mac"]="Adobe AIR SDK URL for Mac invalid in configuration file";
-			_resource.content["error_native_process_error"]="Native Process error unable to untar Adobe AIR SDK";
-			_resource.content["error_invalid_air_sdk_url_windows"]="Adobe AIR SDK URL for Windows invalid in configuration file";
-			_resource.content["error_unable_to_download_flex_sdk"]="Unable to download Apache Flex SDK";
-			_resource.content["error_native_process_not_supported"]="Native Process not supported.  Unable to untar Adobe AIR SDK";
-			_resource.content["error_unable_to_create_temp_directory"]="Unable to create temporary directory";
-			_resource.content["error_invalid_flex_sdk_directory"]="Invalid Flex SDK directory selected";
-			_resource.content["error_unable_to_install_config_files"]="Unable to install configuration files";
-
-			_resource.content["config_url"]="ApacheFlexConfig.xml";
-			_resource.content["apache_flex_url"]="http://incubator.apache.org/flex/";
-			
-			_resource.content["step_unzip_air_runtime_kit"]="Unzip Adobe AIR Runtime Kit";
-			_resource.content["step_install_config_files"]="Install Framework Configuration Files";
-			_resource.content["step_download_flashplayer_swc"]="Download Flash Player swc";
-			_resource.content["step_download_flex_sdk"]="Download Apache Flex SDK";
-			_resource.content["step_download_air_runtime_kit"]="Download Adobe AIR Runtime Kit";
-			_resource.content["step_create_directories"]="Create Directories";
-
-			_resourceManager.addResourceBundle(_resource);
-			_resourceManager.update();
-		}
-
+		return _instance;
 	}
+	
+	//--------------------------------------------------------------------------
+	//
+	// Constructor
+	//
+	//--------------------------------------------------------------------------
+	
+	public function RuntimeLocale(se:SE) { }
+	
+	//--------------------------------------------------------------------------
+	//
+	// Methods
+	//
+	//--------------------------------------------------------------------------
+	
+	private var _initialized:Boolean;
+	
+	private var _resourceManager:IResourceManager;
+	
+	//--------------------------------------------------------------------------
+	//
+	// Methods
+	//
+	//--------------------------------------------------------------------------
+	
+	//----------------------------------
+	// installResources
+	//----------------------------------
+	
+	public function installResources():void
+	{
+		if (!_initialized)
+		{
+			_resourceManager = ResourceManager.getInstance();
+			
+			install_el_GR();
+			install_en_AU();
+			install_en_GB();
+			install_en_US();
+			install_nl_NL();
+			
+			_initialized = true;
+		}
+	}
+	
+	//----------------------------------
+	// install_el_GR
+	//----------------------------------
+	
+	private function install_el_GR():void
+	{
+		var locale:String = EL_GR;
+		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
+		
+		var content:Object = resource.content;
+		content["BTN_LABEL_BROWSE"]="Αναζήτηση";
+		content["BTN_LABEL_CLOSE"]="Έξοδος";
+		content["BTN_LABEL_INSTALL"]="Εγκατάσταση";
+		content["BTN_LABEL_INSTALL_LOG"]="αρχείο καταγραφής εγκατάστασης";
+		content["ERROR_CONFIG_XML_LOAD"]="Πρόεκυψε σφάλμα στην προσπάθεια φόρτωσης του αρχείου ρυθμίσεων XML:";
+		content["ERROR_INVALID_AIR_SDK_URL_MAC"]="Άκυρο Adobe AIR SDK URL για Mac στο αρχείο ρυθμίσεων";
+		content["ERROR_INVALID_AIR_SDK_URL_WINDOWS"]="Άκυρο Adobe AIR SDK URL για Windows στο αρχείο ρυθμίσεων";
+		content["ERROR_INVALID_FLASH_PLAYER_SWC_URL"]="Άκυρο Flash Player swc URL στο αρχείο ρυθμίσεων";
+		content["ERROR_INVALID_FLEX_SDK_DIRECTORY"]="Έχετε επιλέξει άκυρο κατάλογο για το Flex SDK ";
+		content["ERROR_INVALID_SDK_URL"]="Ακυρο Apache Flex SDK URL στο αρχείο ρυθμίσεων.";
+		content["ERROR_NATIVE_PROCESS_ERROR"]="Λάθος στο Native Process Δεν είναι δυνατή η αποσυμπίεση (untar) του Adobe AIR SDK";
+		content["ERROR_NATIVE_PROCESS_NOT_SUPPORTED"]="Native Process δεν υποστηρίζεται. Δεν είναι δυνατή η αποσυμπίεση(untar)του Adobe AIR SDK";
+		content["ERROR_UNABLE_TO_COPY_FILE"]="Δεν είναι δυνατή η αντιγραφή του αρχείου ";
+		content["ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY"]="Δεν είναι δυνατή η δημιουργία προσωρινού καταλόγου";
+		content["ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY"]="Δεν είναι δυνατή η εκκαθάριση των προσωρινών καταλόγων εγκατάστασης";
+		content["ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK"]="Δεν είναι δυνατή η λήψη του Adobe AIR Runtime Kit";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC"]="Δεν είναι δυνατή η λήψη του Flash Player swc";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK"]="Δεν είναι δυνατή η λήψη του Apache Flex SDK";
+		content["ERROR_UNABLE_TO_INSTALL_CONFIG_FILES"]="Δεν είναι δυνατή η εγκατάσταση των αρχείων ρυθμίσεων";
+		content["ERROR_UNSUPPORTED_OPERATING_SYSTEM"]="Δεν υποστηρίζεται το λειτουργικό σύστημα";
+		content["INFO_ABORT_INSTALLATION"]="Ματαίωση εγκατάστασης";
+		content["INFO_APP_INVOKED"]="Κλήση με λειτουργία γραμμής εντολών με τα ακόλουθα ορίσματα:";
+		content["INFO_CREATING_FLEX_HOME"]="Δημιουργία αρχικού καταλόγου για Apache Flex";
+		content["INFO_CREATING_TEMP_DIR"]="Δημιουργία προσωρινού καταλόγου";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC"]="Λήψη Adobe AIR Runtime Kit για Mac από:";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_WINDOWS"]="Λήψη Adobe AIR Runtime Kit για Windows από:";
+		content["INFO_DOWNLOADING_FLEX_SDK"]="Λήψη Apache Flex SDK από:";
+		content["INFO_DOWNLOADED"]="Η λήψη ολοκληρώθηκε";
+		content["INFO_ENTER_VALID_FLEX_SDK_PATH"]="Παρακαλώ εισάγετε μια έγκυρη διαδρομή καταλόγου για το the Flex SDK";
+		content["INFO_FINISHED_UNTARING"]="Η αποσυμπίεση τελείωσε:";
+		content["INFO_FINISHED_UNZIPPING"]="Η αποσυμπίεση τελείωσε:";
+		content["INFO_INSTALLATION_COMPLETE"]="Η εγκατάσταση ολοκληρώθηκε.";
+		content["INFO_INSTALLING_CONFIG_FILES"]="Εγκατάσταση αρχείων ρυθμίσεων για frameworks ρυθμισμένα για χρήση IDE";
+		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Εγκατάσταση Adobe Flash Player playerglobal.swc από:";
+		content["INFO_INVOKED_GUI_MODE"]="Κλήση με λειτουργία γραφικού περιβάλλοντος";
+		content["INFO_SELECT_DIRECTORY"]="Επιλέξτε ένα κατάλογο";
+		content["INFO_UNZIPPING"]="Ααποσυμπίεση: ";
+		content["SELECT_PATH_PROMPT"]="Πληκτρολογήστε η επιλέξτε μια έγκυρη διαδρομή για το Flex SDK";
+		content["STEP_CREATE_DIRECTORIES"]="Δημιουργία Καταλόγων";
+		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Λήψη Adobe AIR Runtime Kit";
+		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Λήψη Flash Player swc";
+		content["STEP_DOWNLOAD_FLEX_SDK"]="Λήψη Apache Flex SDK";
+		content["STEP_INSTALL_CONFIG_FILES"]="Εγκατάσταση αρχείων ρυθμίσεων του Framework";
+		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Ααποσυμπίεση Adobe AIR Runtime Kit";
+		content["STEP_UNZIP_FLEX_SDK"]="Ααποσυμπίεση Apache Flex SDK";
+		
+		
+		_resourceManager.addResourceBundle(resource);
+	}
+	
+	//----------------------------------
+	// install_en_AU
+	//----------------------------------
+	
+	private function install_en_AU():void
+	{
+		var locale:String = EN_AU;
+		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
+		
+		var content:Object = resource.content;
+		content["BTN_LABEL_BROWSE"]="BROWSE";
+		content["BTN_LABEL_CLOSE"]="CLOSE";
+		content["BTN_LABEL_INSTALL"]="INSTALL";
+		content["BTN_LABEL_INSTALL_LOG"]="INSTALL LOG";
+		content["ERROR_CONFIG_XML_LOAD"]="Error while trying to load XML configuration file: ";
+		content["ERROR_INVALID_AIR_SDK_URL_MAC"]="Adobe AIR SDK URL for Mac invalid in configuration file";
+		content["ERROR_INVALID_AIR_SDK_URL_WINDOWS"]="Adobe AIR SDK URL for Windows invalid in configuration file";
+		content["ERROR_INVALID_FLASH_PLAYER_SWC_URL"]="Flash Player swc URL invalid in configuration file";
+		content["ERROR_INVALID_FLEX_SDK_DIRECTORY"]="Invalid Flex SDK directory selected";
+		content["ERROR_INVALID_SDK_URL"]="Apache Flex SDK URL invalid in configuration file";
+		content["ERROR_NATIVE_PROCESS_ERROR"]="Native Process error unable to untar Adobe AIR SDK";
+		content["ERROR_NATIVE_PROCESS_NOT_SUPPORTED"]="Native Process not supported. Unable to untar Adobe AIR SDK";
+		content["ERROR_UNABLE_TO_COPY_FILE"]="Unable to copy file ";
+		content["ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY"]="Unable to create temporary directory";
+		content["ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY"]="Unable to clean up temporary installation directories";
+		content["ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK"]="Unable to download Adobe AIR Runtime Kit";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC"]="Unable to download Flash Player swc";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK"]="Unable to download Apache Flex SDK";
+		content["ERROR_UNABLE_TO_INSTALL_CONFIG_FILES"]="Unable to install configuration files";
+		content["ERROR_UNSUPPORTED_OPERATING_SYSTEM"]="Unsupported operating system";
+		content["INFO_ABORT_INSTALLATION"]="Aborting Installation";
+		content["INFO_APP_INVOKED"]="Invoked in command line mode with the following arguments: ";
+		content["INFO_CREATING_FLEX_HOME"]="Creating Apache Flex home";
+		content["INFO_CREATING_TEMP_DIR"]="Creating temporary directory";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC"]="Downloading Adobe AIR Runtime Kit for Mac from: ";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_WINDOWS"]="Downloading Adobe AIR Runtime Kit for Windows from: ";
+		content["INFO_DOWNLOADING_FLEX_SDK"]="Downloading Apache Flex SDK from: ";
+		content["INFO_DOWNLOADED"]="Download complete ";
+		content["INFO_ENTER_VALID_FLEX_SDK_PATH"]="Please enter valid directory path for the Flex SDK";
+		content["INFO_FINISHED_UNTARING"]="Finished untaring: ";
+		content["INFO_FINISHED_UNZIPPING"]="Finished unzipping: ";
+		content["INFO_INSTALLATION_COMPLETE"]="Installation complete.";
+		content["INFO_INSTALLING_CONFIG_FILES"]="Installing frameworks configuration files configured for use with an IDE";
+		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Installing Adobe Flash Player playerglobal.swc from: ";
+		content["INFO_INVOKED_GUI_MODE"]="invoked in GUI mode";
+		content["INFO_SELECT_DIRECTORY"]="Select a directory";
+		content["INFO_UNZIPPING"]="Unzipping: ";
+		content["SELECT_PATH_PROMPT"]="Enter Flex SDK path or browse to select a path";
+		content["STEP_CREATE_DIRECTORIES"]="Create Directories";
+		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Download Adobe AIR Runtime Kit";
+		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Download Flash Player swc";
+		content["STEP_DOWNLOAD_FLEX_SDK"]="Download Apache Flex SDK";
+		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
+		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Unzip Adobe AIR Runtime Kit";
+		content["STEP_UNZIP_FLEX_SDK"]="Unzip Apache Flex SDK";
+		
+		_resourceManager.addResourceBundle(resource);
+	}
+	
+	//----------------------------------
+	// install_en_GB
+	//----------------------------------
+	
+	private function install_en_GB():void
+	{
+		var locale:String = EN_GB;
+		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
+		
+		var content:Object = resource.content;
+		content["BTN_LABEL_BROWSE"]="BROWSE";
+		content["BTN_LABEL_CLOSE"]="CLOSE";
+		content["BTN_LABEL_INSTALL"]="INSTALL";
+		content["BTN_LABEL_INSTALL_LOG"]="INSTALL LOG";
+		content["ERROR_CONFIG_XML_LOAD"]="Error while trying to load XML configuration file: ";
+		content["ERROR_INVALID_AIR_SDK_URL_MAC"]="Adobe AIR SDK URL for Mac invalid in configuration file";
+		content["ERROR_INVALID_AIR_SDK_URL_WINDOWS"]="Adobe AIR SDK URL for Windows invalid in configuration file";
+		content["ERROR_INVALID_FLASH_PLAYER_SWC_URL"]="Flash Player swc URL invalid in configuration file";
+		content["ERROR_INVALID_FLEX_SDK_DIRECTORY"]="Invalid Flex SDK directory selected";
+		content["ERROR_INVALID_SDK_URL"]="Apache Flex SDK URL invalid in configuration file";
+		content["ERROR_NATIVE_PROCESS_ERROR"]="Native Process error unable to untar Adobe AIR SDK";
+		content["ERROR_NATIVE_PROCESS_NOT_SUPPORTED"]="Native Process not supported. Unable to untar Adobe AIR SDK";
+		content["ERROR_UNABLE_TO_COPY_FILE"]="Unable to copy file ";
+		content["ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY"]="Unable to create temporary directory";
+		content["ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY"]="Unable to clean up temporary installation directories";
+		content["ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK"]="Unable to download Adobe AIR Runtime Kit";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC"]="Unable to download Flash Player swc";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK"]="Unable to download Apache Flex SDK";
+		content["ERROR_UNABLE_TO_INSTALL_CONFIG_FILES"]="Unable to install configuration files";
+		content["ERROR_UNSUPPORTED_OPERATING_SYSTEM"]="Unsupported operating system";
+		content["INFO_ABORT_INSTALLATION"]="Aborting Installation";
+		content["INFO_APP_INVOKED"]="Invoked in command line mode with the following arguments: ";
+		content["INFO_CREATING_FLEX_HOME"]="Creating Apache Flex home";
+		content["INFO_CREATING_TEMP_DIR"]="Creating temporary directory";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC"]="Downloading Adobe AIR Runtime Kit for Mac from: ";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_WINDOWS"]="Downloading Adobe AIR Runtime Kit for Windows from: ";
+		content["INFO_DOWNLOADING_FLEX_SDK"]="Downloading Apache Flex SDK from: ";
+		content["INFO_DOWNLOADED"]="Download complete ";
+		content["INFO_ENTER_VALID_FLEX_SDK_PATH"]="Please enter valid directory path for the Flex SDK";
+		content["INFO_FINISHED_UNTARING"]="Finished untaring: ";
+		content["INFO_FINISHED_UNZIPPING"]="Finished unzipping: ";
+		content["INFO_INSTALLATION_COMPLETE"]="Installation complete.";
+		content["INFO_INSTALLING_CONFIG_FILES"]="Installing frameworks configuration files configured for use with an IDE";
+		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Installing Adobe Flash Player playerglobal.swc from: ";
+		content["INFO_INVOKED_GUI_MODE"]="invoked in GUI mode";
+		content["INFO_SELECT_DIRECTORY"]="Select a directory";
+		content["INFO_UNZIPPING"]="Unzipping: ";
+		content["SELECT_PATH_PROMPT"]="Enter Flex SDK path or browse to select a path";
+		content["STEP_CREATE_DIRECTORIES"]="Create Directories";
+		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Download Adobe AIR Runtime Kit";
+		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Download Flash Player swc";
+		content["STEP_DOWNLOAD_FLEX_SDK"]="Download Apache Flex SDK";
+		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
+		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Unzip Adobe AIR Runtime Kit";
+		content["STEP_UNZIP_FLEX_SDK"]="Unzip Apache Flex SDK";
+		
+		_resourceManager.addResourceBundle(resource);
+	}
+	
+	//----------------------------------
+	// install_en_US
+	//----------------------------------
+	
+	private function install_en_US():void
+	{
+		var locale:String = EN_US;
+		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
+		
+		var content:Object = resource.content;
+		content["ASK_BLAZEDS"]="Apache Flex can optionally integrate with Adobe BlazeDS. This feature requires flex-messaging-common.jar from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to this jar. This license is not compatible with the Apache v2 license. Do you want to install this jar from the Adobe Flex SDK?"
+		content["ASK_FONTSWF"]="Apache Flex can optionally integrate with Adobe's embedded font support. This feature requires a few font jars from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to these jars. This license is not compatible with the Apache v2 license. Do you want to install these jars from the Adobe Flex SDK?";
+		content["ASK_OSMF"]="The Open Source Media Framework (OSMF) used by the video components is licensed under the Mozilla Public License Version 1.1.";
+		content["ASK_TLF"]="The Adobe Text Layout Framework (TLF) used by the Spark text components is licensed under the Mozilla Public License Version 1.1.";
+		content["BTN_LABEL_ADOBE_LICENSE"]="SHOW ADOBE LICENSE";
+		content["BTN_LABEL_BROWSE"]="BROWSE";
+		content["BTN_LABEL_CLOSE"]="CLOSE";
+		content["BTN_LABEL_INSTALL"]="INSTALL";
+		content["BTN_LABEL_INSTALL_LOG"]="INSTALL LOG";
+		content["BTN_LABEL_MPL_LICENSE"]="SHOW MPL LICENSE";
+		content["BTN_LABEL_NEXT"]="NEXT";
+		content["BTN_LABEL_OPEN_APACHE_FLEX_FOLDER"]="OPEN APACHE FLEX FOLDER";
+		content["ERROR_CONFIG_XML_LOAD"]="Error while trying to load XML configuration file: ";
+		content["ERROR_DIR_NOT_EMPTY"]="The selected directory is not empty";
+		content["ERROR_INVALID_AIR_SDK_URL_MAC"]="Adobe AIR SDK URL for Mac invalid in configuration file";
+		content["ERROR_INVALID_AIR_SDK_URL_WINDOWS"]="Adobe AIR SDK URL for Windows invalid in configuration file";
+		content["ERROR_INVALID_FLASH_PLAYER_SWC_URL"]="Flash Player swc URL invalid in configuration file";
+		content["ERROR_INVALID_FLEX_SDK_DIRECTORY"]="Invalid Flex SDK directory selected";
+		content["ERROR_INVALID_SDK_URL"]="Apache Flex SDK URL invalid in configuration file";
+		content["ERROR_MIRROR_FETCH"]="Error while trying to fetch a mirror for downloading the Apache Flex SDK binaries: ";
+		content["ERROR_NATIVE_PROCESS_ERROR"]="Native Process error unable to untar Adobe AIR SDK";
+		content["ERROR_NATIVE_PROCESS_NOT_SUPPORTED"]="Native Process not supported. Unable to untar Adobe AIR SDK";
+		content["ERROR_UNABLE_TO_COPY_FILE"]="Unable to copy file ";
+		content["ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY"]="Unable to create temporary directory";
+		content["ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY"]="Unable to clean up temporary installation directories";
+		content["ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK"]="Unable to download Adobe AIR Runtime Kit";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FILE"]="Unable to download {0}";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC"]="Unable to download Flash Player swc";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK"]="Unable to download Apache Flex SDK";
+		content["ERROR_UNABLE_TO_INSTALL_CONFIG_FILES"]="Unable to install configuration files";
+		content["ERROR_UNABLE_TO_UNZIP"]="Unable to unzip file: ";
+		content["ERROR_UNSUPPORTED_OPERATING_SYSTEM"]="Unsupported operating system";
+		content["ERROR_VERIFY_FLEX_SDK"]="The Apache Flex SDK MD5 Signature of the downloaded files doesn not match the reference value. The file is invalid, installation is aborted.";
+		content["FETCH_GEO_IP"]="Trying to fetch the user's country code from the GeoIP service...";
+		content["FETCH_GEO_IP_DONE"]="Fetched the user's country code from the GeoIP service.";
+		content["FETCH_GEO_IP_ERROR"]="An error occurred while fetching the user's country code from the GeoIP service.";
+		content["FETCH_MIRROR_CGI"]="Trying to fetch the SDK download mirror URL from the CGI...";
+		content["FETCH_MIRROR_CGI_DONE"]="Fetched the SDK download mirror URL from the CGI.";
+		content["FETCH_MIRROR_CGI_ERROR"]="Could not fetch the SDK download mirror URL from the CGI. Going to try the GeoIP route.";
+		content["FETCH_MIRROR_LIST"]="Trying to fetch the mirror list from Apache.org...";
+		content["FETCH_MIRROR_LIST_DONE"]="Fetched the mirror list from Apache.org.";
+		content["FETCH_MIRROR_LIST_PARSED"]="Parsed the mirror list using the country code and got this domain: ";
+		content["INFO_ABORT_INSTALLATION"]="Installation aborted";
+		content["INFO_APP_INVOKED"]="Invoked in command line mode with the following arguments: ";
+		content["INFO_CREATING_FLEX_HOME"]="Creating Apache Flex home";
+		content["INFO_CREATING_TEMP_DIR"]="Creating temporary directory";
+		content["INFO_CURRENT_LANGUAGE"]="Select Language";
+		content["INFO_DOWNLOADING_ADOBE_FLEX_SDK"]="Downloading Adobe Flex SDK from: ";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC"]="Downloading Adobe AIR Runtime Kit for Mac from: ";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_WINDOWS"]="Downloading Adobe AIR Runtime Kit for Windows from: ";
+		content["INFO_DOWNLOADING_FILE_FROM"]="Downloading {0} from: {1}";
+		content["INFO_DOWNLOADING_FLEX_SDK"]="Downloading Apache Flex SDK from: ";
+		content["INFO_DOWNLOADED"]="Download complete ";
+		content["INFO_ENTER_VALID_FLEX_SDK_PATH"]="Please enter valid directory path for the Flex SDK";
+		content["INFO_FINISHED_UNTARING"]="Finished untaring: ";
+		content["INFO_FINISHED_UNZIPPING"]="Finished uncompressing: ";
+		content["INFO_INSTALLATION_COMPLETE"]="Installation complete";
+		content["INFO_INSTALLING"]="Installing...";
+		content["INFO_INSTALLING_CONFIG_FILES"]="Installing frameworks configuration files configured for use with an IDE";
+		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Installing Adobe Flash Player playerglobal.swc from: ";
+		content["INFO_INVOKED_GUI_MODE"]="invoked in GUI mode";
+		content["INFO_LICENSE_AGREEMENTS"]="License Agreements";
+		content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="These components have license agrements other than the Apache License. Please click on each item on the left, read the license and confirm that you agree to the terms of each license.";
+		content["INFO_SELECT_DIRECTORY"]="Select the directory where you want to install the Flex SDK";
+		content["INFO_SELECT_DIRECTORY_INSTALL"]="Select installation directory";
+		content["INFO_UNZIPPING"]="Uncompressing: ";
+		content["INFO_VERIFY_FLEX_SDK_DONE"]="The Apache Flex SDK MD5 Signature of the downloaded files matches the reference. The file is valid.";
+		content["INFO_WINDOW_TITLE"]="Install Apache Flex SDK for use with Adobe Flash Builder";
+		content["INSTALL_AGREE"] = "I Agree, Install"
+		content["INSTALL_DISAGREE"] = "I Disagree, Don't Install"
+		content["SELECT_PATH_PROMPT"]="Where do you want to install the Apache Flex SDK?";
+		content["STEP_CREATE_DIRECTORIES"]="Create Directories";
+		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Download Adobe AIR Runtime Kit";
+		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Download Flash Player swc";
+		content["STEP_DOWNLOAD_FLEX_SDK"]="Download Apache Flex SDK";
+		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
+		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Optional)";
+		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Fontswf Utility (Optional)";
+		content["STEP_OPTIONAL_INSTALL_OSMF"]="OSMF (Required)";
+		content["STEP_OPTIONAL_INSTALL_TLF"]="Adobe Text Layout Framework (Required)";
+		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Uncompress Adobe AIR Runtime Kit";
+		content["STEP_UNZIP_FLEX_SDK"]="Uncompress Apache Flex SDK";
+		content["STEP_VERIFY_FLEX_SDK"]="Verifying Apache Flex SDK MD5 Signature";
+		
+		_resourceManager.addResourceBundle(resource);
+	}
+	
+	//----------------------------------
+	// install_nl_NL
+	//----------------------------------
+	
+	private function install_nl_NL():void
+	{
+		var locale:String = NL_NL;
+		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
+		
+		var content:Object = resource.content;
+		content["BTN_LABEL_BROWSE"]="BLADER";
+		content["BTN_LABEL_CLOSE"]="SLUITEN";
+		content["BTN_LABEL_INSTALL"]="INSTALLEREN";
+		content["BTN_LABEL_INSTALL_LOG"]="TOON LOG";
+		content["BTN_LABEL_MPL_LICENSE"]="TOON MPL LICENSE";
+		content["BTN_LABEL_NEXT"]="VERDER";
+		content["ERROR_CONFIG_XML_LOAD"]="Fout tijdens het laden van het XML configuratie bestand: ";
+		content["ERROR_INVALID_AIR_SDK_URL_MAC"]="Adobe AIR SDK URL voor Mac is ongeldig in configuratie bestand";
+		content["ERROR_INVALID_AIR_SDK_URL_WINDOWS"]="Adobe AIR SDK URL voor Windows is ongeldig in configuratie bestand";
+		content["ERROR_INVALID_FLASH_PLAYER_SWC_URL"]="Flash Player swc URL is ongeldig in configuratie bestand";
+		content["ERROR_INVALID_FLEX_SDK_DIRECTORY"]="Invalid Flex SDK directory selected";
+		content["ERROR_INVALID_SDK_URL"]="Apache Flex SDK URL ongeldig in configuratie bestand";
+		content["ERROR_NATIVE_PROCESS_ERROR"]="Native Process fout kan Adobe AIR SDK niet uitpakken";
+		content["ERROR_NATIVE_PROCESS_NOT_SUPPORTED"]="Native Process niet ondersteund. Kan Adobe AIR SDK niet uitpakken";
+		content["ERROR_UNABLE_TO_COPY_FILE"]="Kan bestand niet kopieeren ";
+		content["ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY"]="Unable to create temporary directory";
+		content["ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY"]="Opruimen van tijdelijke installatie bestanden mislukt";
+		content["ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK"]="Downloaden Adobe AIR Runtime Kit mislukt";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC"]="Downloaden Flash Player swc mislukt";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK"]="Downloaden Apache Flex SDK mislukt";
+		content["ERROR_UNABLE_TO_INSTALL_CONFIG_FILES"]="Unable to install configuration files";
+		content["ERROR_UNSUPPORTED_OPERATING_SYSTEM"]="Besturingsysteem is niet ondersteund";
+		content["INFO_ABORT_INSTALLATION"]="Installatie wordt afgebroken";
+		content["INFO_APP_INVOKED"]="Opgestart in command line modus met de volgende argumenten: ";
+		content["INFO_CREATING_FLEX_HOME"]="Maakt flex home aan";
+		content["INFO_CREATING_TEMP_DIR"]="Maakt tijdelijke map aan";
+		content["INFO_CURRENT_LANGUAGE"]="Kies een taal";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC"]="Adobe AIR Runtime Kit voor Mac wordt gedownload van: ";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_WINDOWS"]="Adobe AIR Runtime Kit voor Windows wordt gedownload van: ";
+		content["INFO_DOWNLOADING_FLEX_SDK"]="Apache Flex SDK wordt gedownload van: ";
+		content["INFO_DOWNLOADED"]="Gedownload ";
+		content["INFO_ENTER_VALID_FLEX_SDK_PATH"]="Geef een geldig Flex SDK pad in";
+		content["INFO_FINISHED_UNTARING"]="Klaar met uitpakken:";
+		content["INFO_FINISHED_UNZIPPING"]="Klaar met uitpakken: ";
+		content["INFO_INSTALLATION_COMPLETE"]="Installatie gereed.";
+		content["INFO_INSTALLING_CONFIG_FILES"]="Framework configuratie bestanden voor gebruik met IDE worden geinstalleerd";
+		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Adobe Flash Player playerglobal.swc wordt geinstalleerd van:";
+		content["INFO_INVOKED_GUI_MODE"]="Opgestart in visuele modus";
+		content["INFO_LICENSE_AGREEMENTS"]="Licentie Overeenkomsten";
+		content["INFO_SELECT_DIRECTORY"]="Kies een map";
+		content["INFO_SELECT_DIRECTORY_INSTALL"]="Kies de installatie map";
+		content["INFO_UNZIPPING"]="Uitpakken: ";
+		content["INFO_WINDOW_TITLE"]="Installeer Apache Flex SDK voor gebruik in Adobe Flash Builder";
+		content["SELECT_PATH_PROMPT"]="Geef Flex SDK pad in of blader naar het pad";
+		content["STEP_CREATE_DIRECTORIES"]="Mappen aanmaken";
+		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Adobe AIR Runtime Kit Downloaden";
+		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Flash Player swc Downloaden";
+		content["STEP_DOWNLOAD_FLEX_SDK"]="Apache Flex SDK Downloaden";
+		content["STEP_INSTALL_CONFIG_FILES"]="Framework Configuratie Bestanden Installeren";
+		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Adobe AIR Runtime Kit Uitpakken";
+		content["STEP_UNZIP_FLEX_SDK"]="Apache Flex SDK uitpakken";
+		
+		_resourceManager.addResourceBundle(resource);
+	}
+	
+}
 }
 
+class SE {}

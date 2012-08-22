@@ -17,10 +17,25 @@ limitations under the License.
 
 -->
 <config>
-	<version>1.0</version>
-	<versionurl>http://people.apache.org/~bigosmallm/installapacheflex/version.xml</versionurl>
+	<version>
+		<latest>0.8.3</latest>
+	</version>
 	<files>
-		<!-- Apache Flex binary distribution -->
+	
+		<!-- SDK Installer App binary distribution
+			 Notes: 
+			 	- use full URL when binaries are NOT released yet, else use 
+			 	  path relative to mirror
+			 	- if path is relative, don't use starting slash -->
+		<file name="SDKInstallerApp" path="http://people.apache.org/~bigosmallm/installapacheflex/" file="InstallApacheFlex" />
+		
+		<!-- Mirror URL CGI -->
+		<file name="MirrorURLCGI" path="" file="single-mirror-url.cgi" />
+		
+		<!-- Apache Flex binary distribution
+			 Notes: 
+			 	- path is relative to mirror URL
+			 	- don't use starting slash -->
 		<file name="ApacheFlexSDK" path="incubator/flex/4.8.0-incubating/binaries/" file="apache-flex-sdk-4.8.0-incubating-bin.zip" />
 		
 		<!-- Adobe AIR SDK -->

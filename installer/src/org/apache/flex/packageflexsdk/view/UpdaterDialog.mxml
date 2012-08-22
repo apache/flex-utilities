@@ -24,149 +24,147 @@
 			   title="Update available"
 			   xmlns:controls="ws.tink.spark.controls.*"
 			   skinClass="ws.tink.spark.skins.controls.UpdaterDialogSkin">
-	<fx:Script>
-		<![CDATA[
-			import air.update.events.DownloadErrorEvent;
-			import air.update.events.StatusUpdateEvent;
-			import air.update.events.UpdateEvent;
-			
-			import com.riaspace.nativeApplicationUpdater.utils.HdiutilHelper;
-			
-			import mx.controls.Alert;
-			import mx.events.CloseEvent;
-			import mx.utils.DisplayUtil;
-			
-			import org.apache.flex.packageflexsdk.util.DownloadUtil;
-			
-			[Bindable] private var _newVersion:String;
-			private var _urlWindows:String;
-			private var _fileWindows:File;
-			private var _urlMac:String;
-			private var _fileMac:File;
-			
-			protected function handleYesBtnClick(event:MouseEvent):void
-			{
-				currentState = "downloading";
-				downloadUpdater();
-			}
-			
-			protected function downloadUpdater():void
-			{
-				var os:String = Capabilities.os.toLowerCase();
-				if (os.indexOf("win") > -1)
-				{
-					DownloadUtil.download(_urlWindows,handleWindowsInstallerDownloadComplete,handleDownloadError, handleDownloadProgress);
-				}
-				else if (os.indexOf("mac") > -1)
-				{
-					DownloadUtil.download(_urlMac,handleMacInstallerDownloadComplete,handleDownloadError, handleDownloadProgress);
-				}
-			}
-			
-			protected function handleWindowsInstallerDownloadComplete(event:Event):void
-			{
-				_fileWindows = File.createTempFile();
-				writeFileToDirectory(_fileWindows,event.target.data);
-				installFromFile(_fileWindows);
-			}
-			
-			protected function installFromFile(file:File):void
-			{
-				DownloadUtil.executeFile(file);
-				setTimeout(NativeApplication.nativeApplication.exit, 200);
-			}
-			
-			protected function handleMacInstallerDownloadComplete(event:Event):void
-			{
-				_fileMac = File.createTempFile();
-				writeFileToDirectory(_fileMac,event.target.data);
-				var hdiutilHelper:HdiutilHelper = new HdiutilHelper(_fileMac);
-				hdiutilHelper.addEventListener(Event.COMPLETE, handleHdiutilHelperComplete);
-				hdiutilHelper.addEventListener(ErrorEvent.ERROR, handleHdiutilHelperError);
-				hdiutilHelper.attach();
-			}
-			
-			private function handleHdiutilHelperComplete(event:Event):void
-			{
-				var hdiutilHelper:HdiutilHelper = event.target as HdiutilHelper;
-				hdiutilHelper.removeEventListener(Event.COMPLETE, handleHdiutilHelperComplete);
-				hdiutilHelper.removeEventListener(ErrorEvent.ERROR, handleHdiutilHelperError);
+	
+	<fx:Script><![CDATA[
+		
+		import air.update.events.DownloadErrorEvent;
+		import air.update.events.StatusUpdateEvent;
+		import air.update.events.UpdateEvent;
+		
+		import com.riaspace.nativeApplicationUpdater.utils.HdiutilHelper;
+		
+		import mx.controls.Alert;
+		import mx.core.Application;
+		import mx.core.FlexGlobals;
+		import mx.events.CloseEvent;
+		import mx.utils.DisplayUtil;
+		
+		import org.apache.flex.packageflexsdk.util.DownloadUtil;
+		import org.apache.flex.utilities.common.Constants;
+		import org.apache.flex.utilities.common.Tools;
+		
+		[Bindable] 
+		private var _newVersion:String;
+		
+		private var _fileWindows:File;
+		private var _fileMac:File;
+		
+		protected function handleYesBtnClick(event:MouseEvent):void
+		{
+			currentState = "downloading";
+			downloadUpdater();
+		}
+		
+		protected function downloadUpdater():void
+		{
+			var applicationExtension:String = Tools.getApplicationExtension();
+			var downloadCompleteHandler:Function =  
+				(applicationExtension == Constants.APPLICATION_EXTENSION_WIN) ? 
+				handleWindowsInstallerDownloadComplete : handleMacInstallerDownloadComplete;
 				
-				var attachedDmg:File = new File(hdiutilHelper.mountPoint);
-				var files:Array = attachedDmg.getDirectoryListing();
+			var main:Object = FlexGlobals.topLevelApplication;
+			
+			var url:String = 
+				main.installerAppPath + main.installerAppFileName + applicationExtension;
+			
+			DownloadUtil.download(url, downloadCompleteHandler, handleDownloadError, handleDownloadProgress);
+		}
+		
+		protected function handleWindowsInstallerDownloadComplete(event:Event):void
+		{
+			_fileWindows = File.createTempFile();
+			writeFileToDirectory(_fileWindows,event.target.data);
+			installFromFile(_fileWindows);
+		}
+		
+		protected function installFromFile(file:File):void
+		{
+			DownloadUtil.executeFile(file);
+			setTimeout(NativeApplication.nativeApplication.exit, 200);
+		}
+		
+		protected function handleMacInstallerDownloadComplete(event:Event):void
+		{
+			_fileMac = File.createTempFile();
+			writeFileToDirectory(_fileMac,event.target.data);
+			var hdiutilHelper:HdiutilHelper = new HdiutilHelper(_fileMac);
+			hdiutilHelper.addEventListener(Event.COMPLETE, handleHdiutilHelperComplete);
+			hdiutilHelper.addEventListener(ErrorEvent.ERROR, handleHdiutilHelperError);
+			hdiutilHelper.attach();
+		}
+		
+		private function handleHdiutilHelperComplete(event:Event):void
+		{
+			var hdiutilHelper:HdiutilHelper = event.target as HdiutilHelper;
+			hdiutilHelper.removeEventListener(Event.COMPLETE, handleHdiutilHelperComplete);
+			hdiutilHelper.removeEventListener(ErrorEvent.ERROR, handleHdiutilHelperError);
+			
+			var attachedDmg:File = new File(hdiutilHelper.mountPoint);
+			var files:Array = attachedDmg.getDirectoryListing();
+			
+			if (files.length == 1)
+			{
+				var installFileFolder:File = File(files[0]).resolvePath("Contents/MacOS");
+				var installFiles:Array = installFileFolder.getDirectoryListing();
 				
-				if (files.length == 1)
+				if (installFiles.length == 1)
 				{
-					var installFileFolder:File = File(files[0]).resolvePath("Contents/MacOS");
-					var installFiles:Array = installFileFolder.getDirectoryListing();
-					
-					if (installFiles.length == 1)
-					{
-						installFromFile(installFiles[0]);
-					}
-					else
-						dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, 
-							"Contents/MacOS folder should contain only 1 install file!"));
+					installFromFile(installFiles[0]);
 				}
 				else
-				{
 					dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, 
-						"Mounted volume should contain only 1 install file!"));
-				}
+						"Contents/MacOS folder should contain only 1 install file!"));
 			}
-			
-			private function handleHdiutilHelperError(event:ErrorEvent):void
+			else
 			{
-				var hdiutilHelper:HdiutilHelper = event.target as HdiutilHelper;
-				hdiutilHelper.removeEventListener(Event.COMPLETE, handleHdiutilHelperComplete);
-				hdiutilHelper.removeEventListener(ErrorEvent.ERROR, handleHdiutilHelperError);
-				
 				dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, 
-					"Error attaching dmg file!"));
+					"Mounted volume should contain only 1 install file!"));
 			}
+		}
+		
+		private function handleHdiutilHelperError(event:ErrorEvent):void
+		{
+			var hdiutilHelper:HdiutilHelper = event.target as HdiutilHelper;
+			hdiutilHelper.removeEventListener(Event.COMPLETE, handleHdiutilHelperComplete);
+			hdiutilHelper.removeEventListener(ErrorEvent.ERROR, handleHdiutilHelperError);
 			
-			protected function handleDownloadProgress(event:ProgressEvent):void
-			{
-				var bytesTotal:int = event.bytesTotal;
-				var bytesLoaded:int = event.bytesLoaded;
-				var percentLoaded:int = Math.round(bytesLoaded*100/bytesTotal);
-				progressBar.percent = percentLoaded;
-			}
-			
-			
-			private function handleDownloadError(event:Event):void
-			{
-				Alert.show("Error downloading update file, try again later.");
-			}
-			
-			public function set versionXML(versionXML:XML):void
-			{
-				try
-				{
-					_urlWindows = versionXML.urlWindows.toString();
-					_urlMac = versionXML.urlMac.toString();
-					_newVersion = versionXML.version.toString();
-				}
-				catch(e:Error)
-				{
-					trace("Invalid version XML");
-				}
-			}
-			
-			private function writeFileToDirectory(file:File,data:ByteArray):void
-			{
-				var fs:FileStream = new FileStream();
-				fs.open(file, FileMode.WRITE);
-				fs.writeBytes(data); 
-				fs.close();
-			}
-			
-			protected function handleNoBtnClick(event:MouseEvent):void
-			{
-				dispatchEvent(new CloseEvent(CloseEvent.CLOSE));
-			}
-		]]>
-	</fx:Script>
+			dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, 
+				"Error attaching dmg file!"));
+		}
+		
+		protected function handleDownloadProgress(event:ProgressEvent):void
+		{
+			var bytesTotal:int = event.bytesTotal;
+			var bytesLoaded:int = event.bytesLoaded;
+			var percentLoaded:int = Math.round(bytesLoaded*100/bytesTotal);
+			progressBar.percent = percentLoaded;
+		}
+		
+		
+		private function handleDownloadError(event:Event):void
+		{
+			Alert.show("Error downloading update file, try again later.");
+		}
+		
+		public function set latestVersion(value:String):void
+		{
+			_newVersion = value;
+		}
+		
+		private function writeFileToDirectory(file:File,data:ByteArray):void
+		{
+			var fs:FileStream = new FileStream();
+			fs.open(file, FileMode.WRITE);
+			fs.writeBytes(data); 
+			fs.close();
+		}
+		
+		protected function handleNoBtnClick(event:MouseEvent):void
+		{
+			dispatchEvent(new CloseEvent(CloseEvent.CLOSE));
+		}
+		
+	]]></fx:Script>
 	
 	<s:states>
 		<s:State name="normal" />

@@ -17,16 +17,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.apache.flex.installApacheFlexBadge.utils
+package org.apache.flex.utilities.common
 {
 
-import flash.events.Event;
-import flash.events.IOErrorEvent;
-import flash.net.URLLoader;
-import flash.net.URLLoaderDataFormat;
-import flash.net.URLRequest;
+import mx.collections.ArrayCollection;
 
-public class InternetUtil
+import org.apache.flex.utilities.common.vo.LogMessagesVO;
+import org.apache.flex.utilities.common.interfaces.ILog;
+
+public class MirrorURLUtil implements ILog
 {
 
 	//--------------------------------------------------------------------------
@@ -39,12 +38,12 @@ public class InternetUtil
 	//    instance
 	//----------------------------------
 	
-	private static var _instance:InternetUtil;
+	private static var _instance:MirrorURLUtil;
 	
-	public static function get instance():InternetUtil
+	public static function get instance():MirrorURLUtil
 	{
 		if (!_instance)
-			_instance = new InternetUtil(new SE());
+			_instance = new MirrorURLUtil(new SE());
 		
 		return _instance;
 	}
@@ -55,8 +54,21 @@ public class InternetUtil
 	//
 	//--------------------------------------------------------------------------
 	
-	public function InternetUtil(se:SE) {}
+	public function MirrorURLUtil(se:SE) 
+	{
+		_internetUtil = InternetUtil.instance;
+	}
 		
+	//--------------------------------------------------------------------------
+	//
+	//    Constants
+	//
+	//--------------------------------------------------------------------------
+	
+	private const ACTION:String = "action";
+	private const ERROR:String = "error";
+	private const SUCCESS:String = "success";
+	
 	//--------------------------------------------------------------------------
 	//
 	//    Variables
@@ -64,8 +76,9 @@ public class InternetUtil
 	//--------------------------------------------------------------------------
 	
 	private var _callback:Function;
-	
-	private var _urlLoader:URLLoader;
+	private var _internetUtil:InternetUtil;
+	private var _mirrorFetchStep:String;
+	private var _userCountryCode:String;
 	
 	//--------------------------------------------------------------------------
 	//
@@ -73,17 +86,6 @@ public class InternetUtil
 	//
 	//--------------------------------------------------------------------------
 	
-	//----------------------------------
-	//    errorMessage
-	//----------------------------------
-	
-	private var _errorMessage:String = "";
-
-	public function get errorMessage():String
-	{
-		return _errorMessage;
-	}
-
 	//----------------------------------
 	//    errorOccurred
 	//----------------------------------
@@ -96,14 +98,41 @@ public class InternetUtil
 	}
 	
 	//----------------------------------
-	//    result
+	//    log
 	//----------------------------------
 	
-	private var _result:String;
-	
-	public function get result():String
+	private var _log:ArrayCollection;
+
+	public function get log():ArrayCollection
 	{
-		return _result;
+		return _log;
+	}
+
+	//----------------------------------
+	//    logMessages
+	//----------------------------------
+	
+	private var _logMessages:LogMessagesVO;
+
+	public function get logMessages():LogMessagesVO
+	{
+		return _logMessages;
+	}
+
+	public function set logMessages(value:LogMessagesVO):void
+	{
+		_logMessages = value;
+	}
+
+	//----------------------------------
+	//    mirrorURL
+	//----------------------------------
+	
+	private var _mirrorURL:String;
+
+	public function get mirrorURL():String
+	{
+		return _mirrorURL;
 	}
 	
 	//--------------------------------------------------------------------------
@@ -113,38 +142,78 @@ public class InternetUtil
 	//--------------------------------------------------------------------------
 	
 	//----------------------------------
-	//    fetchResultHandler
+	//    addLogItem
 	//----------------------------------
 	
-	private function fetchResultHandler(event:Event):void
+	private function addLogItem(messageType:String):void 
 	{
-		_errorOccurred = event is IOErrorEvent;
+		if (_logMessages)
+		{
+			switch (messageType)
+			{
+				case ACTION :
+				{
+					_log.addItem(_logMessages.action);
+					
+					break;
+				}
+					
+				case ERROR :
+				{
+					_log.addItem(_logMessages.error);
+					
+					break;
+				}
+					
+				case SUCCESS :
+				{
+					_log.addItem(_logMessages.success);
+					
+					break;
+				}
+			}
+		}
+	}
+	
+	//----------------------------------
+	//    fetchMirrorFromCGIResult
+	//----------------------------------
+	
+	private function fetchMirrorFromCGIResult():void 
+	{
+		_errorOccurred = _internetUtil.errorOccurred;
 		
 		if (!_errorOccurred)
-			_result = _urlLoader.data;
+		{
+			addLogItem(SUCCESS);
+			
+			var result:String = _internetUtil.result;
+			
+			_mirrorURL = (result.search("<p>") != -1) ? 
+				result.substring(3, result.length - 4) : 
+				result;
+		}
 		else
-			_errorMessage = String(IOErrorEvent(event).text);
+		{
+			addLogItem(ERROR);
+		}
 		
 		_callback();
 	}
 	
 	//----------------------------------
-	//    fetch
+	//    getMirrorURL
 	//----------------------------------
 	
-	public function fetch(fetchURL:String, fetchCompleteHandler:Function, args:String = null):void
+	public function getMirrorURL(fetchURL:String, callback:Function):void
 	{
-		_callback = fetchCompleteHandler;
+		_callback = callback;
+	
+		_log = new ArrayCollection();
 		
-		_errorMessage = "";
-		_errorOccurred = false;
-		_result = "";
-		
-		_urlLoader = new URLLoader();
-		_urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
-		_urlLoader.addEventListener(Event.COMPLETE, fetchResultHandler);
-		_urlLoader.addEventListener(IOErrorEvent.IO_ERROR, fetchResultHandler);
-		_urlLoader.load(new URLRequest(fetchURL + ((args) ? "?" + args : "")));
+		_log.addItem(ACTION);
+
+		_internetUtil.fetch(fetchURL, fetchMirrorFromCGIResult);
 	}
 	
 }
