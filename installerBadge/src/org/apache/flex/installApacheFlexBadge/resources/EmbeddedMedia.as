@@ -29,36 +29,20 @@ public final class EmbeddedMedia
 	//--------------------------------------------------------------------------
 	
 	//----------------------------------
-	//    imageBackground
+	//    backgroundRegular
 	//----------------------------------
 	
-	[Embed(source="/assets/images/background.png")]
+	[Embed(source="/org/apache/flex/installApacheFlexBadge/images/backgroundRegular.png")]
 	[Bindable]
-	public static var background:Class;
+	public static var backgroundRegular:Class;
 	
 	//----------------------------------
-	//    imageHeader
+	//    backgroundSmall
 	//----------------------------------
 	
-	[Embed(source="/assets/images/header.png")]
+	[Embed(source="/org/apache/flex/installApacheFlexBadge/images/backgroundSmall.png")]
 	[Bindable]
-	public static var header:Class;
-	
-	//----------------------------------
-	//    imageLogo
-	//----------------------------------
-	
-	[Embed(source="/assets/images/logo.png")]
-	[Bindable]
-	public static var logo:Class;
-	
-	//----------------------------------
-	//    imageLogo
-	//----------------------------------
-	
-	[Embed(source="/assets/images/logoSmall.png")]
-	[Bindable]
-	public static var logoSmall:Class;
+	public static var backgroundSmall:Class;
 	
 	//--------------------------------------------------------------------------
 	//
