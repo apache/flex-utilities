@@ -52,6 +52,14 @@ public final class EmbeddedMedia
 	[Bindable]
 	public static var logo:Class;
 	
+	//----------------------------------
+	//    imageLogo
+	//----------------------------------
+	
+	[Embed(source="/assets/images/logoSmall.png")]
+	[Bindable]
+	public static var logoSmall:Class;
+	
 	//--------------------------------------------------------------------------
 	//
 	//    Constructor

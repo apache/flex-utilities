@@ -22,8 +22,6 @@ limitations under the License.
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:components="org.apache.flex.installApacheFlexBadge.components.*"
-			   height="300"
-			   width="300" 
 			   creationComplete="creationCompleteHandler(event)">
 	
 	<fx:Style source="/assets/styles/ApacheFlexToolsStyle.css" />
@@ -31,6 +29,7 @@ limitations under the License.
 	<fx:Script><![CDATA[
 		
 		import mx.controls.Alert;
+		import mx.core.FlexGlobals;
 		import mx.events.FlexEvent;
 		
 		import org.apache.flex.installApacheFlexBadge.resources.EmbeddedMedia;
@@ -46,6 +45,12 @@ limitations under the License.
 		//    Constants
 		//
 		//----------------------------------------------------------------------
+		
+		private const DIMENSION_HEIGHT_REGULAR:int = 300;
+		private const DIMENSION_HEIGHT_SMALL:int = 82;
+		
+		private const DIMENSION_WIDTH_REGULAR:int = 300;
+		private const DIMENSION_WIDTH_SMALL:int = 400;
 		
 		private const INFO_DISCLAIMER_XML:XML = 
 			<TextFlow xmlns="http://ns.adobe.com/textLayout/2008" fontFamily="openSansSemiBold">
@@ -130,10 +135,48 @@ limitations under the License.
 		
 		private function creationCompleteHandler(event:FlexEvent):void
 		{
+			var displayType:String = ExternalInterface.call("displayType"); 
+			
+			var newStateName:String;
+			switch (displayType)
+			{
+				case "afSDKInstallBadgeSmall" :
+				{
+					newStateName = "small";
+					
+					break;
+				}
+					
+				case "afSDKInstallBadgeRegular" :
+				default :
+				{
+					newStateName = "regular";
+					
+					break;
+				}
+			}
+			currentState = newStateName;
+			
 			_internetUtil = InternetUtil.instance;
 			
-			_internetUtil.fetch(
-				Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME, internetFetchResultHandler);
+			var localDomain:String = InternetUtil.getTLDFromURL(
+				ExternalInterface.call("function () { return window.location.hostname; }"));
+			
+			var remoteDomain:String = InternetUtil.getTLDFromURL(Constants.APACHE_FLEX_URL);
+
+			var url:String = Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME;
+			if (localDomain == remoteDomain)
+			{
+				_internetUtil.fetch(url, internetFetchResultHandler);
+			}
+			else
+			{
+				/*
+					Using a simple webservice (PHP + cUrl) to bypass cross domain
+					and security sandbox restrictions while developing.
+				*/
+				_internetUtil.fetch("badgeConfigService.php", internetFetchResultHandler, "url=" + escape(url));
+			}
 		}
 		
 		//----------------------------------
@@ -198,77 +241,94 @@ limitations under the License.
 	<fx:Declarations /> 
 	
 	<s:states>
-		<s:State name="normal" />
+		<s:State name="regular" />
+		<s:State name="small" />
 		<s:State name="disclaimerState" />
 	</s:states>
 
 	<s:Image id="imgBackground" source="{EmbeddedMedia.background}"
-			 height="300" width="300" />
+			 height="{DIMENSION_WIDTH_REGULAR + 10}" height.small="{DIMENSION_WIDTH_SMALL + 10}"
+			 width="{DIMENSION_WIDTH_REGULAR + 10}" width.small="{DIMENSION_WIDTH_SMALL + 10}"
+			 left="-5" top="-5"/>
 	
 	<s:Image id="imgLogo" source="{EmbeddedMedia.logo}"
 			 height="165" width="164"
 			 top="10"
-			 horizontalCenter="0" />
+			 horizontalCenter="0"
+			 includeIn="regular" />
 	
-	<s:Image id="imgHeader" source="{EmbeddedMedia.header}"
-			 height="37" width="136"
-			 top="185"
-			 left="75" />
+	<s:Image id="imgLogoSmall" source="{EmbeddedMedia.logoSmall}"
+			 height="72" width="72"
+			 left="5" top="5"
+			 includeIn="small" />
 	
-	<s:Label text="{_sdkVersionString}"
-			 fontFamily="openSansBold"
-			 color="0x162545" fontSize="32"
-			 trackingLeft="-1" trackingRight="-1"
-			 width="137"
-			 left="163" top="194" />
+	<s:Group height="37" width="250"
+			 left="75" left.small="95"
+			 top.regular="185" top.small="15">
+		<s:Image id="imgHeader" source="{EmbeddedMedia.header}" />
+		
+		<s:Label text="{_sdkVersionString}"
+				 fontFamily="openSansBold"
+				 color="0x162545" fontSize="32"
+				 trackingLeft="-1" trackingRight="-1"
+				 left="87" top="9" />		
+	</s:Group>
 	
 	<s:Label text="{INFO_FOR_IDE}"
 			 width="190"
-			 left="25" top="235"
+			 left="25" left.small="228"
+			 top="235" top.small="17"
 			 color="0x162545" 
 			 fontFamily="openSansSemibold" fontSize="13"
 			 textAlign="center" />
 	
 	<s:Label text="{LABEL_DISCLAIMER}"
 			 width="60"
-			 left="190" top="236"
+			 left="190" left.small="140"
+			 top="236" top.small="60"
 			 color="0x717C91"
 			 fontFamily="openSansLightItalic" fontSize="11"
 			 textAlign="center"
 			 buttonMode="true"
-			 click="{currentState = 'disclaimerState'}" />
+			 click="{grpDisclaimer.visible = true;}" />
 	
 	<s:Button id="btnDownload" label="{LABEL_DOWNLOAD}"
-			  bottom="10"
-			  enabled="false"
 			  height="30"
-			  horizontalCenter="0"
+			  bottom="10" bottom.small="12"
+			  right.small="27"
+			  horizontalCenter.regular="0"
+			  enabled="false"
 			  buttonMode="true"
 			  useHandCursor="true"
 			  click="btnDownload_clickHandler(event)"
 			  styleName="mainBtnStyle"/>
 
-	<s:Graphic visible.normal="false">    
-		<s:Rect width="300" height="300">
-			<s:fill>
-				<s:SolidColor color="0x000000" alpha="0.5"/>
-			</s:fill>
-		</s:Rect>
-	</s:Graphic>
+	<s:Group id="grpDisclaimer"
+			 height="{DIMENSION_HEIGHT_REGULAR}" height.small="{DIMENSION_HEIGHT_SMALL}"
+			 width="{DIMENSION_WIDTH_REGULAR}" width.small="{DIMENSION_WIDTH_SMALL}"
+			 visible="false">
+		<s:Graphic>    
+			<s:Rect height="{DIMENSION_HEIGHT_REGULAR}"
+					width="{DIMENSION_WIDTH_SMALL}">
+				<s:fill>
+					<s:SolidColor color="0x000000" alpha="0.5"/>
+				</s:fill>
+			</s:Rect>
+		</s:Graphic>
+		
+		<s:Button id="btnBack" label="{LABEL_BACK}"
+				  height="15"
+				  right="15" top="10"
+				  fontSize="10"
+				  buttonMode="true"
+				  click="{grpDisclaimer.visible = false;}"
+				  styleName="genericBtnStyle"/>
+		
+		<s:TextArea id="disclaimerTxtArea"
+					bottom="10" left="10" right="10" top="25"
+					fontFamily="openSansSemibold"
+					editable="false"
+					textFlow="{TextFlowUtil.importFromXML(INFO_DISCLAIMER_XML)}" />
+	</s:Group>
 	
-	<s:Button id="btnBack" label="{LABEL_BACK}"
-			  height="15"
-			  right="15" top="10"
-			  fontSize="10"
-			  buttonMode="true"
-			  click="{currentState = 'normal'}"
-			  visible.normal="false"
-			  styleName="genericBtnStyle"/>
-	
-	<s:TextArea id="disclaimerTxtArea"
-				bottom="10" left="10" right="10" top="25"
-				fontFamily="openSansSemibold"
-				editable="false"
-				textFlow="{TextFlowUtil.importFromXML(INFO_DISCLAIMER_XML)}"
-				visible.normal="false" />
 </s:Application>

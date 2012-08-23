@@ -51,6 +51,31 @@ public class InternetUtil
 	
 	//--------------------------------------------------------------------------
 	//
+	//    Class methods
+	//
+	//--------------------------------------------------------------------------
+	
+	//----------------------------------
+	//    getTLDFromURL
+	//----------------------------------
+	
+	public static function getTLDFromURL(url:String):String
+	{
+		var array:Array;
+		
+		var result:String = url;
+		
+		if (result.indexOf(Constants.URL_PREFIX) > -1)
+			result = result.split("/")[2];
+
+		array = result.split(".");
+		array.shift();
+
+		return array.join(".");;
+	}
+	
+	//--------------------------------------------------------------------------
+	//
 	//    Constructor
 	//
 	//--------------------------------------------------------------------------
@@ -132,7 +157,7 @@ public class InternetUtil
 	//    fetch
 	//----------------------------------
 	
-	public function fetch(fetchURL:String, fetchCompleteHandler:Function):void
+	public function fetch(fetchURL:String, fetchCompleteHandler:Function, args:String = null):void
 	{
 		_callback = fetchCompleteHandler;
 		
@@ -144,7 +169,7 @@ public class InternetUtil
 		_urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
 		_urlLoader.addEventListener(Event.COMPLETE, fetchResultHandler);
 		_urlLoader.addEventListener(IOErrorEvent.IO_ERROR, fetchResultHandler);
-		_urlLoader.load(new URLRequest(fetchURL));
+		_urlLoader.load(new URLRequest(fetchURL + ((args) ? "?" + args : "")));
 	}
 	
 }
