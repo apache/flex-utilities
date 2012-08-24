@@ -44,6 +44,9 @@ limitations under the License.
 		
 		<!-- Adobe Flash Player player global swc -->
 		<file name="FlashPlayer" path="http://fpdownload.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_1.swc" />	
+
+		<!-- SWFObject.js -->
+		<file name="swfobject" path="http://swfobject.googlecode.com/files/" file="swfobject_2_2.zip" />	
 		
 		<!-- BlazeDS -->
 		<file name="BlazeDS" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="flex-messaging-common.jar" />	

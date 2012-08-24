@@ -47,7 +47,6 @@ variables are not required because the locations of these pieces are known.
 	<fx:Style source="assets/styles/InstallApacheFlexStyle.css" />
 	
 	<fx:Script><![CDATA[
-		
 		import flash.globalization.LocaleID;
 		import flash.globalization.StringTools;
 		
@@ -55,6 +54,7 @@ variables are not required because the locations of these pieces are known.
 		import mx.core.IFlexDisplayObject;
 		import mx.events.FlexEvent;
 		import mx.managers.PopUpManager;
+		import mx.rpc.events.ResultEvent;
 		import mx.utils.StringUtil;
 		
 		import org.apache.flex.packageflexsdk.model.OptionalComponentVO;
@@ -98,7 +98,7 @@ variables are not required because the locations of these pieces are known.
 		/**
 		 * Apache Flex binary distribution
 		 * 
-		 * Values stored in ApacheFlexConfig.xml edit file to change
+		 * Values stored in sdk-installer-config.xmll edit file to change
 		 * 
 		 */
 		private var APACHE_FLEX_BIN_DISTRO_PATH:String;
@@ -108,7 +108,7 @@ variables are not required because the locations of these pieces are known.
 		/**
 		 * Adobe AIR SDK
 		 * 
-		 * Values stored in ApacheFlexConfig.xml edit file to change
+		 * Values stored in sdk-installer-config.xml edit file to change
 		 * 
 		 */ 
 		private var ADOBE_AIR_SDK_WIN_FILE:String;
@@ -119,11 +119,19 @@ variables are not required because the locations of these pieces are known.
 		/**
 		 * Adobe Flash Player
 		 * 
-		 * Values stored in ApacheFlexConfig.xml edit file to change
+		 * Values stored in sdk-installer-config.xml edit file to change
 		 * 
 		 */
 		private var ADOBE_FB_GLOBALPLAYER_SWC_FILE:String;
 		private var ADOBE_FB_GLOBALPLAYER_SWC_URL:String;
+		
+		/**
+		 * 
+		 * SwfObject
+		 * 
+		 */
+		private var SWF_OBJECT_FILE:String;
+		private var SWF_OBJECT_URL:String;
 		
 		
 		/**
@@ -228,6 +236,7 @@ variables are not required because the locations of these pieces are known.
 		protected function loadXML():void
 		{
 			var request:URLRequest = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+			//var request:URLRequest = new URLRequest(Constants.CONFIG_XML_NAME);
 			
 			_loader = new URLLoader();
 			
@@ -317,6 +326,9 @@ variables are not required because the locations of these pieces are known.
 				keepGoing = false;
 			}
 			ADOBE_FB_GLOBALPLAYER_SWC_URL += ADOBE_FB_GLOBALPLAYER_SWC_FILE;
+			
+			SWF_OBJECT_FILE = files.(@name == 'swfobject').@file.toString();
+			SWF_OBJECT_URL = files.(@name == 'swfobject').@path.toString();
 			
 			OSMF_FILE = files.(@name == 'OSMF').@file.toString();
 			OSMF_URL = files.(@name == 'OSMF').@path.toString();
@@ -460,6 +472,7 @@ variables are not required because the locations of these pieces are known.
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT));
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_DOWNLOAD_FLASHPLAYER_SWC));
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES));
+			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT));
 		}
 		
 		protected function resetInstallStepsActivity():void
@@ -934,10 +947,74 @@ variables are not required because the locations of these pieces are known.
 			
 			if (!aborted)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES, StepItem.COMPLETE);
-				//cleanup();
-				installNextOptionalComponent();
+ 				updateActivityStep(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES, StepItem.COMPLETE);
+				downloadSwfObject();
 			}
+		}
+		
+		protected function downloadSwfObject():void
+		{
+			updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ACTIVE);
+			
+			try
+			{
+				log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM,[SWF_OBJECT_FILE,SWF_OBJECT_URL]));
+				copyOrDownload(SWF_OBJECT_URL+SWF_OBJECT_FILE,handlSWFObjectDownload,null,handleSWFObjectDownloadError);
+			}
+			catch (e:Error)
+			{
+				updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ERROR);
+				abortInstallation();
+			}
+		}
+		
+		protected function handlSWFObjectDownload(event:Event):void
+		{
+			log(_viewResourceConstants.INFO_DOWNLOADED);
+			var swfObjectZipFile:File = File.userDirectory.resolvePath(_flexTemp + File.separator + SWF_OBJECT_FILE);
+			writeFileToDirectory(swfObjectZipFile,event.target.data);
+			unzip(swfObjectZipFile, handleSWFObjectUnzipComplete, handleSWFObjectZipFileUnzipError);
+		}
+		
+		protected function handleSWFObjectDownloadError(event:ErrorEvent=null):void
+		{
+			updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ERROR);
+			log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
+			abortInstallation();
+		}
+		
+		protected function handleSWFObjectUnzipComplete(event:Event):void
+		{
+			try{
+				var expressInstallFile:File = File.userDirectory.resolvePath(_flexHome + File.separator + "swfobject" + File.separator + "expressInstall.swf");
+				expressInstallFile.copyTo(_flexHomeDir.resolvePath("templates" + File.separator + "swfobject" + File.separator + "expressInstall.swf"));
+				
+				var swfObjectJSFile:File = File.userDirectory.resolvePath(_flexHome + File.separator + "swfobject" + File.separator + "swfobject.js");
+				swfObjectJSFile.copyTo(_flexHomeDir.resolvePath("templates" + File.separator + "swfobject" + File.separator + "swfobject.js"));
+				
+				swfObjectJSFile.copyTo(_flexHomeDir.resolvePath("javascript" + File.separator + "FABridge" + File.separator + "samples" + File.separator + "fabridge" + File.separator + "swfobject" + File.separator + "swfobject.js"));
+				
+				var swfObjectDir:File = _flexHomeDir.resolvePath("swfobject");
+				swfObjectDir.deleteDirectory(true);
+				
+				updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.COMPLETE);
+				installNextOptionalComponent();
+
+			}
+			catch(e:Error)
+			{
+				updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ERROR);
+				log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
+				abortInstallation();
+			}
+			
+		}
+		
+		protected function handleSWFObjectZipFileUnzipError(event:Event):void
+		{
+			updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ERROR);
+			log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
+			abortInstallation();
 		}
 		
 		protected function installNextOptionalComponent():void

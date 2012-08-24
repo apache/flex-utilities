@@ -323,6 +323,7 @@ public class RuntimeLocale
 		content["ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK"]="Unable to download Apache Flex SDK";
 		content["ERROR_UNABLE_TO_INSTALL_CONFIG_FILES"]="Unable to install configuration files";
 		content["ERROR_UNABLE_TO_UNZIP"]="Unable to unzip file: ";
+		content["ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT"]="Unable to download SWFObject";
 		content["ERROR_UNSUPPORTED_OPERATING_SYSTEM"]="Unsupported operating system";
 		content["ERROR_VERIFY_FLEX_SDK"]="The Apache Flex SDK MD5 Signature of the downloaded files doesn not match the reference value. The file is invalid, installation is aborted.";
 		content["FETCH_GEO_IP"]="Trying to fetch the user's country code from the GeoIP service...";
@@ -368,6 +369,7 @@ public class RuntimeLocale
 		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Download Flash Player swc";
 		content["STEP_DOWNLOAD_FLEX_SDK"]="Download Apache Flex SDK";
 		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
+		content["STEP_INSTALL_SWF_OBJECT"]="Download SWFObject";
 		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Optional)";
 		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Fontswf Utility (Optional)";
 		content["STEP_OPTIONAL_INSTALL_OSMF"]="OSMF (Required)";
