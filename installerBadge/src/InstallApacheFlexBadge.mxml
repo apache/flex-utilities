@@ -65,7 +65,7 @@ limitations under the License.
 		
 		private var _installerFileName:String;
 		
-		private var _internetUtil:InternetUtil;
+		private var _internetUtil:InternetUtil = InternetUtil.instance;
 		
 		private var _mirrorURLUtil:MirrorURLUtil = MirrorURLUtil.instance;
 
@@ -127,26 +127,12 @@ limitations under the License.
 			}
 			currentState = newStateName;
 			
-			_internetUtil = InternetUtil.instance;
-			
-			var localDomain:String = InternetUtil.getTLDFromURL(
-				ExternalInterface.call("function () { return window.location.hostname; }"));
-			
-			var remoteDomain:String = InternetUtil.getTLDFromURL(Constants.APACHE_FLEX_URL);
-
 			var url:String = Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME;
-			if (localDomain == remoteDomain)
-			{
-				_internetUtil.fetch(url, internetFetchResultHandler);
-			}
-			else
-			{
-				/*
-					Using a simple webservice (PHP + cUrl) to bypass cross domain
-					and security sandbox restrictions while developing.
-				*/
+			
+			if (useCURL())
 				_internetUtil.fetch("badgeConfigService.php", internetFetchResultHandler, "url=" + escape(url));
-			}
+			else
+				_internetUtil.fetch(url, internetFetchResultHandler);
 		}
 		
 		//----------------------------------
@@ -217,7 +203,26 @@ limitations under the License.
 			
 			navigateToURL(request, "_blank");
 		}
-		 
+		
+		//----------------------------------
+		//    useCURL
+		//----------------------------------
+		
+		private function useCURL():Boolean
+		{
+			/*
+				Using a simple webservice (PHP + cUrl) to bypass cross domain
+				and security sandbox restrictions while developing.
+			*/
+
+			var localDomain:String = InternetUtil.getTLDFromURL(
+				ExternalInterface.call("function () { return window.location.hostname; }"));
+
+			var remoteDomain:String = InternetUtil.getTLDFromURL(Constants.APACHE_FLEX_URL);
+
+			return (localDomain) && (localDomain != remoteDomain);
+		}
+		
 	]]></fx:Script>
 	
 	<fx:Declarations /> 

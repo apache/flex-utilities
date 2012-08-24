@@ -52,19 +52,21 @@
         function init() {
             var prefix, theElement, theHeight, theWidth, widget;
             
-    		if (typeof window.innerWidth === 'number') {
-    			theHeight = window.innerHeight;
-    			theWidth = window.innerWidth;
-    		} else {
-        		theElement = window.document.documentElement;
-
-    			theHeight = theElement.clientHeight;
-    			theWidth = theElement.clientWidth;
-    		}
-
-            widget = document.getElementById("${application}");
-            widget.style.height = (theHeight - 2) + "px";
-            widget.style.width = (theWidth - 2) + "px";
+    		if (displayType() != "") {
+	    		if (typeof window.innerWidth === 'number') {
+	    			theHeight = window.innerHeight;
+	    			theWidth = window.innerWidth;
+	    		} else {
+	        		theElement = window.document.documentElement;
+	
+	    			theHeight = theElement.clientHeight;
+	    			theWidth = theElement.clientWidth;
+	    		}
+	
+	            widget = document.getElementById("${application}");
+	            widget.style.height = (theHeight - 2) + "px";
+	            widget.style.width = (theWidth - 2) + "px";
+	        }
         }
         
         swfVersionStr = "${version_major}.${version_minor}.${version_revision}";
@@ -72,7 +74,7 @@
             allowfullscreen: "true" };
         attributes = { id: "${application}", name: "${application}" };
         
-        swfobject.embedSWF("${swf}.swf", "flashContent", "0", "0", 
+        swfobject.embedSWF("${swf}.swf", "flashContent", "300", "300", 
             swfVersionStr, "", {}, params, attributes);
         
         swfobject.createCSS("#flashContent", "display: block;");
