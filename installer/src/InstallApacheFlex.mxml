@@ -1583,7 +1583,8 @@ variables are not required because the locations of these pieces are known.
 				var f:File = _flexHomeDir.resolvePath(fzf.filename);
 				var fs:FileStream = new FileStream();
 				
-				if (fzf.sizeUncompressed == 0 && fzf.sizeCompressed == 0)
+//				if (fzf.sizeUncompressed == 0 && fzf.sizeCompressed == 0)
+				if (isDirectory(fzf))
 				{
 					// Is a directory, not a file. Dont try to write anything into it.    
 					return;
@@ -1598,6 +1599,15 @@ variables are not required because the locations of these pieces are known.
 			{
 				_fileUnzipErrorFunction.call();
 			}
+		}
+		
+		private function isDirectory(f:ZipFile):Boolean
+		{
+			if(f.filename.substr(f.filename.length-1) == "/" || f.filename.substr(f.filename.length-1) == "\\" )
+			{
+				return true;	
+			}
+			return false;
 		}
 		
 		private function onUnzipComplete(event:Event):void
