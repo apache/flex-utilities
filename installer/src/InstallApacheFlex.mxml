@@ -548,11 +548,13 @@ variables are not required because the locations of these pieces are known.
 				nextBtn.enabled = true;
 				_langSelect.enabled = true;
 				flexSDKTxtInput.errorString = "";
+				flexSDKTxtInput.prompt = _viewResourceConstants.SELECT_PATH_PROMPT;
 			}
 			else
 			{
 				nextBtn.enabled = false;
 				flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_DIR_NOT_EMPTY;
+				flexSDKTxtInput.prompt = _viewResourceConstants.ERROR_DIR_NOT_EMPTY;
 			}
 		}
 		
@@ -1583,7 +1585,6 @@ variables are not required because the locations of these pieces are known.
 				var f:File = _flexHomeDir.resolvePath(fzf.filename);
 				var fs:FileStream = new FileStream();
 				
-//				if (fzf.sizeUncompressed == 0 && fzf.sizeCompressed == 0)
 				if (isDirectory(fzf))
 				{
 					// Is a directory, not a file. Dont try to write anything into it.    
