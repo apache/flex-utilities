@@ -1424,43 +1424,50 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function handleOptionalInstallsChange(event:IndexChangeEvent):void
 		{
-			installRdBtn.visible = true;
-			dontInstallRdBtn.visible = true;
 			var selectedItem:OptionalComponentVO = OptionalComponentVO(event.target.selectedItem);
 			optionalInstallsTxtArea.text = selectedItem.message;
 			if(selectedItem.answered)
 			{
 				if(selectedItem.selected)
 				{
-					installPermissionRbtnGrp.selection = installRdBtn;
+					installChkBx.selected = true;
 				}
 				else
 				{
-					installPermissionRbtnGrp.selection = dontInstallRdBtn;	
+					installChkBx.selected = false;
 				}
 			}
 			else
 			{
-				installPermissionRbtnGrp.selection = null;
+				installChkBx.selected = false;
 			}
 			if(selectedItem.message == _viewResourceConstants.ASK_OSMF || selectedItem.message == _viewResourceConstants.ASK_TLF)
 			{
 				mplLicenseBtn.includeInLayout = mplLicenseBtn.visible = true;
 				adobeLicenseBtn.includeInLayout = adobeLicenseBtn.visible = false;
-				dontInstallRdBtn.includeInLayout = dontInstallRdBtn.visible = false; 
 			}
 			if(selectedItem.message == _viewResourceConstants.ASK_BLAZEDS || selectedItem.message == _viewResourceConstants.ASK_FONTSWF)
 			{
 				mplLicenseBtn.includeInLayout = mplLicenseBtn.visible = false;
 				adobeLicenseBtn.includeInLayout = adobeLicenseBtn.visible = true;
-				dontInstallRdBtn.includeInLayout = dontInstallRdBtn.visible = true; 
 			}
 		}
 		
 		protected function handleInstallPermissionChange(event:Event):void
 		{
-			optionalComponentsList.selectedItem.selected = (event.target.selectedValue==_viewResourceConstants.INSTALL_AGREE)?true:false;
-			optionalComponentsList.selectedItem.answered = true;
+			if(optionalComponentsList.selectedItem != null)
+			{
+				optionalComponentsList.selectedItem.selected = (event.target.selected);
+				optionalComponentsList.selectedItem.answered = true;
+			}
+			else
+			{
+				for (var i:int=0; i<_optionalInstallsDataProvider.length; i++)
+				{
+					_optionalInstallsDataProvider.getItemAt(i).selected = event.target.selected;
+					_optionalInstallsDataProvider.getItemAt(i).answered = true;
+				}
+			}
 			checkIfAllRequiredComponentsPromptsAnswered();
 		}
 		
@@ -1783,7 +1790,6 @@ variables are not required because the locations of these pieces are known.
 	<fx:Declarations>
 		<s:Sine id="ease" />
 		<s:BlurFilter id="blur"/>
-		<s:RadioButtonGroup id="installPermissionRbtnGrp" change="handleInstallPermissionChange(event)" />
 	</fx:Declarations>
 	
 	<s:states>
@@ -1932,16 +1938,10 @@ variables are not required because the locations of these pieces are known.
 			height="20" 
 			horizontalAlign="center" 
 			verticalAlign="middle">
-			<s:RadioButton id="installRdBtn" 
-						   label="{_viewResourceConstants.INSTALL_AGREE}" 
-						   selected="false" 
-						   group="{installPermissionRbtnGrp}" 
-						   visible="false"/>
-			<s:RadioButton id="dontInstallRdBtn" 
-						   label="{_viewResourceConstants.INSTALL_DISAGREE}" 
-						   selected="false" 
-						   group="{installPermissionRbtnGrp}" 
-						   visible="false"/>
+			<s:CheckBox id="installChkBx"
+						label="{_viewResourceConstants.INSTALL_AGREE}" 
+						selected="false" 
+						change="handleInstallPermissionChange(event)"/>
 			<s:Button id="mplLicenseBtn" 
 					  label="{_viewResourceConstants.BTN_LABEL_MPL_LICENSE}" 
 					  styleName="genericBtnStyle" 
