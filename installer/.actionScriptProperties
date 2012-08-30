@@ -26,7 +26,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default">
-      <airSettings airCertificatePath="C:/p/flex_os/workspace/MakeApacheFlexForFlashBuilder/certificate.p12" airTimestamp="true" anePathSet="true" version="1">
+      <airSettings airCertificatePath="C:/p/documents/certificates/installapacheflex_self.p12" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
       </airSettings>

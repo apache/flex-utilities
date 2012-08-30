@@ -26,6 +26,7 @@
     <!--location of property file -->
     <property file="${basedir}/build.properties" description="Properties for MakeApacheFlexForFlashBuilder project" />
     <property file="${basedir}/build.number"/>
+	<property file="${CERT_PASSWORD_DIR}/${CERT_PASSWORD_FILE}"/>
 
     <property name="installer.version" value="${release.version}.${build.number}"/>
     <property name="kit.prefix" value="apache-flex-sdk-installer-${installer.version}-incubating"/>
@@ -86,13 +87,13 @@
     </condition>
     <property name="extension" value="dmg"/>
 
-    <target name="build" depends="init,compile,packagenative,cleanup" 
+    <target name="build" depends="init,compile,packagenative,copy-config,cleanup" 
         description="Compiles and packages application"/>
 
     <target name="release" depends="clean,build,source-package,binary-package,rat-report"
         description="Build the application and package up the distros for release."/>
         
-    <target name="init" depends="clean,createDirs,update-app-xml,create-version-xml" 
+    <target name="init" depends="clean,createDirs,update-version-in-xml-files" 
         description="Creates the deploy folders and sets app extension"/>
         
     <target name="clean" description="Cleans up old files.">
@@ -118,13 +119,20 @@
     </target>
 
     <!-- Make sure version, esp, build.number, in APP_NAME-app.xml is in sync.  -->
-    <target name="update-app-xml" description="Update version in APP_NAME-app.xml.">
+    <target name="update-version-in-xml-files" description="Update version in APP_NAME-app.xml.">
         <echo message="version in ${APP_NAME}-app.xml will be ${installer.version}"/>
         <replaceregexp byline="true">
             <regexp pattern="&lt;versionNumber&gt;(\d+\.)?(\d+\.)?(\d+)&lt;/versionNumber&gt;"/>
             <substitution expression="&lt;versionNumber&gt;${installer.version}&lt;/versionNumber&gt;"/>
             <fileset dir="${SOURCE_DIR}">
                 <include name="${APP_NAME}-app.xml"/>
+            </fileset>
+        </replaceregexp>
+		<replaceregexp byline="true">
+            <regexp pattern="&lt;latest&gt;(\d+\.)?(\d+\.)?(\d+)&lt;/latest&gt;"/>
+            <substitution expression="&lt;latest&gt;${installer.version}&lt;/latest&gt;"/>
+            <fileset dir="${SOURCE_DIR}">
+                <include name="${APP_CONFIG_XML_NAME}.xml"/>
             </fileset>
         </replaceregexp>
     </target>
@@ -148,7 +156,7 @@
 
     </target>
     
-    <target name="packagenative" depends="certificate,packageair"
+    <target name="packagenative" depends="packageair"
        description="Packages the AIR file from the build directory to create a native installer (exe/dmg) file">
 
        <java jar="${ADT}" fork="true"
@@ -158,7 +166,7 @@
            <arg value="-target"/>
            <arg value="native"/>
            <arg value="${RELEASE_DIR}/${APP_NAME}.${extension}"/>
-           <arg value="${RELEASE_DIR}/${APP_NAME}.air"/>
+           <arg value="${BUILD_DIR}/${APP_NAME}.air"/>
        </java>
    </target>
     
@@ -216,7 +224,7 @@
 
     <!-- Make sure to use the same certificate each time so we can update the app. -->
     <target name="certificate">
-        <available file="${KEYSTORE}" property="certificate.exists"/>
+        <available file="${KEYSTORE_DIR}/${KEYSTORE}" property="certificate.exists"/>
         <antcall target="generate-certificate"/>
     </target>
 
@@ -247,10 +255,10 @@
             <arg value="-storetype"/>
             <arg value="${STORETYPE}"/>
             <arg value="-keystore"/>
-            <arg value="${KEYSTORE}"/>
+            <arg value="${KEYSTORE_DIR}/${KEYSTORE}"/>
             <arg value="-storepass"/>
             <arg value="${CERT_PASSWORD}"/>
-            <arg value="${RELEASE_DIR}/${APP_NAME}.air"/>
+            <arg value="${BUILD_DIR}/${APP_NAME}.air"/>
             <arg value="${SOURCE_DIR}/${APP_NAME}-app.xml"/>
             <arg value="-C"/>
             <arg value="${BUILD_DIR}"/>
@@ -261,47 +269,16 @@
             <arg value="${ASSETS_DIR}"/>
         </java>
     </target>
+	
+	<target name="copy-config" description="Copy config files to release directory">
+		<copy file="${SOURCE_DIR}/${APP_CONFIG_XML_NAME}.xml" todir="${RELEASE_DIR}"/>
+	</target>
     
-    <target name="create-version-xml" description="Creates version.xml file for update">
-        <echo message="version in version.xml will be ${installer.version}"/>
-        <echo file="${RELEASE_DIR}/version.xml">&lt;?xml version="1.0"?&gt;
-&lt;!--
-
-  Licensed to the Apache Software Foundation (ASF) under one or more
-  contributor license agreements.  See the NOTICE file distributed with
-  this work for additional information regarding copyright ownership.
-  The ASF licenses this file to You under the Apache License, Version 2.0
-  (the "License"); you may not use this file except in compliance with
-  the License.  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
---&gt;
-&lt;update&gt;
-    &lt;!-- The URL to download the Windows installer from --&gt;
-    &lt;urlWindows&gt;${installer.url.win}&lt;/urlWindows&gt;
-    &lt;!-- The URL to download the Mac installer from --&gt;
-    &lt;urlMac&gt;${installer.url.mac}&lt;/urlMac&gt;
-    &lt;!-- The version from ${APP_NAME}-app.xml --&gt;
-    &lt;version&gt;${installer.version}&lt;/version&gt;
-    &lt;description&gt;Latest release&lt;/description&gt;
-    &lt;required&gt;true&lt;/required&gt;
-&lt;/update&gt;
-        </echo>
-    </target>
-
     <!-- 
         Packages the source distribution with ZIP and TAR_GZIP.
         The source file line endings match the package type.
     -->
     <target name="source-package" description="Package source files.">
-        
         <mkdir dir="${BUILD_DIR}/temp"/>
         <copy todir="${BUILD_DIR}/temp" includeEmptyDirs="false">
             <fileset dir="${basedir}">

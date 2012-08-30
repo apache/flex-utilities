@@ -413,6 +413,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function checkVersion():void
 		{
+			var shouldUpdate:Boolean = false;
 			//Current version
 			var applicationDescriptor:XML = NativeApplication.nativeApplication.applicationDescriptor;
 			var xmlns:Namespace = new Namespace(applicationDescriptor.namespace());
@@ -424,12 +425,24 @@ variables are not required because the locations of these pieces are known.
 			{
 				if (parseInt(availBuildNumbers[i]) > parseInt(currentBuildNumbers[i]))
 				{
-					var updaterDialog:UpdaterDialog = UpdaterDialog(PopUpManager.createPopUp(this,UpdaterDialog,true));
-					updaterDialog.addEventListener("close",handleUpdaterDialogClose);
-					updaterDialog.latestVersion = _latestVersion;
-					
-					PopUpManager.centerPopUp(updaterDialog);
+					shouldUpdate = true;
 				}
+				else if(parseInt(availBuildNumbers[i]) == parseInt(currentBuildNumbers[i]))
+				{
+					continue;
+				}
+				else
+				{
+					return;
+				}
+			}
+			
+			if(shouldUpdate)
+			{
+				var updaterDialog:UpdaterDialog = UpdaterDialog(PopUpManager.createPopUp(this,UpdaterDialog,true));
+				updaterDialog.addEventListener("close",handleUpdaterDialogClose);
+				updaterDialog.latestVersion = _latestVersion;
+				PopUpManager.centerPopUp(updaterDialog);
 			}
 		}
 		
