@@ -308,6 +308,7 @@
                 <exclude name="certificate.p12"/>
                 <exclude name="rat.report"/>
                 <exclude name="libs/**"/>
+				<exclude name="bin-debug/**"/>
                 <exclude name="release/**"/>
             </fileset>
         </copy>
