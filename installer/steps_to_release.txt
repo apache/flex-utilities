@@ -34,14 +34,14 @@ This step creates the source release files as a .zip file and a tar.gz file
 
 cd release
 
-gpg --armor --output InstallApacheFlex.exe.asc --detach-sig InstallApacheFlex.exe
+gpg --armor --output apache-flex-sdk-installer-1.0.0-incubating-bin.exe.asc --detach-sig apache-flex-sdk-installer-1.0.0-incubating-bin.exe
 gpg --armor --output apache-flex-sdk-installer-1.0.0-incubating-src.tar.gz.asc --detach-sig apache-flex-sdk-installer-1.0.0-incubating-src.tar.gz
 gpg --armor --output apache-flex-sdk-installer-1.0.0-incubating-src.zip.asc --detach-sig apache-flex-sdk-installer-1.0.0-incubating-src.zip
 
 This step creates the release artifacts InstallApacheFlex.exe.asc, apache-flex-sdk-installer-1.0.0-incubating-src.tar.gz.asc and apache-flex-sdk-installer-1.0.0-incubating-src.zip.asc
 
 7.  Run:
-gpg --print-md MD5 InstallApacheFlex.exe > InstallApacheFlex.exe.md5
+gpg --print-md MD5 apache-flex-sdk-installer-1.0.0-incubating-bin.exe > apache-flex-sdk-installer-1.0.0-incubating-bin.exe.md5
 gpg --print-md MD5 apache-flex-sdk-installer-1.0.0-incubating-src.tar.gz > apache-flex-sdk-installer-1.0.0-incubating-src.tar.gz.md5
 gpg --print-md MD5 apache-flex-sdk-installer-1.0.0-incubating-src.zip > apache-flex-sdk-installer-1.0.0-incubating-src.zip.md5
 
