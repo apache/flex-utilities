@@ -51,4 +51,4 @@ ant rat-report
 This step creates the rat.report file.  Inspect the report to make sure there are no violations.  
 
 9. 
-Upload all these artifacts to the release manager's personal space at people.apache.org.  
+Upload all the files under the /release directory to the release manager's personal space at people.apache.org.
