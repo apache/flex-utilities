@@ -165,7 +165,7 @@
            <arg value="-package"/>
            <arg value="-target"/>
            <arg value="native"/>
-           <arg value="${RELEASE_DIR}/${APP_NAME}.${extension}"/>
+		   <arg value="${RELEASE_DIR}/${binary.kit}.${extension}"/>
            <arg value="${BUILD_DIR}/${APP_NAME}.air"/>
        </java>
    </target>
