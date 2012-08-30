@@ -1,3 +1,9 @@
+Apache Flex
+Copyright 2012 The Apache Software Foundation
+
+
+Steps to follow in preparation for a release of InstallApacheFlex
+
 1.    Check out the code from https://svn.apache.org/repos/asf/incubator/flex/utilities/trunk
 
 2.a.  If it is a major release, 
@@ -39,6 +45,10 @@ gpg --print-md MD5 InstallApacheFlex.exe > InstallApacheFlex.exe.md5
 gpg --print-md MD5 apache-flex-sdk-installer-1.0.0-incubating-src.tar.gz > apache-flex-sdk-installer-1.0.0-incubating-src.tar.gz.md5
 gpg --print-md MD5 apache-flex-sdk-installer-1.0.0-incubating-src.zip > apache-flex-sdk-installer-1.0.0-incubating-src.zip.md5
 
-8.
+8. In the /installer directory, run:
+ant rat-report
 
-Upload all these artifacts to the release manager's personal space at people.apache.org and call out a vote
+This step creates the rat.report file.  Inspect the report to make sure there are no violations.  
+
+9. 
+Upload all these artifacts to the release manager's personal space at people.apache.org.  
