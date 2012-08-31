@@ -27,8 +27,8 @@ limitations under the License.
 	<fx:Style source="/org/apache/flex/installApacheFlexBadge/styles/ApacheFlexBadgeStyle.css" />
 	
 	<fx:Script><![CDATA[
-		
 		import mx.controls.Alert;
+		import mx.core.FlexGlobals;
 		import mx.events.FlexEvent;
 		
 		import org.apache.flex.installApacheFlexBadge.resources.EmbeddedMedia;
@@ -69,6 +69,8 @@ limitations under the License.
 		
 		private var _mirrorURLUtil:MirrorURLUtil = MirrorURLUtil.instance;
 
+		private var _serviceURL:String;
+
 		[Bindable]
 		private var _sdkVersionString:String = "";
 		
@@ -105,6 +107,8 @@ limitations under the License.
 		
 		private function creationCompleteHandler(event:FlexEvent):void
 		{
+			_serviceURL = FlexGlobals.topLevelApplication.parameters.serviceURL;
+			
 			var displayType:String = ExternalInterface.call("displayType"); 
 			
 			var newStateName:String;
@@ -127,7 +131,7 @@ limitations under the License.
 			}
 			currentState = newStateName;
 			
-			var url:String = Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME;
+			var url:String = _serviceURL + Constants.CONFIG_XML_NAME;
 			
 			if (useCURL())
 				_internetUtil.fetch("badgeConfigService.php", internetFetchResultHandler, "url=" + escape(url));
@@ -166,9 +170,7 @@ limitations under the License.
 				{
 					var mirrorURLCGI:String = files.(@name == 'MirrorURLCGI').@file.toString();
 					
-					_mirrorURLUtil.getMirrorURL(
-						Constants.APACHE_FLEX_URL + mirrorURLCGI,
-						getMirrorURLResultHandler);
+					_mirrorURLUtil.getMirrorURL(_serviceURL + mirrorURLCGI, getMirrorURLResultHandler);
 				}
 				else
 				{
@@ -218,7 +220,7 @@ limitations under the License.
 			var localDomain:String = InternetUtil.getTLDFromURL(
 				ExternalInterface.call("function () { return window.location.hostname; }"));
 
-			var remoteDomain:String = InternetUtil.getTLDFromURL(Constants.APACHE_FLEX_URL);
+			var remoteDomain:String = InternetUtil.getTLDFromURL(_serviceURL);
 
 			return (localDomain) && (localDomain != remoteDomain);
 		}

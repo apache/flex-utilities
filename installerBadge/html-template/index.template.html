@@ -70,12 +70,13 @@
         }
         
         swfVersionStr = "${version_major}.${version_minor}.${version_revision}";
+        flashVars = { serviceURL: "http://people.apache.org/~bigosmallm/installapacheflex_RC1/binaries/" };
         params = { quality: "high", bgcolor: "${bgcolor}", allowscriptaccess: "sameDomain",
             allowfullscreen: "true" };
         attributes = { id: "${application}", name: "${application}" };
         
         swfobject.embedSWF("${swf}.swf", "flashContent", "300", "300", 
-            swfVersionStr, "", {}, params, attributes);
+            swfVersionStr, "", flashVars, params, attributes);
         
         swfobject.createCSS("#flashContent", "display: block;");
     </script>
