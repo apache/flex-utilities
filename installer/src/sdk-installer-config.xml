@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
 <!--
 
 Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,6 +18,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 -->
+
 <config>
 	<version>
 		<latest>1.0.0</latest>
@@ -27,7 +30,7 @@ limitations under the License.
 			 	- use full URL when binaries are NOT released yet, else use 
 			 	  path relative to mirror
 			 	- if path is relative, don't use starting slash -->
-		<file name="SDKInstallerApp" path="incubator/flex/installer/1.0/binaries/" file="apache-flex-sdk-installer-1.0.0-incubating-bin" />
+		<file name="SDKInstallerApp" path="http://people.apache.org/~bigosmallm/installapacheflex_RC1/binaries/" file="apache-flex-sdk-installer-1.0.0-incubating-bin" />
 		
 		<!-- Mirror URL CGI -->
 		<file name="MirrorURLCGI" path="" file="single-mirror-url.cgi" />
