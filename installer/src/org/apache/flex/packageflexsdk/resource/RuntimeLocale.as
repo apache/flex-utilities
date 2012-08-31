@@ -303,6 +303,7 @@ public class RuntimeLocale
 		content["BTN_LABEL_INSTALL_LOG"]="INSTALL LOG";
 		content["BTN_LABEL_MPL_LICENSE"]="SHOW MPL LICENSE";
 		content["BTN_LABEL_NEXT"]="NEXT";
+		content["BTN_DISCLAIMER"]="Disclaimer";
 		content["BTN_LABEL_OPEN_APACHE_FLEX_FOLDER"]="OPEN APACHE FLEX FOLDER";
 		content["ERROR_CONFIG_XML_LOAD"]="Error while trying to load XML configuration file: ";
 		content["ERROR_DIR_NOT_EMPTY"]="The selected directory is not empty";

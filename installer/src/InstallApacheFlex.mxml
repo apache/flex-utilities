@@ -1798,6 +1798,14 @@ variables are not required because the locations of these pieces are known.
 			return result;
 		}
 		
+		protected function showDisclaimer():void
+		{
+			var request:URLRequest = new URLRequest(
+				Constants.APACHE_FLEX_URL + Constants.DISCLAIMER_PATH);
+			
+			navigateToURL(request, "_blank");
+		}
+		
 	]]></fx:Script>
 	
 	<fx:Declarations>
@@ -1848,6 +1856,10 @@ variables are not required because the locations of these pieces are known.
 		paddingRight="20" 
 		paddingTop="5" 
 		horizontalAlign="right">
+		<s:Button 
+			label="{_viewResourceConstants.BTN_DISCLAIMER}"
+			click="{showDisclaimer()}"
+			/>
 		<s:Spacer width="100%" />
 		<s:Label id="langLabel" 
 				 horizontalCenter="0" 

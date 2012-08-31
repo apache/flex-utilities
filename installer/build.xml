@@ -280,16 +280,34 @@
     -->
     <target name="source-package" description="Package source files.">
         <mkdir dir="${BUILD_DIR}/temp"/>
-        <copy todir="${BUILD_DIR}/temp" includeEmptyDirs="false">
-            <fileset dir="${basedir}">
+        <copy todir="${BUILD_DIR}/temp/${COMMON_PROJECT_NAME}" includeEmptyDirs="false">
+			<fileset dir="${COMMON_PROJECT_DIR}">
                 <exclude name="certificate.p12"/>
                 <exclude name="rat.report"/>
                 <exclude name="libs/**"/>
+				<exclude name="bin/**"/>
 				<exclude name="bin-debug/**"/>
                 <exclude name="release/**"/>
+				<exclude name=".settings/**"/>
             </fileset>
         </copy>
-        
+		
+		<copy todir="${BUILD_DIR}/temp/${INSTALLER_PROJECT_NAME}" includeEmptyDirs="false">
+			<fileset dir="${basedir}">
+                <exclude name="certificate.p12"/>
+                <exclude name="rat.report"/>
+                <exclude name="libs/**"/>
+				<exclude name="bin/**"/>
+				<exclude name="bin-debug/**"/>
+				<exclude name="build/**"/>
+                <exclude name="release/**"/>
+				<exclude name="rc1/**"/>
+				<exclude name=".settings/**"/>
+			</fileset>
+        </copy>
+		
+		<copy file="${basedir}/READme" todir="${RELEASE_DIR}"/>
+		
         <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf"/>
 
         <mkdir dir="${RELEASE_DIR}"/>
@@ -303,6 +321,7 @@
             basedir="${BUILD_DIR}/temp"/>
         
         <delete dir="${BUILD_DIR}/temp"/>
+		<delete dir="${BUILD_DIR}"/>
     </target>
 
     <!-- 
