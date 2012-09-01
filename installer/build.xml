@@ -215,7 +215,7 @@
             maxmemory="512m">
             <source-path path-element="${SOURCE_DIR}"/>
             <source-path path-element="${COMMON_SOURCE_DIR}"/>
-            <external-library-path file="${FLEX_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
+            <external-library-path file="${env.AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
             <library-path dir="${LIBRARY_DIR}" includes="*.swc" append="true"/>
             <define name="INSTALLER::releaseVersion" value="${release.version}"/> 
             <define name="INSTALLER::buildNumber" value="${build.number}"/> 
@@ -301,7 +301,7 @@
 				<exclude name="bin-debug/**"/>
 				<exclude name="build/**"/>
                 <exclude name="release/**"/>
-				<exclude name="rc1/**"/>
+				<exclude name="rc/**"/>
 				<exclude name=".settings/**"/>
 			</fileset>
         </copy>
