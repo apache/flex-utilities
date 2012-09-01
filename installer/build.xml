@@ -308,13 +308,13 @@
 		
 		<copy file="${basedir}/READme" todir="${RELEASE_DIR}"/>
 		
-        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf"/>
+        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf" excludes="**/*.ttf,**/*.png"/>
 
         <mkdir dir="${RELEASE_DIR}"/>
         <zip destfile="${RELEASE_DIR}/${source.kit}.zip" 
             basedir="${BUILD_DIR}/temp"/>
         
-        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="unix"/>
+        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="unix" excludes="**/*.ttf,**/*.png"/>
 
         <tar destfile="${RELEASE_DIR}/${source.kit}.tar.gz" 
             compression="gzip"
