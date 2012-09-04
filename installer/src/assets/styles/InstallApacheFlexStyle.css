@@ -21,7 +21,7 @@ limitations under the License.
 @namespace st "ws.tink.spark.controls.*";
 
 @font-face {
-	src: url("assets/fonts/open-sans/OpenSans-SemiboldItalic.ttf");
+	src: url("/assets/fonts/open-sans/OpenSans-SemiboldItalic.ttf");
 	fontFamily: openSansSemibold;
 	advancedAntiAliasing: true;
 	fontStyle:italic;

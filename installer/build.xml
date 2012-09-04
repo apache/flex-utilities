@@ -26,7 +26,7 @@
     <!--location of property file -->
     <property file="${basedir}/build.properties" description="Properties for MakeApacheFlexForFlashBuilder project" />
     <property file="${basedir}/build.number"/>
-	<property file="${CERT_PASSWORD_DIR}/${CERT_PASSWORD_FILE}"/>
+	<property file="${CERT_PASSWORD_FILE}"/>
 
     <property name="installer.version" value="${release.version}.${build.number}"/>
     <property name="kit.prefix" value="apache-flex-sdk-installer-${installer.version}-incubating"/>
@@ -43,7 +43,29 @@
         <os family="windows"/> 
     </condition>
     <property name="env.AIR_HOME" value="${AIR_HOME_MAC}"/>
-    
+	
+    <condition property="cert_pwd_not_found" >
+		<not>
+       		<available file="${CERT_PASSWORD_FILE}"/>
+		</not>
+    </condition>
+	
+	<condition property="KEYSTORE" value="${RELEASE_KEYSTORE_FILE}" >
+		<available file="${CERT_PASSWORD_FILE}"/>
+	</condition>
+	
+	<condition property="KEYSTORE" value="temp.12" >
+		<not>
+			<available file="${CERT_PASSWORD_FILE}"/>
+		</not>
+	</condition>
+	
+    <condition property="CERT_PASSWORD" value="${TEMP_PASS_CHANGE_THIS}" >
+		<not>
+       		<available file="${CERT_PASSWORD_FILE}"/>
+		</not>
+    </condition>
+	
     <!-- compilers -->
     <property name="ADL" value="${env.AIR_HOME}/bin/adl"/>
     <property name="ADT" value="${env.AIR_HOME}/lib/adt.jar"/>
@@ -87,7 +109,7 @@
     </condition>
     <property name="extension" value="dmg"/>
 
-    <target name="build" depends="init,compile,packagenative,copy-config,cleanup" 
+    <target name="build" depends="init,certificate,compile,packagenative,copy-config,cleanup" 
         description="Compiles and packages application"/>
 
     <target name="release" depends="clean,build,source-package,binary-package,rat-report"
@@ -223,12 +245,11 @@
     </target>
 
     <!-- Make sure to use the same certificate each time so we can update the app. -->
-    <target name="certificate">
-        <available file="${KEYSTORE_DIR}/${KEYSTORE}" property="certificate.exists"/>
+    <target name="certificate" if="cert_pwd_not_found">
         <antcall target="generate-certificate"/>
     </target>
 
-    <target name="generate-certificate" depends="abortBuild" unless="certificate.exists">
+    <target name="generate-certificate" depends="abortBuild" >
         <java jar="${ADT}" fork="true"
             failonerror="true">
             <arg value="-certificate"/>
@@ -255,7 +276,7 @@
             <arg value="-storetype"/>
             <arg value="${STORETYPE}"/>
             <arg value="-keystore"/>
-            <arg value="${KEYSTORE_DIR}/${KEYSTORE}"/>
+            <arg value="${KEYSTORE}"/>
             <arg value="-storepass"/>
             <arg value="${CERT_PASSWORD}"/>
             <arg value="${BUILD_DIR}/${APP_NAME}.air"/>
