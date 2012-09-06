@@ -1,0 +1,73 @@
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+==========================================================================================================================================================
+Overview:
+=========
+
+- The InstallApacheFlex AIR application is intended to provide an easy, single-click installation of the Apache Flex SDK and all its dependencies.  
+- This will make it suitable for working with IDEs such as Flash Builder, FDT, IntelliJ, FlashDevelop, etc.  
+	The downloaded dependencies include:
+	 - The AIR sdk (Windows vs. Mac) based on the current platform
+	 - FlashPlayerGlobal.swc
+	 - SwfObject
+	 - OSMF
+	 - TLF
+	 
+	Optionally, the application would download these files if the user explicitly agrees:
+	 - BlazeDS
+	 - FontSWF utility
+ 
+	All the file names and urls of the downloaded files are available in installer/src/sdk-installer-config.xml. 
+	When the dependencies file names or urls change in future, update the sdk-installer-config.xml to ensure that the application works correctly.  
+
+- The application uses http://incubator.apache.org/flex/single-mirror-url.cgi to determine the preferred mirror url to download Apache Flex SDK binary from.
+- Once the Apache Flex SDK binary file is downloaded, a MD5 has is generated from it.  This hash is compared with the hash from the Apache Flex SDK release site.  
+	If they match, we verify that the downloaded binary file is a valid Apache release and proceed to unzip the file.  
+- The AIR SDK will downloaded and the relevant files are copied to the required locations
+- The Flash player global swc files and the config files are placed in the required locations
+- Then the rest of the external dependencies and the optional files (if selected by user) are downloaded and copied into the appropriate locations.  
+
+==========================================================================================================================================================
+Prerequisites and dependencies:
+===============================
+
+1.  This project also needs the project 'common' that is in the source distribution.  Make sure that the 'common' project lives in the same directory as the 'installer' project is.  
+Just unzipping the source distribution would normally take care of this.  
+
+2.  Run: ant get-as3commons.swc
+This step downloads the required libraries and saves it in the libs directory
+
+3.  In Flash Builder, add a linked resource called: APACHE_FLEX_UTILITIES_ROOT and point it to the directory path where the projects: 'installer' and 'common' are located.  
+
+==========================================================================================================================================================
+How to build the installer using ANT (no Flash Builder or any other IDE required):
+===================================================================
+
+1.a  In the installer directory, run: ant build -DFLEX_HOME=/path/to/apache/flex/sdk -DAIR_HOME=/path/to/air/sdk
+or
+1.b  Define these as environment variables: FLEX_HOME (path to Flex SDK) and FLEX_HOME (path to AIR SDK)
+	Then run "ant run" in the installer directory.  
+or
+1.c  Open the build.properties file and edit these variables to point them to the correct directory paths: FLEX_HOME and FLEX_HOME
+	Then run "ant run" in the installer directory.  
+	
+2.  The intaller executable file created in the installer/release directory.  If you are on Windows, you will see an .exe file; if you are on Mac OS, you will see a .dmg file.  
+	A temporary digital signing certificate - temp.p12 will be created in the installer directory as well.  
+	The password for this file is available in the build.properties file (var: TEMP_PASS_CHANGE_THIS)

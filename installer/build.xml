@@ -328,6 +328,7 @@
         </copy>
 		
 		<copy file="${basedir}/READme" todir="${RELEASE_DIR}"/>
+		<copy file="${basedir}/READme" todir="${BUILD_DIR}/temp"/>
 		
         <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf" excludes="**/*.ttf,**/*.png"/>
 
@@ -389,13 +390,11 @@
                 <exclude name="build.number"/>
                 <exclude name="**/.actionScriptProperties"/>
                 <exclude name="**/.flexProperties"/>
+				<exclude name="**/.flexLibProperties"/>
                 <exclude name="**/.project"/>
                 <exclude name="**/.fxpProperties"/>
                 <exclude name="**/.settings/**"/>
                 <exclude name="rat.report"/>
-            </fileset>
-            <fileset dir="${COMMON_SOURCE_DIR}">
-                <exclude name="**/Apache License Version 2.txt"/>
             </fileset>
         </rat:report>
         
