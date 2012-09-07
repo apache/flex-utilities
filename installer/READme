@@ -62,7 +62,7 @@ How to build the installer using ANT (no Flash Builder or any other IDE required
 
 1.a  In the installer directory, run: ant build -DFLEX_HOME=/path/to/apache/flex/sdk -DAIR_HOME=/path/to/air/sdk
 or
-1.b  Define these as environment variables: FLEX_HOME (path to Flex SDK) and FLEX_HOME (path to AIR SDK)
+1.b  Define these as environment variables: FLEX_HOME (path to Flex SDK) and AIR_HOME (path to AIR SDK)
 	Then run "ant run" in the installer directory.  
 or
 1.c  Open the build.properties file and edit these variables to point them to the correct directory paths: FLEX_HOME and FLEX_HOME
