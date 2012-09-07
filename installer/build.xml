@@ -112,7 +112,7 @@
     <target name="build" depends="init,certificate,compile,packagenative,copy-config,cleanup" 
         description="Compiles and packages application"/>
 
-    <target name="release" depends="clean,build,source-package,binary-package,rat-report"
+    <target name="release" depends="clean,build,source-package,rat-report"
         description="Build the application and package up the distros for release."/>
         
     <target name="init" depends="clean,createDirs,update-version-in-xml-files" 
@@ -304,18 +304,24 @@
         <copy todir="${BUILD_DIR}/temp/${COMMON_PROJECT_NAME}" includeEmptyDirs="false">
 			<fileset dir="${COMMON_PROJECT_DIR}">
                 <exclude name="certificate.p12"/>
+				<exclude name="temp.p12"/>
                 <exclude name="rat.report"/>
                 <exclude name="libs/**"/>
 				<exclude name="bin/**"/>
 				<exclude name="bin-debug/**"/>
                 <exclude name="release/**"/>
 				<exclude name=".settings/**"/>
+				<exclude name="**/.actionScriptProperties"/>
+                <exclude name="**/.flexProperties"/>
+				<exclude name="**/.flexLibProperties"/>
+                <exclude name="**/.project"/>
             </fileset>
         </copy>
 		
 		<copy todir="${BUILD_DIR}/temp/${INSTALLER_PROJECT_NAME}" includeEmptyDirs="false">
 			<fileset dir="${basedir}">
                 <exclude name="certificate.p12"/>
+				<exclude name="temp.p12"/>
                 <exclude name="rat.report"/>
                 <exclude name="libs/**"/>
 				<exclude name="bin/**"/>
@@ -324,6 +330,10 @@
                 <exclude name="release/**"/>
 				<exclude name="rc/**"/>
 				<exclude name=".settings/**"/>
+				<exclude name="**/.actionScriptProperties"/>
+                <exclude name="**/.flexProperties"/>
+				<exclude name="**/.flexLibProperties"/>
+                <exclude name="**/.project"/>
 				<!-- These are bumped up to the top-level release directory.  -->
                 <exclude name="DISCLAIMER"/>
                 <exclude name="LICENSE"/>
@@ -346,8 +356,6 @@
 			</fileset>
         </copy>
 
-		<copy file="${basedir}/README" tofile="${RELEASE_DIR}/READme"/>
-		
         <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf" excludes="**/*.ttf,**/*.png"/>
 
         <mkdir dir="${RELEASE_DIR}"/>
