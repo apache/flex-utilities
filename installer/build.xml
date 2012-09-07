@@ -324,11 +324,29 @@
                 <exclude name="release/**"/>
 				<exclude name="rc/**"/>
 				<exclude name=".settings/**"/>
+				<!-- These are bumped up to the top-level release directory.  -->
+                <exclude name="DISCLAIMER"/>
+                <exclude name="LICENSE"/>
+                <exclude name="NOTICE"/>
+                <exclude name="README"/>
+                <exclude name="RELEASE_GUIDE"/>
+                <exclude name="RELEASE_NOTES"/>
 			</fileset>
         </copy>
-		
-		<copy file="${basedir}/READme" todir="${RELEASE_DIR}"/>
-		<copy file="${basedir}/READme" todir="${BUILD_DIR}/temp"/>
+
+		<!-- Bump these up to the top-level release directory.  -->
+		<copy todir="${BUILD_DIR}/temp" includeEmptyDirs="false">
+			<fileset dir="${basedir}">
+                <include name="DISCLAIMER"/>
+                <include name="LICENSE"/>
+                <include name="NOTICE"/>
+                <include name="README"/>
+                <include name="RELEASE_GUIDE"/>
+                <include name="RELEASE_NOTES"/>
+			</fileset>
+        </copy>
+
+		<copy file="${basedir}/README" tofile="${RELEASE_DIR}/READme"/>
 		
         <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf" excludes="**/*.ttf,**/*.png"/>
 
