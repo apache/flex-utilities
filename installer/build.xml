@@ -387,14 +387,13 @@
             <fileset dir="${rat.dir}">
                 <exclude name="**/Apache License Version 2.txt"/>
                 <!-- generated source files that don't have Apache v2 license header -->
-                <exclude name="build.number"/>
+                <exclude name="**/build.number"/>
                 <exclude name="**/.actionScriptProperties"/>
                 <exclude name="**/.flexProperties"/>
 				<exclude name="**/.flexLibProperties"/>
                 <exclude name="**/.project"/>
                 <exclude name="**/.fxpProperties"/>
                 <exclude name="**/.settings/**"/>
-                <exclude name="rat.report"/>
             </fileset>
         </rat:report>
         
