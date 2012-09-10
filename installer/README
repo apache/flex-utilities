@@ -26,7 +26,7 @@ Overview:
   IDEs such as Adobe Flash Builder, FDT, IntelliJ IDEA, FlashDevelop, etc.  
 	The application downloads the following dependencies:
 	 - The AIR sdk (Windows vs. Mac) based on the current platform
-	 - FlashPlayerGlobal.swc
+	 - Adobe Flash Player playerglobal.swc
 	 - SwfObject
 	 - Open Source Media Framework (OSMF)
 	 - Adobe Text Layout Format (TLF)
@@ -52,7 +52,7 @@ Overview:
 - The Adobe AIR SDK will be downloaded and the relevant files are copied to the required 
   locations.
   
-- The Adobe Flash Player global swc files and the config files are placed in the required 
+- The Adobe Flash Player playerglobal.swc file and the config files are placed in the required 
   locations.
   
 - Then the rest of the external dependencies and the optional files (if selected by user) 
@@ -77,7 +77,7 @@ How to build the installer using ANT (no Flash Builder or any other IDE required
         it is used.  Otherwise, the AIR_HOME_MAC or AIR_HOME_WIN property in 
         installer/build.properties is used.
           	
-2.  The intaller executable file created in the installer/release directory.  If you are 
+2.  The installer executable file created in the installer/release directory.  If you are 
     on Windows, you will see an .exe file; if you are on Mac OS, you will see a .dmg file.  
 	A temporary digital signing certificate - temp.p12 will be created in the installer 
 	directory as well.  The password for this file is available in the build.properties 
