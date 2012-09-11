@@ -363,6 +363,7 @@ public class RuntimeLocale
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="The Apache Flex SDK MD5 Signature of the downloaded files matches the reference. The file is valid.";
 		content["INFO_WINDOW_TITLE"]="Install Apache Flex SDK for use with Adobe Flash Builder";
 		content["INSTALL_AGREE"] = "I Agree, Install"
+		content["INSTALL_AGREE_ALL"] = "I agree to all options and licenses, Install"
 		content["INSTALL_DISAGREE"] = "I Disagree, Don't Install"
 		content["SELECT_PATH_PROMPT"]="Where do you want to install the Apache Flex SDK?";
 		content["STEP_CREATE_DIRECTORIES"]="Create Directories";
@@ -372,7 +373,7 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
 		content["STEP_INSTALL_SWF_OBJECT"]="Download SWFObject";
 		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Optional)";
-		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Fontswf Utility (Optional)";
+		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Embedded Font Libraries and Utilities (Optional)";
 		content["STEP_OPTIONAL_INSTALL_OSMF"]="OSMF (Required)";
 		content["STEP_OPTIONAL_INSTALL_TLF"]="Adobe Text Layout Framework (Required)";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Uncompress Adobe AIR Runtime Kit";

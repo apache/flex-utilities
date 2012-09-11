@@ -1439,6 +1439,7 @@ variables are not required because the locations of these pieces are known.
 		{
 			var selectedItem:OptionalComponentVO = OptionalComponentVO(event.target.selectedItem);
 			optionalInstallsTxtArea.text = selectedItem.message;
+			installChkBx.label = _viewResourceConstants.INSTALL_AGREE;
 			if(selectedItem.answered)
 			{
 				if(selectedItem.selected)
@@ -1914,7 +1915,7 @@ variables are not required because the locations of these pieces are known.
 	</s:Panel>
 	<s:Panel id="secondStepGroup" 
 			 title="{_viewResourceConstants.INFO_LICENSE_AGREEMENTS}"
-			 width="640" 
+			 width="720" 
 			 height="200" 
 			 top="280" 
 			 visible="false" 
@@ -1943,7 +1944,7 @@ variables are not required because the locations of these pieces are known.
 			height="100%" 
 			horizontalAlign="center">
 			<s:List id="optionalComponentsList" 
-					width="45%" 
+					width="50%" 
 					height="100%"
 					itemRenderer="org.apache.flex.packageflexsdk.view.itemrenderers.OptionalInstallItemRenderer"
 					dataProvider="{_optionalInstallsDataProvider}" 
@@ -1954,7 +1955,7 @@ variables are not required because the locations of these pieces are known.
 			</s:List>
 			<s:TextArea id="optionalInstallsTxtArea" text="{_viewResourceConstants.INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE}"
 						fontSize="12" 
-						width="55%" 
+						width="50%" 
 						height="100%" 
 						verticalScrollPolicy="off" 
 						editable="false"/>
@@ -1965,19 +1966,19 @@ variables are not required because the locations of these pieces are known.
 			horizontalAlign="center" 
 			verticalAlign="middle">
 			<s:CheckBox id="installChkBx"
-						label="{_viewResourceConstants.INSTALL_AGREE}" 
+						label="{_viewResourceConstants.INSTALL_AGREE_ALL}" 
 						selected="false" 
 						change="handleInstallPermissionChange(event)"/>
 			<s:Button id="mplLicenseBtn" 
 					  label="{_viewResourceConstants.BTN_LABEL_MPL_LICENSE}" 
 					  styleName="genericBtnStyle" 
 					  click="{showMPLLicense(event)}" 
-					  includeInLayout="false" />
+					  includeInLayout="true" />
 			<s:Button id="adobeLicenseBtn" 
 					  label="{_viewResourceConstants.BTN_LABEL_ADOBE_LICENSE}" 
 					  styleName="genericBtnStyle" 
 					  click="{showAdobeLicense(event)}" 
-					  includeInLayout="false" />
+					  includeInLayout="true" />
 		</s:HGroup>
 	</s:Panel>
 	

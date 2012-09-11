@@ -85,7 +85,7 @@ How to build the installer using ANT (no Flash Builder or any other IDE required
 	file (var: TEMP_PASS_CHANGE_THIS)
 
 ==========================================================================================
-How to build the installer using Adobe Flash Builder (or any other IDE):
+How to set up the project for working with Adobe Flash Builder (or any other IDE):
 ==========================================================================================
 
 1.  Unzip the source distribution.  You should see the 'installer' directory and the 
@@ -99,4 +99,6 @@ How to build the installer using Adobe Flash Builder (or any other IDE):
 3.  If using Adobe Flash Builder, add a linked resource called: 
         APACHE_FLEX_UTILITIES_ROOT 
     and point it to the directory path where the 'installer' and 'common' directories are 
-    located.  
+    located.
+
+4.  In the installer project, add ${APACHE_FLEX_UTILITIES_ROOT}/common/src as a source path.  
