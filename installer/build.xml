@@ -33,16 +33,33 @@
     <property name="source.kit" value="${kit.prefix}-src"/>
     <property name="binary.kit" value="${kit.prefix}-bin"/>
 
-    <!-- properties are immutable so value frozen first time property is set -->
+    <!-- 
+        Properties are immutable so value frozen first time property is set.
+        If FLEX_HOME is not set with -DFLEX_HOME=/path/to/flex/sdk on the ant command line 
+        use the environment variable, if it exists. Else if windows, use FLEX_HOME_WIN 
+        else use FLEX_HOME_MAC, which are both defined in build.properties.
+    -->
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
     <condition property="FLEX_HOME" value="${FLEX_HOME_WIN}">
         <os family="windows"/>
     </condition>
     <property name="FLEX_HOME" value="${FLEX_HOME_MAC}"/>
 
-    <condition property="env.AIR_HOME" value="${AIR_HOME_WIN}">
+    <!-- 
+        Properties are immutable so value frozen first time property is set.
+        If AIR_HOME is not set on the command line with -DAIR_HOME=/path/to/air/sdk on the 
+        ant command line use the environment variable, if it exists. Else if windows, use 
+        AIR_HOME_WIN else use AIR_HOME_MAC, which are both defined in build.properties.
+    -->
+    <condition property="AIR_HOME" value="${env.AIR_HOME}">
+        <isset property="env.AIR_HOME" />
+    </condition>
+    <condition property="AIR_HOME" value="${AIR_HOME_WIN}">
         <os family="windows"/> 
     </condition>
-    <property name="env.AIR_HOME" value="${AIR_HOME_MAC}"/>
+    <property name="AIR_HOME" value="${AIR_HOME_MAC}"/>
 	
     <condition property="cert_pwd_not_found" >
 		<not>
@@ -67,8 +84,8 @@
     </condition>
 	
     <!-- compilers -->
-    <property name="ADL" value="${env.AIR_HOME}/bin/adl"/>
-    <property name="ADT" value="${env.AIR_HOME}/lib/adt.jar"/>
+    <property name="ADL" value="${AIR_HOME}/bin/adl"/>
+    <property name="ADT" value="${AIR_HOME}/lib/adt.jar"/>
 
     <!-- additional tasks - mxmlc tag -->
     <path id="flexTasks.path">
@@ -237,7 +254,7 @@
             maxmemory="512m">
             <source-path path-element="${SOURCE_DIR}"/>
             <source-path path-element="${COMMON_SOURCE_DIR}"/>
-            <external-library-path file="${env.AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
+            <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
             <library-path dir="${LIBRARY_DIR}" includes="*.swc" append="true"/>
             <define name="INSTALLER::releaseVersion" value="${release.version}"/> 
             <define name="INSTALLER::buildNumber" value="${build.number}"/> 

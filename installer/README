@@ -69,11 +69,12 @@ How to build the installer using ANT (no Flash Builder or any other IDE required
         ant build [-DFLEX_HOME=/path/to/apache/flex/sdk] [-DAIR_HOME=/path/to/air/sdk]
         
     FLEX_HOME is the absolute path to the Apache Flex SDK
-        If you omit this argument, the FLEX_HOME_MAC or FLEX_HOME_WIN property in 
+        If you omit this argument, and the system environment variable, FLEX_HOME exists,
+        it is used.  Otherwise, the FLEX_HOME_MAC or FLEX_HOME_WIN property in 
         installer/build.properties is used.
         
     AIR_HOME is the absolute path to the Adobe AIR SDK
-        If you omit this argument, and the system environment variable, AIR_HOME, exists,
+        If you omit this argument, and the system environment variable, AIR_HOME exists,
         it is used.  Otherwise, the AIR_HOME_MAC or AIR_HOME_WIN property in 
         installer/build.properties is used.
           	
