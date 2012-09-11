@@ -211,7 +211,7 @@ public class MirrorURLUtil implements ILog
 	
 		_log = new ArrayCollection();
 		
-		_log.addItem(ACTION);
+		//_log.addItem(ACTION);
 
 		_internetUtil.fetch(fetchURL, fetchMirrorFromCGIResult);
 	}

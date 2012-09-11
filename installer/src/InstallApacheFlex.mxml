@@ -54,7 +54,6 @@ variables are not required because the locations of these pieces are known.
 		import mx.core.IFlexDisplayObject;
 		import mx.events.FlexEvent;
 		import mx.managers.PopUpManager;
-		import mx.rpc.events.ResultEvent;
 		import mx.utils.StringUtil;
 		
 		import org.apache.flex.packageflexsdk.model.OptionalComponentVO;
@@ -402,8 +401,6 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function main():void
 		{
-		    // Log the Installer version to help with any support issues that arise.
-		    log("Version" + " " + INSTALLER_VERSION + "." + INSTALLER_BUILD_NUMBER + " (" + _os + ")",0);
 			
 			initiateInstallStepsActivity();
 			initializeOptionInstallsDataProvider();
@@ -418,6 +415,9 @@ variables are not required because the locations of these pieces are known.
 			var applicationDescriptor:XML = NativeApplication.nativeApplication.applicationDescriptor;
 			var xmlns:Namespace = new Namespace(applicationDescriptor.namespace());
 			var currentVersion:String = applicationDescriptor.xmlns::versionNumber.toString();
+			
+			// Log the Installer version to help with any support issues that arise.
+			log("Version " + currentVersion + " (" + _os + ")" ,0);
 			
 			var availBuildNumbers:Array = _latestVersion.split(".");
 			var currentBuildNumbers:Array = currentVersion.split(".");
@@ -1858,6 +1858,7 @@ variables are not required because the locations of these pieces are known.
 		horizontalAlign="right">
 		<s:Button 
 			label="{_viewResourceConstants.BTN_DISCLAIMER}"
+			styleName="genericBtnStyle"
 			click="{showDisclaimer()}"
 			/>
 		<s:Spacer width="100%" />
