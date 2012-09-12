@@ -39,6 +39,7 @@ public class RuntimeLocale
 	public static const EN_GB:String = "en_GB";
 	public static const EN_US:String = "en_US";
 	public static const NL_NL:String = "nl_NL";
+	public static const PT_BR:String = "pt_BR";
 	
 	//--------------------------------------------------------------------------
 	//
@@ -99,6 +100,7 @@ public class RuntimeLocale
 			install_en_GB();
 			install_en_US();
 			install_nl_NL();
+			install_pt_BR();
 			
 			_initialized = true;
 		}
@@ -444,6 +446,106 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Framework Configuratie Bestanden Installeren";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Adobe AIR Runtime Kit Uitpakken";
 		content["STEP_UNZIP_FLEX_SDK"]="Apache Flex SDK uitpakken";
+		
+		_resourceManager.addResourceBundle(resource);
+	}
+	
+	//----------------------------------
+	// install_pt_BR
+	//----------------------------------
+	
+	private function install_pt_BR():void
+	{
+		var locale:String = PT_BR;
+		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
+		
+		var content:Object = resource.content;
+		content["ASK_BLAZEDS"]="Apache Flex pode, opcionalmente, integrar-se com Adobe BlazeDS. Esta integração requer flex-messaging-common.jar do Adobe Flex SDK, que esta sob o contrato de licença do Adobe SDK para Adobe Flex 4.6. Esta licença não é compatível com a licença Apache v2. Você quer instalar este jar a partir do Adobe Flex SDK?";
+		content["ASK_FONTSWF"]="Apache Flex pode, opcionalmente, integrar-se com o suporte de fontes embutidas da Adobe. Este recurso requer alguns jars do Adobe Flex SDK, que estão sob o contrato de licença do Adobe Flex 4.6. Esta licença não é compatível com a licença Apache v2. Você quer instalar estes jars a partir do Adobe Flex SDK?";
+		content["ASK_OSMF"]="O Open Source Media Framework (OSMF) utilizado pelos componentes de video está sob a licença Mozilla Public License Version 1.1.";
+		content["ASK_TLF"]="O Adobe Text Layout Framework (TLF) utilizado pelos componentes de texto Spark está sob a licença Mozilla Public License Version 1.1.";
+		content["BTN_LABEL_ADOBE_LICENSE"]="LICENÇA ADOBE";
+		content["BTN_LABEL_BROWSE"]="SELEC.";
+		content["BTN_LABEL_CLOSE"]="FECHAR";
+		content["BTN_LABEL_INSTALL"]="INSTALAR";
+		content["BTN_LABEL_INSTALL_LOG"]="LOG";
+		content["BTN_LABEL_MPL_LICENSE"]="LICENÇA MPL";
+		content["BTN_LABEL_NEXT"]="PROX.";
+		content["BTN_DISCLAIMER"]="Disclaimer";
+		content["BTN_LABEL_OPEN_APACHE_FLEX_FOLDER"]="ABRIR DIRETÓRIO APACHE FLEX";	
+		content["ERROR_CONFIG_XML_LOAD"]="Erro ao tentar carregar o arquivo XML de configuração: ";
+		content["ERROR_DIR_NOT_EMPTY"]="O diretório selecionado não está vazio";
+		content["ERROR_INVALID_AIR_SDK_URL_MAC"]="URL inválida no arquivo de configuração para Adobe AIR SDK para Mac";
+		content["ERROR_INVALID_AIR_SDK_URL_WINDOWS"]="URL inválida no arquivo de configuração para Adobe AIR SDK para Windows";
+		content["ERROR_INVALID_FLASH_PLAYER_SWC_URL"]="URL inválida no arquivo de configuração para o Flash Player swc";
+		content["ERROR_INVALID_FLEX_SDK_DIRECTORY"]="Diretório selecionado para Flex SDK inválido";
+		content["ERROR_INVALID_SDK_URL"]="URL do Apache Flex SDK inválida no arquivo de configuração";
+		content["ERROR_MIRROR_FETCH"]="Erro ao tentar encontrar um local para download do Apache Flex SDK (binário): ";
+		content["ERROR_NATIVE_PROCESS_ERROR"]="Erro de processo nativo para descompactar Adobe AIR SDK";
+		content["ERROR_NATIVE_PROCESS_NOT_SUPPORTED"]="Processo Nativo não suportado. Não foi possível descompactar Adobe AIR SDK";
+		content["ERROR_UNABLE_TO_COPY_FILE"]="Não foi possível copiar o arquivo ";
+		content["ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY"]="Não foi possível criar o diretório temporário";
+		content["ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY"]="Não foi possível limpar os diretórios temporários"
+		content["ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK"]="Não foi possível efetuar o download do Adobe AIR Runtime Kit";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FILE"]="Não foi possível efetuar o download {0}";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC"]="Não foi possível efetuar o download do Flash Player swc";
+		content["ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK"]="Não foi possível efetuar o download do Apache Flex SDK";
+		content["ERROR_UNABLE_TO_INSTALL_CONFIG_FILES"]="Não foi possível instalar os arquivos de configuração";
+		content["ERROR_UNABLE_TO_UNZIP"]="Não foi possível descompart o arquivo: ";
+		content["ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT"]="Não foi possível efetuar o download do SWFObject";
+		content["ERROR_UNSUPPORTED_OPERATING_SYSTEM"]="Sistema operacional não suportado";
+		content["ERROR_VERIFY_FLEX_SDK"]="A assinatura MD5 do download efetuado do Apache Flex SDK não corresponde com o valor de referência. O arquivo é inválido, instalação abortada.";
+		content["FETCH_GEO_IP"]="Tentando buscar o código do país do usuário usando o serviço GeoIP ...";
+		content["FETCH_GEO_IP_DONE"]="Buscado o código do país do usuário no serviço GeoIP.";
+		content["FETCH_GEO_IP_ERROR"]="Ocorreu um erro ao buscar o código de país do usuário no serviço GeoIP.";
+		content["FETCH_MIRROR_CGI"]="Tentando buscar o espelhada da URL de download do SDK a partir do CGI ...";
+		content["FETCH_MIRROR_CGI_DONE"]="Buscado o espelho da URL de download do SDK a partir do CGI.";
+		content["FETCH_MIRROR_CGI_ERROR"]="Não foi possível obter o download do SDK da URL espelho pelo CGI. Vamos tentar a rota GeoIP.";
+		content["FETCH_MIRROR_LIST"]="Tentando buscar a lista de espelho da Apache.org...";
+		content["FETCH_MIRROR_LIST_DONE"]="Buscar a lista de espelhos de Apache.org";
+		content["FETCH_MIRROR_LIST_PARSED"]="Analisada a lista de espelhos usando o código de país e escolhi este domínio: ";
+		content["INFO_ABORT_INSTALLATION"]="Instalação abortada";
+		content["INFO_APP_INVOKED"]="Chamado em modo de linha de comando com os seguintes argumentos: ";
+		content["INFO_CREATING_FLEX_HOME"]="Criando diretório do Apache Flex";
+		content["INFO_CREATING_TEMP_DIR"]="Criando diretório temporário";
+		content["INFO_CURRENT_LANGUAGE"]="Selecionar linguagem";
+		content["INFO_DOWNLOADING_ADOBE_FLEX_SDK"]="Efetuando download do Adobe Flex SDK a partir de: ";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC"]="Efetuando download do Adobe AIR Runtime Kit for Mac a partir de: ";
+		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_WINDOWS"]="Efetuando download do Adobe AIR Runtime Kit for Windows a partir de: ";
+		content["INFO_DOWNLOADING_FILE_FROM"]="Efetuando download {0} de: {1}";
+		content["INFO_DOWNLOADING_FLEX_SDK"]="Efetuando download do Apache Flex SDK a partir de: ";
+		content["INFO_DOWNLOADED"]="Download finalizado ";
+		content["INFO_ENTER_VALID_FLEX_SDK_PATH"]="Por favor, informe um diretório válido para instalação do Apache Flex SDK";
+		content["INFO_FINISHED_UNTARING"]="Untar finalizado: ";
+		content["INFO_FINISHED_UNZIPPING"]="Descompactação finalizada: ";
+		content["INFO_INSTALLATION_COMPLETE"]="Instalação finalizada";//
+		content["INFO_INSTALLING"]="Instalando...";
+		content["INFO_INSTALLING_CONFIG_FILES"]="Instalando arquivos de configuração dos frameworks para utilização com a IDE";
+		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Instalando Adobe Flash Player playerglobal.swc a partir de: ";
+		content["INFO_INVOKED_GUI_MODE"]="chamado em modo GUI";
+		content["INFO_LICENSE_AGREEMENTS"]="Contrato de Licença";
+		content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="Esses componentes possuem acordos de licença diferentes da licença Apache. Por favor, clique em cada item da esquerda, leia a licença e confirme que você concorda com os termos de cada licença.";
+		content["INFO_SELECT_DIRECTORY"]="Selecione o diretório que você deseja instalar o Apache Flex SDK";
+		content["INFO_SELECT_DIRECTORY_INSTALL"]="Selecione o diretório de instalação";
+		content["INFO_UNZIPPING"]="Descompactando: ";
+		content["INFO_VERIFY_FLEX_SDK_DONE"]="A assinatura MD5 do download efetuado do Apache Flex SDK MD5 são válidas com sua referência. O arquivo é válido.";
+		content["INFO_WINDOW_TITLE"]="Instalação do Apache Flex SDK para utilização no Adobe Flash Builder";
+		content["INSTALL_AGREE"] = "Eu concordo, instalar"
+		content["INSTALL_DISAGREE"] = "Não concordo, não instale"
+		content["SELECT_PATH_PROMPT"]="Aonde você deseja instalar o Apache Flex SDK?";
+		content["STEP_CREATE_DIRECTORIES"]="Criar diretórios";
+		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Download Adobe AIR Runtime Kit";
+		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Download Flash Player swc";
+		content["STEP_DOWNLOAD_FLEX_SDK"]="Download Apache Flex SDK";
+		content["STEP_INSTALL_CONFIG_FILES"]="Instalando arquivos de configuração do Framework";
+		content["STEP_INSTALL_SWF_OBJECT"]="Download SWFObject";
+		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Opcional)";
+		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Fontswf Utility (Opcional)";
+		content["STEP_OPTIONAL_INSTALL_OSMF"]="OSMF (Obrigatório)";
+		content["STEP_OPTIONAL_INSTALL_TLF"]="Adobe Text Layout Framework (Obrigatório)";
+		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Descompactando Adobe AIR Runtime Kit";
+		content["STEP_UNZIP_FLEX_SDK"]="Descompactando Apache Flex SDK";
+		content["STEP_VERIFY_FLEX_SDK"]="Verificação da assinatura MD5 - Apache Flex SDK";
 		
 		_resourceManager.addResourceBundle(resource);
 	}

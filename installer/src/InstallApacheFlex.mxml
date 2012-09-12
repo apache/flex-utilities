@@ -47,6 +47,7 @@ variables are not required because the locations of these pieces are known.
 	<fx:Style source="assets/styles/InstallApacheFlexStyle.css" />
 	
 	<fx:Script><![CDATA[
+		
 		import flash.globalization.LocaleID;
 		import flash.globalization.StringTools;
 		
@@ -218,6 +219,8 @@ variables are not required because the locations of these pieces are known.
 			{
 				if (supportedLanguages[i].data == userLocale) {
 					_langSelect.selectedIndex = i;
+					
+					resourceManager.localeChain = [ userLocale ];
 					
 					break;
 				}
