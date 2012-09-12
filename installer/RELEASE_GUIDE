@@ -32,38 +32,32 @@ Steps to follow in preparation for a release of InstallApacheFlex
 	(You need to obtain theinstallapacheflex_self.p12 file and its password from the previous release manager for InstallApacheFlex)
 	
 4.  Run: 
-ant build
+ant release
 
 This step 
 	- downloads all the necessary files, 
 	- updates the version numbers in InstallApacheFlex-app.xml and sdk-installer-config.xml
 	- creates the .exe or .dmg file depending on the OS you are working on
+	- creates the source release files as a .zip file and a tar.gz file 
 	
-5.  Run: 
-ant source-package
-
-This step creates the source release files as a .zip file and a tar.gz file 
-
-
-6.  Run:
+5.  Run:
 
 cd release
 
-gpg --armor --output apache-flex-sdk-installer-1.0.1-incubating-bin.exe.asc --detach-sig apache-flex-sdk-installer-1.0.1-incubating-bin.exe
-gpg --armor --output apache-flex-sdk-installer-1.0.1-incubating-src.tar.gz.asc --detach-sig apache-flex-sdk-installer-1.0.1-incubating-src.tar.gz
-gpg --armor --output apache-flex-sdk-installer-1.0.1-incubating-src.zip.asc --detach-sig apache-flex-sdk-installer-1.0.1-incubating-src.zip
+gpg --armor --output apache-flex-sdk-installer-1.0.2-incubating-bin.exe.asc --detach-sig apache-flex-sdk-installer-1.0.2-incubating-bin.exe
+gpg --armor --output apache-flex-sdk-installer-1.0.2-incubating-src.tar.gz.asc --detach-sig apache-flex-sdk-installer-1.0.2-incubating-src.tar.gz
+gpg --armor --output apache-flex-sdk-installer-1.0.2-incubating-src.zip.asc --detach-sig apache-flex-sdk-installer-1.0.2-incubating-src.zip
 
-This step creates the release artifacts InstallApacheFlex.exe.asc, apache-flex-sdk-installer-1.0.1-incubating-src.tar.gz.asc and apache-flex-sdk-installer-1.0.0-incubating-src.zip.asc
+This step creates the release artifacts InstallApacheFlex.exe.asc, apache-flex-sdk-installer-1.0.2-incubating-src.tar.gz.asc and apache-flex-sdk-installer-1.0.2-incubating-src.zip.asc
 
-7.  Run:
-gpg --print-md MD5 apache-flex-sdk-installer-1.0.1-incubating-bin.exe > apache-flex-sdk-installer-1.0.1-incubating-bin.exe.md5
-gpg --print-md MD5 apache-flex-sdk-installer-1.0.1-incubating-src.tar.gz > apache-flex-sdk-installer-1.0.1-incubating-src.tar.gz.md5
-gpg --print-md MD5 apache-flex-sdk-installer-1.0.1-incubating-src.zip > apache-flex-sdk-installer-1.0.1-incubating-src.zip.md5
+6.  Run:
+gpg --print-md MD5 apache-flex-sdk-installer-1.0.2-incubating-bin.exe > apache-flex-sdk-installer-1.0.2-incubating-bin.exe.md5
+gpg --print-md MD5 apache-flex-sdk-installer-1.0.2-incubating-src.tar.gz > apache-flex-sdk-installer-1.0.2-incubating-src.tar.gz.md5
+gpg --print-md MD5 apache-flex-sdk-installer-1.0.2-incubating-src.zip > apache-flex-sdk-installer-1.0.2-incubating-src.zip.md5
 
-8. In the /installer directory, run:
+7. In the /installer directory, run:
 ant rat-report
 
 This step creates the rat.report file.  Inspect the report to make sure there are no violations.  
 
-9. 
-Upload all the files under the /release directory to the release manager's personal space at people.apache.org.
+8. Upload all the files under the /release directory to the release manager's personal space at people.apache.org before calling a VOTE.  
