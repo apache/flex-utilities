@@ -20,6 +20,7 @@ limitations under the License.
 
 
 <!--
+
 This app should be used to create an Apache Flex SDK that has the
 directory structure that an IDE expects.
 
@@ -103,6 +104,7 @@ variables are not required because the locations of these pieces are known.
 		 */
 		private var APACHE_FLEX_BIN_DISTRO_PATH:String;
 		private var APACHE_FLEX_BIN_DISTRO_FILE:String;
+		private var APACHE_FLEX_BIN_DISTRO_FILE_SHORT:String;
 		private var APACHE_FLEX_BIN_DISTRO_URL:String;
 		
 		/**
@@ -163,7 +165,7 @@ variables are not required because the locations of these pieces are known.
 		private var _flexTemp:String;
 		private var _flexHomeDir:File;
 		private var _flexTempDir:File;
-		private var _apacheFlexSDKZipFile:File;
+		private var _apacheFlexSDKCompressedFile:File;
 		private var _adobeAIRSDKZipFile:File;
 		private var _fbGlobalPlayerDir:File;
 		private var _fbGlobalPlayerFile:File;
@@ -293,9 +295,17 @@ variables are not required because the locations of these pieces are known.
 			
 			_mirrorURLCGI = files.(@name == 'MirrorURLCGI').@file.toString();
 			
-			APACHE_FLEX_BIN_DISTRO_FILE = files.(@name == 'ApacheFlexSDK').@file.toString();
-			APACHE_FLEX_BIN_DISTRO_PATH = files.(@name == 'ApacheFlexSDK').@path.toString();
+			var fileName:String = files.(@name == 'ApacheFlexSDK').@file.toString();
+			/* Tmp solution to remove the file extension if present in the config XML */
+			var winExtension:String = Constants.ARCHIVE_EXTENSION_WIN;
+			if (fileName.indexOf(winExtension) > -1)
+				fileName = fileName.substring(0, fileName.length - winExtension.length);
 			
+			APACHE_FLEX_BIN_DISTRO_FILE_SHORT = fileName;
+			fileName += (_os == MAC_OS) ? Constants.ARCHIVE_EXTENSION_MAC : winExtension;
+			
+			APACHE_FLEX_BIN_DISTRO_FILE = fileName;
+			APACHE_FLEX_BIN_DISTRO_PATH = files.(@name == 'ApacheFlexSDK').@path.toString();
 			if (!APACHE_FLEX_BIN_DISTRO_FILE || !APACHE_FLEX_BIN_DISTRO_PATH)
 			{
 				log(_viewResourceConstants.ERROR_INVALID_SDK_URL);
@@ -667,8 +677,8 @@ variables are not required because the locations of these pieces are known.
 			try
 			{
 				log(_viewResourceConstants.INFO_DOWNLOADING_FLEX_SDK + APACHE_FLEX_BIN_DISTRO_URL);
-				_apacheFlexSDKZipFile = File.userDirectory.resolvePath(_flexTemp + File.separator + APACHE_FLEX_BIN_DISTRO_FILE); 
-				copyOrDownload(APACHE_FLEX_BIN_DISTRO_URL, handleApacheFlexSDKDownload, _apacheFlexSDKZipFile, handleApacheFlexSDKDownloadError);
+				_apacheFlexSDKCompressedFile = File.userDirectory.resolvePath(_flexTemp + File.separator + APACHE_FLEX_BIN_DISTRO_FILE); 
+				copyOrDownload(APACHE_FLEX_BIN_DISTRO_URL, handleApacheFlexSDKDownload, _apacheFlexSDKCompressedFile, handleApacheFlexSDKDownloadError);
 			}
 			catch (e:Error)
 			{
@@ -683,7 +693,7 @@ variables are not required because the locations of these pieces are known.
 		{
 			try
 			{
-				writeFileToDirectory(_apacheFlexSDKZipFile, event.target.data);
+				writeFileToDirectory(_apacheFlexSDKCompressedFile, event.target.data);
 			}
 			catch (e:Error)
 			{
@@ -699,9 +709,9 @@ variables are not required because the locations of these pieces are known.
 			
 			_md5CompareUtil.addEventListener(ProgressEvent.PROGRESS, md5VerificationProgressHandler);
 			_md5CompareUtil.verifyMD5(
-				_apacheFlexSDKZipFile, 
+				_apacheFlexSDKCompressedFile, 
 				APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE, 
-				unzipApacheFlexSDK);
+				uncompressApacheFlexSDK);
 		}
 		
 		protected function md5VerificationProgressHandler(event:ProgressEvent):void
@@ -715,7 +725,7 @@ variables are not required because the locations of these pieces are known.
 			abortInstallation();
 		}
 		
-		protected function unzipApacheFlexSDK():void
+		protected function uncompressApacheFlexSDK():void
 		{
 			if (!_md5CompareUtil.fileIsVerified)
 			{
@@ -737,8 +747,12 @@ variables are not required because the locations of these pieces are known.
 			
 			try
 			{
-				log(_viewResourceConstants.INFO_UNZIPPING + _apacheFlexSDKZipFile.nativePath);
-				unzip(_apacheFlexSDKZipFile, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError);
+				log(_viewResourceConstants.INFO_UNZIPPING + _apacheFlexSDKCompressedFile.nativePath);
+				
+				if (_os == WINDOWS_OS)
+					unzip(_apacheFlexSDKCompressedFile, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError);
+				else 
+					untar(_apacheFlexSDKCompressedFile, _flexTempDir, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError);
 			}
 			catch (e:Error)
 			{
@@ -749,7 +763,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function handleApacheFlexSDKZipFileUnzipComplete(event:Event):void
 		{
-			log(_viewResourceConstants.INFO_FINISHED_UNZIPPING + _apacheFlexSDKZipFile.nativePath);
+			log(_viewResourceConstants.INFO_FINISHED_UNZIPPING + _apacheFlexSDKCompressedFile.nativePath);
 			updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.COMPLETE);
 			
 			if (_os == WINDOWS_OS)
@@ -758,6 +772,14 @@ variables are not required because the locations of these pieces are known.
 			}
 			else if (_os == MAC_OS)
 			{ 
+				/* Copy all files from the unarchived directory to the root */
+				var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
+				var files:Array = directory.getDirectoryListing();
+				for each(var file:File in files)
+				{
+					file.copyTo(_flexHomeDir.resolvePath(file.name));
+				}
+				
 				downloadAIRRuntimeKitForMac();
 			}
 		}
@@ -1661,7 +1683,7 @@ variables are not required because the locations of these pieces are known.
 			_process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, unTarFileProgress,false,0,true);
 			_process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, unTarErrorFunction,false,0,true);
 			_process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, unTarError,false,0,true);
-			_process.addEventListener(NativeProcessExitEvent.EXIT, unTarCompleteFunction,false,0,true);
+			_process.addEventListener(NativeProcessExitEvent.EXIT, unTarCompleteFunction,false,0,true); 
 			_process.addEventListener(NativeProcessExitEvent.EXIT, unTarComplete,false,0,true);
 			_process.start(startupInfo);
 		}

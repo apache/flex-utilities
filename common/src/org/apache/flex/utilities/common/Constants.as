@@ -31,6 +31,9 @@ public class Constants
 	
 	public static const APACHE_FLEX_URL:String = "http://incubator.apache.org/flex/";
 	
+	public static const ARCHIVE_EXTENSION_MAC:String = ".tar.gz";
+	public static const ARCHIVE_EXTENSION_WIN:String = ".zip";
+	
 	public static const APPLICATION_EXTENSION_MAC:String = ".dmg";
 	public static const APPLICATION_EXTENSION_WIN:String = ".exe";
 	
