@@ -296,8 +296,13 @@ public class RuntimeLocale
 		var content:Object = resource.content;
 		content["ASK_BLAZEDS"]="Apache Flex can optionally integrate with Adobe BlazeDS. This feature requires flex-messaging-common.jar from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to this jar. This license is not compatible with the Apache v2 license. Do you want to install this jar from the Adobe Flex SDK?"
 		content["ASK_FONTSWF"]="Apache Flex can optionally integrate with Adobe's embedded font support. This feature requires a few font jars from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to these jars. This license is not compatible with the Apache v2 license. Do you want to install these jars from the Adobe Flex SDK?";
-		content["ASK_OSMF"]="The Open Source Media Framework (OSMF) used by the video components is licensed under the Mozilla Public License Version 1.1.";
-		content["ASK_TLF"]="The Adobe Text Layout Framework (TLF) used by the Spark text components is licensed under the Mozilla Public License Version 1.1.";
+		content["ASK_OSMF"]="The Open Source Media Framework (OSMF) used by the video components is licensed under the Mozilla Public License Version 1.1.  Do you want to install The Open Source Media Framework (OSMF)?";
+		content["ASK_TLF"]="The Adobe Text Layout Framework (TLF) used by the Spark text components is licensed under the Mozilla Public License Version 1.1.  Do you want to install The Adobe Text Layout Framework (TLF)?";
+		content["ASK_APACHE_FLEX"]="The Apache License v2 applies to the Apache Flex SDK.  Do you want to install the Apache Flex SDK?";
+		content["ASK_ADOBE_AIR_SDK"]="The Adobe SDK license agreement applies to the Adobe AIR SDK.  Do you want to install the Adobe AIR SDK?";
+		content["ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC"]="The Adobe SDK license agreement applies to the Adobe Flash Player playerglobal.swc.  Do you want to install the Adobe Flash Player playerglobal.swc?";
+		content["ASK_SWFOBJECT"]="The The MIT License (MIT) applies to the SWFObject utility.  Do you want to install the SWFObject utility?";
+		
 		content["BTN_LABEL_ADOBE_LICENSE"]="SHOW ADOBE LICENSE";
 		content["BTN_LABEL_BROWSE"]="BROWSE";
 		content["BTN_LABEL_CLOSE"]="CLOSE";
@@ -358,7 +363,7 @@ public class RuntimeLocale
 		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Installing Adobe Flash Player playerglobal.swc from: ";
 		content["INFO_INVOKED_GUI_MODE"]="invoked in GUI mode";
 		content["INFO_LICENSE_AGREEMENTS"]="License Agreements";
-		content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="These components have license agreements other than Apache License, Version 2.0. Please click on each item on the left, read the license and confirm that you agree to the terms of each license.";
+		content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="These components have license agreements other than Apache License v2. Please click on each item on the left, read the license and confirm that you agree to the terms of each license.";
 		content["INFO_SELECT_DIRECTORY"]="Select the directory where you want to install the Flex SDK";
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Select installation directory";
 		content["INFO_UNZIPPING"]="Uncompressing: ";
@@ -369,15 +374,20 @@ public class RuntimeLocale
 		content["INSTALL_DISAGREE"] = "I Disagree, Don't Install"
 		content["SELECT_PATH_PROMPT"]="Where do you want to install the Apache Flex SDK?";
 		content["STEP_CREATE_DIRECTORIES"]="Create Directories";
-		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Download Adobe AIR Runtime Kit";
-		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Download Flash Player swc";
-		content["STEP_DOWNLOAD_FLEX_SDK"]="Download Apache Flex SDK";
+		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Required)";
+		content["STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK"]="Adobe AIR SDK (Required)";
+		content["STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC"]="Adobe Flash Player playerglobal.swc (Required)";
+		content["STEP_REQUIRED_INSTALL_SWFOBJECT"]="SwfObject (Required)";
 		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
-		content["STEP_INSTALL_SWF_OBJECT"]="Download SWFObject";
+		content["STEP_REQUIRED_INSTALL_OSMF"]="OSMF (Required)";
+		content["STEP_REQUIRED_INSTALL_TLF"]="Adobe Text Layout Framework (Required)";
 		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Optional)";
 		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Embedded Font Libraries and Utilities (Optional)";
-		content["STEP_OPTIONAL_INSTALL_OSMF"]="OSMF (Required)";
-		content["STEP_OPTIONAL_INSTALL_TLF"]="Adobe Text Layout Framework (Required)";
+
+		
+		
+		
+		content["STEP_REQUIRED_UNZIP_AIR_RUNTIME_KIT"]="Uncompress Adobe AIR Runtime Kit";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Uncompress Adobe AIR Runtime Kit";
 		content["STEP_UNZIP_FLEX_SDK"]="Uncompress Apache Flex SDK";
 		content["STEP_VERIFY_FLEX_SDK"]="Verifying Apache Flex SDK MD5 Signature";

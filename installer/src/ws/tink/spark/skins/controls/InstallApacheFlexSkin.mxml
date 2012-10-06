@@ -82,7 +82,7 @@ limitations under the License.
     </s:states>
 
     <!-- layer 1: background fill -->
-	<s:BitmapImage source="@Embed('/assets/icons/bg_logo.png')" width="100%" height="100%" scaleMode="stretch" />
+	<s:BitmapImage source="@Embed('/assets/icons/bg_logo.png')" top="0" left="0"  scaleMode="letterbox" />
 
     <!-- layer 2: content + status bar -->
     <s:Group left="0" right="0" top="0" bottom="0" minHeight="24" minWidth="0" >

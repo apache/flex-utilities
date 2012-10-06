@@ -35,7 +35,7 @@ variables are not required because the locations of these pieces are known.
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
-					   width="800" height="550" maxWidth="800" maxHeight="550" minWidth="800" minHeight="550"
+					   width="800" height="650" maxWidth="800" maxHeight="650" minWidth="800" minHeight="650"
 					   backgroundColor="0xDDDDDD"
 					   applicationComplete="handleApplicationComplete(event)" showStatusBar="false"
 					   skinClass="ws.tink.spark.skins.controls.InstallApacheFlexSkin" 
@@ -58,7 +58,7 @@ variables are not required because the locations of these pieces are known.
 		import mx.managers.PopUpManager;
 		import mx.utils.StringUtil;
 		
-		import org.apache.flex.packageflexsdk.model.OptionalComponentVO;
+		import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
 		import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
 		import org.apache.flex.packageflexsdk.util.MD5CompareUtil;
 		import org.apache.flex.packageflexsdk.view.UpdaterDialog;
@@ -187,7 +187,8 @@ variables are not required because the locations of these pieces are known.
 		
 		[Bindable] private var _viewResourceConstants:ViewResourceConstants;
 		[Bindable] private var _installationSteps:ArrayCollection = new ArrayCollection();
-		[Bindable] private var _optionalInstallsDataProvider:ArrayCollection = new ArrayCollection();
+//		[Bindable] private var _optionalInstallsDataProvider:ArrayCollection = new ArrayCollection();
+		[Bindable] private var _licensesDataProvider:ArrayCollection = new ArrayCollection();
 		[Bindable] public var _messages:ArrayCollection = new ArrayCollection();
 		
 		protected function handleApplicationComplete(event:FlexEvent):void
@@ -491,14 +492,16 @@ variables are not required because the locations of these pieces are known.
 			_installationSteps = new ArrayCollection();
 			
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_CREATE_DIRECTORIES));
-			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_DOWNLOAD_FLEX_SDK));
+			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK));
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_VERIFY_FLEX_SDK));
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_UNZIP_FLEX_SDK));
-			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_DOWNLOAD_AIR_RUNTIME_KIT));
+			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK));
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT));
-			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_DOWNLOAD_FLASHPLAYER_SWC));
+			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC));
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES));
-			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT));
+			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT));
+			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF));
+			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF));
 		}
 		
 		protected function resetInstallStepsActivity():void
@@ -511,9 +514,9 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function addOptionalComponentsToInstallSteps():void
 		{
-			for each (var obj:OptionalComponentVO in _optionalInstallsDataProvider)
+			for each (var obj:InstallerComponentVO in _licensesDataProvider)
 			{
-				if(obj.selected)
+				if(!obj.required && obj.selected)
 				{
 					_installationSteps.addItem(new StepItem(obj.label));
 				}
@@ -522,36 +525,36 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function initializeOptionInstallsDataProvider():void
 		{
-			_optionalInstallsDataProvider = new ArrayCollection();
-			
-			_optionalInstallsDataProvider.addItem(
-				new OptionalComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF,
-					_viewResourceConstants.ASK_TLF, true));
-			_optionalInstallsDataProvider.addItem(
-				new OptionalComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF,
+			_licensesDataProvider = new ArrayCollection();
+			_licensesDataProvider.addItem(
+				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK,
+					_viewResourceConstants.ASK_APACHE_FLEX, true));
+			_licensesDataProvider.addItem(
+				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC,
+					_viewResourceConstants.ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC, true));
+			_licensesDataProvider.addItem(
+				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK,
+					_viewResourceConstants.ASK_ADOBE_AIR_SDK, true));
+			_licensesDataProvider.addItem(
+				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT,
+					_viewResourceConstants.ASK_SWFOBJECT, true));
+			_licensesDataProvider.addItem(
+				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,
 					_viewResourceConstants.ASK_OSMF, true));
-			_optionalInstallsDataProvider.addItem(
-				new OptionalComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF,
+			_licensesDataProvider.addItem(
+				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,
+					_viewResourceConstants.ASK_TLF, true));
+			_licensesDataProvider.addItem(
+				new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF,
 					_viewResourceConstants.ASK_FONTSWF, false));
-			_optionalInstallsDataProvider.addItem(
-				new OptionalComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS,
+			_licensesDataProvider.addItem(
+				new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS,
 					_viewResourceConstants.ASK_BLAZEDS, false));
 		}
 		
 		protected function install():void
 		{
 			createDirectories();
-		}
-		
-		
-		protected function setCommandLineState():void
-		{
-			currentState = "commandLineState";
-		}
-		
-		protected function setGUIState():void
-		{
-			currentState = "guiState";
 		}
 		
 		// TODO Scan for Apache SDKs installed and check if allready modified?
@@ -672,7 +675,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function downloadApacheFlexSDK():void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLEX_SDK, StepItem.ACTIVE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ACTIVE);
 			
 			try
 			{
@@ -682,7 +685,7 @@ variables are not required because the locations of these pieces are known.
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLEX_SDK, StepItem.ERROR);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
 				log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY + "(error: " + e.message);
 				abortInstallation();
 			}
@@ -697,11 +700,11 @@ variables are not required because the locations of these pieces are known.
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLEX_SDK, StepItem.ERROR);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
 				abortInstallation();
 			}
 			
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLEX_SDK, StepItem.COMPLETE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.COMPLETE);
 			
 			updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.ACTIVE);
 
@@ -720,7 +723,7 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function handleApacheFlexSDKDownloadError(event:*=null):void{
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLEX_SDK, StepItem.ERROR);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
 			log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK);
 			abortInstallation();
 		}
@@ -792,7 +795,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function downloadAIRRuntimeKitForWindows():void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_AIR_RUNTIME_KIT, StepItem.ACTIVE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
 			
 			try
 			{
@@ -802,14 +805,14 @@ variables are not required because the locations of these pieces are known.
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_AIR_RUNTIME_KIT, StepItem.ERROR);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
 				abortInstallation();
 			}
 		}
 		
 		protected function downloadAIRRuntimeKitForMac():void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_AIR_RUNTIME_KIT, StepItem.ACTIVE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
 			
 			try
 			{
@@ -819,7 +822,7 @@ variables are not required because the locations of these pieces are known.
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_AIR_RUNTIME_KIT, StepItem.ERROR);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
 				abortInstallation();
 			}
 		}
@@ -832,18 +835,18 @@ variables are not required because the locations of these pieces are known.
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_AIR_RUNTIME_KIT, StepItem.ERROR);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
 				abortInstallation();
 			}
 			
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_AIR_RUNTIME_KIT, StepItem.COMPLETE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.COMPLETE);
 			
 			unzipAdobeAIRSDK();
 		}
 		
 		protected function handleAIRSDKDownloadError(error:*=null):void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_AIR_RUNTIME_KIT, StepItem.ERROR);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
 			log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK);
 			abortInstallation();
 		}
@@ -914,7 +917,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function downloadPlayerGlobalSWC():void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLASHPLAYER_SWC, StepItem.ACTIVE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ACTIVE);
 			
 			try
 			{
@@ -925,7 +928,7 @@ variables are not required because the locations of these pieces are known.
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLASHPLAYER_SWC, StepItem.ERROR);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ERROR);
 				abortInstallation();
 			}
 		}
@@ -939,16 +942,16 @@ variables are not required because the locations of these pieces are known.
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLASHPLAYER_SWC, StepItem.ERROR);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ERROR);
 				abortInstallation();
 			}
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLASHPLAYER_SWC, StepItem.COMPLETE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.COMPLETE);
 			copyConfigFiles();
 		}
 		
 		protected function handlePlayerGlobalDownloadError(event:ErrorEvent=null):void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_DOWNLOAD_FLASHPLAYER_SWC, StepItem.ERROR);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ERROR);
 			log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC);
 			abortInstallation();
 		}
@@ -994,7 +997,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function downloadSwfObject():void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ACTIVE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ACTIVE);
 			
 			try
 			{
@@ -1003,7 +1006,7 @@ variables are not required because the locations of these pieces are known.
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ERROR);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
 				abortInstallation();
 			}
 		}
@@ -1018,7 +1021,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function handleSWFObjectDownloadError(event:ErrorEvent=null):void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ERROR);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
 			log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
 			abortInstallation();
 		}
@@ -1037,13 +1040,14 @@ variables are not required because the locations of these pieces are known.
 				var swfObjectDir:File = _flexHomeDir.resolvePath("swfobject");
 				swfObjectDir.deleteDirectory(true);
 				
-				updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.COMPLETE);
-				installNextOptionalComponent();
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.COMPLETE);
+//				installNextOptionalComponent();
+				installOSMF();
 
 			}
 			catch(e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ERROR);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
 				log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
 				abortInstallation();
 			}
@@ -1052,14 +1056,14 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function handleSWFObjectZipFileUnzipError(event:Event):void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_INSTALL_SWF_OBJECT, StepItem.ERROR);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
 			log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
 			abortInstallation();
 		}
 		
 		protected function installNextOptionalComponent():void
 		{
-			for each (var obj:OptionalComponentVO in _optionalInstallsDataProvider)
+			for each (var obj:InstallerComponentVO in _licensesDataProvider)
 			{
 				if(obj.selected && !obj.installed && !obj.aborted)
 				{
@@ -1077,18 +1081,6 @@ variables are not required because the locations of these pieces are known.
 							return;
 							break;
 						}
-						case _viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF:
-						{
-							installOSMF();
-							return;
-							break;
-						}
-						case _viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF:
-						{
-							installTLF();
-							return;
-							break;
-						} 
 						default:
 						{
 							break;
@@ -1239,7 +1231,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function installOSMF():void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF,StepItem.ACTIVE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,StepItem.ACTIVE);
 			downloadOSMFFile();
 		}
 		
@@ -1258,22 +1250,22 @@ variables are not required because the locations of these pieces are known.
 				copyFileToLibDir(_osmfFile);
 				clearData(URLLoader(event.target));
 				
-				updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF,true);
-				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF,false);
-				updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF, StepItem.COMPLETE);
-				installNextOptionalComponent();
+				updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,true);
+				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,false);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.COMPLETE);
+				installTLF();
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF, StepItem.ERROR);
-				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF,true);
-				installNextOptionalComponent();
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
+				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,true);
+				abortInstallation();
 			}
 		}
 		
 		protected function installTLF():void
 		{
-			updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF,StepItem.ACTIVE);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,StepItem.ACTIVE);
 			downloadTLFFile();
 		}
 		
@@ -1292,15 +1284,15 @@ variables are not required because the locations of these pieces are known.
 				copyFileToLibDir(_tlfFile);
 				clearData(URLLoader(event.target));
 				
-				updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF,true);
-				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF,false);
-				updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF, StepItem.COMPLETE);
+				updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,true);
+				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,false);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF, StepItem.COMPLETE);
 				installNextOptionalComponent();
 			}
 			catch (e:Error)
 			{
-				updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF, StepItem.ERROR);
-				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF,true);
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF, StepItem.ERROR);
+				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,true);
 				installNextOptionalComponent();
 			}
 		}
@@ -1334,22 +1326,22 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function handleOSMFInstallError(event:*=null):void{
-			updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF, StepItem.ERROR);
-			updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_OSMF,true);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
+			updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,true);
 			log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE,["OSMF"]));
 			installNextOptionalComponent();
 		}
 		
 		protected function handleTLFInstallError(event:*=null):void{
-			updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF, StepItem.ERROR);
-			updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_TLF,true);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF, StepItem.ERROR);
+			updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,true);
 			log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE,["TLF"]));
 			installNextOptionalComponent();
 		}
 		
 		protected function updateOptionalComponentInstallStatus(label:String,isInstalled:Boolean):void
 		{
-			for each (var obj:OptionalComponentVO in _optionalInstallsDataProvider)
+			for each (var obj:InstallerComponentVO in _licensesDataProvider)
 			{
 				if(obj.label == label)
 				{
@@ -1360,7 +1352,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function updateOptionalComponentInstallStatusAborted(label:String,isAborted:Boolean):void
 		{
-			for each (var obj:OptionalComponentVO in _optionalInstallsDataProvider)
+			for each (var obj:InstallerComponentVO in _licensesDataProvider)
 			{
 				if(obj.label == label)
 				{
@@ -1372,9 +1364,9 @@ variables are not required because the locations of these pieces are known.
 		protected function checkAndHandleAllOptionalComponentsInstalled():void
 		{
 			var allComponentsInstalled:Boolean = true;
-			for each (var obj:OptionalComponentVO in _optionalInstallsDataProvider)
+			for each (var obj:InstallerComponentVO in _licensesDataProvider)
 			{
-				if(obj.selected && !(obj.installed || obj.aborted))
+				if(!obj.required && obj.selected && !(obj.installed || obj.aborted))
 				{
 					allComponentsInstalled = false;
 				}
@@ -1462,7 +1454,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function handleOptionalInstallsChange(event:IndexChangeEvent):void
 		{
-			var selectedItem:OptionalComponentVO = OptionalComponentVO(event.target.selectedItem);
+			var selectedItem:InstallerComponentVO = InstallerComponentVO(event.target.selectedItem);
 			optionalInstallsTxtArea.text = selectedItem.message;
 			installChkBx.label = _viewResourceConstants.INSTALL_AGREE;
 			if(selectedItem.answered)
@@ -1501,10 +1493,10 @@ variables are not required because the locations of these pieces are known.
 			}
 			else
 			{
-				for (var i:int=0; i<_optionalInstallsDataProvider.length; i++)
+				for (var i:int=0; i<_licensesDataProvider.length; i++)
 				{
-					_optionalInstallsDataProvider.getItemAt(i).selected = event.target.selected;
-					_optionalInstallsDataProvider.getItemAt(i).answered = true;
+					_licensesDataProvider.getItemAt(i).selected = event.target.selected;
+					_licensesDataProvider.getItemAt(i).answered = true;
 				}
 			}
 			checkIfAllRequiredComponentsPromptsAnswered();
@@ -1513,7 +1505,7 @@ variables are not required because the locations of these pieces are known.
 		protected function checkIfAllRequiredComponentsPromptsAnswered():void
 		{
 			var success:Boolean = true;
-			for each (var obj:OptionalComponentVO in _optionalInstallsDataProvider)
+			for each (var obj:InstallerComponentVO in _licensesDataProvider)
 			{
 				if(obj.required && !obj.selected)
 				{
@@ -1902,7 +1894,7 @@ variables are not required because the locations of these pieces are known.
 			 title="{_viewResourceConstants.INFO_SELECT_DIRECTORY_INSTALL}" 
 			 width="640" 
 			 height="200" 
-			 top="280" 
+			 top="380" 
 			 x="{firstStepGroup.x = this.width/2 - firstStepGroup.width/2}"
 			 visible="true" 
 			 visible.optionsState="false" 
@@ -1941,7 +1933,7 @@ variables are not required because the locations of these pieces are known.
 	<s:Panel id="secondStepGroup" 
 			 title="{_viewResourceConstants.INFO_LICENSE_AGREEMENTS}"
 			 width="720" 
-			 height="200" 
+			 height="300" 
 			 top="280" 
 			 visible="false" 
 			 visible.optionsState="true" 
@@ -1972,7 +1964,7 @@ variables are not required because the locations of these pieces are known.
 					width="50%" 
 					height="100%"
 					itemRenderer="org.apache.flex.packageflexsdk.view.itemrenderers.OptionalInstallItemRenderer"
-					dataProvider="{_optionalInstallsDataProvider}" 
+					dataProvider="{_licensesDataProvider}" 
 					change="handleOptionalInstallsChange(event)">
 				<s:layout>
 					<s:VerticalLayout />
@@ -2006,12 +1998,11 @@ variables are not required because the locations of these pieces are known.
 					  includeInLayout="true" />
 		</s:HGroup>
 	</s:Panel>
-	
 	<s:Panel id="thirdStepGroup" 
 			 title="{_viewResourceConstants.INFO_INSTALLING}"  
 			 width="640" 
 			 height="200" 
-			 top="280" 
+			 top="380" 
 			 visible="false" 
 			 visible.installState="true" 
 			 backgroundAlpha="0">
