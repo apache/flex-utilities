@@ -20,7 +20,7 @@
 package org.apache.flex.packageflexsdk.model
 {
 	[Bindable]
-	public class OptionalComponentVO
+	public class InstallerComponentVO
 	{
 		public var label:String;
 		public var message:String;
@@ -30,7 +30,7 @@ package org.apache.flex.packageflexsdk.model
 		public var aborted:Boolean=false;
 		public var answered:Boolean = false;
 		
-		public function OptionalComponentVO(label:String,message:String,required:Boolean,selected:Boolean=false,installed:Boolean=false,aborted:Boolean=false,answered:Boolean=false)
+		public function InstallerComponentVO(label:String,message:String,required:Boolean,selected:Boolean=false,installed:Boolean=false,aborted:Boolean=false,answered:Boolean=false)
 		{
 			this.label = label;
 			this.message = message;
