@@ -1996,12 +1996,24 @@ variables are not required because the locations of these pieces are known.
 					<s:VerticalLayout />
 				</s:layout>
 			</s:List>
-			<s:TextArea id="optionalInstallsTxtArea" text="{_viewResourceConstants.INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE}"
-						fontSize="12" 
-						width="50%" 
-						height="100%" 
-						verticalScrollPolicy="off" 
-						editable="false"/>
+			<s:VGroup width="50%" 
+					  height="100%"
+					  horizontalAlign="center"
+					  gap="5">
+				<controls2:LinkButton id="licenseLinkBtn"
+									  text="{_currentLicenseLabel}"
+									  fontWeight="bold"
+									  click="{handleLicenceBtnClick(event)}"
+									  paddingTop="5"
+									  includeInLayout="false"
+									  />
+				<s:TextArea id="optionalInstallsTxtArea" text="{_viewResourceConstants.INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE}"
+							fontSize="12" 
+							width="100%" 
+							height="100%" 
+							verticalScrollPolicy="off" 
+							editable="false"/>
+			</s:VGroup>
 		</s:HGroup>
 		<s:HGroup 
 			width="100%" 
@@ -2012,13 +2024,6 @@ variables are not required because the locations of these pieces are known.
 						label="{_viewResourceConstants.INSTALL_AGREE_ALL}" 
 						selected="false" 
 						change="handleInstallPermissionChange(event)"/>
-			<controls2:LinkButton id="licenseLinkBtn"
-								  text="{_currentLicenseLabel}"
-								  fontWeight="bold"
-								  click="{handleLicenceBtnClick(event)}"
-								  includeInLayout="false"
-								  />
-						   
 		</s:HGroup>
 	</s:Panel>
 	<s:Panel id="thirdStepGroup" 
