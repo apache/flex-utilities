@@ -41,16 +41,16 @@ variables are not required because the locations of these pieces are known.
 					   skinClass="ws.tink.spark.skins.controls.InstallApacheFlexSkin" 
 					   xmlns:controls="ws.tink.spark.controls.*" 
 					   xmlns:controls1="org.apache.flex.packageflexsdk.view.controls.*" 
-					   xmlns:components="org.apache.flex.packageflexsdk.view.components.*" 
+					   xmlns:components="org.apache.flex.packageflexsdk.view.components.*" xmlns:controls2="org.apache.flex.utilities.common.controls.*" 
 					   >
 	
 	<fx:Style source="assets/styles/ApacheFlexToolsStyle.css" />
 	<fx:Style source="assets/styles/InstallApacheFlexStyle.css" />
 	
 	<fx:Script><![CDATA[
-		
 		import flash.globalization.LocaleID;
 		import flash.globalization.StringTools;
+		import flash.net.navigateToURL;
 		
 		import mx.collections.ArrayCollection;
 		import mx.core.IFlexDisplayObject;
@@ -187,8 +187,9 @@ variables are not required because the locations of these pieces are known.
 		
 		[Bindable] private var _viewResourceConstants:ViewResourceConstants;
 		[Bindable] private var _installationSteps:ArrayCollection = new ArrayCollection();
-//		[Bindable] private var _optionalInstallsDataProvider:ArrayCollection = new ArrayCollection();
-		[Bindable] private var _licensesDataProvider:ArrayCollection = new ArrayCollection();
+		[Bindable] private var _installerComponentsDataProvider:ArrayCollection = new ArrayCollection();
+		[Bindable] private var _currentLicenseURL:String;
+		[Bindable] private var _currentLicenseLabel:String;
 		[Bindable] public var _messages:ArrayCollection = new ArrayCollection();
 		
 		protected function handleApplicationComplete(event:FlexEvent):void
@@ -417,7 +418,7 @@ variables are not required because the locations of these pieces are known.
 		{
 			
 			initiateInstallStepsActivity();
-			initializeOptionInstallsDataProvider();
+			initializeInstallerComponentsDataProvider();
 			
 			checkVersion();
 		}
@@ -514,7 +515,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function addOptionalComponentsToInstallSteps():void
 		{
-			for each (var obj:InstallerComponentVO in _licensesDataProvider)
+			for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
 			{
 				if(!obj.required && obj.selected)
 				{
@@ -523,33 +524,59 @@ variables are not required because the locations of these pieces are known.
 			}
 		}
 		
-		protected function initializeOptionInstallsDataProvider():void
+		protected function initializeInstallerComponentsDataProvider():void
 		{
-			_licensesDataProvider = new ArrayCollection();
-			_licensesDataProvider.addItem(
-				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK,
-					_viewResourceConstants.ASK_APACHE_FLEX, true));
-			_licensesDataProvider.addItem(
-				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC,
-					_viewResourceConstants.ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC, true));
-			_licensesDataProvider.addItem(
+			_installerComponentsDataProvider = new ArrayCollection();
+			_installerComponentsDataProvider.addItem(
+				new InstallerComponentVO(
+					_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK,
+					_viewResourceConstants.ASK_APACHE_FLEX,
+					_viewResourceConstants.LICENSE_APACHE_V2,
+					_viewResourceConstants.LICENSE_URL_APACHE_V2,
+					true
+				));
+			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK,
-					_viewResourceConstants.ASK_ADOBE_AIR_SDK, true));
-			_licensesDataProvider.addItem(
+					_viewResourceConstants.ASK_ADOBE_AIR_SDK, 
+					_viewResourceConstants.LICENSE_ADOBE_AIR_SDK,
+					_viewResourceConstants.LICENSE_URL_ADOBE_AIR_SDK,
+					true));
+			_installerComponentsDataProvider.addItem(
+				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC,
+					_viewResourceConstants.ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC, 
+					_viewResourceConstants.LICENSE_ADOBE_SDK,
+					_viewResourceConstants.LICENSE_URL_ADOBE_SDK,
+					true));
+			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT,
-					_viewResourceConstants.ASK_SWFOBJECT, true));
-			_licensesDataProvider.addItem(
+					_viewResourceConstants.ASK_SWFOBJECT, 
+					_viewResourceConstants.LICENSE_SWFOBJECT,
+					_viewResourceConstants.LICENSE_URL_SWFOBJECT,
+					true));
+			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,
-					_viewResourceConstants.ASK_OSMF, true));
-			_licensesDataProvider.addItem(
+					_viewResourceConstants.ASK_OSMF, 
+					_viewResourceConstants.LICENSE_OSMF,
+					_viewResourceConstants.LICENSE_URL_OSMF,
+					true));
+			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,
-					_viewResourceConstants.ASK_TLF, true));
-			_licensesDataProvider.addItem(
+					_viewResourceConstants.ASK_TLF, 
+					_viewResourceConstants.LICENSE_TLF,
+					_viewResourceConstants.LICENSE_URL_TLF,
+					true));
+			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF,
-					_viewResourceConstants.ASK_FONTSWF, false));
-			_licensesDataProvider.addItem(
+					_viewResourceConstants.ASK_FONTSWF, 
+					_viewResourceConstants.LICENSE_FONTSWF,
+					_viewResourceConstants.LICENSE_URL_FONTSWF,
+					false));
+			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS,
-					_viewResourceConstants.ASK_BLAZEDS, false));
+					_viewResourceConstants.ASK_BLAZEDS, 
+					_viewResourceConstants.LICENSE_BLAZEDS,
+					_viewResourceConstants.LICENSE_URL_BLAZEDS,
+					false));
 		}
 		
 		protected function install():void
@@ -1041,7 +1068,6 @@ variables are not required because the locations of these pieces are known.
 				swfObjectDir.deleteDirectory(true);
 				
 				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.COMPLETE);
-//				installNextOptionalComponent();
 				installOSMF();
 
 			}
@@ -1063,7 +1089,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function installNextOptionalComponent():void
 		{
-			for each (var obj:InstallerComponentVO in _licensesDataProvider)
+			for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
 			{
 				if(obj.selected && !obj.installed && !obj.aborted)
 				{
@@ -1341,7 +1367,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function updateOptionalComponentInstallStatus(label:String,isInstalled:Boolean):void
 		{
-			for each (var obj:InstallerComponentVO in _licensesDataProvider)
+			for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
 			{
 				if(obj.label == label)
 				{
@@ -1352,7 +1378,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function updateOptionalComponentInstallStatusAborted(label:String,isAborted:Boolean):void
 		{
-			for each (var obj:InstallerComponentVO in _licensesDataProvider)
+			for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
 			{
 				if(obj.label == label)
 				{
@@ -1364,7 +1390,7 @@ variables are not required because the locations of these pieces are known.
 		protected function checkAndHandleAllOptionalComponentsInstalled():void
 		{
 			var allComponentsInstalled:Boolean = true;
-			for each (var obj:InstallerComponentVO in _licensesDataProvider)
+			for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
 			{
 				if(!obj.required && obj.selected && !(obj.installed || obj.aborted))
 				{
@@ -1433,7 +1459,7 @@ variables are not required because the locations of these pieces are known.
 			{
 				updateWindowTitle();
 				initiateInstallStepsActivity();
-				initializeOptionInstallsDataProvider();
+				initializeInstallerComponentsDataProvider();
 			}
 		}
 
@@ -1472,31 +1498,31 @@ variables are not required because the locations of these pieces are known.
 			{
 				installChkBx.selected = false;
 			}
-			if(selectedItem.message == _viewResourceConstants.ASK_OSMF || selectedItem.message == _viewResourceConstants.ASK_TLF)
-			{
-				mplLicenseBtn.includeInLayout = mplLicenseBtn.visible = true;
-				adobeLicenseBtn.includeInLayout = adobeLicenseBtn.visible = false;
-			}
-			if(selectedItem.message == _viewResourceConstants.ASK_BLAZEDS || selectedItem.message == _viewResourceConstants.ASK_FONTSWF)
-			{
-				mplLicenseBtn.includeInLayout = mplLicenseBtn.visible = false;
-				adobeLicenseBtn.includeInLayout = adobeLicenseBtn.visible = true;
-			}
+			
+			licenseLinkBtn.includeInLayout = true;
+			_currentLicenseLabel = selectedItem.licenseName;
+			_currentLicenseURL = selectedItem.licenseURL;
+			
+		}
+		
+		protected function handleLicenceBtnClick(event:Event):void
+		{
+			navigateToURL(new URLRequest(_currentLicenseURL),"_blank");
 		}
 		
 		protected function handleInstallPermissionChange(event:Event):void
 		{
-			if(optionalComponentsList.selectedItem != null)
+			if(installComponentsList.selectedItem != null)
 			{
-				optionalComponentsList.selectedItem.selected = (event.target.selected);
-				optionalComponentsList.selectedItem.answered = true;
+				installComponentsList.selectedItem.selected = (event.target.selected);
+				installComponentsList.selectedItem.answered = true;
 			}
 			else
 			{
-				for (var i:int=0; i<_licensesDataProvider.length; i++)
+				for (var i:int=0; i<_installerComponentsDataProvider.length; i++)
 				{
-					_licensesDataProvider.getItemAt(i).selected = event.target.selected;
-					_licensesDataProvider.getItemAt(i).answered = true;
+					_installerComponentsDataProvider.getItemAt(i).selected = event.target.selected;
+					_installerComponentsDataProvider.getItemAt(i).answered = true;
 				}
 			}
 			checkIfAllRequiredComponentsPromptsAnswered();
@@ -1505,7 +1531,7 @@ variables are not required because the locations of these pieces are known.
 		protected function checkIfAllRequiredComponentsPromptsAnswered():void
 		{
 			var success:Boolean = true;
-			for each (var obj:InstallerComponentVO in _licensesDataProvider)
+			for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
 			{
 				if(obj.required && !obj.selected)
 				{
@@ -1960,11 +1986,11 @@ variables are not required because the locations of these pieces are known.
 			width="100%" 
 			height="100%" 
 			horizontalAlign="center">
-			<s:List id="optionalComponentsList" 
+			<s:List id="installComponentsList" 
 					width="50%" 
 					height="100%"
 					itemRenderer="org.apache.flex.packageflexsdk.view.itemrenderers.OptionalInstallItemRenderer"
-					dataProvider="{_licensesDataProvider}" 
+					dataProvider="{_installerComponentsDataProvider}" 
 					change="handleOptionalInstallsChange(event)">
 				<s:layout>
 					<s:VerticalLayout />
@@ -1986,16 +2012,13 @@ variables are not required because the locations of these pieces are known.
 						label="{_viewResourceConstants.INSTALL_AGREE_ALL}" 
 						selected="false" 
 						change="handleInstallPermissionChange(event)"/>
-			<s:Button id="mplLicenseBtn" 
-					  label="{_viewResourceConstants.BTN_LABEL_MPL_LICENSE}" 
-					  styleName="genericBtnStyle" 
-					  click="{showMPLLicense(event)}" 
-					  includeInLayout="true" />
-			<s:Button id="adobeLicenseBtn" 
-					  label="{_viewResourceConstants.BTN_LABEL_ADOBE_LICENSE}" 
-					  styleName="genericBtnStyle" 
-					  click="{showAdobeLicense(event)}" 
-					  includeInLayout="true" />
+			<controls2:LinkButton id="licenseLinkBtn"
+								  text="{_currentLicenseLabel}"
+								  fontWeight="bold"
+								  click="{handleLicenceBtnClick(event)}"
+								  includeInLayout="false"
+								  />
+						   
 		</s:HGroup>
 	</s:Panel>
 	<s:Panel id="thirdStepGroup" 
@@ -2049,9 +2072,6 @@ variables are not required because the locations of these pieces are known.
 				  label="{_viewResourceConstants.BTN_LABEL_INSTALL_LOG}" 
 				  click="showConsole(event)" />
 		<s:Spacer width="100%" />
-		<!--<s:Button label="Update" click="{showUpdateDialog(new XML())}" />-->
-		<s:Spacer width="100%" />
-		
 		<s:Button id="closeBtn" 
 				  styleName="genericBtnStyle" 
 				  width="88" 

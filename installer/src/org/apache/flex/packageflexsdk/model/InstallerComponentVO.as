@@ -29,8 +29,19 @@ package org.apache.flex.packageflexsdk.model
 		public var installed:Boolean=false;
 		public var aborted:Boolean=false;
 		public var answered:Boolean = false;
+		public var licenseName:String;
+		public var licenseURL:String;
 		
-		public function InstallerComponentVO(label:String,message:String,required:Boolean,selected:Boolean=false,installed:Boolean=false,aborted:Boolean=false,answered:Boolean=false)
+		public function InstallerComponentVO(label:String,
+											 message:String,
+											 licenseName:String,
+											 licenseURL:String,
+											 required:Boolean,
+											 selected:Boolean=false,
+											 installed:Boolean=false,
+											 aborted:Boolean=false,
+											 answered:Boolean=false
+											)
 		{
 			this.label = label;
 			this.message = message;
@@ -39,6 +50,8 @@ package org.apache.flex.packageflexsdk.model
 			this.installed = installed;
 			this.aborted = aborted;
 			this.answered = answered;
+			this.licenseName = licenseName;
+			this.licenseURL = licenseURL;
 		}
 	}
 }

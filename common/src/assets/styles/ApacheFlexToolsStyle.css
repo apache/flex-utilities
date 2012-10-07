@@ -19,6 +19,7 @@ limitations under the License.
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/mx";
 @namespace st "ws.tink.spark.controls.*";
+@namespace controls "org.apache.flex.utilities.common.controls.*";
 
 @font-face {
 	src: url("/assets/fonts/open-sans/OpenSans-LightItalic.ttf");
@@ -36,6 +37,17 @@ limitations under the License.
 	src: url("/assets/fonts/open-sans/OpenSans-Semibold.ttf");
 	fontFamily: openSansSemibold;
 	advancedAntiAliasing: true;
+}
+
+controls|LinkButton
+{
+	fontWeight: normal;
+	fontSize: 13;
+	color: #6666CC;
+	verticalCenter: 1;
+	textAlign: left;
+	rollOverTextDecoration:underline;
+	text-roll-over-color: #6666CC;
 }
 
 s|Button
