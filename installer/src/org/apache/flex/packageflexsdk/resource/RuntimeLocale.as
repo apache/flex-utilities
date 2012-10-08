@@ -362,7 +362,7 @@ public class RuntimeLocale
 		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Installing Adobe Flash Player playerglobal.swc from: ";
 		content["INFO_INVOKED_GUI_MODE"]="invoked in GUI mode";
 		content["INFO_LICENSE_AGREEMENTS"]="License Agreements";
-		content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="These components have license agreements other than Apache License V2. Please click on each item on the left, read the license and confirm that you agree to the terms of each license.";
+		content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="This installer will download software from multiple sites with various license agreements. Please click on each item on the left, read the license and confirm that you agree to the terms of each license.";
 		content["INFO_SELECT_DIRECTORY"]="Select the directory where you want to install the Flex SDK";
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Select installation directory";
 		content["INFO_UNZIPPING"]="Uncompressing: ";
