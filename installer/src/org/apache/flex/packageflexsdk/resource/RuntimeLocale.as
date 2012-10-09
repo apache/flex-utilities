@@ -376,7 +376,7 @@ public class RuntimeLocale
 		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Required)";
 		content["STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK"]="Adobe AIR SDK (Required)";
 		content["STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC"]="Adobe Flash Player playerglobal.swc (Required)";
-		content["STEP_REQUIRED_INSTALL_SWFOBJECT"]="SwfObject (Required)";
+		content["STEP_REQUIRED_INSTALL_SWFOBJECT"]="SWFObject (Required)";
 		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
 		content["STEP_REQUIRED_INSTALL_OSMF"]="OSMF (Required)";
 		content["STEP_REQUIRED_INSTALL_TLF"]="Adobe Text Layout Framework (Required)";
