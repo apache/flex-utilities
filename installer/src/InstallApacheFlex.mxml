@@ -750,7 +750,7 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function handleApacheFlexSDKDownloadError(event:*=null):void{
-			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
 			log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK);
 			abortInstallation();
 		}
