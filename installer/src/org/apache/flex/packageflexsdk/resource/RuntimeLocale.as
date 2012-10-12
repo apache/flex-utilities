@@ -296,12 +296,12 @@ public class RuntimeLocale
 		var content:Object = resource.content;
 		content["ASK_BLAZEDS"]="Apache Flex can optionally integrate with Adobe BlazeDS. This feature requires flex-messaging-common.jar from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to this jar. This license is not compatible with the Apache V2 license. Do you want to install this jar from the Adobe Flex SDK?"
 		content["ASK_FONTSWF"]="Apache Flex can optionally integrate with Adobe's embedded font support. This feature requires a few font jars from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to these jars. This license is not compatible with the Apache V2 license. Do you want to install these jars from the Adobe Flex SDK?";
-		content["ASK_OSMF"]="The Open Source Media Framework (OSMF) used by the video components is licensed under the Mozilla Public License Version 1.1.  Do you want to install The Open Source Media Framework (OSMF)?";
-		content["ASK_TLF"]="The Adobe Text Layout Framework (TLF) used by the Spark text components is licensed under the Mozilla Public License Version 1.1.  Do you want to install The Adobe Text Layout Framework (TLF)?";
+		content["ASK_OSMF"]="The Open Source Media Framework (OSMF) used by the video components is licensed under the Mozilla Public License Version 1.1.  Do you want to install the Open Source Media Framework (OSMF)?";
+		content["ASK_TLF"]="The Adobe Text Layout Framework (TLF) used by the Spark text components is licensed under the Mozilla Public License Version 1.1.  Do you want to install the Adobe Text Layout Framework (TLF)?";
 		content["ASK_APACHE_FLEX"]="The Apache License V2 applies to the Apache Flex SDK.  Do you want to install the Apache Flex SDK?";
 		content["ASK_ADOBE_AIR_SDK"]="The Adobe SDK license agreement applies to the Adobe AIR SDK.  Do you want to install the Adobe AIR SDK?";
 		content["ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC"]="The Adobe SDK license agreement applies to the Adobe Flash Player playerglobal.swc.  Do you want to install the Adobe Flash Player playerglobal.swc?";
-		content["ASK_SWFOBJECT"]="The The MIT License (MIT) applies to the SWFObject utility.  Do you want to install the SWFObject utility?";
+		content["ASK_SWFOBJECT"]="The MIT License (MIT) applies to the SWFObject utility.  Do you want to install the SWFObject utility?";
 		content["BTN_LABEL_ADOBE_LICENSE"]="SHOW ADOBE LICENSE";
 		content["BTN_LABEL_BROWSE"]="BROWSE";
 		content["BTN_LABEL_CLOSE"]="CLOSE";
