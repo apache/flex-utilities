@@ -332,7 +332,7 @@ public class RuntimeLocale
 		content["ERROR_UNABLE_TO_UNZIP"]="Unable to unzip file: ";
 		content["ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT"]="Unable to download SWFObject";
 		content["ERROR_UNSUPPORTED_OPERATING_SYSTEM"]="Unsupported operating system";
-		content["ERROR_VERIFY_FLEX_SDK"]="The Apache Flex SDK MD5 Signature of the downloaded files doesn not match the reference value. The file is invalid, installation is aborted.";
+		content["ERROR_VERIFY_FLEX_SDK"]="The Apache Flex SDK MD5 Signature of the downloaded files does not match the reference value. The file is invalid, installation is aborted.";
 		content["FETCH_GEO_IP"]="Trying to fetch the user's country code from the GeoIP service...";
 		content["FETCH_GEO_IP_DONE"]="Fetched the user's country code from the GeoIP service.";
 		content["FETCH_GEO_IP_ERROR"]="An error occurred while fetching the user's country code from the GeoIP service.";
@@ -561,7 +561,7 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Instalando arquivos de configuração do Framework";
 		content["STEP_INSTALL_SWF_OBJECT"]="Download SWFObject";
 		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Opcional)";
-		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Fontswf Utility (Opcional)";
+		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Embedded Font Libraries and Utilities (Opcional)";
 		content["STEP_OPTIONAL_INSTALL_OSMF"]="OSMF (Obrigatório)";
 		content["STEP_OPTIONAL_INSTALL_TLF"]="Adobe Text Layout Framework (Obrigatório)";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Descompactando Adobe AIR Runtime Kit";
