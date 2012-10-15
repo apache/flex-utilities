@@ -21,7 +21,7 @@ limitations under the License.
 
 <config>
 	<version>
-		<latest>1.0.7</latest>
+		<latest>1.0.6</latest>
 	</version>
 	<files>
 	
@@ -30,7 +30,7 @@ limitations under the License.
 			 	- use full URL when binaries are NOT released yet, else use 
 			 	  path relative to mirror
 			 	- if path is relative, don't use starting slash -->
-		<file name="SDKInstallerApp" path="http://people.apache.org/~bigosmallm/installapacheflex_RC6/binaries/" file="apache-flex-sdk-installer-1.0.5-incubating-bin" />
+		<file name="SDKInstallerApp" path="http://people.apache.org/~bigosmallm/installapacheflex_RC7/binaries/" file="apache-flex-sdk-installer-1.0.6-incubating-bin" />
 		
 		<!-- Mirror URL CGI -->
 		<file name="MirrorURLCGI" path="" file="single-mirror-url.cgi" />
