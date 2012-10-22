@@ -44,16 +44,16 @@ This step
 
 cd release
 
-gpg --armor --output apache-flex-sdk-installer-1.0.6-incubating-bin.exe.asc --detach-sig apache-flex-sdk-installer-1.0.6-incubating-bin.exe
-gpg --armor --output apache-flex-sdk-installer-1.0.6-incubating-src.tar.gz.asc --detach-sig apache-flex-sdk-installer-1.0.6-incubating-src.tar.gz
-gpg --armor --output apache-flex-sdk-installer-1.0.6-incubating-src.zip.asc --detach-sig apache-flex-sdk-installer-1.0.6-incubating-src.zip
+gpg --armor --output apache-flex-sdk-installer-1.0.7-incubating-bin.exe.asc --detach-sig apache-flex-sdk-installer-1.0.7-incubating-bin.exe
+gpg --armor --output apache-flex-sdk-installer-1.0.7-incubating-src.tar.gz.asc --detach-sig apache-flex-sdk-installer-1.0.7-incubating-src.tar.gz
+gpg --armor --output apache-flex-sdk-installer-1.0.7-incubating-src.zip.asc --detach-sig apache-flex-sdk-installer-1.0.7-incubating-src.zip
 
-This step creates the release artifacts InstallApacheFlex.exe.asc, apache-flex-sdk-installer-1.0.6-incubating-src.tar.gz.asc and apache-flex-sdk-installer-1.0.6-incubating-src.zip.asc
+This step creates the release artifacts InstallApacheFlex.exe.asc, apache-flex-sdk-installer-1.0.7-incubating-src.tar.gz.asc and apache-flex-sdk-installer-1.0.7-incubating-src.zip.asc
 
 6.  Run:
-gpg --print-md MD5 apache-flex-sdk-installer-1.0.6-incubating-bin.exe > apache-flex-sdk-installer-1.0.6-incubating-bin.exe.md5
-gpg --print-md MD5 apache-flex-sdk-installer-1.0.6-incubating-src.tar.gz > apache-flex-sdk-installer-1.0.6-incubating-src.tar.gz.md5
-gpg --print-md MD5 apache-flex-sdk-installer-1.0.6-incubating-src.zip > apache-flex-sdk-installer-1.0.6-incubating-src.zip.md5
+gpg --print-md MD5 apache-flex-sdk-installer-1.0.7-incubating-bin.exe > apache-flex-sdk-installer-1.0.7-incubating-bin.exe.md5
+gpg --print-md MD5 apache-flex-sdk-installer-1.0.7-incubating-src.tar.gz > apache-flex-sdk-installer-1.0.7-incubating-src.tar.gz.md5
+gpg --print-md MD5 apache-flex-sdk-installer-1.0.7-incubating-src.zip > apache-flex-sdk-installer-1.0.7-incubating-src.zip.md5
 
 7. In the /installer directory, run:
 ant rat-report
