@@ -59,6 +59,7 @@ variables are not required because the locations of these pieces are known.
 		import mx.utils.StringUtil;
 		
 		import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
+		import org.apache.flex.packageflexsdk.resource.RuntimeLocale;
 		import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
 		import org.apache.flex.packageflexsdk.util.MD5CompareUtil;
 		import org.apache.flex.packageflexsdk.view.UpdaterDialog;
@@ -216,7 +217,9 @@ variables are not required because the locations of these pieces are known.
 		{
 			var supportedLanguages:ArrayCollection = ViewResourceConstants.supportedLanguages;
 			
-			var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-","_");
+			// EdB (2012-10-22): disabling Localisation for 1.0 release
+			//var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-","_");
+			var userLocale:String = RuntimeLocale.EN_US;
 			
 			var n:int = supportedLanguages.length;
 			for (var i:int = 0; i < n; i++)
@@ -1893,6 +1896,10 @@ variables are not required because the locations of these pieces are known.
 		<s:BasicLayout />
 	</s:layout>
 	
+	<!-- 
+		EdB (2012-10-22): disabling Localisation for 1.0 release:
+		- hide language selection label and combobox 
+	-->
 	<s:HGroup 
 		left="0" 
 		right="0" 
@@ -1906,13 +1913,13 @@ variables are not required because the locations of these pieces are known.
 			click="{showDisclaimer()}"
 			/>
 		<s:Spacer width="100%" />
-		<s:Label id="langLabel" 
+		<s:Label id="langLabel" visible="false"
 				 horizontalCenter="0" 
 				 height="100%" 
 				 textAlign="right"
 				 text="{_viewResourceConstants.INFO_CURRENT_LANGUAGE}" 
 				 verticalAlign="middle"/>
-		<s:ComboBox id="_langSelect" 
+		<s:ComboBox id="_langSelect" visible="false"
 					width="184" 
 					change="_langSelect_changeHandler(event)"/>
 	</s:HGroup>
