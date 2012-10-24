@@ -36,7 +36,7 @@
 	<id>org.apache.flex.installapacheflex</id>
 
 	<!-- Used as the filename for the application. Required. -->
-	<filename>InstallApacheFlex</filename>
+	<filename>Apache Flex SDK Installer</filename>
 
 	<!-- The name that is displayed in the AIR application installer. 
 	May have multiple values for each language. See samples or xsd schema file. Optional. -->
@@ -137,10 +137,10 @@
 	<supportedProfiles>extendedDesktop desktop</supportedProfiles> 
 
 	<!-- The subpath of the standard default installation location to use. Optional. -->
-	<installFolder>Apache Flex/Apache Flex SDK Installer</installFolder>
+	<installFolder>Apache Flex</installFolder>
 
 	<!-- The subpath of the Programs menu to use. (Ignored on operating systems without a Programs menu.) Optional. -->
-	<programMenuFolder>Apache Flex/Apache Flex SDK Installer</programMenuFolder>
+	<programMenuFolder>Apache Flex</programMenuFolder>
 
 	<!-- The icon the system uses for the application. For at least one resolution,
 	specify the path to a PNG file included in the AIR package. Optional. -->
