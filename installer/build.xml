@@ -430,7 +430,8 @@
             <fileset dir="${rat.dir}">
                 <exclude name="**/Apache License Version 2.txt"/>
                 <!--          Start of source files           -->
-                <!-- source files with Adobe license which permits use/modification if copyright left in place -->
+                <!-- Apache Category A: Authorized Licenses -->
+                <!-- "New BSD License" aka Modified BSD License" aka "BSD 3-Clause License" -->
                 <exclude name="${INSTALLER_PROJECT_NAME}/src/com/adobe/crypto/MD5Stream.as"/>
                 <exclude name="${INSTALLER_PROJECT_NAME}/src/com/adobe/utils/IntUtil.as"/>
                 <!-- generated source files that don't have Apache v2 license header -->
