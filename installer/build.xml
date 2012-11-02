@@ -429,6 +429,10 @@
             reportFile="${basedir}/rat.report">
             <fileset dir="${rat.dir}">
                 <exclude name="**/Apache License Version 2.txt"/>
+                <!--          Start of source files           -->
+                <!-- source files with Adobe license which permits use/modification if copyright left in place -->
+                <exclude name="${INSTALLER_PROJECT_NAME}/src/com/adobe/crypto/MD5Stream.as"/>
+                <exclude name="${INSTALLER_PROJECT_NAME}/src/com/adobe/utils/IntUtil.as"/>
                 <!-- generated source files that don't have Apache v2 license header -->
                 <exclude name="**/build.number"/>
                 <exclude name="**/.actionScriptProperties"/>
@@ -437,6 +441,14 @@
                 <exclude name="**/.project"/>
                 <exclude name="**/.fxpProperties"/>
                 <exclude name="**/.settings/**"/>
+                <!--          End of source files           -->
+                <!--          Start of binary files           -->
+                <!-- exclude media (png, ico) -->
+                <exclude name="**/*.ico"/>
+                <exclude name="**/*.png"/>
+                <!-- exclude fonts -->
+                <exclude name="**/*.ttf"/>
+                <!--          End of binary files           -->
             </fileset>
         </rat:report>
         
