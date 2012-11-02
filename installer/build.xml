@@ -71,7 +71,7 @@
 		<available file="${CERT_PASSWORD_FILE}"/>
 	</condition>
 	
-	<condition property="KEYSTORE" value="temp.12" >
+	<condition property="KEYSTORE" value="temp.p12" >
 		<not>
 			<available file="${CERT_PASSWORD_FILE}"/>
 		</not>
