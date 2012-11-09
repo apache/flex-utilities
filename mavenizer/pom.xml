@@ -26,4 +26,15 @@
         </dependency>
     </dependencies>
 
+    <developers>
+        <developer>
+            <id>cdutz</id>
+            <name>Christofer Dutz</name>
+        </developer>
+        <developer>
+            <id>fthomas</id>
+            <name>Frederic Thomas</name>
+        </developer>
+    </developers>
+
 </project>
