@@ -1,0 +1,4 @@
+Latest Air SDK: http://www.adobe.com/devnet/air/air-sdk-download.html
+Air SDK 3.2 (Win): http://airdownload.adobe.com/air/win/download/3.2/AdobeAIRSDK.zip
+Air SDK 3.2 (Mac): http://airdownload.adobe.com/air/mac/download/3.2/AdobeAIRSDK.tbz2
+Air SDKs & Runtimes: http://helpx.adobe.com/air/kb/archived-air-sdk-version.html

@@ -1,0 +1,13 @@
+f073eb9ff76935a78c95477124033796d42a93dc;batik;batik-awt-util;1.6-1;jar
+27983405f0871f28d3b9ab35b44e62610a60564a;batik;batik-dom;1.6-1;jar
+ee1663185237b9b9d36e5afcb4f086e0b3337a2b;batik;batik-ext;1.6-1;jar
+40c93afdc629e0325d2b35e6b0aba264beca5d65;batik;batik-gvt;1.6-1;jar
+8f3b5f0d46c5927d7c54889cc3022885d4b0332f;batik;batik-parser;1.6-1;jar
+daee1f09570e4709ac02230b8ca2b8783f67bc01;batik;batik-script;1.6-1;jar
+9a1e86894a687cb66b225ba241cb1e4ff2e05b62;batik;batik-svg-dom;1.6-1;jar
+8a37974a82f8a61be44144b4b4bdc89a62caf797;batik;batik-svggen;1.6-1;jar
+7519e5df199826e615b63232281135677b54264;batik;batik-transcoder;1.6-1;jar
+89e49bdd26b8b2a898bced78b0aeee0f62a67f55;batik;batik-util;1.6-1;jar
+52378c0fdbb7fc7d365bb924ac1df1d49cbf5380;batik;batik-xml;1.6-1;jar
+1f5aa56cdda91f67659aa063f72f2df2ed49eee7;commons-collections;commons-collections;20040616
+9d4fca1a12e9e06764eb530e8de2353921f0e437;xerces;xercesImpl;2.4.0:jar
