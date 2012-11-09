@@ -25,7 +25,7 @@ public class SDKDeployer {
 
     public static void main(String[] args) {
         if (args.length < 4) {
-            System.out.println("\nUsage: java -cp flex-sdk-deployer-1.0.jar SDKDeployer \"directory\" \"repositoryId\" \"url\" \"mvn\"\n");
+            System.out.println("\nUsage: java -cp flex-sdk-converter-1.0.jar SDKDeployer \"directory\" \"repositoryId\" \"url\" \"mvn\"\n");
             System.out.println("The SDKDeployer needs 4 ordered parameters separated by spaces:");
             System.out.println("\t1- directory: The path to the directory to deploy.");
             System.out.println("\t2- repositoryId: Server Id to map on the <id> under <server> section of settings.xml.");
