@@ -24,7 +24,7 @@
     <property environment="env"/>
 	
     <!--location of property file -->
-    <property file="${basedir}/build.properties" description="Properties for MakeApacheFlexForFlashBuilder project" />
+    <property file="${basedir}/build.properties" description="Properties for Apache Flex SDK Installer project" />
     <property file="${basedir}/build.number"/>
 	<property file="${CERT_PASSWORD_FILE}"/>
 
@@ -373,13 +373,13 @@
 			</fileset>
         </copy>
 
-        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf" excludes="**/*.ttf,**/*.png"/>
+        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf" encoding="UTF8" excludes="**/assets/**,**/*.ttf,**/*.png" fixlast="false"/>
 
         <mkdir dir="${RELEASE_DIR}"/>
         <zip destfile="${RELEASE_DIR}/${source.kit}.zip" 
             basedir="${BUILD_DIR}/temp"/>
         
-        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="unix" excludes="**/*.ttf,**/*.png"/>
+        <fixcrlf srcdir="${BUILD_DIR}/temp" eol="unix" encoding="UTF8" excludes="**/assets/**,**/*.ttf,**/*.png" fixlast="false"/>
 
         <tar destfile="${RELEASE_DIR}/${source.kit}.tar.gz" 
             compression="gzip"
