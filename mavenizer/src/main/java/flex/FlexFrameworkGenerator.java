@@ -572,19 +572,8 @@ public class FlexFrameworkGenerator extends BaseGenerator {
     }
 
     protected void writeDummyResourceBundleSwc(final File targetFile) throws Exception {
-        final InputStream dummyFile = FlexFrameworkGenerator.class.getResourceAsStream("/dummy.rb.swc");
-        if (dummyFile != null) {
-            final OutputStream out = new FileOutputStream(targetFile);
-            byte buf[] = new byte[1024];
-            int len;
-            while ((len = dummyFile.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            out.close();
-            dummyFile.close();
-        } else {
-            throw new Exception("Could not load dummy resource file.");
-        }
+		final ZipOutputStream out = new ZipOutputStream(new FileOutputStream(targetFile));
+		out.close();
     }
 
     private void generateThemeArtifacts(File themesDirectory, File targetDirectory, String sdkVersion, boolean isApache)
@@ -610,7 +599,7 @@ public class FlexFrameworkGenerator extends BaseGenerator {
 
                     // Copy the SWC.
                     File targetSwcFile = new File(targetThemeVersionDirectory, themeName + "-" +
-                            themeVersion + "-theme.swc");
+                            themeVersion + ".swc");
 
                     if(themeFile.exists()) {
                         if(!targetThemeVersionDirectory.mkdirs()) {
@@ -630,7 +619,6 @@ public class FlexFrameworkGenerator extends BaseGenerator {
                         themeMetadata.setArtifactId(themeName);
                         themeMetadata.setVersion(themeVersion);
                         themeMetadata.setPackaging("swc");
-                        themeMetadata.setClassifier("theme");
                         generateSwcPom(targetSwcFile, themeMetadata);
                     }
                 }
