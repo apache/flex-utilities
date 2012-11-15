@@ -106,6 +106,7 @@ limitations under the License.
 		//----------------------------------
 		
 		private function creationCompleteHandler(event:FlexEvent):void
+
 		{
 			_serviceURL = FlexGlobals.topLevelApplication.parameters.serviceURL;
 			

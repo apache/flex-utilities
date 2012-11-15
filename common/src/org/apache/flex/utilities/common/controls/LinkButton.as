@@ -20,7 +20,9 @@
 package org.apache.flex.utilities.common.controls
 {
 	import flash.events.MouseEvent;
+
 	import spark.components.Label;
+
 	
 	[Style(name="rollOverTextDecoration", type="String", enumeration="none,underline", inherit="yes")]
 	public class LinkButton extends Label

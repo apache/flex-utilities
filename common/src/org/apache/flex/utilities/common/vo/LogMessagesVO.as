@@ -49,6 +49,7 @@ public final class LogMessagesVO
 	private var _action:String;
 
 	public function get action():String
+
 	{
 		return _action;
 	}
@@ -60,6 +61,7 @@ public final class LogMessagesVO
 	private var _success:String;
 
 	public function get success():String
+
 	{
 		return _success;
 	}
@@ -71,6 +73,7 @@ public final class LogMessagesVO
 	private var _error:String;
 
 	public function get error():String
+
 	{
 		return _error;
 	}
