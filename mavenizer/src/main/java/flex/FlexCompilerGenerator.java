@@ -125,8 +125,8 @@ public class FlexCompilerGenerator extends BaseGenerator {
 
                     // Create the name of the directory that will contain the artifact.
                     final File targetJarDirectory = new File(sdkTargetDirectory,
-                            ((isApache) ? "org\\apache\\flex\\compiler\\" : "com\\adobe\\flex\\compiler\\") +
-                            artifactMetadata.getArtifactId() + "\\" + artifactMetadata.getVersion());
+                            ((isApache) ? "org/apache/flex/compiler/" : "com/adobe/flex/compiler/") +
+                            artifactMetadata.getArtifactId() + "/" + artifactMetadata.getVersion());
                     // Create the directory.
                     if(targetJarDirectory.mkdirs()) {
                         // Create the filename of the artifact.
@@ -177,7 +177,7 @@ public class FlexCompilerGenerator extends BaseGenerator {
 
         // Write the compiler-pom document to file.
         final File pomFile = new File(sdkTargetDirectory,
-                ((isApache) ? "org\\apache\\flex\\compiler\\" : "com\\adobe\\flex\\compiler\\") + sdkVersion + "\\compiler-" + sdkVersion + ".pom");
+                ((isApache) ? "org/apache/flex/compiler/" : "com/adobe/flex/compiler/") + sdkVersion + "/compiler-" + sdkVersion + ".pom");
         writeDocument(pom, pomFile);
     }
 
