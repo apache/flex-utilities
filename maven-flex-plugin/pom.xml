@@ -29,6 +29,43 @@
     <packaging>pom</packaging>
 
     <name>Maven-Flex-Plugin (Parent)</name>
+    <description>Maven plugin to allow building of artifacts using Apache Flex</description>
+    <url>http://incubator.apache.org/flex/</url>
+    <inceptionYear>2012</inceptionYear>
+
+    <organization>
+        <name>The Apache Software Foundation</name>
+        <url>http://apache.org/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>cdutz</id>
+            <name>Chrisotfer Dutz</name>
+            <email>cdutz@apache.org</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>
+            scm:svn:https://svn.apache.org/repos/asf/incubator/flex/utilities/trunk/maven-flex-plugin
+        </connection>
+        <developerConnection>
+            scm:svn:https://svn.apache.org/repos/asf/incubator/flex/utilities/trunk/maven-flex-plugin
+        </developerConnection>
+        <url>https://svn.apache.org/repos/asf/incubator/flex/utilities/trunk/maven-flex-plugin</url>
+    </scm>
 
     <properties>
         <project.encoding>UTF-8</project.encoding>
