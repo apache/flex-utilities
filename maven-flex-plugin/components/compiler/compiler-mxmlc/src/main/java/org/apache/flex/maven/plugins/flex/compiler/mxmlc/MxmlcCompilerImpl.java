@@ -14,16 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.flex.maven.plugins.flex.compiler;
+package org.apache.flex.maven.plugins.flex.compiler.mxmlc;
+
+import org.apache.flex.maven.plugins.flex.compiler.Compiler;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Created with IntelliJ IDEA.
  * User: cdutz
- * Date: 01.12.12
- * Time: 23:13
+ * Date: 02.12.12
+ * Time: 12:40
  */
-public interface Compiler {
+@Component(role = Compiler.class, hint = "mxmlc")
+public class MxmlcCompilerImpl implements Compiler {
 
-    void compile();
+    public MxmlcCompilerImpl() {
+        System.out.println("Compiler Instance Created: MXMLC");
+    }
+
+    @Override
+    public void compile() {
+        System.out.println("Executing Compiler: MXMLC");
+    }
 
 }

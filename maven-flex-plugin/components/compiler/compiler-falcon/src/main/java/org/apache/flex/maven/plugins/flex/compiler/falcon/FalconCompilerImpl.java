@@ -14,16 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.flex.maven.plugins.flex.compiler;
+package org.apache.flex.maven.plugins.flex.compiler.falcon;
+
+import org.apache.flex.maven.plugins.flex.compiler.Compiler;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * Created with IntelliJ IDEA.
  * User: cdutz
- * Date: 01.12.12
- * Time: 23:13
+ * Date: 02.12.12
+ * Time: 12:40
  */
-public interface Compiler {
+@Component(role = Compiler.class, hint = "falcon")
+public class FalconCompilerImpl implements Compiler {
 
-    void compile();
+    public FalconCompilerImpl() {
+        System.out.println("Compiler Instance Created: Falcon");
+    }
+
+    @Override
+    public void compile() {
+        System.out.println("Executing Compiler: Falcon");
+    }
 
 }

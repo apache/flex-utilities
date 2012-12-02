@@ -35,6 +35,9 @@
                 <artifactId>maven-flex-plugin</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <useLegacyCompiler>true</useLegacyCompiler>
+                </configuration>
             </plugin>
         </plugins>
     </build>
