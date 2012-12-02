@@ -36,7 +36,7 @@
                 <version>1.0.0-SNAPSHOT</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <useLegacyCompiler>true</useLegacyCompiler>
+                    <useLegacyCompiler>false</useLegacyCompiler>
                 </configuration>
             </plugin>
         </plugins>

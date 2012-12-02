@@ -14,9 +14,9 @@
                 <phases>
                     <!--validate></validate>
                     <initialize></initialize>
-                    <generate-sources></generate-sources>
-                    <process-sources></process-sources>
-                    <generate-resources></generate-resources>
+                    <generate-sources></generate-sources-->
+                    <process-sources>org.apache.maven.plugins:maven-flex-plugin:compile</process-sources>
+                    <!--generate-resources></generate-resources>
                     <process-resources></process-resources-->
                     <compile>org.apache.maven.plugins:maven-flex-plugin:compile</compile>
                     <!--process-classes></process-classes>
@@ -52,9 +52,9 @@
                 <phases>
                     <!--validate></validate>
                     <initialize></initialize>
-                    <generate-sources></generate-sources>
-                    <process-sources></process-sources>
-                    <generate-resources></generate-resources>
+                    <generate-sources></generate-sources-->
+                    <process-sources>org.apache.maven.plugins:maven-flex-plugin:compile</process-sources>
+                    <!--generate-resources></generate-resources>
                     <process-resources></process-resources-->
                     <compile>org.apache.maven.plugins:maven-flex-plugin:compile</compile>
                     <!--process-classes></process-classes>

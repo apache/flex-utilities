@@ -17,7 +17,6 @@
 package org.apache.flex.maven.plugins.flex.compiler;
 
 import org.apache.flex.maven.plugins.flex.AbstractFlexMojo;
-import org.apache.maven.MavenExecutionException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
@@ -63,7 +62,7 @@ public class CompilerMojo extends AbstractFlexMojo {
     private Settings settings;
 
     public void execute() {
-        if(mojoEcecution.getLifecyclePhase().equalsIgnoreCase(LifecyclePhase.COMPILE.toString())) {
+        if(mojoEcecution.getLifecyclePhase().equals(LifecyclePhase.COMPILE.id())) {
             if(useLegacyCompiler) {
                 if(project.getPackaging().equalsIgnoreCase("SWC")) {
                     compilerMap.get("compc").compile();
@@ -75,7 +74,7 @@ public class CompilerMojo extends AbstractFlexMojo {
             } else {
                 compilerMap.get("falcon").compile();
             }
-        } else if(mojoEcecution.getLifecyclePhase().equalsIgnoreCase(LifecyclePhase.PROCESS_SOURCES.toString())) {
+        } else if(mojoEcecution.getLifecyclePhase().equals(LifecyclePhase.PROCESS_SOURCES.id())) {
             compilerMap.get("asdoc").compile();
         }
     }
