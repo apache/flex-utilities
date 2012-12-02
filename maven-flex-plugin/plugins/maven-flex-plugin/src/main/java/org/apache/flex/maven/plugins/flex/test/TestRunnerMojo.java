@@ -29,7 +29,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 @Mojo(name = "test",
         defaultPhase = LifecyclePhase.TEST,
         threadSafe = true)
-public class TestMojo extends AbstractFlexMojo {
+public class TestRunnerMojo extends AbstractFlexMojo {
 
     public void execute() {
         getLog().debug("Executing test-mojo");

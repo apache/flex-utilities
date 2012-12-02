@@ -20,10 +20,7 @@ import org.apache.flex.maven.plugins.flex.AbstractFlexMojo;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 
@@ -37,6 +34,7 @@ import java.util.Map;
  */
 @Mojo(name = "compile",
         defaultPhase = LifecyclePhase.COMPILE,
+        requiresDependencyResolution = ResolutionScope.COMPILE,
         threadSafe = true)
 public class CompilerMojo extends AbstractFlexMojo {
 
@@ -44,22 +42,22 @@ public class CompilerMojo extends AbstractFlexMojo {
     protected boolean useLegacyCompiler;
 
     @Component
-    private Map<String, Compiler> compilerMap;
+    protected Map<String, Compiler> compilerMap;
 
     @Component
-    private MavenSession session;
+    protected MavenSession session;
 
     @Component
-    private MavenProject project;
+    protected MavenProject project;
 
     @Component
-    private MojoExecution mojoEcecution;
+    protected MojoExecution mojoEcecution;
 
     @Component
-    private PluginDescriptor plugin;
+    protected PluginDescriptor plugin;
 
     @Component
-    private Settings settings;
+    protected Settings settings;
 
     public void execute() {
         if(mojoEcecution.getLifecyclePhase().equals(LifecyclePhase.COMPILE.id())) {

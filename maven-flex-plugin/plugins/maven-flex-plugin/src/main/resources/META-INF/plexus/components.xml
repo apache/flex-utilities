@@ -23,9 +23,9 @@
                     <generate-test-sources></generate-test-sources>
                     <process-test-sources></process-test-sources>
                     <generate-test-resources></generate-test-resources>
-                    <process-test-resources></process-test-resources>
-                    <test-compile></test-compile>
-                    <process-test-classes></process-test-classes>
+                    <process-test-resources></process-test-resources-->
+                    <test-compile>org.apache.maven.plugins:maven-flex-plugin:test-compile</test-compile>
+                    <!--process-test-classes></process-test-classes>
                     <test></test>
                     <prepare-package></prepare-package>
                     <package></package>
@@ -61,9 +61,9 @@
                     <generate-test-sources></generate-test-sources>
                     <process-test-sources></process-test-sources>
                     <generate-test-resources></generate-test-resources>
-                    <process-test-resources></process-test-resources>
-                    <test-compile></test-compile>
-                    <process-test-classes></process-test-classes>
+                    <process-test-resources></process-test-resources-->
+                    <test-compile>org.apache.maven.plugins:maven-flex-plugin:test-compile</test-compile>
+                    <!--process-test-classes></process-test-classes>
                     <test></test>
                     <prepare-package></prepare-package>
                     <package></package>
