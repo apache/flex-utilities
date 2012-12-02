@@ -16,6 +16,8 @@
  */
 package org.apache.flex.maven.plugins.flex.compiler;
 
+import org.apache.maven.project.MavenProject;
+
 /**
  * Created with IntelliJ IDEA.
  * User: cdutz
@@ -24,6 +26,6 @@ package org.apache.flex.maven.plugins.flex.compiler;
  */
 public interface Compiler {
 
-    void compile();
+    void compile(MavenProject project);
 
 }

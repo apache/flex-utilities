@@ -36,4 +36,11 @@
 
     <name>Maven-Flex-Plugin / Components / API</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

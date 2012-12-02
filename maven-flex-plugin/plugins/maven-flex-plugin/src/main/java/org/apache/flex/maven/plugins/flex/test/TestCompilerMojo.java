@@ -14,11 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.flex.maven.plugins.flex.optimizer;
+package org.apache.flex.maven.plugins.flex.test;
 
-import org.apache.flex.maven.plugins.flex.AbstractFlexMojo;
+import org.apache.flex.maven.plugins.flex.compiler.CompilerMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,13 +27,24 @@ import org.apache.maven.plugins.annotations.Mojo;
  * Date: 01.12.12
  * Time: 17:48
  */
-@Mojo(name = "optimize",
-        defaultPhase = LifecyclePhase.PROCESS_CLASSES,
+@Mojo(name = "test-compile",
+        defaultPhase = LifecyclePhase.TEST_COMPILE,
+        requiresDependencyResolution = ResolutionScope.TEST,
         threadSafe = true)
-public class OptimizerMojo extends AbstractFlexMojo {
+public class TestCompilerMojo extends CompilerMojo {
 
     public void execute() {
-        getLog().debug("Executing optimize");
+        if (useLegacyCompiler) {
+            if (project.getPackaging().equalsIgnoreCase("SWC")) {
+                compilerMap.get("compc").compile(project);
+            } else if (project.getPackaging().equalsIgnoreCase("SWF")) {
+                compilerMap.get("mxmlc").compile(project);
+            } else {
+                throw new RuntimeException("Wrong packaging");
+            }
+        } else {
+            compilerMap.get("falcon").compile(project);
+        }
     }
 
 }

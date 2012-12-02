@@ -32,7 +32,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 public class GeneratorMojo extends AbstractFlexMojo {
 
     public void execute() {
-        getLog().debug("Executing generator-mojo");
+        getLog().debug("Executing generate");
     }
 
 }

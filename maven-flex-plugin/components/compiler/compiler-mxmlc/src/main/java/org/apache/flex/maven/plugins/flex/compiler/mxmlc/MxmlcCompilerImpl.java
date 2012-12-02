@@ -17,6 +17,7 @@
 package org.apache.flex.maven.plugins.flex.compiler.mxmlc;
 
 import org.apache.flex.maven.plugins.flex.compiler.Compiler;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -28,13 +29,9 @@ import org.codehaus.plexus.component.annotations.Component;
 @Component(role = Compiler.class, hint = "mxmlc")
 public class MxmlcCompilerImpl implements Compiler {
 
-    public MxmlcCompilerImpl() {
-        System.out.println("Compiler Instance Created: MXMLC");
-    }
-
     @Override
-    public void compile() {
-        System.out.println("Executing Compiler: MXMLC");
+    public void compile(MavenProject project) {
+        System.out.println("Executing compile: MXMLC");
     }
 
 }

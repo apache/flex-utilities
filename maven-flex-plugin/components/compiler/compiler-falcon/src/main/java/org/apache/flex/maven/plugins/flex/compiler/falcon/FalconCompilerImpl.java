@@ -17,6 +17,7 @@
 package org.apache.flex.maven.plugins.flex.compiler.falcon;
 
 import org.apache.flex.maven.plugins.flex.compiler.Compiler;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -28,13 +29,9 @@ import org.codehaus.plexus.component.annotations.Component;
 @Component(role = Compiler.class, hint = "falcon")
 public class FalconCompilerImpl implements Compiler {
 
-    public FalconCompilerImpl() {
-        System.out.println("Compiler Instance Created: Falcon");
-    }
-
     @Override
-    public void compile() {
-        System.out.println("Executing Compiler: Falcon");
+    public void compile(MavenProject project) {
+        System.out.println("Executing compile: Falcon");
     }
 
 }

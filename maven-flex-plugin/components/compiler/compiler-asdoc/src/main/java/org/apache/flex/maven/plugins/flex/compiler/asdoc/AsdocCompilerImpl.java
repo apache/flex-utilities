@@ -17,6 +17,7 @@
 package org.apache.flex.maven.plugins.flex.compiler.asdoc;
 
 import org.apache.flex.maven.plugins.flex.compiler.Compiler;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -28,13 +29,9 @@ import org.codehaus.plexus.component.annotations.Component;
 @Component(role = Compiler.class, hint = "asdoc")
 public class AsdocCompilerImpl implements Compiler {
 
-    public AsdocCompilerImpl() {
-        System.out.println("Compiler Instance Created: Asdoc");
-    }
-
     @Override
-    public void compile() {
-        System.out.println("Executing Compiler: Asdoc");
+    public void compile(MavenProject project) {
+        System.out.println("Executing compile: Asdoc");
     }
 
 }

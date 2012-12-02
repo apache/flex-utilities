@@ -27,24 +27,14 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
  * Date: 01.12.12
  * Time: 17:48
  */
-@Mojo(name = "test-compile",
-        defaultPhase = LifecyclePhase.TEST_COMPILE,
+@Mojo(name = "test-generate",
+        defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES,
         requiresDependencyResolution = ResolutionScope.TEST,
         threadSafe = true)
-public class TestCompileMojo extends CompilerMojo {
+public class TestGeneratorMojo extends CompilerMojo {
 
     public void execute() {
-        if (useLegacyCompiler) {
-            if (project.getPackaging().equalsIgnoreCase("SWC")) {
-                compilerMap.get("compc").compile();
-            } else if (project.getPackaging().equalsIgnoreCase("SWF")) {
-                compilerMap.get("mxmlc").compile();
-            } else {
-                throw new RuntimeException("Wrong packaging");
-            }
-        } else {
-            compilerMap.get("falcon").compile();
-        }
+        getLog().debug("Executing test-generate");
     }
 
 }

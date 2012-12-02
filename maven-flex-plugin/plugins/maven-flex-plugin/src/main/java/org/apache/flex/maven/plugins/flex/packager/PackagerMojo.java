@@ -32,7 +32,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 public class PackagerMojo extends AbstractFlexMojo {
 
     public void execute() {
-        getLog().debug("Executing packager-mojo");
+        getLog().debug("Executing package");
     }
 
 }

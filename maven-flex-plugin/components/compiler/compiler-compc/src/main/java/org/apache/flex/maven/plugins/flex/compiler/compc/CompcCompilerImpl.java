@@ -17,6 +17,7 @@
 package org.apache.flex.maven.plugins.flex.compiler.compc;
 
 import org.apache.flex.maven.plugins.flex.compiler.Compiler;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
@@ -28,13 +29,9 @@ import org.codehaus.plexus.component.annotations.Component;
 @Component(role = Compiler.class, hint = "compc")
 public class CompcCompilerImpl implements Compiler {
 
-    public CompcCompilerImpl() {
-        System.out.println("Compiler Instance Created: Compc");
-    }
-
     @Override
-    public void compile() {
-        System.out.println("Executing Compiler: Compc");
+    public void compile(MavenProject project) {
+        System.out.println("Executing compile: Compc");
     }
 
 }

@@ -32,7 +32,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 public class TestRunnerMojo extends AbstractFlexMojo {
 
     public void execute() {
-        getLog().debug("Executing test-mojo");
+        getLog().debug("Executing test");
     }
 
 }

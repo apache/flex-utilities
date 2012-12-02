@@ -17,12 +17,10 @@
 package org.apache.flex.maven.plugins.flex.compiler;
 
 import org.apache.flex.maven.plugins.flex.AbstractFlexMojo;
-import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.settings.Settings;
 
 import java.util.Map;
 
@@ -45,35 +43,26 @@ public class CompilerMojo extends AbstractFlexMojo {
     protected Map<String, Compiler> compilerMap;
 
     @Component
-    protected MavenSession session;
-
-    @Component
     protected MavenProject project;
 
     @Component
     protected MojoExecution mojoEcecution;
 
-    @Component
-    protected PluginDescriptor plugin;
-
-    @Component
-    protected Settings settings;
-
     public void execute() {
         if(mojoEcecution.getLifecyclePhase().equals(LifecyclePhase.COMPILE.id())) {
             if(useLegacyCompiler) {
                 if(project.getPackaging().equalsIgnoreCase("SWC")) {
-                    compilerMap.get("compc").compile();
+                    compilerMap.get("compc").compile(project);
                 } else if(project.getPackaging().equalsIgnoreCase("SWF")) {
-                    compilerMap.get("mxmlc").compile();
+                    compilerMap.get("mxmlc").compile(project);
                 } else {
                     throw new RuntimeException("Wrong packaging");
                 }
             } else {
-                compilerMap.get("falcon").compile();
+                compilerMap.get("falcon").compile(project);
             }
         } else if(mojoEcecution.getLifecyclePhase().equals(LifecyclePhase.PROCESS_SOURCES.id())) {
-            compilerMap.get("asdoc").compile();
+            compilerMap.get("asdoc").compile(project);
         }
     }
 

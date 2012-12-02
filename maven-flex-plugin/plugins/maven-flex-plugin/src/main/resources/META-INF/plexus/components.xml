@@ -13,23 +13,23 @@
             <configuration>
                 <phases>
                     <!--validate></validate>
-                    <initialize></initialize>
-                    <generate-sources></generate-sources-->
+                    <initialize></initialize-->
+                    <generate-sources>org.apache.maven.plugins:maven-flex-plugin:generate</generate-sources>
                     <process-sources>org.apache.maven.plugins:maven-flex-plugin:compile</process-sources>
                     <!--generate-resources></generate-resources>
                     <process-resources></process-resources-->
                     <compile>org.apache.maven.plugins:maven-flex-plugin:compile</compile>
-                    <!--process-classes></process-classes>
-                    <generate-test-sources></generate-test-sources>
-                    <process-test-sources></process-test-sources>
+                    <!--process-classes></process-classes-->
+                    <generate-test-sources>org.apache.maven.plugins:maven-flex-plugin:test-generate</generate-test-sources>
+                    <!--process-test-sources></process-test-sources>
                     <generate-test-resources></generate-test-resources>
                     <process-test-resources></process-test-resources-->
                     <test-compile>org.apache.maven.plugins:maven-flex-plugin:test-compile</test-compile>
-                    <!--process-test-classes></process-test-classes>
-                    <test></test>
-                    <prepare-package></prepare-package>
-                    <package></package>
-                    <pre-integration-test></pre-integration-test>
+                    <!--process-test-classes></process-test-classes-->
+                    <test>org.apache.maven.plugins:maven-flex-plugin:test</test>
+                    <!--prepare-package></prepare-package-->
+                    <package>org.apache.maven.plugins:maven-flex-plugin:optimize</package>
+                    <!--pre-integration-test></pre-integration-test>
                     <integration-test></integration-test>
                     <post-integration-test></post-integration-test>
                     <verify></verify>
@@ -51,23 +51,23 @@
             <configuration>
                 <phases>
                     <!--validate></validate>
-                    <initialize></initialize>
-                    <generate-sources></generate-sources-->
+                    <initialize></initialize-->
+                    <generate-sources>org.apache.maven.plugins:maven-flex-plugin:generate</generate-sources>
                     <process-sources>org.apache.maven.plugins:maven-flex-plugin:compile</process-sources>
                     <!--generate-resources></generate-resources>
                     <process-resources></process-resources-->
                     <compile>org.apache.maven.plugins:maven-flex-plugin:compile</compile>
-                    <!--process-classes></process-classes>
-                    <generate-test-sources></generate-test-sources>
-                    <process-test-sources></process-test-sources>
+                    <!--process-classes></process-classes-->
+                    <generate-test-sources>org.apache.maven.plugins:maven-flex-plugin:test-generate</generate-test-sources>
+                    <!--process-test-sources></process-test-sources>
                     <generate-test-resources></generate-test-resources>
                     <process-test-resources></process-test-resources-->
                     <test-compile>org.apache.maven.plugins:maven-flex-plugin:test-compile</test-compile>
-                    <!--process-test-classes></process-test-classes>
-                    <test></test>
-                    <prepare-package></prepare-package>
-                    <package></package>
-                    <pre-integration-test></pre-integration-test>
+                    <!--process-test-classes></process-test-classes-->
+                    <test>org.apache.maven.plugins:maven-flex-plugin:test</test>
+                    <!--prepare-package></prepare-package-->
+                    <package>org.apache.maven.plugins:maven-flex-plugin:optimize</package>
+                    <!--pre-integration-test></pre-integration-test>
                     <integration-test></integration-test>
                     <post-integration-test></post-integration-test>
                     <verify></verify>
