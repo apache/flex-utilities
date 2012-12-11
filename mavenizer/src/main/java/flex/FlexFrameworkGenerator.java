@@ -626,10 +626,10 @@ public class FlexFrameworkGenerator extends BaseGenerator {
         }
     }
 
-    private File generateThemeSwc(File themeDirectroy, File targetFile) throws Exception {
+    private File generateThemeSwc(File themeDirectory, File targetFile) throws Exception {
         // Prepare the command.
         final StringBuilder cmd = new StringBuilder();
-        final File fdkHomeDir = themeDirectroy.getParentFile().getParentFile().getParentFile();
+        final File fdkHomeDir = themeDirectory.getParentFile().getParentFile().getParentFile();
         final File fdkLibDir = new File(fdkHomeDir, "lib");
         if(fdkLibDir.exists() && fdkLibDir.isDirectory()) {
             final File compcLibrary = new File(fdkLibDir, "compc.jar");
@@ -642,7 +642,7 @@ public class FlexFrameworkGenerator extends BaseGenerator {
             cmd.append("\"");
 
             // Add all the content files.
-            final File contents[] = themeDirectroy.listFiles(new FileFilter() {
+            final File contents[] = themeDirectory.listFiles(new FileFilter() {
                 @Override
                 public boolean accept(File pathname) {
                     return !(pathname.isDirectory() && "src".equals(pathname.getName())) &&
@@ -670,10 +670,10 @@ public class FlexFrameworkGenerator extends BaseGenerator {
 
             // Execute the command.
             try {
-                System.out.println("Geneating theme '" + themeDirectroy.getName() + "'");
+                System.out.println("Geneating theme '" + themeDirectory.getName() + "'");
                 final String[] envps = new String[1];
                 envps[0] = "PLAYERGLOBAL_HOME=" + new File(new File(
-                        themeDirectroy.getParentFile().getParentFile(), "libs"), "player").getAbsolutePath();
+                        themeDirectory.getParentFile().getParentFile(), "libs"), "player").getAbsolutePath();
                 envps[0] = envps[0].replace("\\", "/");
                 final Process child = Runtime.getRuntime().exec(cmd.toString(), envps);
                 final int exitValue = child.waitFor();

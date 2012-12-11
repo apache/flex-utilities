@@ -15,12 +15,17 @@
  * limitations under the License.
  */
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: fthomas
  * Date: 11.08.12
  * Time: 18:17
+ *
+ * @author Frederic Thomas
+ * @author Jose Barragan
  */
 public class SDKDeployer {
     private String directory;
@@ -87,12 +92,17 @@ public class SDKDeployer {
 
         if (artifactName != null) {
             final File artifacts[] = new File(pom.getParent()).listFiles(new ArtifactFilter());
-            final String DEPLOY = mvn + " deploy:deploy-file -DrepositoryId=" + repositoryId + " -Durl=" + url;
+	        final List<String> processCmd = new ArrayList<String>(10);
+	        processCmd.add(mvn);
+	        processCmd.add("deploy:deploy-file");
+	        processCmd.add("-DrepositoryId=" + repositoryId);
+	        processCmd.add("-Durl=" + url);
+
+	        ProcessBuilder processBuilder = null;
+
 
             String packaging;
             String classifier = null;
-
-            String mavenDeploy = DEPLOY;
 
             if (artifacts != null && artifacts.length > 0) {
                 for (File artifact : artifacts) {
@@ -105,28 +115,27 @@ public class SDKDeployer {
                         classifier = artifactName
                                 .substring(artifactName.indexOf(base.getName()) + base.getName().length() + 1, artifactName.length() - packaging.length() - 1);
                     } catch (StringIndexOutOfBoundsException ex) {/*has no classifier*/}
-                    ;
 
-                    mavenDeploy = DEPLOY;
-                    mavenDeploy += " -Dfile=\"" + artifact.getAbsolutePath() + "\"";
-                    mavenDeploy += " -DpomFile=\"" + pom.getAbsolutePath() + "\"";
+	                processCmd.add("-Dfile=" + artifact.getAbsolutePath());
+	                processCmd.add("-DpomFile=" + pom.getAbsolutePath());
                     if (classifier != null && classifier.length() > 0) {
-                        mavenDeploy += " -Dclassifier=\"" + classifier + "\"";
+	                    processCmd.add("-Dclassifier=" + classifier);
                     }
-                    mavenDeploy += " -Dpackaging=\"" + packaging + "\"";
-                    exec(mavenDeploy);
+	                processCmd.add("-Dpackaging=" + packaging);
+	                processBuilder = new ProcessBuilder(processCmd);
+	                exec(processBuilder.start());
                 }
             } else {
-                mavenDeploy += " -Dfile=\"" + pom.getAbsolutePath() + "\"";
-                mavenDeploy += " -DpomFile=\"" + pom.getAbsolutePath() + "\"";
-                exec(mavenDeploy);
+	            processCmd.add("-Dfile=" + pom.getAbsolutePath());
+	            processCmd.add("-DpomFile=" + pom.getAbsolutePath());
+	            processBuilder = new ProcessBuilder(processCmd);
+	            exec(processBuilder.start());
             }
+
         }
     }
 
-    private void exec(String exec) throws InterruptedException, IOException {
-        System.out.println(exec);
-        Process p = Runtime.getRuntime().exec(exec);
+    private void exec(Process p) throws InterruptedException, IOException {
         String line;
         BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
         BufferedReader bre = new BufferedReader(new InputStreamReader(p.getErrorStream()));
