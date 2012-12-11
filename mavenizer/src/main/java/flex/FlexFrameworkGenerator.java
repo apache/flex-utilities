@@ -37,6 +37,9 @@ import javax.xml.parsers.ParserConfigurationException;
  * User: cdutz
  * Date: 11.05.12
  * Time: 14:55
+ *
+ * @author Christofer Dutz
+ * @author Jose Barragan
  */
 public class FlexFrameworkGenerator extends BaseGenerator {
 
@@ -635,11 +638,10 @@ public class FlexFrameworkGenerator extends BaseGenerator {
             final File compcLibrary = new File(fdkLibDir, "compc.jar");
             final File frameworkDir = new File(fdkHomeDir, "frameworks");
 
-            cmd.append("java -Xmx384m -Dsun.io.useCanonCaches=false -jar \"");
+            cmd.append("java -Xmx384m -Dsun.io.useCanonCaches=false -jar ");
             cmd.append(compcLibrary.getAbsolutePath());
-            cmd.append("\" +flexlib=\"");
+            cmd.append(" +flexlib=");
             cmd.append(frameworkDir.getAbsolutePath());
-            cmd.append("\"");
 
             // Add all the content files.
             final File contents[] = themeDirectory.listFiles(new FileFilter() {
@@ -654,12 +656,11 @@ public class FlexFrameworkGenerator extends BaseGenerator {
             }
 
             for(final File resource : contents) {
-                cmd.append(" -include-file ").append(resource.getName()).append(" \"").append(
-                        resource.getAbsolutePath()).append("\"");
+                cmd.append(" -include-file ").append(resource.getName()).append(" ").append(resource.getAbsolutePath());
             }
 
             // Define the output file.
-            cmd.append(" -o \"").append(targetFile.getAbsolutePath()).append("\"");
+            cmd.append(" -o ").append(targetFile.getAbsolutePath());
 
             final File targetDirectory = targetFile.getParentFile();
             if(targetDirectory.exists()) {
