@@ -228,7 +228,8 @@ public class FlexFrameworkGenerator extends BaseGenerator {
                                                  boolean skipGroupPomGeneration, final boolean isApache)
             throws Exception {
         final MavenMetadata groupMetadata = new MavenMetadata();
-        groupMetadata.setGroupId(groupId);
+	    String groupMetadataId = groupId;
+        groupMetadata.setGroupId(groupId.substring(0, groupId.lastIndexOf(".")));
         groupMetadata.setArtifactId(groupId.substring(groupId.lastIndexOf(".") + 1, groupId.length()));
         groupMetadata.setVersion(sdkVersion);
         groupMetadata.setPackaging("pom");
@@ -349,7 +350,7 @@ public class FlexFrameworkGenerator extends BaseGenerator {
             // the dependencies the same way velos sdks did.
             if ("libs".equals(sourceDirectory.getName())) {
                 final MavenMetadata commonFrameworkMetaData = new MavenMetadata();
-                commonFrameworkMetaData.setGroupId(groupMetadata.getGroupId());
+                commonFrameworkMetaData.setGroupId(groupMetadataId);
                 commonFrameworkMetaData.setArtifactId("common-framework");
                 commonFrameworkMetaData.setVersion(groupMetadata.getVersion());
                 commonFrameworkMetaData.setPackaging("pom");
@@ -370,14 +371,14 @@ public class FlexFrameworkGenerator extends BaseGenerator {
                 // Generate a dummy entry for the "flex-framework" pom,
                 // which will be generated later in the process.
                 final MavenMetadata flexFrameworkMetadata = new MavenMetadata();
-                flexFrameworkMetadata.setGroupId(groupMetadata.getGroupId());
+                flexFrameworkMetadata.setGroupId(groupMetadataId);
                 flexFrameworkMetadata.setArtifactId("flex-framework");
                 flexFrameworkMetadata.setVersion(groupMetadata.getVersion());
                 flexFrameworkMetadata.setPackaging("pom");
                 groupMetadata.getDependencies().add(flexFrameworkMetadata);
             } else if ("air".equals(sourceDirectory.getName())) {
                 final MavenMetadata airCommonFrameworkMetaData = new MavenMetadata();
-                airCommonFrameworkMetaData.setGroupId(groupMetadata.getGroupId());
+                airCommonFrameworkMetaData.setGroupId(groupMetadataId);
                 airCommonFrameworkMetaData.setArtifactId("common-framework");
                 airCommonFrameworkMetaData.setVersion(groupMetadata.getVersion());
                 airCommonFrameworkMetaData.setPackaging("pom");
@@ -398,7 +399,7 @@ public class FlexFrameworkGenerator extends BaseGenerator {
                 // Generate a dummy entry for the "flex-framework" pom,
                 // which will be generated later in the process.
                 final MavenMetadata flexFrameworkMetadata = new MavenMetadata();
-                flexFrameworkMetadata.setGroupId(groupMetadata.getGroupId());
+                flexFrameworkMetadata.setGroupId(groupMetadataId);
                 flexFrameworkMetadata.setArtifactId("air-framework");
                 flexFrameworkMetadata.setVersion(groupMetadata.getVersion());
                 flexFrameworkMetadata.setPackaging("pom");

@@ -91,12 +91,12 @@ public class SDKDeployer {
         String artifactName = fileName.substring(0, fileName.lastIndexOf("-"));
 
         if (artifactName != null) {
-            final File artifacts[] = new File(pom.getParent()).listFiles(new ArtifactFilter());
-	        final List<String> processCmd = new ArrayList<String>(10);
-	        processCmd.add(mvn);
-	        processCmd.add("deploy:deploy-file");
-	        processCmd.add("-DrepositoryId=" + repositoryId);
-	        processCmd.add("-Durl=" + url);
+            File artifacts[] = new File(pom.getParent()).listFiles(new ArtifactFilter());
+	        List<String> processCmdBase = new ArrayList<String>(10);
+	        processCmdBase.add(mvn);
+	        processCmdBase.add("deploy:deploy-file");
+	        processCmdBase.add("-DrepositoryId=" + repositoryId);
+	        processCmdBase.add("-Durl=" + url);
 
 	        ProcessBuilder processBuilder = null;
 
@@ -104,8 +104,11 @@ public class SDKDeployer {
             String packaging;
             String classifier = null;
 
+	        List<String> processCmd = null;
             if (artifacts != null && artifacts.length > 0) {
                 for (File artifact : artifacts) {
+	                processCmd = new ArrayList<String>(10);
+	                processCmd.addAll(processCmdBase);
                     classifier = packaging = null;
                     artifactName = artifact.getName();
 
@@ -126,6 +129,8 @@ public class SDKDeployer {
 	                exec(processBuilder.start());
                 }
             } else {
+	            processCmd = new ArrayList<String>(10);
+	            processCmd.addAll(processCmdBase);
 	            processCmd.add("-Dfile=" + pom.getAbsolutePath());
 	            processCmd.add("-DpomFile=" + pom.getAbsolutePath());
 	            processBuilder = new ProcessBuilder(processCmd);

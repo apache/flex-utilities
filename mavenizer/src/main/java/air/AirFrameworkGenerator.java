@@ -51,7 +51,8 @@ public class AirFrameworkGenerator extends BaseGenerator {
             throws Exception
     {
         final MavenMetadata groupMetadata = new MavenMetadata();
-        groupMetadata.setGroupId(groupId);
+	    String groupMetadataId = groupId;
+        groupMetadata.setGroupId(groupId.substring(0, groupId.lastIndexOf(".")));
         groupMetadata.setArtifactId(groupId.substring(groupId.lastIndexOf(".") + 1, groupId.length()));
         groupMetadata.setVersion(sdkVersion);
         groupMetadata.setPackaging("pom");
@@ -108,7 +109,7 @@ public class AirFrameworkGenerator extends BaseGenerator {
         }
 
         final MavenMetadata commonFrameworkMetaData = new MavenMetadata();
-        commonFrameworkMetaData.setGroupId(groupMetadata.getGroupId());
+        commonFrameworkMetaData.setGroupId(groupMetadataId);
         commonFrameworkMetaData.setArtifactId("common-framework");
         commonFrameworkMetaData.setVersion(groupMetadata.getVersion());
         commonFrameworkMetaData.setPackaging("pom");
@@ -129,7 +130,7 @@ public class AirFrameworkGenerator extends BaseGenerator {
         // Generate a dummy entry for the "flex-framework" pom,
         // which will be generated later in the process.
         final MavenMetadata flexFrameworkMetadata = new MavenMetadata();
-        flexFrameworkMetadata.setGroupId(groupMetadata.getGroupId());
+        flexFrameworkMetadata.setGroupId(groupMetadataId);
         flexFrameworkMetadata.setArtifactId("flex-framework");
         flexFrameworkMetadata.setVersion(groupMetadata.getVersion());
         flexFrameworkMetadata.setPackaging("pom");
