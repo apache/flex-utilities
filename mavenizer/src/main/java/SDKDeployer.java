@@ -45,18 +45,22 @@ public class SDKDeployer {
     }
 
     public static void main(String[] args) {
-        if (args.length < 4) {
-            System.out.println("\nUsage: java -cp flex-sdk-converter-1.0.jar SDKDeployer \"directory\" \"repositoryId\" \"url\" \"mvn\"\n");
-            System.out.println("The SDKDeployer needs 4 ordered parameters separated by spaces:");
-            System.out.println("\t1- directory: The path to the directory to deploy.");
-            System.out.println("\t2- repositoryId: Server Id to map on the <id> under <server> section of settings.xml.");
-            System.out.println("\t3- url: URL where the artifacts will be deployed.");
-            System.out.println("\t4- mvn: The path to the mvn.bat / mvn.sh.");
-            return;
+        if (args.length != 4) {
+            printUsage();
+            System.exit(0);
         }
 
         SDKDeployer deployer = new SDKDeployer(args);
         deployer.start();
+    }
+
+    private static void printUsage() {
+        System.out.println("\nUsage: java -cp flex-sdk-converter-1.0.jar SDKDeployer \"directory\" \"repositoryId\" \"url\" \"mvn\"\n");
+        System.out.println("The SDKDeployer needs 4 ordered parameters separated by spaces:");
+        System.out.println("\t1- directory: The path to the directory to deploy.");
+        System.out.println("\t2- repositoryId: Server Id to map on the <id> under <server> section of settings.xml.");
+        System.out.println("\t3- url: URL where the artifacts will be deployed.");
+        System.out.println("\t4- mvn: The path to the mvn.bat / mvn.sh.");
     }
 
     private void start() {
@@ -147,12 +151,12 @@ public class SDKDeployer {
         while ((line = bri.readLine()) != null) {
             System.out.println(line);
         }
-        bri.close();
         while ((line = bre.readLine()) != null) {
             System.out.println(line);
         }
-        bre.close();
         p.waitFor();
+        bri.close();
+        bre.close();
         System.out.println("Done.");
     }
 
