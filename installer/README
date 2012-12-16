@@ -29,7 +29,6 @@ Overview:
 	 - Adobe Flash Player playerglobal.swc
 	 - SwfObject
 	 - Open Source Media Framework (OSMF)
-	 - Adobe Text Layout Format (TLF)
 	 
 	Optionally, the application will download these files if the user explicitly agrees to 
 	the licensing terms:

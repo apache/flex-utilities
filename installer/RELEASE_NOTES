@@ -1,4 +1,10 @@
 Apache Flex
 Copyright 2012 The Apache Software Foundation
 
-1.  If you have previously installed pre-release version of  InstallApacheFlex, you need to uninstall it first.  And then run the downoaded installer file.  
+Apache Flex SDK Installer 2.0
+1.  If you have previously installed a release candidate (RC) version of  InstallApacheFlex, you need to uninstall it first.  And then run the downoaded installer file.  
+2.  From Flex 4.9 onwards, the Text Layout Framework (TLF) is part of the Flex SDK.  So the installer does not download is separately anymore.  
+
+Apache Flex Installer SDK 1.0
+
+1.  If you have previously installed a pre-release version of  InstallApacheFlex, you need to uninstall it first.  And then run the downoaded installer file.  
