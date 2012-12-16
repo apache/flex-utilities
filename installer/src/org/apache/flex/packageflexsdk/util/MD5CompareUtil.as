@@ -35,6 +35,8 @@ import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
 import flash.utils.ByteArray;
 
+import org.apache.flex.utilities.common.Constants;
+
 [Event(name="progress", type="flash.events.ProgressEvent")]
 
 public class MD5CompareUtil extends EventDispatcher
@@ -218,7 +220,14 @@ public class MD5CompareUtil extends EventDispatcher
 		_urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
 		_urlLoader.addEventListener(Event.COMPLETE, urlLoaderResultHandler);
 		_urlLoader.addEventListener(IOErrorEvent.IO_ERROR, urlLoaderResultHandler);
-		_urlLoader.load(new URLRequest(MD5_DOMAIN + remoteSDKZipPath + MD5_POSTFIX));
+		if (remoteSDKZipPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX)
+		{
+			_urlLoader.load(new URLRequest(MD5_DOMAIN + remoteSDKZipPath + MD5_POSTFIX));
+		}
+		else
+		{
+			_urlLoader.load(new URLRequest(remoteSDKZipPath + MD5_POSTFIX));
+		}
 	}
 	
 }

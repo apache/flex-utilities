@@ -144,9 +144,6 @@ variables are not required because the locations of these pieces are known.
 		private var OSMF_FILE:String;
 		private var OSMF_URL:String;
 		
-		private var TLF_FILE:String;
-		private var TLF_URL:String;
-		
 		private var BLAZEDS_FILE:String;
 		private var BLAZEDS_URL:String;
 		
@@ -176,7 +173,6 @@ variables are not required because the locations of these pieces are known.
 		private var _flexFontKitJarFile:File;
 		private var _rideauJarFile:File;
 		private var _osmfFile:File;
-		private var _tlfFile:File;
 		
 		private var _os:String;
 		private var _loader:URLLoader;	
@@ -217,10 +213,7 @@ variables are not required because the locations of these pieces are known.
 		{
 			var supportedLanguages:ArrayCollection = ViewResourceConstants.supportedLanguages;
 			
-			// EdB (2012-10-22): disabling Localisation for 1.0 release
-			//var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-","_");
-			var userLocale:String = RuntimeLocale.EN_US;
-			
+			var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-","_");
 			var n:int = supportedLanguages.length;
 			for (var i:int = 0; i < n; i++)
 			{
@@ -244,8 +237,8 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function loadXML():void
 		{
-			var request:URLRequest = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
-			//var request:URLRequest = new URLRequest(Constants.CONFIG_XML_NAME);
+			//var request:URLRequest = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+			var request:URLRequest = new URLRequest(Constants.CONFIG_XML_NAME);
 			
 			_loader = new URLLoader();
 			
@@ -350,9 +343,6 @@ variables are not required because the locations of these pieces are known.
 			OSMF_FILE = files.(@name == 'OSMF').@file.toString();
 			OSMF_URL = files.(@name == 'OSMF').@path.toString();
 			
-			TLF_FILE = files.(@name == 'TLF').@file.toString();
-			TLF_URL = files.(@name == 'TLF').@path.toString();
-			
 			BLAZEDS_FILE = files.(@name == 'BlazeDS').@file.toString();
 			BLAZEDS_URL = files.(@name == 'BlazeDS').@path.toString();
 			
@@ -405,8 +395,16 @@ variables are not required because the locations of these pieces are known.
 			}
 			else
 			{
-				APACHE_FLEX_BIN_DISTRO_URL = _mirrorURLUtil.mirrorURL + 
-					APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
+				
+				if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX)
+				{
+					APACHE_FLEX_BIN_DISTRO_URL = _mirrorURLUtil.mirrorURL + 
+						APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
+				}
+				else
+				{
+					APACHE_FLEX_BIN_DISTRO_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
+				}
 				
 				if (installerAppPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX)
 				{
@@ -505,7 +503,6 @@ variables are not required because the locations of these pieces are known.
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES));
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT));
 			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF));
-			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF));
 		}
 		
 		protected function resetInstallStepsActivity():void
@@ -561,12 +558,6 @@ variables are not required because the locations of these pieces are known.
 					_viewResourceConstants.ASK_OSMF, 
 					_viewResourceConstants.LICENSE_OSMF,
 					_viewResourceConstants.LICENSE_URL_OSMF,
-					true));
-			_installerComponentsDataProvider.addItem(
-				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,
-					_viewResourceConstants.ASK_TLF, 
-					_viewResourceConstants.LICENSE_TLF,
-					_viewResourceConstants.LICENSE_URL_TLF,
 					true));
 			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF,
@@ -1282,47 +1273,13 @@ variables are not required because the locations of these pieces are known.
 				updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,true);
 				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,false);
 				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.COMPLETE);
-				installTLF();
+				installNextOptionalComponent();
 			}
 			catch (e:Error)
 			{
 				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
 				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,true);
 				abortInstallation();
-			}
-		}
-		
-		protected function installTLF():void
-		{
-			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,StepItem.ACTIVE);
-			downloadTLFFile();
-		}
-		
-		protected function downloadTLFFile():void
-		{
-			log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM,[TLF_FILE,TLF_URL]));
-			_tlfFile = File.userDirectory.resolvePath(_flexTemp + File.separator + TLF_FILE);
-			copyOrDownload(TLF_URL+TLF_FILE,handleTLFFileDownloaded,null,handleTLFInstallError);
-		}
-		
-		protected function handleTLFFileDownloaded(event:Event):void
-		{
-			try
-			{
-				writeFileToDirectory(_tlfFile, event.target.data);
-				copyFileToLibDir(_tlfFile);
-				clearData(URLLoader(event.target));
-				
-				updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,true);
-				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,false);
-				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF, StepItem.COMPLETE);
-				installNextOptionalComponent();
-			}
-			catch (e:Error)
-			{
-				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF, StepItem.ERROR);
-				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,true);
-				installNextOptionalComponent();
 			}
 		}
 		
@@ -1358,13 +1315,6 @@ variables are not required because the locations of these pieces are known.
 			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
 			updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,true);
 			log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE,["OSMF"]));
-			installNextOptionalComponent();
-		}
-		
-		protected function handleTLFInstallError(event:*=null):void{
-			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF, StepItem.ERROR);
-			updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_TLF,true);
-			log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE,["TLF"]));
 			installNextOptionalComponent();
 		}
 		
@@ -1895,11 +1845,6 @@ variables are not required because the locations of these pieces are known.
 	<s:layout>
 		<s:BasicLayout />
 	</s:layout>
-	
-	<!-- 
-		EdB (2012-10-22): disabling Localisation for 1.0 release:
-		- hide language selection label and combobox 
-	-->
 	<s:HGroup 
 		left="0" 
 		right="0" 
@@ -1913,13 +1858,13 @@ variables are not required because the locations of these pieces are known.
 			click="{showDisclaimer()}"
 			/>
 		<s:Spacer width="100%" />
-		<s:Label id="langLabel" visible="false"
+		<s:Label id="langLabel" 
 				 horizontalCenter="0" 
 				 height="100%" 
 				 textAlign="right"
 				 text="{_viewResourceConstants.INFO_CURRENT_LANGUAGE}" 
 				 verticalAlign="middle"/>
-		<s:ComboBox id="_langSelect" visible="false"
+		<s:ComboBox id="_langSelect" 
 					width="184" 
 					change="_langSelect_changeHandler(event)"/>
 	</s:HGroup>
