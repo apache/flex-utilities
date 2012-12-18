@@ -631,18 +631,22 @@ public class FlexFrameworkGenerator extends BaseGenerator {
     }
 
     private File generateThemeSwc(File themeDirectory, File targetFile) throws Exception {
-        // Prepare the command.
-        final StringBuilder cmd = new StringBuilder();
-        final File fdkHomeDir = themeDirectory.getParentFile().getParentFile().getParentFile();
+
+	    final File fdkHomeDir = themeDirectory.getParentFile().getParentFile().getParentFile();
         final File fdkLibDir = new File(fdkHomeDir, "lib");
+
+	    List<String> processCmd = new ArrayList<String>(10);
+
         if(fdkLibDir.exists() && fdkLibDir.isDirectory()) {
             final File compcLibrary = new File(fdkLibDir, "compc.jar");
             final File frameworkDir = new File(fdkHomeDir, "frameworks");
 
-            cmd.append("java -Xmx384m -Dsun.io.useCanonCaches=false -jar ");
-            cmd.append(compcLibrary.getAbsolutePath());
-            cmd.append(" +flexlib=");
-            cmd.append(frameworkDir.getAbsolutePath());
+	        processCmd.add("java");
+	        processCmd.add("-Xmx384m");
+	        processCmd.add("-Dsun.io.useCanonCaches=false");
+	        processCmd.add("-jar");
+	        processCmd.add(compcLibrary.getCanonicalPath());
+	        processCmd.add("+flexlib=" + frameworkDir.getCanonicalPath());
 
             // Add all the content files.
             final File contents[] = themeDirectory.listFiles(new FileFilter() {
@@ -657,33 +661,35 @@ public class FlexFrameworkGenerator extends BaseGenerator {
             }
 
             for(final File resource : contents) {
-                cmd.append(" -include-file ").append(resource.getName()).append(" ").append(resource.getAbsolutePath());
+	            processCmd.add("-include-file");
+			    processCmd.add(resource.getName());
+	            processCmd.add(resource.getCanonicalPath());
             }
 
             // Define the output file.
-            cmd.append(" -o ").append(targetFile.getAbsolutePath());
+	        processCmd.add("-o");
+	        processCmd.add(targetFile.getCanonicalPath());
 
             final File targetDirectory = targetFile.getParentFile();
             if(targetDirectory.exists()) {
                 if(!targetDirectory.mkdirs()) {
-                    throw new RuntimeException("Could not create directory: " + targetDirectory.getAbsolutePath());
+                    throw new RuntimeException("Could not create directory: " + targetDirectory.getCanonicalPath());
                 }
             }
 
             // Execute the command.
             try {
                 System.out.println("Geneating theme '" + themeDirectory.getName() + "'");
-                final String[] envps = new String[1];
-                envps[0] = "PLAYERGLOBAL_HOME=" + new File(new File(
-                        themeDirectory.getParentFile().getParentFile(), "libs"), "player").getAbsolutePath();
-                envps[0] = envps[0].replace("\\", "/");
-                final Process child = Runtime.getRuntime().exec(cmd.toString(), envps);
-                final int exitValue = child.waitFor();
+
+                //final Process child = Runtime.getRuntime().exec(cmd.toString(), envps);
+	            ProcessBuilder processBuilder = new ProcessBuilder(processCmd);
+	            processBuilder.environment().put("PLAYERGLOBAL_HOME", new File(new File(themeDirectory.getParentFile().getParentFile(), "libs"), "player").getCanonicalPath());
+	            int exitValue = exec(processBuilder.start());
                 if(exitValue != 0) {
                     System.out.println("Couldn't create theme swc");
                     System.out.println("----------------------------------------------------------------");
-                    System.out.println("Env: '" + envps[0] + "'");
-                    System.out.println(cmd.toString());
+                    System.out.println("Env: '" + processBuilder.environment().get("PLAYERGLOBAL_HOME") + "'");
+	                System.out.println(processBuilder.command());
                     System.out.println("----------------------------------------------------------------");
                 }
             } catch(Exception e) {
@@ -695,6 +701,23 @@ public class FlexFrameworkGenerator extends BaseGenerator {
         }
         return null;
     }
+
+	private int exec(Process p) throws InterruptedException, IOException {
+		String line;
+		BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		BufferedReader bre = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		while ((line = bri.readLine()) != null) {
+			System.out.println(line);
+		}
+		while ((line = bre.readLine()) != null) {
+			System.out.println(line);
+		}
+		int result = p.waitFor();
+		bri.close();
+		bre.close();
+		System.out.println("Done.");
+		return result;
+	}
 
     private void createConfigsZip(File sdkSourceDirectory) throws Exception {
         // ZIP up every file (not directory) in the framework directory and the entire themes directory.
