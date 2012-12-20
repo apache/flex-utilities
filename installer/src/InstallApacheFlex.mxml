@@ -191,17 +191,26 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function handleApplicationComplete(event:FlexEvent):void
 		{
-			_langSelect.dataProvider = ViewResourceConstants.supportedLanguages;
-			_langSelect.selectedIndex = 0;
-			selectDefaultLanguage();
-
-			_viewResourceConstants = ViewResourceConstants.instance;
-			resourceManager.addEventListener(Event.CHANGE, _viewResourceConstants.update);
-			_viewResourceConstants.update();
+			_langSelect.dataProvider 	= ViewResourceConstants.supportedLanguages;
+			_langSelect.selectedIndex 	= 0;
+			defineResourceManagerDefaultLanguage();
 
 			updateWindow();
 			
 			loadXML();
+		}
+		
+		/**
+		* Define on ResourceManager all keys for translation.
+		* If some key is not present on any other language selected by user, the default value will be displayed 
+		* on the screen
+		*/
+		private function defineResourceManagerDefaultLanguage() : void
+		{
+			resourceManager.localeChain = [ ViewResourceConstants.DEFAULT_LANGUAGE ];
+			_viewResourceConstants 		= ViewResourceConstants.instance;
+			_viewResourceConstants.update();
+			selectDefaultLanguage();			
 		}
 		
 		private function updateWindowTitle():void
@@ -225,6 +234,10 @@ variables are not required because the locations of these pieces are known.
 					break;
 				}
 			}
+			resourceManager.addEventListener(Event.CHANGE, _viewResourceConstants.update);
+						
+			_viewResourceConstants.update();
+			
 		}
 		
 		protected function updateWindow():void
