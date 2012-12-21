@@ -36,7 +36,8 @@ variables are not required because the locations of these pieces are known.
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   width="800" height="650" maxWidth="800" maxHeight="650" minWidth="800" minHeight="650"
-					   backgroundColor="0xDDDDDD"
+					   backgroundColor="0xDDDDDD" 
+					   preinitialize="getInvoke()"  
 					   applicationComplete="handleApplicationComplete(event)" showStatusBar="false"
 					   skinClass="ws.tink.spark.skins.controls.InstallApacheFlexSkin" 
 					   xmlns:controls="ws.tink.spark.controls.*" 
@@ -182,12 +183,31 @@ variables are not required because the locations of these pieces are known.
 		private var _numOptionalComponents:int = 4;
 		private var _numOptionalComponentsPermissions:int = 0;
 		
+		private var languageOverride:String;
+		
 		[Bindable] private var _viewResourceConstants:ViewResourceConstants;
 		[Bindable] private var _installationSteps:ArrayCollection = new ArrayCollection();
 		[Bindable] private var _installerComponentsDataProvider:ArrayCollection = new ArrayCollection();
 		[Bindable] private var _currentLicenseURL:String;
 		[Bindable] private var _currentLicenseLabel:String;
 		[Bindable] public var _messages:ArrayCollection = new ArrayCollection();
+		
+		private function getInvoke():void
+		{
+			var nativeApplication:NativeApplication = NativeApplication.nativeApplication;
+			nativeApplication.addEventListener(InvokeEvent.INVOKE, parseArgs);
+		}
+		
+		private function parseArgs(event:InvokeEvent):void
+		{
+			for each (var s:String in event.arguments)
+			{
+				if (s.indexOf("-language=") == 0)
+				{
+					languageOverride = s.substring(10);
+				}
+			}
+		}
 		
 		protected function handleApplicationComplete(event:FlexEvent):void
 		{
@@ -223,6 +243,10 @@ variables are not required because the locations of these pieces are known.
 			var supportedLanguages:ArrayCollection = ViewResourceConstants.supportedLanguages;
 			
 			var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-","_");
+
+			if (languageOverride)
+				userLocale = languageOverride;
+			
 			var n:int = supportedLanguages.length;
 			for (var i:int = 0; i < n; i++)
 			{
