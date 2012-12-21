@@ -77,8 +77,9 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 		result.addItem({label: "English (US)", data: RuntimeLocale.EN_US});
 		result.addItem({label: "English (GB)", data: RuntimeLocale.EN_GB});
 		result.addItem({label: "English (AU)", data: RuntimeLocale.EN_AU});
-		result.addItem({label: "Nederlands", data: RuntimeLocale.NL_NL});
+		result.addItem({label: "Español (ES)", data: RuntimeLocale.ES_ES});
 		result.addItem({label: "Greek", data: RuntimeLocale.EL_GR});
+		result.addItem({label: "Nederlands", data: RuntimeLocale.NL_NL});
 		result.addItem({label: "Português", data: RuntimeLocale.PT_BR});
 		
 		return result;

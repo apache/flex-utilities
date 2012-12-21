@@ -29,7 +29,7 @@
 	<property file="${CERT_PASSWORD_FILE}"/>
 
     <property name="installer.version" value="${release.version}.${build.number}"/>
-    <property name="kit.prefix" value="apache-flex-sdk-installer-${installer.version}-incubating"/>
+    <property name="kit.prefix" value="apache-flex-sdk-installer-${installer.version}"/>
     <property name="source.kit" value="${kit.prefix}-src"/>
     <property name="binary.kit" value="${kit.prefix}-bin"/>
 

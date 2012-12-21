@@ -229,7 +229,7 @@ variables are not required because the locations of these pieces are known.
 				if (supportedLanguages[i].data == userLocale) {
 					_langSelect.selectedIndex = i;
 					
-					resourceManager.localeChain = [ userLocale ];
+					resourceManager.localeChain = [ userLocale, "en_US" ];
 					
 					break;
 				}
