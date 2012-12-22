@@ -1893,9 +1893,9 @@ variables are not required because the locations of these pieces are known.
 		paddingRight="20" 
 		paddingTop="5" 
 		horizontalAlign="right">
-		<s:Button 
-			label="{_viewResourceConstants.BTN_DISCLAIMER}"
-			styleName="genericBtnStyle"
+		<controls2:LinkButton 
+			text="{_viewResourceConstants.BTN_DISCLAIMER}"
+			fontWeight="bold"
 			click="{showDisclaimer()}"
 			/>
 		<s:Spacer width="100%" />
@@ -1905,9 +1905,12 @@ variables are not required because the locations of these pieces are known.
 				 textAlign="right"
 				 text="{_viewResourceConstants.INFO_CURRENT_LANGUAGE}" 
 				 verticalAlign="middle"/>
-		<s:ComboBox id="_langSelect" 
-					width="184" 
-					change="_langSelect_changeHandler(event)"/>
+		<s:DropDownList id="_langSelect"
+					change="_langSelect_changeHandler(event)">
+			<s:layout>
+				<s:VerticalLayout requestedRowCount="-1" />
+			</s:layout>
+		</s:DropDownList>
 	</s:HGroup>
 	<s:Panel id="firstStepGroup" 
 			 title="{_viewResourceConstants.INFO_SELECT_DIRECTORY_INSTALL}" 
