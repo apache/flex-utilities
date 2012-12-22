@@ -432,8 +432,8 @@ variables are not required because the locations of these pieces are known.
 			}
 			else
 			{
-				
-				if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX)
+				if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX &&
+					APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) != Constants.FILE_PREFIX)
 				{
 					APACHE_FLEX_BIN_DISTRO_URL = _mirrorURLUtil.mirrorURL + 
 						APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
@@ -1545,6 +1545,10 @@ variables are not required because the locations of these pieces are known.
 		private function copyOrDownload(url:String, handlerFunction:Function, dest:File=null, errorFunction:Function=null):void
 		{
 			if (url.search("http") == 0)
+			{
+				download(url, handlerFunction,errorFunction);
+			}
+			else if (url.search("file://") == 0)
 			{
 				download(url, handlerFunction,errorFunction);
 			}

@@ -44,6 +44,7 @@ public class Constants
 	public static const SDK_BINARY_FILE_NAME_PREFIX:String = "apache-flex-sdk-";
 	
 	public static const URL_PREFIX:String = "http://";
+	public static const FILE_PREFIX:String = "file://";
 	
 	//--------------------------------------------------------------------------
 	//
