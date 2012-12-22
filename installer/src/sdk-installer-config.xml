@@ -41,7 +41,7 @@ limitations under the License.
 			 	- don't use starting slash 
 			 	- for the second and later releases, remove the extension from the file name -->
 <!-- 		<file name="ApacheFlexSDK" path="incubator/flex/4.8.0-incubating/binaries/" file="apache-flex-sdk-4.8.0-incubating-bin.zip" /> -->
-		<file name="ApacheFlexSDK" path="http://people.apache.org/~jmclean/Apache%20Flex%204.9.0%20Release%20Candidate%203/binaries/" file="apache-flex-sdk-4.9.0-incubating-bin" />
+		<file name="ApacheFlexSDK" path="http://people.apache.org/~jmclean/Apache%20Flex%204.9.0%20Release%20Candidate%206/binaries/" file="apache-flex-sdk-4.9.0-bin" />
 		
 		<!-- Adobe AIR SDK -->
 		<file name="AdobeAIRSDKWin" path="http://airdownload.adobe.com/air/win/download/3.1/" file="AdobeAIRSDK.zip" />
