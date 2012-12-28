@@ -298,7 +298,7 @@ public class RuntimeLocale
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
 		
 		var content:Object = resource.content;
-		content["ASK_BLAZEDS"]="Apache Flex can optionally integrate with Adobe BlazeDS. This feature requires flex-messaging-common.jar from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to this jar. This license is not compatible with the Apache V2 license. Do you want to install this jar from the Adobe Flex SDK?"
+		content["ASK_BLAZEDS"]="Apache Flex can optionally integrate with Adobe BlazeDS. This feature requires flex-messaging-common.jar from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to this jar. This license is not compatible with the Apache V2 license. Do you want to install this jar from the Adobe Flex SDK?";
 		content["ASK_FONTSWF"]="Apache Flex can optionally integrate with Adobe's embedded font support. This feature requires a few font jars from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to these jars. This license is not compatible with the Apache V2 license. Do you want to install these jars from the Adobe Flex SDK?";
 		content["ASK_OSMF"]="The Open Source Media Framework (OSMF) used by the video components is licensed under the Mozilla Public License Version 1.1.  Do you want to install the Open Source Media Framework (OSMF)?";
 		content["ASK_TLF"]="The Adobe Text Layout Framework (TLF) used by the Spark text components is licensed under the Mozilla Public License Version 1.1.  Do you want to install the Adobe Text Layout Framework (TLF)?";
@@ -372,9 +372,9 @@ public class RuntimeLocale
 		content["INFO_UNZIPPING"]="Uncompressing: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="The Apache Flex SDK MD5 Signature of the downloaded files matches the reference. The file is valid.";
 		content["INFO_WINDOW_TITLE"]="Install Apache Flex SDK for use with Adobe Flash Builder";
-		content["INSTALL_AGREE"] = "I Agree, Install"
-		content["INSTALL_AGREE_ALL"] = "I agree to all options and licenses, Install"
-		content["INSTALL_DISAGREE"] = "I Disagree, Don't Install"
+		content["INSTALL_AGREE"] = "I Agree, Install";
+		content["INSTALL_AGREE_ALL"] = "I agree to all options and licenses, Install";
+		content["INSTALL_DISAGREE"] = "I Disagree, Don't Install";
 		content["SELECT_PATH_PROMPT"]="Where do you want to install the Apache Flex SDK?";
 		content["STEP_CREATE_DIRECTORIES"]="Create Directories";
 		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Required)";
@@ -494,9 +494,9 @@ public class RuntimeLocale
 		content["INFO_UNZIPPING"]="Descomprimiendo: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="La firma MD5 de Apache Flex SDK en los archivos descargados coincide con la original. El archivo es válido.";
 		content["INFO_WINDOW_TITLE"]="Instalar Apache Flex SDK para su uso con Adobe Flash Builder";
-		content["INSTALL_AGREE"] = "Acepto, Instalar"
-		content["INSTALL_AGREE_ALL"] = "Acepto todas las opciones y licencias, Instalar"
-		content["INSTALL_DISAGREE"] = "No estoy de acuerdo, Cancelar"
+		content["INSTALL_AGREE"] = "Acepto, Instalar";
+		content["INSTALL_AGREE_ALL"] = "Acepto todas las opciones y licencias, Instalar";
+		content["INSTALL_DISAGREE"] = "No estoy de acuerdo, Cancelar";
 		content["SELECT_PATH_PROMPT"]="¿Dónde quieres instalar el SDK de Apache Flex?";
 		content["STEP_CREATE_DIRECTORIES"]="Crear directorios";
 		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Necesario)";
@@ -534,7 +534,7 @@ public class RuntimeLocale
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
 		
 		var content:Object = resource.content;
-		content["ASK_BLAZEDS"]="Apache Flex kan optioneel integreren met Adobe BlazeDS. Deze feature vereist flex-messaging-common.jar uit de Adobe Flex SDK. De Adobe SDK licentie overeenkomst voor Adobe Flex 4.6 geldt voor deze jar. Deze licentie is niet compatibel met de Apache V2 licentie. Wilt u deze jar uit de Adobe Flex SDK installeren?"
+		content["ASK_BLAZEDS"]="Apache Flex kan optioneel integreren met Adobe BlazeDS. Deze feature vereist flex-messaging-common.jar uit de Adobe Flex SDK. De Adobe SDK licentie overeenkomst voor Adobe Flex 4.6 geldt voor deze jar. Deze licentie is niet compatibel met de Apache V2 licentie. Wilt u deze jar uit de Adobe Flex SDK installeren?";
 		content["ASK_FONTSWF"]="Apache Flex kan optioneel integreren met Adobe's embedded font support. Deze feature vereist een aantal font jars uit de Adobe Flex SDK. De Adobe SDK licentie overeenkomst voor Adobe Flex 4.6 geldt voor deze jars. Deze licentie is niet compatibel met de Apache V2 licentie. Wilt u deze jars uit de Adobe Flex SDK installeren?";
 		content["ASK_OSMF"]="Het Open Source Media Framework (OSMF) dat gebruikt wordt door de video componenten is gelicenseerd onder de Mozilla Public License Versie 1.1. Wilt u het Open Source Media Framework (OSMF) installeren?";
 		content["ASK_TLF"]="Het Adobe Text Layout Framework (TLF) dat gebruikt wordt door de Spark tekst componenten zijn gelicenseerd onder de Mozilla Public License Versie 1.1. Wilt u het Adobe Text Layout Framework (TLF) installeren?";
@@ -608,7 +608,7 @@ public class RuntimeLocale
 		content["INFO_UNZIPPING"]="Uitpakken: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="Het Apache Flex SDK MD5 signatuur van de gedownloade bestanden komt overeen met de referentie. Het bestand is geldig.";
 		content["INFO_WINDOW_TITLE"]="Installeer Apache Flex SDK voor gebruik in Adobe Flash Builder";
-		content["INSTALL_AGREE"] = "I Agree, Install"
+		content["INSTALL_AGREE"] = "I Agree, Install";
 		content["INSTALL_AGREE_ALL"] = "I agree to all options and licenses, Install";
 		content["INSTALL_DISAGREE"] = "I Disagree, Don't Install";
 		content["SELECT_PATH_PROMPT"]="Geef Flex SDK pad in of blader naar het pad";
@@ -673,7 +673,7 @@ public class RuntimeLocale
 		content["ERROR_NATIVE_PROCESS_NOT_SUPPORTED"]="Processo Nativo não suportado. Não foi possível descompactar Adobe AIR SDK";
 		content["ERROR_UNABLE_TO_COPY_FILE"]="Não foi possível copiar o arquivo ";
 		content["ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY"]="Não foi possível criar o diretório temporário";
-		content["ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY"]="Não foi possível limpar os diretórios temporários"
+		content["ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY"]="Não foi possível limpar os diretórios temporários";
 		content["ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK"]="Não foi possível efetuar o download do Adobe AIR Runtime Kit";
 		content["ERROR_UNABLE_TO_DOWNLOAD_FILE"]="Não foi possível efetuar o download {0}";
 		content["ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC"]="Não foi possível efetuar o download do Flash Player swc";
@@ -718,8 +718,8 @@ public class RuntimeLocale
 		content["INFO_UNZIPPING"]="Descompactando: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="A assinatura MD5 do download efetuado do Apache Flex SDK MD5 são válidas com sua referência. O arquivo é válido.";
 		content["INFO_WINDOW_TITLE"]="Instalação do Apache Flex SDK para utilização no Adobe Flash Builder";
-		content["INSTALL_AGREE"] = "Eu concordo, instalar"
-		content["INSTALL_DISAGREE"] = "Não concordo, não instale"
+		content["INSTALL_AGREE"] = "Eu concordo, instalar";
+		content["INSTALL_DISAGREE"] = "Não concordo, não instale";
 		content["SELECT_PATH_PROMPT"]="Aonde você deseja instalar o Apache Flex SDK?";
 		content["STEP_CREATE_DIRECTORIES"]="Criar diretórios";
 		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Download Adobe AIR Runtime Kit";
@@ -748,7 +748,7 @@ public class RuntimeLocale
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
 		
 		var content:Object = resource.content;
-		content["ASK_BLAZEDS"]="Apache Flex peut éventuellement s'intégrer à Adobe BlazeDS. Cette fonction nécessite flex-messaging-common.jar du SDK Adobe Flex. L'accord de licence Adobe SDK pour Adobe Flex 4.6 s'applique à ce jar. Cette licence n'est pas compatible avec la licence Apache V2. Voulez-vous installer ce jar à partir du SDK Adobe Flex?"
+		content["ASK_BLAZEDS"]="Apache Flex peut éventuellement s'intégrer à Adobe BlazeDS. Cette fonction nécessite flex-messaging-common.jar du SDK Adobe Flex. L'accord de licence Adobe SDK pour Adobe Flex 4.6 s'applique à ce jar. Cette licence n'est pas compatible avec la licence Apache V2. Voulez-vous installer ce jar à partir du SDK Adobe Flex?";
 		content["ASK_FONTSWF"]="Apache Flex peut éventuellement s'intégrer avec le support de polices embarquées Adobe (Adobe's embedded font support). Cette fonction nécessite quelques jars de polices du SDK Adobe Flex. L'accord de licence Adobe SDK pour Adobe Flex 4.6 s'applique à ces jarres. Cette licence n'est pas compatible avec la licence Apache V2. Voulez-vous installer ces jars à partir du SDK Adobe Flex?";
 		content["ASK_OSMF"]="L'Open Source Media Framework (OSMF) utilisé par les composants vidéo est sous la licence Mozilla Public License Version 1.1. Voulez-vous installer le Open Source Media Framework (OSMF)?";
 		content["ASK_TLF"]="Le Text Layout Framework Adobe (TLF) utilisé par les composants de texte Spark est sous licence Mozilla Public License Version 1.1. Voulez-vous installer le logiciel Adobe Text Layout Framework (TLF)?";
@@ -822,9 +822,9 @@ public class RuntimeLocale
 		content["INFO_UNZIPPING"]="Décompression: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="L'Apache Flex SDK MD5 Signature des fichiers téléchargés correspond à la référence. Le fichier est valide.";
 		content["INFO_WINDOW_TITLE"]="Installer Apache Flex SDK à utiliser avec Adobe Flash Builder";
-		content["INSTALL_AGREE"] = "Je suis d'accord, Installer"
-		content["INSTALL_AGREE_ALL"] = "Je suis d'accord à toutes les options et les licences, installer"
-		content["INSTALL_DISAGREE"] = "Je suis en désaccord, Ne pas installer"
+		content["INSTALL_AGREE"] = "Je suis d'accord, Installer";
+		content["INSTALL_AGREE_ALL"] = "Je suis d'accord à toutes les options et les licences, installer";
+		content["INSTALL_DISAGREE"] = "Je suis en désaccord, Ne pas installer";
 		content["SELECT_PATH_PROMPT"]="Où voulez-vous installer le SDK Flex Apache?";
 		content["STEP_CREATE_DIRECTORIES"]="Créer les répertoires";
 		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Requis)";
