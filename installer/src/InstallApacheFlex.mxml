@@ -288,7 +288,7 @@ variables are not required because the locations of these pieces are known.
 			}
 			else
 			{
-				request new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+				request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
 			}
 			
 			_loader = new URLLoader();
