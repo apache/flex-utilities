@@ -37,7 +37,7 @@ public class Constants
 	public static const APPLICATION_EXTENSION_MAC:String = ".dmg";
 	public static const APPLICATION_EXTENSION_WIN:String = ".exe";
 	
-	public static const CONFIG_XML_NAME:String = "sdk-installer-config.xml";
+	public static const CONFIG_XML_NAME:String = "sdk-installer-config-2.0.xml";
 	public static const DISCLAIMER_PATH:String = "about-binaries.html";
 	
 	

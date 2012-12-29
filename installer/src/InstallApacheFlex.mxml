@@ -128,6 +128,7 @@ variables are not required because the locations of these pieces are known.
 		 */
 		private var ADOBE_FB_GLOBALPLAYER_SWC_FILE:String;
 		private var ADOBE_FB_GLOBALPLAYER_SWC_URL:String;
+		private var ADOBE_FB_GLOBALPLAYER_SWC_VERSION:String = "11.1";	//Default to 11.1 if this var is not set by value in sdk-installer-config.xml
 		
 		/**
 		 * 
@@ -184,6 +185,7 @@ variables are not required because the locations of these pieces are known.
 		private var _numOptionalComponentsPermissions:int = 0;
 		
 		private var languageOverride:String;
+		private var configOverride:String="";
 		
 		[Bindable] private var _viewResourceConstants:ViewResourceConstants;
 		[Bindable] private var _installationSteps:ArrayCollection = new ArrayCollection();
@@ -205,6 +207,10 @@ variables are not required because the locations of these pieces are known.
 				if (s.indexOf("-language=") == 0)
 				{
 					languageOverride = s.substring(10);
+				}
+				if (s.indexOf("-config=") == 0)
+				{
+					configOverride = s.substring(8);
 				}
 			}
 		}
@@ -274,8 +280,16 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function loadXML():void
 		{
-			//var request:URLRequest = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
-			var request:URLRequest = new URLRequest(Constants.CONFIG_XML_NAME);
+			var request:URLRequest;
+			
+			if(configOverride != "")
+			{
+				request = new URLRequest(configOverride);
+			}
+			else
+			{
+				request new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+			}
 			
 			_loader = new URLLoader();
 			
@@ -367,6 +381,7 @@ variables are not required because the locations of these pieces are known.
 			
 			ADOBE_FB_GLOBALPLAYER_SWC_FILE =  files.(@name == 'FlashPlayer').@file.toString();
 			ADOBE_FB_GLOBALPLAYER_SWC_URL = files.(@name == 'FlashPlayer').@path.toString();
+			ADOBE_FB_GLOBALPLAYER_SWC_VERSION = files.(@name == 'FlashPlayer').@version.toString();
 			if (!ADOBE_FB_GLOBALPLAYER_SWC_FILE || !ADOBE_FB_GLOBALPLAYER_SWC_URL)
 			{
 				log(_viewResourceConstants.ERROR_INVALID_FLASH_PLAYER_SWC_URL);
@@ -615,7 +630,6 @@ variables are not required because the locations of these pieces are known.
 			createDirectories();
 		}
 		
-		// TODO Scan for Apache SDKs installed and check if allready modified?
 		protected function browseForSDK(event:MouseEvent):void
 		{
 			var file:File = new File(); 
@@ -645,41 +659,6 @@ variables are not required because the locations of these pieces are known.
 			}
 		}
 		
-		protected function validApacheSDK(flexPath:String):Boolean
-		{
-			var valid:Boolean = true;
-			var descriptionFile:String = flexPath + File.separator + "flex-sdk-description.xml";
-			var file:File = new File(descriptionFile);
-			
-			// Check flex SDK diretory has flex description file
-			if (!file.exists)
-			{
-				valid = false;
-				flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_INVALID_FLEX_SDK_DIRECTORY;
-			}
-			
-			// TODO Check is Apache not Adobe SDK
-			
-			return valid;
-		}
-		
-		protected function SDKNotPackaged(flexPath:String):Boolean
-		{
-			var unpackaged:Boolean = true;
-			var playerFile:String = flexPath + File.separator + "frameworks" + File.separator + "libs" + File.separator
-				+ "player" + File.separator + "11.1" + File.separator + "playerglobal.swc"; 
-			var file:File = new File(playerFile);
-			
-			// check for existance of  player global
-			if (file.exists)
-			{
-				unpackaged = false;
-				flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_INVALID_FLEX_SDK_DIRECTORY;
-			}
-			
-			return unpackaged;
-		}
-		
 		protected function handleFlexSDXTxtInputChange(event:TextOperationEvent):void
 		{
 			var tempDir:File;
@@ -689,7 +668,7 @@ variables are not required because the locations of these pieces are known.
 			{
 				tempDir = new File(path);
 				
-				if (SDKNotPackaged(path))
+				if(isDirectoryEmpty(tempDir))
 				{
 					flexSDKTxtInput.errorString = "";
 					_flexHome = path;
@@ -980,7 +959,7 @@ variables are not required because the locations of these pieces are known.
 			try
 			{
 				log(_viewResourceConstants.INFO_INSTALLING_PLAYERGLOBAL_SWC + ADOBE_FB_GLOBALPLAYER_SWC_URL);
-				_fbGlobalPlayerDir = createFolder(_flexHome + File.separator + "frameworks" + File.separator + "libs" + File.separator + "player" + File.separator + "11.1");
+				_fbGlobalPlayerDir = createFolder(_flexHome + File.separator + "frameworks" + File.separator + "libs" + File.separator + "player" + File.separator + ADOBE_FB_GLOBALPLAYER_SWC_VERSION);
 				_fbGlobalPlayerFile = File.userDirectory.resolvePath(_fbGlobalPlayerDir.nativePath + File.separator + "playerglobal.swc");
 				copyOrDownload(ADOBE_FB_GLOBALPLAYER_SWC_URL, handlePlayerGlobalDownload, _fbGlobalPlayerFile, handlePlayerGlobalDownloadError);
 			}
