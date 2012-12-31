@@ -47,7 +47,7 @@ limitations under the License.
 		<file name="AdobeAIRSDKMac" path="http://airdownload.adobe.com/air/mac/download/3.4/" file="AdobeAIRSDK.tbz2" />
 		
 		<!-- Adobe Flash Player player global swc -->
-		<file name="FlashPlayer" path="http://fpdownload.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_3.swc" version="11.3" />	
+		<file name="FlashPlayer" path="http://fpdownload.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_1.swc" version="11.1" />	
 
 		<!-- SWFObject.js -->
 		<file name="swfobject" path="http://swfobject.googlecode.com/files/" file="swfobject_2_2.zip" />	

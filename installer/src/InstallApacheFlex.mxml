@@ -87,12 +87,6 @@ variables are not required because the locations of these pieces are known.
 		public var installerAppFileName:String;
 		
 		/**
-		 * Installer version number for the log file.  
-		 */			
-		private static const INSTALLER_VERSION:String = String(INSTALLER::releaseVersion);
-		private static const INSTALLER_BUILD_NUMBER:String = String(INSTALLER::buildNumber);
-		
-		/**
 		 * Utility Singleton Instances
 		 */
 		private var _md5CompareUtil:MD5CompareUtil = MD5CompareUtil.instance;
