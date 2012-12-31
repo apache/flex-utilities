@@ -30,7 +30,7 @@ limitations under the License.
 			 	- use full URL when binaries are NOT released yet, else use 
 			 	  path relative to mirror
 			 	- if path is relative, don't use starting slash -->
-		<file name="SDKInstallerApp" path="http://people.apache.org/~bigosmallm/installapacheflex_RC10/binaries/" file="apache-flex-sdk-installer-1.0.9-incubating-bin" />
+		<file name="SDKInstallerApp" path="incubator/flex/installer/1.0/binaries/" file="apache-flex-sdk-installer-1.0.9-incubating-bin" />
 		
 		<!-- Mirror URL CGI -->
 		<file name="MirrorURLCGI" path="" file="single-mirror-url.cgi" />
@@ -40,8 +40,7 @@ limitations under the License.
 			 	- path is relative to mirror URL
 			 	- don't use starting slash 
 			 	- for the second and later releases, remove the extension from the file name -->
-<!-- 		<file name="ApacheFlexSDK" path="incubator/flex/4.8.0-incubating/binaries/" file="apache-flex-sdk-4.8.0-incubating-bin.zip" /> -->
-		<file name="ApacheFlexSDK" path="http://people.apache.org/~jmclean/Apache%20Flex%204.9.0%20Release%20Candidate%206/binaries/" file="apache-flex-sdk-4.9.0-bin" />
+		<file name="ApacheFlexSDK" path="incubator/flex/4.8.0-incubating/binaries/" file="apache-flex-sdk-4.8.0-incubating-bin.zip" />
 		
 		<!-- Adobe AIR SDK -->
 		<file name="AdobeAIRSDKWin" path="http://airdownload.adobe.com/air/win/download/3.1/" file="AdobeAIRSDK.zip" />
@@ -64,6 +63,9 @@ limitations under the License.
 			
 		<!-- OSMF -->
 		<file name="OSMF" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/frameworks/libs/" file="osmf.swc" />	
+		
+		<!-- TLF -->
+		<file name="TLF" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/frameworks/libs/" file="textLayout.swc" />	
 
 	</files>
 </config>
