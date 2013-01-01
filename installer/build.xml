@@ -266,7 +266,8 @@
         <antcall target="generate-certificate"/>
     </target>
 
-    <target name="generate-certificate" depends="abortBuild" >
+    <target name="generate-certificate" depends="abortBuild">
+    	<echo message="Using cert ${KEYSTORE}" />
         <java jar="${ADT}" fork="true"
             failonerror="true">
             <arg value="-certificate"/>
@@ -286,6 +287,7 @@
 
     <target name="packageair" depends="abortBuild"
         description="Packages the build SWF file from a temp directory to create an AIR file">
+    	<echo message="Using cert ${KEYSTORE}" />
         <java jar="${ADT}" fork="true"
             failonerror="true"
             maxmemory="512m">
