@@ -31,6 +31,10 @@ Steps to follow in preparation for a release of InstallApacheFlex
 	- Modify the KEYSTORE_DIR and CERT_PASSWORD_DIR variables with the correct directory paths
 	(You need to obtain the installapacheflex_self.p12 file and its password from the previous release manager for InstallApacheFlex)
 	
+	WARNING WARNING WARNING
+	Do not place the 2 certificate files anywhere in the installer directory or in a subdirectory under it.
+	If you do so the certificate files will be packaged into the source release. That would be very bad.
+	
 4.  Run: 
 ant release
 
