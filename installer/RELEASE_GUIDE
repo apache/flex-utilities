@@ -44,14 +44,16 @@ This step
 
 cd release
 
-gpg --armor --output apache-flex-sdk-installer-2.0.0-bin.exe.asc --detach-sig apache-flex-sdk-installer-2.0.0-bin.exe
+gpg --armor --output apache-flex-sdk-installer-2.0.0-bin.exe.asc --detach-sig apache-flex-sdk-installer-2.0.0-bin.exe (on Windows)
+gpg --armor --output apache-flex-sdk-installer-2.0.0-bin.dmg.asc --detach-sig apache-flex-sdk-installer-2.0.0-bin.dmg (on Mac)
 gpg --armor --output apache-flex-sdk-installer-2.0.0-src.tar.gz.asc --detach-sig apache-flex-sdk-installer-2.0.0-src.tar.gz
 gpg --armor --output apache-flex-sdk-installer-2.0.0-src.zip.asc --detach-sig apache-flex-sdk-installer-2.0.0-src.zip
 
 This step creates the release artifacts InstallApacheFlex.exe.asc, apache-flex-sdk-installer-2.0.0-src.tar.gz.asc and apache-flex-sdk-installer-2.0.0-src.zip.asc
 
 6.  Run:
-gpg --print-md MD5 apache-flex-sdk-installer-2.0.0-bin.exe > apache-flex-sdk-installer-2.0.0-bin.exe.md5
+gpg --print-md MD5 apache-flex-sdk-installer-2.0.0-bin.exe > apache-flex-sdk-installer-2.0.0-bin.exe.md5 (On Windows)
+gpg --print-md MD5 apache-flex-sdk-installer-2.0.0-bin.dmg > apache-flex-sdk-installer-2.0.0-bin.dmg.md5 (On Mac)
 gpg --print-md MD5 apache-flex-sdk-installer-2.0.0-src.tar.gz > apache-flex-sdk-installer-2.0.0-src.tar.gz.md5
 gpg --print-md MD5 apache-flex-sdk-installer-2.0.0-src.zip > apache-flex-sdk-installer-2.0.0-src.zip.md5
 
