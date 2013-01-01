@@ -24,7 +24,25 @@ limitations under the License.
 	<s:layout>
 		<s:HorizontalLayout verticalAlign="middle" gap="5" />
 	</s:layout>
-	<s:CheckBox selected="{data.selected}" enabled="false" skinClass="ws.tink.spark.skins.controls.ColorCheckBoxSkin" />
+	<fx:Metadata>
+		[Event(name="installItemSelectionChanged", type="org.apache.flex.packageflexsdk.view.events.InstallItemSelectionEvent")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
+			import org.apache.flex.packageflexsdk.view.events.InstallItemSelectionEvent;
+			protected function checkbox1_changeHandler(event:Event):void
+			{
+				var e:InstallItemSelectionEvent = new InstallItemSelectionEvent(InstallItemSelectionEvent.INSTALL_ITEM_SELECTION_CHANGED,true);
+				data.selected = event.target.selected; 
+				e.item = InstallerComponentVO(data);
+				dispatchEvent(e);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:CheckBox id="checkbox1" selected="{data.selected}" enabled="true" change="checkbox1_changeHandler(event)" skinClass="ws.tink.spark.skins.controls.ColorCheckBoxSkin" />
 	<s:Label text="{data.label}" fontSize="12"/>
 	
 </s:ItemRenderer>

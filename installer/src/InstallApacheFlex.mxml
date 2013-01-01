@@ -67,6 +67,7 @@ variables are not required because the locations of these pieces are known.
 		import org.apache.flex.packageflexsdk.view.components.AdobeLicense;
 		import org.apache.flex.packageflexsdk.view.components.ConsoleWindow;
 		import org.apache.flex.packageflexsdk.view.components.MPLLicense;
+		import org.apache.flex.packageflexsdk.view.events.InstallItemSelectionEvent;
 		import org.apache.flex.utilities.common.Constants;
 		import org.apache.flex.utilities.common.MirrorURLUtil;
 		import org.apache.flex.utilities.common.interfaces.ILog;
@@ -1465,6 +1466,7 @@ variables are not required because the locations of these pieces are known.
 			licenseLinkBtn.includeInLayout = true;
 			_currentLicenseLabel = selectedItem.licenseName;
 			_currentLicenseURL = selectedItem.licenseURL;
+			checkIfAllRequiredComponentsPromptsAnswered();
 			
 		}
 		
@@ -1473,18 +1475,18 @@ variables are not required because the locations of these pieces are known.
 			navigateToURL(new URLRequest(_currentLicenseURL),"_blank");
 		}
 		
-		protected function handleInstallPermissionChange(event:Event):void
+		protected function handleInstallPermissionChange(event:InstallItemSelectionEvent):void
 		{
 			if(installComponentsList.selectedItem != null)
 			{
-				installComponentsList.selectedItem.selected = (event.target.selected);
+				installComponentsList.selectedItem.selected = (event.item.selected);
 				installComponentsList.selectedItem.answered = true;
 			}
 			else
 			{
 				for (var i:int=0; i<_installerComponentsDataProvider.length; i++)
 				{
-					_installerComponentsDataProvider.getItemAt(i).selected = event.target.selected;
+					_installerComponentsDataProvider.getItemAt(i).selected = event.item.selected;
 					_installerComponentsDataProvider.getItemAt(i).answered = true;
 				}
 			}
@@ -1817,6 +1819,11 @@ variables are not required because the locations of these pieces are known.
 			navigateToURL(request, "_blank");
 		}
 		
+		protected function installComponentsList_creationCompleteHandler(event:FlexEvent):void
+		{
+			installComponentsList.addEventListener(InstallItemSelectionEvent.INSTALL_ITEM_SELECTION_CHANGED,handleInstallPermissionChange); 
+		}
+		
 	]]></fx:Script>
 	
 	<fx:Declarations>
@@ -1960,7 +1967,7 @@ variables are not required because the locations of these pieces are known.
 					height="100%"
 					itemRenderer="org.apache.flex.packageflexsdk.view.itemrenderers.OptionalInstallItemRenderer"
 					dataProvider="{_installerComponentsDataProvider}" 
-					change="handleOptionalInstallsChange(event)">
+					change="handleOptionalInstallsChange(event)" creationComplete="installComponentsList_creationCompleteHandler(event)" >
 				<s:layout>
 					<s:VerticalLayout />
 				</s:layout>
@@ -1992,7 +1999,7 @@ variables are not required because the locations of these pieces are known.
 			<s:CheckBox id="installChkBx"
 						label="{_viewResourceConstants.INSTALL_AGREE_ALL}" 
 						selected="false" 
-						change="handleInstallPermissionChange(event)"/>
+						visible="false"/>
 		</s:HGroup>
 	</s:Panel>
 	<s:Panel id="thirdStepGroup" 

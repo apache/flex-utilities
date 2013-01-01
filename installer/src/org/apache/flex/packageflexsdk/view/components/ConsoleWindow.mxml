@@ -21,7 +21,7 @@ limitations under the License.
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
 		  title="Install Log" width="600" height="300" showStatusBar="false"
-		  skinClass="ws.tink.spark.skins.controls.InstallApacheFlexSkin">
+		  >
 	
 	<fx:Script>
 		<![CDATA[

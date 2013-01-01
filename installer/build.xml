@@ -322,8 +322,8 @@
         <mkdir dir="${BUILD_DIR}/temp"/>
         <copy todir="${BUILD_DIR}/temp/${COMMON_PROJECT_NAME}" includeEmptyDirs="false">
 			<fileset dir="${COMMON_PROJECT_DIR}">
-                <exclude name="certificate.p12"/>
-				<exclude name="temp.p12"/>
+				<exclude name="*.p12"/>
+				<exclude name="*.password"/>
                 <exclude name="rat.report"/>
                 <exclude name="libs/**"/>
 				<exclude name="bin/**"/>
@@ -339,8 +339,8 @@
 		
 		<copy todir="${BUILD_DIR}/temp/${INSTALLER_PROJECT_NAME}" includeEmptyDirs="false">
 			<fileset dir="${basedir}">
-                <exclude name="certificate.p12"/>
-				<exclude name="temp.p12"/>
+				<exclude name="*.p12"/>
+				<exclude name="*.password"/>				
                 <exclude name="rat.report"/>
                 <exclude name="libs/**"/>
 				<exclude name="bin/**"/>
