@@ -584,7 +584,7 @@ public class RuntimeLocale
 		content["FETCH_MIRROR_LIST_PARSED"]="Mirror lijst is geparsed met behulp van de landcode en dit domein is ervoor gevonden: ";
 		content["INFO_ABORT_INSTALLATION"]="Installatie wordt afgebroken";
 		content["INFO_APP_INVOKED"]="Opgestart in command line modus met de volgende argumenten: ";
-		content["INFO_CREATING_FLEX_HOME"]="Maakt flex home aan";
+		content["INFO_CREATING_FLEX_HOME"]="Maakt Apache Flex home aan";
 		content["INFO_CREATING_TEMP_DIR"]="Maakt tijdelijke map aan";
 		content["INFO_CURRENT_LANGUAGE"]="Kies een taal";
 		content["INFO_DOWNLOADING_ADOBE_FLEX_SDK"]="Adobe Flex SDK wordt gedownload van: ";
@@ -608,9 +608,9 @@ public class RuntimeLocale
 		content["INFO_UNZIPPING"]="Uitpakken: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="Het Apache Flex SDK MD5 signatuur van de gedownloade bestanden komt overeen met de referentie. Het bestand is geldig.";
 		content["INFO_WINDOW_TITLE"]="Installeer Apache Flex SDK voor gebruik in Adobe Flash Builder";
-		content["INSTALL_AGREE"] = "I Agree, Install";
-		content["INSTALL_AGREE_ALL"] = "I agree to all options and licenses, Install";
-		content["INSTALL_DISAGREE"] = "I Disagree, Don't Install";
+		content["INSTALL_AGREE"] = "Ik ga akkoord, installeer";
+		content["INSTALL_AGREE_ALL"] = "Ik ga akkoord met alle opties en licenties, installeer";
+		content["INSTALL_DISAGREE"] = "Ik ga niet akkoord, installeer niet";
 		content["SELECT_PATH_PROMPT"]="Geef Flex SDK pad in of blader naar het pad";
 		content["STEP_CREATE_DIRECTORIES"]="Mappen aanmaken";
 		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Verplicht)";
@@ -625,7 +625,7 @@ public class RuntimeLocale
 		content["STEP_REQUIRED_UNZIP_AIR_RUNTIME_KIT"]="Adobe AIR Runtime Kit uitpakken";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Adobe AIR Runtime Kit Uitpakken";
 		content["STEP_UNZIP_FLEX_SDK"]="Apache Flex SDK uitpakken";
-		content["STEP_VERIFY_FLEX_SDK"]="Verifieer Apache Flex SDK MD5 signatuur";
+		content["STEP_VERIFY_FLEX_SDK"]="Verifieër Apache Flex SDK MD5 signatuur";
 		content["LICENSE_APACHE_V2"]="Apache V2 Licentie";
 		content["LICENSE_ADOBE_SDK"]="Adobe Flex SDK Licentie";
 		content["LICENSE_ADOBE_AIR_SDK"]="Adobe AIR SDK Licentie";
