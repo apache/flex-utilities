@@ -31,11 +31,13 @@ package org.apache.flex.packageflexsdk.model
 		public var answered:Boolean = false;
 		public var licenseName:String;
 		public var licenseURL:String;
+		public var key:String;
 		
 		public function InstallerComponentVO(label:String,
 											 message:String,
 											 licenseName:String,
 											 licenseURL:String,
+											 key:String,
 											 required:Boolean,
 											 selected:Boolean=false,
 											 installed:Boolean=false,
@@ -45,6 +47,7 @@ package org.apache.flex.packageflexsdk.model
 		{
 			this.label = label;
 			this.message = message;
+			this.key = key;
 			this.required = required;
 			this.selected = selected;
 			this.installed = installed;

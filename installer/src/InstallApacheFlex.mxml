@@ -580,6 +580,7 @@ variables are not required because the locations of these pieces are known.
 					_viewResourceConstants.ASK_APACHE_FLEX,
 					_viewResourceConstants.LICENSE_APACHE_V2,
 					_viewResourceConstants.LICENSE_URL_APACHE_V2,
+					"STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK",
 					true
 				));
 			_installerComponentsDataProvider.addItem(
@@ -587,36 +588,42 @@ variables are not required because the locations of these pieces are known.
 					_viewResourceConstants.ASK_ADOBE_AIR_SDK, 
 					_viewResourceConstants.LICENSE_ADOBE_AIR_SDK,
 					_viewResourceConstants.LICENSE_URL_ADOBE_AIR_SDK,
+					"STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK",
 					true));
 			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC,
 					_viewResourceConstants.ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC, 
 					_viewResourceConstants.LICENSE_ADOBE_SDK,
 					_viewResourceConstants.LICENSE_URL_ADOBE_SDK,
+					"STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC",
 					true));
 			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT,
 					_viewResourceConstants.ASK_SWFOBJECT, 
 					_viewResourceConstants.LICENSE_SWFOBJECT,
 					_viewResourceConstants.LICENSE_URL_SWFOBJECT,
+					"STEP_REQUIRED_INSTALL_SWFOBJECT",
 					true));
 			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,
 					_viewResourceConstants.ASK_OSMF, 
 					_viewResourceConstants.LICENSE_OSMF,
 					_viewResourceConstants.LICENSE_URL_OSMF,
+					"STEP_REQUIRED_INSTALL_OSMF",
 					true));
 			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF,
 					_viewResourceConstants.ASK_FONTSWF, 
 					_viewResourceConstants.LICENSE_FONTSWF,
 					_viewResourceConstants.LICENSE_URL_FONTSWF,
+					"STEP_OPTIONAL_INSTALL_FONTSWF",
 					false));
 			_installerComponentsDataProvider.addItem(
 				new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS,
 					_viewResourceConstants.ASK_BLAZEDS, 
 					_viewResourceConstants.LICENSE_BLAZEDS,
 					_viewResourceConstants.LICENSE_URL_BLAZEDS,
+					"STEP_OPTIONAL_INSTALL_BLAZEDS",
 					false));
 		}
 		
@@ -1421,9 +1428,32 @@ variables are not required because the locations of these pieces are known.
 			
 			if (_viewResourceConstants)
 			{
+				rememberInstallerComponents();
 				updateWindowTitle();
 				initiateInstallStepsActivity();
 				initializeInstallerComponentsDataProvider();
+				recallInstallerComponents();
+			}
+		}
+		
+		private var _selectedInstallerComponents:Vector.<InstallerComponentVO>;
+		protected function rememberInstallerComponents():void
+		{
+			_selectedInstallerComponents = new Vector.<InstallerComponentVO>;
+			for each(var item:InstallerComponentVO in _installerComponentsDataProvider)
+			{
+				if(item.selected)
+				{
+					_selectedInstallerComponents.push(item);
+				}
+			}
+		}
+		
+		protected function recallInstallerComponents():void
+		{
+			for each(var item:InstallerComponentVO in _selectedInstallerComponents)
+			{
+				getInstallerComponentFromLabel(item.key).selected = true;
 			}
 		}
 
@@ -1778,6 +1808,17 @@ variables are not required because the locations of these pieces are known.
 			for each (var s:StepItem in _installationSteps)
 			{
 				if (s.label == stepLabel)
+					return s;
+			}
+			
+			return null;
+		}
+		
+		protected function getInstallerComponentFromLabel(key:String):InstallerComponentVO
+		{
+			for each (var s:InstallerComponentVO in _installerComponentsDataProvider)
+			{
+				if (s.key == key)
 					return s;
 			}
 			
