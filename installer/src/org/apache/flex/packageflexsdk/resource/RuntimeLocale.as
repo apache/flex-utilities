@@ -120,11 +120,14 @@ public class RuntimeLocale
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
 		
 		var content:Object = resource.content;
-		content["BTN_LABEL_BROWSE"]="Αναζήτηση";
-		content["BTN_LABEL_CLOSE"]="Έξοδος";
-		content["BTN_LABEL_INSTALL"]="Εγκατάσταση";
-		content["BTN_LABEL_INSTALL_LOG"]="αρχείο καταγραφής εγκατάστασης";
+		content["BTN_LABEL_BROWSE"]="ΑΝΑΖΗΤΗΣΗ";
+		content["BTN_LABEL_CLOSE"]="ΕΞΟΔΟΣ";
+		content["BTN_LABEL_INSTALL"]="ΕΓΚΑΤΑΣΤΑΣΗ";
+		content["BTN_LABEL_INSTALL_LOG"]="ΑΡΧΕΙΟ ΚΑΤΑΓΡΑΦΗΣ ΕΓΚΑΤΑΣΤΑΣΗΣ";
+		content["BTN_LABEL_NEXT"]="ΕΠΟΜΕΝΟ";
+		content["BTN_LABEL_OPEN_APACHE_FLEX_FOLDER"]="ΑΝΟΙΓΜΑ ΦΑΚΕΛΟΥ APACHE FLEX";
 		content["ERROR_CONFIG_XML_LOAD"]="Πρόεκυψε σφάλμα στην προσπάθεια φόρτωσης του αρχείου ρυθμίσεων XML:";
+		content["ERROR_DIR_NOT_EMPTY"]="Ο κατάλογος που επιλέξατε δεν είναι άδειος";
 		content["ERROR_INVALID_AIR_SDK_URL_MAC"]="Άκυρο Adobe AIR SDK URL για Mac στο αρχείο ρυθμίσεων";
 		content["ERROR_INVALID_AIR_SDK_URL_WINDOWS"]="Άκυρο Adobe AIR SDK URL για Windows στο αρχείο ρυθμίσεων";
 		content["ERROR_INVALID_FLASH_PLAYER_SWC_URL"]="Άκυρο Flash Player swc URL στο αρχείο ρυθμίσεων";
@@ -144,6 +147,7 @@ public class RuntimeLocale
 		content["INFO_APP_INVOKED"]="Κλήση με λειτουργία γραμμής εντολών με τα ακόλουθα ορίσματα:";
 		content["INFO_CREATING_FLEX_HOME"]="Δημιουργία αρχικού καταλόγου για Apache Flex";
 		content["INFO_CREATING_TEMP_DIR"]="Δημιουργία προσωρινού καταλόγου";
+		content["INFO_CURRENT_LANGUAGE"]="Επιλέξτε Γλώσσα";
 		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC"]="Λήψη Adobe AIR Runtime Kit για Mac από:";
 		content["INFO_DOWNLOADING_AIR_RUNTIME_KIT_WINDOWS"]="Λήψη Adobe AIR Runtime Kit για Windows από:";
 		content["INFO_DOWNLOADING_FLEX_SDK"]="Λήψη Apache Flex SDK από:";
@@ -152,10 +156,12 @@ public class RuntimeLocale
 		content["INFO_FINISHED_UNTARING"]="Η αποσυμπίεση τελείωσε:";
 		content["INFO_FINISHED_UNZIPPING"]="Η αποσυμπίεση τελείωσε:";
 		content["INFO_INSTALLATION_COMPLETE"]="Η εγκατάσταση ολοκληρώθηκε.";
+		content["INFO_INSTALLING"]="Εγκατάσταση...";
 		content["INFO_INSTALLING_CONFIG_FILES"]="Εγκατάσταση αρχείων ρυθμίσεων για frameworks ρυθμισμένα για χρήση IDE";
 		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Εγκατάσταση Adobe Flash Player playerglobal.swc από:";
 		content["INFO_INVOKED_GUI_MODE"]="Κλήση με λειτουργία γραφικού περιβάλλοντος";
 		content["INFO_SELECT_DIRECTORY"]="Επιλέξτε ένα κατάλογο";
+		content["INFO_SELECT_DIRECTORY_INSTALL"]="Επιλέξτε τον κατάλογο εγκατάστασης";
 		content["INFO_UNZIPPING"]="Ααποσυμπίεση: ";
 		content["SELECT_PATH_PROMPT"]="Πληκτρολογήστε η επιλέξτε μια έγκυρη διαδρομή για το Flex SDK";
 		content["STEP_CREATE_DIRECTORIES"]="Δημιουργία Καταλόγων";
