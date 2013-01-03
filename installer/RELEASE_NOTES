@@ -23,7 +23,15 @@ Copyright 2012 The Apache Software Foundation
 Apache Flex SDK Installer 2.0
 1.  If you have previously installed a release candidate (RC) version of  Apache Flex SDK Installer, you need to uninstall it first.  And then run the downloaded installer file.  
 2.  From Flex 4.9 onwards, the Text Layout Framework (TLF) is part of the Flex SDK.  So the installer does not download it separately anymore.  
-3.  By default, Apache Flex SDK Installer 2.0 downloads Adobe Flash Player 11.1 and Adobe AIR SDK 3.4.  If you want to change it to any other supported combination, save a copy of the config file found at: http://incubator.apache.org/flex/sdk-installer-config-2.0.xml, modify the download urls to point to the required versions.  Then run the app from command line mode with the optional command line parameter: -config=<path to config file>.  The new urls will be used to download the required dependencies.  
+3.  By default, Apache Flex SDK Installer 2.0 downloads Adobe Flash Player 11.1 and Adobe AIR SDK 3.4.  If you want to change it to any other supported combination, save a copy 
+	of the config file found at: http://incubator.apache.org/flex/sdk-installer-config-2.0.xml, modify the download urls to point to the required versions.  Then run the app from command 
+	line mode with the optional command line parameter: -config=<path to config file>.  The new urls will be used to download the required dependencies.  
+
+Issues addressed in this release:
+Here is a list of significant issues that were fixed with this release:
+1.  https://issues.apache.org/jira/browse/FLEX-33214 (Fix UI of license screen)
+2.  https://issues.apache.org/jira/browse/FLEX-33122 (Enable language switching)
+	Available languages: English(US), English(AU), English(GB), Español (ES), Français, Greek, Nederlands and Português
 
 Apache Flex Installer SDK 1.0
 
