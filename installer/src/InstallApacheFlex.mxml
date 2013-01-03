@@ -195,6 +195,80 @@ variables are not required because the locations of these pieces are known.
 			nativeApplication.addEventListener(InvokeEvent.INVOKE, parseArgs);
 		}
 		
+		private var _logButtonWidth:Number = 110;
+		[Bindable("logButtonWidthChanged")]
+		public function get logButtonWidth():Number
+		{
+			return _logButtonWidth;	
+		}
+		
+		private var _folderButtonWidth:Number = 225;
+		[Bindable("folderButtonWidthChanged")]
+		public function get folderButtonWidth():Number
+		{
+			return _folderButtonWidth;	
+		}
+		
+		private var _standardButtonWidth:Number = 88;
+		[Bindable("buttonWidthChanged")]
+		public function get standardButtonWidth():Number
+		{
+			return _standardButtonWidth;	
+		}
+		public function computeStandardButtonWidth():void
+		{
+			// designer set english width at 88 so factor
+			// in the different between english strings and 88
+			var fudgeFactor:Number = 10;
+			var logFudgeFactor:Number = 3;
+			var folderFudgeFactor:Number = 17;
+			
+			var w:Number;
+			hiddenButton.label = installLogBtn.label;
+			hiddenButton.validateNow();
+			w = hiddenButton.measuredWidth;
+			w += logFudgeFactor;
+			if (_logButtonWidth != w)
+			{
+				_logButtonWidth = w;
+				dispatchEvent(new Event("logButtonWidthChanged"));
+				trace("log = ",w);
+			}
+
+			hiddenButton.label = openApacheFlexFolderBtn.label;
+			hiddenButton.validateNow();
+			w = hiddenButton.measuredWidth;
+			w += folderFudgeFactor;
+			if (_folderButtonWidth != w)
+			{
+				_folderButtonWidth = w;
+				dispatchEvent(new Event("folderButtonWidthChanged"));
+				trace("folder = ",w);
+			}
+			
+			w = 0;
+			hiddenButton.label = installBtn.label;
+			hiddenButton.validateNow();
+			w = Math.max(w, hiddenButton.measuredWidth);
+			hiddenButton.label = browseBtn.label;
+			hiddenButton.validateNow();
+			w = Math.max(w, hiddenButton.measuredWidth);
+			hiddenButton.label = closeBtn.label;
+			hiddenButton.validateNow();
+			w = Math.max(w, hiddenButton.measuredWidth);
+			hiddenButton.label = nextBtn.label;
+			hiddenButton.validateNow();
+			w = Math.max(w, hiddenButton.measuredWidth);
+			
+			w += fudgeFactor;
+			if (_standardButtonWidth != w)
+			{
+				_standardButtonWidth = w;
+				dispatchEvent(new Event("buttonWidthChanged"));
+				trace(w);
+			}
+		}
+		
 		private function parseArgs(event:InvokeEvent):void
 		{
 			for each (var s:String in event.arguments)
@@ -231,6 +305,7 @@ variables are not required because the locations of these pieces are known.
 			resourceManager.localeChain = [ ViewResourceConstants.DEFAULT_LANGUAGE ];
 			_viewResourceConstants 		= ViewResourceConstants.instance;
 			_viewResourceConstants.update();
+			computeStandardButtonWidth();
 			selectDefaultLanguage();			
 		}
 		
@@ -262,6 +337,7 @@ variables are not required because the locations of these pieces are known.
 			resourceManager.addEventListener(Event.CHANGE, _viewResourceConstants.update);
 						
 			_viewResourceConstants.update();
+			computeStandardButtonWidth();
 			
 		}
 		
@@ -1420,6 +1496,7 @@ variables are not required because the locations of these pieces are known.
 				resourceManager.localeChain = [ _langSelect.selectedItem["data"], defaultLanguage ];
 			
 			resourceManager.update();
+			computeStandardButtonWidth();
 		}
 		
 		override protected function resourcesChanged():void
@@ -1955,7 +2032,7 @@ variables are not required because the locations of these pieces are known.
 					 change="handleFlexSDXTxtInputChange(event)"/>
 		<s:Button id="browseBtn" 
 				  styleName="browseBtnStyle" 
-				  width="88" 
+				  width="{standardButtonWidth}" 
 				  height="32"
 				  label="{_viewResourceConstants.BTN_LABEL_BROWSE}" 
 				  click="browseForSDK(event)" 
@@ -1965,7 +2042,7 @@ variables are not required because the locations of these pieces are known.
 				width="100%" />
 			<s:Button id="nextBtn" 
 					  styleName="mainBtnStyle" 
-					  width="88" 
+					  width="{standardButtonWidth}" 
 					  height="32" 
 					  right="10"
 					  label="{_viewResourceConstants.BTN_LABEL_NEXT}" 
@@ -1986,7 +2063,7 @@ variables are not required because the locations of these pieces are known.
 				width="100%" />
 			<s:Button id="installBtn" 
 					  styleName="mainBtnStyle" 
-					  width="88" 
+					  width="{standardButtonWidth}" 
 					  height="32" 
 					  right="10"
 					  label="{_viewResourceConstants.BTN_LABEL_INSTALL}" 
@@ -2072,7 +2149,7 @@ variables are not required because the locations of these pieces are known.
 							  height="21" />
 		<s:Button id="openApacheFlexFolderBtn"
 				  styleName="mainBtnStyle"
-				  width="225"
+				  width="{folderButtonWidth}"
 				  height="32"
 				  visible="false"
 				  includeInLayout="false"
@@ -2088,18 +2165,19 @@ variables are not required because the locations of these pieces are known.
 		paddingRight="20" 
 		paddingTop="0">
 		<s:Button id="installLogBtn" 
-				  styleName="genericBtnStyle" 
-				  width="110" 
+				  styleName="genericBtnStyle"
+				  width="{logButtonWidth}"
 				  height="32"
 				  label="{_viewResourceConstants.BTN_LABEL_INSTALL_LOG}" 
 				  click="showConsole(event)" />
 		<s:Spacer width="100%" />
 		<s:Button id="closeBtn" 
 				  styleName="genericBtnStyle" 
-				  width="88" 
+				  width="{standardButtonWidth}" 
 				  height="32" 
 				  label="{_viewResourceConstants.BTN_LABEL_CLOSE}" 
 				  click="closeApplication(event)" />
 	</s:HGroup>
-	
+	<!-- used to measure text -->
+	<s:Button id="hiddenButton" visible="false" includeInLayout="false" />
 </s:WindowedApplication>
