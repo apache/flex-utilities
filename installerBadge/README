@@ -1,7 +1,0 @@
-The code implements functionality to be viewed through an iframe on another domain. Please use one of these to embed the badge on your site or communications:
-
-Regular size (302 x 302)
-<iframe name="afSDKInstallBadgeRegular" src="http://incubator.apache.org/flex/installerbadge/index.html" frameborder="0" height="302" marginheight="0" marginwidth="0" scrolling="no" width="302"></iframe>
-
-Small size (402 x 84)
-<iframe name="afSDKInstallBadgeSmall" src="http://incubator.apache.org/flex/installerbadge/index.html" frameborder="0" height="84" marginheight="0" marginwidth="0" scrolling="no" width="402"></iframe>
