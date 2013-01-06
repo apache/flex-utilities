@@ -15,11 +15,4 @@
 		<nature>com.adobe.flexbuilder.project.flexnature</nature>
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>[source path] src</name>
-			<type>2</type>
-			<location>C:/p/flex_os/workspace/utilities/ApacheFlexUtilitiesCommon/src</location>
-		</link>
-	</linkedResources>
 </projectDescription>
