@@ -126,10 +126,10 @@
     </condition>
     <property name="extension" value="dmg"/>
 
-    <target name="build" depends="init,certificate,compile,packagenative,copy-config,cleanup" 
+    <target name="build" depends="init,certificate,compile,packagenative,cleanup" 
         description="Compiles and packages application"/>
 
-    <target name="release" depends="clean,build,source-package,rat-report"
+    <target name="release" depends="clean,build,source-package,rat-report,sign,copy-misc"
         description="Build the application and package up the distros for release."/>
         
     <target name="init" depends="clean,createDirs,update-version-in-xml-files" 
@@ -310,8 +310,8 @@
         </java>
     </target>
 	
-	<target name="copy-config" description="Copy config files to release directory">
-		<copy file="${SOURCE_DIR}/${APP_CONFIG_XML_NAME}.xml" todir="${RELEASE_DIR}"/>
+	<target name="copy-misc" description="Copy config files to release directory">
+		<copy file="${basedir}/README" tofile="${RELEASE_DIR}/READme"/>
 	</target>
     
     <!-- 
@@ -477,5 +477,50 @@
         <echo message="Rat report not generated."/>
         <echo message="rat jars (apache-rat-*.jar, apache-rat-tasks-*.jar)"/>
         <echo message="not found in anttask.classpath"/>
-    </target>   
+    </target>
+	
+	<target name="sign" >
+		<exec executable="gpg" output="${RELEASE_DIR}/${source.kit}.zip.md5">
+			<arg value="--print-md" />
+			<arg value="MD5" />
+			<arg value="release/${source.kit}.zip" />
+		</exec>
+		
+		<exec executable="gpg">
+			<arg value="--armor" />
+			<arg value="--output" />
+			<arg value="${RELEASE_DIR}/${source.kit}.zip.asc" />
+			<arg value="--detach-sig" />
+			<arg value="${RELEASE_DIR}/${source.kit}.zip" />
+		</exec>
+		
+		<exec executable="gpg" output="${RELEASE_DIR}/${source.kit}.tar.gz.md5">
+			<arg value="--print-md" />
+			<arg value="MD5" />
+			<arg value="release/${source.kit}.tar.gz" />
+		</exec>
+		
+		<exec executable="gpg">
+			<arg value="--armor" />
+			<arg value="--output" />
+			<arg value="${RELEASE_DIR}/${source.kit}.tar.gz.asc" />
+			<arg value="--detach-sig" />
+			<arg value="${RELEASE_DIR}/${source.kit}.tar.gz" />
+		</exec>
+		
+		<exec executable="gpg" output="${RELEASE_DIR}/${binary.kit}.${extension}.md5">
+			<arg value="--print-md" />
+			<arg value="MD5" />
+			<arg value="release/${binary.kit}.${extension}" />
+		</exec>
+		
+		<exec executable="gpg">
+			<arg value="--armor" />
+			<arg value="--output" />
+			<arg value="${RELEASE_DIR}/${binary.kit}.${extension}.asc" />
+			<arg value="--detach-sig" />
+			<arg value="${RELEASE_DIR}/${binary.kit}.${extension}" />
+		</exec>
+	</target>
+	
 </project>

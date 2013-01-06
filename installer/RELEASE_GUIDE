@@ -19,7 +19,7 @@ limitations under the License.
 
 Steps to follow in preparation for a release of InstallApacheFlex
 
-1.    Check out the code from https://svn.apache.org/repos/asf/incubator/flex/utilities/trunk
+1.    Check out the code from https://svn.apache.org/repos/asf/flex/utilities/trunk
 
 2.a.  If it is a major release, 
 		- bump up the "release.version" property in the build.properties file 
@@ -36,34 +36,13 @@ Steps to follow in preparation for a release of InstallApacheFlex
 	If you do so the certificate files will be packaged into the source release. That would be very bad.
 	
 4.  Run: 
-ant release
+	ant release
 
 This step 
 	- downloads all the necessary files, 
 	- updates the version numbers in InstallApacheFlex-app.xml and sdk-installer-config-2.0.xml
 	- creates the .exe or .dmg file depending on the OS you are working on
 	- creates the source release files as a .zip file and a tar.gz file 
+	- signs the artifacts to create corresponding .asc and .md5 files (assumes that you have a pgp id and keypair set up and prompts for the passphrase)
 	
-5.  Run:
-
-cd release
-
-gpg --armor --output apache-flex-sdk-installer-2.0.1-bin.exe.asc --detach-sig apache-flex-sdk-installer-2.0.1-bin.exe (on Windows)
-gpg --armor --output apache-flex-sdk-installer-2.0.1-bin.dmg.asc --detach-sig apache-flex-sdk-installer-2.0.1-bin.dmg (on Mac)
-gpg --armor --output apache-flex-sdk-installer-2.0.1-src.tar.gz.asc --detach-sig apache-flex-sdk-installer-2.0.1-src.tar.gz
-gpg --armor --output apache-flex-sdk-installer-2.0.1-src.zip.asc --detach-sig apache-flex-sdk-installer-2.0.1-src.zip
-
-This step creates the release artifacts InstallApacheFlex.exe.asc, apache-flex-sdk-installer-2.0.1-src.tar.gz.asc and apache-flex-sdk-installer-2.0.1-src.zip.asc
-
-6.  Run:
-gpg --print-md MD5 apache-flex-sdk-installer-2.0.1-bin.exe > apache-flex-sdk-installer-2.0.1-bin.exe.md5 (On Windows)
-gpg --print-md MD5 apache-flex-sdk-installer-2.0.1-bin.dmg > apache-flex-sdk-installer-2.0.1-bin.dmg.md5 (On Mac)
-gpg --print-md MD5 apache-flex-sdk-installer-2.0.1-src.tar.gz > apache-flex-sdk-installer-2.0.1-src.tar.gz.md5
-gpg --print-md MD5 apache-flex-sdk-installer-2.0.1-src.zip > apache-flex-sdk-installer-2.0.1-src.zip.md5
-
-7. In the /installer directory, run:
-ant rat-report
-
-This step creates the rat.report file.  Inspect the report to make sure there are no violations.  
-
-8. Upload all the files under the /release directory to the release manager's personal space at people.apache.org before calling a VOTE.  
+5. Upload all the files under the /release directory to the https://dist.apache.org/repos/dist/dev/flex/installer/{version}/{RCversion}/ before calling a VOTE.  

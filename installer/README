@@ -21,7 +21,7 @@ limitations under the License.
 Overview:
 =========
 
-- The InstallApacheFlex AIR application provides an easy, single-click installation of the 
+- The Apache Flex SDK Installer AIR application provides an easy, single-click installation of the 
   Apache Flex SDK and all its dependencies.  This will make it suitable for working with 
   IDEs such as Adobe Flash Builder, FDT, IntelliJ IDEA, FlashDevelop, etc.  
 	The application downloads the following dependencies:
@@ -40,7 +40,7 @@ Overview:
 	When the dependencies file names or urls change in future, update the 
 	sdk-installer-config-2.0.xml to ensure that the application works correctly.  
 
-- The application uses http://incubator.apache.org/flex/single-mirror-url.cgi to determine
+- The application uses http://flex.apache.org/single-mirror-url.cgi to determine
   the preferred mirror url to download Apache Flex SDK binary from.
   
 - Once the Apache Flex SDK binary file is downloaded, a MD5 hash is generated for it.  
@@ -59,7 +59,7 @@ Overview:
 
 - From the 2.0 version, by default, Apache Flex SDK Installer 2.0 downloads Adobe Flash Player 11.1 
 	and Adobe AIR SDK 3.4.  If you want to change it to any other supported combination, you save 
-	a copy of the config file found at: http://incubator.apache.org/flex/sdk-installer-config-2.0.xml, 
+	a copy of the config file found at: http://flex.apache.org/sdk-installer-config-2.0.xml, 
 	modify the download urls to point to the required versions.  Then run the app from command line 
 	mode with the optional command line parameter: -config=<path to config file>
 	
