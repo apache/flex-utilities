@@ -544,10 +544,13 @@ variables are not required because the locations of these pieces are known.
 			initiateInstallStepsActivity();
 			initializeInstallerComponentsDataProvider();
 			
-			checkVersion();
+			if(shouldUpdate())
+			{
+				doUpdate();
+			}
 		}
 		
-		protected function checkVersion():void
+		protected function shouldUpdate():Boolean
 		{
 			var shouldUpdate:Boolean = false;
 			//Current version
@@ -560,29 +563,35 @@ variables are not required because the locations of these pieces are known.
 			
 			var availBuildNumbers:Array = _latestVersion.split(".");
 			var currentBuildNumbers:Array = currentVersion.split(".");
-			for (var i:int=0; i < currentBuildNumbers.length; i++)
+			
+			if(parseInt(availBuildNumbers[0]) > parseInt(currentBuildNumbers[0]))
 			{
-				if (parseInt(availBuildNumbers[i]) > parseInt(currentBuildNumbers[i]))
+				return true;
+			}
+			else if(parseInt(availBuildNumbers[0]) == parseInt(currentBuildNumbers[0]))
+			{
+				if(parseInt(availBuildNumbers[1]) > parseInt(currentBuildNumbers[1]))
 				{
-					shouldUpdate = true;
+					return true;
 				}
-				else if(parseInt(availBuildNumbers[i]) == parseInt(currentBuildNumbers[i]))
+				else if(parseInt(availBuildNumbers[1]) == parseInt(currentBuildNumbers[1]))
 				{
-					continue;
-				}
-				else
-				{
-					return;
+					if(parseInt(availBuildNumbers[2]) > parseInt(currentBuildNumbers[2]))
+					{
+						return true;
+					}
 				}
 			}
+			return false;
 			
-			if(shouldUpdate)
-			{
+		}
+		
+		protected function doUpdate():void
+		{
 				var updaterDialog:UpdaterDialog = UpdaterDialog(PopUpManager.createPopUp(this,UpdaterDialog,true));
 				updaterDialog.addEventListener("close",handleUpdaterDialogClose);
 				updaterDialog.latestVersion = _latestVersion;
 				PopUpManager.centerPopUp(updaterDialog);
-			}
 		}
 		
 		protected function handleUpdaterDialogClose(event:Event):void
