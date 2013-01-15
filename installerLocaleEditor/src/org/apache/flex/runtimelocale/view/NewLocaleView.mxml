@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   width="400"
+			   height="80"
+			   implements="org.apache.flex.runtimelocale.view.IInjectableView"
+			   name="newLocaleView"
+			   title="Enter new locale name"
+			   close="titlewindow1_closeHandler(event)"
+			   defaultButton="{addNewLocaleButton}"
+			   creationComplete="titlewindow1_creationCompleteHandler(event)">
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import org.apache.flex.runtimelocale.event.LocaleEvent;
+			import spark.events.TextOperationEvent;
+
+			protected function addNewLocaleButton_clickHandler(event:MouseEvent):void {
+				var locale:String = localeNameLeft.text + '_' + localeNameRight.text;
+				var localeEvent:LocaleEvent = new LocaleEvent(LocaleEvent.CREATE_LOCALE_REQUEST, locale);
+				dispatchEvent(localeEvent);
+				if (!localeEvent.isDefaultPrevented()) {
+					closeWindow();
+				} else {
+					localeNameLeft.selectAll();
+				}
+			}
+
+			protected function localeNameLeft_changeHandler(event:TextOperationEvent):void {
+				localeNameLeft.text = localeNameLeft.text.toLowerCase();
+				if (localeNameLeft.text.length == 2) {
+					localeNameRight.setFocus();
+				}
+			}
+
+			protected function localeNameRight_changeHandler(event:TextOperationEvent):void {
+				localeNameRight.text = localeNameRight.text.toUpperCase();
+				if (localeNameRight.text.length == 2) {
+					addNewLocaleButton.setFocus();
+				}
+			}
+
+			protected function titlewindow1_closeHandler(event:CloseEvent):void {
+				closeWindow();
+			}
+
+			protected function titlewindow1_creationCompleteHandler(event:FlexEvent):void {
+				localeNameLeft.setFocus();
+			}
+
+			private function closeWindow():void {
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:HGroup width="380"
+			  height="100%"
+			  verticalAlign="middle"
+			  paddingLeft="15">
+		<s:TextInput id="localeNameLeft"
+					 width="25"
+					 maxChars="2"
+					 change="localeNameLeft_changeHandler(event)"/>
+		<s:Label text="_"/>
+		<s:TextInput id="localeNameRight"
+					 width="25"
+					 maxChars="2"
+					 change="localeNameRight_changeHandler(event)"/>
+		<s:Button id="addNewLocaleButton"
+				  label="Add"
+				  click="addNewLocaleButton_clickHandler(event)"
+				  enabled="{((localeNameLeft.text.length + localeNameRight.text.length) == 4)}"/>
+	</s:HGroup>
+</s:TitleWindow>

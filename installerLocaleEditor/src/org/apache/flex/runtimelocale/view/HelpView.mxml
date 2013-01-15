@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   width="800"
+			   height="600"
+			   name="helpView"
+			   title="Introductory help text"
+			   implements="org.apache.flex.runtimelocale.view.IInjectableView"
+			   close="titlewindow1_closeHandler(event)"
+			   creationComplete="titlewindow1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import org.apache.flex.runtimelocale.model.ApplicationModel;
+			import org.as3commons.logging.api.ILogger;
+			import org.as3commons.logging.api.getClassLogger;
+
+			private static const logger:ILogger = getClassLogger(HelpView);
+
+			private var _applicationModel:ApplicationModel;
+
+			public function get applicationModel():ApplicationModel {
+				return _applicationModel;
+			}
+
+			public function set applicationModel(value:ApplicationModel):void {
+				if (value !== _applicationModel) {
+					_applicationModel = value;
+					if (_applicationModel) {
+						var showHelp:String = _applicationModel.configurationProperties['showhelp'];
+						alwaysShowHelp.selected = (showHelp.toLowerCase() == "true");
+					}
+				}
+			}
+
+			protected function alwaysShowHelp_changeHandler(event:Event):void {
+				_applicationModel.configurationProperties['showhelp'] = (alwaysShowHelp.selected) ? "true" : false;
+			}
+
+			protected function titlewindow1_closeHandler(event:CloseEvent):void {
+				PopUpManager.removePopUp(this);
+			}
+
+			protected function titlewindow1_creationCompleteHandler(event:FlexEvent):void {
+				var helpFile:File = File.applicationDirectory.resolvePath("helptext.txt");
+				if (helpFile.exists) {
+					try {
+						var fileStream:FileStream = new FileStream();
+						fileStream.open(helpFile, FileMode.READ);
+						fileStream.position = 0;
+						helpText.text = fileStream.readMultiByte(fileStream.bytesAvailable, "utf-8");
+					} catch (e:Error) {
+						logger.error("Error encountered while reading log file '{0}': {0}", [helpFile, e.message]);
+					} finally {
+						fileStream.close();
+						logger.info("Successfully loaded logfile: {0}", [helpFile.nativePath]);
+					}
+				}
+
+			}
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextArea width="100%"
+				height="100%"
+				id="helpText"
+				editable="false"
+				selectable="true">
+	</s:TextArea>
+	<s:CheckBox id="alwaysShowHelp"
+				change="alwaysShowHelp_changeHandler(event)"
+				label="Always show this screen at application startup"/>
+</s:TitleWindow>

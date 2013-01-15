@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sas:SASObjects xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:sas="http://www.springactionscript.org/mxml/config"
+				skipMetadata="true"
+				skipPostProcessors="true">
+	<fx:Script>
+		<![CDATA[
+			import org.apache.flex.runtimelocale.IStatusReporter;
+			import org.apache.flex.runtimelocale.command.ApplicationErrorStatusCommand;
+			import org.apache.flex.runtimelocale.command.ApplicationInfoStatusCommand;
+			import org.apache.flex.runtimelocale.command.CreateLocaleRequestCommand;
+			import org.apache.flex.runtimelocale.command.InitializeApplicationCommand;
+			import org.apache.flex.runtimelocale.command.LocaleFileLoadedCommand;
+			import org.apache.flex.runtimelocale.command.LocaleFileReadyCommand;
+			import org.apache.flex.runtimelocale.command.LocaleFileSaveRequestCommand;
+			import org.apache.flex.runtimelocale.command.LocaleFileShowRequestCommand;
+			import org.apache.flex.runtimelocale.command.NewLocaleItemRequestCommand;
+			import org.apache.flex.runtimelocale.command.NewLocaleRequestCommand;
+			import org.apache.flex.runtimelocale.command.ReferenceLocaleRequestCommand;
+			import org.apache.flex.runtimelocale.command.RemoveLocaleItemRequestCommand;
+			import org.apache.flex.runtimelocale.command.RemoveLocaleRequestCommand;
+			import org.apache.flex.runtimelocale.command.RequestAddMissingKeysCommand;
+			import org.apache.flex.runtimelocale.command.SaveConfigurationRequestCommand;
+			import org.apache.flex.runtimelocale.command.ShowHelpRequestCommand;
+			import org.apache.flex.runtimelocale.command.ShowLocaleFileSelectorViewCommand;
+			import org.apache.flex.runtimelocale.command.ShowLogFileRequestCommand;
+			import org.apache.flex.runtimelocale.controller.ApplicationController;
+			import org.apache.flex.runtimelocale.event.ApplicationStatusEvent;
+			import org.apache.flex.runtimelocale.event.LocaleDataEvent;
+			import org.apache.flex.runtimelocale.event.LocaleEvent;
+			import org.apache.flex.runtimelocale.event.LocaleFileEvent;
+			import org.apache.flex.runtimelocale.event.LocaleFileLoadedEvent;
+			import org.apache.flex.runtimelocale.event.LocaleItemEvent;
+			import org.apache.flex.runtimelocale.event.ReferenceLocaleRequestEvent;
+			import org.apache.flex.runtimelocale.event.ShowHelpRequestEvent;
+			import org.apache.flex.runtimelocale.event.ShowLocaleFileSelectorViewEvent;
+			import org.apache.flex.runtimelocale.event.ShowLogFileRequestEvent;
+			import org.apache.flex.runtimelocale.model.ApplicationModel;
+			import org.apache.flex.runtimelocale.model.IApplicationModelAware;
+			import org.apache.flex.runtimelocale.model.LocaleFileSelectorPM;
+			import org.apache.flex.runtimelocale.model.MainViewPM;
+			import org.apache.flex.runtimelocale.view.HelpView;
+			import org.apache.flex.runtimelocale.view.LocaleFileSelectorView;
+			import org.apache.flex.runtimelocale.view.LocaleView;
+			import org.apache.flex.runtimelocale.view.MainView;
+			import org.apache.flex.runtimelocale.view.NewLocaleView;
+			import org.apache.flex.runtimelocale.view.itemrenderer.LocaleItemView;
+			import org.springextensions.actionscript.stage.DefaultAutowiringStageProcessor;
+			import org.springextensions.actionscript.stage.DefaultObjectDefinitionResolver;
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<sas:Interface id="applicationModelAware"
+					   clazz="{IApplicationModelAware}">
+			<sas:Property name="applicationModel"
+						  ref="applicationModel"/>
+		</sas:Interface>
+
+		<sas:Interface id="statusReporter"
+					   clazz="{IStatusReporter}">
+			<sas:EventRouterConfiguration eventNames="{ApplicationStatusEvent.APPLICATION_ERROR_STATUS},{ApplicationStatusEvent.APPLICATION_INFO_STATUS}"/>
+		</sas:Interface>
+
+		<sas:Object id="objectSelector"
+					clazz="{StageObjectSelector}"
+					childContextAccess="none"/>
+
+		<sas:Object id="objectDefinitionResolver"
+					clazz="{DefaultObjectDefinitionResolver}">
+			<sas:Property name="lookupByType"
+						  value="false"
+						  type="boolean"/>
+		</sas:Object>
+
+		<sas:StageObjectProcessor objectSelector="objectSelector"
+								  id="autowiringStageProcessor"
+								  clazz="{DefaultAutowiringStageProcessor}">
+		</sas:StageObjectProcessor>
+
+		<sas:Object id="localeFileSelectorPM"
+					clazz="{LocaleFileSelectorPM}"
+					isLazyInit="true">
+			<sas:Property name="applicationModel"
+						  ref="applicationModel"/>
+			<sas:EventRouterConfiguration eventNames="{LocaleFileLoadedEvent.LOCALE_FILE_LOADED}"/>
+		</sas:Object>
+
+		<sas:Object id="mainViewPM"
+					clazz="{MainViewPM}"
+					isLazyInit="true">
+			<sas:Property name="applicationModel"
+						  ref="applicationModel"/>
+			<sas:EventRouterConfiguration eventNames="{LocaleFileEvent.FILE_SAVE_REQUEST},{LocaleFileEvent.FILE_SHOW_REQUEST},{ReferenceLocaleRequestEvent.REFERENCE_LOCALE_REQUEST},{LocaleEvent.NEW_LOCALE_REQUEST},{ShowLogFileRequestEvent.SHOW_LOG_FILE_REQUEST},{ShowHelpRequestEvent.SHOW_HELP_REQUEST}"/>
+			<sas:EventHandlerMethod eventName="{LocaleEvent.LOCALE_CREATED}"
+									name="handleNewLocale"/>
+			<sas:EventHandlerMethod eventName="{LocaleEvent.LOCALE_REMOVED}"
+									name="handleRemovedLocale"/>
+		</sas:Object>
+
+		<sas:Object id="applicationController"
+					clazz="{ApplicationController}"
+					initMethod="initialize"/>
+
+		<sas:Object id="applicationModel"
+					clazz="{ApplicationModel}"
+					isLazyInit="true"/>
+
+		<!-- BEGIN: View configurations -->
+
+		<sas:Object id="selectorView"
+					clazz="{LocaleFileSelectorView}"
+					scope="stage">
+			<sas:Property name="presentationModel"
+						  ref="localeFileSelectorPM"/>
+		</sas:Object>
+
+		<sas:Object id="mainView"
+					clazz="{MainView}"
+					scope="stage">
+			<sas:Property name="presentationModel"
+						  ref="mainViewPM"/>
+		</sas:Object>
+
+		<sas:Object id="localeItemView"
+					clazz="{LocaleItemView}"
+					scope="stage">
+			<sas:Property name="applicationModel"
+						  ref="applicationModel"/>
+		</sas:Object>
+
+		<sas:Object id="localeView"
+					clazz="{LocaleView}"
+					scope="stage">
+			<sas:EventRouterConfiguration eventNames="{LocaleItemEvent.REMOVE_LOCALE_ITEM_REQUEST},{LocaleDataEvent.REQUEST_ADD_MISSING_KEYS},{LocaleItemEvent.NEW_LOCALE_ITEM_REQUEST},{LocaleEvent.REMOVE_LOCALE_REQUEST}"/>
+		</sas:Object>
+
+		<sas:Object id="newLocaleView"
+					clazz="{NewLocaleView}"
+					scope="stage">
+			<sas:EventRouterConfiguration eventNames="{LocaleEvent.CREATE_LOCALE_REQUEST}"/>
+		</sas:Object>
+
+		<sas:Object id="helpView"
+					clazz="{HelpView}"
+					scope="stage">
+			<sas:Property name="applicationModel"
+						  ref="applicationModel"/>
+		</sas:Object>
+
+		<!-- END: View configurations -->
+
+		<!-- BEGIN: Command configurations -->
+
+		<sas:Object id="localeFileLoadedCommand"
+					clazz="{LocaleFileLoadedCommand}"
+					scope="prototype">
+			<sas:EventRouterConfiguration eventNames="{LocaleFileEvent.FILE_READY},{ShowLocaleFileSelectorViewEvent.SHOW_LOCALE_FILE_SELECTOR}"/>
+		</sas:Object>
+
+		<sas:Object id="applicationErrorStatusCommand"
+					clazz="{ApplicationErrorStatusCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="applicationInfoStatusCommand"
+					clazz="{ApplicationInfoStatusCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="localeFileReadyCommand"
+					clazz="{LocaleFileReadyCommand}"
+					scope="prototype">
+			<sas:EventRouterConfiguration eventNames="{ReferenceLocaleRequestEvent.REFERENCE_LOCALE_REQUEST}"/>
+		</sas:Object>
+
+		<sas:Object id="localeFileSaveRequestCommand"
+					clazz="{LocaleFileSaveRequestCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="referenceLocaleRequestCommand"
+					clazz="{ReferenceLocaleRequestCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="removeLocaleItemRequestCommand"
+					clazz="{RemoveLocaleItemRequestCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="requestAddMissingKeysCommand"
+					clazz="{RequestAddMissingKeysCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="newLocaleRequestCommand"
+					clazz="{NewLocaleRequestCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="createLocaleRequestCommand"
+					clazz="{CreateLocaleRequestCommand}"
+					scope="prototype">
+			<sas:EventRouterConfiguration eventNames="{LocaleEvent.LOCALE_CREATED}"/>
+		</sas:Object>
+
+		<sas:Object id="showLocaleFileSelectorViewCommand"
+					clazz="{ShowLocaleFileSelectorViewCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="initializeApplicationCommand"
+					clazz="{InitializeApplicationCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="saveConfigurationRequestCommand"
+					clazz="{SaveConfigurationRequestCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="newLocaleItemRequestCommand"
+					clazz="{NewLocaleItemRequestCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="localeFileShowRequestCommand"
+					clazz="{LocaleFileShowRequestCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="removeLocaleRequestCommand"
+					clazz="{RemoveLocaleRequestCommand}"
+					scope="prototype">
+			<sas:EventRouterConfiguration eventNames="{LocaleEvent.LOCALE_REMOVED}"/>
+		</sas:Object>
+
+		<sas:Object id="showLogFileRequestCommand"
+					clazz="{ShowLogFileRequestCommand}"
+					scope="prototype"/>
+
+		<sas:Object id="showHelpRequestCommand"
+					clazz="{ShowHelpRequestCommand}"
+					scope="prototype"/>
+
+		<!-- END: Command configurations -->
+	</fx:Declarations>
+</sas:SASObjects>

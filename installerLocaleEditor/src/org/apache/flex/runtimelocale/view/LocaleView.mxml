@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009"
+					xmlns:s="library://ns.adobe.com/flex/spark"
+					xmlns:mx="library://ns.adobe.com/flex/mx"
+					label="{localeData.name}"
+					implements="org.apache.flex.runtimelocale.view.IInjectableView"
+					name="localeView">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ListCollectionView;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.utils.ObjectUtil;
+			import org.apache.flex.runtimelocale.event.LocaleDataEvent;
+			import org.apache.flex.runtimelocale.event.LocaleEvent;
+			import org.apache.flex.runtimelocale.event.LocaleItemEvent;
+			import org.apache.flex.runtimelocale.model.locale.LocaleDataVO;
+			import org.apache.flex.runtimelocale.model.locale.LocaleItemDataVO;
+			import org.apache.flex.runtimelocale.view.itemrenderer.LocaleItemView;
+			import spark.collections.Sort;
+			import spark.collections.SortField;
+			import spark.events.IndexChangeEvent;
+			import spark.events.RendererExistenceEvent;
+			import spark.events.TextOperationEvent;
+
+			private var _localeData:LocaleDataVO;
+			private var _localeDataContent:ListCollectionView;
+			private var _nameSortField:SortField;
+
+			[Bindable(event="localeDataChanged")]
+			public function get localeData():LocaleDataVO {
+				return _localeData;
+			}
+
+			public function set localeData(value:LocaleDataVO):void {
+				if (_localeData !== value) {
+					_localeData = value;
+					if (_localeData) {
+						_localeDataContent = new ListCollectionView(_localeData.content);
+						_localeDataContent.sort = new Sort();
+						_localeDataContent.sort.compareFunction = sortKeys;
+						_localeDataContent.refresh();
+						if (localeItems) {
+							localeItems.dataProvider = _localeDataContent;
+						}
+					}
+					dispatchEvent(new Event("localeDataChanged"));
+				}
+			}
+
+			private function addLocaleKeyButton_clickHandler(event:MouseEvent):void {
+				var newKey:String = '"' + newLocaleKey.text + '"';
+				if (!localeData.getItemByKey(newKey)) {
+					dispatchEvent(new LocaleItemEvent(LocaleItemEvent.NEW_LOCALE_ITEM_REQUEST, newKey, localeData));
+					newLocaleKey.text = "";
+				} else {
+					var closeHandler:Function = function(closeEvent:CloseEvent):void {
+						newLocaleKey.selectAll();
+						newLocaleKey.setFocus();
+					}
+					Alert.show("The locale '" + localeData.name + "' already contains a key named " + newKey + ".", "Attention", 4, null, closeHandler);
+				}
+			}
+
+			private function buttonAddMissing_clickHandler(event:MouseEvent):void {
+				dispatchEvent(new LocaleDataEvent(LocaleDataEvent.REQUEST_ADD_MISSING_KEYS, localeData));
+			}
+
+			private function datagroup1_rendererAddHandler(event:RendererExistenceEvent):void {
+				if (event.renderer) {
+					event.renderer.addEventListener(LocaleItemEvent.REMOVE_LOCALE_ITEM_REQUEST, handleItemRemoveRequest);
+				}
+			}
+
+			private function datagroup1_rendererRemoveHandler(event:RendererExistenceEvent):void {
+				if (event.renderer) {
+					event.renderer.removeEventListener(LocaleItemEvent.REMOVE_LOCALE_ITEM_REQUEST, handleItemRemoveRequest);
+				}
+			}
+
+			private function deleteLocaleButton_clickHandler(event:MouseEvent):void {
+				dispatchEvent(new LocaleEvent(LocaleEvent.REMOVE_LOCALE_REQUEST, null, localeData));
+			}
+
+			private function handleItemRemoveRequest(event:LocaleItemEvent):void {
+				event.localeData = localeData;
+				dispatchEvent(event);
+			}
+
+			private function localeItems_creationCompleteHandler(event:FlexEvent):void {
+				localeItems.dataProvider = _localeDataContent;
+			}
+
+			private function newLocaleKey_changeHandler(event:TextOperationEvent):void {
+				newLocaleKey.text = newLocaleKey.text.toUpperCase();
+			}
+
+			private function sortEmptyTranslation(a:LocaleItemDataVO, b:LocaleItemDataVO, fields:Array=null):int {
+				if ((!a.value) && (b.value)) {
+					return -1;
+				} else if ((a.value) && (!b.value)) {
+					return 1;
+				} else if ((!a.value) && (!b.value)) {
+					return 0;
+				} else {
+					return sortKeys(a, b);
+				}
+			}
+
+			private function sortKeys(a:LocaleItemDataVO, b:LocaleItemDataVO, fields:Array=null):int {
+				return ObjectUtil.stringCompare(a.key, b.key);
+			}
+
+			private function sortingOptions_changeHandler(event:IndexChangeEvent):void {
+				if (_localeDataContent) {
+					if (sortingOptions.selectedIndex == 0) {
+						_localeDataContent.sort.compareFunction = sortKeys;
+					} else {
+						_localeDataContent.sort.compareFunction = sortEmptyTranslation;
+					}
+					_localeDataContent.refresh();
+				}
+			}
+			//
+			{
+				LocaleItemView;
+			}
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:HGroup verticalAlign="middle"
+			  height="30"
+			  paddingLeft="10"
+			  paddingRight="10"
+			  width="100%">
+		<s:Label text="This locale is missing {localeData.missingKeys.length} translations"
+				 visible="{localeData.missingKeys &amp;&amp; localeData.missingKeys.length &gt; 0}"
+				 includeInLayout="{localeData.missingKeys &amp;&amp; localeData.missingKeys.length &gt; 0}"
+				 color="0xff0000"
+				 toolTip="Compared to the reference locale this locale is missing translation keys, press the button next to this label to automatically add these keys."/>
+		<s:Button id="buttonAddMissing"
+				  label="Add missing keys"
+				  visible="{localeData.missingKeys &amp;&amp; localeData.missingKeys.length &gt; 0}"
+				  includeInLayout="{localeData.missingKeys &amp;&amp; localeData.missingKeys.length &gt; 0}"
+				  click="buttonAddMissing_clickHandler(event)"
+				  toolTip="Adds all they missing translation keys as compared to the reference locale"/>
+		<s:Spacer width="50"
+				  includeInLayout="{localeData.missingKeys &amp;&amp; localeData.missingKeys.length &gt; 0}"/>
+		<s:TextInput id="newLocaleKey"
+					 width="250"
+					 change="newLocaleKey_changeHandler(event)"
+					 toolTip="Define a new translation key, the key will be automatically uppercased"/>
+		<s:Button id="addLocaleKeyButton"
+				  label="Add new key"
+				  enabled="{newLocaleKey.text.length &gt; 0}"
+				  click="addLocaleKeyButton_clickHandler(event)"
+				  toolTip="Adds a new translation key, if you are editing the current reference locale you will be prompted to add the same key to all the other locales automatically as well."/>
+		<s:Spacer width="25"/>
+		<s:Label text="Sorting:"/>
+		<s:ComboBox id="sortingOptions"
+					selectedIndex="0"
+					change="sortingOptions_changeHandler(event)"
+					width="200">
+			<s:dataProvider>
+				<s:ArrayList>
+					<fx:String>Sort by keys</fx:String>
+					<fx:String>Sort empty translations on top</fx:String>
+				</s:ArrayList>
+			</s:dataProvider>
+		</s:ComboBox>
+		<s:Spacer width="100%"/>
+		<s:Button id="deleteLocaleButton"
+				  label="Remove locale"
+				  click="deleteLocaleButton_clickHandler(event)"
+				  toolTip="Removes the entire locale from the AS3 output"/>
+		<s:Label text="Total number of translations for locale '{localeData.name}': {localeData.content.length}"/>
+	</s:HGroup>
+	<s:Line width="100%">
+		<s:stroke>
+			<s:SolidColorStroke color="0x000000"
+								weight="1"
+								caps="none"/>
+		</s:stroke>
+	</s:Line>
+	<s:Scroller width="100%"
+				height="100%">
+		<s:DataGroup itemRenderer="{new ClassFactory(LocaleItemView)}"
+					 width="100%"
+					 id="localeItems"
+					 clipAndEnableScrolling="true"
+					 rendererAdd="datagroup1_rendererAddHandler(event)"
+					 rendererRemove="datagroup1_rendererRemoveHandler(event)"
+					 creationComplete="localeItems_creationCompleteHandler(event)">
+			<s:layout>
+				<s:VerticalLayout useVirtualLayout="true"/>
+			</s:layout>
+		</s:DataGroup>
+	</s:Scroller>
+</s:NavigatorContent>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:sas="http://www.springactionscript.org/mxml/config"
+					   preinitialize="windowedapplication1_preinitializeHandler(event)"
+					   applicationComplete="windowedapplication1_applicationCompleteHandler(event)"
+					   title="Apache Flex Installer Locale Editor"
+					   xmlns:view="org.apache.flex.runtimelocale.view.*"
+					   currentState="appInitState"
+					   close="windowedapplication1_closeHandler(event)">
+	<s:states>
+		<s:State name="appInitState"/>
+		<s:State name="appReadyState"/>
+	</s:states>
+	<fx:Script>
+		<![CDATA[
+			import flash.utils.setTimeout;
+			import mx.events.FlexEvent;
+			import mx.utils.ObjectUtil;
+			import org.apache.flex.runtimelocale.context.MainConfiguration;
+			import org.apache.flex.runtimelocale.event.ApplicationStatusEvent;
+			import org.apache.flex.runtimelocale.event.InitializeApplicationEvent;
+			import org.apache.flex.runtimelocale.event.SaveConfigurationEvent;
+			import org.apache.flex.runtimelocale.event.ShowHelpRequestEvent;
+			import org.apache.flex.runtimelocale.event.ShowLocaleFileSelectorViewEvent;
+			import org.as3commons.logging.api.ILogSetup;
+			import org.as3commons.logging.api.ILogger;
+			import org.as3commons.logging.api.LOGGER_FACTORY;
+			import org.as3commons.logging.api.getClassLogger;
+			import org.as3commons.logging.setup.SimpleTargetSetup;
+			import org.as3commons.logging.setup.target.AirFileTarget;
+			import org.as3commons.logging.setup.target.TraceTarget;
+			import org.as3commons.logging.setup.target.mergeTargets;
+			import org.as3commons.logging.util.xml.xmlToSetup;
+
+			private static const logger:ILogger = getClassLogger(Main);
+
+			protected function handleUncaught(event:UncaughtErrorEvent):void {
+				if (applicationContext) {
+					trace(event.error);
+					applicationContext.eventBus.dispatchEvent(new ApplicationStatusEvent(ApplicationStatusEvent.APPLICATION_ERROR_STATUS, "An expected error occured: " + event.text, "Unexpected error"));
+				}
+			}
+
+			protected function windowedapplication1_applicationCompleteHandler(event:FlexEvent):void {
+				pruneLogFiles();
+				loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, handleUncaught);
+				statusText.setStyle("color", 0x008800);
+				statusText.setStyle("fontWeight", "bold");
+				//Pfff, ugly, but I want to center the popup after the window has been
+				//maximised, and this was the only way I could get it do so.
+				//(I secretly suck)
+				setTimeout(function():void {
+					applicationContext.eventBus.dispatchEvent(new InitializeApplicationEvent(InitializeApplicationEvent.APP_INITIALIZE));
+					setUpLogging();
+					applicationContext.eventBus.dispatchEvent(new ShowLocaleFileSelectorViewEvent(ShowLocaleFileSelectorViewEvent.SHOW_LOCALE_FILE_SELECTOR));
+					if (applicationContext.propertiesProvider.getProperty("showhelp") == "true") {
+						applicationContext.eventBus.dispatchEvent(new ShowHelpRequestEvent(ShowHelpRequestEvent.SHOW_HELP_REQUEST));
+					}
+				}, 500);
+			}
+
+			protected function windowedapplication1_closeHandler(event:Event):void {
+				applicationContext.eventBus.dispatchEvent(new SaveConfigurationEvent(SaveConfigurationEvent.SAVE_CONFIGURATION_REQUEST));
+			}
+
+			protected function windowedapplication1_preinitializeHandler(event:FlexEvent):void {
+				maximize();
+			}
+
+			private function compareCreationDates(f1:File, f2:File):Number {
+				return ObjectUtil.dateCompare(f1.creationDate, f2.creationDate);
+			}
+
+			private function pruneLogFiles():void {
+				var listing:Array = File.applicationStorageDirectory.getDirectoryListing();
+				var logListing:Array = [];
+				for each (var file:File in listing) {
+					if (file.extension == "log") {
+						logListing[logListing.length] = file;
+					}
+				}
+				if (logListing.length > 5) {
+					logListing.sort(compareCreationDates, Array.NUMERIC);
+					var len:int = logListing.length - 5;
+					var logFile:File;
+					for (var i:int = 0; i < len; ++i) {
+						logFile = logListing[i];
+						logFile.deleteFile();
+						logger.info("Deleted old logfile: {0}", [logFile.nativePath]);
+					}
+				}
+			}
+
+			private function setUpLogging():void {
+				if (applicationContext.propertiesProvider.getProperty('logging') == "true") {
+					var file:File = File.applicationDirectory.resolvePath("logging-config.xml");
+					if (file.exists) {
+						try {
+							var fileStream:FileStream = new FileStream();
+							fileStream.open(file, FileMode.READ);
+							fileStream.position = 0;
+							var content:String = fileStream.readMultiByte(fileStream.bytesAvailable, "utf-8");
+							var xml:XML = new XML(content);
+							var mergedSetup:ILogSetup = xmlToSetup(xml, {}, {console: new TraceTarget(), file: new AirFileTarget()});
+							LOGGER_FACTORY.setup = mergedSetup;
+						} catch (e:Error) {
+							LOGGER_FACTORY.setup = new SimpleTargetSetup(mergeTargets(new TraceTarget(), new AirFileTarget()));
+							logger.error("Error encountered while reading XML logging configuration: {0}", [e.message]);
+							logger.info("Logging defaults used");
+						} finally {
+							fileStream.close();
+						}
+					} else {
+						LOGGER_FACTORY.setup = new SimpleTargetSetup(mergeTargets(new TraceTarget(), new AirFileTarget()));
+						logger.info("Logging defaults used");
+					}
+					logger.info("Application initializing");
+					pruneLogFiles();
+				}
+			}
+			//
+			{
+				MainConfiguration;
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<sas:MXMLApplicationContext configurations="{[MainConfiguration]}"
+									id="applicationContext"/>
+	</fx:Declarations>
+	<view:MainView id="mainView"
+				   width="100%"
+				   height="100%"
+				   includeIn="appReadyState"/>
+</s:WindowedApplication>

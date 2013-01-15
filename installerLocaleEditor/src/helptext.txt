@@ -1,0 +1,26 @@
+To use this application first checkout this Apache Flex repository:
+
+https://svn.apache.org/repos/asf/incubator/flex/utilities/trunk/installer
+
+After this use the file selector dialog in this application to locate the following file:
+
+<SVN_CHECKOUT_DIRECTORY>/installer/src/org/apache/flex/packageflexsdk/resource/RuntimeLocale.as
+
+Select the file and wait while the application parses the .as file.
+
+Note #1: This might take quite a while when running the application in debug mode from your IDE. In release mode the parsing still takes quite a bit of time but is acceptable compared to debug mode.
+
+Note #2: The parser is a little bit more strict than the MXMLC parser you're used to. Especially lines that are not suffixed with a semi-colon (;) will raise parsing errors. So the first time you try to open the file will very likely result in a number of parsing errors.
+The parsing errors indicate on which line the problem occurs so correcting these errors shouldn't be too much of a problem.
+
+After the file is parsed you'll be presented with a tabnavigator in which each tab represents a single locale.
+Each tab is divided in three columns, the left column indicates the translation key, the second column the actual translated text and the third column shows the translated text as defined in the reference locale.
+By default the reference local is US English, but can be changed using the dropdown in the topleft corner.
+
+After entering the appropriate translations press the 'Save locale file' button in the topright corner.
+To view the Actionscript output, use the 'View AS3 output' button, also in the topright corner.
+
+If you have any questions or criticism about this application please use the Apache Flex developers mailinglist,
+or open a JIRA ticket.
+
+Thanks to Michael Schmalle for creating the ASBlocks library (https://github.com/teotigraphix/as3-commons-asblocks) which made building this application a breeze.

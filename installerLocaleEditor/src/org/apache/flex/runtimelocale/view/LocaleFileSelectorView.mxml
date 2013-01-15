@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   width="400"
+			   height="80"
+			   name="selectorView"
+			   implements="org.apache.flex.runtimelocale.view.IInjectableView"
+			   title="Select the RuntimeLocale.as file you want to edit">
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+
+	<fx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import org.apache.flex.runtimelocale.model.LocaleFileSelectorPM;
+			import org.as3commons.logging.api.ILogger;
+			import org.as3commons.logging.api.getClassLogger;
+
+			private static const logger:ILogger = getClassLogger(LocaleFileSelectorView);
+
+			[Bindable]
+			public var presentationModel:LocaleFileSelectorPM;
+
+			protected function fileBrowser_clickHandler(event:MouseEvent):void {
+				presentationModel.browseFile();
+			}
+
+			protected function fileLoader_clickHandler(event:MouseEvent):void {
+				presentationModel.loadFile(localeFileLocation.text);
+				logger.info("Removing LocaleFileSelectorView popup");
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:HGroup width="380"
+			  height="100%"
+			  verticalAlign="middle"
+			  paddingLeft="15">
+		<s:TextInput id="localeFileLocation"
+					 width="100%"
+					 text="{presentationModel.selectedFile}"/>
+		<s:Button id="fileBrowser"
+				  label="Browse..."
+				  click="fileBrowser_clickHandler(event)"/>
+		<s:Button id="fileLoader"
+				  label="Load"
+				  click="fileLoader_clickHandler(event)"
+				  enabled="{localeFileLocation.text.length&gt;0}"/>
+	</s:HGroup>
+</s:TitleWindow>

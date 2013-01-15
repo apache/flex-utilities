@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 implements="org.apache.flex.runtimelocale.view.IInjectableView"
+		 name="mainView">
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import org.apache.flex.runtimelocale.model.MainViewPM;
+			import spark.events.IndexChangeEvent;
+
+			private var _presentationModel:MainViewPM;
+
+			[Bindable(event="presentationModelChanged")]
+			public function get presentationModel():MainViewPM {
+				return _presentationModel;
+			}
+
+			public function set presentationModel(value:MainViewPM):void {
+				if (_presentationModel !== value) {
+					_presentationModel = value;
+					if (_presentationModel) {
+						_presentationModel.initialize(this);
+					}
+					dispatchEvent(new Event("presentationModelChanged"));
+				}
+			}
+
+			protected function addLocaleButton_clickHandler(event:MouseEvent):void {
+				presentationModel.addLocale();
+			}
+
+			protected function helpButton_clickHandler(event:MouseEvent):void {
+				presentationModel.showHelp();
+			}
+
+			protected function referenceLocale_changeHandler(event:IndexChangeEvent):void {
+				presentationModel.requestReferenceLocale(referenceLocale.selectedItem);
+			}
+
+			protected function saveButton_clickHandler(event:MouseEvent):void {
+				presentationModel.saveLocaleFile();
+			}
+
+			protected function showAS3Code_clickHandler(event:MouseEvent):void {
+				presentationModel.showLocaleFile();
+			}
+
+			protected function showLogFile_clickHandler(event:MouseEvent):void {
+				presentationModel.showLogFile();
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:HGroup verticalAlign="middle"
+			  height="35"
+			  width="100%"
+			  paddingLeft="15"
+			  paddingRight="15">
+		<s:Label text="Reference locale:"/>
+		<s:ComboBox width="75"
+					id="referenceLocale"
+					dataProvider="{presentationModel.applicationModel.availableLocales}"
+					change="referenceLocale_changeHandler(event)"
+					selectedItem="en_US"
+					toolTip="The reference locale is used to define the reference set of translation keys to which all the other locales are compared"/>
+		<s:Button id="addLocaleButton"
+				  label="Add locale"
+				  click="addLocaleButton_clickHandler(event)"
+				  toolTip="Show a dialog with which a new locale can be defined"/>
+		<s:Spacer width="100%"/>
+		<s:Button id="showAS3Code"
+				  label="View AS3 output"
+				  click="showAS3Code_clickHandler(event)"
+				  toolTip="Shows a popup that displays the exact Actionscript output for all the locales. I.e. the contents of the RuntimeLocale.as file."/>
+		<s:Button id="saveButton"
+				  label="Save locale file"
+				  click="saveButton_clickHandler(event)"
+				  toolTip="Saves the RuntimeLocale.as file to disk containing all the changes made using the current application"/>
+		<s:Button id="helpButton"
+				  label="Show help"
+				  click="helpButton_clickHandler(event)"
+				  toolTip="Shows the introductory help screen"/>
+		<s:Spacer width="20"/>
+		<s:Button id="showLogFile"
+				  label="View logfile (debug)"
+				  click="showLogFile_clickHandler(event)"
+				  toolTip="Shows the contents of the logfile, mainly for debugging purposes"/>
+	</s:HGroup>
+	<mx:TabNavigator id="localesTab"
+					 width="100%"
+					 height="100%"/>
+</s:Group>

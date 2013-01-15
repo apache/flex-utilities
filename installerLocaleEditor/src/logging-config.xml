@@ -1,0 +1,10 @@
+<setup xmlns="http://as3commons.org/logging/1">
+	<rule name="/^org\.apache\./"
+		  level="DEBUG">
+		<target-ref ref="file"/>
+		<target-ref ref="console"/>
+	</rule>
+	<!-- rule name="/^org\.springextensions\./" level="DEBUG">
+		 <target-ref ref="console" />
+	</rule-->
+</setup>

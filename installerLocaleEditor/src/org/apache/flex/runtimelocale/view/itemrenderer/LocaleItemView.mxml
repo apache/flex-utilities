@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				autoDrawBackground="true"
+				width="100%"
+				implements="org.apache.flex.runtimelocale.view.IInjectableView"
+				name="localeItemView">
+	<s:layout>
+		<s:HorizontalLayout verticalAlign="top"
+							gap="20"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import org.apache.flex.runtimelocale.event.LocaleItemEvent;
+			import org.apache.flex.runtimelocale.model.ApplicationModel;
+			import org.apache.flex.runtimelocale.model.locale.LocaleItemDataVO;
+
+			private var _applicationModel:ApplicationModel;
+
+			private var _localeItem:LocaleItemDataVO;
+
+			[Bindable(event="applicationModelChanged")]
+			public function get applicationModel():ApplicationModel {
+				return _applicationModel;
+			}
+
+			public function set applicationModel(value:ApplicationModel):void {
+				if (_applicationModel !== value) {
+					if (_applicationModel) {
+						_applicationModel.removeEventListener("referenceLocaleChanged", handleReferenceLocaleChanged);
+					}
+					_applicationModel = value;
+					if (_applicationModel) {
+						_applicationModel.addEventListener("referenceLocaleChanged", handleReferenceLocaleChanged);
+					}
+					setRerenceLocale();
+					dispatchEvent(new Event("applicationModelChanged"));
+				}
+			}
+
+			override public function set data(value:Object):void {
+				super.data = value;
+				localeItem = value as LocaleItemDataVO;
+			}
+
+			public function get localeItem():LocaleItemDataVO {
+				return _localeItem;
+			}
+
+			public function set localeItem(value:LocaleItemDataVO):void {
+				if (_localeItem !== value) {
+					_localeItem = value;
+					if (_localeItem) {
+						keyLabel.text = _localeItem.key;
+						keyLabel.toolTip = _localeItem.key;
+						itemValue.text = _localeItem.value;
+						setRerenceLocale();
+					}
+				}
+			}
+
+			protected function deleteKeyButton_clearHandler(event:Event):void {
+				Alert.show("Are you sure you want to remove " + localeItem.key + "?", "Please confirm", Alert.YES | Alert.NO, this, function(closeEvent:CloseEvent):void {
+					if (closeEvent.detail == Alert.YES) {
+						dispatchEvent(new LocaleItemEvent(LocaleItemEvent.REMOVE_LOCALE_ITEM_REQUEST, localeItem.key));
+					}
+				});
+			}
+
+			private function handleReferenceLocaleChanged(event:Event):void {
+				setRerenceLocale();
+			}
+
+			private function setRerenceLocale():void {
+				if ((applicationModel) && (applicationModel.referenceLocale) && (localeItem)) {
+					var item:LocaleItemDataVO = applicationModel.referenceLocale.getItemByKey(localeItem.key);
+					itemReference.text = (item) ? item.value : "";
+				}
+			}
+
+			private function textarea1_valueCommitHandler(event:FlexEvent):void {
+				if ((localeItem) && (itemValue)) {
+					localeItem.value = itemValue.text;
+				}
+			}
+		]]>
+	</fx:Script>
+	<s:VGroup width="225">
+		<s:Button id="deleteKeyButton"
+				  width="30"
+				  height="30"
+				  label="X"
+				  toolTip="Remove this translation"
+				  click="deleteKeyButton_clearHandler(event)"/>
+		<s:Label id="keyLabel"
+				 fontWeight="bold"/>
+	</s:VGroup>
+	<s:TextArea id="itemValue"
+				width="400"
+				valueCommit="textarea1_valueCommitHandler(event)"/>
+	<s:TextArea id="itemReference"
+				width="400"
+				editable="false"
+				selectable="true"/>
+</s:ItemRenderer>

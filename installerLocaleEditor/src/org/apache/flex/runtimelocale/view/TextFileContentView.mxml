@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   width="1200"
+			   height="800"
+			   title="Showing file: {filePath}"
+			   close="titlewindow1_closeHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import org.as3commons.logging.api.ILogger;
+			import org.as3commons.logging.api.getClassLogger;
+
+			private static const logger:ILogger = getClassLogger(TextFileContentView);
+
+			private var _fileContent:String;
+			private var _filePath:String;
+
+			[Bindable(event="fileContentChanged")]
+			public function get fileContent():String {
+				return _fileContent;
+			}
+
+			public function set fileContent(value:String):void {
+				if (_fileContent !== value) {
+					_fileContent = value;
+					dispatchEvent(new Event("fileContentChanged"));
+				}
+			}
+
+			[Bindable(event="filePathChanged")]
+			public function get filePath():String {
+				return _filePath;
+			}
+
+			public function set filePath(value:String):void {
+				if (_filePath !== value) {
+					_filePath = value;
+					dispatchEvent(new Event("filePathChanged"));
+				}
+			}
+
+			protected function titlewindow1_closeHandler(event:CloseEvent):void {
+				logger.info("Removing TextFileContentView popup");
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TextArea width="100%"
+				height="100%"
+				text="{fileContent}"/>
+</s:TitleWindow>
