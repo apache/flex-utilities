@@ -34,7 +34,8 @@ public class AirFrameworkGenerator extends BaseGenerator {
     protected Map<String, String> libraryVersions = new HashMap<String, String>();
     protected Map<String, String> libraryLocations = new HashMap<String, String>();
 
-    public void process(File sdkSourceDirectory, final boolean isApache, File sdkTargetDirectory, String sdkVersion)
+    public void process(File sdkSourceDirectory, final boolean isApache, File sdkTargetDirectory, String sdkVersion,
+                        boolean useApache)
             throws Exception
     {
         final File frameworksDirectory = new File(sdkSourceDirectory, "frameworks");
@@ -51,7 +52,6 @@ public class AirFrameworkGenerator extends BaseGenerator {
             throws Exception
     {
         final MavenMetadata groupMetadata = new MavenMetadata();
-	    String groupMetadataId = groupId;
         groupMetadata.setGroupId(groupId.substring(0, groupId.lastIndexOf(".")));
         groupMetadata.setArtifactId(groupId.substring(groupId.lastIndexOf(".") + 1, groupId.length()));
         groupMetadata.setVersion(sdkVersion);
@@ -109,7 +109,7 @@ public class AirFrameworkGenerator extends BaseGenerator {
         }
 
         final MavenMetadata commonFrameworkMetaData = new MavenMetadata();
-        commonFrameworkMetaData.setGroupId(groupMetadataId);
+        commonFrameworkMetaData.setGroupId(groupId);
         commonFrameworkMetaData.setArtifactId("common-framework");
         commonFrameworkMetaData.setVersion(groupMetadata.getVersion());
         commonFrameworkMetaData.setPackaging("pom");
@@ -126,15 +126,6 @@ public class AirFrameworkGenerator extends BaseGenerator {
                 "common-framework/" + groupMetadata.getVersion() + "/common-framework-" +
                         groupMetadata.getVersion() + ".pom");
         generateSwcPom(commonFrameworkPom, commonFrameworkMetaData);
-
-        // Generate a dummy entry for the "flex-framework" pom,
-        // which will be generated later in the process.
-        final MavenMetadata flexFrameworkMetadata = new MavenMetadata();
-        flexFrameworkMetadata.setGroupId(groupMetadataId);
-        flexFrameworkMetadata.setArtifactId("flex-framework");
-        flexFrameworkMetadata.setVersion(groupMetadata.getVersion());
-        flexFrameworkMetadata.setPackaging("pom");
-        groupMetadata.getDependencies().add(flexFrameworkMetadata);
 
         // Generate the master pom for the current library (Pom that defines
         // all versions of the current sdk libraries.

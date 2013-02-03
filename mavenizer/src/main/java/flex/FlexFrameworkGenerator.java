@@ -62,12 +62,13 @@ public class FlexFrameworkGenerator extends BaseGenerator {
         skipArtifacts.add("flex3");
     }
 
-    public void process(File sdkSourceDirectory, final boolean isApache, File sdkTargetDirectory, String sdkVersion)
+    public void process(File sdkSourceDirectory, final boolean isApache, File sdkTargetDirectory, String sdkVersion,
+                        boolean useApache)
             throws Exception {
         final File frameworksDirectory = new File(sdkSourceDirectory, "frameworks");
         final File rslsDirectory = new File(frameworksDirectory, "rsls");
         final File targetBaseDirectory = new File(sdkTargetDirectory,
-                (isApache) ? "org/apache/flex/framework" : "com/adobe/flex/framework");
+                (isApache && useApache) ? "org/apache/flex/framework" : "com/adobe/flex/framework");
 
         // Look at the RSLs first, as these have version numbers.
         // This makes it possible to deploy the swcs with the correct versions.
@@ -84,8 +85,6 @@ public class FlexFrameworkGenerator extends BaseGenerator {
                 final String libraryName = rslName.substring(0, rslName.lastIndexOf("_"));
                 final String libraryVersion = rslName.substring(rslName.lastIndexOf("_") + 1, rslName.lastIndexOf("."));
                 libraryVersions.put(libraryName, libraryVersion);
-                // TODO: Supporting different versions would result in major problems in the flexmojos build.
-                //libraryVersions.put(libraryName, sdkVersion);
             }
         }
 
@@ -116,14 +115,14 @@ public class FlexFrameworkGenerator extends BaseGenerator {
         // Generate the artifacts based upon the structure of the libraries in the lib-directory.
         final File swcsDirectory = new File(frameworksDirectory, "libs");
         generateArtifactsForDirectory(swcsDirectory, targetBaseDirectory, sdkVersion,
-                (isApache) ? "org.apache.flex.framework" : "com.adobe.flex.framework",
-                false, isApache);
+                (isApache && useApache) ? "org.apache.flex.framework" : "com.adobe.flex.framework",
+                false, isApache && useApache);
 
         // Deploy the playerglobal in it's own groupId as this is not directly linked to flex.
         final File playerRootDirectory = new File(sdkTargetDirectory, "com/adobe/flash");
         generatePlayerglobalArtifacts(new File(swcsDirectory, "player"), new File(playerRootDirectory, "framework"));
         final String minimumFlashPlayerVersion = getMinimumPlayerVersion(frameworksDirectory);
-        generateFlexFrameworkPom(targetBaseDirectory, sdkVersion, isApache, minimumFlashPlayerVersion);
+        generateFlexFrameworkPom(targetBaseDirectory, sdkVersion, isApache && useApache, minimumFlashPlayerVersion);
 
         // After processing the swcs the locations for the libraries will be
         // available and the swfs and swzs can be deployed.
@@ -219,7 +218,7 @@ public class FlexFrameworkGenerator extends BaseGenerator {
         // Deploy all the swcs in the themes directory.
         final File themesSrcDirectory = new File(frameworksDirectory, "themes");
         if(themesSrcDirectory.exists()) {
-            generateThemeArtifacts(themesSrcDirectory, targetBaseDirectory, sdkVersion, isApache);
+            generateThemeArtifacts(themesSrcDirectory, targetBaseDirectory, sdkVersion, isApache && useApache);
         }
     }
 
@@ -228,7 +227,6 @@ public class FlexFrameworkGenerator extends BaseGenerator {
                                                  boolean skipGroupPomGeneration, final boolean isApache)
             throws Exception {
         final MavenMetadata groupMetadata = new MavenMetadata();
-	    String groupMetadataId = groupId;
         groupMetadata.setGroupId(groupId.substring(0, groupId.lastIndexOf(".")));
         groupMetadata.setArtifactId(groupId.substring(groupId.lastIndexOf(".") + 1, groupId.length()));
         groupMetadata.setVersion(sdkVersion);
@@ -350,7 +348,7 @@ public class FlexFrameworkGenerator extends BaseGenerator {
             // the dependencies the same way velos sdks did.
             if ("libs".equals(sourceDirectory.getName())) {
                 final MavenMetadata commonFrameworkMetaData = new MavenMetadata();
-                commonFrameworkMetaData.setGroupId(groupMetadataId);
+                commonFrameworkMetaData.setGroupId(groupId);
                 commonFrameworkMetaData.setArtifactId("common-framework");
                 commonFrameworkMetaData.setVersion(groupMetadata.getVersion());
                 commonFrameworkMetaData.setPackaging("pom");
@@ -371,14 +369,14 @@ public class FlexFrameworkGenerator extends BaseGenerator {
                 // Generate a dummy entry for the "flex-framework" pom,
                 // which will be generated later in the process.
                 final MavenMetadata flexFrameworkMetadata = new MavenMetadata();
-                flexFrameworkMetadata.setGroupId(groupMetadataId);
+                flexFrameworkMetadata.setGroupId(groupId);
                 flexFrameworkMetadata.setArtifactId("flex-framework");
                 flexFrameworkMetadata.setVersion(groupMetadata.getVersion());
                 flexFrameworkMetadata.setPackaging("pom");
                 groupMetadata.getDependencies().add(flexFrameworkMetadata);
             } else if ("air".equals(sourceDirectory.getName())) {
                 final MavenMetadata airCommonFrameworkMetaData = new MavenMetadata();
-                airCommonFrameworkMetaData.setGroupId(groupMetadataId);
+                airCommonFrameworkMetaData.setGroupId(groupId);
                 airCommonFrameworkMetaData.setArtifactId("common-framework");
                 airCommonFrameworkMetaData.setVersion(groupMetadata.getVersion());
                 airCommonFrameworkMetaData.setPackaging("pom");
@@ -399,7 +397,7 @@ public class FlexFrameworkGenerator extends BaseGenerator {
                 // Generate a dummy entry for the "flex-framework" pom,
                 // which will be generated later in the process.
                 final MavenMetadata flexFrameworkMetadata = new MavenMetadata();
-                flexFrameworkMetadata.setGroupId(groupMetadataId);
+                flexFrameworkMetadata.setGroupId(groupId);
                 flexFrameworkMetadata.setArtifactId("air-framework");
                 flexFrameworkMetadata.setVersion(groupMetadata.getVersion());
                 flexFrameworkMetadata.setPackaging("pom");

@@ -18,6 +18,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.parsers.*;
+
+import air.AirCompilerGenerator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -75,11 +77,14 @@ public class SDKGenerator {
     }
 
     public void generateAir(final File sdkSourceDirectory, final File sdkTargetDirectory, final String sdkVersion) throws Exception {
+        // Generate the artifacts, needed by the air compiler.
+        new AirCompilerGenerator().process(sdkSourceDirectory, false, sdkTargetDirectory, sdkVersion, false);
+
         // Generate the artifacts, needed by the flex application.
-        new AirFrameworkGenerator().process(sdkSourceDirectory, false, sdkTargetDirectory, sdkVersion);
+        new AirFrameworkGenerator().process(sdkSourceDirectory, false, sdkTargetDirectory, sdkVersion, false);
 
         // Deploy the FlashPlayer and AIR runtime binaries.
-        new AirRuntimeGenerator().process(sdkSourceDirectory, false, sdkTargetDirectory, sdkVersion);
+        new AirRuntimeGenerator().process(sdkSourceDirectory, false, sdkTargetDirectory, sdkVersion, false);
     }
 
     public void generateAllFlex(File sdkSourceDirectory, File sdkTargetDirectory) throws Exception {
@@ -104,23 +109,24 @@ public class SDKGenerator {
                 System.out.println("---------------------------------------------");
 
                 // TODO: Comment this line in to deploy the apache flex under org.apache.flex
-                //generateFlex(sdkDirectory, isApache, sdkTargetDirectory, sdkVersion);
-                generateFlex(sdkDirectory, false, sdkTargetDirectory, sdkVersion);
+                //generateFlex(sdkDirectory, isApache, sdkTargetDirectory, sdkVersion, true);
+                generateFlex(sdkDirectory, isApache, sdkTargetDirectory, sdkVersion, false);
 
                 System.out.println("---------------------------------------------");
             }
         }
     }
 
-    public void generateFlex(final File sdkSourceDirectory, final boolean isApache, final File sdkTargetDirectory, final String sdkVersion) throws Exception {
+    public void generateFlex(final File sdkSourceDirectory, final boolean isApache, final File sdkTargetDirectory,
+                             final String sdkVersion, final boolean useApache) throws Exception {
         // Generate the artifacts, needed by the flex compiler.
-        new FlexCompilerGenerator().process(sdkSourceDirectory, isApache, sdkTargetDirectory, sdkVersion);
+        new FlexCompilerGenerator().process(sdkSourceDirectory, isApache, sdkTargetDirectory, sdkVersion, useApache);
 
         // Generate the artifacts, needed by the flex application.
-        new FlexFrameworkGenerator().process(sdkSourceDirectory, isApache, sdkTargetDirectory, sdkVersion);
+        new FlexFrameworkGenerator().process(sdkSourceDirectory, isApache, sdkTargetDirectory, sdkVersion, useApache);
 
         // Deploy the FlashPlayer and AIR runtime binaries.
-        new FlexRuntimeGenerator().process(sdkSourceDirectory, isApache, sdkTargetDirectory, sdkVersion);
+        new FlexRuntimeGenerator().process(sdkSourceDirectory, isApache, sdkTargetDirectory, sdkVersion, useApache);
     }
 
     public static void main(String[] args) throws Exception {
@@ -205,7 +211,7 @@ public class SDKGenerator {
             final String build = root.getElementsByTagName("build").item(0).getTextContent();
 
             // In general the version consists of the content of the version element with an appended build-number.
-            String sdkVersion = version + "." + build;
+            String sdkVersion = (build.equals("0")) ? version + "-SNAPSHOT" : version + "." + build;
 
             // Deal with the patched re-releases of all older SDKs:
             // The patched versions have A or B appended to their name and not a modified version or build number.

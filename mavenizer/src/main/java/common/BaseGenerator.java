@@ -49,7 +49,7 @@ public abstract class BaseGenerator {
     // Artifactory: "http://server:port/artifactory/api/search/checksum?repos=libs-release-local&md5=04040c7c184620af0a0a8a3682a75eb7
     // Nexus: "http://repository.sonatype.org/service/local/data_index?a=04040c7c184620af0a0a8a3682a75eb7"
 
-    abstract public void process(File sdkSourceDirectory, boolean isApache, File sdkTargetDirectory, String sdkVersion)
+    abstract public void process(File sdkSourceDirectory, boolean isApache, File sdkTargetDirectory, String sdkVersion, boolean useApache)
             throws Exception;
 
     protected String calculateChecksum(File jarFile) throws Exception {

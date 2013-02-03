@@ -35,7 +35,8 @@ import java.util.Locale;
 public class FlexRuntimeGenerator extends BaseGenerator {
 
     @Override
-    public void process(File sdkSourceDirectory, boolean isApache, File sdkTargetDirectory, String sdkVersion)
+    public void process(File sdkSourceDirectory, boolean isApache, File sdkTargetDirectory, String sdkVersion,
+                        boolean useApache)
             throws Exception
     {
         processFlashRuntime(sdkSourceDirectory, sdkTargetDirectory);

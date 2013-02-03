@@ -14,23 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package flex;
+package air;
 
-import java.io.*;
-import java.util.*;
-import java.util.zip.*;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import common.BaseGenerator;
 import common.MavenMetadata;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: cdutz
- * Date: 11.05.12
- * Time: 14:53
+ * Date: 02.02.13
+ * Time: 13:41
  */
-public class FlexCompilerGenerator extends BaseGenerator {
+public class AirCompilerGenerator extends BaseGenerator {
 
     public void process(final File sdkSourceDirectory, final boolean isApache, final File sdkTargetDirectory,
                         final String sdkVersion, boolean useApache)
@@ -38,42 +40,17 @@ public class FlexCompilerGenerator extends BaseGenerator {
 
         final File sdkCompilerLibsDirectory = new File(sdkSourceDirectory, "lib");
         final List<File> jars = new ArrayList<File>();
-        // In the Adobe Flex SDKs there can be 3 jars, that are actually part of the air sdk, so we manually
-        // exclude these from the flex-compiler.
         jars.addAll(Arrays.asList(sdkCompilerLibsDirectory.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return name.endsWith(".jar") && !(name.equalsIgnoreCase("adt.jar") ||
-                        name.equalsIgnoreCase("baksmali.jar") || name.equalsIgnoreCase("smali.jar"));
+                return name.equalsIgnoreCase("adt.jar") ||
+                        name.equalsIgnoreCase("baksmali.jar") ||
+                        name.equalsIgnoreCase("smali.jar");
             }
         })));
 
-        // The Apache SDKs have an additional "external" directory
-        // containing external libs. These have to be added too.
-        final File externalLibsDirectory = new File(sdkCompilerLibsDirectory, "external");
-        if(externalLibsDirectory.exists() && externalLibsDirectory.isDirectory()) {
-            final File[] externalJars = externalLibsDirectory.listFiles(new FilenameFilter() {
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".jar");
-                }
-            });
-            jars.addAll(Arrays.asList(externalJars));
-        }
-
-        // The Apache SDKs have an additional "optional" directory
-        // containing external libs. These have to be added too.
-        final File optionalLibsDirectory = new File(externalLibsDirectory, "optional");
-        if (optionalLibsDirectory.exists() && optionalLibsDirectory.isDirectory()) {
-            final File[] optionalJars = optionalLibsDirectory.listFiles(new FilenameFilter() {
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".jar");
-                }
-            });
-            jars.addAll(Arrays.asList(optionalJars));
-        }
-
         // A pom artifact will be generated that has all libs as a dependency.
         final MavenMetadata metadata = new MavenMetadata();
-        metadata.setGroupId((isApache && useApache) ? "org.apache.flex" : "com.adobe.flex");
+        metadata.setGroupId("com.adobe.air");
         metadata.setArtifactId("compiler");
         metadata.setVersion(sdkVersion);
         metadata.setPackaging("pom");
@@ -122,16 +99,15 @@ public class FlexCompilerGenerator extends BaseGenerator {
 
                     // Generate a new metadata object
                     artifactMetadata = new MavenMetadata();
-                    artifactMetadata.setGroupId((isApache && useApache) ? "org.apache.flex.compiler" :
-                            "com.adobe.flex.compiler");
+                    artifactMetadata.setGroupId("com.adobe.air.compiler");
                     artifactMetadata.setArtifactId(dependencyArtifactId);
                     artifactMetadata.setVersion(sdkVersion);
                     artifactMetadata.setPackaging("jar");
 
                     // Create the name of the directory that will contain the artifact.
                     final File targetJarDirectory = new File(sdkTargetDirectory,
-                            ((isApache && useApache) ? "org/apache/flex/compiler/" : "com/adobe/flex/compiler/") +
-                            artifactMetadata.getArtifactId() + "/" + artifactMetadata.getVersion());
+                            "com/adobe/air/compiler/" + artifactMetadata.getArtifactId() + "/" +
+                                    artifactMetadata.getVersion());
                     // Create the directory.
                     if(targetJarDirectory.mkdirs()) {
                         // Create the filename of the artifact.
@@ -144,8 +120,7 @@ public class FlexCompilerGenerator extends BaseGenerator {
                         // Add the dependency to the compiler-poms dependency section.
                         appendArtifact(artifactMetadata, dependencies);
                     } else {
-                        throw new RuntimeException("Could not create directory: " +
-                                targetJarDirectory.getAbsolutePath());
+                        throw new RuntimeException("Could not create directory: " + targetJarDirectory.getAbsolutePath());
                     }
 
                     // Create the pom document that will reside next to the artifact lib.
@@ -153,15 +128,6 @@ public class FlexCompilerGenerator extends BaseGenerator {
                     final File artifactPomFile =
                             new File(targetJarDirectory, dependencyArtifactId + "-" + sdkVersion + ".pom");
                     writeDocument(artifactPom, artifactPomFile);
-
-                    // The asdoc library needs us to zip up an additional directory and
-                    // deploy that as "asdoc-{version}-template.zip"
-                    if("asdoc".equals(dependencyArtifactId)) {
-                        final File asdocTemplatesDirectory = new File(sdkSourceDirectory, "asdoc/templates");
-                        if(asdocTemplatesDirectory.exists()) {
-                            createAsdocTemplatesZip(asdocTemplatesDirectory, targetJarDirectory, sdkVersion);
-                        }
-                    }
                 }
 
                 // Remember the checksum for later re-usage.
@@ -175,7 +141,7 @@ public class FlexCompilerGenerator extends BaseGenerator {
         // was needed due to the re-deployment of patched FDKs in 2011/2012 in which the framework.swc no longer
         // has the same version as the compiler.
         final MavenMetadata frameworkVersions = new MavenMetadata();
-        frameworkVersions.setGroupId((isApache && useApache) ? "org.apache.flex" : "com.adobe.flex");
+        frameworkVersions.setGroupId("com.adobe.air");
         frameworkVersions.setArtifactId("framework");
         frameworkVersions.setVersion(sdkVersion);
         frameworkVersions.setPackaging("pom");
@@ -183,64 +149,8 @@ public class FlexCompilerGenerator extends BaseGenerator {
 
         // Write the compiler-pom document to file.
         final File pomFile = new File(sdkTargetDirectory,
-                ((isApache && useApache) ? "org/apache/flex/compiler/" : "com/adobe/flex/compiler/") +
-                        sdkVersion + "/compiler-" + sdkVersion + ".pom");
+                "com/adobe/air/compiler/" + sdkVersion + "/compiler-" + sdkVersion + ".pom");
         writeDocument(pom, pomFile);
     }
 
-    /**
-     * Zips up the stuff in the asdoc templates directory.
-     *
-     * @param asdocTemplatesDirectory asdoc templates directory
-     * @param asdocDestinationDir directory containing the asdoc lib
-     * @param asdocVersion version of the asdoc lib
-     * @throws Exception
-     */
-    private void createAsdocTemplatesZip(File asdocTemplatesDirectory, File asdocDestinationDir, String asdocVersion)
-            throws Exception {
-        // ZIP up every file (not directory) in the framework directory and the entire themes directory.
-        final File sourceFiles[] = asdocTemplatesDirectory.listFiles(new FileFilter() {
-            public boolean accept(File pathname) {
-                return pathname.isFile();
-            }
-        });
-        final File zipInputFiles[] = new File[sourceFiles.length + 1];
-        System.arraycopy(sourceFiles, 0, zipInputFiles, 0, sourceFiles.length);
-        final File imagesDirectory = new File(asdocTemplatesDirectory, "images");
-        zipInputFiles[sourceFiles.length] = imagesDirectory;
-
-        // Add all the content to a zip-file.
-        final File targetFile = new File(asdocDestinationDir,
-                "asdoc-" + asdocVersion + "-template.zip");
-        final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(targetFile));
-        for(final File file : zipInputFiles) {
-            addFileToZip(zipOutputStream, file, asdocTemplatesDirectory);
-        }
-        zipOutputStream.close();
-    }
-
-    private void addFileToZip(ZipOutputStream zipOutputStream, File inputFile, File rootDirectory) throws Exception {
-        // If this is a directory, add all it's children.
-        if(inputFile.isDirectory()) {
-            final File directoryContent[] = inputFile.listFiles();
-            if(directoryContent != null) {
-                for(final File file : directoryContent) {
-                    addFileToZip(zipOutputStream, file, rootDirectory);
-                }
-            }
-        }
-        // If this is a file, add it to the zips output.
-        else {
-            byte[] buf = new byte[1024];
-            final FileInputStream in = new FileInputStream(inputFile);
-            final String zipPath = inputFile.getAbsolutePath().substring(rootDirectory.getAbsolutePath().length() + 1);
-            zipOutputStream.putNextEntry(new ZipEntry(zipPath));
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                zipOutputStream.write(buf, 0, len);
-            }
-            zipOutputStream.closeEntry();
-            in.close();
-        }
-    }
 }
