@@ -221,7 +221,8 @@ public class MD5CompareUtil extends EventDispatcher
 		_urlLoader.addEventListener(Event.COMPLETE, urlLoaderResultHandler);
 		_urlLoader.addEventListener(IOErrorEvent.IO_ERROR, urlLoaderResultHandler);
 		if (remoteSDKZipPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX &&
-			remoteSDKZipPath.substr(0, Constants.FILE_PREFIX.length) != Constants.FILE_PREFIX)
+			remoteSDKZipPath.substr(0, Constants.FILE_PREFIX.length) != Constants.FILE_PREFIX &&
+			remoteSDKZipPath.search("http") != 0)
 		{
 			_urlLoader.load(new URLRequest(MD5_DOMAIN + remoteSDKZipPath + MD5_POSTFIX));
 		}

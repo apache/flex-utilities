@@ -82,6 +82,7 @@ variables are not required because the locations of these pieces are known.
 		import ws.tink.spark.controls.StepItem;
 		
 		private var _mirrorURLCGI:String;
+		private var _useMirror:Boolean = true;
 		private var _latestVersion:String;
 		
 		public var installerAppPath:String;
@@ -92,7 +93,7 @@ variables are not required because the locations of these pieces are known.
 		 */
 		private var _md5CompareUtil:MD5CompareUtil = MD5CompareUtil.instance;
 		private var _mirrorURLUtil:MirrorURLUtil = MirrorURLUtil.instance;
-
+		
 		/**
 		 * Apache Flex binary distribution
 		 * 
@@ -234,7 +235,7 @@ variables are not required because the locations of these pieces are known.
 				dispatchEvent(new Event("logButtonWidthChanged"));
 				trace("log = ",w);
 			}
-
+			
 			hiddenButton.label = openApacheFlexFolderBtn.label;
 			hiddenButton.validateNow();
 			w = hiddenButton.measuredWidth;
@@ -289,17 +290,17 @@ variables are not required because the locations of these pieces are known.
 			_langSelect.dataProvider 	= ViewResourceConstants.supportedLanguages;
 			_langSelect.selectedIndex 	= 0;
 			defineResourceManagerDefaultLanguage();
-
+			
 			updateWindow();
 			
 			loadXML();
 		}
 		
 		/**
-		* Define on ResourceManager all keys for translation.
-		* If some key is not present on any other language selected by user, the default value will be displayed 
-		* on the screen
-		*/
+		 * Define on ResourceManager all keys for translation.
+		 * If some key is not present on any other language selected by user, the default value will be displayed 
+		 * on the screen
+		 */
 		private function defineResourceManagerDefaultLanguage() : void
 		{
 			resourceManager.localeChain = [ ViewResourceConstants.DEFAULT_LANGUAGE ];
@@ -319,7 +320,7 @@ variables are not required because the locations of these pieces are known.
 			var supportedLanguages:ArrayCollection = ViewResourceConstants.supportedLanguages;
 			
 			var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-","_");
-
+			
 			if (languageOverride)
 				userLocale = languageOverride;
 			
@@ -335,7 +336,7 @@ variables are not required because the locations of these pieces are known.
 				}
 			}
 			resourceManager.addEventListener(Event.CHANGE, _viewResourceConstants.update);
-						
+			
 			_viewResourceConstants.update();
 			computeStandardButtonWidth();
 			
@@ -415,6 +416,7 @@ variables are not required because the locations of these pieces are known.
 			
 			_mirrorURLCGI = files.(@name == 'MirrorURLCGI').@file.toString();
 			
+			
 			var fileName:String = files.(@name == 'ApacheFlexSDK').@file.toString();
 			/* Tmp solution to remove the file extension if present in the config XML */
 			var winExtension:String = Constants.ARCHIVE_EXTENSION_WIN;
@@ -430,6 +432,11 @@ variables are not required because the locations of these pieces are known.
 			{
 				log(_viewResourceConstants.ERROR_INVALID_SDK_URL);
 				keepGoing = false;
+			}
+			
+			// ApacheFlex is full URL so download directly and dont use mirror useful for testing release candidates
+			if (APACHE_FLEX_BIN_DISTRO_PATH.indexOf("http") == 0) {
+				_useMirror = false;
 			}
 			
 			ADOBE_AIR_SDK_WIN_FILE = files.(@name == 'AdobeAIRSDKWin').@file.toString();
@@ -459,6 +466,7 @@ variables are not required because the locations of these pieces are known.
 				keepGoing = false;
 			}
 			ADOBE_FB_GLOBALPLAYER_SWC_URL += ADOBE_FB_GLOBALPLAYER_SWC_FILE;
+
 			
 			SWF_OBJECT_FILE = files.(@name == 'swfobject').@file.toString();
 			SWF_OBJECT_URL = files.(@name == 'swfobject').@path.toString();
@@ -502,6 +510,14 @@ variables are not required because the locations of these pieces are known.
 			}
 		}
 		
+		private function useMirrorPath(path:String):String {
+			if (_useMirror) {
+				return path;
+			}
+			
+			return "";
+		}
+		
 		private function getMirrorURLResultHandler():void
 		{
 			var logMessages:ArrayCollection = ILog(_mirrorURLUtil).log;
@@ -521,7 +537,7 @@ variables are not required because the locations of these pieces are known.
 				if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX &&
 					APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) != Constants.FILE_PREFIX)
 				{
-					APACHE_FLEX_BIN_DISTRO_URL = _mirrorURLUtil.mirrorURL + 
+					APACHE_FLEX_BIN_DISTRO_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + 
 						APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
 				}
 				else
@@ -531,7 +547,7 @@ variables are not required because the locations of these pieces are known.
 				
 				if (installerAppPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX)
 				{
-					installerAppPath = _mirrorURLUtil.mirrorURL + installerAppPath;
+					installerAppPath = useMirrorPath(_mirrorURLUtil.mirrorURL) + installerAppPath;
 				}
 			}
 			
@@ -588,10 +604,10 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function doUpdate():void
 		{
-				var updaterDialog:UpdaterDialog = UpdaterDialog(PopUpManager.createPopUp(this,UpdaterDialog,true));
-				updaterDialog.addEventListener("close",handleUpdaterDialogClose);
-				updaterDialog.latestVersion = _latestVersion;
-				PopUpManager.centerPopUp(updaterDialog);
+			var updaterDialog:UpdaterDialog = UpdaterDialog(PopUpManager.createPopUp(this,UpdaterDialog,true));
+			updaterDialog.addEventListener("close",handleUpdaterDialogClose);
+			updaterDialog.latestVersion = _latestVersion;
+			PopUpManager.centerPopUp(updaterDialog);
 		}
 		
 		protected function handleUpdaterDialogClose(event:Event):void
@@ -831,7 +847,7 @@ variables are not required because the locations of these pieces are known.
 			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.COMPLETE);
 			
 			updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.ACTIVE);
-
+			
 			log(_viewResourceConstants.STEP_VERIFY_FLEX_SDK);
 			
 			_md5CompareUtil.addEventListener(ProgressEvent.PROGRESS, md5VerificationProgressHandler);
@@ -869,7 +885,7 @@ variables are not required because the locations of these pieces are known.
 				
 				log(_viewResourceConstants.INFO_VERIFY_FLEX_SDK_DONE);
 			} 
-
+			
 			updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.ACTIVE);
 			
 			try
@@ -1114,7 +1130,7 @@ variables are not required because the locations of these pieces are known.
 			
 			if (!aborted)
 			{
- 				updateActivityStep(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES, StepItem.COMPLETE);
+				updateActivityStep(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES, StepItem.COMPLETE);
 				downloadSwfObject();
 			}
 		}
@@ -1166,7 +1182,7 @@ variables are not required because the locations of these pieces are known.
 				
 				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.COMPLETE);
 				installOSMF();
-
+				
 			}
 			catch(e:Error)
 			{
@@ -1542,7 +1558,7 @@ variables are not required because the locations of these pieces are known.
 				getInstallerComponentFromLabel(item.key).selected = true;
 			}
 		}
-
+		
 		protected function placeFirstGroup():void
 		{
 			firstStepGroup.x = this.width/2 - firstStepGroup.width/2;
@@ -1871,7 +1887,7 @@ variables are not required because the locations of these pieces are known.
 			licenseWindow.nativeWindow.x = this.nativeWindow.x + this.nativeWindow.width/2 - licenseWindow.nativeWindow.width/2;
 			licenseWindow.nativeWindow.y = this.nativeWindow.y + this.nativeWindow.height/2 - licenseWindow.nativeWindow.height/2;
 		}
-
+		
 		private function openApacheFlexFolder(event:Event):void 
 		{
 			_flexHomeDir.openWithDefaultApplication();
@@ -2013,7 +2029,7 @@ variables are not required because the locations of these pieces are known.
 				 text="{_viewResourceConstants.INFO_CURRENT_LANGUAGE}" 
 				 verticalAlign="middle"/>
 		<s:DropDownList id="_langSelect"
-					change="_langSelect_changeHandler(event)">
+						change="_langSelect_changeHandler(event)">
 			<s:layout>
 				<s:VerticalLayout requestedRowCount="-1" />
 			</s:layout>
