@@ -1471,6 +1471,7 @@ variables are not required because the locations of these pieces are known.
 			}
 			if(allComponentsInstalled)
 			{
+				tracker.trackInstallerSuccess();
 				cleanup(false);	
 			}
 		}
@@ -2181,6 +2182,7 @@ variables are not required because the locations of these pieces are known.
 				  label="{_viewResourceConstants.BTN_LABEL_OPEN_APACHE_FLEX_FOLDER}"
 				  toolTip="{_flexHome}"
 				  click="openApacheFlexFolder(event)" />
+		<components:Tracker id="tracker" width="1" height="1" visible="false" />
 	</s:Panel>
 	<s:HGroup 
 		left="0" 
@@ -2188,13 +2190,16 @@ variables are not required because the locations of these pieces are known.
 		bottom="20" 
 		paddingLeft="20" 
 		paddingRight="20" 
-		paddingTop="0">
+		paddingTop="0"
+		verticalAlign="middle">
 		<s:Button id="installLogBtn" 
 				  styleName="genericBtnStyle"
 				  width="{logButtonWidth}"
 				  height="32"
 				  label="{_viewResourceConstants.BTN_LABEL_INSTALL_LOG}" 
 				  click="showConsole(event)" />
+		<s:Spacer width="100%" />
+		<s:Label text="{_viewResourceConstants.INFO_TRACKING}" />
 		<s:Spacer width="100%" />
 		<s:Button id="closeBtn" 
 				  styleName="genericBtnStyle" 

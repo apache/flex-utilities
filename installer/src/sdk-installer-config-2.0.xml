@@ -34,7 +34,7 @@ limitations under the License.
 		
 		<!-- Mirror URL CGI -->
 		<file name="MirrorURLCGI" path="" file="single-mirror-url.cgi" />
-		.
+
 		<!-- Apache Flex binary distribution
 			 Notes: 
 			 	- path is relative to mirror URL
