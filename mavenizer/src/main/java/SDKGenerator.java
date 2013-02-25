@@ -87,7 +87,7 @@ public class SDKGenerator {
         new AirRuntimeGenerator().process(sdkSourceDirectory, false, sdkTargetDirectory, sdkVersion, false);
     }
 
-    public void generateAllFlex(File sdkSourceDirectory, File sdkTargetDirectory) throws Exception {
+    public void generateAllFlex(File sdkSourceDirectory, File sdkTargetDirectory, boolean useApache) throws Exception {
         final File sdkDirectories[] = sdkSourceDirectory.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.isDirectory();
@@ -108,9 +108,7 @@ public class SDKGenerator {
                 System.out.println("-- Generating Flex SDK version: " + sdkVersion);
                 System.out.println("---------------------------------------------");
 
-                // TODO: Comment this line in to deploy the apache flex under org.apache.flex
-                //generateFlex(sdkDirectory, isApache, sdkTargetDirectory, sdkVersion, true);
-                generateFlex(sdkDirectory, isApache, sdkTargetDirectory, sdkVersion, false);
+                generateFlex(sdkDirectory, isApache, sdkTargetDirectory, sdkVersion, useApache);
 
                 System.out.println("---------------------------------------------");
             }
@@ -131,13 +129,14 @@ public class SDKGenerator {
 
     public static void main(String[] args) throws Exception {
 
-        if (args.length != 2) {
-            System.out.println("Usage: SDKGenerator {source-directory} {target-directory}");
+        if (args.length != 3) {
+            System.out.println("Usage: SDKGenerator {source-directory} {target-directory} {use-apache-gid}");
             System.exit(0);
         }
 
         final String sdkSourceDirectoryName = args[0];
         final String sdkTargetDirectoryName = args[1];
+        final boolean useApache = Boolean.valueOf(args[2]);
 
         final File sdkSourceDirectory = new File(sdkSourceDirectoryName);
         final File sdkTargetDirectory = new File(sdkTargetDirectoryName);
@@ -151,7 +150,7 @@ public class SDKGenerator {
         generator.generateAllAir(new File(sdkSourceDirectory, "flex"), sdkTargetDirectory);
 
         // After the air artifacts are generated and
-        generator.generateAllFlex(new File(sdkSourceDirectory, "flex"), sdkTargetDirectory);
+        generator.generateAllFlex(new File(sdkSourceDirectory, "flex"), sdkTargetDirectory, useApache);
     }
 
     /**
