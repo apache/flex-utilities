@@ -16,14 +16,9 @@
  */
 package flex;
 
-import java.io.*;
-import java.text.NumberFormat;
-import java.util.*;
-import java.util.jar.*;
-import java.util.zip.*;
-import org.w3c.dom.Document;
 import common.BaseGenerator;
 import common.MavenMetadata;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -31,6 +26,23 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.jar.JarOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -575,6 +587,8 @@ public class FlexFrameworkGenerator extends BaseGenerator {
 
     protected void writeDummyResourceBundleSwc(final File targetFile) throws Exception {
 		final ZipOutputStream out = new ZipOutputStream(new FileOutputStream(targetFile));
+		out.putNextEntry(new ZipEntry("dummy"));
+		out.closeEntry();
 		out.close();
     }
 
