@@ -853,7 +853,7 @@ public class RuntimeLocale
 		content["ERROR_UNABLE_TO_UNZIP"]="Impossible de décompresser le fichier: ";
 		content["ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT"]="Impossible de télécharger SWFObject";
 		content["ERROR_UNSUPPORTED_OPERATING_SYSTEM"]="Système d'exploitation non pris en charge";
-		content["ERROR_VERIFY_FLEX_SDK"]="La Signature MD5 des fichiers téléchargés de l'Apache Flex SDK ne correspond pas à la valeur de référence. Le fichier n'est pas valide, l'installation est interrompue.";
+		content["ERROR_VERIFY_FLEX_SDK"]="La Signature MD5 des fichiers téléchargés du SDK Apache Flex ne correspond pas à la valeur de référence. Le fichier n'est pas valide, l'installation est interrompue.";
 		content["FETCH_GEO_IP"]="Essai de récupération du code du pays de l'utilisateur à partir du service GeoIP ...";
 		content["FETCH_GEO_IP_DONE"]="Le code du pays de l'utilisateur à été récupéré à partir du service GeoIP.";
 		content["FETCH_GEO_IP_ERROR"]="Une erreur s'est produite lors de la récupération du code pays de l'utilisateur à partir du service GeoIP.";
@@ -887,7 +887,7 @@ public class RuntimeLocale
 		content["INFO_SELECT_DIRECTORY"]="Sélectionnez le répertoire où vous souhaitez installer le SDK Flex";
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Sélectionnez le répertoire d'installation";
 		content["INFO_UNZIPPING"]="Décompression: ";
-		content["INFO_VERIFY_FLEX_SDK_DONE"]="La Signature MD5 des fichiers téléchargés pour l'Apache Flex SDK correspond à la référence. Le fichier est valide.";
+		content["INFO_VERIFY_FLEX_SDK_DONE"]="La Signature MD5 des fichiers téléchargés pour le Flex Apache SDK correspond à la référence. Le fichier est valide.";
 		content["INFO_WINDOW_TITLE"]="Installer Apache Flex SDK à utiliser avec Adobe Flash Builder";
 		content["INSTALL_AGREE"] = "Je suis d'accord, Installer";
 		content["INSTALL_AGREE_ALL"] = "Je suis d'accord pour toutes les options et les licences, installer";
