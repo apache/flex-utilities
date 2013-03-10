@@ -27,13 +27,13 @@ import mx.resources.ResourceManager;
 
 public class RuntimeLocale
 {
-	
+
 	//--------------------------------------------------------------------------
 	//
 	// Class constants
 	//
 	//--------------------------------------------------------------------------
-	
+
 	public static const EL_GR:String = "el_GR";
 	public static const EN_AU:String = "en_AU";
 	public static const EN_GB:String = "en_GB";
@@ -42,61 +42,61 @@ public class RuntimeLocale
 	public static const NL_NL:String = "nl_NL";
 	public static const PT_BR:String = "pt_BR";
 	public static const FR_FR:String = "fr_FR";
-	
+
 	//--------------------------------------------------------------------------
 	//
 	// Class properties
 	//
 	//--------------------------------------------------------------------------
-	
+
 	//----------------------------------
 	// instance
 	//----------------------------------
-	
+
 	private static var _instance:RuntimeLocale;
-	
+
 	public static function get instance():RuntimeLocale
 	{
 		if (!_instance)
 			_instance = new RuntimeLocale(new SE());
-		
+
 		return _instance;
 	}
-	
+
 	//--------------------------------------------------------------------------
 	//
 	// Constructor
 	//
 	//--------------------------------------------------------------------------
-	
+
 	public function RuntimeLocale(se:SE) { }
-	
+
 	//--------------------------------------------------------------------------
 	//
 	// Methods
 	//
 	//--------------------------------------------------------------------------
-	
+
 	private var _initialized:Boolean;
-	
+
 	private var _resourceManager:IResourceManager;
-	
+
 	//--------------------------------------------------------------------------
 	//
 	// Methods
 	//
 	//--------------------------------------------------------------------------
-	
+
 	//----------------------------------
 	// installResources
 	//----------------------------------
-	
+
 	public function installResources():void
 	{
 		if (!_initialized)
 		{
 			_resourceManager = ResourceManager.getInstance();
-			
+
 			install_el_GR();
 			install_en_AU();
 			install_en_GB();
@@ -105,20 +105,20 @@ public class RuntimeLocale
 			install_nl_NL();
 			install_pt_BR();
 			install_fr_FR();
-			
+
 			_initialized = true;
 		}
 	}
-	
+
 	//----------------------------------
 	// install_el_GR
 	//----------------------------------
-	
+
 	private function install_el_GR():void
 	{
 		var locale:String = EL_GR;
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
-		
+
 		var content:Object = resource.content;
 		content["BTN_LABEL_BROWSE"]="ΑΝΑΖΗΤΗΣΗ";
 		content["BTN_LABEL_CLOSE"]="ΕΞΟΔΟΣ";
@@ -201,7 +201,7 @@ public class RuntimeLocale
 		content["INFO_LICENSE_AGREEMENTS"]="Άδειες χρήσης";
 		content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="Η εφαρμογή θα κάνει λήψη λογισμικού απο πολλαπλές ιστοσελίδες με διαφορετικές άδειες χρήσης. Παρακαλώ επιλέξτε κάθε εγγραφή απο την λίστα αριστερά, διαβάστε την άδεια χρήσης και βεβαιώθείτε πως συμφωνείτε με τους όρους της κάθε άδειας.";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="Η επαλήθευση των ληφθέντων αρχείων είναι επιτυχής.";
-		content["INFO_WINDOW_TITLE"]="Εγκατάσταση του Apache Flex SDK για χρήση με το Adobe Flash Builder";
+		content["INFO_WINDOW_TITLE"]="Εγκατάσταση του Apache Flex SDK {0} για χρήση με το Adobe Flash Builder";
 		content["INSTALL_AGREE"]="Συμφωνώ, να γίνει εγκατάσταση";
 		content["INSTALL_AGREE_ALL"]="Συμφωνώ με όλες τις άδειες χρήσης και τις επιλογές. Να γίνει εγκατάσταση.";
 		content["INSTALL_DISAGREE"]="Δεν συμφωνώ. Να μην γίνει εγκατάσταση.";
@@ -231,20 +231,21 @@ public class RuntimeLocale
 		content["LICENSE_URL_FONTSWF"]="";
 		content["LICENSE_BLAZEDS"]="'Αδεια χρήσης Adobe Flex SDK";
 		content["LICENSE_URL_BLAZEDS"]="";
-		
-		
-		_resourceManager.addResourceBundle(resource);	
+        content["INFO_TRACKING"] = "Information about your use of this application\nis being collected using HTTP requests.";
+
+
+		_resourceManager.addResourceBundle(resource);
 	}
-	
+
 	//----------------------------------
 	// install_en_AU
 	//----------------------------------
-	
+
 	private function install_en_AU():void
 	{
 		var locale:String = EN_AU;
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
-		
+
 		var content:Object = resource.content;
 		content["BTN_LABEL_BROWSE"]="BROWSE";
 		content["BTN_LABEL_CLOSE"]="CLOSE";
@@ -291,19 +292,19 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Unzip Adobe AIR Runtime Kit";
 		content["STEP_UNZIP_FLEX_SDK"]="Unzip Apache Flex SDK";
-		
+
 		_resourceManager.addResourceBundle(resource);
 	}
-	
+
 	//----------------------------------
 	// install_en_GB
 	//----------------------------------
-	
+
 	private function install_en_GB():void
 	{
 		var locale:String = EN_GB;
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
-		
+
 		var content:Object = resource.content;
 		content["BTN_LABEL_BROWSE"]="BROWSE";
 		content["BTN_LABEL_CLOSE"]="CLOSE";
@@ -350,19 +351,19 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Unzip Adobe AIR Runtime Kit";
 		content["STEP_UNZIP_FLEX_SDK"]="Unzip Apache Flex SDK";
-		
+
 		_resourceManager.addResourceBundle(resource);
 	}
-	
+
 	//----------------------------------
 	// install_en_US
 	//----------------------------------
-	
+
 	private function install_en_US():void
 	{
 		var locale:String = EN_US;
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
-		
+
 		var content:Object = resource.content;
 		content["ASK_BLAZEDS"]="Apache Flex can optionally integrate with Adobe BlazeDS. This feature requires flex-messaging-common.jar from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to this jar. This license is not compatible with the Apache V2 license. Do you want to install this jar from the Adobe Flex SDK?";
 		content["ASK_FONTSWF"]="Apache Flex can optionally integrate with Adobe's embedded font support. This feature requires a few font jars from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to these jars. This license is not compatible with the Apache V2 license. Do you want to install these jars from the Adobe Flex SDK?";
@@ -437,7 +438,7 @@ public class RuntimeLocale
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Select installation directory";
 		content["INFO_UNZIPPING"]="Uncompressing: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="The Apache Flex SDK MD5 Signature of the downloaded files matches the reference. The file is valid.";
-		content["INFO_WINDOW_TITLE"]="Install Apache Flex SDK for use with Adobe Flash Builder";
+		content["INFO_WINDOW_TITLE"]="Install Apache Flex SDK {0} for use with Adobe Flash Builder";
 		content["INSTALL_AGREE"] = "I Agree, Install";
 		content["INSTALL_AGREE_ALL"] = "I agree to all options and licenses, Install";
 		content["INSTALL_DISAGREE"] = "I Disagree, Don't Install";
@@ -473,19 +474,19 @@ public class RuntimeLocale
 		content["LICENSE_BLAZEDS"]="Adobe Flex SDK License";
 		content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
 		content["INFO_TRACKING"]="Information about your use of this application is being collected using HTTP requests.";
-		
+
 		_resourceManager.addResourceBundle(resource);
 	}
 
 	//----------------------------------
 	// install_es_ES
 	//----------------------------------
-	
+
 	private function install_es_ES():void
 	{
 		var locale:String = ES_ES;
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
-		
+
 		var content:Object = resource.content;
 		content["ASK_BLAZEDS"]="Apache Flex puede integrarse de manera opcional con Adobe BlazeDS. Esta característica necesita flex-messaging-common.jar del SDK de Adobe Flex. Este archivo se ofrecen bajo los términos de la licencia de Adobe SDK para Adobe Flex 4.6. Esta licencia no es compatibla con la licencia Apache V2. ¿Quieres instalar este archivo desde el SDK de Adobe Flex?";
 		content["ASK_FONTSWF"]="Apache Flex puede integrarse de manera opcional con el soporte para fuentes embebidas de Adobe. Esta característica necesita algunos ficheros de fuentes del SDK de Adobe Flex. Estos archivos se ofrecen bajo los términos de la licencia de Adobe SDK para Adobe Flex 4.6. Esta licencia no es compatibla con la licencia Apache V2. ¿Quieres instalar estos archivos desde el SDK de Adobe Flex?";
@@ -560,7 +561,7 @@ public class RuntimeLocale
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Selecciona el directorio de instalación";
 		content["INFO_UNZIPPING"]="Descomprimiendo: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="La firma MD5 de Apache Flex SDK en los archivos descargados coincide con la original. El archivo es válido.";
-		content["INFO_WINDOW_TITLE"]="Instalar Apache Flex SDK para su uso con Adobe Flash Builder";
+		content["INFO_WINDOW_TITLE"]="Instalar Apache Flex SDK {0} para su uso con Adobe Flash Builder";
 		content["INSTALL_AGREE"] = "Acepto, Instalar";
 		content["INSTALL_AGREE_ALL"] = "Acepto todas las opciones y licencias, Instalar";
 		content["INSTALL_DISAGREE"] = "No estoy de acuerdo, Cancelar";
@@ -587,19 +588,20 @@ public class RuntimeLocale
 		content["LICENSE_TLF"]="Licencia Pública de Mozilla Versión 1.1";
 		content["LICENSE_FONTSWF"]="Licencia de Adobe Flex SDK";
 		content["LICENSE_BLAZEDS"]="Licencia de Adobe Flex SDK";
-		
+        content["INFO_TRACKING"] = "Information about your use of this application\nis being collected using HTTP requests.";
+
 		_resourceManager.addResourceBundle(resource);
 	}
-	
+
 	//----------------------------------
 	// install_nl_NL
 	//----------------------------------
-	
+
 	private function install_nl_NL():void
 	{
 		var locale:String = NL_NL;
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
-		
+
 		var content:Object = resource.content;
 		content["ASK_BLAZEDS"]="Apache Flex kan optioneel integreren met Adobe BlazeDS. Deze feature vereist flex-messaging-common.jar uit de Adobe Flex SDK. De Adobe SDK licentie overeenkomst voor Adobe Flex 4.6 geldt voor deze jar. Deze licentie is niet compatibel met de Apache V2 licentie. Wilt u deze jar uit de Adobe Flex SDK installeren?";
 		content["ASK_FONTSWF"]="Apache Flex kan optioneel integreren met Adobe's embedded font support. Deze feature vereist een aantal font jars uit de Adobe Flex SDK. De Adobe SDK licentie overeenkomst voor Adobe Flex 4.6 geldt voor deze jars. Deze licentie is niet compatibel met de Apache V2 licentie. Wilt u deze jars uit de Adobe Flex SDK installeren?";
@@ -674,7 +676,7 @@ public class RuntimeLocale
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Kies de installatie map";
 		content["INFO_UNZIPPING"]="Uitpakken: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="Het Apache Flex SDK MD5 signatuur van de gedownloade bestanden komt overeen met de referentie. Het bestand is geldig.";
-		content["INFO_WINDOW_TITLE"]="Installeer Apache Flex SDK voor gebruik in Adobe Flash Builder";
+		content["INFO_WINDOW_TITLE"]="Installeer Apache Flex SDK {0} voor gebruik in Adobe Flash Builder";
 		content["INSTALL_AGREE"] = "Ik ga akkoord, installeer";
 		content["INSTALL_AGREE_ALL"] = "Ik ga akkoord met alle opties en licenties, installeer";
 		content["INSTALL_DISAGREE"] = "Ik ga niet akkoord, installeer niet";
@@ -701,19 +703,19 @@ public class RuntimeLocale
 		content["LICENSE_TLF"]="Mozilla Public License Versie 1.1";
 		content["LICENSE_FONTSWF"]="Adobe Flex SDK Licentie";
 		content["LICENSE_BLAZEDS"]="Adobe Flex SDK Licentie";
-		
+
 		_resourceManager.addResourceBundle(resource);
 	}
-	
+
 	//----------------------------------
 	// install_pt_BR
 	//----------------------------------
-	
+
 	private function install_pt_BR():void
 	{
 		var locale:String = PT_BR;
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
-		
+
 		var content:Object = resource.content;
 		content["ASK_BLAZEDS"]="Apache Flex pode, opcionalmente, integrar-se com Adobe BlazeDS. Esta integração requer flex-messaging-common.jar do Adobe Flex SDK, que esta sob o contrato de licença do Adobe SDK para Adobe Flex 4.6. Esta licença não é compatível com a licença Apache V2. Você quer instalar este jar a partir do Adobe Flex SDK?";
 		content["ASK_FONTSWF"]="Apache Flex pode, opcionalmente, integrar-se com o suporte de fontes embutidas da Adobe. Este recurso requer alguns jars do Adobe Flex SDK, que estão sob o contrato de licença do Adobe Flex 4.6. Esta licença não é compatível com a licença Apache V2. Você quer instalar estes jars a partir do Adobe Flex SDK?";
@@ -727,7 +729,7 @@ public class RuntimeLocale
 		content["BTN_LABEL_MPL_LICENSE"]="LICENÇA MPL";
 		content["BTN_LABEL_NEXT"]="PROX.";
 		content["BTN_DISCLAIMER"]="Disclaimer";
-		content["BTN_LABEL_OPEN_APACHE_FLEX_FOLDER"]="ABRIR DIRETÓRIO APACHE FLEX";	
+		content["BTN_LABEL_OPEN_APACHE_FLEX_FOLDER"]="ABRIR DIRETÓRIO APACHE FLEX";
 		content["ERROR_CONFIG_XML_LOAD"]="Erro ao tentar carregar o arquivo XML de configuração: ";
 		content["ERROR_DIR_NOT_EMPTY"]="O diretório selecionado não está vazio";
 		content["ERROR_INVALID_AIR_SDK_URL_MAC"]="URL inválida no arquivo de configuração para Adobe AIR SDK para Mac";
@@ -784,7 +786,7 @@ public class RuntimeLocale
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Selecione o diretório de instalação";
 		content["INFO_UNZIPPING"]="Descompactando: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="A assinatura MD5 do download efetuado do Apache Flex SDK MD5 são válidas com sua referência. O arquivo é válido.";
-		content["INFO_WINDOW_TITLE"]="Instalação do Apache Flex SDK para utilização no Adobe Flash Builder";
+		content["INFO_WINDOW_TITLE"]="Instalação do Apache Flex SDK {0} para utilização no Adobe Flash Builder";
 		content["INSTALL_AGREE"] = "Eu concordo, instalar";
 		content["INSTALL_DISAGREE"] = "Não concordo, não instale";
 		content["SELECT_PATH_PROMPT"]="Aonde você deseja instalar o Apache Flex SDK?";
@@ -801,19 +803,19 @@ public class RuntimeLocale
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Descompactando Adobe AIR Runtime Kit";
 		content["STEP_UNZIP_FLEX_SDK"]="Descompactando Apache Flex SDK";
 		content["STEP_VERIFY_FLEX_SDK"]="Verificação da assinatura MD5 - Apache Flex SDK";
-		
+
 		_resourceManager.addResourceBundle(resource);
 	}
-	
+
 	//----------------------------------
 	// install_fr_FR
 	//----------------------------------
-	
+
 	private function install_fr_FR():void
 	{
 		var locale:String = FR_FR;
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
-		
+
 		var content:Object = resource.content;
 		content["ASK_BLAZEDS"]="Apache Flex peut éventuellement s'intégrer à Adobe BlazeDS. Cette fonctionalité nécessite flex-messaging-common.jar du SDK Adobe Flex. L'accord de licence Adobe SDK pour Adobe Flex 4.6 s'applique à ce jar. Cette licence n'est pas compatible avec la licence Apache V2. Voulez-vous installer ce jar à partir du SDK Adobe Flex?";
 		content["ASK_FONTSWF"]="Apache Flex peut éventuellement s'intégrer avec le support de polices embarquées Adobe (Adobe's embedded font support). Cette fonctionalité nécessite quelques jars de polices du SDK Adobe Flex. L'accord de licence Adobe SDK pour Adobe Flex 4.6 s'applique à ces jarres. Cette licence n'est pas compatible avec la licence Apache V2. Voulez-vous installer ces jars à partir du SDK Adobe Flex?";
@@ -883,12 +885,12 @@ public class RuntimeLocale
 		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Installation d'Adobe Flash Player playerglobal.swc à partir de: ";
 		content["INFO_INVOKED_GUI_MODE"]="invoqué en mode graphique";
 		content["INFO_LICENSE_AGREEMENTS"]="Contrats de licences";
-		content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="Ce programme d'installation va télécharger le logiciel à partir de plusieurs sites avec des accords de licence différents. S'il vous plaît cliquer sur chaque élément sur la gauche, lisez la licence et confirmez que vous acceptez les termes de la licence.";
+		content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="Ce programme d'installation va télécharger le logiciel à partir de plusieurs sites avec des accords de licence différents. S'il vous plaît, cliquez sur chaque élément sur la gauche, lisez la licence et confirmez que vous acceptez ses termes.";
 		content["INFO_SELECT_DIRECTORY"]="Sélectionnez le répertoire où vous souhaitez installer le SDK Flex";
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Sélectionnez le répertoire d'installation";
 		content["INFO_UNZIPPING"]="Décompression: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="La Signature MD5 des fichiers téléchargés pour le SDK Apache Flex correspond à la référence. Le fichier est valide.";
-		content["INFO_WINDOW_TITLE"]="Installer Apache Flex SDK à utiliser avec Adobe Flash Builder";
+		content["INFO_WINDOW_TITLE"]="Installer Apache Flex SDK {0} à utiliser avec Adobe Flash Builder";
 		content["INSTALL_AGREE"] = "Je suis d'accord, Installer";
 		content["INSTALL_AGREE_ALL"] = "Je suis d'accord pour toutes les options et les licences, installer";
 		content["INSTALL_DISAGREE"] = "Je suis en désaccord, Ne pas installer";
@@ -923,10 +925,11 @@ public class RuntimeLocale
 		content["LICENSE_URL_FONTSWF"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
 		content["LICENSE_BLAZEDS"]="Licence Adobe Flex SDK";
 		content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
-		
+        content["INFO_TRACKING"]="Les informations concernant votre utilisation de cette application\nvont être collectées en utilisant des requêtes HTTP";
+
 		_resourceManager.addResourceBundle(resource);
 	}
-	
+
 }
 }
 
