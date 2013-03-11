@@ -101,7 +101,7 @@ variables are not required because the locations of these pieces are known.
         private var APACHE_FLEX_BIN_DISTRO_FILE:String;
         private var APACHE_FLEX_BIN_DISTRO_FILE_SHORT:String;
         private var APACHE_FLEX_BIN_DISTRO_URL:String;
-        private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
+        [Bindable]private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
 
         /**
          * Adobe AIR SDK
@@ -235,7 +235,6 @@ variables are not required because the locations of these pieces are known.
             if (_logButtonWidth != w) {
                 _logButtonWidth = w;
                 dispatchEvent(new Event("logButtonWidthChanged"));
-                trace("log = ", w);
             }
 
             hiddenButton.label = openApacheFlexFolderBtn.label;
@@ -245,7 +244,6 @@ variables are not required because the locations of these pieces are known.
             if (_folderButtonWidth != w) {
                 _folderButtonWidth = w;
                 dispatchEvent(new Event("folderButtonWidthChanged"));
-                trace("folder = ", w);
             }
 
             w = 0;
@@ -266,7 +264,6 @@ variables are not required because the locations of these pieces are known.
             if (_standardButtonWidth != w) {
                 _standardButtonWidth = w;
                 dispatchEvent(new Event("buttonWidthChanged"));
-                trace(w);
             }
         }
 
@@ -1708,7 +1705,7 @@ variables are not required because the locations of these pieces are known.
             horizontalAlign="right">
         <controls2:LinkButton
                 text="{_viewResourceConstants.BTN_DISCLAIMER}"
-                fontWeight="bold"
+				fontFamily="openSansSemibold"
                 click="{showDisclaimer()}"
                 />
         <s:Spacer width="100%"/>
@@ -1717,14 +1714,30 @@ variables are not required because the locations of these pieces are known.
                  height="100%"
                  textAlign="right"
                  text="{_viewResourceConstants.INFO_CURRENT_LANGUAGE}"
+				 fontFamily="openSansSemibold"
                  verticalAlign="middle"/>
         <s:DropDownList id="_langSelect"
+						fontFamily="openSansSemibold"
                         change="_langSelect_changeHandler(event)">
             <s:layout>
                 <s:VerticalLayout requestedRowCount="-1"/>
             </s:layout>
         </s:DropDownList>
     </s:HGroup>
+	<s:HGroup width="100%" top="170" horizontalAlign="left">
+		<s:Spacer width="100" />
+		<s:Image source="assets/icons/apache_flex_logo_text.png" scaleX=".4" scaleY=".4" smooth="true" />
+		<s:Spacer width="100%" />
+		<s:VGroup gap="-5" paddingLeft="20" horizontalAlign="left">
+			<s:Label text="{_viewResourceConstants.INFO_VERSION}" fontFamily="openSansBold" color="0x677084" fontSize="33" />
+			<s:Label text="{APACHE_FLEX_BIN_DISTRO_VERSION}"
+					 fontFamily="openSansBold"
+					 color="0x172647" fontSize="85"
+					 trackingLeft="-2" trackingRight="-2"
+					 />		
+		</s:VGroup>
+		<s:Spacer width="100" />
+	</s:HGroup>
     <s:Panel id="firstStepGroup"
              title="{_viewResourceConstants.INFO_SELECT_DIRECTORY_INSTALL}"
              width="640"
@@ -1817,6 +1830,7 @@ variables are not required because the locations of these pieces are known.
                                       includeInLayout="false"
                         />
                 <s:TextArea id="optionalInstallsTxtArea" text="{_viewResourceConstants.INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE}"
+							fontFamily="openSansSemiBold" 
                             fontSize="12"
                             width="100%"
                             height="100%"
@@ -1855,7 +1869,8 @@ variables are not required because the locations of these pieces are known.
         <controls1:MultiStepProgressIndicator
                 steps="{_installationSteps}"/>
         <s:Label id="lastMessage"
-                 text="{_messages.getItemAt(_messages.length-1)}"
+				text="{_messages.getItemAt(_messages.length-1)}"
+				fontFamily="openSansLightItalic"
                  textAlign="center"
                  width="80%"
                  horizontalCenter="0"/>
@@ -1888,7 +1903,7 @@ variables are not required because the locations of these pieces are known.
                   label="{_viewResourceConstants.BTN_LABEL_INSTALL_LOG}"
                   click="showConsole(event)"/>
         <s:Spacer width="100%"/>
-        <s:Label text="{_viewResourceConstants.INFO_TRACKING}"/>
+        <s:Label fontFamily="openSansLightItalic" text="{_viewResourceConstants.INFO_TRACKING}"/>
         <s:Spacer width="100%"/>
         <s:Button id="closeBtn"
                   styleName="genericBtnStyle"

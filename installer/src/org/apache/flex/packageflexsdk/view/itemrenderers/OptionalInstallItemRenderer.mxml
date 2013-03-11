@@ -20,7 +20,7 @@ limitations under the License.
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
-				autoDrawBackground="true">
+				autoDrawBackground="true" >
 	<s:layout>
 		<s:HorizontalLayout verticalAlign="middle" gap="5" paddingLeft="5" />
 	</s:layout>
@@ -43,6 +43,6 @@ limitations under the License.
 	</fx:Script>
 	
 	<s:CheckBox id="checkbox1" selected="{data.selected}" enabled="true" change="checkbox1_changeHandler(event)"  />
-	<s:Label text="{data.label}" fontSize="12"/>
+	<s:Label text="{data.label}" fontFamily="openSansBold" fontSize="11"/>
 	
 </s:ItemRenderer>
