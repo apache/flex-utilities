@@ -438,7 +438,7 @@ public class RuntimeLocale
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Select installation directory";
 		content["INFO_UNZIPPING"]="Uncompressing: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="The Apache Flex SDK MD5 Signature of the downloaded files matches the reference. The file is valid.";
-		content["INFO_WINDOW_TITLE"]="Install Apache Flex SDK {0} for use with Adobe Flash Builder";
+		content["INFO_WINDOW_TITLE"]="Install Apache Flex SDK {0} for use with your IDE";
 		content["INSTALL_AGREE"] = "I Agree, Install";
 		content["INSTALL_AGREE_ALL"] = "I agree to all options and licenses, Install";
 		content["INSTALL_DISAGREE"] = "I Disagree, Don't Install";
@@ -890,7 +890,7 @@ public class RuntimeLocale
 		content["INFO_SELECT_DIRECTORY_INSTALL"]="Sélectionnez le répertoire d'installation";
 		content["INFO_UNZIPPING"]="Décompression: ";
 		content["INFO_VERIFY_FLEX_SDK_DONE"]="La Signature MD5 des fichiers téléchargés pour le SDK Apache Flex correspond à la référence. Le fichier est valide.";
-		content["INFO_WINDOW_TITLE"]="Installer Apache Flex SDK {0} à utiliser avec Adobe Flash Builder";
+		content["INFO_WINDOW_TITLE"]="Installer Apache Flex SDK {0} à utiliser avec votre IDE";
 		content["INSTALL_AGREE"] = "Je suis d'accord, Installer";
 		content["INSTALL_AGREE_ALL"] = "Je suis d'accord pour toutes les options et les licences, installer";
 		content["INSTALL_DISAGREE"] = "Je suis en désaccord, Ne pas installer";
