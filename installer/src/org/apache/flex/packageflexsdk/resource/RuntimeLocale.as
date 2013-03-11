@@ -703,6 +703,15 @@ public class RuntimeLocale
 		content["LICENSE_TLF"]="Mozilla Public License Versie 1.1";
 		content["LICENSE_FONTSWF"]="Adobe Flex SDK Licentie";
 		content["LICENSE_BLAZEDS"]="Adobe Flex SDK Licentie";
+		content["LICENSE_URL_APACHE_V2"]="http://www.apache.org/licenses/LICENSE-2.0.html";
+		content["LICENSE_URL_ADOBE_SDK"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
+		content["LICENSE_URL_ADOBE_AIR_SDK"]="http://www.adobe.com/products/air/sdk-eula.html";
+		content["LICENSE_URL_SWFOBJECT"]="http://opensource.org/licenses/mit-license.php";
+		content["LICENSE_URL_OSMF"]="http://www.mozilla.org/MPL/";
+		content["LICENSE_URL_TLF"]="http://www.mozilla.org/MPL/";
+		content["LICENSE_URL_FONTSWF"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
+		content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
+		content["INFO_TRACKING"]="Informatie over uw gebruik van deze applicatie wordt verzameld via HTTP verzoeken.";
 
 		_resourceManager.addResourceBundle(resource);
 	}
