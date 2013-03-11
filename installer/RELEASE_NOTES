@@ -29,7 +29,8 @@ Here is a list of significant issues that were fixed with this release:
 3.  https://issues.apache.org/jira/browse/FLEX-33151 (Auto-update logic fix)
 4.  French and Dutch language locale fixes.
 5.  Added the SDK version number to be downloaded in the window title.
-6.  https://issues.apache.org/jira/browse/FLEX-33202 (more issues)
+6.  https://issues.apache.org/jira/browse/FLEX-33202 (more issues).
+7.  https://issues.apache.org/jira/browse/FLEX-33419 (added germain language).
 
 
 Apache Flex SDK Installer 2.0
