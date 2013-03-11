@@ -33,25 +33,23 @@ variables are not required because the locations of these pieces are known.
 
 
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
-					   xmlns:s="library://ns.adobe.com/flex/spark"
-					   xmlns:mx="library://ns.adobe.com/flex/mx"
-					   width="800" height="650" maxWidth="800" maxHeight="650" minWidth="800" minHeight="650"
-					   backgroundColor="0xDDDDDD"
-					   preinitialize="getInvoke()"
-					   applicationComplete="handleApplicationComplete(event)" showStatusBar="false"
-					   skinClass="ws.tink.spark.skins.controls.InstallApacheFlexSkin"
-					   xmlns:controls="ws.tink.spark.controls.*"
-					   xmlns:controls1="org.apache.flex.packageflexsdk.view.controls.*"
-					   xmlns:components="org.apache.flex.packageflexsdk.view.components.*" xmlns:controls2="org.apache.flex.utilities.common.controls.*"
-					   >
+                       xmlns:s="library://ns.adobe.com/flex/spark"
+                       width="800" height="650" maxWidth="800" maxHeight="650" minWidth="800" minHeight="650"
+                       backgroundColor="0xDDDDDD"
+                       preinitialize="getInvoke()"
+                       applicationComplete="handleApplicationComplete(event)" showStatusBar="false"
+                       skinClass="ws.tink.spark.skins.controls.InstallApacheFlexSkin"
+                       xmlns:controls="ws.tink.spark.controls.*"
+                       xmlns:controls1="org.apache.flex.packageflexsdk.view.controls.*"
+                       xmlns:components="org.apache.flex.packageflexsdk.view.components.*" xmlns:controls2="org.apache.flex.utilities.common.controls.*"
+        >
 
-	<fx:Style source="assets/styles/ApacheFlexToolsStyle.css" />
-	<fx:Style source="assets/styles/InstallApacheFlexStyle.css" />
+    <fx:Style source="assets/styles/ApacheFlexToolsStyle.css"/>
+    <fx:Style source="assets/styles/InstallApacheFlexStyle.css"/>
 
-	<fx:Script><![CDATA[
+    <fx:Script><![CDATA[
         import flash.globalization.LocaleID;
         import flash.globalization.StringTools;
-        import flash.net.navigateToURL;
 
         import mx.collections.ArrayCollection;
         import mx.core.IFlexDisplayObject;
@@ -60,7 +58,6 @@ variables are not required because the locations of these pieces are known.
         import mx.utils.StringUtil;
 
         import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
-        import org.apache.flex.packageflexsdk.resource.RuntimeLocale;
         import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
         import org.apache.flex.packageflexsdk.util.MD5CompareUtil;
         import org.apache.flex.packageflexsdk.view.UpdaterDialog;
@@ -316,8 +313,9 @@ variables are not required because the locations of these pieces are known.
 
             var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
 
-            if (languageOverride)
+            if (languageOverride) {
                 userLocale = languageOverride;
+            }
 
             var n:int = supportedLanguages.length;
             for (var i:int = 0; i < n; i++) {
@@ -398,8 +396,9 @@ variables are not required because the locations of these pieces are known.
             var fileName:String = files.(@name == 'ApacheFlexSDK').@file.toString();
             /* Tmp solution to remove the file extension if present in the config XML */
             var winExtension:String = Constants.ARCHIVE_EXTENSION_WIN;
-            if (fileName.indexOf(winExtension) > -1)
+            if (fileName.indexOf(winExtension) > -1) {
                 fileName = fileName.substring(0, fileName.length - winExtension.length);
+            }
 
             APACHE_FLEX_BIN_DISTRO_FILE_SHORT = fileName;
             APACHE_FLEX_BIN_DISTRO_VERSION = fileName.substr(Constants.SDK_BINARY_FILE_NAME_PREFIX.length).split("-")[0];
@@ -771,9 +770,11 @@ variables are not required because the locations of these pieces are known.
             try {
                 log(_viewResourceConstants.INFO_UNZIPPING + _apacheFlexSDKCompressedFile.nativePath);
 
-                if (_os == WINDOWS_OS)
-                    unzip(_apacheFlexSDKCompressedFile, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError); else
+                if (_os == WINDOWS_OS) {
+                    unzip(_apacheFlexSDKCompressedFile, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError);
+                } else {
                     untar(_apacheFlexSDKCompressedFile, _flexTempDir, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError);
+                }
             } catch (e:Error) {
                 updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.ERROR);
                 abortInstallation();
@@ -1280,9 +1281,11 @@ variables are not required because the locations of these pieces are known.
         protected function _langSelect_changeHandler(event:IndexChangeEvent):void {
             var defaultLanguage:String = ViewResourceConstants.DEFAULT_LANGUAGE;
 
-            if (_langSelect.selectedItem["data"] == defaultLanguage)
-                resourceManager.localeChain = [ defaultLanguage ]; else
+            if (_langSelect.selectedItem["data"] == defaultLanguage) {
+                resourceManager.localeChain = [ defaultLanguage ];
+            } else {
                 resourceManager.localeChain = [ _langSelect.selectedItem["data"], defaultLanguage ];
+            }
 
             resourceManager.update();
             computeStandardButtonWidth();
@@ -1592,6 +1595,7 @@ variables are not required because the locations of these pieces are known.
         private function closeApplication(event:Event):void {
             // TODO only enable close button when finished or when an error occurs
             // TODO anything we need to clean up?
+            cleanup();
             close();
         }
 
@@ -1601,8 +1605,9 @@ variables are not required because the locations of these pieces are known.
 
         protected function getStepItemFromStepLabel(stepLabel:String):StepItem {
             for each (var s:StepItem in _installationSteps) {
-                if (s.label == stepLabel)
+                if (s.label == stepLabel) {
                     return s;
+                }
             }
 
             return null;
@@ -1610,8 +1615,9 @@ variables are not required because the locations of these pieces are known.
 
         protected function getInstallerComponentFromLabel(key:String):InstallerComponentVO {
             for each (var s:InstallerComponentVO in _installerComponentsDataProvider) {
-                if (s.key == key)
+                if (s.key == key) {
                     return s;
+                }
             }
 
             return null;
@@ -1620,8 +1626,9 @@ variables are not required because the locations of these pieces are known.
         protected function updateActivityStep(stepLabel:String, status:String):void {
             var step:StepItem = getStepItemFromStepLabel(stepLabel);
 
-            if (step)
+            if (step) {
                 step.status = status;
+            }
         }
 
         private function isDirectoryEmpty(dir:File):Boolean {
@@ -1652,244 +1659,244 @@ variables are not required because the locations of these pieces are known.
         }
         ]]></fx:Script>
 
-	<fx:Declarations>
-		<s:Sine id="ease" />
-		<s:BlurFilter id="blur"/>
-	</fx:Declarations>
+    <fx:Declarations>
+        <s:Sine id="ease"/>
+        <s:BlurFilter id="blur"/>
+    </fx:Declarations>
 
-	<s:states>
-		<s:State name="default" />
-		<s:State name="optionsState" />
-		<s:State name="installState" />
-	</s:states>
+    <s:states>
+        <s:State name="default"/>
+        <s:State name="optionsState"/>
+        <s:State name="installState"/>
+    </s:states>
 
-	<s:transitions>
-		<s:Transition id="showDefault" fromState="*" toState="default">
-			<s:Sequence id="t0" targets="{[firstStepGroup]}" effectEnd="placeFirstGroup()">
-				<s:SetAction target="{firstStepGroup}" property="visible" value="true"/>
-				<s:SetAction target="{secondStepGroup}" property="visible" value="false"/>
-				<s:SetAction target="{thirdStepGroup}" property="visible" value="false"/>
-				<s:Move target="{firstStepGroup}" xFrom="800" xTo="{this.width/2 - firstStepGroup.width/2}" duration="500" easer="{ease}" />
-			</s:Sequence>
-		</s:Transition>
-		<s:Transition id="showOptions" fromState="*" toState="optionsState">
-			<s:Sequence id="t1" targets="{[secondStepGroup]}" effectEnd="placeSecondGroup()">
-				<s:SetAction target="{firstStepGroup}" property="visible" value="false"/>
-				<s:SetAction target="{secondStepGroup}" property="visible" value="true"/>
-				<s:SetAction target="{thirdStepGroup}" property="visible" value="false"/>
-				<s:Move target="{secondStepGroup}" xFrom="800" xTo="{this.width/2 - secondStepGroup.width/2}" duration="500" easer="{ease}" />
-			</s:Sequence>
-		</s:Transition>
-		<s:Transition id="showInstall" fromState="*" toState="installState">
-			<s:Sequence id="t2" targets="{[thirdStepGroup]}" effectEnd="placeThirdGroup()">
-				<s:SetAction target="{firstStepGroup}" property="visible" value="false"/>
-				<s:SetAction target="{secondStepGroup}" property="visible" value="false"/>
-				<s:SetAction target="{thirdStepGroup}" property="visible" value="true"/>
-				<s:Move target="{thirdStepGroup}" xFrom="800" xTo="{this.width/2 - thirdStepGroup.width/2}" duration="500" easer="{ease}" />
-			</s:Sequence>
-		</s:Transition>
-	</s:transitions>
-	<s:layout>
-		<s:BasicLayout />
-	</s:layout>
-	<s:HGroup
-		left="0"
-		right="0"
-		paddingLeft="20"
-		paddingRight="20"
-		paddingTop="5"
-		horizontalAlign="right">
-		<controls2:LinkButton
-			text="{_viewResourceConstants.BTN_DISCLAIMER}"
-			fontWeight="bold"
-			click="{showDisclaimer()}"
-			/>
-		<s:Spacer width="100%" />
-		<s:Label id="langLabel"
-				 horizontalCenter="0"
-				 height="100%"
-				 textAlign="right"
-				 text="{_viewResourceConstants.INFO_CURRENT_LANGUAGE}"
-				 verticalAlign="middle"/>
-		<s:DropDownList id="_langSelect"
-						change="_langSelect_changeHandler(event)">
-			<s:layout>
-				<s:VerticalLayout requestedRowCount="-1" />
-			</s:layout>
-		</s:DropDownList>
-	</s:HGroup>
-	<s:Panel id="firstStepGroup"
-			 title="{_viewResourceConstants.INFO_SELECT_DIRECTORY_INSTALL}"
-			 width="640"
-			 height="200"
-			 top="380"
-			 x="{firstStepGroup.x = this.width/2 - firstStepGroup.width/2}"
-			 visible="true"
-			 visible.optionsState="false"
-			 visible.installState="false"
-			 backgroundAlpha="0" >
-		<s:layout>
-			<s:HorizontalLayout
-				verticalAlign="middle"
-				paddingRight="10"
-				paddingLeft="10" />
-		</s:layout>
-		<s:TextInput id="flexSDKTxtInput"
-					 width="100%"
-					 prompt="{_viewResourceConstants.SELECT_PATH_PROMPT}"
-					 change="handleFlexSDXTxtInputChange(event)"/>
-		<s:Button id="browseBtn"
-				  styleName="browseBtnStyle"
-				  width="{standardButtonWidth}"
-				  height="32"
-				  label="{_viewResourceConstants.BTN_LABEL_BROWSE}"
-				  click="browseForSDK(event)"
-				  toolTip="{_viewResourceConstants.INFO_SELECT_DIRECTORY}" />
-		<s:controlBarContent>
-			<s:Spacer
-				width="100%" />
-			<s:Button id="nextBtn"
-					  styleName="mainBtnStyle"
-					  width="{standardButtonWidth}"
-					  height="32"
-					  right="10"
-					  label="{_viewResourceConstants.BTN_LABEL_NEXT}"
-					  enabled="false"
-					  click="handleFirstStepNextBtnClick(event)" />
-		</s:controlBarContent>
-	</s:Panel>
-	<s:Panel id="secondStepGroup"
-			 title="{_viewResourceConstants.INFO_LICENSE_AGREEMENTS}"
-			 width="720"
-			 height="300"
-			 top="280"
-			 visible="false"
-			 visible.optionsState="true"
-			 backgroundAlpha="0" >
-		<s:controlBarContent>
-			<s:Spacer
-				width="100%" />
-			<s:Button id="installBtn"
-					  styleName="mainBtnStyle"
-					  width="{standardButtonWidth}"
-					  height="32"
-					  right="10"
-					  label="{_viewResourceConstants.BTN_LABEL_INSTALL}"
-					  enabled="false"
-					  click="handleInstallBtnClick(event)" />
-		</s:controlBarContent>
-		<s:layout>
-			<s:VerticalLayout
-				verticalAlign="middle"
-				paddingRight="10"
-				paddingLeft="10" />
-		</s:layout>
-		<s:HGroup
-			width="100%"
-			height="100%"
-			horizontalAlign="center">
-			<s:List id="installComponentsList"
-					width="50%"
-					height="100%"
-					itemRenderer="org.apache.flex.packageflexsdk.view.itemrenderers.OptionalInstallItemRenderer"
-					dataProvider="{_installerComponentsDataProvider}"
-					change="handleOptionalInstallsChange(event)" creationComplete="installComponentsList_creationCompleteHandler(event)" >
-				<s:layout>
-					<s:VerticalLayout />
-				</s:layout>
-			</s:List>
-			<s:VGroup width="50%"
-					  height="100%"
-					  horizontalAlign="center"
-					  gap="5">
-				<controls2:LinkButton id="licenseLinkBtn"
-									  text="{_currentLicenseLabel}"
-									  fontWeight="bold"
-									  click="{handleLicenceBtnClick(event)}"
-									  paddingTop="5"
-									  includeInLayout="false"
-									  />
-				<s:TextArea id="optionalInstallsTxtArea" text="{_viewResourceConstants.INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE}"
-							fontSize="12"
-							width="100%"
-							height="100%"
-							verticalScrollPolicy="off"
-							editable="false"/>
-			</s:VGroup>
-		</s:HGroup>
-		<s:HGroup
-			width="100%"
-			height="20"
-			horizontalAlign="center"
-			verticalAlign="middle">
-			<s:CheckBox id="installChkBx"
-						label="{_viewResourceConstants.INSTALL_AGREE_ALL}"
-						selected="false"
-						visible="false"/>
-		</s:HGroup>
-	</s:Panel>
-	<s:Panel id="thirdStepGroup"
-			 title="{_viewResourceConstants.INFO_INSTALLING}"
-			 width="640"
-			 height="200"
-			 top="380"
-			 visible="false"
-			 visible.installState="true"
-			 backgroundAlpha="0">
-		<s:layout>
-			<s:VerticalLayout
-				horizontalAlign="center"
-				verticalAlign="middle"
-				paddingTop="10"
-				paddingRight="10"
-				paddingLeft="10"
-				gap="15"/>
-		</s:layout>
-		<controls1:MultiStepProgressIndicator
-			steps="{_installationSteps}" />
-		<s:Label id="lastMessage"
-				 text="{_messages.getItemAt(_messages.length-1)}"
-				 textAlign="center"
-				 width="80%"
-				 horizontalCenter="0" />
-		<controls:ProgressBar id="progressBar"
-							  width="60%"
-							  height="21" />
-		<s:Button id="openApacheFlexFolderBtn"
-				  styleName="mainBtnStyle"
-				  width="{folderButtonWidth}"
-				  height="32"
-				  visible="false"
-				  includeInLayout="false"
-				  label="{_viewResourceConstants.BTN_LABEL_OPEN_APACHE_FLEX_FOLDER}"
-				  toolTip="{_flexHome}"
-				  click="openApacheFlexFolder(event)" />
-		<components:Tracker id="tracker" width="1" height="1" visible="false" />
-	</s:Panel>
-	<s:HGroup
-		left="0"
-		right="0"
-		bottom="20"
-		paddingLeft="20"
-		paddingRight="20"
-		paddingTop="0"
-		verticalAlign="middle">
-		<s:Button id="installLogBtn"
-				  styleName="genericBtnStyle"
-				  width="{logButtonWidth}"
-				  height="32"
-				  label="{_viewResourceConstants.BTN_LABEL_INSTALL_LOG}"
-				  click="showConsole(event)" />
-		<s:Spacer width="100%" />
-		<s:Label text="{_viewResourceConstants.INFO_TRACKING}" />
-		<s:Spacer width="100%" />
-		<s:Button id="closeBtn"
-				  styleName="genericBtnStyle"
-				  width="{standardButtonWidth}"
-				  height="32"
-				  label="{_viewResourceConstants.BTN_LABEL_CLOSE}"
-				  click="closeApplication(event)" />
-	</s:HGroup>
-	<!-- used to measure text -->
-	<s:Button id="hiddenButton" visible="false" includeInLayout="false" />
+    <s:transitions>
+        <s:Transition id="showDefault" fromState="*" toState="default">
+            <s:Sequence id="t0" targets="{[firstStepGroup]}" effectEnd="placeFirstGroup()">
+                <s:SetAction target="{firstStepGroup}" property="visible" value="true"/>
+                <s:SetAction target="{secondStepGroup}" property="visible" value="false"/>
+                <s:SetAction target="{thirdStepGroup}" property="visible" value="false"/>
+                <s:Move target="{firstStepGroup}" xFrom="800" xTo="{this.width/2 - firstStepGroup.width/2}" duration="500" easer="{ease}"/>
+            </s:Sequence>
+        </s:Transition>
+        <s:Transition id="showOptions" fromState="*" toState="optionsState">
+            <s:Sequence id="t1" targets="{[secondStepGroup]}" effectEnd="placeSecondGroup()">
+                <s:SetAction target="{firstStepGroup}" property="visible" value="false"/>
+                <s:SetAction target="{secondStepGroup}" property="visible" value="true"/>
+                <s:SetAction target="{thirdStepGroup}" property="visible" value="false"/>
+                <s:Move target="{secondStepGroup}" xFrom="800" xTo="{this.width/2 - secondStepGroup.width/2}" duration="500" easer="{ease}"/>
+            </s:Sequence>
+        </s:Transition>
+        <s:Transition id="showInstall" fromState="*" toState="installState">
+            <s:Sequence id="t2" targets="{[thirdStepGroup]}" effectEnd="placeThirdGroup()">
+                <s:SetAction target="{firstStepGroup}" property="visible" value="false"/>
+                <s:SetAction target="{secondStepGroup}" property="visible" value="false"/>
+                <s:SetAction target="{thirdStepGroup}" property="visible" value="true"/>
+                <s:Move target="{thirdStepGroup}" xFrom="800" xTo="{this.width/2 - thirdStepGroup.width/2}" duration="500" easer="{ease}"/>
+            </s:Sequence>
+        </s:Transition>
+    </s:transitions>
+    <s:layout>
+        <s:BasicLayout/>
+    </s:layout>
+    <s:HGroup
+            left="0"
+            right="0"
+            paddingLeft="20"
+            paddingRight="20"
+            paddingTop="5"
+            horizontalAlign="right">
+        <controls2:LinkButton
+                text="{_viewResourceConstants.BTN_DISCLAIMER}"
+                fontWeight="bold"
+                click="{showDisclaimer()}"
+                />
+        <s:Spacer width="100%"/>
+        <s:Label id="langLabel"
+                 horizontalCenter="0"
+                 height="100%"
+                 textAlign="right"
+                 text="{_viewResourceConstants.INFO_CURRENT_LANGUAGE}"
+                 verticalAlign="middle"/>
+        <s:DropDownList id="_langSelect"
+                        change="_langSelect_changeHandler(event)">
+            <s:layout>
+                <s:VerticalLayout requestedRowCount="-1"/>
+            </s:layout>
+        </s:DropDownList>
+    </s:HGroup>
+    <s:Panel id="firstStepGroup"
+             title="{_viewResourceConstants.INFO_SELECT_DIRECTORY_INSTALL}"
+             width="640"
+             height="200"
+             top="380"
+             x="{firstStepGroup.x = this.width/2 - firstStepGroup.width/2}"
+             visible="true"
+             visible.optionsState="false"
+             visible.installState="false"
+             backgroundAlpha="0">
+        <s:layout>
+            <s:HorizontalLayout
+                    verticalAlign="middle"
+                    paddingRight="10"
+                    paddingLeft="10"/>
+        </s:layout>
+        <s:TextInput id="flexSDKTxtInput"
+                     width="100%"
+                     prompt="{_viewResourceConstants.SELECT_PATH_PROMPT}"
+                     change="handleFlexSDXTxtInputChange(event)"/>
+        <s:Button id="browseBtn"
+                  styleName="browseBtnStyle"
+                  width="{standardButtonWidth}"
+                  height="32"
+                  label="{_viewResourceConstants.BTN_LABEL_BROWSE}"
+                  click="browseForSDK(event)"
+                  toolTip="{_viewResourceConstants.INFO_SELECT_DIRECTORY}"/>
+        <s:controlBarContent>
+            <s:Spacer
+                    width="100%"/>
+            <s:Button id="nextBtn"
+                      styleName="mainBtnStyle"
+                      width="{standardButtonWidth}"
+                      height="32"
+                      right="10"
+                      label="{_viewResourceConstants.BTN_LABEL_NEXT}"
+                      enabled="false"
+                      click="handleFirstStepNextBtnClick(event)"/>
+        </s:controlBarContent>
+    </s:Panel>
+    <s:Panel id="secondStepGroup"
+             title="{_viewResourceConstants.INFO_LICENSE_AGREEMENTS}"
+             width="720"
+             height="300"
+             top="280"
+             visible="false"
+             visible.optionsState="true"
+             backgroundAlpha="0">
+        <s:controlBarContent>
+            <s:Spacer
+                    width="100%"/>
+            <s:Button id="installBtn"
+                      styleName="mainBtnStyle"
+                      width="{standardButtonWidth}"
+                      height="32"
+                      right="10"
+                      label="{_viewResourceConstants.BTN_LABEL_INSTALL}"
+                      enabled="false"
+                      click="handleInstallBtnClick(event)"/>
+        </s:controlBarContent>
+        <s:layout>
+            <s:VerticalLayout
+                    verticalAlign="middle"
+                    paddingRight="10"
+                    paddingLeft="10"/>
+        </s:layout>
+        <s:HGroup
+                width="100%"
+                height="100%"
+                horizontalAlign="center">
+            <s:List id="installComponentsList"
+                    width="50%"
+                    height="100%"
+                    itemRenderer="org.apache.flex.packageflexsdk.view.itemrenderers.OptionalInstallItemRenderer"
+                    dataProvider="{_installerComponentsDataProvider}"
+                    change="handleOptionalInstallsChange(event)" creationComplete="installComponentsList_creationCompleteHandler(event)">
+                <s:layout>
+                    <s:VerticalLayout/>
+                </s:layout>
+            </s:List>
+            <s:VGroup width="50%"
+                      height="100%"
+                      horizontalAlign="center"
+                      gap="5">
+                <controls2:LinkButton id="licenseLinkBtn"
+                                      text="{_currentLicenseLabel}"
+                                      fontWeight="bold"
+                                      click="{handleLicenceBtnClick(event)}"
+                                      paddingTop="5"
+                                      includeInLayout="false"
+                        />
+                <s:TextArea id="optionalInstallsTxtArea" text="{_viewResourceConstants.INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE}"
+                            fontSize="12"
+                            width="100%"
+                            height="100%"
+                            verticalScrollPolicy="off"
+                            editable="false"/>
+            </s:VGroup>
+        </s:HGroup>
+        <s:HGroup
+                width="100%"
+                height="20"
+                horizontalAlign="center"
+                verticalAlign="middle">
+            <s:CheckBox id="installChkBx"
+                        label="{_viewResourceConstants.INSTALL_AGREE_ALL}"
+                        selected="false"
+                        visible="false"/>
+        </s:HGroup>
+    </s:Panel>
+    <s:Panel id="thirdStepGroup"
+             title="{_viewResourceConstants.INFO_INSTALLING}"
+             width="640"
+             height="200"
+             top="380"
+             visible="false"
+             visible.installState="true"
+             backgroundAlpha="0">
+        <s:layout>
+            <s:VerticalLayout
+                    horizontalAlign="center"
+                    verticalAlign="middle"
+                    paddingTop="10"
+                    paddingRight="10"
+                    paddingLeft="10"
+                    gap="15"/>
+        </s:layout>
+        <controls1:MultiStepProgressIndicator
+                steps="{_installationSteps}"/>
+        <s:Label id="lastMessage"
+                 text="{_messages.getItemAt(_messages.length-1)}"
+                 textAlign="center"
+                 width="80%"
+                 horizontalCenter="0"/>
+        <controls:ProgressBar id="progressBar"
+                              width="60%"
+                              height="21"/>
+        <s:Button id="openApacheFlexFolderBtn"
+                  styleName="mainBtnStyle"
+                  width="{folderButtonWidth}"
+                  height="32"
+                  visible="false"
+                  includeInLayout="false"
+                  label="{_viewResourceConstants.BTN_LABEL_OPEN_APACHE_FLEX_FOLDER}"
+                  toolTip="{_flexHome}"
+                  click="openApacheFlexFolder(event)"/>
+        <components:Tracker id="tracker" width="1" height="1" visible="false"/>
+    </s:Panel>
+    <s:HGroup
+            left="0"
+            right="0"
+            bottom="20"
+            paddingLeft="20"
+            paddingRight="20"
+            paddingTop="0"
+            verticalAlign="middle">
+        <s:Button id="installLogBtn"
+                  styleName="genericBtnStyle"
+                  width="{logButtonWidth}"
+                  height="32"
+                  label="{_viewResourceConstants.BTN_LABEL_INSTALL_LOG}"
+                  click="showConsole(event)"/>
+        <s:Spacer width="100%"/>
+        <s:Label text="{_viewResourceConstants.INFO_TRACKING}"/>
+        <s:Spacer width="100%"/>
+        <s:Button id="closeBtn"
+                  styleName="genericBtnStyle"
+                  width="{standardButtonWidth}"
+                  height="32"
+                  label="{_viewResourceConstants.BTN_LABEL_CLOSE}"
+                  click="closeApplication(event)"/>
+    </s:HGroup>
+    <!-- used to measure text -->
+    <s:Button id="hiddenButton" visible="false" includeInLayout="false"/>
 </s:WindowedApplication>
