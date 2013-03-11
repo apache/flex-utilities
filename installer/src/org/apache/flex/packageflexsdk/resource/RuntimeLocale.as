@@ -1026,7 +1026,7 @@ public class RuntimeLocale
         content["INFO_SELECT_DIRECTORY_INSTALL"]="Installationsverzeichnis wählen";
         content["INFO_UNZIPPING"]="Entpacke: ";
         content["INFO_VERIFY_FLEX_SDK_DONE"]="Die Signatur der heruntergeladenen Dateien stimm mit der Apache Flex SDK MD5 Signature überein. Die Datei ist gültig.";
-        content["INFO_WINDOW_TITLE"]="Installiere Apache Flex SDK {0} für die Verwendung mit Adobe Flash Builder";
+		content["INFO_WINDOW_TITLE"]="Installiere Apache Flex SDK {0} für die Verwendung mit einer IDE";
         content["INSTALL_AGREE"] = "Ich Stimme zu, Installation Starten";
         content["INSTALL_AGREE_ALL"] = "Ich Stimme allen Optionen und Lizenzen zu, Installation starten";
         content["INSTALL_DISAGREE"] = "Ich Stimme nicht zu, nicht installieren";
