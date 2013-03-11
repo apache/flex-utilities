@@ -73,7 +73,8 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 	public static function get supportedLanguages():ArrayCollection
 	{
 		var result:ArrayCollection = new ArrayCollection();
-		
+
+		result.addItem({label: "Deutsch ", data: RuntimeLocale.DE_DE});
 		result.addItem({label: "English (US)", data: RuntimeLocale.EN_US});
 		result.addItem({label: "English (AU)", data: RuntimeLocale.EN_AU});
 		result.addItem({label: "English (GB)", data: RuntimeLocale.EN_GB});
