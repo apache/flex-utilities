@@ -45,7 +45,7 @@ variables are not required because the locations of these pieces are known.
         >
 
     <fx:Style source="assets/styles/ApacheFlexToolsStyle.css"/>
-    <fx:Style source="assets/styles/InstallApacheFlexStyle.css"/>
+    <fx:Style source="assets/styles/InstallApacheFlexStyle.css"/> 
 
     <fx:Script><![CDATA[
         import flash.globalization.LocaleID;
