@@ -24,45 +24,45 @@ limitations under the License.
 		<latest>2.5.0</latest>
 	</version>
 	<files>
-	
+
 		<!-- SDK Installer App binary distribution
-			 Notes: 
-			 	- use full URL when binaries are NOT released yet, else use 
+			 Notes:
+			 	- use full URL when binaries are NOT released yet, else use
 			 	  path relative to mirror
 			 	- if path is relative, don't use starting slash -->
 		<file name="SDKInstallerApp" path="https://dist.apache.org/repos/dist/dev/flex/installer/2.0/rc1/binaries/" file="apache-flex-sdk-installer-2.0.3-bin" />
-		
-		<!-- Mirror URL CGI -->
-		<file name="MirrorURLCGI" path="" file="single-mirror-url.cgi" />
 
-		<!-- Apache Flex binary distribution
-			 Notes: 
-			 	- path is relative to mirror URL
-			 	- don't use starting slash 
-			 	- for the second and later releases, remove the extension from the file name -->
-		<file name="ApacheFlexSDK" path="flex/4.9.0/binaries/" file="apache-flex-sdk-4.9.0-bin" />
-		
-		<!-- Adobe AIR SDK -->
-		<file name="AdobeAIRSDKWin" path="http://airdownload.adobe.com/air/win/download/3.4/" file="AdobeAIRSDK.zip" />
-		<file name="AdobeAIRSDKMac" path="http://airdownload.adobe.com/air/mac/download/3.4/" file="AdobeAIRSDK.tbz2" />
-		
-		<!-- Adobe Flash Player player global swc -->
-		<file name="FlashPlayer" path="http://fpdownload.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_1.swc" version="11.1" />	
+        <!-- Mirror URL CGI -->
+        <file name="MirrorURLCGI" path="" file="single-mirror-url.cgi"/>
 
-		<!-- SWFObject.js -->
-		<file name="swfobject" path="http://swfobject.googlecode.com/files/" file="swfobject_2_2.zip" />	
-		
-		<!-- BlazeDS -->
-		<file name="BlazeDS" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="flex-messaging-common.jar" />	
-		
-		<!-- FontSWF -->
-		<file name="afe" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="afe.jar" />
-		<file name="aglj40" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="aglj40.jar" />
-		<file name="flex-fontkit" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="flex-fontkit.jar" />
-		<file name="rideau" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="rideau.jar" />
-			
-		<!-- OSMF -->
-		<file name="OSMF" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/frameworks/libs/" file="osmf.swc" />	
+        <!-- Apache Flex binary distribution
+             Notes:
+                 - path is relative to mirror URL
+                 - don't use starting slash
+                 - for the second and later releases, remove the extension from the file name -->
+        <file name="ApacheFlexSDK" path="flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin"/>
 
-	</files>
+        <!-- Adobe AIR SDK -->
+        <file name="AdobeAIRSDKWin" path="http://airdownload.adobe.com/air/win/download/3.4/" file="AdobeAIRSDK.zip"/>
+        <file name="AdobeAIRSDKMac" path="http://airdownload.adobe.com/air/mac/download/3.4/" file="AdobeAIRSDK.tbz2"/>
+
+        <!-- Adobe Flash Player player global swc -->
+        <file name="FlashPlayer" path="http://fpdownload.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_1.swc" version="11.1"/>
+
+        <!-- SWFObject.js -->
+        <file name="swfobject" path="http://swfobject.googlecode.com/files/" file="swfobject_2_2.zip"/>
+
+        <!-- BlazeDS -->
+        <file name="BlazeDS" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="flex-messaging-common.jar"/>
+
+        <!-- FontSWF -->
+        <file name="afe" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="afe.jar"/>
+        <file name="aglj40" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="aglj40.jar"/>
+        <file name="flex-fontkit" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="flex-fontkit.jar"/>
+        <file name="rideau" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/lib/" file="rideau.jar"/>
+
+        <!-- OSMF -->
+        <file name="OSMF" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/frameworks/libs/" file="osmf.swc"/>
+
+    </files>
 </config>
