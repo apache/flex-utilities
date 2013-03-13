@@ -66,3 +66,15 @@ s|TextInput:disabledWithPrompt
 {
 	color: #BBBBBB;
 }
+
+s|Label.linkText {
+    color: #0000FF;
+    verticalAlign: middle;
+    textDecoration: none;
+}
+
+s|Label.linkTextHover {
+    color: #0000FF;
+    verticalAlign: middle;
+    textDecoration: underline;
+}

@@ -233,7 +233,7 @@ public class RuntimeLocale
         content["LICENSE_URL_FONTSWF"] = "";
         content["LICENSE_BLAZEDS"] = "'Αδεια χρήσης Adobe Flex SDK";
         content["LICENSE_URL_BLAZEDS"] = "";
-        content["INFO_TRACKING"] = "Information about your use of this application\nis being collected using HTTP requests.";
+        content["INFO_TRACKING"] = "Anonymous usage statistics will be collected\nin accordance with our privacy policy.";
 
 
 		_resourceManager.addResourceBundle(resource);
@@ -475,7 +475,7 @@ public class RuntimeLocale
 		content["LICENSE_URL_FONTSWF"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
 		content["LICENSE_BLAZEDS"]="Adobe Flex SDK License";
 		content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
-		content["INFO_TRACKING"]="Information about your use of this application is being collected using HTTP requests.";
+		content["INFO_TRACKING"]="Anonymous usage statistics will be collected in accordance with our privacy policy.";
 		content["INFO_VERSION"]="version";
 
 		_resourceManager.addResourceBundle(resource);
@@ -591,7 +591,7 @@ public class RuntimeLocale
 		content["LICENSE_TLF"]="Licencia Pública de Mozilla Versión 1.1";
 		content["LICENSE_FONTSWF"]="Licencia de Adobe Flex SDK";
 		content["LICENSE_BLAZEDS"]="Licencia de Adobe Flex SDK";
-        content["INFO_TRACKING"] = "Information about your use of this application\nis being collected using HTTP requests.";
+        content["INFO_TRACKING"] = "Anonymous usage statistics will be collected\nin accordance with our privacy policy.";
 
 		_resourceManager.addResourceBundle(resource);
 	}
@@ -714,7 +714,6 @@ public class RuntimeLocale
 		content["LICENSE_URL_TLF"]="http://www.mozilla.org/MPL/";
 		content["LICENSE_URL_FONTSWF"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
 		content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
-		content["INFO_TRACKING"]="Informatie over uw gebruik van deze applicatie wordt verzameld via HTTP verzoeken.";
 
 		_resourceManager.addResourceBundle(resource);
 	}
@@ -937,7 +936,7 @@ public class RuntimeLocale
 		content["LICENSE_URL_FONTSWF"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
 		content["LICENSE_BLAZEDS"]="Licence Adobe Flex SDK";
 		content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
-        content["INFO_TRACKING"]="Les informations concernant votre utilisation de cette application\nvont être collectées en utilisant des requêtes HTTP";
+        content["INFO_TRACKING"]="Des statistiques anonymes d'utilisation seront\ncollectées en accord avec notre politique de confidentialité.";
 
 		_resourceManager.addResourceBundle(resource);
 	}
@@ -1062,7 +1061,7 @@ public class RuntimeLocale
         content["LICENSE_URL_FONTSWF"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
         content["LICENSE_BLAZEDS"]="Adobe Flex SDK Lizenzvereinbarung";
         content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
-        content["INFO_TRACKING"]="Es werden Informationen über die Nutzung dieser \n Anwendung per HTTP-Request gesammelt.";
+        content["INFO_TRACKING"] = "Anonymous usage statistics will be collected\nin accordance with our privacy policy.";
 
         _resourceManager.addResourceBundle(resource);
     }

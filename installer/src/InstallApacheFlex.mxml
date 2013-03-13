@@ -101,7 +101,8 @@ variables are not required because the locations of these pieces are known.
         private var APACHE_FLEX_BIN_DISTRO_FILE:String;
         private var APACHE_FLEX_BIN_DISTRO_FILE_SHORT:String;
         private var APACHE_FLEX_BIN_DISTRO_URL:String;
-        [Bindable]private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
+        [Bindable]
+        private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
 
         /**
          * Adobe AIR SDK
@@ -1654,6 +1655,14 @@ variables are not required because the locations of these pieces are known.
         protected function installComponentsList_creationCompleteHandler(event:FlexEvent):void {
             installComponentsList.addEventListener(InstallItemSelectionEvent.INSTALL_ITEM_SELECTION_CHANGED, handleInstallPermissionChange);
         }
+
+        private function onMouseRoll(event:MouseEvent):void {
+            if (event.type == MouseEvent.MOUSE_OVER) {
+                event.target.styleName = "linkTextHover";
+            } else {
+                event.target.styleName = "linkText";
+            }
+        }
         ]]></fx:Script>
 
     <fx:Declarations>
@@ -1734,7 +1743,7 @@ variables are not required because the locations of these pieces are known.
 					 fontFamily="openSansBold"
 					 color="0x172647" fontSize="85"
 					 trackingLeft="-2" trackingRight="-2"
-					 />		
+					 />
 		</s:VGroup>
 		<s:Spacer width="100" />
 	</s:HGroup>
@@ -1830,7 +1839,7 @@ variables are not required because the locations of these pieces are known.
                                       includeInLayout="false"
                         />
                 <s:TextArea id="optionalInstallsTxtArea" text="{_viewResourceConstants.INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE}"
-							fontFamily="openSansSemiBold" 
+							fontFamily="openSansSemiBold"
                             fontSize="12"
                             width="100%"
                             height="100%"
@@ -1903,7 +1912,13 @@ variables are not required because the locations of these pieces are known.
                   label="{_viewResourceConstants.BTN_LABEL_INSTALL_LOG}"
                   click="showConsole(event)"/>
         <s:Spacer width="100%"/>
-        <s:Label fontFamily="openSansLightItalic" text="{_viewResourceConstants.INFO_TRACKING}"/>
+        <s:Label fontFamily="openSansLightItalic" text="{_viewResourceConstants.INFO_TRACKING}"
+                 styleName="linkText" maxDisplayedLines="2"
+                 mouseOver="onMouseRoll(event)" mouseOut="onMouseRoll(event)"
+                 click="navigateToURL(new URLRequest('http://flex.apache.org/about-privacy.html'))"
+                 buttonMode="true"
+                 useHandCursor="true"
+                 mouseChildren="false"/>
         <s:Spacer width="100%"/>
         <s:Button id="closeBtn"
                   styleName="genericBtnStyle"
