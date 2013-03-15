@@ -714,6 +714,7 @@ public class RuntimeLocale
 		content["LICENSE_URL_TLF"]="http://www.mozilla.org/MPL/";
 		content["LICENSE_URL_FONTSWF"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
 		content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
+        content["INFO_TRACKING"] = "Anonieme gebruiksgegevens worden bijgehouden in overeenstemming met ons privacybeleid.";
 
 		_resourceManager.addResourceBundle(resource);
 	}
