@@ -41,6 +41,7 @@ META-INF/
 *.vms
 *.ser
 *.mxp
+*.report
 bundles.properties
 empty.properties
 css_*.properties
