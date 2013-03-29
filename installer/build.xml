@@ -22,7 +22,7 @@
 
     <!--load environment variables prefixed with env -->
     <property environment="env"/>
-	
+
     <!--location of property file -->
     <property file="${basedir}/build.properties" description="Properties for Apache Flex SDK Installer project" />
     <property file="${basedir}/build.number"/>
@@ -33,10 +33,10 @@
     <property name="source.kit" value="${kit.prefix}-src"/>
     <property name="binary.kit" value="${kit.prefix}-bin"/>
 
-    <!-- 
+    <!--
         Properties are immutable so value frozen first time property is set.
-        If FLEX_HOME is not set with -DFLEX_HOME=/path/to/flex/sdk on the ant command line 
-        use the environment variable, if it exists. Else if windows, use FLEX_HOME_WIN 
+        If FLEX_HOME is not set with -DFLEX_HOME=/path/to/flex/sdk on the ant command line
+        use the environment variable, if it exists. Else if windows, use FLEX_HOME_WIN
         else use FLEX_HOME_MAC, which are both defined in build.properties.
     -->
     <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
@@ -47,42 +47,42 @@
     </condition>
     <property name="FLEX_HOME" value="${FLEX_HOME_MAC}"/>
 
-    <!-- 
+    <!--
         Properties are immutable so value frozen first time property is set.
-        If AIR_HOME is not set on the command line with -DAIR_HOME=/path/to/air/sdk on the 
-        ant command line use the environment variable, if it exists. Else if windows, use 
+        If AIR_HOME is not set on the command line with -DAIR_HOME=/path/to/air/sdk on the
+        ant command line use the environment variable, if it exists. Else if windows, use
         AIR_HOME_WIN else use AIR_HOME_MAC, which are both defined in build.properties.
     -->
     <condition property="AIR_HOME" value="${env.AIR_HOME}">
         <isset property="env.AIR_HOME" />
     </condition>
     <condition property="AIR_HOME" value="${AIR_HOME_WIN}">
-        <os family="windows"/> 
+        <os family="windows"/>
     </condition>
     <property name="AIR_HOME" value="${AIR_HOME_MAC}"/>
-	
+
     <condition property="cert_pwd_not_found" >
 		<not>
        		<available file="${CERT_PASSWORD_FILE}"/>
 		</not>
     </condition>
-	
+
 	<condition property="KEYSTORE" value="${RELEASE_KEYSTORE_FILE}" >
 		<available file="${CERT_PASSWORD_FILE}"/>
 	</condition>
-	
+
 	<condition property="KEYSTORE" value="temp.p12" >
 		<not>
 			<available file="${CERT_PASSWORD_FILE}"/>
 		</not>
 	</condition>
-	
+
     <condition property="CERT_PASSWORD" value="${TEMP_PASS_CHANGE_THIS}" >
 		<not>
        		<available file="${CERT_PASSWORD_FILE}"/>
 		</not>
     </condition>
-	
+
     <!-- compilers -->
     <property name="ADL" value="${AIR_HOME}/bin/adl"/>
     <property name="ADT" value="${AIR_HOME}/lib/adt.jar"/>
@@ -96,9 +96,9 @@
     </path>
     <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
 
-    <!-- 
+    <!--
         Optional jars but should be in place for a real release build.
-        
+
         For <rat> apache-rat-0.8.jar and apache-rat-tasks-0.8.jar should be in classpath.
         See rat-report.
     -->
@@ -110,31 +110,31 @@
            <include name=".ant/lib/**/apache-rat*.jar"/>
         </fileset>
     </path>
-    
+
     <condition property="unsupportedOS">
-        <and>   
+        <and>
             <os family="unix" />
             <not>
                 <os family="mac" />
             </not>
        </and>
     </condition>
-    
+
     <!-- AIR package extension -->
     <condition property="extension" value="exe">
         <os family="windows" />
     </condition>
     <property name="extension" value="dmg"/>
 
-    <target name="build" depends="init,certificate,compile,packagenative,cleanup" 
+    <target name="build" depends="init,certificate,compile,packagenative,cleanup"
         description="Compiles and packages application"/>
 
     <target name="release" depends="clean,build,source-package,rat-report,sign,copy-misc"
         description="Build the application and package up the distros for release."/>
-        
-    <target name="init" depends="clean,createDirs,update-version-in-xml-files" 
+
+    <target name="init" depends="clean,createDirs,update-version-in-xml-files"
         description="Creates the deploy folders and sets app extension"/>
-        
+
     <target name="clean" description="Cleans up old files.">
         <delete dir="${BUILD_DIR}" failOnError="false" includeEmptyDirs="true" />
         <delete dir="${LIBRARY_DIR}" failOnError="false" includeEmptyDirs="true" />
@@ -175,12 +175,12 @@
             </fileset>
         </replaceregexp>
     </target>
-    
-    <!-- 
-        Run this target once, and then rebuild, when you make a change to this app 
-        so that the AIR Installer will allow the app to be updated. The build.number 
-        property in the file build.property will be read and then incremented and the 
-        nano version number in the <version> tag in InstallApacheFlex-app.xml will be 
+
+    <!--
+        Run this target once, and then rebuild, when you make a change to this app
+        so that the AIR Installer will allow the app to be updated. The build.number
+        property in the file build.property will be read and then incremented and the
+        nano version number in the <version> tag in InstallApacheFlex-app.xml will be
         updated.
     -->
     <target name="update-version" description="Update the app version number so the installer will be updated.">
@@ -188,13 +188,13 @@
             <format property="touch.year" pattern="yyyy"/>
         </tstamp>
 
-        <propertyfile file="build.number" 
+        <propertyfile file="build.number"
             comment="Copyright ${touch.year} The Apache Software Foundation.">
             <entry key="build.number" type="int" default="0" operation="+"/>
         </propertyfile>
 
     </target>
-    
+
     <target name="packagenative" depends="packageair"
        description="Packages the AIR file from the build directory to create a native installer (exe/dmg) file">
 
@@ -208,12 +208,12 @@
            <arg value="${BUILD_DIR}/${APP_NAME}.air"/>
        </java>
    </target>
-    
+
     <target name="abortBuild" if="unsupportedOS">
         <fail>
             Unable to create a .exe or a .dmg file on this operating system.
-            You must use ADT on the same operating system as that of the native installer file you want to generate. 
-            So, to create an EXE file for Windows, run this build on Windows. To create a DMG file for Mac OS, run this 
+            You must use ADT on the same operating system as that of the native installer file you want to generate.
+            So, to create an EXE file for Windows, run this build on Windows. To create a DMG file for Mac OS, run this
             build on Mac OS.
         </fail>
     </target>
@@ -226,11 +226,11 @@
     <target name="get-as3commons.swc" depends="check-as3commons.swc" unless="as3commons.swc.present"
         description="Download as3commons.swc and fail if checksum mismatch.">
         <mkdir dir="${LIBRARY_DIR}"/>
-        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc" 
-            dest="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc" 
+        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc"
+            dest="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc"
             verbose="true"/>
-        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc.md5" 
-            dest="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc.md5" 
+        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc.md5"
+            dest="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc.md5"
             verbose="true"/>
         <checksum file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc" algorithm="MD5" verifyProperty="isMD5ok"/>
         <delete file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc.md5" failOnError="false"/>
@@ -240,7 +240,7 @@
             </condition>
         </fail>
     </target>
-    
+
     <target name="compile" depends="get-as3commons.swc"
         description="Compiles the AIR application to a SWF file and places SWF in a temp directory to be packaged.">
         <mxmlc file="${SOURCE_DIR}/${APP_NAME}.${APP_EXTENSION}"
@@ -256,8 +256,8 @@
             <source-path path-element="${COMMON_SOURCE_DIR}"/>
             <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
             <library-path dir="${LIBRARY_DIR}" includes="*.swc" append="true"/>
-            <define name="INSTALLER::releaseVersion" value="${release.version}"/> 
-            <define name="INSTALLER::buildNumber" value="${build.number}"/> 
+            <define name="INSTALLER::releaseVersion" value="${release.version}"/>
+            <define name="INSTALLER::buildNumber" value="${build.number}"/>
         </mxmlc>
     </target>
 
@@ -309,12 +309,12 @@
             <arg value="${ASSETS_DIR}"/>
         </java>
     </target>
-	
+
 	<target name="copy-misc" description="Copy config files to release directory">
 		<copy file="${basedir}/README" tofile="${RELEASE_DIR}/READme"/>
 	</target>
-    
-    <!-- 
+
+    <!--
         Packages the source distribution with ZIP and TAR_GZIP.
         The source file line endings match the package type.
     -->
@@ -334,13 +334,14 @@
                 <exclude name="**/.flexProperties"/>
 				<exclude name="**/.flexLibProperties"/>
                 <exclude name="**/.project"/>
+                <exclude name="**/.idea/**"/>
             </fileset>
         </copy>
-		
+
 		<copy todir="${BUILD_DIR}/temp/${INSTALLER_PROJECT_NAME}" includeEmptyDirs="false">
 			<fileset dir="${basedir}">
 				<exclude name="*.p12"/>
-				<exclude name="*.password"/>				
+				<exclude name="*.password"/>
                 <exclude name="rat.report"/>
                 <exclude name="libs/**"/>
 				<exclude name="bin/**"/>
@@ -353,6 +354,7 @@
                 <exclude name="**/.flexProperties"/>
 				<exclude name="**/.flexLibProperties"/>
                 <exclude name="**/.project"/>
+                <exclude name="**/.idea/**"/>
 				<!-- These are bumped up to the top-level release directory.  -->
                 <exclude name="DISCLAIMER"/>
                 <exclude name="LICENSE"/>
@@ -378,25 +380,25 @@
         <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf" encoding="UTF8" excludes="**/assets/**,**/*.ttf,**/*.png" fixlast="false"/>
 
         <mkdir dir="${RELEASE_DIR}"/>
-        <zip destfile="${RELEASE_DIR}/${source.kit}.zip" 
+        <zip destfile="${RELEASE_DIR}/${source.kit}.zip"
             basedir="${BUILD_DIR}/temp"/>
-        
+
         <fixcrlf srcdir="${BUILD_DIR}/temp" eol="unix" encoding="UTF8" excludes="**/assets/**,**/*.ttf,**/*.png" fixlast="false"/>
 
-        <tar destfile="${RELEASE_DIR}/${source.kit}.tar.gz" 
+        <tar destfile="${RELEASE_DIR}/${source.kit}.tar.gz"
             compression="gzip"
             basedir="${BUILD_DIR}/temp"/>
-        
+
         <delete dir="${BUILD_DIR}/temp"/>
 		<delete dir="${BUILD_DIR}"/>
     </target>
 
-    <!-- 
+    <!--
         Packages the binary distribution with ZIP and TAR_GZIP.
     -->
-    <target name="binary-package" description="Package binary files.">      
+    <target name="binary-package" description="Package binary files.">
         <mkdir dir="${RELEASE_DIR}"/>
-        
+
         <zip destfile="${RELEASE_DIR}/${binary.kit}.zip">
             <fileset dir="${basedir}/release">
                 <exclude name="**/*.zip"/>
@@ -412,22 +414,22 @@
 	<!--
 	    Run the Apache Rat audit tool against the source in the source kit.
 	    The report is written to rat.report.
-	    
-	    You need to place apache-rat-tasks-0.8.jar and apache-rat-0.8.jar in the 
+
+	    You need to place apache-rat-tasks-0.8.jar and apache-rat-0.8.jar in the
 	    anttask.classpath in order to do this.  If the jar isn't found, the report
 	    will not be generated.
-	--> 
+	-->
     <target name="rat-report" depends="rat-taskdef" if="have.rattasks"
         description="Report on licenses in source kit.">
-    
+
         <!-- Unzip the source kit -->
         <unzip src="${RELEASE_DIR}/${source.kit}.zip" dest="${RELEASE_DIR}/temp"/>
-        
+
         <property name="rat.dir" value="${RELEASE_DIR}/temp"/>
 
         <echo message="Checking files at ${rat.dir}, report is ${basedir}/rat.report"/>
 
-        <rat:report xmlns:rat="antlib:org.apache.rat.anttasks" 
+        <rat:report xmlns:rat="antlib:org.apache.rat.anttasks"
             reportFile="${basedir}/rat.report">
             <fileset dir="${rat.dir}">
                 <exclude name="**/Apache License Version 2.txt"/>
@@ -444,6 +446,8 @@
                 <exclude name="**/.project"/>
                 <exclude name="**/.fxpProperties"/>
                 <exclude name="**/.settings/**"/>
+                <exclude name="**/.idea/**"/>
+                <exclude name="**/*.iml"/>
                 <!--          End of source files           -->
                 <!--          Start of binary files           -->
                 <!-- exclude media (png, ico) -->
@@ -454,13 +458,13 @@
                 <!--          End of binary files           -->
             </fileset>
         </rat:report>
-        
+
         <delete dir="${RELEASE_DIR}/temp" failOnError="false"/>
     </target>
 
-    <target name="rat-taskdef" description="Rat taskdef"> 
-        <available property="have.rattasks" 
-            resource="org/apache/rat/anttasks/antlib.xml" 
+    <target name="rat-taskdef" description="Rat taskdef">
+        <available property="have.rattasks"
+            resource="org/apache/rat/anttasks/antlib.xml"
             classpathref="anttask.classpath"/>
 
         <antcall target="have-rattasks"/>
@@ -470,22 +474,22 @@
     <target name="have-rattasks" if="have.rattasks">
         <typedef resource="org/apache/rat/anttasks/antlib.xml"
                  uri="antlib:org.apache.rat.anttasks"
-                 classpathref="anttask.classpath"/>                 
+                 classpathref="anttask.classpath"/>
     </target>
-    
+
     <target name="no-rattasks" unless="have.rattasks">
         <echo message="Rat report not generated."/>
         <echo message="rat jars (apache-rat-*.jar, apache-rat-tasks-*.jar)"/>
         <echo message="not found in anttask.classpath"/>
     </target>
-	
+
 	<target name="sign" >
 		<exec executable="gpg" output="${RELEASE_DIR}/${source.kit}.zip.md5">
 			<arg value="--print-md" />
 			<arg value="MD5" />
 			<arg value="release/${source.kit}.zip" />
 		</exec>
-		
+
 		<exec executable="gpg">
 			<arg value="--armor" />
 			<arg value="--output" />
@@ -493,13 +497,13 @@
 			<arg value="--detach-sig" />
 			<arg value="${RELEASE_DIR}/${source.kit}.zip" />
 		</exec>
-		
+
 		<exec executable="gpg" output="${RELEASE_DIR}/${source.kit}.tar.gz.md5">
 			<arg value="--print-md" />
 			<arg value="MD5" />
 			<arg value="release/${source.kit}.tar.gz" />
 		</exec>
-		
+
 		<exec executable="gpg">
 			<arg value="--armor" />
 			<arg value="--output" />
@@ -507,13 +511,13 @@
 			<arg value="--detach-sig" />
 			<arg value="${RELEASE_DIR}/${source.kit}.tar.gz" />
 		</exec>
-		
+
 		<exec executable="gpg" output="${RELEASE_DIR}/${binary.kit}.${extension}.md5">
 			<arg value="--print-md" />
 			<arg value="MD5" />
 			<arg value="release/${binary.kit}.${extension}" />
 		</exec>
-		
+
 		<exec executable="gpg">
 			<arg value="--armor" />
 			<arg value="--output" />
@@ -522,5 +526,5 @@
 			<arg value="${RELEASE_DIR}/${binary.kit}.${extension}" />
 		</exec>
 	</target>
-	
+
 </project>
