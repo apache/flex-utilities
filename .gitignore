@@ -24,6 +24,7 @@ build.log
 release
 out
 gen
+bin-debug
 
 #Apache Flex Projects
 lib/
