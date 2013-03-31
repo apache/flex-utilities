@@ -996,7 +996,7 @@ public class RuntimeLocale
         content["FETCH_GEO_IP"]="Versuche Länderkennung des Benutzer über GeoIP Service zu identifizieren...";
         content["FETCH_GEO_IP_DONE"]="Länderkennung erfolgreich über GeoIP Service identifiziert.";
         content["FETCH_GEO_IP_ERROR"]="Identifizierung von Länderkennung über GeoIP Service fehlgeschlagen";
-        content["FETCH_MIRROR_CGI"]="Versuche mirror URL für APACHE Flex SDK  über CGI-Skript zu ermitteln...";
+        content["FETCH_MIRROR_CGI"]="Versuche mirror URL für Apache Flex SDK über CGI-Skript zu ermitteln...";
         content["FETCH_MIRROR_CGI_DONE"]="Ermitteln von mirror URL über CGI-Skript erfolgreich.";
         content["FETCH_MIRROR_CGI_ERROR"]="Ermitteln von mirror URL über CGI-Skript fehlgeschlagen.";
         content["FETCH_MIRROR_LIST"]="Versuche mirror Liste von Apache.org zu laden...";
@@ -1013,20 +1013,20 @@ public class RuntimeLocale
         content["INFO_DOWNLOADING_FILE_FROM"]="Lade {0} von: {1} herunter";
         content["INFO_DOWNLOADING_FLEX_SDK"]="Lade Apache Flex SDK von: ";
         content["INFO_DOWNLOADED"]="Download abgeschlossen ";
-        content["INFO_ENTER_VALID_FLEX_SDK_PATH"]="Bitte geben Sie einen gültigen Pfad für das FLex SDK ein";
+        content["INFO_ENTER_VALID_FLEX_SDK_PATH"]="Bitte geben Sie einen gültigen Pfad für das Flex SDK ein";
         content["INFO_FINISHED_UNTARING"]="untar abgeschlossen: ";
         content["INFO_FINISHED_UNZIPPING"]="entpacken abgeschlossen: ";
         content["INFO_INSTALLATION_COMPLETE"]="Installation abgeschlossen";
         content["INFO_INSTALLING"]="Installiere...";
         content["INFO_INSTALLING_CONFIG_FILES"]="Installiere Framework Konfigurationsdateien für die Verwendung mit einer IDE";
         content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Installiere Adobe Flash Player playerglobal.swc von: ";
-        content["INFO_INVOKED_GUI_MODE"]="GUI modus gestartet";
+        content["INFO_INVOKED_GUI_MODE"]="GUI Modus gestartet";
         content["INFO_LICENSE_AGREEMENTS"]="Lizenzvereinbarung";
         content["INFO_NEED_TO_READ_AND_AGREE_TO_LICENSE"]="Dieser Installer wird Software von unterschiedlichen Seiten mit unterschiedlichen Lizenzen herunterladen. Bitte wählen Sie jedes Element auf der linken Seite aus, lesen Sie die jeweiligen Lizenzvereinbarungen und bestätigen Sie mit einem Häkchen, dass Sie den jeweiligen Bedingungen zustimmen.";
-        content["INFO_SELECT_DIRECTORY"]="Wählen Sie das Verzeichnis in dem Sie das Flex SDK installieren wollen";
+        content["INFO_SELECT_DIRECTORY"]="Wählen Sie das Verzeichnis in dem Sie das Apache Flex SDK installieren wollen";
         content["INFO_SELECT_DIRECTORY_INSTALL"]="Installationsverzeichnis wählen";
         content["INFO_UNZIPPING"]="Entpacke: ";
-        content["INFO_VERIFY_FLEX_SDK_DONE"]="Die Signatur der heruntergeladenen Dateien stimm mit der Apache Flex SDK MD5 Signature überein. Die Datei ist gültig.";
+        content["INFO_VERIFY_FLEX_SDK_DONE"]="Die Signatur der heruntergeladenen Dateien stimmt mit der Apache Flex SDK MD5 Signatur überein. Die Datei ist gültig.";
 		content["INFO_WINDOW_TITLE"]="Installiere Apache Flex SDK {0} für die Verwendung mit einer IDE";
         content["INSTALL_AGREE"] = "Ich Stimme zu, Installation Starten";
         content["INSTALL_AGREE_ALL"] = "Ich Stimme allen Optionen und Lizenzen zu, Installation starten";
@@ -1062,7 +1062,7 @@ public class RuntimeLocale
         content["LICENSE_URL_FONTSWF"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
         content["LICENSE_BLAZEDS"]="Adobe Flex SDK Lizenzvereinbarung";
         content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
-        content["INFO_TRACKING"] = "Anonymous usage statistics will be collected\nin accordance with our privacy policy.";
+        content["INFO_TRACKING"] = "Anonyme Nutzungsstatistiken werden in Übereinstimmung mit unserer Datenschutzerklärung gesammelt.";
 
         _resourceManager.addResourceBundle(resource);
     }
