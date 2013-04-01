@@ -1062,7 +1062,7 @@ public class RuntimeLocale
         content["LICENSE_URL_FONTSWF"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
         content["LICENSE_BLAZEDS"]="Adobe Flex SDK Lizenzvereinbarung";
         content["LICENSE_URL_BLAZEDS"]="http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf";
-        content["INFO_TRACKING"] = "Anonyme Nutzungsstatistiken werden in Übereinstimmung mit unserer Datenschutzerklärung gesammelt.";
+        content["INFO_TRACKING"] = "Anonyme Nutzungsstatistiken werden in Übereinstimmung\n mit unserer Datenschutzerklärung gesammelt.";
 
         _resourceManager.addResourceBundle(resource);
     }
