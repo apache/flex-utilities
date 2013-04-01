@@ -19,17 +19,18 @@ limitations under the License.
 
 Steps to follow in preparation for a release of InstallApacheFlex
 
-1.    Check out the code from https://svn.apache.org/repos/asf/flex/utilities/trunk
+1.    Check out the code from https://git-wip-us.apache.org/repos/asf/flex-utilities.git
 
 2.a.  If it is a major release, 
-		- bump up the "release.version" property in the build.properties file 
-		- reset the build.number property in the build.number file to 0
+	- bump up the "release.version" property in the build.properties file 
+	- reset the build.number property in the build.number file to 0
 
 2.b.  If it is a minor release, run: ant update-version
 
 3.  Open build.properties and update the following:
 	- Modify the KEYSTORE_DIR and CERT_PASSWORD_DIR variables with the correct directory paths
-	(You need to obtain the installapacheflex_self.p12 file and its password from the previous release manager for InstallApacheFlex)
+	(You need to obtain the installapacheflex_self.p12 file and its password from the previous
+	 release manager for InstallApacheFlex)
 	
 	WARNING WARNING WARNING
 	Do not place the 2 certificate files anywhere in the installer directory or in a subdirectory under it.
@@ -43,6 +44,10 @@ This step
 	- updates the version numbers in InstallApacheFlex-app.xml and sdk-installer-config-2.0.xml
 	- creates the .exe or .dmg file depending on the OS you are working on
 	- creates the source release files as a .zip file and a tar.gz file 
-	- signs the artifacts to create corresponding .asc and .md5 files (assumes that you have a pgp id and keypair set up and prompts for the passphrase)
+	- signs the artifacts to create corresponding .asc and .md5 files (assumes that you have a pgp
+	  id and keypair set up and prompts for the passphrase)
 	
-5. Upload all the files under the /release directory to the https://dist.apache.org/repos/dist/dev/flex/installer/{version}/{RCversion}/ before calling a VOTE.  
+5.  Upload all the files under the /release directory to the following directory before calling a VOTE.
+	https://dist.apache.org/repos/dist/dev/flex/installer/{version}/{RCversion}/
+
+6.  Check that your key is cntained in https://dist.apache.org/repos/dist/release/flex/KEYS if not add it.
