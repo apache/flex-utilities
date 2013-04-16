@@ -1,0 +1,34 @@
+/* CSS file */
+
+
+.checkbox
+{
+	horizontalGap:3;
+	icon:ClassReference("org.apache.view.skins.CheckBoxSkin");
+}
+.button{
+	skin:ClassReference("org.apache.view.skins.ButtonSkin")
+}
+.panelbutton{
+	skin:ClassReference("org.apache.view.skins.PanelButtonSkin")
+}
+.combobox{
+	disabledSkin: ClassReference("org.apache.view.skins.ComboBoxSkin");
+	downSkin: ClassReference("org.apache.view.skins.ComboBoxSkin");
+	overSkin: ClassReference("org.apache.view.skins.ComboBoxSkin");
+	upSkin: ClassReference("org.apache.view.skins.ComboBoxSkin");
+}
+.radiobutton{
+	horizontalGap:3;
+	disabledIcon: ClassReference("org.apache.view.skins.RadioButtonSkin");
+	downIcon: ClassReference("org.apache.view.skins.RadioButtonSkin");
+	overIcon: ClassReference("org.apache.view.skins.RadioButtonSkin");
+	selectedDisabledIcon: ClassReference("org.apache.view.skins.RadioButtonSkin");
+	selectedDownIcon: ClassReference("org.apache.view.skins.RadioButtonSkin");
+	selectedOverIcon: ClassReference("org.apache.view.skins.RadioButtonSkin");
+	selectedUpIcon: ClassReference("org.apache.view.skins.RadioButtonSkin");
+	upIcon: ClassReference("org.apache.view.skins.RadioButtonSkin");
+}
+.flyoutDropDown{
+	
+}

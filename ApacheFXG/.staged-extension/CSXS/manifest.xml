@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ExtensionManifest Version="2.0" ExtensionBundleId="org.apache.fxg" ExtensionBundleVersion="1.0.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ExtensionList>
+		<Extension Id="org.apache.fxg.extension1" Version="1.0" />
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="FWKS" Version="[11.0,12.9]" />
+			<Host Name="ILST" Version="[15.0,16.9]" />
+			<Host Name="PHXS" Version="[12.0,13.9]" />
+			<Host Name="FLPR" Version="[11.0,12.9]" />
+			<Host Name="PHSP" Version="[12.0,13.9]" />
+			<Host Name="IDSN" Version="[7.0,8.9]" />
+		</HostList>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="2.0" />
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+	<DispatchInfoList>
+		<Extension Id="org.apache.fxg.extension1">
+			<DispatchInfo >
+				<Resources>
+					<SwfPath>./ApacheFXG.swf</SwfPath>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+				</Lifecycle>
+				<UI>
+					<Type>Panel</Type>
+					<Menu>Apache FXG</Menu>
+					<Geometry>
+						<Size>
+							<Height>400</Height>
+							<Width>209</Width>
+						</Size>
+						<MaxSize>
+							<Height>4000</Height>
+							<Width>4000</Width>
+						</MaxSize>
+						<MinSize>
+							<Height>400</Height>
+							<Width>209</Width>
+						</MinSize>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<csxs:CSXSWindowedApplication
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:csxs="com.adobe.csxs.core.*"
+	usePreloader="false" showStatusBar="false"
+	layout="absolute" historyManagementEnabled="false"  applicationComplete="init()" xmlns:comp="org.apache.view.components.*">
+	<mx:Style source="default.css"/>
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.csxs.core.CSXSInterface;
+			import com.adobe.csxs.types.AppSkinInfo;
+			import com.adobe.csxs.types.ColorType;
+			import com.adobe.csxs.types.HostEnvironment;
+			import com.adobe.csxs.types.RGBColor;
+			import com.adobe.csxs.types.SyncRequestResult;
+			import com.adobe.csxs.types.UIColor;
+			
+			import org.apache.controller.FlyoutController;
+			import org.apache.model.utils.ColorUtils;
+			import org.apache.view.utils.SkinUtils;
+
+			[Bindable]
+			private var hostName:String = HostObject.mainExtension;
+			[Bindable]private var backgroundColor:uint;
+			
+			private function init():void{
+				var result:SyncRequestResult;
+				result = CSXSInterface.getInstance().getHostEnvironment();
+				var hostEnv:HostEnvironment;
+				var skin:AppSkinInfo;
+				if(SyncRequestResult.COMPLETE == result.status && result.data)
+				{
+					hostEnv = result.data as HostEnvironment;
+					skin = hostEnv.appSkinInfo;
+					backgroundColor = colorToUint(skin.panelBackgroundColor);
+					SkinUtils.backgroundColor = backgroundColor;
+					
+					SkinUtils.darkTheme = backgroundColor <= 0x777777;
+					SkinUtils.setStyleDeclarations();
+					darkRule.setStyle("strokeColor",ColorUtils.darken(backgroundColor,20));
+					lightRule.setStyle("strokeColor",ColorUtils.lighten(backgroundColor,20));
+					
+					mx.core.Application.application.setStyle("backgroundColor", colorToString(skin.panelBackgroundColor));
+					mx.core.Application.application.setStyle("fontFamily", skin.baseFontFamily);
+					mx.core.Application.application.setStyle("fontSize", skin.baseFontSize);
+				}
+				// add flyout menu...
+				new FlyoutController(this);
+			}
+			public function colorSync():void{
+			 	AutoTheme.sync();
+			}
+			private function colorToUint(uiColor:UIColor):uint{return (uiColor.type == ColorType.RGB) ? (uiColor.color as RGBColor).rgb : 0;}
+			private function colorToString(uiColor:UIColor):String{return (uiColor.type == ColorType.RGB) ? rgbToString(uiColor.color) : "Unknown";}
+			private function rgbToString(color:RGBColor):String{return "#" + color.rgb.toString(16).toUpperCase();}
+
+			[Bindable]private var nativeProvider:Array = [
+				{label:'Native Item 1'},
+				{label:'Native Item 2'},
+				{isSeparator:true},
+				{label:'Native Item 3'},
+				{label:'Native Item 4'},
+			];
+			
+		]]>
+	</mx:Script>
+	
+	<mx:VBox height="100%" width="100%" verticalAlign="middle" horizontalAlign="center">
+		<mx:Button styleName="button" label="A Button"/>
+		<mx:RadioButton styleName="radiobutton" label="A Radio Button"/>
+		<mx:ComboBox styleName="combobox" dataProvider="['Item 1','Item 2']"/>
+		<comp:NativeComboBox styleName="combobox" dataProvider="{nativeProvider}" autoCheck="true"/>
+		<mx:CheckBox styleName="checkbox" label="A Checkbox"/>
+		<mx:TextArea/>
+		
+	</mx:VBox>
+	<mx:HRule bottom="21" width="100%" id="darkRule"/>
+	<mx:HRule bottom="20" width="100%" id="lightRule"/>
+	<mx:Button bottom="0" height="22" styleName="panelbutton" label="X"/>
+</csxs:CSXSWindowedApplication>

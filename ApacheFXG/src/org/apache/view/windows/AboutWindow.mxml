@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+		   title="About" showStatusBar="false" backgroundColor="{SkinUtils.backgroundColor}"
+		   width="300" height="200" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import org.apache.view.utils.SkinUtils;
+			
+			import mx.events.FlexEvent;
+			
+			private function init():void
+			{
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" verticalCenter="0" horizontalAlign="center">
+		<mx:TextArea id="copyrightText" backgroundAlpha="0" borderStyle="none" text="FXG Export by Apache"/>
+	</mx:VBox>
+	<mx:Button styleName="button" bottom="15" right="15" label="Close" width="80" click="close()"/>
+</mx:Window>
