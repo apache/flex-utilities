@@ -16,16 +16,6 @@
  */
 package flex;
 
-import common.BaseGenerator;
-import common.MavenMetadata;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -43,6 +33,18 @@ import java.util.Map;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import common.BaseGenerator;
+import common.MavenMetadata;
 
 /**
  * Created with IntelliJ IDEA.
@@ -232,6 +234,12 @@ public class FlexFrameworkGenerator extends BaseGenerator {
         if(themesSrcDirectory.exists()) {
             generateThemeArtifacts(themesSrcDirectory, targetBaseDirectory, sdkVersion, isApache && useApache);
         }
+
+	    // Deploy MXFTEText theme
+	    final File mxfteThemeCss = new File(frameworksDirectory, "projects" + File.separator + "spark" + File.separator + "MXFTEText.css");
+	    if(mxfteThemeCss.exists()){
+		    generateMxFteThemeArtifact(mxfteThemeCss, targetBaseDirectory, sdkVersion, isApache && useApache);
+	    }
     }
 
     protected void generateArtifactsForDirectory(final File sourceDirectory, final File targetDirectory,
@@ -630,8 +638,7 @@ public class FlexFrameworkGenerator extends BaseGenerator {
                     if(targetSwcFile != null) {
                         // Generate the pom file.
                         final MavenMetadata themeMetadata = new MavenMetadata();
-                        themeMetadata.setGroupId(
-                                (isApache) ? "org.apache.flex.framework.themes" : "com.adobe.flex.framework.themes");
+                        themeMetadata.setGroupId((isApache) ? "org.apache.flex.framework.themes" : "com.adobe.flex.framework.themes");
                         themeMetadata.setArtifactId(themeName);
                         themeMetadata.setVersion(themeVersion);
                         themeMetadata.setPackaging("swc");
@@ -642,9 +649,31 @@ public class FlexFrameworkGenerator extends BaseGenerator {
         }
     }
 
+	private void generateMxFteThemeArtifact(File themeCssFile, File targetDirectory, String themeVersion, boolean isApache) throws Exception {
+		final String themeName = "mxfte";
+
+		final File targetThemesDirectory = new File(targetDirectory, "themes");
+		final File targetThemeDirectory = new File(targetThemesDirectory, themeName);
+		final File targetThemeVersionDirectory = new File(targetThemeDirectory, themeVersion);
+
+		// Generate and Copy the SWC.
+		File targetSwcFile = new File(targetThemeVersionDirectory, themeName + "-" + themeVersion + ".swc");
+		targetSwcFile = generateThemeSwc(themeCssFile, targetSwcFile);
+
+		if(targetSwcFile != null) {
+			// Generate the pom file.
+			final MavenMetadata themeMetadata = new MavenMetadata();
+			themeMetadata.setGroupId((isApache) ? "org.apache.flex.framework.themes" : "com.adobe.flex.framework.themes");
+			themeMetadata.setArtifactId(themeName);
+			themeMetadata.setVersion(themeVersion);
+			themeMetadata.setPackaging("swc");
+			generateSwcPom(targetSwcFile, themeMetadata);
+		}
+	}
+
     private File generateThemeSwc(File themeDirectory, File targetFile) throws Exception {
 
-	    final File fdkHomeDir = themeDirectory.getParentFile().getParentFile().getParentFile();
+	    final File fdkHomeDir = (themeDirectory.isDirectory()) ? themeDirectory.getParentFile().getParentFile().getParentFile() : themeDirectory.getParentFile().getParentFile().getParentFile().getParentFile();
         final File fdkLibDir = new File(fdkHomeDir, "lib");
 
 	    List<String> processCmd = new ArrayList<String>(10);
@@ -660,23 +689,29 @@ public class FlexFrameworkGenerator extends BaseGenerator {
 	        processCmd.add(compcLibrary.getCanonicalPath());
 	        processCmd.add("+flexlib=" + frameworkDir.getCanonicalPath());
 
-            // Add all the content files.
-            final File contents[] = themeDirectory.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File pathname) {
-                    return !(pathname.isDirectory() && "src".equals(pathname.getName())) &&
-                            !"preview.jpg".equals(pathname.getName()) && !pathname.getName().endsWith(".fla");
-                }
-            });
-            if(contents.length == 0) {
-                return null;
-            }
+	        if(themeDirectory.isDirectory()){
+	            // Add all the content files.
+	            final File contents[] = themeDirectory.listFiles(new FileFilter() {
+	                @Override
+	                public boolean accept(File pathname) {
+	                    return !(pathname.isDirectory() && "src".equals(pathname.getName())) &&
+	                            !"preview.jpg".equals(pathname.getName()) && !pathname.getName().endsWith(".fla");
+	                }
+	            });
+	            if(contents.length == 0) {
+	                return null;
+	            }
 
-            for(final File resource : contents) {
-	            processCmd.add("-include-file");
-			    processCmd.add(resource.getName());
-	            processCmd.add(resource.getCanonicalPath());
-            }
+	            for(final File resource : contents) {
+		            processCmd.add("-include-file");
+				    processCmd.add(resource.getName());
+		            processCmd.add(resource.getCanonicalPath());
+	            }
+	        }  else {
+		        processCmd.add("-include-file");
+		        processCmd.add(themeDirectory.getName());
+		        processCmd.add(themeDirectory.getCanonicalPath());
+	        }
 
             // Define the output file.
 	        processCmd.add("-o");
