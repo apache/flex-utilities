@@ -20,6 +20,10 @@ limitations under the License.
 Apache Flex
 Copyright 2013 The Apache Software Foundation
 
+Apache Flex SDK Installer 2.6
+Here is a list of significant issues that were fixed with this release:
+1. Able to select which version of AIR and Flash Player to use.
+
 Apache Flex SDK Installer 2.5
 
 Issues addressed in this release:
@@ -44,7 +48,7 @@ Issues addressed in this release:
 Here is a list of significant issues that were fixed with this release:
 1.  https://issues.apache.org/jira/browse/FLEX-33214 (Fix UI of license screen)
 2.  https://issues.apache.org/jira/browse/FLEX-33122 (Enable language switching)
-	Available languages: English(US), English(AU), English(GB), Espa�ol (ES), Fran�ais, Greek, Nederlands and Portugu�s
+	Available languages: English(US), English(AU), English(GB), Español (ES), Français, Greek, Nederlands and Português
 
 Apache Flex Installer SDK 1.0
 
