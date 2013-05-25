@@ -64,7 +64,7 @@ Overview:
   modify the download urls to point to the required versions.  Then run the app from command line 
   mode with the optional command line parameter: -config=<path to config file>
 	
-- From the 2.6 version, you can select the version of Adobe Flash Playe and Adobe AIR the
+- From the 2.6 version, you can select the version of Adobe Flash Player and Adobe AIR the
   installer downloads.
    	
 ==========================================================================================
