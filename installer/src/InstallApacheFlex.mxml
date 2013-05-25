@@ -110,10 +110,14 @@ variables are not required because the locations of these pieces are known.
          * Values stored in sdk-installer-config.xml edit file to change
          *
          */
+		[Bindable] private var AIR_VERSIONS:ArrayCollection = new ArrayCollection();
+		private var AIR_VERSION:String;
         private var ADOBE_AIR_SDK_WIN_FILE:String;
         private var ADOBE_AIR_SDK_WIN_URL:String;
-        private var ADOBE_AIR_SDK_MAC_FILE:String;
-        private var ADOBE_AIR_SDK_MAC_URL:String;
+		private var ADOBE_AIR_SDK_MAC_FILE:String;
+		private var ADOBE_AIR_SDK_MAC_URL:String;
+		private var ADOBE_AIR_SDK_LINUX_FILE:String;
+		private var ADOBE_AIR_SDK_LINUX_URL:String;
 
         /**
          * Adobe Flash Player
@@ -121,9 +125,11 @@ variables are not required because the locations of these pieces are known.
          * Values stored in sdk-installer-config.xml edit file to change
          *
          */
+		[Bindable] private var FLASH_PLAYER_VERSIONS:ArrayCollection = new ArrayCollection();
+		private var FLASH_PLAYER_VERSION:String = "11.1";
+		private var FLASH_PLAYER_SWF_VERSION:String = "14";
         private var ADOBE_FB_GLOBALPLAYER_SWC_FILE:String;
         private var ADOBE_FB_GLOBALPLAYER_SWC_URL:String;
-        private var ADOBE_FB_GLOBALPLAYER_SWC_VERSION:String = "11.1";	//Default to 11.1 if this var is not set by value in sdk-installer-config.xml
 
         /**
          *
@@ -153,7 +159,8 @@ variables are not required because the locations of these pieces are known.
         private var RIDEAU_URL:String;
 
         private const WINDOWS_OS:String = "windows";
-        private const MAC_OS:String = "mac";
+		private const MAC_OS:String = "mac";
+		private const LINUX_OS:String = "linux";
 
         [Bindable]
         private var _flexHome:String;
@@ -413,26 +420,51 @@ variables are not required because the locations of these pieces are known.
             if (APACHE_FLEX_BIN_DISTRO_PATH.indexOf("http") == 0) {
                 _useMirror = false;
             }
+			
+			var airVersions:Array = files.(@name == 'Versions').@airVersions.toString().split(",");
+			for each (var airVersion:String in airVersions) {
+				AIR_VERSIONS.addItem({label:"AIR " + airVersion, version:airVersion});
+			}
+			
+			if (this.airVersion.selectedIndex == -1) {
+				this.airVersion.selectedIndex = 1;	
+			}
+			
+			var flashPlayerVersions:Array = files.(@name == 'Versions').@flashPlayerVersions.toString().split(",");
+			for each (var flashPlayerVersion:String in flashPlayerVersions) {
+				FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + flashPlayerVersion, version:flashPlayerVersion});
+			}
+			
+			if (this.flashPlayerVersion.selectedIndex == -1) {
+				this.flashPlayerVersion.selectedIndex = 1;	
+			}
 
-            ADOBE_AIR_SDK_WIN_FILE = files.(@name == 'AdobeAIRSDKWin').@file.toString();
-            ADOBE_AIR_SDK_WIN_URL = files.(@name == 'AdobeAIRSDKWin').@path.toString();
+            ADOBE_AIR_SDK_WIN_FILE = files.(@name == 'AdobeAIRSDKWin' + AIR_VERSION).@file.toString();
+            ADOBE_AIR_SDK_WIN_URL = files.(@name == 'AdobeAIRSDKWin' + AIR_VERSION).@path.toString();
             if (_os == WINDOWS_OS && (!ADOBE_AIR_SDK_WIN_FILE || !ADOBE_AIR_SDK_WIN_URL)) {
                 log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_WINDOWS);
                 keepGoing = false;
             }
             ADOBE_AIR_SDK_WIN_URL += ADOBE_AIR_SDK_WIN_FILE;
 
-            ADOBE_AIR_SDK_MAC_FILE = files.(@name == 'AdobeAIRSDKMac').@file.toString();
-            ADOBE_AIR_SDK_MAC_URL = files.(@name == 'AdobeAIRSDKMac').@path.toString();
+            ADOBE_AIR_SDK_MAC_FILE = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@file.toString();
+            ADOBE_AIR_SDK_MAC_URL = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@path.toString();
             if (_os == MAC_OS && (!ADOBE_AIR_SDK_MAC_FILE || !ADOBE_AIR_SDK_MAC_URL)) {
                 log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_MAC);
                 keepGoing = false;
             }
             ADOBE_AIR_SDK_MAC_URL += ADOBE_AIR_SDK_MAC_FILE;
+			
+			ADOBE_AIR_SDK_LINUX_FILE = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@file.toString();
+			ADOBE_AIR_SDK_LINUX_URL = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@path.toString();
+			if (_os == LINUX_OS && (!ADOBE_AIR_SDK_LINUX_FILE || !ADOBE_AIR_SDK_LINUX_URL)) {
+				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_LINUX);
+				keepGoing = false;
+			}
+			ADOBE_AIR_SDK_MAC_URL += ADOBE_AIR_SDK_MAC_FILE;
 
-            ADOBE_FB_GLOBALPLAYER_SWC_FILE = files.(@name == 'FlashPlayer').@file.toString();
-            ADOBE_FB_GLOBALPLAYER_SWC_URL = files.(@name == 'FlashPlayer').@path.toString();
-            ADOBE_FB_GLOBALPLAYER_SWC_VERSION = files.(@name == 'FlashPlayer').@version.toString();
+            ADOBE_FB_GLOBALPLAYER_SWC_FILE = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@file.toString();
+            ADOBE_FB_GLOBALPLAYER_SWC_URL = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@path.toString();
             if (!ADOBE_FB_GLOBALPLAYER_SWC_FILE || !ADOBE_FB_GLOBALPLAYER_SWC_URL) {
                 log(_viewResourceConstants.ERROR_INVALID_FLASH_PLAYER_SWC_URL);
                 keepGoing = false;
@@ -468,8 +500,10 @@ variables are not required because the locations of these pieces are known.
 
             if (operatingSystemStr.search("Mac OS") != -1) {
                 _os = MAC_OS;
-            } else if (operatingSystemStr.search("Windows") != -1) {
-                _os = WINDOWS_OS;
+			} else if (operatingSystemStr.search("Windows") != -1) {
+				_os = WINDOWS_OS;
+			} else if (operatingSystemStr.search("Linux") != -1) {
+				_os = LINUX_OS;
             } else {
                 log(_viewResourceConstants.ERROR_UNSUPPORTED_OPERATING_SYSTEM);
             }
@@ -571,6 +605,19 @@ variables are not required because the locations of these pieces are known.
                 install();
             }
         }
+		
+		protected function handleZeroStepNextBtnClick(event:MouseEvent):void {	
+			AIR_VERSION = airVersion.selectedItem.version;
+			FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.version;
+			
+			setXMLVariables(); // as AIR and Flash version may of changed
+			
+			log("AIR version " + AIR_VERSION);
+			log("Flash Plyer version " + FLASH_PLAYER_VERSION);
+			
+			currentState = "directoryState";
+		}
+
 
         protected function handleFirstStepNextBtnClick(event:MouseEvent):void {
             currentState = "optionsState";
@@ -579,6 +626,7 @@ variables are not required because the locations of these pieces are known.
         protected function initiateInstallStepsActivity():void {
             _installationSteps = new ArrayCollection();
 
+			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_SELECT_AIR_AND_FLASH_VERSION));
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_CREATE_DIRECTORIES));
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK));
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_VERIFY_FLEX_SDK));
@@ -641,6 +689,26 @@ variables are not required because the locations of these pieces are known.
         protected function install():void {
             createDirectories();
         }
+		
+		protected function handleAirVersionChange(event:Event):void {
+			AIR_VERSION = airVersion.selectedItem.verson;
+			
+			// AIR requires a minimum Flash Player version
+			if (flashPlayerVersion.selectedIndex > airVersion.selectedIndex) {
+				flashPlayerVersion.selectedIndex = airVersion.selectedIndex;
+				FLASH_PLAYER_VERSION = FLASH_PLAYER_VERSIONS[airVersion.selectedIndex].version;
+			}
+		}
+		
+		protected function handleFlashPlayerVersionChange(event:Event):void {
+			FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.verson;
+			
+			// AIR requires a minimum Flash Player version
+			if (airVersion.selectedIndex > flashPlayerVersion.selectedIndex) {
+				airVersion.selectedIndex = flashPlayerVersion.selectedIndex;
+				AIR_VERSION = AIR_VERSIONS[flashPlayerVersion.selectedIndex].version;
+			}
+		}
 
         protected function browseForSDK(event:MouseEvent):void {
             var file:File = new File();
@@ -785,7 +853,7 @@ variables are not required because the locations of these pieces are known.
 
             if (_os == WINDOWS_OS) {
                 downloadAIRRuntimeKitForWindows();
-            } else if (_os == MAC_OS) {
+            } else if (_os == MAC_OS || _os == LINUX_OS) {
                 /* Copy all files from the unarchived directory to the root */
                 var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
                 var files:Array = directory.getDirectoryListing();
@@ -793,7 +861,12 @@ variables are not required because the locations of these pieces are known.
                     file.copyTo(_flexHomeDir.resolvePath(file.name));
                 }
 
-                downloadAIRRuntimeKitForMac();
+				if (_os == MAC_OS) {
+                	downloadAIRRuntimeKitForMac();
+				}
+				else {
+					downloadAIRRuntimeKitForLinux();
+				}
             }
         }
 
@@ -815,18 +888,31 @@ variables are not required because the locations of these pieces are known.
             }
         }
 
-        protected function downloadAIRRuntimeKitForMac():void {
-            updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
-
-            try {
-                log(_viewResourceConstants.INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC + ADOBE_AIR_SDK_MAC_URL);
-                _adobeAIRSDKZipFile = File.userDirectory.resolvePath(_flexTemp + File.separator + ADOBE_AIR_SDK_MAC_FILE);
-                copyOrDownload(ADOBE_AIR_SDK_MAC_URL, handleAIRSDKDownload, _adobeAIRSDKZipFile, handleAIRSDKDownloadError);
-            } catch (e:Error) {
-                updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
-                abortInstallation();
-            }
-        }
+		protected function downloadAIRRuntimeKitForMac():void {
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
+			
+			try {
+				log(_viewResourceConstants.INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC + ADOBE_AIR_SDK_MAC_URL);
+				_adobeAIRSDKZipFile = File.userDirectory.resolvePath(_flexTemp + File.separator + ADOBE_AIR_SDK_MAC_FILE);
+				copyOrDownload(ADOBE_AIR_SDK_MAC_URL, handleAIRSDKDownload, _adobeAIRSDKZipFile, handleAIRSDKDownloadError);
+			} catch (e:Error) {
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
+				abortInstallation();
+			}
+		}
+		
+		protected function downloadAIRRuntimeKitForLinux():void {
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
+			
+			try {
+				log(_viewResourceConstants.INFO_DOWNLOADING_AIR_RUNTIME_KIT_LINUX + ADOBE_AIR_SDK_LINUX_URL);
+				_adobeAIRSDKZipFile = File.userDirectory.resolvePath(_flexTemp + File.separator + ADOBE_AIR_SDK_LINUX_FILE);
+				copyOrDownload(ADOBE_AIR_SDK_LINUX_URL, handleAIRSDKDownload, _adobeAIRSDKZipFile, handleAIRSDKDownloadError);
+			} catch (e:Error) {
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
+				abortInstallation();
+			}
+		}
 
         protected function handleAIRSDKDownload(event:Event):void {
             try {
@@ -903,7 +989,7 @@ variables are not required because the locations of these pieces are known.
             try {
                 log(_viewResourceConstants.INFO_INSTALLING_PLAYERGLOBAL_SWC + ADOBE_FB_GLOBALPLAYER_SWC_URL);
                 _fbGlobalPlayerDir = createFolder(_flexHome + File.separator + "frameworks" + File.separator + "libs" + File.separator + "player"
-                                                          + File.separator + ADOBE_FB_GLOBALPLAYER_SWC_VERSION);
+                                                          + File.separator + FLASH_PLAYER_VERSION);
                 _fbGlobalPlayerFile = File.userDirectory.resolvePath(_fbGlobalPlayerDir.nativePath + File.separator + "playerglobal.swc");
                 copyOrDownload(ADOBE_FB_GLOBALPLAYER_SWC_URL, handlePlayerGlobalDownload, _fbGlobalPlayerFile, handlePlayerGlobalDownloadError);
             } catch (e:Error) {
@@ -942,6 +1028,8 @@ variables are not required because the locations of these pieces are known.
                 var configFiles:Array = configFilesDir.getDirectoryListing();
                 var flexHomeFrameworksDir:File = File.userDirectory.resolvePath(_flexHome + File.separator + "frameworks");
                 log(_viewResourceConstants.INFO_INSTALLING_CONFIG_FILES);
+				
+				// TODO update with AIR and flashplayer version selected
 
                 for each (var file:File in configFiles) {
                     if (isValidConfigFile(file)) {
@@ -1317,18 +1405,10 @@ variables are not required because the locations of these pieces are known.
                 getInstallerComponentFromLabel(item.key).selected = true;
             }
         }
-
-        protected function placeFirstGroup():void {
-            firstStepGroup.x = this.width / 2 - firstStepGroup.width / 2;
-        }
-
-        protected function placeSecondGroup():void {
-            secondStepGroup.x = this.width / 2 - secondStepGroup.width / 2;
-        }
-
-        protected function placeThirdGroup():void {
-            thirdStepGroup.x = this.width / 2 - thirdStepGroup.width / 2;
-        }
+		
+		protected function placeGroup(panel:Panel):void {
+			panel.x = this.width / 2 - panel.width / 2;
+		}
 
         protected function handleOptionalInstallsChange(event:IndexChangeEvent):void {
             var selectedItem:InstallerComponentVO = InstallerComponentVO(event.target.selectedItem);
@@ -1671,14 +1751,25 @@ variables are not required because the locations of these pieces are known.
     </fx:Declarations>
 
     <s:states>
-        <s:State name="default"/>
+		<s:State name="default"/>
+		<s:State name="directoryState"/>
         <s:State name="optionsState"/>
         <s:State name="installState"/>
     </s:states>
 
     <s:transitions>
-        <s:Transition id="showDefault" fromState="*" toState="default">
-            <s:Sequence id="t0" targets="{[firstStepGroup]}" effectEnd="placeFirstGroup()">
+		<s:Transition id="showDefault" fromState="*" toState="default">
+			<s:Sequence id="t0" targets="{[zeroStepGroup]}" effectEnd="placeGroup(zeroStepGroup)">
+				<s:SetAction target="{zeroStepGroup}" property="visible" value="true"/>
+				<s:SetAction target="{firstStepGroup}" property="visible" value="false"/>
+				<s:SetAction target="{secondStepGroup}" property="visible" value="false"/>
+				<s:SetAction target="{thirdStepGroup}" property="visible" value="false"/>
+				<s:Move target="{zeroStepGroup}" xFrom="800" xTo="{this.width/2 - zeroStepGroup.width/2}" duration="500" easer="{ease}"/>
+			</s:Sequence>
+		</s:Transition>
+        <s:Transition id="showDirectory" fromState="*" toState="directoryState">
+            <s:Sequence id="t1" targets="{[firstStepGroup]}" effectEnd="placeGroup(firstStepGroup)">
+				<s:SetAction target="{zeroStepGroup}" property="visible" value="false"/>
                 <s:SetAction target="{firstStepGroup}" property="visible" value="true"/>
                 <s:SetAction target="{secondStepGroup}" property="visible" value="false"/>
                 <s:SetAction target="{thirdStepGroup}" property="visible" value="false"/>
@@ -1686,7 +1777,8 @@ variables are not required because the locations of these pieces are known.
             </s:Sequence>
         </s:Transition>
         <s:Transition id="showOptions" fromState="*" toState="optionsState">
-            <s:Sequence id="t1" targets="{[secondStepGroup]}" effectEnd="placeSecondGroup()">
+            <s:Sequence id="t2" targets="{[secondStepGroup]}" effectEnd="placeGroup(secondStepGroup)">
+				<s:SetAction target="{zeroStepGroup}" property="visible" value="false"/>
                 <s:SetAction target="{firstStepGroup}" property="visible" value="false"/>
                 <s:SetAction target="{secondStepGroup}" property="visible" value="true"/>
                 <s:SetAction target="{thirdStepGroup}" property="visible" value="false"/>
@@ -1694,7 +1786,8 @@ variables are not required because the locations of these pieces are known.
             </s:Sequence>
         </s:Transition>
         <s:Transition id="showInstall" fromState="*" toState="installState">
-            <s:Sequence id="t2" targets="{[thirdStepGroup]}" effectEnd="placeThirdGroup()">
+            <s:Sequence id="t3" targets="{[thirdStepGroup]}" effectEnd="placeGroup(thirdStepGroup)">
+				<s:SetAction target="{zeroStepGroup}" property="visible" value="false"/>
                 <s:SetAction target="{firstStepGroup}" property="visible" value="false"/>
                 <s:SetAction target="{secondStepGroup}" property="visible" value="false"/>
                 <s:SetAction target="{thirdStepGroup}" property="visible" value="true"/>
@@ -1747,15 +1840,56 @@ variables are not required because the locations of these pieces are known.
 		</s:VGroup>
 		<s:Spacer width="100" />
 	</s:HGroup>
+	<s:Panel id="zeroStepGroup"
+			 title="{_viewResourceConstants.INFO_SELECT_AIR_FLASH_PLAYER}"
+			 width="640"
+			 height="200"
+			 top="380"
+			 x="{zeroStepGroup.x = this.width/2 - zeroStepGroup.width/2}"
+			 visible="true"
+			 visible.optionsState="false"
+			 visible.directoryState="false"
+			 visible.installState="false"
+			 backgroundAlpha="0">
+		<s:layout>
+			<s:VerticalLayout
+				verticalAlign="middle"
+				paddingRight="10"
+				paddingLeft="10"/>
+		</s:layout>
+		<s:HGroup>
+			<s:Label text="Select AIR version" width="200" />
+			<s:ComboBox id="airVersion"
+						dataProvider="{AIR_VERSIONS}"
+						change="handleAirVersionChange(event)"/>
+		</s:HGroup>
+		<s:HGroup>
+			<s:Label text="Select Flash Player version" width="200" />
+			<s:ComboBox id="flashPlayerVersion"
+						dataProvider="{FLASH_PLAYER_VERSIONS}"
+						change="handleFlashPlayerVersionChange(event)"/>
+		</s:HGroup>
+		<s:controlBarContent>
+			<s:Spacer
+				width="100%"/>
+			<s:Button id="directoryBtn"
+					  styleName="mainBtnStyle"
+					  width="{standardButtonWidth}"
+					  height="32"
+					  right="10"
+					  label="{_viewResourceConstants.BTN_LABEL_NEXT}"
+					  click="handleZeroStepNextBtnClick(event)"/>
+		</s:controlBarContent>
+	</s:Panel>
+
     <s:Panel id="firstStepGroup"
              title="{_viewResourceConstants.INFO_SELECT_DIRECTORY_INSTALL}"
              width="640"
              height="200"
              top="380"
              x="{firstStepGroup.x = this.width/2 - firstStepGroup.width/2}"
-             visible="true"
-             visible.optionsState="false"
-             visible.installState="false"
+             visible="false"
+             visible.directoryState="true"
              backgroundAlpha="0">
         <s:layout>
             <s:HorizontalLayout
