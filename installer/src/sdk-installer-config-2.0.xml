@@ -21,11 +21,11 @@ limitations under the License.
 
 <config>
 	<version>
-		<latest>2.5.4</latest>
+		<latest>2.6.0</latest>
 	</version>
 	<files>
 
-		<!-- SDK Installer App binary distribution
+		<!-- SDK Installer Application binary distribution
 			 Notes:
 			 	- use full URL when binaries are NOT released yet, else use
 			 	  path relative to mirror
@@ -49,6 +49,47 @@ limitations under the License.
         <!-- Adobe Flash Player player global swc -->
         <file name="FlashPlayer" path="http://fpdownload.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_1.swc" version="11.1"/>
 
+        <!-- All the versions! -->
+		<file name="Versions" airVersions="3.8,3.7,3.6,3.5,3.4,3.3,3.2,3.1,3.0,2.7,2.6" flashPlayerVersions="11.8,11.7,11.6,11.5,11.4,11.3,11.2,11.1,11.0,10.3,10.2" /> 
+
+		<file name="AdobeAIRSDKLin2.6" path="http://airdownload.adobe.com/air/lin/download/2.6" file="AdobeAIRSDK.zip" />
+		
+		<file name="AdobeAIRSDKWin2.6" path="http://airdownload.adobe.com/air/win/download/2.6/" file="AdobeAIRSDK.zip" /> 
+		<file name="AdobeAIRSDKWin2.7" path="http://airdownload.adobe.com/air/win/download/2.7/" file="AdobeAIRSDK.zip" />
+		<file name="AdobeAIRSDKWin3.0" path="http://airdownload.adobe.com/air/win/download/3.0/" file="AdobeAIRSDK.zip" />
+		<file name="AdobeAIRSDKWin3.1" path="http://airdownload.adobe.com/air/win/download/3.1/" file="AdobeAIRSDK.zip" />
+		<file name="AdobeAIRSDKWin3.2" path="http://airdownload.adobe.com/air/win/download/3.2/" file="AdobeAIRSDK.zip" />
+		<file name="AdobeAIRSDKWin3.3" path="http://airdownload.adobe.com/air/win/download/3.3/" file="AdobeAIRSDK.zip" />
+		<file name="AdobeAIRSDKWin3.4" path="http://airdownload.adobe.com/air/win/download/3.4/" file="AdobeAIRSDK.zip" />
+		<file name="AdobeAIRSDKWin3.5" path="http://airdownload.adobe.com/air/win/download/3.5/" file="AdobeAIRSDK.zip" />
+		<file name="AdobeAIRSDKWin3.6" path="http://airdownload.adobe.com/air/win/download/3.6/" file="AdobeAIRSDK.zip" />
+		<file name="AdobeAIRSDKWin3.7" path="http://airdownload.adobe.com/air/win/download/3.7/" file="AdobeAIRSDK.zip" />
+		<file name="AdobeAIRSDKWin3.8" path="http://labsdownload.adobe.com/pub/labs/flashruntimes/air" file="air3-8_sdk_sa_win.zip" />
+
+		<file name="AdobeAIRSDKMac2.6" path="http://airdownload.adobe.com/air/win/download/2.6/" file="AdobeAIRSDK.tbz2" /> 
+		<file name="AdobeAIRSDKMac2.7" path="http://airdownload.adobe.com/air/win/download/2.7/" file="AdobeAIRSDK.tbz2" />
+		<file name="AdobeAIRSDKMac3.0" path="http://airdownload.adobe.com/air/win/download/3.0/" file="AdobeAIRSDK.tbz2" />
+		<file name="AdobeAIRSDKMac3.1" path="http://airdownload.adobe.com/air/win/download/3.1/" file="AdobeAIRSDK.tbz2" />
+		<file name="AdobeAIRSDKMac3.2" path="http://airdownload.adobe.com/air/win/download/3.2/" file="AdobeAIRSDK.tbz2" />
+		<file name="AdobeAIRSDKMac3.3" path="http://airdownload.adobe.com/air/win/download/3.3/" file="AdobeAIRSDK.tbz2" />
+		<file name="AdobeAIRSDKMac3.4" path="http://airdownload.adobe.com/air/win/download/3.4/" file="AdobeAIRSDK.tbz2" />
+		<file name="AdobeAIRSDKMac3.5" path="http://airdownload.adobe.com/air/win/download/3.5/" file="AdobeAIRSDK.tbz2" />
+		<file name="AdobeAIRSDKMac3.6" path="http://airdownload.adobe.com/air/win/download/3.6/" file="AdobeAIRSDK.tbz2" />
+		<file name="AdobeAIRSDKMac3.7" path="http://airdownload.adobe.com/air/win/download/3.7/" file="AdobeAIRSDK.tbz2" />
+		<file name="AdobeAIRSDKMac3.8" path="http://labsdownload.adobe.com/pub/labs/flashruntimes/air" file="air3-8_sdk_sa_mac.tbz2" />
+		
+		<file name="FlashPlayer10.2" path="http://download.macromedia.com/get/flashplayer/installers/archive/playerglobal" file="playerglobal10_2.swc" version="10.2" swfversion="11"/>
+		<file name="FlashPlayer10.3" path="http://download.macromedia.com/get/flashplayer/installers/archive/playerglobal" file="playerglobal10_3.swc" version="10.3" swfversion="12"/>
+		<file name="FlashPlayer11.0" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_0.swc" version="11.0" swfversion="13"/>
+		<file name="FlashPlayer11.1" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_1.swc" version="11.1" swfversion="14"/>
+		<file name="FlashPlayer11.2" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_2.swc" version="11.2" swfversion="15"/>
+		<file name="FlashPlayer11.3" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_3.swc" version="11.3" swfversion="16"/>
+		<file name="FlashPlayer11.4" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_4.swc" version="11.4" swfversion="17"/>
+		<file name="FlashPlayer11.5" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_5.swc" version="11.5" swfversion="18"/>
+		<file name="FlashPlayer11.6" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_6.swc" version="11.6" swfversion="19" />
+		<file name="FlashPlayer11.7" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_7.swc" version="11.7" swfversion="20" />
+		<file name="FlashPlayer11.8" path="http://labsdownload.adobe.com/pub/labs/flashruntimes/flashplayer/" file="flashplayer11-8_playerglobal.swc" version="11.8" swfversion="21" />			
+        
         <!-- SWFObject.js -->
         <file name="swfobject" path="http://swfobject.googlecode.com/files/" file="swfobject_2_2.zip"/>
 
