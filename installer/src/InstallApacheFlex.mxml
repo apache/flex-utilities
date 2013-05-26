@@ -455,13 +455,13 @@ variables are not required because the locations of these pieces are known.
             }
             ADOBE_AIR_SDK_MAC_URL += ADOBE_AIR_SDK_MAC_FILE;
 			
-			ADOBE_AIR_SDK_LINUX_FILE = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@file.toString();
-			ADOBE_AIR_SDK_LINUX_URL = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@path.toString();
+			ADOBE_AIR_SDK_LINUX_FILE = files.(@name == 'AdobeAIRSDKLin' + AIR_VERSION).@file.toString();
+			ADOBE_AIR_SDK_LINUX_URL = files.(@name == 'AdobeAIRSDKLin' + AIR_VERSION).@path.toString();
 			if (_os == LINUX_OS && (!ADOBE_AIR_SDK_LINUX_FILE || !ADOBE_AIR_SDK_LINUX_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_LINUX);
 				keepGoing = false;
 			}
-			ADOBE_AIR_SDK_MAC_URL += ADOBE_AIR_SDK_MAC_FILE;
+			ADOBE_AIR_SDK_LINUX_URL += ADOBE_AIR_SDK_LINUX_FILE;
 
             ADOBE_FB_GLOBALPLAYER_SWC_FILE = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@file.toString();
             ADOBE_FB_GLOBALPLAYER_SWC_URL = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@path.toString();
@@ -613,7 +613,7 @@ variables are not required because the locations of these pieces are known.
 			setXMLVariables(); // as AIR and Flash version may of changed
 			
 			log("AIR version " + AIR_VERSION);
-			log("Flash Plyer version " + FLASH_PLAYER_VERSION);
+			log("Flash Player version " + FLASH_PLAYER_VERSION);
 			
 			currentState = "directoryState";
 		}
