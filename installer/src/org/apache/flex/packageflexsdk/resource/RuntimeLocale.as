@@ -346,10 +346,11 @@ public class RuntimeLocale
 		content["INFO_INSTALLING_CONFIG_FILES"]="Installing frameworks configuration files configured for use with an IDE";
 		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Installing Adobe Flash Player playerglobal.swc from: ";
 		content["INFO_INVOKED_GUI_MODE"]="invoked in GUI mode";
+		content["INFO_SELECT_AIR_FLASH_PLAYER"] = "Select AIR and Flash Player versions."
 		content["INFO_SELECT_DIRECTORY"]="Select a directory";
 		content["INFO_UNZIPPING"]="Unzipping: ";
 		content["SELECT_PATH_PROMPT"]="Enter Flex SDK path or browse to select a path";
-		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Select the AIR and Flash Player versions.";
+		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Select AIR and Flash Player versions.";
 		content["STEP_CREATE_DIRECTORIES"]="Create Directories";
 		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Download Adobe AIR Runtime Kit";
 		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Download Flash Player swc";
