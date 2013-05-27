@@ -1848,28 +1848,37 @@ variables are not required because the locations of these pieces are known.
 			 height="200"
 			 top="380"
 			 x="{zeroStepGroup.x = this.width/2 - zeroStepGroup.width/2}"
-			 visible="true"
-			 visible.optionsState="false"
-			 visible.directoryState="false"
-			 visible.installState="false"
 			 backgroundAlpha="0">
 		<s:layout>
 			<s:VerticalLayout
 				verticalAlign="middle"
+				horizontalAlign="center"
 				paddingRight="10"
 				paddingLeft="10"/>
 		</s:layout>
-		<s:HGroup>
-			<s:Label text="Select AIR version" width="200" />
-			<s:ComboBox id="airVersion"
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Select AIR version" width="200" fontFamily="openSansBold" />
+			<s:DropDownList id="airVersion"
 						dataProvider="{AIR_VERSIONS}"
-						change="handleAirVersionChange(event)"/>
+						width="200"
+						fontFamily="openSansSemibold"
+						change="handleAirVersionChange(event)">
+				<s:layout>
+					<s:VerticalLayout requestedRowCount="-1"/>
+				</s:layout>
+			</s:DropDownList>
 		</s:HGroup>
-		<s:HGroup>
-			<s:Label text="Select Flash Player version" width="200" />
-			<s:ComboBox id="flashPlayerVersion"
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Select Flash Player version" width="200" fontFamily="openSansBold" />
+			<s:DropDownList id="flashPlayerVersion"
+						width="200"
 						dataProvider="{FLASH_PLAYER_VERSIONS}"
-						change="handleFlashPlayerVersionChange(event)"/>
+						fontFamily="openSansSemibold"
+						change="handleFlashPlayerVersionChange(event)">
+				<s:layout>
+					<s:VerticalLayout requestedRowCount="-1"/>
+				</s:layout>
+			</s:DropDownList>
 		</s:HGroup>
 		<s:controlBarContent>
 			<s:Spacer
