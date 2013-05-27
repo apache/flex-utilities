@@ -629,7 +629,6 @@ variables are not required because the locations of these pieces are known.
         protected function initiateInstallStepsActivity():void {
             _installationSteps = new ArrayCollection();
 
-			_installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_SELECT_AIR_AND_FLASH_VERSION));
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_CREATE_DIRECTORIES));
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK));
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_VERIFY_FLEX_SDK));
