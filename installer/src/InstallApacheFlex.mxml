@@ -111,7 +111,7 @@ variables are not required because the locations of these pieces are known.
          *
          */
 		[Bindable] private var AIR_VERSIONS:ArrayCollection = new ArrayCollection();
-		private var AIR_VERSION:String;
+		private var AIR_VERSION:String = "3.1";
         private var ADOBE_AIR_SDK_WIN_FILE:String;
         private var ADOBE_AIR_SDK_WIN_URL:String;
 		private var ADOBE_AIR_SDK_MAC_FILE:String;
@@ -707,7 +707,7 @@ variables are not required because the locations of these pieces are known.
 			FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.verson;
 			
 			// AIR requires a minimum Flash Player version
-			if (airVersion.selectedIndex > flashPlayerVersion.selectedIndex) {
+			if (airVersion.selectedIndex < flashPlayerVersion.selectedIndex) {
 				airVersion.selectedIndex = flashPlayerVersion.selectedIndex;
 				AIR_VERSION = AIR_VERSIONS[flashPlayerVersion.selectedIndex].version;
 			}
