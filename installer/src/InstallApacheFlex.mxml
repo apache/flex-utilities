@@ -423,20 +423,24 @@ variables are not required because the locations of these pieces are known.
 			
 			var airVersions:Array = files.(@name == 'Versions').@airVersions.toString().split(",");
 			for each (var airVersion:String in airVersions) {
-				AIR_VERSIONS.addItem({label:"AIR " + airVersion, version:airVersion});
+				if (_os != LINUX_OS || Number(airVersion) <= 2.6) {
+					AIR_VERSIONS.addItem({label:"AIR " + airVersion, version:airVersion});
+				}
 			}
 			
 			if (this.airVersion.selectedIndex == -1) {
-				this.airVersion.selectedIndex = 1;	
+				this.airVersion.selectedIndex = 0;	
 			}
 			
 			var flashPlayerVersions:Array = files.(@name == 'Versions').@flashPlayerVersions.toString().split(",");
 			for each (var flashPlayerVersion:String in flashPlayerVersions) {
-				FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + flashPlayerVersion, version:flashPlayerVersion});
+				if (_os != LINUX_OS || Number(flashPlayerVersion) <= 11.2) {
+					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + flashPlayerVersion, version:flashPlayerVersion});
+				}
 			}
 			
 			if (this.flashPlayerVersion.selectedIndex == -1) {
-				this.flashPlayerVersion.selectedIndex = 1;	
+				this.flashPlayerVersion.selectedIndex = 0;	
 			}
 
             ADOBE_AIR_SDK_WIN_FILE = files.(@name == 'AdobeAIRSDKWin' + AIR_VERSION).@file.toString();
@@ -528,9 +532,8 @@ variables are not required because the locations of these pieces are known.
             if (_mirrorURLUtil.errorOccurred) {
                 abortInstallation();
             } else {
-                if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX && APACHE_FLEX_BIN_DISTRO_PATH.substr(0,
-                                                                                                                                                     Constants.FILE_PREFIX.length)
-                        != Constants.FILE_PREFIX) {
+                if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX
+					&& APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) != Constants.FILE_PREFIX) {
                     APACHE_FLEX_BIN_DISTRO_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
                 } else {
                     APACHE_FLEX_BIN_DISTRO_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
