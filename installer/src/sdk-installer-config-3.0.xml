@@ -80,14 +80,14 @@ limitations under the License.
 		
 		<file name="FlashPlayer10.2" path="http://download.macromedia.com/get/flashplayer/installers/archive/playerglobal" file="playerglobal10_2.swc" version="10.2" swfversion="11"/>
 		<file name="FlashPlayer10.3" path="http://download.macromedia.com/get/flashplayer/installers/archive/playerglobal" file="playerglobal10_3.swc" version="10.3" swfversion="12"/>
-		<file name="FlashPlayer11.0" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_0.swc" version="11.0" swfversion="13"/>
-		<file name="FlashPlayer11.1" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_1.swc" version="11.1" swfversion="14"/>
-		<file name="FlashPlayer11.2" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_2.swc" version="11.2" swfversion="15"/>
-		<file name="FlashPlayer11.3" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_3.swc" version="11.3" swfversion="16"/>
-		<file name="FlashPlayer11.4" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_4.swc" version="11.4" swfversion="17"/>
-		<file name="FlashPlayer11.5" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_5.swc" version="11.5" swfversion="18"/>
-		<file name="FlashPlayer11.6" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_6.swc" version="11.6" swfversion="19" />
-		<file name="FlashPlayer11.7" path="http://download.macromedia.com/get/flashplayer/updaters/" file="playerglobal11_7.swc" version="11.7" swfversion="20" />
+		<file name="FlashPlayer11.0" path="http://download.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_0.swc" version="11.0" swfversion="13"/>
+		<file name="FlashPlayer11.1" path="http://download.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_1.swc" version="11.1" swfversion="14"/>
+		<file name="FlashPlayer11.2" path="http://download.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_2.swc" version="11.2" swfversion="15"/>
+		<file name="FlashPlayer11.3" path="http://download.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_3.swc" version="11.3" swfversion="16"/>
+		<file name="FlashPlayer11.4" path="http://download.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_4.swc" version="11.4" swfversion="17"/>
+		<file name="FlashPlayer11.5" path="http://download.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_5.swc" version="11.5" swfversion="18"/>
+		<file name="FlashPlayer11.6" path="http://download.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_6.swc" version="11.6" swfversion="19" />
+		<file name="FlashPlayer11.7" path="http://download.macromedia.com/get/flashplayer/updaters/11/" file="playerglobal11_7.swc" version="11.7" swfversion="20" />
 		<file name="FlashPlayer11.8" path="http://labsdownload.adobe.com/pub/labs/flashruntimes/flashplayer/" file="flashplayer11-8_playerglobal.swc" version="11.8" swfversion="21" />			
         
         <!-- SWFObject.js -->
