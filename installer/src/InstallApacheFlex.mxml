@@ -50,13 +50,13 @@ variables are not required because the locations of these pieces are known.
     <fx:Script><![CDATA[
         import flash.globalization.LocaleID;
         import flash.globalization.StringTools;
-
+        
         import mx.collections.ArrayCollection;
         import mx.core.IFlexDisplayObject;
         import mx.events.FlexEvent;
         import mx.managers.PopUpManager;
         import mx.utils.StringUtil;
-
+        
         import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
         import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
         import org.apache.flex.packageflexsdk.util.MD5CompareUtil;
@@ -72,10 +72,10 @@ variables are not required because the locations of these pieces are known.
         import org.as3commons.zip.Zip;
         import org.as3commons.zip.ZipEvent;
         import org.as3commons.zip.ZipFile;
-
+        
         import spark.events.IndexChangeEvent;
         import spark.events.TextOperationEvent;
-
+        
         import ws.tink.spark.controls.StepItem;
 
         private var _mirrorURLCGI:String;
@@ -422,6 +422,7 @@ variables are not required because the locations of these pieces are known.
             }
 			
 			var airVersions:Array = files.(@name == 'Versions').@airVersions.toString().split(",");
+			var selected:String = files.(@name == 'Versions').@airDefault.toString();
 			for each (var airVersion:String in airVersions) {
 				if (_os != LINUX_OS || Number(airVersion) <= 2.6) {
 					AIR_VERSIONS.addItem({label:"AIR " + airVersion, version:airVersion});
@@ -429,10 +430,11 @@ variables are not required because the locations of these pieces are known.
 			}
 			
 			if (this.airVersion.selectedIndex == -1) {
-				this.airVersion.selectedIndex = 0;	
+				this.airVersion.selectedIndex = airVersions.indexOf(selected);	
 			}
 			
 			var flashPlayerVersions:Array = files.(@name == 'Versions').@flashPlayerVersions.toString().split(",");
+			selected = files.(@name == 'Versions').@flashPlayerDefault.toString();
 			for each (var flashPlayerVersion:String in flashPlayerVersions) {
 				if (_os != LINUX_OS || Number(flashPlayerVersion) <= 11.2) {
 					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + flashPlayerVersion, version:flashPlayerVersion});
@@ -440,7 +442,7 @@ variables are not required because the locations of these pieces are known.
 			}
 			
 			if (this.flashPlayerVersion.selectedIndex == -1) {
-				this.flashPlayerVersion.selectedIndex = 0;	
+				this.flashPlayerVersion.selectedIndex = flashPlayerVersions.indexOf(selected);	
 			}
 
             ADOBE_AIR_SDK_WIN_FILE = files.(@name == 'AdobeAIRSDKWin' + AIR_VERSION).@file.toString();
@@ -469,6 +471,7 @@ variables are not required because the locations of these pieces are known.
 
             ADOBE_FB_GLOBALPLAYER_SWC_FILE = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@file.toString();
             ADOBE_FB_GLOBALPLAYER_SWC_URL = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@path.toString();
+			FLASH_PLAYER_SWF_VERSION = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@swfversion.toString();
             if (!ADOBE_FB_GLOBALPLAYER_SWC_FILE || !ADOBE_FB_GLOBALPLAYER_SWC_URL) {
                 log(_viewResourceConstants.ERROR_INVALID_FLASH_PLAYER_SWC_URL);
                 keepGoing = false;
@@ -1030,13 +1033,19 @@ variables are not required because the locations of these pieces are known.
                 var configFiles:Array = configFilesDir.getDirectoryListing();
                 var flexHomeFrameworksDir:File = File.userDirectory.resolvePath(_flexHome + File.separator + "frameworks");
                 log(_viewResourceConstants.INFO_INSTALLING_CONFIG_FILES);
-				
-				// TODO update with AIR and flashplayer version selected
 
                 for each (var file:File in configFiles) {
                     if (isValidConfigFile(file)) {
-                        var copyToFile:File = flexHomeFrameworksDir.resolvePath(file.name);
-                        file.copyTo(copyToFile, true);
+						var configFile:FileStream = new FileStream();
+						configFile.open(file, FileMode.UPDATE);
+						var contents:String = configFile.readMultiByte(configFile.bytesAvailable, "utf-8");
+						var playerVersion:RegExp = /<target-player>\d\d\.\d<\/target-player>/;
+						contents = contents.replace(playerVersion, "<target-player>" + FLASH_PLAYER_VERSION + "<\/target-player>");
+						var swfVersion:RegExp = /<swf-version>\d\d<\/swf-version>/;
+						contents = contents.replace(swfVersion, "<swf-version>" + FLASH_PLAYER_SWF_VERSION + "<\/swf-version>" );
+						configFile.writeMultiByte(contents, "utf-8");					
+						var copyToFile:File = flexHomeFrameworksDir.resolvePath(file.name);
+						file.copyTo(copyToFile, true);
                     }
                 }
             } catch (e:Error) {
