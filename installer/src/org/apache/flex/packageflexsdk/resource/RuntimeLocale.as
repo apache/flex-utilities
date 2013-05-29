@@ -574,7 +574,7 @@ public class RuntimeLocale
 		content["INSTALL_AGREE_ALL"] = "Acepto todas las opciones y licencias, Instalar";
 		content["INSTALL_DISAGREE"] = "No estoy de acuerdo, Cancelar";
 		content["SELECT_PATH_PROMPT"]="¿Dónde quieres instalar el SDK de Apache Flex?";
-		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Select AIR and Flash Player versions.";
+		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Seleccione las versiones de AIR y Flash Player.";
 		content["STEP_CREATE_DIRECTORIES"]="Crear directorios";
 		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Necesario)";
 		content["STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK"]="Adobe AIR SDK (Necesario)";
@@ -690,7 +690,7 @@ public class RuntimeLocale
 		content["INSTALL_AGREE_ALL"] = "Ik ga akkoord met alle opties en licenties, installeer";
 		content["INSTALL_DISAGREE"] = "Ik ga niet akkoord, installeer niet";
 		content["SELECT_PATH_PROMPT"]="Geef Flex SDK pad in of blader naar het pad";
-		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Select AIR and Flash Player versions.";
+		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Selecteer AIR en Flash Player versies.";
 		content["STEP_CREATE_DIRECTORIES"]="Mappen aanmaken";
 		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Verplicht)";
 		content["STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK"]="Adobe AIR SDK (Verplicht)";
@@ -809,7 +809,7 @@ public class RuntimeLocale
 		content["INSTALL_AGREE"] = "Eu concordo, instalar";
 		content["INSTALL_DISAGREE"] = "Não concordo, não instale";
 		content["SELECT_PATH_PROMPT"]="Aonde você deseja instalar o Apache Flex SDK?";
-		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Select AIR and Flash Player versions.";
+		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Selecione as versões do AIR e Flash Player.";
 		content["STEP_CREATE_DIRECTORIES"]="Criar diretórios";
 		content["STEP_DOWNLOAD_AIR_RUNTIME_KIT"]="Download Adobe AIR Runtime Kit";
 		content["STEP_DOWNLOAD_FLASHPLAYER_SWC"]="Download Flash Player swc";
@@ -916,7 +916,7 @@ public class RuntimeLocale
 		content["INSTALL_DISAGREE"] = "Je suis en désaccord, Ne pas installer";
 		content["SELECT_PATH_PROMPT"]="Où voulez-vous installer le SDK Flex Apache?";
 		content["STEP_CREATE_DIRECTORIES"]="Créer les répertoires";
-		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Select AIR and Flash Player versions.";
+		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Sélectionnez la version de AIR et du Player Flash.";
 		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Requis)";
 		content["STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK"]="Adobe AIR SDK (Requis)";
 		content["STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC"]="Adobe Flash Player playerglobal.swc (Requis)";
@@ -1042,7 +1042,7 @@ public class RuntimeLocale
         content["INSTALL_DISAGREE"] = "Ich Stimme nicht zu, nicht installieren";
         content["SELECT_PATH_PROMPT"]="In welches Verzeichnis soll das Apache Flex SDK installiert werden?";
         content["STEP_CREATE_DIRECTORIES"]="Erstelle Verzeichnisse";
-		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Select AIR and Flash Player versions.";
+		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Bitte wählen Sie die AIR und Flash Player Versionen.";
         content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Benötigt)";
         content["STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK"]="Adobe AIR SDK (Benötigt)";
         content["STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC"]="Adobe Flash Player playerglobal.swc (Benötigt)";
