@@ -1048,6 +1048,15 @@ variables are not required because the locations of these pieces are known.
 						file.copyTo(copyToFile, true);
                     }
                 }
+				
+				file = File.userDirectory.resolvePath(_flexHome + File.separator + "flex-sdk-description.xml");
+				var descriptionFile:FileStream = new FileStream();
+				descriptionFile.open(file, FileMode.UPDATE);
+				contents = descriptionFile.readMultiByte(descriptionFile.bytesAvailable, "utf-8");
+				var description:RegExp = /<name>[^<]*<\/name>/;
+				contents = contents.replace(description, "<name>Apache Flex " + APACHE_FLEX_BIN_DISTRO_VERSION + " FP " + FLASH_PLAYER_VERSION + " AIR " + AIR_VERSION + " en_US</name>");
+				descriptionFile.writeMultiByte(contents, "utf-8");
+				descriptionFile.close();
             } catch (e:Error) {
                 updateActivityStep(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES, StepItem.ERROR);
                 log(_viewResourceConstants.ERROR_UNABLE_TO_INSTALL_CONFIG_FILES);
