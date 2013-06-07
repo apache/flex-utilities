@@ -214,7 +214,7 @@ public class RuntimeLocale
         content["STEP_REQUIRED_INSTALL_SWFOBJECT"] = "SWFObject (Απαιτούμενο)";
         content["STEP_REQUIRED_INSTALL_OSMF"] = "OSMF (Απαιτούμενο)";
         content["STEP_REQUIRED_INSTALL_TLF"] = "Adobe Text Layout Framework (Απαιτούμενο)";
-        content["STEP_OPTIONAL_INSTALL_BLAZEDS"] = "BlazeDS (Προαιρετικό)";
+        content["STEP_OPTIONAL_INSTALL_BLAZEDS"] = "Remoting Support (Προαιρετικό)";
         content["STEP_OPTIONAL_INSTALL_FONTSWF"] = "Adobe Embedded Font Libraries and Utilities (Προαιρετικό)";
         content["STEP_REQUIRED_UNZIP_AIR_RUNTIME_KIT"] = "Αποσυμπίεση του Adobe AIR Runtime Kit";
         content["STEP_VERIFY_FLEX_SDK"] = "Γίνεται επαλήθευση του Apache Flex SDK MD5 Signature";
@@ -370,7 +370,7 @@ public class RuntimeLocale
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
 
 		var content:Object = resource.content;
-		content["ASK_BLAZEDS"]="Apache Flex can optionally integrate with Adobe BlazeDS. This feature requires flex-messaging-common.jar from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to this jar. This license is not compatible with the Apache V2 license. Do you want to install this jar from the Adobe Flex SDK?";
+		content["ASK_BLAZEDS"]="Apache Flex can optionally integrate with remoting providers like BlazeDS, GraniteDS, WebORB, Red5, AMFPHP, RubyAMF, PyAMF and others. This feature requires flex-messaging-common.jar from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to this jar. This license is not compatible with the Apache V2 license. Do you want to install this jar from the Adobe Flex SDK?";
 		content["ASK_FONTSWF"]="Apache Flex can optionally integrate with Adobe's embedded font support. This feature requires a few font jars from the Adobe Flex SDK. The Adobe SDK license agreement for Adobe Flex 4.6 applies to these jars. This license is not compatible with the Apache V2 license. Do you want to install these jars from the Adobe Flex SDK?";
 		content["ASK_OSMF"]="The Open Source Media Framework (OSMF) used by the video components is licensed under the Mozilla Public License Version 1.1.  Do you want to install the Open Source Media Framework (OSMF)?";
 		content["ASK_TLF"]="The Adobe Text Layout Framework (TLF) used by the Spark text components is licensed under the Mozilla Public License Version 1.1.  Do you want to install the Adobe Text Layout Framework (TLF)?";
@@ -458,7 +458,7 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Install Framework Configuration Files";
 		content["STEP_REQUIRED_INSTALL_OSMF"]="OSMF (Required)";
 		content["STEP_REQUIRED_INSTALL_TLF"]="Adobe Text Layout Framework (Required)";
-		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Optional)";
+		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Remoting Support (Optional)";
 		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Embedded Font Libraries and Utilities (Optional)";
 		content["STEP_REQUIRED_UNZIP_AIR_RUNTIME_KIT"]="Uncompress Adobe AIR Runtime Kit";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Uncompress Adobe AIR Runtime Kit";
@@ -583,7 +583,7 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Instalar ficheros de coniguración";
 		content["STEP_REQUIRED_INSTALL_OSMF"]="OSMF (Necesario)";
 		content["STEP_REQUIRED_INSTALL_TLF"]="Adobe Text Layout Framework (Necesario)";
-		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Opcional)";
+		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Remoting Support (Opcional)";
 		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Embedded Font Libraries and Utilities (Opcional)";
 		content["STEP_REQUIRED_UNZIP_AIR_RUNTIME_KIT"]="Descomprimir Adobe AIR Runtime Kit";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Descomprimir Adobe AIR Runtime Kit";
@@ -699,7 +699,7 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Framework Configuratie Bestanden Installeren";
 		content["STEP_REQUIRED_INSTALL_OSMF"]="OSMF (Verplicht)";
 		content["STEP_REQUIRED_INSTALL_TLF"]="Adobe Text Layout Framework (Verplicht)";
-		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Optioneel)";
+		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Remoting Support (Optioneel)";
 		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Embedded Font Libraries en Utilities (Optioneel)";
 		content["STEP_REQUIRED_UNZIP_AIR_RUNTIME_KIT"]="Adobe AIR Runtime Kit uitpakken";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Adobe AIR Runtime Kit Uitpakken";
@@ -816,7 +816,7 @@ public class RuntimeLocale
 		content["STEP_DOWNLOAD_FLEX_SDK"]="Download Apache Flex SDK";
 		content["STEP_INSTALL_CONFIG_FILES"]="Instalando arquivos de configuração do Framework";
 		content["STEP_INSTALL_SWF_OBJECT"]="Download SWFObject";
-		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Opcional)";
+		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Remoting Support (Opcional)";
 		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Embedded Font Libraries and Utilities (Opcional)";
 		content["STEP_OPTIONAL_INSTALL_OSMF"]="OSMF (Obrigatório)";
 		content["STEP_OPTIONAL_INSTALL_TLF"]="Adobe Text Layout Framework (Obrigatório)";
@@ -924,7 +924,7 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Installer les fichiers de configuration du framework";
 		content["STEP_REQUIRED_INSTALL_OSMF"]="OSMF (Requis)";
 		content["STEP_REQUIRED_INSTALL_TLF"]="Adobe Text Layout Framework (Requis)";
-		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (facultatif)";
+		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Remoting Support (facultatif)";
 		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Bibliothèques Adobe Font embarqués et utilitaires (facultatif)";
 		content["STEP_REQUIRED_UNZIP_AIR_RUNTIME_KIT"]="Décompresser Adobe AIR Runtime Kit";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Décompresser Adobe AIR Runtime Kit";
@@ -1050,7 +1050,7 @@ public class RuntimeLocale
         content["STEP_INSTALL_CONFIG_FILES"]="Installiere Framework Konfigurationsdateien";
         content["STEP_REQUIRED_INSTALL_OSMF"]="OSMF (Benötigt)";
         content["STEP_REQUIRED_INSTALL_TLF"]="Adobe Text Layout Framework (Benötigt)";
-        content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="BlazeDS (Optional)";
+        content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Remoting Support (Optional)";
         content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Bibliothek zur Einbettung von Schriften (Optional)";
         content["STEP_REQUIRED_UNZIP_AIR_RUNTIME_KIT"]="Entpacke Adobe AIR Runtime Kit";
         content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Entpacke Adobe AIR Runtime Kit";
