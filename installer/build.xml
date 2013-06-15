@@ -125,7 +125,12 @@
     <condition property="extension" value="exe">
         <os family="windows" />
     </condition>
-    <property name="extension" value="dmg"/>
+    <condition property="extension" value="dmg">
+        <os family="mac" />
+    </condition>
+    <condition property="extension" value="rpm">
+        <os family="unix" />
+    </condition>
 
     <target name="build" depends="init,certificate,compile,packagenative,cleanup"
         description="Compiles and packages application"/>
