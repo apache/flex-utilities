@@ -45,7 +45,12 @@
     <condition property="FLEX_HOME" value="${FLEX_HOME_WIN}">
         <os family="windows"/>
     </condition>
-    <property name="FLEX_HOME" value="${FLEX_HOME_MAC}"/>
+    <condition property="FLEX_HOME" value="${FLEX_HOME_MAC}">
+        <os family="mac"/>
+    </condition>
+    <condition property="FLEX_HOME" value="${FLEX_HOME_LINUX}">
+        <os family="unix"/>
+    </condition>
 
     <!--
         Properties are immutable so value frozen first time property is set.
@@ -59,7 +64,12 @@
     <condition property="AIR_HOME" value="${AIR_HOME_WIN}">
         <os family="windows"/>
     </condition>
-    <property name="AIR_HOME" value="${AIR_HOME_MAC}"/>
+    <condition property="AIR_HOME" value="${AIR_HOME_MAC}">
+        <os family="mac"/>
+    </condition>
+    <condition property="AIR_HOME" value="${AIR_HOME_LINUX}">
+        <os family="unix"/>
+    </condition>
 
     <condition property="cert_pwd_not_found" >
 		<not>
@@ -110,15 +120,6 @@
            <include name=".ant/lib/**/apache-rat*.jar"/>
         </fileset>
     </path>
-
-    <condition property="unsupportedOS">
-        <and>
-            <os family="unix" />
-            <not>
-                <os family="mac" />
-            </not>
-       </and>
-    </condition>
 
     <!-- AIR package extension -->
     <condition property="extension" value="exe">
@@ -209,15 +210,6 @@
        </java>
    </target>
 
-    <target name="abortBuild" if="unsupportedOS">
-        <fail>
-            Unable to create a .exe or a .dmg file on this operating system.
-            You must use ADT on the same operating system as that of the native installer file you want to generate.
-            So, to create an EXE file for Windows, run this build on Windows. To create a DMG file for Mac OS, run this
-            build on Mac OS.
-        </fail>
-    </target>
-
     <target name="check-as3commons.swc">
         <available file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc" property="as3commons.swc.present"/>
     </target>
@@ -232,7 +224,7 @@
         <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc.md5"
             dest="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc.md5"
             verbose="true"/>
-        <checksum file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc" algorithm="MD5" verifyProperty="isMD5ok"/>
+        <checksum file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc" algorithm="md5" verifyProperty="isMD5ok"/>
         <delete file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc.md5" failOnError="false"/>
         <fail message="Checksum failure for ${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc">
             <condition>
@@ -266,7 +258,7 @@
         <antcall target="generate-certificate"/>
     </target>
 
-    <target name="generate-certificate" depends="abortBuild">
+    <target name="generate-certificate">
     	<echo message="Using cert ${KEYSTORE}" />
         <java jar="${ADT}" fork="true"
             failonerror="true">
@@ -285,7 +277,7 @@
         </java>
     </target>
 
-    <target name="packageair" depends="abortBuild"
+    <target name="packageair"
         description="Packages the build SWF file from a temp directory to create an AIR file">
     	<echo message="Using cert ${KEYSTORE}" />
         <java jar="${ADT}" fork="true"
