@@ -128,7 +128,7 @@
     <condition property="extension" value="dmg">
         <os family="mac" />
     </condition>
-    <condition property="extension" value="rpm">
+    <condition property="extension" value="deb">
         <os family="unix" />
     </condition>
 
