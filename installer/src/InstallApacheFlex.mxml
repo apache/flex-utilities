@@ -916,7 +916,7 @@ variables are not required because the locations of these pieces are known.
 			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
 			
 			try {
-				log(_viewResourceConstants.INFO_DOWNLOADING_AIR_RUNTIME_KIT_LINUX + ADOBE_AIR_SDK_LINUX_URL);
+				log(_viewResourceConstants.INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC + ADOBE_AIR_SDK_LINUX_URL);
 				_adobeAIRSDKZipFile = File.userDirectory.resolvePath(_flexTemp + File.separator + ADOBE_AIR_SDK_LINUX_FILE);
 				copyOrDownload(ADOBE_AIR_SDK_LINUX_URL, handleAIRSDKDownload, _adobeAIRSDKZipFile, handleAIRSDKDownloadError);
 			} catch (e:Error) {
