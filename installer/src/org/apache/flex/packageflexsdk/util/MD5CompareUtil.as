@@ -195,7 +195,13 @@ public class MD5CompareUtil extends EventDispatcher
 		if (!_errorOccurred)
 		{
 			_remoteMD5Value = String(_urlLoader.data);
-			_remoteMD5Value = _remoteMD5Value.split("\n")[0]; // we need only the first line
+			
+			/** 
+			 * We need only the first line; split for both Unix and Windows 
+			 * style line delimiters
+			 */
+			_remoteMD5Value = _remoteMD5Value.split("\n")[0];
+			_remoteMD5Value = _remoteMD5Value.split("\r")[0];
 			
 			compareSignatures();
 		}
