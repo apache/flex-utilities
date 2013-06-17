@@ -496,7 +496,7 @@ public class RuntimeLocale
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
 
 		var content:Object = resource.content;
-		content["ASK_BLAZEDS"]="Apache Flex puede integrarse de manera opcional con Adobe BlazeDS. Esta característica necesita flex-messaging-common.jar del SDK de Adobe Flex. Este archivo se ofrecen bajo los términos de la licencia de Adobe SDK para Adobe Flex 4.6. Esta licencia no es compatibla con la licencia Apache V2. ¿Quieres instalar este archivo desde el SDK de Adobe Flex?";
+		content["ASK_BLAZEDS"]="Apache Flex puede integrarse de manera opcional con Adobe BlazeDS. Esta característica necesita flex-messaging-common.jar del SDK de Adobe Flex. Este archivo se ofrecen bajo los términos de la licencia de Adobe SDK para Adobe Flex 4.6. Esta licencia no es compatible con la licencia Apache V2. ¿Quieres instalar este archivo desde el SDK de Adobe Flex?";
 		content["ASK_FONTSWF"]="Apache Flex puede integrarse de manera opcional con el soporte para fuentes embebidas de Adobe. Esta característica necesita algunos ficheros de fuentes del SDK de Adobe Flex. Estos archivos se ofrecen bajo los términos de la licencia de Adobe SDK para Adobe Flex 4.6. Esta licencia no es compatibla con la licencia Apache V2. ¿Quieres instalar estos archivos desde el SDK de Adobe Flex?";
 		content["ASK_OSMF"]="Open Source Media Framework (OSMF), utilizado en los componentes de video, se ofrece bajo los términos de la Mozilla Public License Version 1.1. ¿Quieres instalar Open Source Media Framework (OSMF)?";
 		content["ASK_TLF"]="Adobe Text Layout Framework (TLF), utilizados por los compoentes de texto de Spark se ofrece bajo los términos de la Mozilla Public License Version 1.1. ¿Quieres instalar Adobe Text Layout Framework (TLF)?";
@@ -583,7 +583,7 @@ public class RuntimeLocale
 		content["STEP_INSTALL_CONFIG_FILES"]="Instalar ficheros de coniguración";
 		content["STEP_REQUIRED_INSTALL_OSMF"]="OSMF (Necesario)";
 		content["STEP_REQUIRED_INSTALL_TLF"]="Adobe Text Layout Framework (Necesario)";
-		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Remoting Support (Opcional)";
+		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Suporte para Remoting (Opcional)";
 		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Embedded Font Libraries and Utilities (Opcional)";
 		content["STEP_REQUIRED_UNZIP_AIR_RUNTIME_KIT"]="Descomprimir Adobe AIR Runtime Kit";
 		content["STEP_UNZIP_AIR_RUNTIME_KIT"]="Descomprimir Adobe AIR Runtime Kit";
@@ -612,7 +612,7 @@ public class RuntimeLocale
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
 
 		var content:Object = resource.content;
-		content["ASK_BLAZEDS"]="Apache Flex kan optioneel integreren met Adobe BlazeDS. Deze feature vereist flex-messaging-common.jar uit de Adobe Flex SDK. De Adobe SDK licentie overeenkomst voor Adobe Flex 4.6 geldt voor deze jar. Deze licentie is niet compatibel met de Apache V2 licentie. Wilt u deze jar uit de Adobe Flex SDK installeren?";
+		content["ASK_BLAZEDS"]="Apache Flex kan optioneel integreren met remoting providers zoals BlazeDS, GraniteDS, WebORB, Red5, AMFPHP, RubyAMF, PyAMF en andere. Deze feature vereist flex-messaging-common.jar uit de Adobe Flex SDK. De Adobe SDK licentie overeenkomst voor Adobe Flex 4.6 geldt voor deze jar. Deze licentie is niet compatibel met de Apache V2 licentie. Wilt u deze jar uit de Adobe Flex SDK installeren?";
 		content["ASK_FONTSWF"]="Apache Flex kan optioneel integreren met Adobe's embedded font support. Deze feature vereist een aantal font jars uit de Adobe Flex SDK. De Adobe SDK licentie overeenkomst voor Adobe Flex 4.6 geldt voor deze jars. Deze licentie is niet compatibel met de Apache V2 licentie. Wilt u deze jars uit de Adobe Flex SDK installeren?";
 		content["ASK_OSMF"]="Het Open Source Media Framework (OSMF) dat gebruikt wordt door de video componenten is gelicenseerd onder de Mozilla Public License Versie 1.1. Wilt u het Open Source Media Framework (OSMF) installeren?";
 		content["ASK_TLF"]="Het Adobe Text Layout Framework (TLF) dat gebruikt wordt door de Spark tekst componenten zijn gelicenseerd onder de Mozilla Public License Versie 1.1. Wilt u het Adobe Text Layout Framework (TLF) installeren?";
@@ -736,7 +736,7 @@ public class RuntimeLocale
 		var resource:ResourceBundle = new ResourceBundle(locale, ViewResourceConstants.BUNDLE_NAME);
 
 		var content:Object = resource.content;
-		content["ASK_BLAZEDS"]="Apache Flex pode, opcionalmente, integrar-se com Adobe BlazeDS. Esta integração requer flex-messaging-common.jar do Adobe Flex SDK, que esta sob o contrato de licença do Adobe SDK para Adobe Flex 4.6. Esta licença não é compatível com a licença Apache V2. Você quer instalar este jar a partir do Adobe Flex SDK?";
+		content["ASK_BLAZEDS"]="Apache Flex pode, opcionalmente, integrar-se com serviços de remoting como BlazeDS, GraniteDS, WebORB, Red5, AMFPHP, RubyAMF, PyAMF e outros. Esta funcionalidade requer a biblioteca flex-messaging-common.jar do SDK Adobe Flex. A licença do SDK Adobe Flex 4.6 aplica-se a esta biblioteca. Esta licença não é compatível com a licença Apache V2. Deseja instalar a biblioteca a partir do SDK Adobe Flex";
 		content["ASK_FONTSWF"]="Apache Flex pode, opcionalmente, integrar-se com o suporte de fontes embutidas da Adobe. Este recurso requer alguns jars do Adobe Flex SDK, que estão sob o contrato de licença do Adobe Flex 4.6. Esta licença não é compatível com a licença Apache V2. Você quer instalar estes jars a partir do Adobe Flex SDK?";
 		content["ASK_OSMF"]="O Open Source Media Framework (OSMF) utilizado pelos componentes de video está sob a licença Mozilla Public License Version 1.1.";
 		content["ASK_TLF"]="O Adobe Text Layout Framework (TLF) utilizado pelos componentes de texto Spark está sob a licença Mozilla Public License Version 1.1.";
@@ -794,7 +794,7 @@ public class RuntimeLocale
 		content["INFO_ENTER_VALID_FLEX_SDK_PATH"]="Por favor, informe um diretório válido para instalação do Apache Flex SDK";
 		content["INFO_FINISHED_UNTARING"]="Untar finalizado: ";
 		content["INFO_FINISHED_UNZIPPING"]="Descompactação finalizada: ";
-		content["INFO_INSTALLATION_COMPLETE"]="Instalação finalizada";//
+		content["INFO_INSTALLATION_COMPLETE"]="Instalação finalizada";
 		content["INFO_INSTALLING"]="Instalando...";
 		content["INFO_INSTALLING_CONFIG_FILES"]="Instalando arquivos de configuração dos frameworks para utilização com a IDE";
 		content["INFO_INSTALLING_PLAYERGLOBAL_SWC"]="Instalando Adobe Flash Player playerglobal.swc a partir de: ";
@@ -816,7 +816,7 @@ public class RuntimeLocale
 		content["STEP_DOWNLOAD_FLEX_SDK"]="Download Apache Flex SDK";
 		content["STEP_INSTALL_CONFIG_FILES"]="Instalando arquivos de configuração do Framework";
 		content["STEP_INSTALL_SWF_OBJECT"]="Download SWFObject";
-		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Remoting Support (Opcional)";
+		content["STEP_OPTIONAL_INSTALL_BLAZEDS"]="Suporte para Remoting (Opcional)";
 		content["STEP_OPTIONAL_INSTALL_FONTSWF"]="Adobe Embedded Font Libraries and Utilities (Opcional)";
 		content["STEP_OPTIONAL_INSTALL_OSMF"]="OSMF (Obrigatório)";
 		content["STEP_OPTIONAL_INSTALL_TLF"]="Adobe Text Layout Framework (Obrigatório)";
