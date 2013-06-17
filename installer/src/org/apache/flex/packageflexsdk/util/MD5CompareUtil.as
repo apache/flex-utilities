@@ -152,6 +152,7 @@ public class MD5CompareUtil extends EventDispatcher
 		_md5Stream = new MD5Stream();
 		
 		_fileStream = new FileStream();
+		_fileStream.readAhead = 16384;
 		_fileStream.addEventListener(Event.COMPLETE, fileStreamOpenHandler);
 		_fileStream.addEventListener(ProgressEvent.PROGRESS, fileStreamOpenHandler);
 		_fileStream.addEventListener(OutputProgressEvent.OUTPUT_PROGRESS, fileStreamOpenHandler);
@@ -179,6 +180,7 @@ public class MD5CompareUtil extends EventDispatcher
 			{
 				_fileIsVerified = (_md5Stream.complete(data) == _remoteMD5Value);
 				
+				removeEventListeners();
 				_callback();
 			}
 		}
@@ -236,6 +238,15 @@ public class MD5CompareUtil extends EventDispatcher
 		{
 			_urlLoader.load(new URLRequest(remoteSDKZipPath + MD5_POSTFIX));
 		}
+	}
+	
+	private function removeEventListeners():void
+	{
+		_fileStream.removeEventListener(Event.COMPLETE, fileStreamOpenHandler);
+		_fileStream.removeEventListener(ProgressEvent.PROGRESS, fileStreamOpenHandler);
+		_fileStream.removeEventListener(OutputProgressEvent.OUTPUT_PROGRESS, fileStreamOpenHandler);
+		_urlLoader.removeEventListener(Event.COMPLETE, urlLoaderResultHandler);
+		_urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, urlLoaderResultHandler);
 	}
 	
 }
