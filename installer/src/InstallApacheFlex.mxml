@@ -1051,6 +1051,7 @@ variables are not required because the locations of these pieces are known.
 						contents = contents.replace(swfVersion, "<swf-version>" + FLASH_PLAYER_SWF_VERSION + "<\/swf-version>" );
 						configFile.writeMultiByte(contents, "utf-8");					
 						var copyToFile:File = flexHomeFrameworksDir.resolvePath(file.name);
+						configFile.close();
 						file.copyTo(copyToFile, true);
 					}
 				}
@@ -1852,19 +1853,19 @@ variables are not required because the locations of these pieces are known.
 			</s:layout>
 		</s:DropDownList>
 	</s:HGroup>
-	<s:HGroup width="100%" top="170" horizontalAlign="left">
-		<s:Spacer width="100" />
-		<s:Image source="assets/icons/apache_flex_logo_text.png" scaleX=".4" scaleY=".4" smooth="true" />
+	<s:HGroup width="100%" top="170">
 		<s:Spacer width="100%" />
-		<s:VGroup gap="-5" paddingLeft="20" horizontalAlign="left">
+		<s:Image source="assets/icons/apache_flex_logo_text.png" scaleX=".4" scaleY=".4" smooth="true" />
+		<s:Spacer width="150" />
+		<s:VGroup horizontalAlign="left" paddingLeft="100" gap="-5">
 			<s:Label text="{_viewResourceConstants.INFO_VERSION}" fontFamily="openSansBold" color="0x677084" fontSize="33" />
-			<s:Label text="{APACHE_FLEX_BIN_DISTRO_VERSION}"
+			<s:Label text="{APACHE_FLEX_BIN_DISTRO_VERSION}" right="0"
 					 fontFamily="openSansBold"
-					 color="0x172647" fontSize="85"
+					 color="0x172647" fontSize="80"
 					 trackingLeft="-2" trackingRight="-2"
 					 />
 		</s:VGroup>
-		<s:Spacer width="100" />
+		<s:Spacer width="100%" />
 	</s:HGroup>
 	<s:Panel id="zeroStepGroup"
 			 title="{_viewResourceConstants.INFO_SELECT_AIR_FLASH_PLAYER}"
