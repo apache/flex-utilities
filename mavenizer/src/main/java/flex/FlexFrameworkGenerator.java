@@ -730,7 +730,7 @@ public class FlexFrameworkGenerator extends BaseGenerator {
 
                 //final Process child = Runtime.getRuntime().exec(cmd.toString(), envps);
 	            ProcessBuilder processBuilder = new ProcessBuilder(processCmd);
-	            processBuilder.environment().put("PLAYERGLOBAL_HOME", new File(new File(themeDirectory.getParentFile().getParentFile(), "libs"), "player").getCanonicalPath());
+	            processBuilder.environment().put("PLAYERGLOBAL_HOME", new File(new File(frameworkDir, "libs"), "player").getCanonicalPath());
 	            int exitValue = exec(processBuilder.start());
                 if(exitValue != 0) {
                     System.out.println("Couldn't create theme swc");
