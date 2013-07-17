@@ -34,7 +34,7 @@ variables are not required because the locations of these pieces are known.
 
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
 					   xmlns:s="library://ns.adobe.com/flex/spark"
-					   width="800" height="650" maxWidth="800" maxHeight="650" minWidth="800" minHeight="650"
+					   width="800" height="700" maxWidth="800" maxHeight="700" minWidth="800" minHeight="700"
 					   backgroundColor="0xDDDDDD"
 					   preinitialize="getInvoke()"
 					   applicationComplete="handleApplicationComplete(event)" showStatusBar="false"
@@ -57,6 +57,9 @@ variables are not required because the locations of these pieces are known.
 		import mx.managers.PopUpManager;
 		import mx.utils.StringUtil;
 		
+		import spark.events.IndexChangeEvent;
+		import spark.events.TextOperationEvent;
+		
 		import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
 		import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
 		import org.apache.flex.packageflexsdk.util.MD5CompareUtil;
@@ -72,9 +75,6 @@ variables are not required because the locations of these pieces are known.
 		import org.as3commons.zip.Zip;
 		import org.as3commons.zip.ZipEvent;
 		import org.as3commons.zip.ZipFile;
-		
-		import spark.events.IndexChangeEvent;
-		import spark.events.TextOperationEvent;
 		
 		import ws.tink.spark.controls.StepItem;
 		
@@ -101,8 +101,8 @@ variables are not required because the locations of these pieces are known.
 		private var APACHE_FLEX_BIN_DISTRO_FILE:String;
 		private var APACHE_FLEX_BIN_DISTRO_FILE_SHORT:String;
 		private var APACHE_FLEX_BIN_DISTRO_URL:String;
-		[Bindable]
-		private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
+		[Bindable] private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
+		[Bindable] private var APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY:String = "";
 		
 		/**
 		 * Adobe AIR SDK
@@ -130,6 +130,14 @@ variables are not required because the locations of these pieces are known.
 		private var FLASH_PLAYER_SWF_VERSION:String = "14";
 		private var ADOBE_FB_GLOBALPLAYER_SWC_FILE:String;
 		private var ADOBE_FB_GLOBALPLAYER_SWC_URL:String;
+		
+		/**
+		 * Apache Flex
+		 *
+		 * Values stored in sdk-installer-config.xml edit file to change
+		 *
+		 */
+		[Bindable] private var FLEX_VERSIONS:ArrayCollection = new ArrayCollection();
 		
 		/**
 		 *
@@ -310,7 +318,7 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		private function updateWindowTitle():void {
-			this.nativeWindow.title = StringUtil.substitute(_viewResourceConstants.INFO_WINDOW_TITLE, [APACHE_FLEX_BIN_DISTRO_VERSION]);
+			this.nativeWindow.title = StringUtil.substitute(_viewResourceConstants.INFO_WINDOW_TITLE, [APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY]);
 		}
 		
 		protected function selectDefaultLanguage():void {
@@ -352,7 +360,8 @@ variables are not required because the locations of these pieces are known.
 			if (configOverride != "") {
 				request = new URLRequest(configOverride);
 			} else {
-				request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+//				request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+				request = new URLRequest(Constants.CONFIG_XML_NAME);
 			}
 			
 			_loader = new URLLoader();
@@ -400,29 +409,6 @@ variables are not required because the locations of these pieces are known.
 			
 			_mirrorURLCGI = files.(@name == 'MirrorURLCGI').@file.toString();
 			
-			var fileName:String = files.(@name == 'ApacheFlexSDK').@file.toString();
-			/* Tmp solution to remove the file extension if present in the config XML */
-			var winExtension:String = Constants.ARCHIVE_EXTENSION_WIN;
-			if (fileName.indexOf(winExtension) > -1) {
-				fileName = fileName.substring(0, fileName.length - winExtension.length);
-			}
-			
-			APACHE_FLEX_BIN_DISTRO_FILE_SHORT = fileName;
-			APACHE_FLEX_BIN_DISTRO_VERSION = fileName.substr(Constants.SDK_BINARY_FILE_NAME_PREFIX.length).split("-")[0];
-			fileName += (_os == WINDOWS_OS) ? winExtension : Constants.ARCHIVE_EXTENSION_MAC;
-			
-			APACHE_FLEX_BIN_DISTRO_FILE = fileName;
-			APACHE_FLEX_BIN_DISTRO_PATH = files.(@name == 'ApacheFlexSDK').@path.toString();
-			if (!APACHE_FLEX_BIN_DISTRO_FILE || !APACHE_FLEX_BIN_DISTRO_PATH) {
-				log(_viewResourceConstants.ERROR_INVALID_SDK_URL);
-				keepGoing = false;
-			}
-			
-			// ApacheFlex is full URL so download directly and dont use mirror useful for testing release candidates
-			if (APACHE_FLEX_BIN_DISTRO_PATH.indexOf("http") == 0) {
-				_useMirror = false;
-			}
-			
 			var airVersions:Array = files.(@name == 'Versions').@airVersions.toString().split(",");
 			var selected:String = files.(@name == 'Versions').@airDefault.toString();
 			for each (var airVersion:String in airVersions) {
@@ -437,6 +423,29 @@ variables are not required because the locations of these pieces are known.
 			
 			if (this.airVersion.selectedIndex == -1) {
 				this.airVersion.selectedIndex = airVersions.indexOf(selected);	
+			}
+			
+			var flexVersions:Array = files.(@name == 'FlexVersions').@versions.toString().split(",");
+			for each (var flexVersion:String in flexVersions) {
+				var shortName:String = files.(@name == flexVersion).@file.toString();
+				var fileName:String = shortName + ((_os == WINDOWS_OS) ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
+				var label:String = "Flex SDK " + flexVersion;
+				var ver:String = fileName.substr(Constants.SDK_BINARY_FILE_NAME_PREFIX.length).split("-")[0];
+				var path:String = files.(@name == flexVersion).@path.toString();
+				FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, path:path});
+			}
+			var selectedFlexVersion:String = files.(@name == 'FlexVersions').@default.toString();
+			
+			if (this.flexVersion.selectedIndex == -1) {
+				this.flexVersion.selectedIndex = 0;
+			}
+			
+			var selectedFlexVersionObject:Object = this.flexVersion.selectedItem;
+			updateFlexVersionStrings(selectedFlexVersionObject);
+			
+			if (!APACHE_FLEX_BIN_DISTRO_FILE || !APACHE_FLEX_BIN_DISTRO_PATH) {
+				log(_viewResourceConstants.ERROR_INVALID_SDK_URL);
+				keepGoing = false;
 			}
 			
 			var flashPlayerVersions:Array = files.(@name == 'Versions').@flashPlayerVersions.toString().split(",");
@@ -504,8 +513,28 @@ variables are not required because the locations of these pieces are known.
 			
 			RIDEAU_FILE = files.(@name == 'rideau').@file.toString();
 			RIDEAU_URL = files.(@name == 'rideau').@path.toString();
+
 			
 			return keepGoing;
+		}
+		
+		protected function updateFlexVersionStrings(selectedFlexVersionObject:Object):void
+		{
+			APACHE_FLEX_BIN_DISTRO_FILE_SHORT = selectedFlexVersionObject.shortName;
+			APACHE_FLEX_BIN_DISTRO_VERSION = selectedFlexVersionObject.version;
+			APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY = selectedFlexVersionObject.label;
+			
+			APACHE_FLEX_BIN_DISTRO_FILE = selectedFlexVersionObject.fileName;
+			APACHE_FLEX_BIN_DISTRO_PATH = selectedFlexVersionObject.path;
+			
+			// ApacheFlex is full URL so download directly and dont use mirror useful for testing release candidates
+			if (APACHE_FLEX_BIN_DISTRO_PATH.indexOf("http") == 0) {
+				_useMirror = false;
+			}
+			else
+			{
+				_useMirror = true;
+			}
 		}
 		
 		protected function setOSSpecificVariables():void {
@@ -702,7 +731,7 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function handleAirVersionChange(event:Event):void {
-			AIR_VERSION = airVersion.selectedItem.verson;
+			AIR_VERSION = airVersion.selectedItem.version;
 			
 			// AIR requires a minimum Flash Player version
 			if (flashPlayerVersion.selectedIndex > airVersion.selectedIndex) {
@@ -712,13 +741,20 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function handleFlashPlayerVersionChange(event:Event):void {
-			FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.verson;
+			FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.version;
 			
 			// AIR requires a minimum Flash Player version
 			if (airVersion.selectedIndex < flashPlayerVersion.selectedIndex) {
 				airVersion.selectedIndex = flashPlayerVersion.selectedIndex;
 				AIR_VERSION = AIR_VERSIONS[flashPlayerVersion.selectedIndex].version;
 			}
+		}
+		
+		protected function handleFlexVersionChange(event:Event):void {
+			/*APACHE_FLEX_BIN_DISTRO_VERSION =  flexVersion.selectedItem.version;
+			APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY = flexVersion.selectedItem.label;*/
+			updateFlexVersionStrings(flexVersion.selectedItem);
+			updateWindowTitle();
 		}
 		
 		protected function browseForSDK(event:MouseEvent):void {
@@ -1043,12 +1079,14 @@ variables are not required because the locations of these pieces are known.
 				for each (var file:File in configFiles) {
 					if (isValidConfigFile(file)) {
 						var configFile:FileStream = new FileStream();
-						configFile.open(file, FileMode.UPDATE);
+						configFile.open(file, FileMode.READ);
 						var contents:String = configFile.readMultiByte(configFile.bytesAvailable, "utf-8");
 						var playerVersion:RegExp = /<target-player>\d\d\.\d<\/target-player>/;
 						contents = contents.replace(playerVersion, "<target-player>" + FLASH_PLAYER_VERSION + "<\/target-player>");
 						var swfVersion:RegExp = /<swf-version>\d\d<\/swf-version>/;
 						contents = contents.replace(swfVersion, "<swf-version>" + FLASH_PLAYER_SWF_VERSION + "<\/swf-version>" );
+						configFile.close();
+						configFile.open(file,FileMode.WRITE);
 						configFile.writeMultiByte(contents, "utf-8");					
 						var copyToFile:File = flexHomeFrameworksDir.resolvePath(file.name);
 						configFile.close();
@@ -1058,10 +1096,12 @@ variables are not required because the locations of these pieces are known.
 				
 				file = File.userDirectory.resolvePath(_flexHome + File.separator + "flex-sdk-description.xml");
 				var descriptionFile:FileStream = new FileStream();
-				descriptionFile.open(file, FileMode.UPDATE);
+				descriptionFile.open(file, FileMode.READ);
 				contents = descriptionFile.readMultiByte(descriptionFile.bytesAvailable, "utf-8");
 				var description:RegExp = /<name>[^<]*<\/name>/;
 				contents = contents.replace(description, "<name>Apache Flex " + APACHE_FLEX_BIN_DISTRO_VERSION + " FP " + FLASH_PLAYER_VERSION + " AIR " + AIR_VERSION + " en_US</name>");
+				descriptionFile.close();
+				descriptionFile.open(file,FileMode.WRITE);
 				descriptionFile.writeMultiByte(contents, "utf-8");
 				descriptionFile.close();
 			} catch (e:Error) {
@@ -1440,7 +1480,7 @@ variables are not required because the locations of these pieces are known.
 		protected function handleOptionalInstallsChange(event:IndexChangeEvent):void {
 			var selectedItem:InstallerComponentVO = InstallerComponentVO(event.target.selectedItem);
 			optionalInstallsTxtArea.text = selectedItem.message;
-			installChkBx.label = _viewResourceConstants.INSTALL_AGREE;
+/*			installChkBx.label = _viewResourceConstants.INSTALL_AGREE;
 			if (selectedItem.answered) {
 				if (selectedItem.selected) {
 					installChkBx.selected = true;
@@ -1449,7 +1489,7 @@ variables are not required because the locations of these pieces are known.
 				}
 			} else {
 				installChkBx.selected = false;
-			}
+			}*/
 			
 			licenseLinkBtn.includeInLayout = true;
 			_currentLicenseLabel = selectedItem.licenseName;
@@ -1853,20 +1893,23 @@ variables are not required because the locations of these pieces are known.
 			</s:layout>
 		</s:DropDownList>
 	</s:HGroup>
-	<s:HGroup width="100%" top="170">
-		<s:Spacer width="100%" />
-		<s:Image source="assets/icons/apache_flex_logo_text.png" scaleX=".4" scaleY=".4" smooth="true" />
-		<s:Spacer width="150" />
-		<s:VGroup horizontalAlign="left" paddingLeft="100" gap="-5">
-			<s:Label text="{_viewResourceConstants.INFO_VERSION}" fontFamily="openSansBold" color="0x677084" fontSize="33" />
+<!--	<s:Group width="100%" top="275">-->
+<!--		<s:HGroup gap="0" horizontalCenter="0" top="30">
+			<s:Label text="apache" fontFamily="openSansBold" color="0x677084" fontSize="24" />
+			<s:Label text="Flex" right="0"
+					 fontFamily="openSansBold"
+					 color="0x172647" fontSize="70"
+					 />
+		</s:HGroup>-->
+		
+		<s:HGroup verticalAlign="middle" gap="5" horizontalCenter="0" top="300">
+			<s:Label text="{_viewResourceConstants.INFO_VERSION}" fontFamily="openSansBold" color="0x677084" fontSize="24" />
 			<s:Label text="{APACHE_FLEX_BIN_DISTRO_VERSION}" right="0"
 					 fontFamily="openSansBold"
-					 color="0x172647" fontSize="80"
-					 trackingLeft="-2" trackingRight="-2"
+					 color="0x172647" fontSize="70"
 					 />
-		</s:VGroup>
-		<s:Spacer width="100%" />
-	</s:HGroup>
+		</s:HGroup>
+<!--	</s:Group>-->
 	<s:Panel id="zeroStepGroup"
 			 title="{_viewResourceConstants.INFO_SELECT_AIR_FLASH_PLAYER}"
 			 width="640"
@@ -1881,6 +1924,19 @@ variables are not required because the locations of these pieces are known.
 				paddingRight="10"
 				paddingLeft="10"/>
 		</s:layout>
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Select Flex version" width="200" fontFamily="openSansBold" />
+			<s:DropDownList id="flexVersion"
+							dataProvider="{FLEX_VERSIONS}"
+							labelField="label"
+							width="200"
+							fontFamily="openSansSemibold"
+							change="handleFlexVersionChange(event)">
+				<s:layout>
+					<s:VerticalLayout requestedRowCount="-1"/>
+				</s:layout>
+			</s:DropDownList>
+		</s:HGroup>
 		<s:HGroup verticalAlign="middle">
 			<s:Label text="Select AIR version" width="200" fontFamily="openSansBold" />
 			<s:DropDownList id="airVersion"
@@ -1960,11 +2016,11 @@ variables are not required because the locations of these pieces are known.
 	<s:Panel id="secondStepGroup"
 			 title="{_viewResourceConstants.INFO_LICENSE_AGREEMENTS}"
 			 width="720"
-			 height="300"
-			 top="280"
+			 height="250"
+			 top="370"
 			 visible="false"
 			 visible.optionsState="true"
-			 backgroundAlpha="0">
+			 backgroundAlpha="0"> 
 		<s:controlBarContent>
 			<s:Spacer
 				width="100%"/>
@@ -2017,16 +2073,16 @@ variables are not required because the locations of these pieces are known.
 							editable="false"/>
 			</s:VGroup>
 		</s:HGroup>
-		<s:HGroup
+<!--		<s:HGroup
 			width="100%"
 			height="20"
 			horizontalAlign="center"
 			verticalAlign="middle">
 			<s:CheckBox id="installChkBx"
 						label="{_viewResourceConstants.INSTALL_AGREE_ALL}"
-						selected="false"
-						visible="false"/>
-		</s:HGroup>
+						selected="false" 
+						visible="true"/>
+		</s:HGroup>-->
 	</s:Panel>
 	<s:Panel id="thirdStepGroup"
 			 title="{_viewResourceConstants.INFO_INSTALLING}"
