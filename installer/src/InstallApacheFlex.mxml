@@ -1646,9 +1646,16 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		private function untar(source:File, destination:File, unTarCompleteFunction:Function, unTarErrorFunction:Function):void {
-			var tar:File = new File("/usr/bin/tar");
+			var tar:File;
 			var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 			var arguments:Vector.<String> = new Vector.<String>();
+			
+			if (_os == LINUX_OS) {
+				tar = new File("/bin/tar");
+			}
+			else {
+				tar = new File("/usr/bin/tar");	
+			}
 			
 			arguments.push("xf");
 			arguments.push(source.nativePath);
