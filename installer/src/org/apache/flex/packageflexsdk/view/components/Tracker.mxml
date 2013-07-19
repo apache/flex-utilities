@@ -22,11 +22,18 @@ limitations under the License.
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
 	<fx:Script>
 		<![CDATA[
-			import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
 			import org.apache.flex.utilities.common.Constants;
-			public function trackInstallerSuccess():void
+			public function trackInstallerSuccess(version:String=null,os:String=null):void
 			{
-				trackInstallerHTML.location = Constants.APACHE_FLEX_URL + Constants.INSTALLER_TRACK_SUCCESS;
+				if(version == null && os == null)
+				{
+					trackInstallerHTML.location = Constants.APACHE_FLEX_URL + Constants.INSTALLER_TRACK_SUCCESS;
+				}
+				else
+				{
+					trackInstallerHTML.location = Constants.APACHE_FLEX_URL + Constants.INSTALLER_TRACK_SUCCESS + "?version=" + version + "&os=" + os;
+				}
+				
 			}
 		]]>
 	</fx:Script>

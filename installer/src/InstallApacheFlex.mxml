@@ -1396,7 +1396,7 @@ variables are not required because the locations of these pieces are known.
 				}
 			}
 			if (allComponentsInstalled) {
-				tracker.trackInstallerSuccess();
+				tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION,_os);
 				cleanup(false);
 			}
 		}
