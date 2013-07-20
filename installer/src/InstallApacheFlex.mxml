@@ -437,7 +437,7 @@ variables are not required because the locations of these pieces are known.
 			var selectedFlexVersion:String = files.(@name == 'FlexVersions').@default.toString();
 			
 			if (this.flexVersion.selectedIndex == -1) {
-				this.flexVersion.selectedIndex = 0;
+				this.flexVersion.selectedIndex = getIndexOfFlexVersion(selectedFlexVersion);
 			}
 			
 			var selectedFlexVersionObject:Object = this.flexVersion.selectedItem;
@@ -535,6 +535,19 @@ variables are not required because the locations of these pieces are known.
 			{
 				_useMirror = true;
 			}
+		}
+		
+		protected function getIndexOfFlexVersion(ver:String):int
+		{
+			for (var i:int=0; i<FLEX_VERSIONS.length; i++)
+			{
+				var obj:Object = FLEX_VERSIONS.getItemAt(i);
+				if(obj.label == "Flex SDK " + ver)
+				{
+					return i;
+				}
+			}
+			return -1;
 		}
 		
 		protected function setOSSpecificVariables():void {
@@ -754,6 +767,7 @@ variables are not required because the locations of these pieces are known.
 			/*APACHE_FLEX_BIN_DISTRO_VERSION =  flexVersion.selectedItem.version;
 			APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY = flexVersion.selectedItem.label;*/
 			updateFlexVersionStrings(flexVersion.selectedItem);
+			getMirrorURLResultHandler();
 			updateWindowTitle();
 		}
 		
