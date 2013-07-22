@@ -734,8 +734,8 @@ variables are not required because the locations of these pieces are known.
 		protected function handleAirVersionChange(event:Event):void {
 			AIR_VERSION = airVersion.selectedItem.version;
 			
-			// AIR requires a minimum Flash Player version
-			if (flashPlayerVersion.selectedIndex > airVersion.selectedIndex) {
+			// Match AIR and Flash versions
+			if (flashPlayerVersion.selectedIndex != airVersion.selectedIndex) {
 				flashPlayerVersion.selectedIndex = airVersion.selectedIndex;
 				FLASH_PLAYER_VERSION = FLASH_PLAYER_VERSIONS[airVersion.selectedIndex].version;
 			}
@@ -744,8 +744,8 @@ variables are not required because the locations of these pieces are known.
 		protected function handleFlashPlayerVersionChange(event:Event):void {
 			FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.version;
 			
-			// AIR requires a minimum Flash Player version
-			if (airVersion.selectedIndex < flashPlayerVersion.selectedIndex) {
+			// Match AIR and Flash versions
+			if (airVersion.selectedIndex != flashPlayerVersion.selectedIndex) {
 				airVersion.selectedIndex = flashPlayerVersion.selectedIndex;
 				AIR_VERSION = AIR_VERSIONS[flashPlayerVersion.selectedIndex].version;
 			}
@@ -1095,20 +1095,8 @@ variables are not required because the locations of these pieces are known.
 				var flexHomeFrameworksDir:File = File.userDirectory.resolvePath(_flexHome + File.separator + "frameworks");
 				log(_viewResourceConstants.INFO_INSTALLING_CONFIG_FILES);
 				
-				for (var i:int = 0; i < AIR_VERSIONS.length; i++) {
-					if (AIR_VERSION == AIR_VERSIONS[i].version) {
-						var airVerison:String = FLASH_PLAYER_VERSION[i].version;
-						var airSWFVersion:String = FLASH_PLAYER_VERSION[i].swfVersion;
-					}
-				}
-				
 				for each (var file:File in configFiles) {
-					if (isAirConfigFile(file)) {
-						changeConfig(flexHomeFrameworksDir, file, airVerison, airSWFVersion);
-					}
-					else {
-						changeConfig(flexHomeFrameworksDir, file, FLASH_PLAYER_VERSION, FLASH_PLAYER_SWF_VERSION);
-					}
+					changeConfig(flexHomeFrameworksDir, file, FLASH_PLAYER_VERSION, FLASH_PLAYER_SWF_VERSION);
 				}
 				
 				file = File.userDirectory.resolvePath(_flexHome + File.separator + "flex-sdk-description.xml");
