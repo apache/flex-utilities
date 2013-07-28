@@ -296,7 +296,7 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function handleApplicationComplete(event:FlexEvent):void {
 			_langSelect.dataProvider = ViewResourceConstants.supportedLanguages;
-			_langSelect.selectedIndex = 0;
+			_langSelect.selectedIndex = getIndexOfEnUS();
 			defineResourceManagerDefaultLanguage();
 			
 			updateWindow();
@@ -315,6 +315,18 @@ variables are not required because the locations of these pieces are known.
 			_viewResourceConstants.update();
 			computeStandardButtonWidth();
 			selectDefaultLanguage();
+		}
+		
+		private function getIndexOfEnUS():int
+		{
+			for (var i:int = 0; i < _langSelect.dataProvider.length; i++) 
+			{
+				if(_langSelect.dataProvider.getItemAt(i).data == "en_US")
+				{
+					return i;
+				}
+			}
+			return -1;
 		}
 		
 		private function updateWindowTitle():void {

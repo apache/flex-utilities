@@ -36,10 +36,10 @@ Overview:
      - Adobe embedded font support
  
     All the file names and urls of the downloaded files are available in 
-    installer/src/sdk-installer-config-2.0.xml. 
+    installer/src/installer/sdk-installer-config-3.0.xml. 
     When the dependencies file names or urls change in future, update the 
-    sdk-installer-config-2.0.xml to ensure that the application works correctly.  
-
+    sdk-installer-config-3.0.xml to ensure that the application works correctly.
+    
 - The application uses http://flex.apache.org/single-mirror-url.cgi to determine
   the preferred mirror url to download the Apache Flex SDK binary from.
   
@@ -51,22 +51,27 @@ Overview:
 - The Adobe AIR SDK will be downloaded and the relevant files are copied to the required 
   locations.
   
-- The Adobe Flash Player playerglobal.swc file and the config files are placed in the required 
-  locations.
+- The Adobe Flash Player playerglobal.swc file and the config files are placed in the 
+  required locations.
   
 - Then the rest of the external dependencies and the optional files (if selected by user) 
   are downloaded and copied into the appropriate locations.  
 
-- From the 2.5 version, by default, Apache Flex SDK Installer 2.5 downloads Adobe Flash Player 11.1 
-  and Adobe AIR SDK 3.4. 
-  If you want to change it to any other supported combination, you save 
-  a copy of the config file found at: http://flex.apache.org/sdk-installer-config-2.0.xml, 
-  modify the download urls to point to the required versions.  Then run the app from command line 
-  mode with the optional command line parameter: -config=<path to config file>
+- From the 2.6 version, you can select the version of Adobe Flash Player and Adobe AIR SDK
+  the installer downloads.
+
+- From the 2.5 version, by default, Apache Flex SDK Installer 2.5 downloads Adobe Flash 
+  Player 11.1 and Adobe AIR SDK 3.4. 
+  If you want to change it to any other supported combination, you save a copy of the 
+  config file found at: http://flex.apache.org/installer/sdk-installer-config-3.0.xml, 
+  modify the download urls to point to the required versions.  Then run the app from 
+  command line mode with the optional command line parameter: -config=<path to config file>
+
+- If building the app for Linux, open InstallApacheFlex-app.xml and change the Adobe AIR 
+  namespace from http://ns.adobe.com/air/application/3.4 to 
+  http://ns.adobe.com/air/application/2.6  This is because AIR 2.6 is the latest available 
+  version on Linux.  
 	
-- From the 2.6 version, you can select the version of Adobe Flash Player and Adobe AIR the
-  installer downloads.
-   	
 ==========================================================================================
 How to build the installer using ANT (no Flash Builder or any other IDE required):
 ==========================================================================================
