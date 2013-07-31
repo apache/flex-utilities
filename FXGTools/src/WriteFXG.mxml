@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="windowedapplication1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			private var sourceFile:File = new File();			
+			private var sourcePath:String;
+			private var sourceDir:String;
+			private var slash:String;
+			private var sourceStream:FileStream;
+			private var sourceString:String;
+			private var sourceXML:XML;
+			private var xml1:XML = <afx:foo xmlns:afx="http://ns.apache.org/flex/2012" />;
+			private var afxns:Namespace = xml1.namespace();
+			private var xml2:XML = <flm:foo xmlns:flm="http://ns.adobe.com/flame/2008" />;
+			private var flmns:Namespace = xml2.namespace();
+			private var fxgns:Namespace = new Namespace("http://ns.adobe.com/fxg/2008");
+			private var originalNameQName:QName = new QName(flmns, "originalName");
+			
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				XML.ignoreComments = false;
+				XML.prettyPrinting = true;
+			}
+			
+			private function browse():void
+			{
+				var fxgFilter:FileFilter = new FileFilter("FXG", "*.fxg");
+				sourceFile.browseForOpen("Select FXG file", [fxgFilter]);
+				sourceFile.addEventListener(Event.SELECT, fileSelected);
+			}
+			
+			private function fileSelected(event:Event):void
+			{
+				sourceFileTI.text = sourceFile.nativePath;
+			}
+			
+			
+			
+			private function readFile():void
+			{
+				if (Capabilities.os.indexOf("Windows") != -1)
+					slash = "\\";
+				else
+					slash = "/";
+				
+				sourceFile.nativePath = sourceFileTI.text;	
+				sourcePath = sourceFile.nativePath;
+				var c:int = sourcePath.lastIndexOf(slash);
+				sourceDir = sourcePath.substring(0, c);
+				
+				sourceStream = new FileStream();
+				sourceStream.open(sourceFile, FileMode.READ);
+				sourceString = sourceStream.readUTFBytes(sourceStream.bytesAvailable);
+				
+				sourceXML = XML(sourceString);
+			}
+			
+			private function writeFXG():void
+			{
+				readFile();
+				callLater(makeFXGFiles);
+			}
+			
+			private var topTags:XMLList;
+			private var numTags:int;
+			private var curTag:int = 0;
+			
+			private var symbols:Object = {};
+			private var symbolList:Array = [];
+			
+			private function makeFXGFiles():void
+			{
+				default xml namespace = fxgns;
+				var topGroups:XMLList = sourceXML.Group;
+				if (topGroups.length() > 1)
+					errorLabel.text = "Unexpected: More than one top-level group";
+				topTags = topGroups.children();
+				numTags = topTags.length();
+				
+				var syms:XMLList = sourceXML.Library.children();
+				var n:int = syms.length();
+				for (var i:int = 0; i < n; i++)
+				{
+					var node:XML = syms[i];
+					symbols[node.@name] = node;
+				}
+				callLater(makeFXGFile);
+			}	
+			
+			private function makeFXGFile():void
+			{
+				for each (var symbolXML:XML in symbols)
+				{
+					var newFXG:XML = getNewFXG(symbolXML);
+					
+					// write out file
+					var destFile:File = new File(sourceDir + slash + "fxg" + slash + symbolXML.@name + ".fxg");
+					var writeStream:FileStream = new FileStream();
+					writeStream.open(destFile, FileMode.WRITE);
+					writeStream.writeUTFBytes(newFXG.toXMLString());
+					writeStream.close();
+					
+				}
+			}
+			
+			private function getNewFXG(v:XML):XML
+			{
+				var newFXG:XML = v.copy();
+				//var newFXG:XML = new XML();
+				var newName:String = newFXG.@name
+				// change name from 'Definition' to 'Graphic'
+				newFXG.setName("Graphic");
+				newFXG.addNamespace(flmns);
+				
+				// delete name attribute
+				delete newFXG.@name;
+				
+				// add version
+				newFXG.@version = "2.0";
+				for (var i:int=newFXG.children().length(); i>=0; i--)
+				{
+					delete newFXG.child(i)[0];
+				}
+				return newFXG;
+			}
+			
+			private function optimizeFXG():void
+			{
+				readFile();
+				optimize();
+			}
+			
+			private function optimize():void{
+				var children:XMLList = sourceXML.children();
+				var outputXML:XML = getNewFXG(sourceXML);
+				if(children.length() == 1)
+				{
+					sourceXML = simplify(children[0]);
+				}
+				else
+				{
+					for each (var child:XML in children)
+					{
+						if(child.localName() != "Private")
+						{
+							outputXML.appendChild(simplify(child));	
+						}
+					}
+				}
+				// write out file
+				var destFile:File = new File(sourceDir + slash + "fxg" + slash + sourceFile.name);
+				var writeStream:FileStream = new FileStream();
+				writeStream.open(destFile, FileMode.WRITE);
+				writeStream.writeUTFBytes(outputXML.toXMLString());
+				writeStream.close();
+				
+			}
+			
+			private function simplify(v:XML):XML
+			{
+				if(v.localName() == "Group")
+				{
+					if(v.children().length() == 1)
+					{
+						return simplify(v.children()[0]);
+					}
+					else
+					{
+						return v;
+					}
+				}
+				else
+				{
+					return v;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<s:VGroup width="100%" >
+		<s:HGroup width="100%">
+			<s:Label text="Source File:" />
+			<s:TextInput id="sourceFileTI" width="100%" />
+			<s:Button label="Browse..." click="browse()" />
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:Button label="Write Library to FXGs" click="writeFXG()" />
+			<s:Button label="Optimize FXG" click="optimizeFXG()" />
+		</s:HGroup>
+		<s:Label id="errorLabel" />		
+	</s:VGroup>
+</s:WindowedApplication>
