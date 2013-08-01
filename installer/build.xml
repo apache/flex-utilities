@@ -153,11 +153,7 @@
     </target>
 
     <target name="createDirs">
-        <echo>
-        ************************************************************************************
-        Execute the update-version target once, and only once, when you modifiy this app.
-        This will increment the version number to allow the app to be updated by the AIR installer.
-        ************************************************************************************
+        <echo>***************************************${line.separator}Execute the update-version target once,${line.separator}and only once, when you modifiy this app.${line.separator}This will increment the version number to allow${line.separator}the app to be updated by the AIR installer.${line.separator}***************************************
         </echo>
         <mkdir dir="${BUILD_DIR}"/>
         <mkdir dir="${RELEASE_DIR}"/>
