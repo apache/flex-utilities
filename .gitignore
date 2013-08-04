@@ -110,3 +110,7 @@ _ReSharper*/
 *.zip
 *.rar
 *.tar
+rc
+*.flexProperties
+*.project
+*.actionScriptProperties
