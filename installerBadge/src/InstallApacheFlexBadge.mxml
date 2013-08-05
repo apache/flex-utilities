@@ -161,8 +161,9 @@ limitations under the License.
 			{
 				var configXML:XML = XML(_internetUtil.result);
 				var files:XMLList = configXML.files.file;
+				var defaultFlexVersion:String = files.(@name == "FlexVersions").@default.toString();
 				
-				_sdkBinaryFileName = files.(@name == "ApacheFlexSDK").@file.toString();
+				_sdkBinaryFileName = files.(@name == defaultFlexVersion).@file.toString();
 				
 				_installerFileName = files.(@name == 'SDKInstallerApp').@file.toString();
 				_installerDownloadPath = files.(@name == 'SDKInstallerApp').@path.toString();
