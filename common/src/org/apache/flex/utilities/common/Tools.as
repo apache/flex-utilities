@@ -35,6 +35,7 @@ public class Tools
 	
 	private static const PLATFORM_MAC:String = "Mac";
 	private static const PLATFORM_WIN:String = "Windows";
+	private static const PLATFORM_LINUX:String = "Linux";
 	
 	//--------------------------------------------------------------------------
 	//
@@ -74,6 +75,8 @@ public class Tools
 			return Constants.APPLICATION_EXTENSION_WIN;
 		else if (platform == PLATFORM_MAC)
 			return Constants.APPLICATION_EXTENSION_MAC;
+		else if (platform == PLATFORM_LINUX)
+			return Constants.APPLICATION_EXTENSION_LINUX;
 		else
 			throw(new Error("PlatformNotSupported"));
 	}
