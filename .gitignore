@@ -114,3 +114,4 @@ rc
 *.flexProperties
 *.project
 *.actionScriptProperties
+bin-release
