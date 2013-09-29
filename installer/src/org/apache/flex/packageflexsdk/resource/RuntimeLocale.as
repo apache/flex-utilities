@@ -914,7 +914,7 @@ public class RuntimeLocale
 		content["INSTALL_AGREE"] = "Je suis d'accord, Installer";
 		content["INSTALL_AGREE_ALL"] = "Je suis d'accord pour toutes les options et les licences, installer";
 		content["INSTALL_DISAGREE"] = "Je suis en désaccord, Ne pas installer";
-		content["SELECT_PATH_PROMPT"]="Où voulez-vous installer le SDK Flex Apache?";
+		content["SELECT_PATH_PROMPT"]="Où voulez-vous installer le SDK Apache Flex ?";
 		content["STEP_CREATE_DIRECTORIES"]="Créer les répertoires";
 		content["STEP_SELECT_AIR_AND_FLASH_VERSION"]="Sélectionnez la version de AIR et du Player Flash.";
 		content["STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK"]="Apache Flex SDK (Requis)";
