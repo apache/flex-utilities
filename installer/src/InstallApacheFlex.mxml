@@ -41,8 +41,8 @@ variables are not required because the locations of these pieces are known.
 					   skinClass="ws.tink.spark.skins.controls.InstallApacheFlexSkin"
 					   xmlns:controls="ws.tink.spark.controls.*"
 					   xmlns:controls1="org.apache.flex.packageflexsdk.view.controls.*"
-					   xmlns:components="org.apache.flex.packageflexsdk.view.components.*" xmlns:controls2="org.apache.flex.utilities.common.controls.*"
-					   >
+					   xmlns:components="org.apache.flex.packageflexsdk.view.components.*"
+					   xmlns:controls2="org.apache.flex.utilities.common.controls.*">
 	
 	<fx:Style source="assets/styles/ApacheFlexToolsStyle.css"/>
 	<fx:Style source="assets/styles/InstallApacheFlexStyle.css"/> 
@@ -151,8 +151,10 @@ variables are not required because the locations of these pieces are known.
 		 * Optional installs
 		 *
 		 */
-		private var OSMF_FILE:String;
-		private var OSMF_URL:String;
+		private var OSMF_SWF_FILE:String;
+		private var OSMF_SWF_URL:String;
+		private var OSMF_SWC_FILE:String;
+		private var OSMF_SWC_URL:String;
 		
 		private var BLAZEDS_FILE:String;
 		private var BLAZEDS_URL:String;
@@ -184,7 +186,8 @@ variables are not required because the locations of these pieces are known.
 		private var _aglj40JarFile:File;
 		private var _flexFontKitJarFile:File;
 		private var _rideauJarFile:File;
-		private var _osmfFile:File;
+		private var _osmfSWCFile:File;
+		private var _osmfSWFFile:File;
 		
 		private var _os:String;
 		private var _loader:URLLoader;
@@ -373,7 +376,7 @@ variables are not required because the locations of these pieces are known.
 				request = new URLRequest(configOverride);
 			} else {
 				request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
-//				request = new URLRequest(Constants.CONFIG_XML_NAME);
+				//				request = new URLRequest(Constants.CONFIG_XML_NAME);
 			}
 			
 			_loader = new URLLoader();
@@ -509,8 +512,10 @@ variables are not required because the locations of these pieces are known.
 			SWF_OBJECT_FILE = files.(@name == 'swfobject').@file.toString();
 			SWF_OBJECT_URL = files.(@name == 'swfobject').@path.toString();
 			
-			OSMF_FILE = files.(@name == 'OSMF').@file.toString();
-			OSMF_URL = files.(@name == 'OSMF').@path.toString();
+			OSMF_SWC_FILE = files.(@name == 'OSMF_SWC').@file.toString();
+			OSMF_SWC_URL = files.(@name == 'OSMF_SWC').@path.toString();
+			OSMF_SWF_FILE = files.(@name == 'OSMF_SWF').@file.toString();
+			OSMF_SWF_URL = files.(@name == 'OSMF_SWF').@path.toString();
 			
 			BLAZEDS_FILE = files.(@name == 'BlazeDS').@file.toString();
 			BLAZEDS_URL = files.(@name == 'BlazeDS').@path.toString();
@@ -526,7 +531,7 @@ variables are not required because the locations of these pieces are known.
 			
 			RIDEAU_FILE = files.(@name == 'rideau').@file.toString();
 			RIDEAU_URL = files.(@name == 'rideau').@path.toString();
-
+			
 			
 			return keepGoing;
 		}
@@ -1348,15 +1353,31 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function downloadOSMFFile():void {
-			log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [OSMF_FILE, OSMF_URL]));
-			_osmfFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_FILE);
-			copyOrDownload(OSMF_URL + OSMF_FILE, handleOSMFFileDownloaded, null, handleOSMFInstallError);
+			log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [OSMF_SWF_FILE, OSMF_SWF_URL]));
+			_osmfSWFFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_SWF_FILE);
+			copyOrDownload(OSMF_SWF_URL + OSMF_SWF_FILE, handleOSMFSWFFileDownloaded, null, handleOSMFSWFInstallError);
+			
+			log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [OSMF_SWC_FILE, OSMF_SWC_URL]));
+			_osmfSWCFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_SWC_FILE);
+			copyOrDownload(OSMF_SWC_URL + OSMF_SWC_FILE, handleOSMFSWCFileDownloaded, null, handleOSMFSWCInstallError);
 		}
 		
-		protected function handleOSMFFileDownloaded(event:Event):void {
+		protected function handleOSMFSWFFileDownloaded(event:Event):void {
 			try {
-				writeFileToDirectory(_osmfFile, event.target.data);
-				copyFileToLibDir(_osmfFile);
+				writeFileToDirectory(_osmfSWFFile, event.target.data);
+				copyFileToLibDir(_osmfSWFFile);
+				clearData(URLLoader(event.target));
+			} catch (e:Error) {
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
+				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
+				abortInstallation();
+			}
+		}
+		
+		protected function handleOSMFSWCFileDownloaded(event:Event):void {
+			try {
+				writeFileToDirectory(_osmfSWCFile, event.target.data);
+				copyFileToLibDir(_osmfSWCFile);
 				clearData(URLLoader(event.target));
 				
 				updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
@@ -1396,10 +1417,17 @@ variables are not required because the locations of these pieces are known.
 			installNextOptionalComponent();
 		}
 		
-		protected function handleOSMFInstallError(event:* = null):void {
+		protected function handleOSMFSWFInstallError(event:* = null):void {
 			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
 			updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
-			log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE, ["OSMF"]));
+			log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE, ["OSMF_SWF"]));
+			installNextOptionalComponent();
+		}
+		
+		protected function handleOSMFSWCInstallError(event:* = null):void {
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
+			updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
+			log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE, ["OSMF_SWC"]));
 			installNextOptionalComponent();
 		}
 		
@@ -1511,15 +1539,15 @@ variables are not required because the locations of these pieces are known.
 		protected function handleOptionalInstallsChange(event:IndexChangeEvent):void {
 			var selectedItem:InstallerComponentVO = InstallerComponentVO(event.target.selectedItem);
 			optionalInstallsTxtArea.text = selectedItem.message;
-/*			installChkBx.label = _viewResourceConstants.INSTALL_AGREE;
+			/*			installChkBx.label = _viewResourceConstants.INSTALL_AGREE;
 			if (selectedItem.answered) {
-				if (selectedItem.selected) {
-					installChkBx.selected = true;
-				} else {
-					installChkBx.selected = false;
-				}
+			if (selectedItem.selected) {
+			installChkBx.selected = true;
 			} else {
-				installChkBx.selected = false;
+			installChkBx.selected = false;
+			}
+			} else {
+			installChkBx.selected = false;
 			}*/
 			
 			licenseLinkBtn.includeInLayout = true;
@@ -1941,23 +1969,23 @@ variables are not required because the locations of these pieces are known.
 			</s:layout>
 		</s:DropDownList>
 	</s:HGroup>
-<!--	<s:Group width="100%" top="275">-->
-<!--		<s:HGroup gap="0" horizontalCenter="0" top="30">
-			<s:Label text="apache" fontFamily="openSansBold" color="0x677084" fontSize="24" />
-			<s:Label text="Flex" right="0"
-					 fontFamily="openSansBold"
-					 color="0x172647" fontSize="70"
-					 />
-		</s:HGroup>-->
-		
-		<s:HGroup verticalAlign="middle" gap="5" horizontalCenter="0" top="300">
-			<s:Label text="{_viewResourceConstants.INFO_VERSION}" fontFamily="openSansBold" color="0x677084" fontSize="24" />
-			<s:Label text="{APACHE_FLEX_BIN_DISTRO_VERSION}" right="0"
-					 fontFamily="openSansBold"
-					 color="0x172647" fontSize="70"
-					 />
-		</s:HGroup>
-<!--	</s:Group>-->
+	<!--	<s:Group width="100%" top="275">-->
+	<!--		<s:HGroup gap="0" horizontalCenter="0" top="30">
+	<s:Label text="apache" fontFamily="openSansBold" color="0x677084" fontSize="24" />
+	<s:Label text="Flex" right="0"
+	fontFamily="openSansBold"
+	color="0x172647" fontSize="70"
+	/>
+	</s:HGroup>-->
+	
+	<s:HGroup verticalAlign="middle" gap="5" horizontalCenter="0" top="300">
+		<s:Label text="{_viewResourceConstants.INFO_VERSION}" fontFamily="openSansBold" color="0x677084" fontSize="24" />
+		<s:Label text="{APACHE_FLEX_BIN_DISTRO_VERSION}" right="0"
+				 fontFamily="openSansBold"
+				 color="0x172647" fontSize="70"
+				 />
+	</s:HGroup>
+	<!--	</s:Group>-->
 	<s:Panel id="zeroStepGroup"
 			 title="{_viewResourceConstants.INFO_SELECT_AIR_FLASH_PLAYER}"
 			 width="640"
@@ -2121,15 +2149,15 @@ variables are not required because the locations of these pieces are known.
 							editable="false"/>
 			</s:VGroup>
 		</s:HGroup>
-<!--		<s:HGroup
-			width="100%"
-			height="20"
-			horizontalAlign="center"
-			verticalAlign="middle">
-			<s:CheckBox id="installChkBx"
-						label="{_viewResourceConstants.INSTALL_AGREE_ALL}"
-						selected="false" 
-						visible="true"/>
+		<!--		<s:HGroup
+		width="100%"
+		height="20"
+		horizontalAlign="center"
+		verticalAlign="middle">
+		<s:CheckBox id="installChkBx"
+		label="{_viewResourceConstants.INSTALL_AGREE_ALL}"
+		selected="false" 
+		visible="true"/>
 		</s:HGroup>-->
 	</s:Panel>
 	<s:Panel id="thirdStepGroup"
