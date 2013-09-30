@@ -58,6 +58,7 @@ variables are not required because the locations of these pieces are known.
 		import mx.utils.StringUtil;
 		
 		import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
+		import org.apache.flex.packageflexsdk.model.OS;
 		import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
 		import org.apache.flex.packageflexsdk.util.CalcButtonWidth;
 		import org.apache.flex.packageflexsdk.util.MD5CompareUtil;
@@ -169,10 +170,6 @@ variables are not required because the locations of these pieces are known.
 		private var RIDEAU_FILE:String;
 		private var RIDEAU_URL:String;
 		
-		private const WINDOWS_OS:String = "windows";
-		private const MAC_OS:String = "mac";
-		private const LINUX_OS:String = "linux";
-		
 		[Bindable]
 		private var _flexHome:String;
 		private var _flexTemp:String;
@@ -190,7 +187,7 @@ variables are not required because the locations of these pieces are known.
 		private var _osmfSWCFile:File;
 		private var _osmfSWFFile:File;
 		
-		private var _os:String;
+		private var _os:OS = new OS();
 		private var _loader:URLLoader;
 		private var _process:NativeProcess;
 		private var _previousDisplayedPercent:int = 0;
@@ -344,7 +341,7 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function xmlLoaded(event:Event):void {
-			setOSSpecificVariables();
+			checkValidOS();
 			
 			if (setXMLVariables()) {
 				updateWindowTitle();
@@ -353,6 +350,11 @@ variables are not required because the locations of these pieces are known.
 				
 				_mirrorURLUtil.getMirrorURL(Constants.APACHE_FLEX_URL + _mirrorURLCGI, getMirrorURLResultHandler);
 			}
+		}
+		
+		protected function checkValidOS():void {
+			if (_os.isOther())
+				log(_viewResourceConstants.ERROR_UNSUPPORTED_OPERATING_SYSTEM);
 		}
 		
 		protected function setXMLVariables():Boolean {
@@ -371,12 +373,12 @@ variables are not required because the locations of these pieces are known.
 			var airVersions:Array = files.(@name == 'Versions').@airVersions.toString().split(",");
 			var selected:String = files.(@name == 'Versions').@airDefault.toString();
 			for each (var airVersion:String in airVersions) {
-				if (_os != LINUX_OS || Number(airVersion) <= 2.6) {
+				if (!_os.isLinux()|| Number(airVersion) <= 2.6) {
 					AIR_VERSIONS.addItem({label:"AIR " + airVersion, version:airVersion});
 				}
 			}
 			
-			if (_os == LINUX_OS) {
+			if (_os.isLinux()) {
 				AIR_VERSION = "2.6";
 			}
 			
@@ -387,7 +389,7 @@ variables are not required because the locations of these pieces are known.
 			var flexVersions:Array = files.(@name == 'FlexVersions').@versions.toString().split(",");
 			for each (var flexVersion:String in flexVersions) {
 				var shortName:String = files.(@name == flexVersion).@file.toString();
-				var fileName:String = shortName + ((_os == WINDOWS_OS) ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
+				var fileName:String = shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
 				var label:String = "Flex SDK " + flexVersion;
 				var ver:String = fileName.substr(Constants.SDK_BINARY_FILE_NAME_PREFIX.length).split("-")[0];
 				var path:String = files.(@name == flexVersion).@path.toString();
@@ -410,7 +412,7 @@ variables are not required because the locations of these pieces are known.
 			var flashPlayerVersions:Array = files.(@name == 'Versions').@flashPlayerVersions.toString().split(",");
 			selected = files.(@name == 'Versions').@flashPlayerDefault.toString();
 			for each (var flashPlayerVersion:String in flashPlayerVersions) {
-				if (_os != LINUX_OS || Number(flashPlayerVersion) <= 11.2) {
+				if (!_os.isLinux() || Number(flashPlayerVersion) <= 11.2) {
 					var swfVersion:String = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@swfversion.toString();
 					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + flashPlayerVersion, version:flashPlayerVersion, swfVersion:swfVersion});
 				}
@@ -422,7 +424,7 @@ variables are not required because the locations of these pieces are known.
 			
 			ADOBE_AIR_SDK_WIN_FILE = files.(@name == 'AdobeAIRSDKWin' + AIR_VERSION).@file.toString();
 			ADOBE_AIR_SDK_WIN_URL = files.(@name == 'AdobeAIRSDKWin' + AIR_VERSION).@path.toString();
-			if (_os == WINDOWS_OS && (!ADOBE_AIR_SDK_WIN_FILE || !ADOBE_AIR_SDK_WIN_URL)) {
+			if (_os.isWindows() && (!ADOBE_AIR_SDK_WIN_FILE || !ADOBE_AIR_SDK_WIN_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_WINDOWS);
 				keepGoing = false;
 			}
@@ -430,7 +432,7 @@ variables are not required because the locations of these pieces are known.
 			
 			ADOBE_AIR_SDK_MAC_FILE = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@file.toString();
 			ADOBE_AIR_SDK_MAC_URL = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@path.toString();
-			if (_os == MAC_OS && (!ADOBE_AIR_SDK_MAC_FILE || !ADOBE_AIR_SDK_MAC_URL)) {
+			if (_os.isMac() && (!ADOBE_AIR_SDK_MAC_FILE || !ADOBE_AIR_SDK_MAC_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_MAC);
 				keepGoing = false;
 			}
@@ -438,7 +440,7 @@ variables are not required because the locations of these pieces are known.
 			
 			ADOBE_AIR_SDK_LINUX_FILE = files.(@name == 'AdobeAIRSDKLin' + AIR_VERSION).@file.toString();
 			ADOBE_AIR_SDK_LINUX_URL = files.(@name == 'AdobeAIRSDKLin' + AIR_VERSION).@path.toString();
-			if (_os == LINUX_OS && (!ADOBE_AIR_SDK_LINUX_FILE || !ADOBE_AIR_SDK_LINUX_URL)) {
+			if (_os.isLinux() && (!ADOBE_AIR_SDK_LINUX_FILE || !ADOBE_AIR_SDK_LINUX_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_LINUX);
 				keepGoing = false;
 			}
@@ -512,20 +514,6 @@ variables are not required because the locations of these pieces are known.
 			return -1;
 		}
 		
-		protected function setOSSpecificVariables():void {
-			var operatingSystemStr:String = Capabilities.os;
-			
-			if (operatingSystemStr.search("Mac OS") != -1) {
-				_os = MAC_OS;
-			} else if (operatingSystemStr.search("Windows") != -1) {
-				_os = WINDOWS_OS;
-			} else if (operatingSystemStr.search("Linux") != -1) {
-				_os = LINUX_OS;
-			} else {
-				log(_viewResourceConstants.ERROR_UNSUPPORTED_OPERATING_SYSTEM);
-			}
-		}
-		
 		private function useMirrorPath(path:String):String {
 			if (_useMirror) {
 				return path;
@@ -578,7 +566,7 @@ variables are not required because the locations of these pieces are known.
 			var currentVersion:String = applicationDescriptor.xmlns::versionNumber.toString();
 			
 			// Log the Installer version to help with any support issues that arise.
-			log("Version " + currentVersion + " (" + _os + ")", 0);
+			log("Version " + currentVersion + " (" + _os.os + ")", 0);
 			
 			var availBuildNumbers:Array = _latestVersion.split(".");
 			var currentBuildNumbers:Array = currentVersion.split(".");
@@ -859,7 +847,7 @@ variables are not required because the locations of these pieces are known.
 			try {
 				log(_viewResourceConstants.INFO_UNZIPPING + _apacheFlexSDKCompressedFile.nativePath);
 				
-				if (_os == WINDOWS_OS) {
+				if (_os.isWindows()) {
 					unzip(_apacheFlexSDKCompressedFile, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError);
 				} else {
 					untar(_apacheFlexSDKCompressedFile, _flexTempDir, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError);
@@ -874,7 +862,7 @@ variables are not required because the locations of these pieces are known.
 			log(_viewResourceConstants.INFO_FINISHED_UNZIPPING + _apacheFlexSDKCompressedFile.nativePath);
 			updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.COMPLETE);
 			
-			if (_os == WINDOWS_OS) {
+			if (_os.isWindows()) {
 				downloadAIRRuntimeKitForWindows();
 			} else {
 				/* Copy all files from the unarchived directory to the root */
@@ -884,7 +872,7 @@ variables are not required because the locations of these pieces are known.
 					file.copyTo(_flexHomeDir.resolvePath(file.name));
 				}
 				
-				if (_os == MAC_OS) {
+				if (_os.isMac()) {
 					downloadAIRRuntimeKitForMac();
 				}
 				else {
@@ -960,7 +948,7 @@ variables are not required because the locations of these pieces are known.
 			updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.ACTIVE);
 			
 			try {
-				if (_os == WINDOWS_OS) {
+				if (_os.isWindows()) {
 					unzipAdobeAIRSDKWindows()
 				} else {
 					unzipAdobeAIRSDKMac();
@@ -1399,7 +1387,7 @@ variables are not required because the locations of these pieces are known.
 				}
 			}
 			if (allComponentsInstalled) {
-				tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION,_os);
+				tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
 				cleanup(false);
 			}
 		}
@@ -1653,7 +1641,7 @@ variables are not required because the locations of these pieces are known.
 			var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 			var arguments:Vector.<String> = new Vector.<String>();
 			
-			if (_os == LINUX_OS) {
+			if (_os.isLinux()) {
 				tar = new File("/bin/tar");
 			}
 			else {
