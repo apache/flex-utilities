@@ -57,6 +57,9 @@ variables are not required because the locations of these pieces are known.
 		import mx.managers.PopUpManager;
 		import mx.utils.StringUtil;
 		
+		import spark.events.IndexChangeEvent;
+		import spark.events.TextOperationEvent;
+		
 		import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
 		import org.apache.flex.packageflexsdk.model.OS;
 		import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
@@ -74,9 +77,7 @@ variables are not required because the locations of these pieces are known.
 		import org.as3commons.zip.Zip;
 		import org.as3commons.zip.ZipEvent;
 		import org.as3commons.zip.ZipFile;
-		
-		import spark.events.IndexChangeEvent;
-		import spark.events.TextOperationEvent;
+		import org.osmf.utils.OSMFStrings;
 		
 		import ws.tink.spark.controls.StepItem;
 		
@@ -153,10 +154,9 @@ variables are not required because the locations of these pieces are known.
 		 * Optional installs
 		 *
 		 */
-		private var OSMF_SWF_FILE:String;
-		private var OSMF_SWF_URL:String;
 		private var OSMF_SWC_FILE:String;
 		private var OSMF_SWC_URL:String;
+		private var OSMF_SWF_FILE:String = "osmf.swf";
 		
 		private var BLAZEDS_FILE:String;
 		private var BLAZEDS_URL:String;
@@ -316,8 +316,8 @@ variables are not required because the locations of these pieces are known.
 			if (configOverride != "") {
 				request = new URLRequest(configOverride);
 			} else {
-				request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
-				//				request = new URLRequest(Constants.CONFIG_XML_NAME);
+				//request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+				request = new URLRequest(Constants.CONFIG_XML_NAME);
 			}
 			
 			_loader = new URLLoader();
@@ -458,10 +458,17 @@ variables are not required because the locations of these pieces are known.
 			SWF_OBJECT_FILE = files.(@name == 'swfobject').@file.toString();
 			SWF_OBJECT_URL = files.(@name == 'swfobject').@path.toString();
 			
-			OSMF_SWC_FILE = files.(@name == 'OSMF_SWC').@file.toString();
-			OSMF_SWC_URL = files.(@name == 'OSMF_SWC').@path.toString();
-			OSMF_SWF_FILE = files.(@name == 'OSMF_SWF').@file.toString();
-			OSMF_SWF_URL = files.(@name == 'OSMF_SWF').@path.toString();
+			//Supporting OSMF 2.0 from 4.11 onwards.  
+			if(APACHE_FLEX_BIN_DISTRO_VERSION != "4.11.0")
+			{
+				OSMF_SWC_FILE = files.(@name == 'OSMF_SWC').@file.toString();
+				OSMF_SWC_URL = files.(@name == 'OSMF_SWC').@path.toString();
+			}
+			else
+			{
+				OSMF_SWC_FILE = files.(@name == 'OSMF_SWC_2.0').@file.toString();
+				OSMF_SWC_URL = files.(@name == 'OSMF_SWC_2.0').@path.toString();
+			}
 			
 			BLAZEDS_FILE = files.(@name == 'BlazeDS').@file.toString();
 			BLAZEDS_URL = files.(@name == 'BlazeDS').@path.toString();
@@ -1285,31 +1292,18 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function downloadOSMFFile():void {
-			log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [OSMF_SWF_FILE, OSMF_SWF_URL]));
-			_osmfSWFFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_SWF_FILE);
-			copyOrDownload(OSMF_SWF_URL + OSMF_SWF_FILE, handleOSMFSWFFileDownloaded, null, handleOSMFSWFInstallError);
+			_osmfSWFFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_SWF_FILE.toLowerCase());
 			
 			log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [OSMF_SWC_FILE, OSMF_SWC_URL]));
-			_osmfSWCFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_SWC_FILE);
-			copyOrDownload(OSMF_SWC_URL + OSMF_SWC_FILE, handleOSMFSWCFileDownloaded, null, handleOSMFSWCInstallError);
-		}
-		
-		protected function handleOSMFSWFFileDownloaded(event:Event):void {
-			try {
-				writeFileToDirectory(_osmfSWFFile, event.target.data);
-				copyFileToLibDir(_osmfSWFFile);
-				clearData(URLLoader(event.target));
-			} catch (e:Error) {
-				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
-				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
-				abortInstallation();
-			}
+			_osmfSWCFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_SWC_FILE.toLowerCase());
+			copyOrDownload(OSMF_SWC_URL, handleOSMFSWCFileDownloaded, null, handleOSMFSWCInstallError);
 		}
 		
 		protected function handleOSMFSWCFileDownloaded(event:Event):void {
 			try {
 				writeFileToDirectory(_osmfSWCFile, event.target.data);
 				copyFileToLibDir(_osmfSWCFile);
+				unzip(_osmfSWCFile,handleOSMFSWCUnzipped,handleOSMFSWCUnzipError);
 				clearData(URLLoader(event.target));
 				
 				updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
@@ -1321,6 +1315,31 @@ variables are not required because the locations of these pieces are known.
 				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
 				abortInstallation();
 			}
+		}
+		
+		protected function handleOSMFSWCUnzipped(event:Event):void
+		{
+			try {
+				var copyToFile:File = _flexHomeDir.resolvePath("frameworks" + File.separator + "libs" + File.separator + OSMF_SWF_FILE);
+				var osmfLibrarySwfFile:File = _flexHomeDir.resolvePath("library.swf");
+				osmfLibrarySwfFile.moveTo(copyToFile);
+				var catalogXMLFile:File = _flexHomeDir.resolvePath("catalog.xml");
+				catalogXMLFile.deleteFile();
+				var manifestXMLFile:File = _flexHomeDir.resolvePath("manifest.xml");
+				manifestXMLFile.deleteFile();
+			}
+			catch (e:Error) {
+				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
+				updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
+				abortInstallation();
+			}
+		}
+		
+		protected function handleOSMFSWCUnzipError(event:Event):void
+		{
+			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
+			updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
+			abortInstallation();
 		}
 		
 		protected function copyFileToOptionalLibDir(file:File):void {
