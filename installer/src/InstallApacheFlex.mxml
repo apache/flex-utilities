@@ -459,7 +459,9 @@ variables are not required because the locations of these pieces are known.
 			SWF_OBJECT_URL = files.(@name == 'swfobject').@path.toString();
 			
 			//Supporting OSMF 2.0 from 4.11 onwards.  
-			if(APACHE_FLEX_BIN_DISTRO_VERSION != "4.11.0")
+			//if(APACHE_FLEX_BIN_DISTRO_VERSION != "4.11.0")
+			//TODO: We are having trouble downloading the osmf.swc v2.0 from the sourceforge mirrors.  Disabling this till we sort that out
+			if(true)	
 			{
 				OSMF_SWC_FILE = files.(@name == 'OSMF_SWC').@file.toString();
 				OSMF_SWC_URL = files.(@name == 'OSMF_SWC').@path.toString();
@@ -1317,10 +1319,15 @@ variables are not required because the locations of these pieces are known.
 			}
 		}
 		
+		/**
+		 * Unzip osmf.swc, extract library.swf from it and copy it into frameworks/rsls/osmf_<flexversion>.<buildnumber>
+		 * Delete other files extracted from osmf.swc
+		 */
 		protected function handleOSMFSWCUnzipped(event:Event):void
 		{
 			try {
-				var copyToFile:File = _flexHomeDir.resolvePath("frameworks" + File.separator + "libs" + File.separator + OSMF_SWF_FILE);
+				var osmfFileName:String =  "osmf_" + getFlexVersionBuildString() + ".swf";
+				var copyToFile:File = _flexHomeDir.resolvePath("frameworks" + File.separator + "rsls" + File.separator + osmfFileName);
 				var osmfLibrarySwfFile:File = _flexHomeDir.resolvePath("library.swf");
 				osmfLibrarySwfFile.moveTo(copyToFile);
 				var catalogXMLFile:File = _flexHomeDir.resolvePath("catalog.xml");
@@ -1836,6 +1843,16 @@ variables are not required because the locations of these pieces are known.
 			} else {
 				event.target.styleName = "linkText";
 			}
+		}
+		
+		private function getFlexVersionBuildString():String
+		{
+			var flexPropertiesFile:File = _flexHomeDir.resolvePath("flex-sdk-description.xml");
+			var fs:FileStream = new FileStream();
+			fs.open(flexPropertiesFile, FileMode.READ);
+			var contents:XML = new XML(fs.readMultiByte(fs.bytesAvailable, "utf-8"));
+			fs.close();
+			return contents.version + "." + contents.build;
 		}
 	]]></fx:Script>
 	
