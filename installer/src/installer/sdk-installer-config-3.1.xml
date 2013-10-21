@@ -107,10 +107,10 @@ limitations under the License.
 
 		<!-- For OSMF, we are including the file name along with the url.  This is to support the weird url format for OSMF2.0 which forces us to do the same -->
         <!-- OSMF 1.x -->
-        <file name="OSMF_SWC" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/frameworks/libs/osmf.swc" file="osmf.swc"/>
+        <file name="OSMF_SWC" path="http://opensource.adobe.com/svn/opensource/flex/sdk/branches/4.y/frameworks/libs/" file="osmf.swc"/>
 
         <!-- OSMF 2.0 -->
-        <file name="OSMF_SWC_2.0" path="http://switch.dl.sourceforge.net/project/osmf.adobe/OSMF%202.0%20Release%20%28final%20source%2C%20ASDocs%2C%20pdf%20guides%20and%20release%20notes%29/OSMF.swc" file="OSMF.swc"/>
+        <file name="OSMF_SWC_2.0" path="osmf.adobe/OSMF%202.0%20Release%20%28final%20source%2C%20ASDocs%2C%20pdf%20guides%20and%20release%20notes%29/" file="OSMF.swc"/>
 
     </files>
 </config>

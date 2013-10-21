@@ -55,6 +55,9 @@ variables are not required because the locations of these pieces are known.
 		import mx.core.IFlexDisplayObject;
 		import mx.events.FlexEvent;
 		import mx.managers.PopUpManager;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import mx.rpc.http.HTTPService;
 		import mx.utils.StringUtil;
 		
 		import spark.events.IndexChangeEvent;
@@ -194,6 +197,7 @@ variables are not required because the locations of these pieces are known.
 		private var _fileUnzipErrorFunction:Function;
 		private var _numOptionalComponents:int = 4;
 		private var _numOptionalComponentsPermissions:int = 0;
+		private var _useOSMF2:Boolean = true;
 		
 		private var languageOverride:String;
 		private var configOverride:String = "";
@@ -459,17 +463,17 @@ variables are not required because the locations of these pieces are known.
 			SWF_OBJECT_URL = files.(@name == 'swfobject').@path.toString();
 			
 			//Supporting OSMF 2.0 from 4.11 onwards.  
-			//if(APACHE_FLEX_BIN_DISTRO_VERSION != "4.11.0")
-			//TODO: We are having trouble downloading the osmf.swc v2.0 from the sourceforge mirrors.  Disabling this till we sort that out
-			if(true)	
+			if(APACHE_FLEX_BIN_DISTRO_VERSION == "4.9.1" || APACHE_FLEX_BIN_DISTRO_VERSION == "4.10.0" )
 			{
 				OSMF_SWC_FILE = files.(@name == 'OSMF_SWC').@file.toString();
 				OSMF_SWC_URL = files.(@name == 'OSMF_SWC').@path.toString();
+				_useOSMF2 = false;
 			}
 			else
 			{
 				OSMF_SWC_FILE = files.(@name == 'OSMF_SWC_2.0').@file.toString();
 				OSMF_SWC_URL = files.(@name == 'OSMF_SWC_2.0').@path.toString();
+				_useOSMF2 = true;
 			}
 			
 			BLAZEDS_FILE = files.(@name == 'BlazeDS').@file.toString();
@@ -1298,7 +1302,45 @@ variables are not required because the locations of these pieces are known.
 			
 			log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [OSMF_SWC_FILE, OSMF_SWC_URL]));
 			_osmfSWCFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_SWC_FILE.toLowerCase());
-			copyOrDownload(OSMF_SWC_URL, handleOSMFSWCFileDownloaded, null, handleOSMFSWCInstallError);
+			if(_useOSMF2)
+			{
+				downloadOSMF2SWC();
+			}
+			else
+			{
+				copyOrDownload(OSMF_SWC_URL + OSMF_SWC_FILE,handleOSMFSWCFileDownloaded,null,handleOSMFSWCInstallError);
+			}
+		}
+		
+		protected function downloadOSMF2SWC():void
+		{
+			var httpService:HTTPService = new HTTPService();
+			httpService.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
+			httpService.url = Constants.SOURCEFORGE_DOWNLOAD_URL + OSMF_SWC_URL + OSMF_SWC_FILE;
+			httpService.addEventListener(ResultEvent.RESULT, getMirrorInfo);
+			httpService.addEventListener(FaultEvent.FAULT, handleOSMFSWCUnzipError);
+			httpService.send();
+		}
+		
+		protected function getMirrorInfo(event:ResultEvent):void
+		{
+			var mirror:String = String(event.result);
+			mirror = mirror.substr(mirror.indexOf('use_mirror=') + 'use_mirror='.length, mirror.length);
+			mirror = mirror.substring(0, mirror.indexOf('">'));
+			
+			var mirrorURL:String = 'http://' + mirror + Constants.SOURCEFORGE_DL_URL + OSMF_SWC_URL + OSMF_SWC_FILE;
+			var refererURL:String = Constants.SOURCEFORGE_DOWNLOAD_URL + OSMF_SWC_URL + '/download?use_mirror=' + mirror;
+			
+			var req:URLRequest = new URLRequest(mirrorURL);
+			req.requestHeaders = [ new URLRequestHeader('Referer', refererURL) ];
+			
+			var loader:URLLoader = new URLLoader();
+			loader.dataFormat = URLLoaderDataFormat.BINARY;
+			loader.addEventListener(Event.COMPLETE, handleOSMFSWCFileDownloaded);
+			loader.addEventListener(ErrorEvent.ERROR, handleOSMFSWCInstallError);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, handleOSMFSWCInstallError);
+			
+			loader.load(req);
 		}
 		
 		protected function handleOSMFSWCFileDownloaded(event:Event):void {
@@ -1331,9 +1373,15 @@ variables are not required because the locations of these pieces are known.
 				var osmfLibrarySwfFile:File = _flexHomeDir.resolvePath("library.swf");
 				osmfLibrarySwfFile.moveTo(copyToFile);
 				var catalogXMLFile:File = _flexHomeDir.resolvePath("catalog.xml");
-				catalogXMLFile.deleteFile();
+				if(catalogXMLFile.exists)
+				{
+					catalogXMLFile.deleteFile();
+				}
 				var manifestXMLFile:File = _flexHomeDir.resolvePath("manifest.xml");
-				manifestXMLFile.deleteFile();
+				if(manifestXMLFile.exists)
+				{
+					manifestXMLFile.deleteFile();
+				}
 			}
 			catch (e:Error) {
 				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
