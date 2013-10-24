@@ -178,6 +178,7 @@ public class MD5CompareUtil extends EventDispatcher
 		{
 			if (event.type == Event.COMPLETE)
 			{
+                _fileStream.close();
 				_fileIsVerified = (_md5Stream.complete(data) == _remoteMD5Value);
 				
 				removeEventListeners();
