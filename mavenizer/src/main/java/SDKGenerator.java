@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.parsers.*;
 
 import air.AirCompilerGenerator;
+import common.ConversionPlan;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -37,7 +36,21 @@ import flex.FlexRuntimeGenerator;
  */
 public class SDKGenerator {
 
-    protected List<String> generatedAirVersions = new ArrayList<String>();
+    protected void buildAirConversionPlan(ConversionPlan plan, File sdkSourceDirectory) {
+        final File sdkDirectories[] = sdkSourceDirectory.listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                return pathname.isDirectory();
+            }
+        });
+        if (sdkDirectories != null) {
+            for (final File sdkDirectory : sdkDirectories) {
+                final String sdkVersion = getAirSdkVersion(sdkDirectory);
+                if(sdkVersion != null) {
+                    plan.addVersion(sdkVersion, sdkDirectory, false);
+                }
+            }
+        }
+    }
 
     /**
      * All this little helper does is list up all directories in the given base directory and
@@ -45,34 +58,19 @@ public class SDKGenerator {
      * is identical to that of an ordinary air sdk. Therefore the import works if a flex sdk or
      * an air sdk directory is passed to this method.
      *
-     * @param sdkSourceDirectory source directory containing the air content
+     * @param plan conversion plan for converting the air sdks containing the air content
      * @param sdkTargetDirectory directory where to copy the content
      * @throws Exception
      */
-    public void generateAllAir(File sdkSourceDirectory, File sdkTargetDirectory) throws Exception {
-        final File sdkDirectories[] = sdkSourceDirectory.listFiles(new FileFilter() {
-            public boolean accept(File pathname) {
-                return pathname.isDirectory();
-            }
-        });
-        if (sdkDirectories != null) {
+    public void generateAllAir(ConversionPlan plan, File sdkTargetDirectory) throws Exception {
+        for(final String airVersion : plan.getVersionIterator()) {
+            final File airDirectory = plan.getDirectory(airVersion);
+
             System.out.println("---------------------------------------------");
-            for (final File sdkDirectory : sdkDirectories) {
-                String sdkVersion = getAirSdkVersion(sdkDirectory);
+            System.out.println("-- Generating Air SDK version: " + airVersion);
+            System.out.println("---------------------------------------------");
 
-                // As we are eventually generating the air sdks first, a flex sdk processed
-                // later could contain the same version of air, in this case we skip that.
-                if((sdkVersion != null) && !generatedAirVersions.contains(sdkVersion)) {
-                    System.out.println("-- Generating Air SDK version: " + sdkVersion);
-                    System.out.println("---------------------------------------------");
-
-                    generateAir(sdkDirectory, sdkTargetDirectory, sdkVersion);
-
-                    System.out.println("---------------------------------------------");
-
-                    generatedAirVersions.add(sdkVersion);
-                }
-            }
+            generateAir(airDirectory, sdkTargetDirectory, airVersion);
         }
     }
 
@@ -87,31 +85,38 @@ public class SDKGenerator {
         new AirRuntimeGenerator().process(sdkSourceDirectory, false, sdkTargetDirectory, sdkVersion, false);
     }
 
-    public void generateAllFlex(File sdkSourceDirectory, File sdkTargetDirectory, boolean useApache) throws Exception {
+    protected void buildFlexConversionPlan(ConversionPlan plan, File sdkSourceDirectory) {
         final File sdkDirectories[] = sdkSourceDirectory.listFiles(new FileFilter() {
             public boolean accept(File pathname) {
                 return pathname.isDirectory();
             }
         });
         if (sdkDirectories != null) {
-            System.out.println("---------------------------------------------");
+            // Build a sorted set of versions as well as maps for the additional information
+            // to allow sorted conversion of the Flex SDKs.
             for (final File sdkDirectory : sdkDirectories) {
-                String sdkVersion = getFlexSdkVersion(sdkDirectory);
-
-                // Apache FDKs (ok ... the only one available) have the version prefix "Apache-"
+                String fdkVersion = getFlexSdkVersion(sdkDirectory);
+                // Apache FDKs have the version prefix "Apache-"
                 // So this is what we use in order to determine what type of FDK it is.
-                final boolean isApache = sdkVersion.startsWith("Apache-");
+                final boolean isApache = fdkVersion.startsWith("Apache-");
                 if (isApache) {
-                    sdkVersion = sdkVersion.substring("Apache-".length());
+                    fdkVersion = fdkVersion.substring("Apache-".length());
                 }
-
-                System.out.println("-- Generating Flex SDK version: " + sdkVersion);
-                System.out.println("---------------------------------------------");
-
-                generateFlex(sdkDirectory, isApache, sdkTargetDirectory, sdkVersion, useApache);
-
-                System.out.println("---------------------------------------------");
+                plan.addVersion(fdkVersion, sdkDirectory, isApache);
             }
+        }
+    }
+
+    public void generateAllFlex(ConversionPlan plan, File sdkTargetDirectory, boolean useApache) throws Exception {
+        for(final String fdkVersion : plan.getVersionIterator()) {
+            final File fdkDirectory = plan.getDirectory(fdkVersion);
+            final boolean isApache = plan.getApacheFlag(fdkVersion);
+
+            System.out.println("---------------------------------------------");
+            System.out.println("-- Generating Flex SDK version: " + fdkVersion);
+            System.out.println("---------------------------------------------");
+
+            generateFlex(fdkDirectory, isApache, sdkTargetDirectory, fdkVersion, useApache);
         }
     }
 
@@ -146,11 +151,15 @@ public class SDKGenerator {
         // hashes has to be created first. Therefore the Generator generates air artifacts by processing air
         // sdk directories and then by extracting the needed artifacts from the flex fdks.
         final SDKGenerator generator = new SDKGenerator();
-        generator.generateAllAir(new File(sdkSourceDirectory, "air"), sdkTargetDirectory);
-        generator.generateAllAir(new File(sdkSourceDirectory, "flex"), sdkTargetDirectory);
+        final ConversionPlan airPlan = new ConversionPlan();
+        generator.buildAirConversionPlan(airPlan, new File(sdkSourceDirectory, "air"));
+        generator.buildAirConversionPlan(airPlan, new File(sdkSourceDirectory, "flex"));
+        generator.generateAllAir(airPlan, sdkTargetDirectory);
 
         // After the air artifacts are generated and
-        generator.generateAllFlex(new File(sdkSourceDirectory, "flex"), sdkTargetDirectory, useApache);
+        final ConversionPlan flexPlan = new ConversionPlan();
+        generator.buildFlexConversionPlan(flexPlan, new File(sdkSourceDirectory, "flex"));
+        generator.generateAllFlex(flexPlan, sdkTargetDirectory, useApache);
     }
 
     /**
