@@ -26,7 +26,7 @@ public class ConversionPlan {
                     }
                 }
                 // If all segments were equal, the string that has more segments wins.
-                return Integer.compare(versionSegments1.length, versionSegments2.length);
+                return Integer.valueOf(versionSegments1.length).compareTo(versionSegments2.length);
             }
         };
         versions = new TreeSet<String>(versionComparator);
