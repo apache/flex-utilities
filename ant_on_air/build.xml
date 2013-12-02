@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="ant_on_air" basedir="." default="build">
+
+    <!--load environment variables prefixed with env -->
+    <property environment="env"/>
+
+    <!--location of property file -->
+    <property file="${basedir}/build.properties" description="Properties for Ant On AIR project" />
+
+    <!--
+        Properties are immutable so value frozen first time property is set.
+        If FLEX_HOME is not set with -DFLEX_HOME=/path/to/flex/sdk on the ant command line
+        use the environment variable, if it exists. Else if windows, use FLEX_HOME_WIN
+        else use FLEX_HOME_MAC, which are both defined in build.properties.
+    -->
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+
+    <!--
+        Properties are immutable so value frozen first time property is set.
+        If AIR_HOME is not set on the command line with -DAIR_HOME=/path/to/air/sdk on the
+        ant command line use the environment variable, if it exists. Else if windows, use
+        AIR_HOME_WIN else use AIR_HOME_MAC, which are both defined in build.properties.
+    -->
+    <condition property="AIR_HOME" value="${env.AIR_HOME}">
+        <isset property="env.AIR_HOME" />
+    </condition>
+
+    <!-- additional tasks - mxmlc tag -->
+    <path id="flexTasks.path">
+        <fileset dir="${FLEX_HOME}">
+            <include name="lib/flexTasks.jar" />
+            <include name="ant/lib/flexTasks.jar" />
+        </fileset>
+    </path>
+    <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
+    <target name="build" depends="init,compile"
+        description="Compiles SWC"/>
+
+    <target name="init" depends="clean"
+        description="Creates the deploy folders and sets app extension"/>
+
+    <target name="clean" description="Cleans up old files.">
+        <delete dir="${LIBRARY_DIR}" failOnError="false" includeEmptyDirs="true" />
+    </target>
+
+    <target name="compile" 
+        description="Compiles the SWC.">
+        <compc 
+            output="${LIBRARY_DIR}/${LIBRARY_NAME}.swc"
+            debug="${DEBUG_FLAG}"
+            failonerror="true"
+            fork="true"
+            maxmemory="512m">
+            <source-path path-element="${SOURCE_DIR}"/>
+            <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
+			<include-classes>AntClasses</include-classes>
+
+        </compc>
+		<mxmlc file="${basedir}/tests/TestTarget.as"
+			output="${basedir}/tests/TestTarget.swf"
+			debug="${DEBUG_FLAG}"
+			failonerror="true"
+            fork="true"
+            maxmemory="512m">
+            <source-path path-element="${SOURCE_DIR}"/>
+            <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
+		</mxmlc>
+    </target>
+
+</project>
