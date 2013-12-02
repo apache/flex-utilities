@@ -62,8 +62,41 @@ package org.apache.flex.ant
             tagMap = antTagProcessors;
             if (!context)
                 context = {};
+            this.context = context;
             var project:Project = processXMLTag(xml, context) as Project;
-            project.execute();
+            if (waiting == 0)
+                project.execute();
+            else
+                this.project = project;
+        }
+    
+        private var context:Object;
+        private var project:Project;
+        
+        private var _waiting:int = 0;
+        
+        /**
+         *  A flag used to defer execution if
+         *  waiting on something async like loading
+         *  environment variables.
+         */
+        public function get waiting():int
+        {
+            return _waiting;
+        }
+        
+        /**
+         *  @private
+         */
+        public function set waiting(value:int):void
+        {
+            if (value >= 0)
+                _waiting = value;
+            
+            if (value == 0)
+                if (project)
+                    project.execute()
+                        
         }
         
         /**

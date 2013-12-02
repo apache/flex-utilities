@@ -73,6 +73,7 @@
             fork="true"
             maxmemory="512m">
             <source-path path-element="${SOURCE_DIR}"/>
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
             <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
 			<include-classes>AntClasses</include-classes>
 
@@ -83,8 +84,8 @@
 			failonerror="true"
             fork="true"
             maxmemory="512m">
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
             <source-path path-element="${SOURCE_DIR}"/>
-            <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
 		</mxmlc>
     </target>
 

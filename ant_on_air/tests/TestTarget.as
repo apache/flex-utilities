@@ -20,6 +20,7 @@ package
 {
     import flash.desktop.NativeApplication;
     import flash.display.Sprite;
+    import flash.events.Event;
     import flash.filesystem.File;
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.Condition; Condition.init(null);
@@ -39,7 +40,13 @@ package
             var file:File = File.applicationDirectory;
             file = file.resolvePath("test.xml");
             ant.processXMLFile(file, context);
-            NativeApplication.nativeApplication.exit();
+            addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+        }
+        
+        private function enterFrameHandler(event:Event):void
+        {
+            if (ant.waiting == 0)
+                NativeApplication.nativeApplication.exit();
         }
         
         private var ant:Ant;

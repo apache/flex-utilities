@@ -21,6 +21,12 @@ package org.apache.flex.ant.tags
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
+    import flash.desktop.NativeProcess;
+    import flash.desktop.NativeProcessStartupInfo;
+    import flash.events.NativeProcessExitEvent;
+    import flash.events.ProgressEvent;
+    import flash.system.Capabilities;
+    import flash.utils.IDataInput;
     
     import mx.core.IFlexModuleFactory;
     import mx.utils.StringUtil;
@@ -74,7 +80,7 @@ package org.apache.flex.ant.tags
                         else
                         {
                             parts.shift();
-                            val = parts.joint("=");
+                            val = parts.join("=");
                         }
                         context[key] = val;
                     }
@@ -89,11 +95,73 @@ package org.apache.flex.ant.tags
             else if (name == "environment")
             {
                 envPrefix = value;
-                // TODO
-                ant.output("environment attribute is not supported");
+                ant.waiting++;
+                requestEnvironmentVariables();
             }
             else
                 super.processAttribute(name, value);
         }
-    }
+        
+        private var process:NativeProcess;
+        
+        public function requestEnvironmentVariables():void
+        {
+            var file:File = File.applicationDirectory;
+            if (Capabilities.os.indexOf('Mac OS') > -1)
+                file = new File("/bin/bash");
+            else
+                file = file.resolvePath("C:\\Windows\\System32\\cmd.exe");
+            var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+            nativeProcessStartupInfo.executable = file;
+            var args:Vector.<String> = new Vector.<String>();
+            if (Capabilities.os.indexOf('Mac OS') > -1)
+                args.push("-c");
+            args.push("set");
+            nativeProcessStartupInfo.arguments = args;
+            process = new NativeProcess();
+            process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onOutputData); 
+            process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onOutputErrorData); 
+            process.start(nativeProcessStartupInfo);
+            process.addEventListener(NativeProcessExitEvent.EXIT, exitHandler);
+        }
+         
+        private function exitHandler(event:NativeProcessExitEvent):void
+        {
+        }
+
+        private function onOutputErrorData(event:ProgressEvent):void 
+        { 
+            var stdError:IDataInput = process.standardError; 
+            var data:String = stdError.readUTFBytes(process.standardError.bytesAvailable); 
+            trace("Got Error Output: ", data); 
+            ant.waiting--;
+        }
+        
+        private function onOutputData(event:ProgressEvent):void 
+        { 
+            var stdOut:IDataInput = process.standardOutput; 
+            var data:String = stdOut.readUTFBytes(process.standardOutput.bytesAvailable); 
+            trace("Got: ", data); 
+            var propLines:Array = data.split("\n");
+            for each (var line:String in propLines)
+            {
+                var parts:Array = line.split("=");
+                if (parts.length >= 2)
+                {
+                    var key:String = StringUtil.trim(parts[0]);
+                    var val:String;
+                    if (parts.length == 2)
+                        val = parts[1];
+                    else
+                    {
+                        parts.shift();
+                        val = parts.join("=");
+                    }
+                    context[key] = val;
+                }
+            }
+            ant.waiting--;
+        }
+
+    } 
 }
