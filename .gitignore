@@ -112,6 +112,7 @@ _ReSharper*/
 *.tar
 rc
 *.flexProperties
+*.flexLibProperties
 *.project
 *.actionScriptProperties
 bin-release
