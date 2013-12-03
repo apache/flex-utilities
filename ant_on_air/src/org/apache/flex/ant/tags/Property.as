@@ -116,6 +116,8 @@ package org.apache.flex.ant.tags
             var args:Vector.<String> = new Vector.<String>();
             if (Capabilities.os.indexOf('Mac OS') > -1)
                 args.push("-c");
+			else
+				args.push("/c");
             args.push("set");
             nativeProcessStartupInfo.arguments = args;
             process = new NativeProcess();
@@ -142,7 +144,11 @@ package org.apache.flex.ant.tags
             var stdOut:IDataInput = process.standardOutput; 
             var data:String = stdOut.readUTFBytes(process.standardOutput.bytesAvailable); 
             trace("Got: ", data); 
-            var propLines:Array = data.split("\n");
+            var propLines:Array;
+			if (Capabilities.os.indexOf('Mac OS') > -1)
+				propLines = data.split("\n");
+			else
+				propLines = data.split("\r\n");
             for each (var line:String in propLines)
             {
                 var parts:Array = line.split("=");
