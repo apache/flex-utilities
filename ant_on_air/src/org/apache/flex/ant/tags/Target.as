@@ -18,6 +18,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
+    import flash.events.Event;
+    
     import mx.core.IFlexModuleFactory;
     
     import org.apache.flex.ant.Ant;
@@ -66,32 +68,79 @@ package org.apache.flex.ant.tags
             context.currentTarget = this;
         }
         
-        private function processDepends():void
+        private var dependsList:Array;
+        
+        private function processDepends():Boolean
         {
-            if (!_depends)
-                return;
+            if (dependsList.length == 0)
+            {
+                continueOnToSteps();
+                return true;
+            }
+
+            while (dependsList.length > 0)
+            {
+                var depend:String = dependsList.shift();
+                var t:Target = project.getTarget(depend);
+                if (!t.execute())
+                {
+                    t.addEventListener(Event.COMPLETE, dependCompleteHandler);
+                    return false;
+                }
+            }
             
-            var dependsList:Array = _depends.split(",");
-            for each (var d:String in dependsList)
-                project.executeTarget(d);
+            return continueOnToSteps();
         }
         
-        override public function execute():void
+        private function dependCompleteHandler(event:Event):void
         {
             processDepends();
-            ant.processChildren(xml, context, this);
-            processSteps();
         }
         
-        private function processSteps():void
+        override public function execute():Boolean
         {
-            var n:int = numChildren;
-            for (var i:int = 0; i < n; i++)
+            if (_depends)
             {
-                var step:TaskHandler = getChildAt(i) as TaskHandler;
-                step.execute();
+                dependsList = _depends.split(",");
+                if (!processDepends())
+                    return false;
             }
+            
+            return continueOnToSteps();
+        }
+        
+        private function continueOnToSteps():Boolean
+        {
+            ant.processChildren(xml, context, this);
+            return processSteps();
+        }
+        
+        private var current:int = 0;
+        
+        private function processSteps():Boolean
+        {
+            if (current == numChildren)
+            {
+                dispatchEvent(new Event(Event.COMPLETE));
+                return true;
+            }
+            
+            while (current < numChildren)
+            {
+                var step:TaskHandler = getChildAt(current++) as TaskHandler;
+                if (!step.execute())
+                {
+                    step.addEventListener(Event.COMPLETE, completeHandler);
+                    return false;
+                }
+            }
+            dispatchEvent(new Event(Event.COMPLETE));
+            return true;
         }
 
+        private function completeHandler(event:Event):void
+        {
+            processSteps();
+        }
     }
 }

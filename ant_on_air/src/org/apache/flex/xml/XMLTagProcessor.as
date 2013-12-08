@@ -18,10 +18,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.xml
 {
+    import flash.events.EventDispatcher;
+
     /**
      *  Base class for processing XML Tags 
      */
-    public class XMLTagProcessor
+    public class XMLTagProcessor extends EventDispatcher
     {
         /**
          *  Constructor

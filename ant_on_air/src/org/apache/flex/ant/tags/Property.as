@@ -18,13 +18,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
+    import flash.desktop.NativeProcess;
+    import flash.desktop.NativeProcessStartupInfo;
+    import flash.events.Event;
+    import flash.events.NativeProcessExitEvent;
+    import flash.events.ProgressEvent;
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
-    import flash.desktop.NativeProcess;
-    import flash.desktop.NativeProcessStartupInfo;
-    import flash.events.NativeProcessExitEvent;
-    import flash.events.ProgressEvent;
     import flash.system.Capabilities;
     import flash.utils.IDataInput;
     
@@ -32,11 +33,11 @@ package org.apache.flex.ant.tags
     import mx.utils.StringUtil;
     
     import org.apache.flex.ant.Ant;
-    import org.apache.flex.ant.tags.supportClasses.NamedTagHandler;
+    import org.apache.flex.ant.tags.supportClasses.TaskHandler;
     import org.apache.flex.xml.XMLTagProcessor;
     
     [Mixin]
-    public class Property extends NamedTagHandler
+    public class Property extends TaskHandler
     {
         public static function init(mf:IFlexModuleFactory):void
         {
@@ -50,19 +51,14 @@ package org.apache.flex.ant.tags
         override public function init(xml:XML, context:Object, xmlProcessor:XMLTagProcessor):void
         {
             super.init(xml, context, xmlProcessor);
-            if (name && value && !context.hasOwnProperty(name))
-                context[name] = value;
         }
         
-        private var fileName:String;
-        private var value:String;
-        private var envPrefix:String;
-        
-        override protected function processAttribute(name:String, value:String):void
+        override public function execute():Boolean
         {
-            if (name == "file")
+            if (name && value && !context.hasOwnProperty(name))
+                context[name] = value;
+            else if (fileName != null)
             {
-                fileName = ant.getValue(value, context);
                 var f:File = new File(fileName);
                 var fs:FileStream = new FileStream();
                 fs.open(f, FileMode.READ);
@@ -76,17 +72,36 @@ package org.apache.flex.ant.tags
                         var key:String = StringUtil.trim(parts[0]);
                         var val:String;
                         if (parts.length == 2)
-                           val = parts[1];
+                            val = parts[1];
                         else
                         {
                             parts.shift();
                             val = parts.join("=");
                         }
-                        context[key] = val;
+                        if (!context.hasOwnProperty(key))
+                            context[key] = val;
                     }
-                        
+                    
                 }
-                fs.close();
+                fs.close();                
+            }
+            else if (envPrefix != null)
+            {
+                requestEnvironmentVariables();
+                return false;
+            }
+            return true;
+        }
+        
+        private var fileName:String;
+        private var value:String;
+        private var envPrefix:String;
+        
+        override protected function processAttribute(name:String, value:String):void
+        {
+            if (name == "file")
+            {
+                fileName = ant.getValue(value, context);
             }
             else if (name == "value")
             {
@@ -95,8 +110,6 @@ package org.apache.flex.ant.tags
             else if (name == "environment")
             {
                 envPrefix = value;
-                ant.waiting++;
-                requestEnvironmentVariables();
             }
             else
                 super.processAttribute(name, value);
@@ -129,6 +142,7 @@ package org.apache.flex.ant.tags
          
         private function exitHandler(event:NativeProcessExitEvent):void
         {
+            dispatchEvent(new Event(Event.COMPLETE));
         }
 
         private function onOutputErrorData(event:ProgressEvent):void 
@@ -136,7 +150,6 @@ package org.apache.flex.ant.tags
             var stdError:IDataInput = process.standardError; 
             var data:String = stdError.readUTFBytes(process.standardError.bytesAvailable); 
             trace("Got Error Output: ", data); 
-            ant.waiting--;
         }
         
         private function onOutputData(event:ProgressEvent):void 
@@ -163,10 +176,10 @@ package org.apache.flex.ant.tags
                         parts.shift();
                         val = parts.join("=");
                     }
-                    context[key] = val;
+                    if (!context.hasOwnProperty(key))
+                        context[key] = val;
                 }
             }
-            ant.waiting--;
         }
 
     } 

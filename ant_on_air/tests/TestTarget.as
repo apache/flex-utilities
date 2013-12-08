@@ -39,14 +39,15 @@ package
             var context:Object = { targets: "test" };
             var file:File = File.applicationDirectory;
             file = file.resolvePath("test.xml");
-            ant.processXMLFile(file, context);
-            addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+            if (!ant.processXMLFile(file, context))
+                ant.addEventListener(Event.COMPLETE, completeHandler);
+            else
+                completeHandler(null);
         }
         
-        private function enterFrameHandler(event:Event):void
+        private function completeHandler(event:Event):void
         {
-            if (ant.waiting == 0)
-                NativeApplication.nativeApplication.exit();
+            NativeApplication.nativeApplication.exit();
         }
         
         private var ant:Ant;

@@ -18,14 +18,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags.supportClasses
 {
-    import org.apache.flex.xml.XMLTagProcessor;
+    import flash.events.EventDispatcher;
+    
     import org.apache.flex.ant.Ant;
     import org.apache.flex.xml.ITagHandler;
+    import org.apache.flex.xml.XMLTagProcessor;
     
     /**
      *   The lowest-level base class for ITagHandlers for Ant.
      */
-    public class TagHandler implements ITagHandler
+    public class TagHandler extends EventDispatcher implements ITagHandler
     {
         /**
          *  Constructor

@@ -19,6 +19,7 @@
 package org.apache.flex.ant
 {
     
+    import flash.events.Event;
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
@@ -37,6 +38,7 @@ package org.apache.flex.ant
         public function Ant()
         {
             super();
+            ant = this;
         }
         
         /**
@@ -50,7 +52,7 @@ package org.apache.flex.ant
          *   @param file File The file to open.
          *   @param context Object An object containing an optional targets property listing the targets to run.
          */
-        public function processXMLFile(file:File, context:Object = null):void
+        public function processXMLFile(file:File, context:Object = null):Boolean
         {
             this.file = file;
             var fs:FileStream = new FileStream();
@@ -64,39 +66,26 @@ package org.apache.flex.ant
                 context = {};
             this.context = context;
             var project:Project = processXMLTag(xml, context) as Project;
-            if (waiting == 0)
-                project.execute();
-            else
-                this.project = project;
+            Ant.project = project;
+            if (!project.execute())
+            {
+                project.addEventListener(Event.COMPLETE, completeHandler);
+                return false;                
+            }
+            return true;
         }
     
         private var context:Object;
-        private var project:Project;
-        
-        private var _waiting:int = 0;
-        
-        /**
-         *  A flag used to defer execution if
-         *  waiting on something async like loading
-         *  environment variables.
-         */
-        public function get waiting():int
+        public static var ant:Ant;
+        public static var project:Project;
+        public static function log(msg:String, level:int):void
         {
-            return _waiting;
+            ant.output(msg);
         }
-        
-        /**
-         *  @private
-         */
-        public function set waiting(value:int):void
+                
+        private function completeHandler(event:Event):void
         {
-            if (value >= 0)
-                _waiting = value;
-            
-            if (value == 0)
-                if (project)
-                    project.execute()
-                        
+            dispatchEvent(event);
         }
         
         /**

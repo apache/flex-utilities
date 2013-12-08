@@ -22,12 +22,12 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.IValueTagHandler;
-    import org.apache.flex.ant.tags.supportClasses.ParentTagHandler;
+    import org.apache.flex.ant.tags.supportClasses.TaskHandler;
     import org.apache.flex.xml.XMLTagProcessor;
     
     [Mixin]
 
-    public class Condition extends ParentTagHandler
+    public class Condition extends TaskHandler
     {
         public static function init(mf:IFlexModuleFactory):void
         {
@@ -39,12 +39,10 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        override public function init(xml:XML, context:Object, xmlProcessor:XMLTagProcessor):void
+        override public function execute():Boolean
         {
-            // process attributes
-            super.init(xml, context, xmlProcessor);
-            // create child nodes
-            ant.processChildren(xml, context, this);
+            super.execute();
+            
             // if the property is not already set
             if (_property && _value != null && !context.hasOwnProperty(_property))
             {
@@ -58,6 +56,7 @@ package org.apache.flex.ant.tags
                     context[_property] = val;
                 }
             }
+            return true;
         }
 
         private var _property:String;

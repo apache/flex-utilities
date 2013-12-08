@@ -52,10 +52,11 @@ package org.apache.flex.ant.tags
                 super.processAttribute(name, value);
         }
 
-        override public function execute():void
+        override public function execute():Boolean
         {
             super.execute();
             ant.output(ant.getValue(text, context));
+            return true;
         }
     }
 }

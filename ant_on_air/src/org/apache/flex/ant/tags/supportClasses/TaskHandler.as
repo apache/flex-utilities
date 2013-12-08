@@ -34,9 +34,10 @@ package org.apache.flex.ant.tags.supportClasses
          *  super.execute() should be called before
          *  doing any real work. 
          */
-        public function execute():void
+        public function execute():Boolean
         {
             ant.processChildren(this.xml, context, this);
+            return true;
         }
     }
 }
