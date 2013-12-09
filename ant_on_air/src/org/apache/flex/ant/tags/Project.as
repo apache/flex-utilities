@@ -52,6 +52,13 @@ package org.apache.flex.ant.tags
         {
         }
         
+        /**
+         *  true if tasks completed successfully.
+         *  Do not monitor this property to determine if the project is done executing.
+         *  This property is set to true and a failing task sets it to false.
+         */
+        public var status:Boolean;
+        
         override public function init(xml:XML, context:Object, xmlProcessor:XMLTagProcessor):void
         {
             context.project = this;
@@ -87,6 +94,8 @@ package org.apache.flex.ant.tags
 
         override public function execute():Boolean
         {
+            status = true;
+            
             if (context.targets == null)
                 context.targets == _defaultTarget;
             
@@ -100,6 +109,12 @@ package org.apache.flex.ant.tags
         
         private function executeChildren():Boolean
         {
+            if (!status)
+            {
+                dispatchEvent(new Event(Event.COMPLETE));
+                return true;                
+            }
+            
             if (current == numChildren)
                 return executeTargets();
             
@@ -116,6 +131,11 @@ package org.apache.flex.ant.tags
                         task.addEventListener(Event.COMPLETE, childCompleteHandler);
                         return false;
                     }
+                    if (!status)
+                    {
+                        dispatchEvent(new Event(Event.COMPLETE));
+                        return true;                                        
+                    }
                 }
             }
             return executeTargets();
@@ -127,7 +147,13 @@ package org.apache.flex.ant.tags
             {
                 var targetName:String = targets.shift();
                 if (!executeTarget(targetName))
-                    return false;                
+                    return false;
+                if (!status)
+                {
+                    dispatchEvent(new Event(Event.COMPLETE));
+                    return true;
+                }
+                    
             }
             if (targets.length == 0)
                 dispatchEvent(new Event(Event.COMPLETE));

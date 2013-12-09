@@ -46,19 +46,25 @@ package org.apache.flex.ant.tags
             // if the property is not already set
             if (_property && _value != null && !context.hasOwnProperty(_property))
             {
-                // get the value from the children
-                var val:Object = IValueTagHandler(getChildAt(0)).value;
+                var val:Object = computedValue;
                 if (val == "true" || val == true)
                 {
                     // set it if we should
                     if (_value != null)
                         val = _value;
                     context[_property] = val;
-                }
+                }            
             }
             return true;
         }
 
+        public function get computedValue():Object
+        {
+            // get the value from the children
+            var val:Object = IValueTagHandler(getChildAt(0)).value;
+            return val;
+        }
+        
         private var _property:String;
         private var _value:Object;
         

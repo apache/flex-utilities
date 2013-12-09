@@ -48,6 +48,13 @@
         <mkdir dir="${basedir}/temp" />
         <copy file="${basedir}/test.xml" toFile="${basedir}/temp/copied.xml" />
         <available file="${basedir}/temp/copied.xml" property="copied.doesnt.exist" value="got copied" />
+        <fail message="test.xml was not copied to temp/copied.xml">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/copied.xml" />
+                </not>
+            </condition>
+        </fail>
         <echo>copied ${copied.doesnt.exist}.  Should say: got copied</echo>
         <copy toDir="${basedir}/temp">
             <fileset dir="${basedir}/../src">
@@ -56,14 +63,36 @@
             </fileset>
         </copy>
         <available file="${basedir}/temp/org/apache/flex/ant/Ant.as" property="ant.doesnt.exist" value="got copied" />
+        <fail message="Ant.as was copied to temp">
+            <condition>
+                <available file="${basedir}/temp/org/apache/flex/ant/Ant.as" />
+            </condition>
+        </fail>
         <echo>Ant.as ${ant.doesnt.exist}. Should NOT say: got copied</echo>
         <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" property="project.doesnt.exist" value="got copied" />
+        <fail message="Project.as was not copied to temp">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" />
+                </not>
+            </condition>
+        </fail>
         <echo>Project.as ${project.doesnt.exist}. Should say: got copied</echo>
         <delete file="${basedir}/temp/copied.xml" />
         <available file="${basedir}/temp/copied.xml" property="copied.doesnt.exist.after.delete" value="didn't get deleted" />
+        <fail message="temp/copied.xml was not deleted">
+            <condition>
+                <available file="${basedir}/temp/copied.xml" />
+            </condition>
+        </fail>
         <echo>copied.xml ${copied.doesnt.exist.after.delete}. Should NOT say: didn't get deleted</echo>
         <delete dir="${basedir}/temp" />
         <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" property="project.doesnt.exist.after.delete" value="didn't get deleted" />
+        <fail message="temp/copied.xml was not deleted">
+            <condition>
+                <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" />
+            </condition>
+        </fail>
         <echo>Project.as ${project.doesnt.exist.after.delete}. Should NOT say: didn't get deleted</echo>
 	</target>
 

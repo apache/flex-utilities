@@ -48,9 +48,12 @@ package org.apache.flex.ant
         private var file:File;
         
         /**
-         *   Open a file, read the XML and create ITagHandlers for every tag
+         *   Open a file, read the XML, create ITagHandlers for every tag, then process them.
+         *   When finished, check the project's status property.  If it is true then all
+         *   tasks completed successfully
          *   @param file File The file to open.
          *   @param context Object An object containing an optional targets property listing the targets to run.
+         *   @return true if XML file was processed synchronously.  If false, then add listener for Event.COMPLETE.
          */
         public function processXMLFile(file:File, context:Object = null):Boolean
         {

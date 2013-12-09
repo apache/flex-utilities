@@ -28,6 +28,8 @@ package org.apache.flex.ant.tags.supportClasses
         {
         }
         
+        public var failonerror:Boolean = true
+        
         /**
          *  Do the work.
          *  TaskHandlers lazily create their children so
@@ -38,6 +40,14 @@ package org.apache.flex.ant.tags.supportClasses
         {
             ant.processChildren(this.xml, context, this);
             return true;
+        }
+        
+        override protected function processAttribute(name:String, value:String):void
+        {
+            if (name == "failonerror")
+                failonerror = value == "true";
+            else
+                super.processAttribute(name, value);
         }
     }
 }

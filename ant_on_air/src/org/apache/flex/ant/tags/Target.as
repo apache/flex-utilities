@@ -111,6 +111,8 @@ package org.apache.flex.ant.tags
         
         private function continueOnToSteps():Boolean
         {
+            if (!Ant.project.status)
+                return true;
             ant.processChildren(xml, context, this);
             return processSteps();
         }
@@ -133,6 +135,8 @@ package org.apache.flex.ant.tags
                     step.addEventListener(Event.COMPLETE, completeHandler);
                     return false;
                 }
+                if (!Ant.project.status)
+                    return true;
             }
             dispatchEvent(new Event(Event.COMPLETE));
             return true;
@@ -140,6 +144,11 @@ package org.apache.flex.ant.tags
 
         private function completeHandler(event:Event):void
         {
+            if (!Ant.project.status)
+            {
+                dispatchEvent(new Event(Event.COMPLETE));
+                return;                
+            }
             processSteps();
         }
     }

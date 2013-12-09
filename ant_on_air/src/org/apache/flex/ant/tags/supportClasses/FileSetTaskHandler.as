@@ -20,6 +20,7 @@ package org.apache.flex.ant.tags.supportClasses
 {
     import flash.filesystem.File;
     
+    import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.FileSet;
     
     /**
@@ -46,13 +47,24 @@ package org.apache.flex.ant.tags.supportClasses
                 var fs:FileSet = getChildAt(i) as FileSet;
                 if (fs)
                 {
-                    var list:Vector.<String> = fs.value as Vector.<String>;
-                    if (list)
+                    try
                     {
-                        var dir:File = new File(fs.dir);
-                        for each (var fileName:String in list)
+                        var list:Vector.<String> = fs.value as Vector.<String>;
+                        if (list)
                         {
-                            actOnFile(dir.nativePath, fileName);
+                            var dir:File = new File(fs.dir);
+                            for each (var fileName:String in list)
+                            {
+                                actOnFile(dir.nativePath, fileName);
+                            }
+                        }
+                    }
+                    catch (e:Error)
+                    {
+                        if (failonerror)
+                        {
+                            Ant.project.status = false;
+                            return true;
                         }
                     }
                 }
