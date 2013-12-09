@@ -101,11 +101,11 @@ package org.apache.flex.ant.tags
         {
             if (name == "file")
             {
-                fileName = ant.getValue(value, context);
+                fileName = value;
             }
             else if (name == "value")
             {
-                this.value = ant.getValue(value, context);
+                this.value = value;
             }
             else if (name == "environment")
             {

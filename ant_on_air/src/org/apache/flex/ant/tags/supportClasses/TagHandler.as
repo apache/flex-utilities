@@ -71,7 +71,7 @@ package org.apache.flex.ant.tags.supportClasses
         {
             var n:int = xmlList.length();
             for (var i:int = 0; i < n; i++)
-                processAttribute(xmlList[i].name().toString(), xmlList[i].toString());
+                processAttribute(xmlList[i].name().toString(), ant.getValue(xmlList[i].toString(), context));
         }
         
         /**
