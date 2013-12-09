@@ -44,6 +44,8 @@ package org.apache.flex.ant.tags.supportClasses
         
         public function get numChildren():int
         {
+            if (!children) return 0;
+            
             return children.length;
         }
     }
