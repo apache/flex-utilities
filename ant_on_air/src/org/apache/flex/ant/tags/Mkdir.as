@@ -16,26 +16,45 @@
 //  limitations under the License.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package
+package org.apache.flex.ant.tags
 {
-    public class AntClasses
+    import flash.filesystem.File;
+    
+    import mx.core.IFlexModuleFactory;
+    
+    import org.apache.flex.ant.Ant;
+    import org.apache.flex.ant.tags.supportClasses.TaskHandler;
+    
+    [Mixin]
+    public class Mkdir extends TaskHandler
     {
-        public function AntClasses()
+        public static function init(mf:IFlexModuleFactory):void
         {
-            import org.apache.flex.ant.Ant; Ant;
-            import org.apache.flex.ant.tags.Project; Project;
-            import org.apache.flex.ant.tags.Available; Available;
-            import org.apache.flex.ant.tags.Condition; Condition;
-            import org.apache.flex.ant.tags.Copy; Copy;
-            import org.apache.flex.ant.tags.Delete; Delete;
-            import org.apache.flex.ant.tags.Echo; Echo;
-            import org.apache.flex.ant.tags.FileSet; FileSet;
-            import org.apache.flex.ant.tags.FileSetExclude; FileSetExclude;
-            import org.apache.flex.ant.tags.FileSetInclude; FileSetInclude;
-            import org.apache.flex.ant.tags.IsSet; IsSet;
-            import org.apache.flex.ant.tags.Mkdir; Mkdir;
-            import org.apache.flex.ant.tags.OS; OS;
-            import org.apache.flex.ant.tags.Property; Property;
+            Ant.antTagProcessors["mkdir"] = Mkdir;
         }
+
+        public function Mkdir()
+        {
+            super();
+        }
+        
+        private var _dir:String;
+        
+        override public function execute():Boolean
+        {
+            super.execute();
+            
+            var dir:File = new File(_dir);
+            dir.createDirectory();
+            
+            return true;
+        }
+        
+        override protected function processAttribute(name:String, value:String):void
+        {
+            if (name == "dir")
+                _dir = value;
+       }
+        
     }
 }
