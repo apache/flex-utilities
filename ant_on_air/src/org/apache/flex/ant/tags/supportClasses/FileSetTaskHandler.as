@@ -18,6 +18,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags.supportClasses
 {
+    import flash.filesystem.File;
+    
     import org.apache.flex.ant.tags.FileSet;
     
     /**
@@ -47,9 +49,10 @@ package org.apache.flex.ant.tags.supportClasses
                     var list:Vector.<String> = fs.value as Vector.<String>;
                     if (list)
                     {
+                        var dir:File = new File(fs.dir);
                         for each (var fileName:String in list)
                         {
-                            actOnFile(fs.dir, fileName);
+                            actOnFile(dir.nativePath, fileName);
                         }
                     }
                 }

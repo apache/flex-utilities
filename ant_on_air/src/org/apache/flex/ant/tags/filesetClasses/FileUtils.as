@@ -175,7 +175,7 @@ package org.apache.flex.ant.tags.filesetClasses
             var sep:String = File.separator;
             filename = filename.replace(/\//g, sep).replace(/\\/g, sep);
             var c:String = filename.charAt(0);
-            if (ON_DOS)
+            if (!ON_DOS)
                 return (c == sep);
             
             if (c == sep) {
@@ -258,7 +258,7 @@ package org.apache.flex.ant.tags.filesetClasses
                     continue;
                 }
                 if (".." == thisToken) {
-                    if (s.size() < 2) {
+                    if (s.length < 2) {
                         // Cannot resolve it, so skip it.
                         return new File(path);
                     }
@@ -268,14 +268,14 @@ package org.apache.flex.ant.tags.filesetClasses
                 }
             }
             var sb:String = "";
-            var size:int = s.size();
+            var size:int = s.length;
             for (var i:int = 0; i < size; i++) {
                 if (i > 1) {
                     // not before the filesystem root and not after it, since root
                     // already contains one
                     sb += File.separator;
                 }
-                sb += s.elementAt(i);
+                sb += s[i];
             }
             return new File(sb);
         }

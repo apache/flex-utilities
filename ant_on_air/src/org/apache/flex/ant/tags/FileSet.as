@@ -53,6 +53,7 @@ package org.apache.flex.ant.tags
         {
             if (_value) return _value;
             
+            ant.processChildren(xml, context, this);
             var ds:DirectoryScanner = new DirectoryScanner();
             var n:int = numChildren;
             var includes:Vector.<String> = new Vector.<String>();

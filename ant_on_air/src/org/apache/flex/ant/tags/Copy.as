@@ -18,6 +18,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
+    import flash.filesystem.File;
+    
     import mx.core.IFlexModuleFactory;
     
     import org.apache.flex.ant.Ant;
@@ -46,7 +48,7 @@ package org.apache.flex.ant.tags
             if (name == "file")
                 fileName = value;
             else if (name == "toFile")
-                toFileName == value;
+                toFileName = value;
             else if (name == "toDir")
                 toDirName = value;
             else if (name == "overwrite")
@@ -57,17 +59,37 @@ package org.apache.flex.ant.tags
 
         override protected function actOnFile(dir:String, fileName:String):void
         {
+            var srcName:String;
+            if (dir)
+                srcName = dir + File.separator + fileName;
+            else
+                srcName = fileName;
+            var srcFile:File = File.applicationDirectory.resolvePath(srcName);
             
+            var destName:String;
+            if (toDirName)
+                destName = toDirName + File.separator + fileName;
+            else
+                destName = toFileName;
+            var destFile:File = File.applicationDirectory.resolvePath(destName);
+                
+            srcFile.copyTo(destFile, overwrite);
         }
         
-        /**
-         *  Do the work.
-         *  TaskHandlers lazily create their children so
-         *  super.execute() should be called before
-         *  doing any real work. 
-         */
         override public function execute():Boolean
         {
+            var retVal:Boolean = super.execute();
+            if (numChildren > 0)
+                return retVal;
+            
+            var srcFile:File = File.applicationDirectory.resolvePath(fileName);
+            var destFile:File = File.applicationDirectory.resolvePath(toFileName);;
+            //var destDir:File = destFile.parent;
+            //var resolveName:String = destFile.nativePath.substr(destFile.nativePath.lastIndexOf(File.separator) + 1);
+            //destDir.resolvePath(resolveName);
+            
+            
+            srcFile.copyTo(destFile, overwrite);
             return true;
         }
     }

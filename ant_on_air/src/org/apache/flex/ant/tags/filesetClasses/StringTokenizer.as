@@ -27,29 +27,35 @@ package org.apache.flex.ant.tags.filesetClasses
             var c1:int = 0;
             var c2:int = 0;
             var n:int = s.length;
-            while (c1 < n)
+            while (c2 < n)
             {
                 var c:String = s.charAt(c2);
                 if (delims.indexOf(c) != -1)
                 {
-                    tokens.push(s.substring(c1, c2 - 1));
+                    tokens.push(s.substring(c1, c2));
                     c1 = c2;
-                    while (c1 < n)
+                    while (c2 < n)
                     {
                         c = s.charAt(c2);
                         if (delims.indexOf(c) == -1)
                         {
                             if (returnDelims)
-                            {
-                                tokens.push(s.substring(c1, c2 - 1))
-                            }
+                                tokens.push(s.substring(c1, c2))
                             c1 = c2;
                             break;
                         }
+                        c2++;
+                    }
+                    if (returnDelims && c1 < c2)
+                    {
+                        tokens.push(s.substring(c1, c2));
+                        c1 = c2;
                     }
                 }
                 c2++;
             }
+            if (c1 < n)
+                tokens.push(s.substring(c1))
         }
         
         private var tokens:Vector.<String>;

@@ -23,9 +23,16 @@ package
     import flash.events.Event;
     import flash.filesystem.File;
     import org.apache.flex.ant.Ant;
+    import org.apache.flex.ant.tags.Available; Available.init(null);
     import org.apache.flex.ant.tags.Condition; Condition.init(null);
+    import org.apache.flex.ant.tags.Copy; Copy.init(null);
+    import org.apache.flex.ant.tags.Delete; Delete.init(null);
     import org.apache.flex.ant.tags.Echo; Echo.init(null);
+    import org.apache.flex.ant.tags.FileSet; FileSet.init(null);
+    import org.apache.flex.ant.tags.FileSetExclude; FileSetExclude.init(null);
+    import org.apache.flex.ant.tags.FileSetInclude; FileSetInclude.init(null);
     import org.apache.flex.ant.tags.IsSet; IsSet.init(null);
+    import org.apache.flex.ant.tags.Mkdir; Mkdir.init(null);
     import org.apache.flex.ant.tags.OS; OS.init(null);
     import org.apache.flex.ant.tags.Project; Project.init(null);
     import org.apache.flex.ant.tags.Property; Property.init(null);

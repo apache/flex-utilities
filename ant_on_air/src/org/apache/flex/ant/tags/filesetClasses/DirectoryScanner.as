@@ -526,11 +526,14 @@ package org.apache.flex.ant.tags.filesetClasses
          * @since Ant 1.6
          */
         public static function resetDefaultExcludes():Vector.<String> {
-                defaultExcludes.length = 0;
+                var arr:Vector.<String> = defaultExcludes;
+                if (!arr)
+                    arr = new Vector.<String>();
+                arr.length = 0;
                 for (var i:int = 0; i < DEFAULTEXCLUDES.length; i++) {
-                    defaultExcludes.push(DEFAULTEXCLUDES[i]);
+                    arr.push(DEFAULTEXCLUDES[i]);
                 }
-                return defaultExcludes;
+                return arr;
         }
         
         /**
@@ -819,6 +822,8 @@ package org.apache.flex.ant.tags.filesetClasses
                     excludes = nullExcludes ? null : excludes;
             } catch (ex:IOException) {
                 throw new BuildException(ex.message);
+            } catch (e:Error) {
+                throw new BuildException(e.message);
             } finally {
                 basedir = savedBase;
             }
@@ -843,14 +848,14 @@ package org.apache.flex.ant.tags.filesetClasses
                         pattern;
                 }
             }
-            for each (var entry:Dictionary in includeNonPatterns.entrySet()) {
+            for each (var entry:Object in includeNonPatterns) {
                 for (var p:String in entry)
                 {
                     pattern = p;
                     break;
                 }
                 if (!shouldSkipPattern(pattern)) {
-                    newroots[entry.getValue()] = pattern;
+                    newroots[entry[pattern]] = pattern;
                 }
             }
             
@@ -870,13 +875,9 @@ package org.apache.flex.ant.tags.filesetClasses
                 }
                 // only scan directories that can include matched files or
                 // directories
-                for each (entry in newroots.entrySet()) {
+                for (entry in newroots) {
                     var currentPath:TokenizedPath;
-                    for (p in entry)
-                    {
-                        currentPath = p as TokenizedPath;
-                        break;
-                    }
+                    currentPath = entry as TokenizedPath;
                     var currentelement:String = currentPath.toString();
                     if (basedir == null
                         && !FileUtils.isAbsolutePath(currentelement)) {
@@ -895,7 +896,7 @@ package org.apache.flex.ant.tags.filesetClasses
                                 ? myCanonFile.nativePath
                                 : FILE_UTILS.removeLeadingPath(canonBase,
                                     myCanonFile);
-                            if (!path == currentelement) {
+                            if (path != currentelement) {
                                 myfile = currentPath.findFile(basedir, true);
                                 if (myfile != null && basedir != null) {
                                     currentelement = FILE_UTILS.removeLeadingPath(
@@ -941,10 +942,7 @@ package org.apache.flex.ant.tags.filesetClasses
                             }
                         } else {
                             var originalpattern:String;
-                            for (var q:* in entry)
-                            {
-                                originalpattern = entry[q];
-                            }
+                                originalpattern = newroots[entry] as String;
                             var included:Boolean = isCaseSensitive()
                                 ? originalpattern == currentelement
                                 : originalpattern.toUpperCase() == currentelement.toUpperCase();
@@ -1089,21 +1087,21 @@ package org.apache.flex.ant.tags.filesetClasses
             if (dir == null) {
                 throw new BuildException("dir must not be null.");
             }
-            var arr:Array = dir.getDirectoryListing();
+            else if (!dir.exists) {
+                throw new BuildException(dir + DOES_NOT_EXIST_POSTFIX);
+            } else if (!dir.isDirectory) {
+                throw new BuildException(dir + " is not a directory.");
+            }
+            try {
+                var arr:Array = dir.getDirectoryListing();                
+            } catch (e:Error) {
+                throw new BuildException("IO error scanning directory '"
+                    + dir.nativePath + "'");
+            }
             var arr2:Array = [];
             for each (var f:File in arr)
-                arr2.push(f.nativePath);
+                arr2.push(f.name);
             var newfiles:Vector.<String> = Vector.<String>(arr2);;
-            if (newfiles == null) {
-                if (!dir.exists) {
-                    throw new BuildException(dir + DOES_NOT_EXIST_POSTFIX);
-                } else if (!dir.isDirectory) {
-                    throw new BuildException(dir + " is not a directory.");
-                } else {
-                    throw new BuildException("IO error scanning directory '"
-                        + dir.nativePath + "'");
-                }
-            }
             _scandir(dir, path, fast, newfiles, new Vector.<String>());
         }
         
@@ -1150,11 +1148,16 @@ package org.apache.flex.ant.tags.filesetClasses
                     name = vpath + newfiles[i];
                     var newPath:TokenizedPath = new TokenizedPath("").initAsChild(path, newfiles[i]);
                     file = new File(dir.nativePath + File.separator + newfiles[i]);
-                    var arr:Array = file.getDirectoryListing();
+                    var arr:Array = null;
                     var arr2:Array = [];
-                    for each (var f:File in arr)
-                        arr2.push(f.nativePath);
-                    var children:Vector.<String> = Vector.<String>(arr2);
+                    var children:Vector.<String> = null;
+                    if (file.isDirectory)
+                    {
+                        arr = file.getDirectoryListing();
+                        for each (var f:File in arr)
+                            arr2.push(f.name);
+                        children = Vector.<String>(arr2);
+                    }
                     if (children == null || (children.length == 0 && !file.isDirectory)) {
                         if (isIncludedPath(newPath)) {
                             accountForIncludedFile(newPath, file);
@@ -1272,8 +1275,8 @@ package org.apache.flex.ant.tags.filesetClasses
             ensureNonPatternSetsReady();
             
             if (isCaseSensitive()
-                ? includeNonPatterns.containsKey(path.toString())
-                : includeNonPatterns.containsKey(path.toString().toUpperCase())) {
+                ? includeNonPatterns.hasOwnProperty(path.toString())
+                : includeNonPatterns.hasOwnProperty(path.toString().toUpperCase())) {
                 return true;
             }
             for (var i:int = 0; i < includePatterns.length; i++) {
@@ -1668,8 +1671,8 @@ package org.apache.flex.ant.tags.filesetClasses
          * @since Ant 1.6
          */
         private function clearCaches():void {
-            includeNonPatterns.clear();
-            excludeNonPatterns.clear();
+            includeNonPatterns = {};
+            excludeNonPatterns = {};
             includePatterns = null;
             excludePatterns = null;
             areNonPatternSetsReady = false;
@@ -1698,7 +1701,7 @@ package org.apache.flex.ant.tags.filesetClasses
          * @since Ant 1.8.0
          */
         private function fillNonPatternSet(map:Object, patterns:Vector.<String>):Vector.<TokenizedPattern> {
-            var al:Vector.<TokenizedPattern> = new Vector.<TokenizedPattern>(patterns.length);
+            var al:Vector.<TokenizedPattern> = new Vector.<TokenizedPattern>();
             for (var i:int = 0; i < patterns.length; i++) {
                 if (!SelectorUtils.hasWildcards(patterns[i])) {
                     var s:String = isCaseSensitive()
