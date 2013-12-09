@@ -29,11 +29,13 @@ package
             import org.apache.flex.ant.tags.Copy; Copy;
             import org.apache.flex.ant.tags.Delete; Delete;
             import org.apache.flex.ant.tags.Echo; Echo;
+            import org.apache.flex.ant.tags.Fail; Fail;
             import org.apache.flex.ant.tags.FileSet; FileSet;
             import org.apache.flex.ant.tags.FileSetExclude; FileSetExclude;
             import org.apache.flex.ant.tags.FileSetInclude; FileSetInclude;
             import org.apache.flex.ant.tags.IsSet; IsSet;
             import org.apache.flex.ant.tags.Mkdir; Mkdir;
+            import org.apache.flex.ant.tags.Not; Not;
             import org.apache.flex.ant.tags.OS; OS;
             import org.apache.flex.ant.tags.Property; Property;
         }
