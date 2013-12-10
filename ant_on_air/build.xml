@@ -18,7 +18,7 @@
 
 -->
 
-<project name="ant_on_air" basedir="." default="build">
+<project name="ant_on_air" basedir="." default="main">
 
     <!--load environment variables prefixed with env -->
     <property environment="env"/>
@@ -46,6 +46,22 @@
         <isset property="env.AIR_HOME" />
     </condition>
 
+    <condition property="adl" value="adl.exe">
+        <os family="windows"/>
+    </condition>
+    
+    <condition property="adl" value="adl">
+        <os family="mac"/>
+    </condition>
+
+    <condition property="runtime" value="win">
+        <os family="windows"/>
+    </condition>
+    
+    <condition property="runtime" value="mac">
+        <os family="mac"/>
+    </condition>
+    
     <!-- additional tasks - mxmlc tag -->
     <path id="flexTasks.path">
         <fileset dir="${FLEX_HOME}">
@@ -54,6 +70,9 @@
         </fileset>
     </path>
     <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
+    
+    <target name="main" depends="init,compile,test" />
+    
     <target name="build" depends="init,compile"
         description="Compiles SWC"/>
 
@@ -78,6 +97,9 @@
 			<include-classes>AntClasses</include-classes>
 
         </compc>
+    </target>
+    
+    <target name="test" >
 		<mxmlc file="${basedir}/tests/TestTarget.as"
 			output="${basedir}/tests/TestTarget.swf"
 			debug="${DEBUG_FLAG}"
@@ -87,6 +109,22 @@
 			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
             <source-path path-element="${SOURCE_DIR}"/>
 		</mxmlc>
+		<mxmlc file="${basedir}/tests/AntTest.mxml"
+			output="${basedir}/tests/AntTest.swf"
+			debug="${DEBUG_FLAG}"
+			failonerror="true"
+            fork="true"
+            maxmemory="512m">
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
+            <source-path path-element="${SOURCE_DIR}"/>
+		</mxmlc>
+        <exec executable="${AIR_HOME}/bin/${adl}" dir="${basedir}/tests" failonerror="true">
+            <arg value="-runtime" />
+            <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
+            <arg value="${basedir}/tests/AntTest-app.xml" />
+            <arg value="--" />
+            <arg value="exitwhendone" />
+        </exec>
     </target>
 
 </project>
