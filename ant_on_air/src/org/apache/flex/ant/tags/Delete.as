@@ -65,9 +65,9 @@ package org.apache.flex.ant.tags
                 delFile.deleteFile();
         }
         
-        override public function execute():Boolean
+        override public function execute(callbackMode:Boolean):Boolean
         {
-            var retVal:Boolean = super.execute();
+            var retVal:Boolean = super.execute(callbackMode);
             if (numChildren > 0)
                 return retVal;
             

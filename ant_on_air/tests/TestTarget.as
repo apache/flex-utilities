@@ -48,7 +48,7 @@ package
             var context:Object = { targets: "test" };
             var file:File = File.applicationDirectory;
             file = file.resolvePath("test.xml");
-            if (!ant.processXMLFile(file, context))
+            if (!ant.processXMLFile(file, context, false))
                 ant.addEventListener(Event.COMPLETE, completeHandler);
             else
                 completeHandler(null);

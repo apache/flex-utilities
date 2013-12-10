@@ -82,7 +82,7 @@ package org.apache.flex.ant.tags
             {
                 var depend:String = dependsList.shift();
                 var t:Target = project.getTarget(depend);
-                if (!t.execute())
+                if (!t.execute(callbackMode))
                 {
                     t.addEventListener(Event.COMPLETE, dependCompleteHandler);
                     return false;
@@ -97,8 +97,9 @@ package org.apache.flex.ant.tags
             processDepends();
         }
         
-        override public function execute():Boolean
+        override public function execute(callbackMode:Boolean):Boolean
         {
+            this.callbackMode = callbackMode;
             if (_depends)
             {
                 dependsList = _depends.split(",");
@@ -130,13 +131,18 @@ package org.apache.flex.ant.tags
             while (current < numChildren)
             {
                 var step:TaskHandler = getChildAt(current++) as TaskHandler;
-                if (!step.execute())
+                if (!step.execute(callbackMode))
                 {
                     step.addEventListener(Event.COMPLETE, completeHandler);
                     return false;
                 }
                 if (!Ant.project.status)
                     return true;
+                if (callbackMode)
+                {
+                    ant.functionToCall = processSteps;
+                    return false;
+                }
             }
             dispatchEvent(new Event(Event.COMPLETE));
             return true;
@@ -149,7 +155,10 @@ package org.apache.flex.ant.tags
                 dispatchEvent(new Event(Event.COMPLETE));
                 return;                
             }
-            processSteps();
+            if (callbackMode)
+                ant.functionToCall = processSteps;
+            else
+                processSteps();
         }
     }
 }

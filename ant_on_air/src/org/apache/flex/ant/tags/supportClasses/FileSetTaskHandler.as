@@ -18,6 +18,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags.supportClasses
 {
+    import flash.events.Event;
+    import flash.events.ProgressEvent;
     import flash.filesystem.File;
     
     import org.apache.flex.ant.Ant;
@@ -32,17 +34,25 @@ package org.apache.flex.ant.tags.supportClasses
         {
         }
         
+        private var current:int = 0;
+        private var currentFile:int;
+        private var currentList:Vector.<String>;
+        private var currentDir:File;
+        private var totalFiles:int;
+        private var thisFile:int;
+        
         /**
          *  Do the work.
          *  TaskHandlers lazily create their children so
          *  super.execute() should be called before
          *  doing any real work. 
          */
-        override public function execute():Boolean
+        override public function execute(callbackMode:Boolean):Boolean
         {
-            ant.processChildren(this.xml, context, this);
-            var n:int = numChildren;
-            for (var i:int = 0; i < n; i++)
+            super.execute(callbackMode);
+            totalFiles = 0;
+            thisFile = 0;
+            for (var i:int = 0; i < numChildren; i++)
             {
                 var fs:FileSet = getChildAt(i) as FileSet;
                 if (fs)
@@ -52,11 +62,7 @@ package org.apache.flex.ant.tags.supportClasses
                         var list:Vector.<String> = fs.value as Vector.<String>;
                         if (list)
                         {
-                            var dir:File = new File(fs.dir);
-                            for each (var fileName:String in list)
-                            {
-                                actOnFile(dir.nativePath, fileName);
-                            }
+                            totalFiles += list.length;
                         }
                     }
                     catch (e:Error)
@@ -69,7 +75,58 @@ package org.apache.flex.ant.tags.supportClasses
                     }
                 }
             }
-            return true;
+            actOnFileSets();
+            return !callbackMode;
+        }
+        
+        private function actOnFileSets():void
+        {
+            if (current == numChildren)
+            {
+                dispatchEvent(new Event(Event.COMPLETE));
+                return;
+            }
+            
+            while (current < numChildren)
+            {
+                var fs:FileSet = getChildAt(current++) as FileSet;
+                if (fs)
+                {
+                    var list:Vector.<String> = fs.value as Vector.<String>;
+                    if (list)
+                    {
+                        currentDir = new File(fs.dir);
+                        currentFile = 0;
+                        currentList = list;
+                        actOnList();
+                        if (callbackMode)
+                            return;
+                    }
+                }
+            }
+        }
+
+        private function actOnList():void
+        {
+            if (currentFile == currentList.length)
+            {
+                ant.functionToCall = actOnFileSets;
+                ant.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, thisFile, totalFiles));
+                return;
+            }
+            
+            while (currentFile < currentList.length)
+            {
+                var fileName:String = currentList[currentFile++];
+                ant.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, thisFile, totalFiles));
+                actOnFile(currentDir.nativePath, fileName);
+                thisFile++;
+                if (callbackMode)
+                {
+                    ant.functionToCall = actOnList;
+                    return;
+                }
+            }
         }
         
         protected function actOnFile(dir:String, fileName:String):void

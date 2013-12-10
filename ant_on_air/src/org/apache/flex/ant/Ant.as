@@ -55,7 +55,7 @@ package org.apache.flex.ant
          *   @param context Object An object containing an optional targets property listing the targets to run.
          *   @return true if XML file was processed synchronously.  If false, then add listener for Event.COMPLETE.
          */
-        public function processXMLFile(file:File, context:Object = null):Boolean
+        public function processXMLFile(file:File, context:Object = null, callbackMode:Boolean = true):Boolean
         {
             this.file = file;
             var fs:FileStream = new FileStream();
@@ -70,7 +70,7 @@ package org.apache.flex.ant
             this.context = context;
             var project:Project = processXMLTag(xml, context) as Project;
             Ant.project = project;
-            if (!project.execute())
+            if (!project.execute(callbackMode))
             {
                 project.addEventListener(Event.COMPLETE, completeHandler);
                 return false;                
@@ -78,6 +78,25 @@ package org.apache.flex.ant
             return true;
         }
     
+        /**
+         *  Set by various classes to defer processing in callbackMode
+         */
+        public var functionToCall:Function;
+        
+        /**
+         *  If you set callbackMode = true, you must call this method until you receive
+         *  the Event.COMPLETE 
+         */
+        public function doCallback():void   
+        {
+            if (functionToCall != null)
+            {
+                var f:Function = functionToCall;
+                functionToCall = null;
+                f();
+            }
+        }
+        
         private var context:Object;
         public static var ant:Ant;
         public static var project:Project;

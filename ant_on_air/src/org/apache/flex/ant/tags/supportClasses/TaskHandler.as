@@ -28,7 +28,9 @@ package org.apache.flex.ant.tags.supportClasses
         {
         }
         
-        public var failonerror:Boolean = true
+        public var failonerror:Boolean = true;
+        
+        protected var callbackMode:Boolean;
         
         /**
          *  Do the work.
@@ -36,8 +38,9 @@ package org.apache.flex.ant.tags.supportClasses
          *  super.execute() should be called before
          *  doing any real work. 
          */
-        public function execute():Boolean
+        public function execute(callbackMode:Boolean):Boolean
         {
+            this.callbackMode = callbackMode;
             ant.processChildren(this.xml, context, this);
             return true;
         }

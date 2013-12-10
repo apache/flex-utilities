@@ -58,9 +58,9 @@ package org.apache.flex.ant.tags
             return true;
         }
 
-        override public function execute():Boolean
+        override public function execute(callbackMode:Boolean):Boolean
         {
-            super.execute();
+            super.execute(callbackMode);
             if (value)
                 if (!context.hasOwnProperty(_property))
                     context[_property] = _value;

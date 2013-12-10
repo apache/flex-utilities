@@ -53,7 +53,7 @@ package org.apache.flex.ant.tags
             super.init(xml, context, xmlProcessor);
         }
         
-        override public function execute():Boolean
+        override public function execute(callbackMode:Boolean):Boolean
         {
             if (name && value && !context.hasOwnProperty(name))
                 context[name] = value;

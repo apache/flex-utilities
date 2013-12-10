@@ -92,8 +92,10 @@ package org.apache.flex.ant.tags
                 super.processAttribute(name, value);
         }
 
-        override public function execute():Boolean
+        override public function execute(callbackMode:Boolean):Boolean
         {
+            this.callbackMode = callbackMode;
+            
             status = true;
             
             if (context.targets == null)
@@ -126,7 +128,7 @@ package org.apache.flex.ant.tags
                 if (child is TaskHandler)
                 {
                     var task:TaskHandler = TaskHandler(child);
-                    if (!task.execute())
+                    if (!task.execute(callbackMode))
                     {
                         task.addEventListener(Event.COMPLETE, childCompleteHandler);
                         return false;
@@ -185,7 +187,7 @@ package org.apache.flex.ant.tags
         public function executeTarget(targetName:String):Boolean
         {
             var t:Target = getTarget(targetName);
-            if (!t.execute())
+            if (!t.execute(callbackMode))
             {
                 t.addEventListener(Event.COMPLETE, completeHandler);
                 return false;

@@ -53,15 +53,15 @@ package org.apache.flex.ant.tags
                 super.processAttribute(name, value);
         }
 
-        override public function execute():Boolean
+        override public function execute(callbackMode:Boolean):Boolean
         {
-            super.execute();
+            super.execute(callbackMode);
             if (numChildren == 1)
             {
                 var child:Condition = getChildAt(0) as Condition;
                 if (child)
                 {
-                    child.execute();
+                    child.execute(false);
                     var val:Object = child.computedValue;
                     if (!(val == "true" || val == true))
                     {

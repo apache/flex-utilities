@@ -39,9 +39,9 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        override public function execute():Boolean
+        override public function execute(callbackMode:Boolean):Boolean
         {
-            super.execute();
+            super.execute(callbackMode);
             
             // if the property is not already set
             if (_property && _value != null && !context.hasOwnProperty(_property))

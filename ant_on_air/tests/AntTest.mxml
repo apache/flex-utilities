@@ -49,8 +49,12 @@ limitations under the License.
                 var context:Object = { targets: "test" };
                 var file:File = File.applicationDirectory;
                 file = file.resolvePath("test.xml");
-                if (!ant.processXMLFile(file, context))
+                addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+                if (!ant.processXMLFile(file, context, true))
+                {
                     ant.addEventListener(Event.COMPLETE, completeHandler);
+                    pb.source = ant;
+                }
                 else
                     completeHandler(null);
             }
@@ -79,7 +83,15 @@ limitations under the License.
                 console.verticalScrollPosition = console.maxVerticalScrollPosition;
             }
             
+            private function enterFrameHandler(event:Event):void
+            {
+                ant.doCallback();
+            }
         ]]>
     </fx:Script>
+    <s:layout>
+        <s:VerticalLayout />
+    </s:layout>
     <mx:TextArea id="console" width="100%" height="100%" />
+    <mx:ProgressBar id="pb" width="100%" mode="event" label="Copying %1 of %2" />
 </s:WindowedApplication>

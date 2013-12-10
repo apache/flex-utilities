@@ -76,9 +76,9 @@ package org.apache.flex.ant.tags
             srcFile.copyTo(destFile, overwrite);
         }
         
-        override public function execute():Boolean
+        override public function execute(callbackMode:Boolean):Boolean
         {
-            var retVal:Boolean = super.execute();
+            var retVal:Boolean = super.execute(callbackMode);
             if (numChildren > 0)
                 return retVal;
             
@@ -87,7 +87,6 @@ package org.apache.flex.ant.tags
             //var destDir:File = destFile.parent;
             //var resolveName:String = destFile.nativePath.substr(destFile.nativePath.lastIndexOf(File.separator) + 1);
             //destDir.resolvePath(resolveName);
-            
             
             srcFile.copyTo(destFile, overwrite);
             return true;
