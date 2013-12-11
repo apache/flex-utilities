@@ -21,12 +21,10 @@ package org.apache.flex.ant.tags
     import mx.core.IFlexModuleFactory;
     
     import org.apache.flex.ant.Ant;
-    import org.apache.flex.ant.tags.supportClasses.IValueTagHandler;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-    import org.apache.flex.xml.ITextTagHandler;
     
     [Mixin]
-    public class Fail extends TaskHandler implements ITextTagHandler
+    public class Fail extends TaskHandler
     {
         public static function init(mf:IFlexModuleFactory):void
         {
