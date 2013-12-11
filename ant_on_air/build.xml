@@ -106,6 +106,7 @@
     </target>
     
     <target name="test" >
+        <!-- TestTarget is probably obsolete
 		<mxmlc file="${basedir}/tests/TestTarget.as"
 			output="${basedir}/tests/TestTarget.swf"
 			debug="${DEBUG_FLAG}"
@@ -115,6 +116,7 @@
 			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
             <source-path path-element="${SOURCE_DIR}"/>
 		</mxmlc>
+        -->
 		<mxmlc file="${basedir}/tests/AntTest.mxml"
 			output="${basedir}/tests/AntTest.swf"
 			debug="${DEBUG_FLAG}"
