@@ -30,6 +30,9 @@ package org.apache.flex.ant.tags.supportClasses
         
         public var failonerror:Boolean = true;
         
+        public var ifProperty:String;
+        public var unlessProperty:String;
+        
         protected var callbackMode:Boolean;
         
         /**
@@ -49,6 +52,10 @@ package org.apache.flex.ant.tags.supportClasses
         {
             if (name == "failonerror")
                 failonerror = value == "true";
+            else if (name == "if")
+                ifProperty = value;
+            else if (name == "unless")
+                unlessProperty = value;
             else
                 super.processAttribute(name, value);
         }

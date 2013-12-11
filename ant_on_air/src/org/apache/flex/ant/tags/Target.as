@@ -131,6 +131,12 @@ package org.apache.flex.ant.tags
             while (current < numChildren)
             {
                 var step:TaskHandler = getChildAt(current++) as TaskHandler;
+                if (step.ifProperty != null)
+                    if (!context.hasOwnProperty(step.ifProperty))
+                        continue;
+                if (step.unlessProperty != null)
+                    if (context.hasOwnProperty(step.unlessProperty))
+                        continue;
                 if (!step.execute(callbackMode))
                 {
                     step.addEventListener(Event.COMPLETE, completeHandler);
