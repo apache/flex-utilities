@@ -103,6 +103,7 @@ package org.apache.flex.ant.tags
         
         private function sumComplete():void
         {
+            sum = md5.complete();
             var sumFile:File = getSumFile();
             var fs:FileStream = new FileStream();
             if (verifyproperty)
