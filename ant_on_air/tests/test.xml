@@ -107,6 +107,8 @@
         <checksum file="${basedir}/temp/apache-rat-0.10-src.zip" todir="${basedir}/temp"
             verifyproperty="rat.md5" />
         <echo>rat checksum match = ${rat.md5}</echo>
+        <mkdir dir="${basedir}/temp/unzip" />
+        <unzip src="${basedir}/temp/apache-rat-0.10-src.zip" dest="${basedir}/temp/unzip" />
         <delete dir="${basedir}/temp" />
         <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" property="project.doesnt.exist.after.delete" value="didn't get deleted" />
         <fail message="temp/copied.xml was not deleted">
