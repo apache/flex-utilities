@@ -30,16 +30,20 @@ package
             import org.apache.flex.ant.tags.Copy; Copy;
             import org.apache.flex.ant.tags.Delete; Delete;
             import org.apache.flex.ant.tags.Echo; Echo;
+            import org.apache.flex.ant.tags.Equals; Equals;
             import org.apache.flex.ant.tags.Fail; Fail;
             import org.apache.flex.ant.tags.FileSet; FileSet;
             import org.apache.flex.ant.tags.FileSetExclude; FileSetExclude;
             import org.apache.flex.ant.tags.FileSetInclude; FileSetInclude;
             import org.apache.flex.ant.tags.Get; Get;
             import org.apache.flex.ant.tags.IsSet; IsSet;
+            import org.apache.flex.ant.tags.LoadProperties; LoadProperties;
             import org.apache.flex.ant.tags.Mkdir; Mkdir;
             import org.apache.flex.ant.tags.Not; Not;
             import org.apache.flex.ant.tags.OS; OS;
             import org.apache.flex.ant.tags.Property; Property;
+            import org.apache.flex.ant.tags.PropertyFile; PropertyFile;
+            import org.apache.flex.ant.tags.Replace; Replace;
             import org.apache.flex.ant.tags.Untar; Untar;
             import org.apache.flex.ant.tags.Unzip; Unzip;
         }

@@ -110,6 +110,11 @@
         <checksum file="${basedir}/temp/apache-rat-0.10-src.zip" todir="${basedir}/temp"
             verifyproperty="rat.md5" />
         <echo>rat checksum match = ${rat.md5}</echo>
+        <fail message="checksum did not match">
+            <condition>
+                <equals arg1="${rat.md5}" arg2="false" />
+            </condition>
+        </fail>
         <mkdir dir="${basedir}/temp/unzip" />
         <unzip src="${basedir}/temp/apache-rat-0.10-src.zip" dest="${basedir}/temp/unzip" />
         <fail message="unzip did not result in expected files">
@@ -135,6 +140,34 @@
                 <not>
                     <available file="${basedir}/temp/untar/apache-rat-0.10/pom.xml" />
                 </not>
+            </condition>
+        </fail>
+        <propertyfile file="${basedir}/temp/custom.properties" >
+            <entry key="somekey" value="somevalue" />
+            <entry key="somekey1" value="somevalue1" />
+        </propertyfile>
+        <fail message="propertyfile did not result in expected file">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/custom.properties" />
+                </not>
+            </condition>
+        </fail>
+        <replace file="${basedir}/temp/custom.properties" token="somekey" value="replacedkey" />
+        <loadproperties srcFile="${basedir}/temp/custom.properties" />
+        <fail message="replace did not work: found somekey">
+            <condition>
+                <isset property="somekey" />
+            </condition>
+        </fail>
+        <fail message="replace did not work: did not find replacedkey">
+            <condition>
+                <equals arg1="${replacedkey}" arg2="somevalue" />
+            </condition>
+        </fail>
+        <fail message="replace did not work: did not find replacedkey1">
+            <condition>
+                <equals arg1="${replacedkey1}" arg2="somevalue1" />
             </condition>
         </fail>
         <delete dir="${basedir}/temp" />
