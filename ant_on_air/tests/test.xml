@@ -42,6 +42,9 @@
     <condition property="theOS" value="Mac">
 		<os family="mac"/>
     </condition>
+    <condition property="isMac" value="Mac">
+		<os family="mac"/>
+    </condition>
 
 	<target name="test">
 		<echo>FLEX_HOME is ${FLEX_HOME}. DEBUG is ${DEBUG_FLAG}. The OS is ${theOS}</echo>
@@ -109,6 +112,31 @@
         <echo>rat checksum match = ${rat.md5}</echo>
         <mkdir dir="${basedir}/temp/unzip" />
         <unzip src="${basedir}/temp/apache-rat-0.10-src.zip" dest="${basedir}/temp/unzip" />
+        <fail message="unzip did not result in expected files">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/unzip/apache-rat-0.10/pom.xml" />
+                </not>
+            </condition>
+        </fail>
+        <get src="http://archive.apache.org/dist/creadur/apache-rat-0.10/apache-rat-0.10-src.tar.gz"
+        dest="${basedir}/temp" />
+        <fail message="apache-rat-0.10-src.tar.gz was not copied to temp">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/apache-rat-0.10-src.tar.gz" />
+                </not>
+            </condition>
+        </fail>
+        <mkdir dir="${basedir}/temp/untar" />
+        <untar src="${basedir}/temp/apache-rat-0.10-src.tar.gz" dest="${basedir}/temp/untar" if="isMac" />
+        <fail message="untar did not result in expected files">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/untar/apache-rat-0.10/pom.xml" />
+                </not>
+            </condition>
+        </fail>
         <delete dir="${basedir}/temp" />
         <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" property="project.doesnt.exist.after.delete" value="didn't get deleted" />
         <fail message="temp/copied.xml was not deleted">

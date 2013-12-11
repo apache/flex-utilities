@@ -40,6 +40,7 @@ package
             import org.apache.flex.ant.tags.Not; Not;
             import org.apache.flex.ant.tags.OS; OS;
             import org.apache.flex.ant.tags.Property; Property;
+            import org.apache.flex.ant.tags.Untar; Untar;
             import org.apache.flex.ant.tags.Unzip; Unzip;
         }
     }
