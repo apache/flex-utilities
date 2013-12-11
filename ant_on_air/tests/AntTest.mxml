@@ -30,6 +30,9 @@ limitations under the License.
             // all tag handlers
             import AntClasses; AntClasses;
             import org.apache.flex.ant.Ant;
+            import org.apache.flex.ant.tags.Copy;
+            import org.apache.flex.ant.tags.Get;
+            import org.apache.flex.ant.tags.Checksum;
             
             private function checkargs(event:InvokeEvent):void
             {
@@ -53,10 +56,27 @@ limitations under the License.
                 if (!ant.processXMLFile(file, context, true))
                 {
                     ant.addEventListener(Event.COMPLETE, completeHandler);
+                    ant.addEventListener(ProgressEvent.PROGRESS, progressEventHandler);
                     pb.source = ant;
                 }
                 else
                     completeHandler(null);
+            }
+            
+            private function progressEventHandler(event:ProgressEvent):void
+            {
+                if (ant.progressClass is Copy)
+                {
+                    pb.label = "Copying %1 of %2";
+                }
+                else if (ant.progressClass is Get)
+                {
+                    pb.label = "Downloading bytes %1 of %2";                    
+                }
+                else if (ant.progressClass is Checksum)
+                {
+                    pb.label = "Verifying download: bytes %1 of %2";                    
+                }
             }
             
             private function completeHandler(event:Event):void

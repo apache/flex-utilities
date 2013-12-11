@@ -77,7 +77,12 @@
         description="Compiles SWC"/>
 
     <target name="init" depends="clean"
-        description="Creates the deploy folders and sets app extension"/>
+        description="Creates the deploy folders and sets app extension">
+        <copy file="../installer/src/com/adobe/crypto/MD5Stream.as"
+            toFile="${SOURCE_DIR}/com/adobe/crypto/MD5Stream.as" />
+            <copy file="../installer/src/com/adobe/utils/IntUtil.as"
+            toFile="${SOURCE_DIR}/com/adobe/utils/IntUtil.as" />
+    </target>
 
     <target name="clean" description="Cleans up old files.">
         <delete dir="${LIBRARY_DIR}" failOnError="false" includeEmptyDirs="true" />

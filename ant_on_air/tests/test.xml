@@ -86,6 +86,27 @@
             </condition>
         </fail>
         <echo>copied.xml ${copied.doesnt.exist.after.delete}. Should NOT say: didn't get deleted</echo>
+        <get src="http://archive.apache.org/dist/creadur/apache-rat-0.10/apache-rat-0.10-src.zip"
+            dest="${basedir}/temp" />
+        <fail message="apache-rat-0.10-src.zip was not copied to temp">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/apache-rat-0.10-src.zip" />
+                </not>
+            </condition>
+        </fail>
+        <get src="http://archive.apache.org/dist/creadur/apache-rat-0.10/apache-rat-0.10-src.zip.md5"
+            dest="${basedir}/temp" />
+        <fail message="apache-rat-0.10-src.zip.md5 was not copied to temp">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/apache-rat-0.10-src.zip.md5" />
+                </not>
+            </condition>
+        </fail>
+        <checksum file="${basedir}/temp/apache-rat-0.10-src.zip" todir="${basedir}/temp"
+            verifyproperty="rat.md5" />
+        <echo>rat checksum match = ${rat.md5}</echo>
         <delete dir="${basedir}/temp" />
         <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" property="project.doesnt.exist.after.delete" value="didn't get deleted" />
         <fail message="temp/copied.xml was not deleted">

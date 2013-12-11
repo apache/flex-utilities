@@ -97,6 +97,11 @@ package org.apache.flex.ant
             }
         }
         
+        /** 
+         * the instance of the class dispatching progress events
+         */
+        public var progressClass:Object;
+        
         private var context:Object;
         public static var ant:Ant;
         public static var project:Project;

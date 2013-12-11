@@ -117,6 +117,7 @@ package org.apache.flex.ant.tags.supportClasses
             
             while (currentFile < currentList.length)
             {
+                ant.progressClass = this;
                 var fileName:String = currentList[currentFile++];
                 ant.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, thisFile, totalFiles));
                 actOnFile(currentDir.nativePath, fileName);
