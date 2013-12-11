@@ -170,6 +170,14 @@
                 <equals arg1="${replacedkey1}" arg2="somevalue1" />
             </condition>
         </fail>
+        <input message="Ok to delete temp directory?" unless="exitwhendone"
+            validargs="yn"
+            addproperty="oktodelete" />
+        <fail message="you were supposed to hit 'y'" >
+            <condition>
+                <equals arg1="n" arg2="${oktodelete}" />
+            </condition>
+        </fail>
         <delete dir="${basedir}/temp" />
         <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" property="project.doesnt.exist.after.delete" value="didn't get deleted" />
         <fail message="temp/copied.xml was not deleted">

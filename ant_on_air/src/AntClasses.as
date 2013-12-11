@@ -36,6 +36,7 @@ package
             import org.apache.flex.ant.tags.FileSetExclude; FileSetExclude;
             import org.apache.flex.ant.tags.FileSetInclude; FileSetInclude;
             import org.apache.flex.ant.tags.Get; Get;
+            import org.apache.flex.ant.tags.Input; Input;
             import org.apache.flex.ant.tags.IsSet; IsSet;
             import org.apache.flex.ant.tags.LoadProperties; LoadProperties;
             import org.apache.flex.ant.tags.Mkdir; Mkdir;

@@ -50,6 +50,8 @@ limitations under the License.
                 ant = new Ant();
                 ant.output = output;
                 var context:Object = { targets: "test" };
+                if (exitwhendone)
+                    context["exitwhendone"] = true;
                 var file:File = File.applicationDirectory;
                 file = file.resolvePath("test.xml");
                 addEventListener(Event.ENTER_FRAME, enterFrameHandler);
@@ -57,6 +59,8 @@ limitations under the License.
                 {
                     ant.addEventListener(Event.COMPLETE, completeHandler);
                     ant.addEventListener(ProgressEvent.PROGRESS, progressEventHandler);
+                    // redispatch keyboard events off of ant so input task can see them
+                    systemManager.stage.addEventListener(KeyboardEvent.KEY_DOWN, ant_keyDownHandler);
                     pb.source = ant;
                 }
                 else
@@ -106,6 +110,11 @@ limitations under the License.
             private function enterFrameHandler(event:Event):void
             {
                 ant.doCallback();
+            }
+            
+            private function ant_keyDownHandler(event:KeyboardEvent):void
+            {
+                ant.dispatchEvent(event);
             }
         ]]>
     </fx:Script>
