@@ -125,6 +125,7 @@
             <source-path path-element="${SOURCE_DIR}"/>
             <library-path file="${basedir}/../installer/libs" append="true"/>
 		</mxmlc>
+        <delete dir="${basedir}/tests/temp" failonerror="false" />
         <exec executable="${AIR_HOME}/bin/${adl}" dir="${basedir}/tests" failonerror="true">
             <arg value="-runtime" />
             <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
