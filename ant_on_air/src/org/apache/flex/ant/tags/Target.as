@@ -97,17 +97,25 @@ package org.apache.flex.ant.tags
             processDepends();
         }
         
+        private var inExecute:Boolean;
+        
         override public function execute(callbackMode:Boolean):Boolean
         {
+            inExecute = true;
             this.callbackMode = callbackMode;
             if (_depends)
             {
                 dependsList = _depends.split(",");
                 if (!processDepends())
+                {
+                    inExecute = false;
                     return false;
+                }
             }
             
-            return continueOnToSteps();
+            var ok:Boolean = continueOnToSteps();
+            inExecute = false;
+            return ok;
         }
         
         private function continueOnToSteps():Boolean
@@ -143,7 +151,11 @@ package org.apache.flex.ant.tags
                     return false;
                 }
                 if (!Ant.project.status)
+                {
+                    if (!inExecute)
+                        dispatchEvent(new Event(Event.COMPLETE));
                     return true;
+                }
                 if (callbackMode)
                 {
                     ant.functionToCall = processSteps;
