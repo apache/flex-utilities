@@ -186,6 +186,28 @@
             </condition>
         </fail>
         <echo>Project.as ${project.doesnt.exist.after.delete}. Should NOT say: didn't get deleted</echo>
+        <xmlproperty file="${basedir}/test_data.xml" collapseAttributes="true" />
+        <fail message="xmlproperty did not work set property">
+            <condition>
+                <not>
+                    <isset property="project.property.environment" />
+                </not>
+            </condition>
+        </fail>
+        <fail message="xmlproperty did not work set property value">
+            <condition>
+                <not>
+                    <equals arg1="${project.property.environment}" arg2="env" />
+                </not>
+            </condition>
+        </fail>
+        <fail message="xmlproperty did not work for text node">
+            <condition>
+                <not>
+                    <equals arg1="${project.target.echo}" arg2="FLEX_HOME" />
+                </not>
+            </condition>
+        </fail>
 	</target>
 
     <target name="build" depends="init,compile"

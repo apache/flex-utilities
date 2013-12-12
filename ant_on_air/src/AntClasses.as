@@ -47,6 +47,7 @@ package
             import org.apache.flex.ant.tags.Replace; Replace;
             import org.apache.flex.ant.tags.Untar; Untar;
             import org.apache.flex.ant.tags.Unzip; Unzip;
+            import org.apache.flex.ant.tags.XmlProperty; XmlProperty;
         }
     }
 }
