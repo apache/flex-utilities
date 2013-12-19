@@ -62,9 +62,9 @@ package org.apache.flex.ant.tags
         
         private var destFile:File;
         
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
          
             var srcFile:File = File.applicationDirectory.resolvePath(src);
             destFile = File.applicationDirectory.resolvePath(dest);
@@ -105,7 +105,7 @@ package org.apache.flex.ant.tags
             var output:String = _process.standardError.readUTFBytes(_process.standardError.bytesAvailable);
             ant.output(output);
             if (failonerror)
-                Ant.project.status = false;
+                ant.project.status = false;
             dispatchEvent(new Event(Event.COMPLETE));
         }
         

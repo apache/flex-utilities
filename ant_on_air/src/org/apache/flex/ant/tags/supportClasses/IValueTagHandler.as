@@ -25,6 +25,12 @@ package org.apache.flex.ant.tags.supportClasses
      */
     public interface IValueTagHandler extends ITagHandler
     {
-        function get value():Object;
+		/**
+		 *  Return a value based on the attributes and children.
+		 *  @param context Object A object of properties and values
+		 *  @return Object The computed value.  Often a Boolean but
+		 *  always.
+		 */
+        function getValue(context:Object):Object;
     }
 }

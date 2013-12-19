@@ -1135,7 +1135,7 @@ package org.apache.flex.ant.tags.filesetClasses
                             var msg:String = "IOException caught while checking "
                                 + "for links, couldn't get canonical path!";
                             // will be caught and redirected to Ant's logging system
-                            Ant.ant.output(msg);
+                            Ant.currentAnt.output(msg);
                             noLinks.push(newfiles[i]);
                         }
                     }
@@ -1171,7 +1171,7 @@ package org.apache.flex.ant.tags.filesetClasses
                             && causesIllegalSymlinkLoop(newfiles[i], dir,
                                 directoryNamesFollowed)) {
                             // will be caught and redirected to Ant's logging system
-                            Ant.ant.output("skipping symbolic link "
+                            Ant.currentAnt.output("skipping symbolic link "
                                 + file.nativePath
                                 + " -- too many levels of symbolic"
                                 + " links.");

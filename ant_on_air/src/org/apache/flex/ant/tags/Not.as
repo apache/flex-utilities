@@ -37,14 +37,15 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        public function get value():Object
+        public function getValue(context:Object):Object
         {
-            ant.processChildren(xml, context, this);
+			processAttributes(xml.attributes(), context);
+            ant.processChildren(xml, this);
             if (numChildren == 1)
             {
                 var value:IValueTagHandler = getChildAt(0) as IValueTagHandler;
                 // get the value from the children
-                var val:Object = IValueTagHandler(value).value;
+                var val:Object = IValueTagHandler(value).getValue(context);
                 if (!(val == "true" || val == true))
                 {
                     return true;

@@ -134,7 +134,7 @@
             </condition>
         </fail>
         <mkdir dir="${basedir}/temp/untar" />
-        <untar src="${basedir}/temp/apache-rat-0.10-src.tar.gz" dest="${basedir}/temp/untar" if="isMac" />
+        <untar src="${basedir}/temp/apache-rat-0.10-src.tar.gz" dest="${basedir}/temp/untar" />
         <fail message="untar did not result in expected files">
             <condition>
                 <not>
@@ -170,7 +170,7 @@
                 <equals arg1="${replacedkey1}" arg2="somevalue1" />
             </condition>
         </fail>
-        <input message="Ok to delete temp directory?" unless="exitwhendone"
+        <input message="Ok to delete temp directory?"
             validargs="yn"
             addproperty="oktodelete" />
         <fail message="you were supposed to hit 'y'" >

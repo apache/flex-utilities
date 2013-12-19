@@ -67,9 +67,9 @@ package org.apache.flex.ant.tags
         
         private var urlLoader:URLLoader;
         
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
          
             if (skipexisting)
             {
@@ -90,14 +90,14 @@ package org.apache.flex.ant.tags
         
         private function ioErrorEventHandler(event:IOErrorEvent):void
         {
-            Ant.project.status = false;
+            ant.project.status = false;
             dispatchEvent(new Event(Event.COMPLETE));
             event.preventDefault();
         }
             
         private function securityErrorHandler(event:SecurityErrorEvent):void
         {
-            Ant.project.status = false;
+            ant.project.status = false;
             dispatchEvent(new Event(Event.COMPLETE));
             event.preventDefault();
         }

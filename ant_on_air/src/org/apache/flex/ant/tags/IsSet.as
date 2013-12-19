@@ -39,9 +39,11 @@ package org.apache.flex.ant.tags
         
         private var _property:String;
         
-        public function get value():Object
+        public function getValue(context:Object):Object
         {
-            if (_property == null) return false;
+			processAttributes(xml.attributes(), context);
+
+			if (_property == null) return false;
             
             return context.hasOwnProperty(_property);
         }

@@ -34,6 +34,9 @@ package org.apache.flex.ant.tags.supportClasses
          */
         public function get name():String
         {
+			if (_name == null && xml != null)
+				_name = xml.@name.toString();
+			
             return _name;
         }
         

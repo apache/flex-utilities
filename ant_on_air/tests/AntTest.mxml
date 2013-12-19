@@ -85,13 +85,13 @@ limitations under the License.
             
             private function completeHandler(event:Event):void
             {
-                if (Ant.project.status)
+                if (Ant.currentAnt.project.status)
                     output("SUCCESS!");
                 else
                     output("FAILURE!");
                 
                 if (exitwhendone)
-                    NativeApplication.nativeApplication.exit(Ant.project.status ? 0 : 255);
+                    NativeApplication.nativeApplication.exit(Ant.currentAnt.project.status ? 0 : 255);
             }
             
             private var ant:Ant;

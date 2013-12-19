@@ -40,9 +40,9 @@ package org.apache.flex.ant.tags
         
         private var _dir:String;
         
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
             
             var dir:File = new File(_dir);
             dir.createDirectory();

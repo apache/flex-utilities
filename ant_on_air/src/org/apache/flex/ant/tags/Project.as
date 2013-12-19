@@ -52,20 +52,26 @@ package org.apache.flex.ant.tags
         {
         }
         
+		private var _status:Boolean;
         /**
          *  true if tasks completed successfully.
          *  Do not monitor this property to determine if the project is done executing.
          *  This property is set to true and a failing task sets it to false.
          */
-        public var status:Boolean;
-        
-        override public function init(xml:XML, context:Object, xmlProcessor:XMLTagProcessor):void
-        {
-            context.project = this;
-            super.init(xml, context, xmlProcessor);
-            ant.processChildren(xml, context, this);
-        }
-        
+        public function get status():Boolean
+		{
+			return _status;
+		}
+		
+		public function set status(value:Boolean):void
+		{
+			if (_status != value)
+			{
+				_status = value;
+				ant.dispatchEvent(new Event("statusChanged"));
+			}
+		}
+                
         private var _basedir:String;
         
         public function get basedir():String
@@ -92,10 +98,14 @@ package org.apache.flex.ant.tags
                 super.processAttribute(name, value);
         }
 
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
+			super.execute(callbackMode, context);
+			
             this.callbackMode = callbackMode;
-            
+			
+            context.basedir = basedir;
+			
             status = true;
             
             if (context.targets == null)
@@ -128,7 +138,7 @@ package org.apache.flex.ant.tags
                 if (child is TaskHandler)
                 {
                     var task:TaskHandler = TaskHandler(child);
-                    if (!task.execute(callbackMode))
+                    if (!task.execute(callbackMode, context))
                     {
                         task.addEventListener(Event.COMPLETE, childCompleteHandler);
                         return false;
@@ -187,7 +197,7 @@ package org.apache.flex.ant.tags
         public function executeTarget(targetName:String):Boolean
         {
             var t:Target = getTarget(targetName);
-            if (!t.execute(callbackMode))
+            if (!t.execute(callbackMode, context))
             {
                 t.addEventListener(Event.COMPLETE, completeHandler);
                 return false;

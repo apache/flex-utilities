@@ -42,7 +42,7 @@ package org.apache.flex.ant.tags.supportClasses
         protected var ant:Ant;
         
         /**
-         *  The context object.  Contains a project property referencing the project.
+         *  The context object.  Contains the properties that currently apply.
          */
         protected var context:Object;
         
@@ -54,12 +54,10 @@ package org.apache.flex.ant.tags.supportClasses
         /**
          *  @see org.apache.flex.xml.ITagHandler 
          */
-        public function init(xml:XML, context:Object, xmlProcessor:XMLTagProcessor):void
+        public function init(xml:XML, xmlProcessor:XMLTagProcessor):void
         {
             ant = xmlProcessor as Ant;
-            this.context = context;
             this.xml = xml;
-            processAttributes(xml.attributes(), context);
         }
         
         /**
@@ -80,7 +78,8 @@ package org.apache.flex.ant.tags.supportClasses
          *  @param value String The attribute value.
          */
         protected function processAttribute(name:String, value:String):void
-        {     
+        {
+			trace("unknown attribute:", name);
         }
     }
 }

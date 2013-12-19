@@ -40,13 +40,10 @@ package org.apache.flex.ant.tags
         {
         }
         
-        override public function init(xml:XML, context:Object, xmlProcessor:XMLTagProcessor):void
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.init(xml, context, xmlProcessor);
-        }
-        
-        override public function execute(callbackMode:Boolean):Boolean
-        {
+			super.execute(callbackMode, context);
+			
             var f:File = new File(fileName);
             var fs:FileStream = new FileStream();
             fs.open(f, FileMode.READ);

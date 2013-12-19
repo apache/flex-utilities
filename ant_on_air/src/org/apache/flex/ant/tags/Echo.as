@@ -52,9 +52,9 @@ package org.apache.flex.ant.tags
                 super.processAttribute(name, value);
         }
 
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
             ant.output(ant.getValue(text, context));
             return true;
         }

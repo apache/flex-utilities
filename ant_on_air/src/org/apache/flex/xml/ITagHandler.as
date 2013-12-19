@@ -26,9 +26,8 @@ package org.apache.flex.xml
         /**
          *  This method is called after the instance is created
          *  @param xml XML The XML node.
-         *  @param context Object An object containing useful information.
          *  @param tagProcessor The XMLTagProcessor that generated this instance.
          */
-        function init(xml:XML, context:Object, tagProcessor:XMLTagProcessor):void;
+        function init(xml:XML, tagProcessor:XMLTagProcessor):void;
     }
 }

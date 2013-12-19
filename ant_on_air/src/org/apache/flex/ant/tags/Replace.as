@@ -58,9 +58,9 @@ package org.apache.flex.ant.tags
                 super.processAttribute(name, value);
         }
         
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
 
             var f:File = File.applicationDirectory.resolvePath(file);
             var fs:FileStream = new FileStream();

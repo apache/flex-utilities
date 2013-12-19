@@ -76,9 +76,9 @@ package org.apache.flex.ant.tags
             srcFile.copyTo(destFile, overwrite);
         }
         
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            var retVal:Boolean = super.execute(callbackMode);
+            var retVal:Boolean = super.execute(callbackMode, context);
             if (numChildren > 0)
                 return retVal;
             

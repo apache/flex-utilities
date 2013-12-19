@@ -473,11 +473,11 @@ package org.apache.flex.ant.tags.filesetClasses
             from = normalize(from.nativePath);
             to = normalize(to.nativePath);
             if (!from.exists) {
-                Ant.ant.output("Cannot rename nonexistent file " + from);
+                Ant.currentAnt.output("Cannot rename nonexistent file " + from);
                 return;
             }
             if (from.nativePath == to.nativePath) {
-                Ant.ant.output("Rename of " + from + " to " + to + " is a no-op.");
+                Ant.currentAnt.output("Rename of " + from + " to " + to + " is a no-op.");
                 return;
             }
             if (to.exists)

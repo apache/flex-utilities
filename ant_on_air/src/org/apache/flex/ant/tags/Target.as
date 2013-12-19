@@ -24,7 +24,6 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-    import org.apache.flex.xml.XMLTagProcessor;
     
     [Mixin]
     public class Target extends TaskHandler
@@ -37,16 +36,11 @@ package org.apache.flex.ant.tags
         public function Target()
         {
         }
-        
-        override public function init(xml:XML, context:Object, xmlProcessor:XMLTagProcessor):void
-        {
-            this.xml = xml;
-            project = context.project as Project;
-            super.init(xml, context, xmlProcessor);
-        }
-        
+                
         private var project:Project;
-        
+		private var ifProperty:String;
+		private var unlessProperty:String;
+		
         private var _depends:String;
         
         public function get depends():String
@@ -58,14 +52,12 @@ package org.apache.flex.ant.tags
         {
             if (name == "depends")
                 _depends = value;
+			else if (name == "if")
+				ifProperty = value;
+			else if (name == "unless")
+				unlessProperty = value;
             else
                 super.processAttribute(name, value);
-        }
-        
-        override protected function processAttributes(xmlList:XMLList, context:Object):void
-        {
-            super.processAttributes(xmlList, context);
-            context.currentTarget = this;
         }
         
         private var dependsList:Array;
@@ -82,7 +74,7 @@ package org.apache.flex.ant.tags
             {
                 var depend:String = dependsList.shift();
                 var t:Target = project.getTarget(depend);
-                if (!t.execute(callbackMode))
+                if (!t.execute(callbackMode, context))
                 {
                     t.addEventListener(Event.COMPLETE, dependCompleteHandler);
                     return false;
@@ -99,8 +91,10 @@ package org.apache.flex.ant.tags
         
         private var inExecute:Boolean;
         
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
+			super.execute(callbackMode, context);
+			
             inExecute = true;
             this.callbackMode = callbackMode;
             if (_depends)
@@ -120,9 +114,8 @@ package org.apache.flex.ant.tags
         
         private function continueOnToSteps():Boolean
         {
-            if (!Ant.project.status)
+            if (!ant.project.status)
                 return true;
-            ant.processChildren(xml, context, this);
             return processSteps();
         }
         
@@ -130,6 +123,24 @@ package org.apache.flex.ant.tags
         
         private function processSteps():Boolean
         {
+			if (ifProperty != null)
+			{
+				if (!context.hasOwnProperty(ifProperty))
+				{
+					dispatchEvent(new Event(Event.COMPLETE));
+					return true;
+				}
+			}
+			
+			if (unlessProperty != null)
+			{
+				if (context.hasOwnProperty(unlessProperty))
+				{
+					dispatchEvent(new Event(Event.COMPLETE));
+					return true;
+				}
+			}
+			
             if (current == numChildren)
             {
                 dispatchEvent(new Event(Event.COMPLETE));
@@ -139,18 +150,12 @@ package org.apache.flex.ant.tags
             while (current < numChildren)
             {
                 var step:TaskHandler = getChildAt(current++) as TaskHandler;
-                if (step.ifProperty != null)
-                    if (!context.hasOwnProperty(step.ifProperty))
-                        continue;
-                if (step.unlessProperty != null)
-                    if (context.hasOwnProperty(step.unlessProperty))
-                        continue;
-                if (!step.execute(callbackMode))
+                if (!step.execute(callbackMode, context))
                 {
                     step.addEventListener(Event.COMPLETE, completeHandler);
                     return false;
                 }
-                if (!Ant.project.status)
+                if (!ant.project.status)
                 {
                     if (!inExecute)
                         dispatchEvent(new Event(Event.COMPLETE));
@@ -168,7 +173,7 @@ package org.apache.flex.ant.tags
 
         private function completeHandler(event:Event):void
         {
-            if (!Ant.project.status)
+            if (!ant.project.status)
             {
                 dispatchEvent(new Event(Event.COMPLETE));
                 return;                

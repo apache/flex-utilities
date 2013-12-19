@@ -64,9 +64,9 @@ package org.apache.flex.ant.tags
         
         private var destFile:File;
         
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
          
             var srcFile:File = File.applicationDirectory.resolvePath(src);
             destFile = File.applicationDirectory.resolvePath(dest);
@@ -116,7 +116,7 @@ package org.apache.flex.ant.tags
                 
             } catch (error:Error) {
                 if (failonerror)
-                    Ant.project.status = false;
+                    ant.project.status = false;
             }
         }
         
@@ -135,7 +135,7 @@ package org.apache.flex.ant.tags
             fzip.removeEventListener(Event.COMPLETE, onUnzipComplete);            
             fzip.removeEventListener(ErrorEvent.ERROR, onUnzipError);
             if (failonerror)
-                Ant.project.status = false;
+                ant.project.status = false;
         }
     }
 }

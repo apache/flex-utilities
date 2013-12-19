@@ -39,9 +39,9 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
             
             // if the property is not already set
             if (_property && _value != null && !context.hasOwnProperty(_property))
@@ -61,7 +61,7 @@ package org.apache.flex.ant.tags
         public function get computedValue():Object
         {
             // get the value from the children
-            var val:Object = IValueTagHandler(getChildAt(0)).value;
+            var val:Object = IValueTagHandler(getChildAt(0)).getValue(context);
             return val;
         }
         

@@ -43,9 +43,11 @@ package org.apache.flex.ant.tags
         private var casesensitive:Boolean;
         private var trim:Boolean;
         
-        public function get value():Object
+        public function getValue(context:Object):Object
         {
-            var val1:String = arg1;
+			processAttributes(xml.attributes(), context);
+
+			var val1:String = arg1;
             var val2:String = arg2;
             if (casesensitive)
             {
@@ -69,7 +71,7 @@ package org.apache.flex.ant.tags
             else if (name == "casesensitive")
                 casesensitive = value == "true";
             else if (name == "trim")
-                casesensitive = value == "true";
+                trim = value == "true";
         }
         
     }

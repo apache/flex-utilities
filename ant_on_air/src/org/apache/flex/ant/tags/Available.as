@@ -44,8 +44,10 @@ package org.apache.flex.ant.tags
         private var _property:String;
         private var _value:String;
         
-        public function get value():Object
+        public function getValue(context:Object):Object
         {
+			processAttributes(xml.attributes(), context);
+
             if (_file == null) return false;
             
             var file:File = new File(_file);
@@ -58,12 +60,12 @@ package org.apache.flex.ant.tags
             return true;
         }
 
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
-            if (value)
+            super.execute(callbackMode, context);
+            var value:Object = getValue(context);
                 if (!context.hasOwnProperty(_property))
-                    context[_property] = _value;
+                    context[_property] = _value != null ? _value : true;
             return true;
         }
         

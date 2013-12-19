@@ -24,6 +24,9 @@ package
         {
             import org.apache.flex.ant.Ant; Ant;
             import org.apache.flex.ant.tags.Project; Project;
+			import org.apache.flex.ant.tags.And; And;
+			import org.apache.flex.ant.tags.AntTask; AntTask;
+			import org.apache.flex.ant.tags.AntCall; AntCall;
             import org.apache.flex.ant.tags.Available; Available;
             import org.apache.flex.ant.tags.Checksum; Checksum;
             import org.apache.flex.ant.tags.Condition; Condition;

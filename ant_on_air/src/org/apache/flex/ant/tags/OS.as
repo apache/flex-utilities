@@ -41,8 +41,10 @@ package org.apache.flex.ant.tags
         
         private var _family:String;
         
-        public function get value():Object
+        public function getValue(context:Object):Object
         {
+			processAttributes(xml.attributes(), context);
+			
             if (_family == null) return false;
             
             return Capabilities.os.toLowerCase().indexOf(_family.toLowerCase()) != -1;

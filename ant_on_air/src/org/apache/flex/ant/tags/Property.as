@@ -34,7 +34,6 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-    import org.apache.flex.xml.XMLTagProcessor;
     
     [Mixin]
     public class Property extends TaskHandler
@@ -48,13 +47,10 @@ package org.apache.flex.ant.tags
         {
         }
         
-        override public function init(xml:XML, context:Object, xmlProcessor:XMLTagProcessor):void
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.init(xml, context, xmlProcessor);
-        }
-        
-        override public function execute(callbackMode:Boolean):Boolean
-        {
+			super.execute(callbackMode, context);
+			
             if (name && value && !context.hasOwnProperty(name))
                 context[name] = value;
             else if (fileName != null)

@@ -137,4 +137,12 @@
         </exec>
     </target>
 
+    <target name="debug-test" >
+        <delete dir="${basedir}/tests/temp" failonerror="false" />
+        <exec executable="${AIR_HOME}/bin/${adl}" dir="${basedir}/tests" failonerror="true">
+            <arg value="-runtime" />
+            <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
+            <arg value="${basedir}/tests/AntTest-app.xml" />
+        </exec>
+    </target>
 </project>

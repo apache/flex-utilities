@@ -152,7 +152,7 @@ package org.apache.flex.ant.tags.filesetClasses
                     var msg:String = "IOException caught while checking "
                         + "for links, couldn't get canonical path!";
                     // will be caught and redirected to Ant's logging system
-                    Ant.ant.output(msg);
+                    Ant.currentAnt.output(msg);
                 }
             }
             return false;

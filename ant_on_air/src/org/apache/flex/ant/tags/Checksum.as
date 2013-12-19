@@ -70,9 +70,9 @@ package org.apache.flex.ant.tags
         private var md5:MD5Stream;
         private var fs:FileStream;
         
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
          
             var f:File = File.applicationDirectory.resolvePath(file);
             fs = new FileStream();

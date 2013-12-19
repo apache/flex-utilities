@@ -30,9 +30,6 @@ package org.apache.flex.ant.tags.supportClasses
         
         public var failonerror:Boolean = true;
         
-        public var ifProperty:String;
-        public var unlessProperty:String;
-        
         protected var callbackMode:Boolean;
         
         /**
@@ -41,10 +38,12 @@ package org.apache.flex.ant.tags.supportClasses
          *  super.execute() should be called before
          *  doing any real work. 
          */
-        public function execute(callbackMode:Boolean):Boolean
+        public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             this.callbackMode = callbackMode;
-            ant.processChildren(this.xml, context, this);
+			this.context = context;
+			processAttributes(xml.attributes(), context);
+            ant.processChildren(xml, this);
             return true;
         }
         
@@ -52,10 +51,6 @@ package org.apache.flex.ant.tags.supportClasses
         {
             if (name == "failonerror")
                 failonerror = value == "true";
-            else if (name == "if")
-                ifProperty = value;
-            else if (name == "unless")
-                unlessProperty = value;
             else
                 super.processAttribute(name, value);
         }

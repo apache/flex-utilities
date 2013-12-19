@@ -121,7 +121,7 @@ package org.apache.flex.ant.tags.filesetClasses
         protected function dieOnCircularReference(stack:Vector.<String> = null, project:Project = null):void
         {
             if (!project)
-                project = Ant.project;
+                project = Ant.currentAnt.project;
             
             if (!stack)
                 stack = new Vector.<String>();
@@ -190,7 +190,7 @@ package org.apache.flex.ant.tags.filesetClasses
         protected function getCheckedRef(p:Project = null):Object 
         {
             if (!p)
-                p = Ant.project;
+                p = Ant.currentAnt.project;
             return getCheckedRefActual(Class(ApplicationDomain.currentDomain.getDefinition(getQualifiedClassName(this))), 
                     getDataTypeName(), p);
         }

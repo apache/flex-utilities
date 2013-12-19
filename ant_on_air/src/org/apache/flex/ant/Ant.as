@@ -57,6 +57,7 @@ package org.apache.flex.ant
          */
         public function processXMLFile(file:File, context:Object = null, callbackMode:Boolean = true):Boolean
         {
+			Ant.ants.push(this);
             this.file = file;
             var fs:FileStream = new FileStream();
             fs.open(file, FileMode.READ);
@@ -68,13 +69,14 @@ package org.apache.flex.ant
             if (!context)
                 context = {};
             this.context = context;
-            var project:Project = processXMLTag(xml, context) as Project;
-            Ant.project = project;
-            if (!project.execute(callbackMode))
+            var project:Project = processXMLTag(xml) as Project;
+            this.project = project;
+            if (!project.execute(callbackMode, context))
             {
                 project.addEventListener(Event.COMPLETE, completeHandler);
                 return false;                
             }
+			Ant.ants.pop();
             return true;
         }
     
@@ -103,13 +105,19 @@ package org.apache.flex.ant
         public var progressClass:Object;
         
         private var context:Object;
-        public static var ant:Ant;
-        public static var project:Project;
-        public static function log(msg:String, level:int):void
-        {
-            ant.output(msg);
-        }
-                
+        public var ant:Ant;
+        public var project:Project;
+		
+		// the stack of ant instances (ant can call <ant/>)
+		public static var ants:Array = [];
+		
+		public static function get currentAnt():Ant
+		{
+			if (ants.length == 0)
+				return null;
+			return ants[ants.length - 1] as Ant;
+		}
+		
         private function completeHandler(event:Event):void
         {
             dispatchEvent(event);
@@ -149,16 +157,16 @@ package org.apache.flex.ant
                     if (c != -1)
                     {
                         var token:String = input.substring(i + 2, c);
-                        if (context.hasOwnProperty(token))
+						if (token == "basedir")
+						{
+							var basedir:String = context.basedir;
+							rep = file.parent.resolvePath(basedir).nativePath;
+							input = input.replace("${" + token + "}", rep);
+							i += rep.length - token.length - 3;
+						}
+						else if (context.hasOwnProperty(token))
                         {
                             var rep:String = context[token];
-                            input = input.replace("${" + token + "}", rep);
-                            i += rep.length - token.length - 3;
-                        }
-                        else if (token == "basedir")
-                        {
-                            var basedir:String = context.project.basedir;
-                            rep = file.parent.resolvePath(basedir).nativePath;
                             input = input.replace("${" + token + "}", rep);
                             i += rep.length - token.length - 3;
                         }
@@ -170,6 +178,11 @@ package org.apache.flex.ant
             return input;
         }
         
+		public static function log(s:String, level:int):void
+		{
+			currentAnt.output(s);	
+		}
+		
         /**
          *  Output for Echo.  Defaults to trace().
          */

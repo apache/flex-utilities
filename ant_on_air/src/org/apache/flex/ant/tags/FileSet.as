@@ -49,11 +49,12 @@ package org.apache.flex.ant.tags
         
         private var _value:Vector.<String>;
         
-        public function get value():Object
+        public function getValue(context:Object):Object
         {
             if (_value) return _value;
             
-            ant.processChildren(xml, context, this);
+			processAttributes(xml.attributes(), context);
+            ant.processChildren(xml, this);
             var ds:DirectoryScanner = new DirectoryScanner();
             var n:int = numChildren;
             var includes:Vector.<String> = new Vector.<String>();

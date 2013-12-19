@@ -51,15 +51,15 @@ package org.apache.flex.ant.tags
                 super.processAttribute(name, value);
         }
 
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
             if (numChildren == 1)
             {
                 var child:Condition = getChildAt(0) as Condition;
                 if (child)
                 {
-                    child.execute(false);
+                    child.execute(false, context);
                     var val:Object = child.computedValue;
                     if (!(val == "true" || val == true))
                     {
@@ -69,7 +69,7 @@ package org.apache.flex.ant.tags
             }
             if (text)
                 ant.output(ant.getValue(text, context));
-            Ant.project.status = false;
+            ant.project.status = false;
             return true;
         }
     }

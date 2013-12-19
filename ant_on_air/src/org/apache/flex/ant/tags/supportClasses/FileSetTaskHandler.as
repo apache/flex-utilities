@@ -43,13 +43,14 @@ package org.apache.flex.ant.tags.supportClasses
         
         /**
          *  Do the work.
-         *  TaskHandlers lazily create their children so
+         *  TaskHandlers lazily create their children
+		 *  and attributes so
          *  super.execute() should be called before
          *  doing any real work. 
          */
-        override public function execute(callbackMode:Boolean):Boolean
+        override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-            super.execute(callbackMode);
+            super.execute(callbackMode, context);
             totalFiles = 0;
             thisFile = 0;
             for (var i:int = 0; i < numChildren; i++)
@@ -59,7 +60,7 @@ package org.apache.flex.ant.tags.supportClasses
                 {
                     try
                     {
-                        var list:Vector.<String> = fs.value as Vector.<String>;
+                        var list:Vector.<String> = fs.getValue(context) as Vector.<String>;
                         if (list)
                         {
                             totalFiles += list.length;
@@ -69,7 +70,7 @@ package org.apache.flex.ant.tags.supportClasses
                     {
                         if (failonerror)
                         {
-                            Ant.project.status = false;
+                            ant.project.status = false;
                             return true;
                         }
                     }
@@ -92,7 +93,7 @@ package org.apache.flex.ant.tags.supportClasses
                 var fs:FileSet = getChildAt(current++) as FileSet;
                 if (fs)
                 {
-                    var list:Vector.<String> = fs.value as Vector.<String>;
+                    var list:Vector.<String> = fs.getValue(context) as Vector.<String>;
                     if (list)
                     {
                         currentDir = new File(fs.dir);

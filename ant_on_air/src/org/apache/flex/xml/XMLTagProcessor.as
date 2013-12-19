@@ -40,7 +40,7 @@ package org.apache.flex.xml
          *  @param context Object An object containing useful information.
          *  @return ITagHandler An instance representing this XML node
          */
-        public function processXMLTag(xml:XML, context:Object):ITagHandler
+        public function processXMLTag(xml:XML):ITagHandler
         {
             var tag:String = xml.name().toString();
             var c:Class = tagMap[tag];
@@ -50,7 +50,7 @@ package org.apache.flex.xml
                 throw new Error("no processor for " + tag);
             }
             var o:ITagHandler = new c() as ITagHandler;
-            o.init(xml, context, this);
+            o.init(xml, this);
             return o;
         }
         
@@ -61,7 +61,7 @@ package org.apache.flex.xml
          *  @param context Object An object containing useful information.
          *  @param parentTag IParentTagHandler The parent for the instances that are created.
          */
-        public function processChildren(xml:XML, context:Object, parentTag:IParentTagHandler):void
+        public function processChildren(xml:XML, parentTag:IParentTagHandler):void
         {
             var xmlList:XMLList = xml.children();
             var n:int = xmlList.length();
@@ -72,7 +72,7 @@ package org.apache.flex.xml
                     ITextTagHandler(parentTag).setText(xmlList[i].toString());
                 else
                 {
-                    var tagHandler:ITagHandler = processXMLTag(xmlList[i], context);
+                    var tagHandler:ITagHandler = processXMLTag(xmlList[i]);
                     parentTag.addChild(tagHandler);
                 }
             }
