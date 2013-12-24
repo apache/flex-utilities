@@ -45,8 +45,23 @@
     <condition property="isMac" value="Mac">
 		<os family="mac"/>
     </condition>
+    <condition property="isWindows" value="Windows">
+		<os family="windows"/>
+    </condition>
 
-	<target name="test">
+	<target name="test" depends="copy-test,confirm-delete,delete-test">
+        <exec executable="where.exe" osfamily="windows" outputproperty="java.executable" failonerror="true">
+            <arg value="java"/>
+        </exec>
+        <exec executable="which" osfamily="mac" outputproperty="java.executable" failonerror="true">
+            <arg value="java"/>
+        </exec>
+        <echo>java is at ${java.executable}</echo>
+        <ant dir="${basedir}" antfile="subant.xml" />
+        <echo>Test is complete</echo>
+    </target>
+    
+    <target name="copy-test" >
 		<echo>FLEX_HOME is ${FLEX_HOME}. DEBUG is ${DEBUG_FLAG}. The OS is ${theOS}</echo>
         <mkdir dir="${basedir}/temp" />
         <copy file="${basedir}/test.xml" toFile="${basedir}/temp/copied.xml" />
@@ -64,19 +79,20 @@
                 <include name="**/**" />
                 <exclude name="**/Ant.as" />
             </fileset>
+            <globmapper from="*" to="Z*" />
         </copy>
-        <available file="${basedir}/temp/org/apache/flex/ant/Ant.as" property="ant.doesnt.exist" value="got copied" />
+        <available file="${basedir}/temp/Zorg/apache/flex/ant/Ant.as" property="ant.doesnt.exist" value="got copied" />
         <fail message="Ant.as was copied to temp">
             <condition>
-                <available file="${basedir}/temp/org/apache/flex/ant/Ant.as" />
+                <available file="${basedir}/temp/Zorg/apache/flex/ant/Ant.as" />
             </condition>
         </fail>
         <echo>Ant.as ${ant.doesnt.exist}. Should NOT say: got copied</echo>
-        <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" property="project.doesnt.exist" value="got copied" />
+        <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" property="project.doesnt.exist" value="got copied" />
         <fail message="Project.as was not copied to temp">
             <condition>
                 <not>
-                    <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" />
+                    <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" />
                 </not>
             </condition>
         </fail>
@@ -116,7 +132,25 @@
             </condition>
         </fail>
         <mkdir dir="${basedir}/temp/unzip" />
-        <unzip src="${basedir}/temp/apache-rat-0.10-src.zip" dest="${basedir}/temp/unzip" />
+        <unzip src="${basedir}/temp/apache-rat-0.10-src.zip" dest="${basedir}/temp/unzip">
+            <patternset>
+                <include name="apache-rat-0.10/pom.xml" />
+                <include name="apache-rat-0.10/RE*.txt" />
+                <exclude name="apache-rat-0.10/RELEASE_NOTES.txt" />
+            </patternset>
+        </unzip>
+        <fail message="unzip did not exclude expected files">
+            <condition>
+                <available file="${basedir}/temp/unzip/apache-rat-0.10/RELEASE_NOTES.txt" />
+            </condition>
+        </fail>
+        <fail message="unzip did not include expected files">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/unzip/apache-rat-0.10/README.txt" />
+                </not>
+            </condition>
+        </fail>
         <fail message="unzip did not result in expected files">
             <condition>
                 <not>
@@ -133,15 +167,7 @@
                 </not>
             </condition>
         </fail>
-        <mkdir dir="${basedir}/temp/untar" />
-        <untar src="${basedir}/temp/apache-rat-0.10-src.tar.gz" dest="${basedir}/temp/untar" />
-        <fail message="untar did not result in expected files">
-            <condition>
-                <not>
-                    <available file="${basedir}/temp/untar/apache-rat-0.10/pom.xml" />
-                </not>
-            </condition>
-        </fail>
+        <antcall target="macunzip" />
         <propertyfile file="${basedir}/temp/custom.properties" >
             <entry key="somekey" value="somevalue" />
             <entry key="somekey1" value="somevalue1" />
@@ -154,6 +180,9 @@
             </condition>
         </fail>
         <replace file="${basedir}/temp/custom.properties" token="somekey" value="replacedkey" />
+        <replace file="${basedir}/temp/custom.properties">
+            <replacefilter token="key" value="ky" />
+        </replace>
         <loadproperties srcFile="${basedir}/temp/custom.properties" />
         <fail message="replace did not work: found somekey">
             <condition>
@@ -162,27 +191,52 @@
         </fail>
         <fail message="replace did not work: did not find replacedkey">
             <condition>
-                <equals arg1="${replacedkey}" arg2="somevalue" />
+                <not>
+                    <equals arg1="${replacedky}" arg2="somevalue" />
+                </not>
             </condition>
         </fail>
         <fail message="replace did not work: did not find replacedkey1">
             <condition>
-                <equals arg1="${replacedkey1}" arg2="somevalue1" />
+                <not>
+                    <equals arg1="${replacedky1}" arg2="somevalue1" />
+                </not>
             </condition>
         </fail>
-        <input message="Ok to delete temp directory?"
-            validargs="yn"
-            addproperty="oktodelete" />
+        <echo file="${basedir}/temp/echotest.properties">echotest=good
+        </echo>
+        <loadproperties srcFile="${basedir}/temp/echotest.properties" />
+        <fail message="echo to file did not work: missing property">
+            <condition>
+                <not>
+                    <isset property="echotest" />
+                </not>
+            </condition>
+        </fail>
+        <touch file="${basedir}/temp/touchtest.txt" />
+        <available file="${basedir}/temp/touchtest.txt" property="touch.test" value="passed" />
+        <fail message="touch test failed">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/touchtest.txt" />
+                </not>
+            </condition>
+        </fail>
+        <echo>Touch test ${touch.test}. Should say: passed</echo>
+        
+    </target>
+    
+    <target name="delete-test" >
         <fail message="you were supposed to hit 'y'" >
             <condition>
                 <equals arg1="n" arg2="${oktodelete}" />
             </condition>
         </fail>
         <delete dir="${basedir}/temp" />
-        <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" property="project.doesnt.exist.after.delete" value="didn't get deleted" />
+        <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" property="project.doesnt.exist.after.delete" value="didn't get deleted" />
         <fail message="temp/copied.xml was not deleted">
             <condition>
-                <available file="${basedir}/temp/org/apache/flex/ant/tags/Project.as" />
+                <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" />
             </condition>
         </fail>
         <echo>Project.as ${project.doesnt.exist.after.delete}. Should NOT say: didn't get deleted</echo>
@@ -210,6 +264,24 @@
         </fail>
 	</target>
 
+    <target name="macunzip" unless="isWindows">
+        <mkdir dir="${basedir}/temp/untar" />
+        <untar compression="gzip" src="${basedir}/temp/apache-rat-0.10-src.tar.gz" dest="${basedir}/temp/untar" />
+        <fail message="untar did not result in expected files">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/untar/apache-rat-0.10/pom.xml" />
+                </not>
+            </condition>
+        </fail>
+    </target>
+    
+    <target name="confirm-delete" unless="exitwhendone">
+        <input message="Ok to delete temp directory?"
+            validargs="y,n"
+            addproperty="oktodelete" />
+    </target>
+    
     <target name="build" depends="init,compile"
         description="Compiles SWC"/>
 
@@ -217,22 +289,11 @@
         description="Creates the deploy folders and sets app extension"/>
 
     <target name="clean" description="Cleans up old files.">
-        <delete dir="${LIBRARY_DIR}" failOnError="false" includeEmptyDirs="true" />
+        <delete dir="${basedir}/temp" failOnError="false" includeEmptyDirs="true" />
     </target>
 
     <target name="compile" 
         description="Compiles the SWC.">
-        <compc 
-            output="${LIBRARY_DIR}/${LIBRARY_NAME}.swc"
-            debug="${DEBUG_FLAG}"
-            failonerror="true"
-            fork="true"
-            maxmemory="512m">
-            <source-path path-element="${SOURCE_DIR}"/>
-            <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
-			<include-classes>AntClasses</include-classes>
-
-        </compc>
     </target>
 
 </project>
