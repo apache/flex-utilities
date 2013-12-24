@@ -304,8 +304,8 @@ package org.apache.flex.ant.tags.filesetClasses
         public static function match(pattern:String, str:String,
             caseSensitive:Boolean = true):Boolean 
         {
-                var patArr:Vector.<String> = Vector.<String>(pattern.split());
-                var strArr:Vector.<String> = Vector.<String>(str.split());
+                var patArr:Vector.<String> = Vector.<String>(pattern.split(""));
+                var strArr:Vector.<String> = Vector.<String>(str.split(""));
                 var patIdxStart:int = 0;
                 var patIdxEnd:int = patArr.length - 1;
                 var strIdxStart:int = 0;

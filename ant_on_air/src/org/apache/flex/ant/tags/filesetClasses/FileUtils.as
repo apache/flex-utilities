@@ -301,7 +301,7 @@ package org.apache.flex.ant.tags.filesetClasses
                 
                 var next:int = colon + 1;
                 root = path.substring(0, next);
-                var ca:Vector.<String> = Vector.<String>(path.split());
+                var ca:Vector.<String> = Vector.<String>(path.split(""));
                 root += sep;
                 //remove the initial separator; the root has it.
                 next = (ca[next] == sep) ? next + 1 : next;
