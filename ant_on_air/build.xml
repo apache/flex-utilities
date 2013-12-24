@@ -117,8 +117,8 @@
             <source-path path-element="${SOURCE_DIR}"/>
 		</mxmlc>
         -->
-		<mxmlc file="${basedir}/tests/AntTest.mxml"
-			output="${basedir}/tests/AntTest.swf"
+		<mxmlc file="${basedir}/tests/AntOnAir.mxml"
+			output="${basedir}/tests/AntOnAir.swf"
 			debug="${DEBUG_FLAG}"
 			failonerror="true"
             fork="true"
@@ -131,9 +131,11 @@
         <exec executable="${AIR_HOME}/bin/${adl}" dir="${basedir}/tests" failonerror="true">
             <arg value="-runtime" />
             <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
-            <arg value="${basedir}/tests/AntTest-app.xml" />
+            <arg value="${basedir}/tests/AntOnAir-app.xml" />
             <arg value="--" />
-            <arg value="exitwhendone" />
+            <arg value="-f ${basedir}/tests/test.xml" />
+            <arg value="-Dexitwhendone" />
+            <arg value="test" />
         </exec>
     </target>
 
@@ -142,7 +144,10 @@
         <exec executable="${AIR_HOME}/bin/${adl}" dir="${basedir}/tests" failonerror="true">
             <arg value="-runtime" />
             <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
-            <arg value="${basedir}/tests/AntTest-app.xml" />
+            <arg value="${basedir}/tests/AntOnAir-app.xml" />
+            <arg value="--" />
+            <arg value="-f ${basedir}/tests/test.xml" />
+            <arg value="test" />
         </exec>
     </target>
 </project>
