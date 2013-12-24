@@ -39,22 +39,37 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var _file:String;
-        private var _type:String;
-        private var _property:String;
-        private var _value:String;
+        private function get file():String
+		{
+			return getNullOrAttributeValue("@file");
+		}
+		
+        private function get type():String
+		{
+			return getNullOrAttributeValue("@type");
+		}
+		
+        private function get property():String
+		{
+			return getNullOrAttributeValue("@property");
+		}
+		
+        private function get value():String
+		{
+			return getNullOrAttributeValue("@value");
+		}
         
         public function getValue(context:Object):Object
         {
-			processAttributes(xml.attributes(), context);
-
-            if (_file == null) return false;
+			this.context = context;
+			
+            if (this.file == null) return false;
             
-            var file:File = new File(_file);
+            var file:File = new File(this.file);
             if (!file.exists)
                 return false;
             
-            if (_type == "dir" && !file.isDirectory)
+            if (type == "dir" && !file.isDirectory)
                 return false;
             
             return true;
@@ -63,23 +78,14 @@ package org.apache.flex.ant.tags
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
-            var value:Object = getValue(context);
-                if (!context.hasOwnProperty(_property))
-                    context[_property] = _value != null ? _value : true;
+            var avail:Object = getValue(context);
+			if (avail)
+			{
+	            if (!context.hasOwnProperty(property))
+	                context[property] = value != null ? value : true;
+			}			
             return true;
         }
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "file")
-                _file = value;
-            else if (name == "type")
-                _type = value;
-            if (name == "property")
-                _property = value;
-            if (name == "value")
-                _value = value;
-        }
-        
+                
     }
 }

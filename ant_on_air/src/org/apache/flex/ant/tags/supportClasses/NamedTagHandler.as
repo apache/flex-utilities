@@ -40,14 +40,5 @@ package org.apache.flex.ant.tags.supportClasses
             return _name;
         }
         
-        /**
-         *  @private 
-         */
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "name")
-                _name = value;
-        }
-
     }
 }

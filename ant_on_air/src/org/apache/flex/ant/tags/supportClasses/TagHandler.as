@@ -60,26 +60,19 @@ package org.apache.flex.ant.tags.supportClasses
             this.xml = xml;
         }
         
-        /**
-         *  Loop through and process attributes.
-         *  @param xmlList XMLList The list of attributes.
-         *  @param context Object An object containing useful information.
-         */
-        protected function processAttributes(xmlList:XMLList, context:Object):void
-        {
-            var n:int = xmlList.length();
-            for (var i:int = 0; i < n; i++)
-                processAttribute(xmlList[i].name().toString(), ant.getValue(xmlList[i].toString(), context));
-        }
-        
-        /**
-         *  Process an attribute on the tag.
-         *  @param name String The attribute name.
-         *  @param value String The attribute value.
-         */
-        protected function processAttribute(name:String, value:String):void
-        {
-			trace("unknown attribute:", name);
-        }
+		protected function getAttributeValue(name:String):String
+		{
+			return ant.getValue(xml[name].toString(), context);	
+		}
+		
+		protected function getNullOrAttributeValue(name:String):String
+		{
+			var xmlList:XMLList = xml[name];
+			if (xmlList.length() == 0)
+				return null;
+			
+			return ant.getValue(xml[name].toString(), context);	
+		}
+		
     }
 }

@@ -40,11 +40,9 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var _dir:String;
-        
         public function get dir():String
         {
-            return _dir;
+            return getNullOrAttributeValue("@dir");
         }
         
         private var _value:Vector.<String>;
@@ -52,8 +50,8 @@ package org.apache.flex.ant.tags
         public function getValue(context:Object):Object
         {
             if (_value) return _value;
-            
-			processAttributes(xml.attributes(), context);
+            this.context = context;
+			
             ant.processChildren(xml, this);
             var ds:DirectoryScanner = new DirectoryScanner();
             var n:int = numChildren;
@@ -71,17 +69,11 @@ package org.apache.flex.ant.tags
             }
             ds.setIncludes(includes);
             ds.setExcludes(excludes);
-            if (_dir != null)
-                ds.setBasedir(_dir);
+            if (dir != null)
+                ds.setBasedir(dir);
             ds.scan();
             _value = ds.getIncludedFiles();
             return _value;
-        }
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "dir")
-                _dir = value;
         }
         
     }

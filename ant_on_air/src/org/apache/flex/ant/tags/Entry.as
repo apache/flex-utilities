@@ -36,16 +36,15 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        public var key:String;
-        public var value:String;
-                
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "key")
-                key = value;
-            else if (name == value)
-                this.value = value;
-        }
-        
+        public function get key():String
+		{
+			return getAttributeValue("@key");
+		}
+		
+        public function get value():String
+		{
+			return getNullOrAttributeValue("@value");
+		}
+                        
     }
 }

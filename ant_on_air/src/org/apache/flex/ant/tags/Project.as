@@ -27,7 +27,6 @@ package org.apache.flex.ant.tags
     import org.apache.flex.ant.tags.filesetClasses.Reference;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
     import org.apache.flex.xml.ITagHandler;
-    import org.apache.flex.xml.XMLTagProcessor;
     
     [Mixin]
     public class Project extends TaskHandler
@@ -72,32 +71,18 @@ package org.apache.flex.ant.tags
 			}
 		}
                 
-        private var _basedir:String;
-        
         public function get basedir():String
         {
-            return _basedir;
+            return getAttributeValue("@basedir");
         }
-        
-        private var _defaultTarget:String;
         
         public function get defaultTarget():String
         {
-            return _defaultTarget;
+            return getAttributeValue("@default");
         }
         
         private var targets:Array;
         
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "basedir")
-                _basedir = value;
-            else if (name == "default")
-                _defaultTarget = value;
-            else
-                super.processAttribute(name, value);
-        }
-
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
 			super.execute(callbackMode, context);
@@ -109,7 +94,7 @@ package org.apache.flex.ant.tags
             status = true;
             
             if (context.targets == null)
-                context.targets == _defaultTarget;
+                context.targets = defaultTarget;
             
             targets = context.targets.split(",");
             

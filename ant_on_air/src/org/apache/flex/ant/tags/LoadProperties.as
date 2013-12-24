@@ -18,23 +18,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
-    import flash.desktop.NativeProcess;
-    import flash.desktop.NativeProcessStartupInfo;
-    import flash.events.Event;
-    import flash.events.NativeProcessExitEvent;
-    import flash.events.ProgressEvent;
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
-    import flash.system.Capabilities;
-    import flash.utils.IDataInput;
     
     import mx.core.IFlexModuleFactory;
     import mx.utils.StringUtil;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-    import org.apache.flex.xml.XMLTagProcessor;
     
     [Mixin]
     public class LoadProperties extends TaskHandler
@@ -80,18 +72,10 @@ package org.apache.flex.ant.tags
             return true;
         }
         
-        private var fileName:String;
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "srcFile")
-            {
-                fileName = value;
-            }
-            else
-                super.processAttribute(name, value);
-        }
-        
+        private function get fileName():String
+		{
+			return getAttributeValue("@srcFile");
+		}        
 
     } 
 }

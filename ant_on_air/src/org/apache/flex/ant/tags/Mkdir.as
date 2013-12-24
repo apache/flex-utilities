@@ -38,7 +38,10 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var _dir:String;
+        private function get _dir():String
+		{
+			return getAttributeValue("@dir");
+		}
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
@@ -49,12 +52,6 @@ package org.apache.flex.ant.tags
             
             return true;
         }
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "dir")
-                _dir = value;
-       }
         
     }
 }

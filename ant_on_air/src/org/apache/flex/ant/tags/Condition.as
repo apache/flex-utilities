@@ -23,7 +23,6 @@ package org.apache.flex.ant.tags
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.IValueTagHandler;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-    import org.apache.flex.xml.XMLTagProcessor;
     
     [Mixin]
 
@@ -44,15 +43,15 @@ package org.apache.flex.ant.tags
             super.execute(callbackMode, context);
             
             // if the property is not already set
-            if (_property && _value != null && !context.hasOwnProperty(_property))
+            if (property && !context.hasOwnProperty(property))
             {
                 var val:Object = computedValue;
                 if (val == "true" || val == true)
                 {
                     // set it if we should
-                    if (_value != null)
-                        val = _value;
-                    context[_property] = val;
+                    if (value != null)
+                        val = value;
+                    context[property] = val;
                 }            
             }
             return true;
@@ -65,16 +64,15 @@ package org.apache.flex.ant.tags
             return val;
         }
         
-        private var _property:String;
-        private var _value:Object;
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "property")
-                _property = value;
-            else if (name == "value")
-                _value = value;
-        }
-        
+        private function get property():String
+		{
+			return getNullOrAttributeValue("@property");
+		}
+		
+        private function get value():Object
+		{
+			return getNullOrAttributeValue("@value");
+		}
+                
     }
 }

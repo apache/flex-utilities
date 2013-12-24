@@ -44,23 +44,22 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var src:String;
-        private var dest:String;
-        private var overwrite:Boolean;
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "src")
-                src = value;
-            else if (name == "dest")
-                dest = value;
-            else if (name == "overwrite")
-                overwrite = value == "true";
-            else
-                super.processAttribute(name, value);
-        }
-        
-        private var destFile:File;
+        private function get src():String
+		{
+			return getAttributeValue("@src");
+		}
+		
+        private function get dest():String
+		{
+			return getAttributeValue("@dest");
+		}
+		
+        private function get overwrite():Boolean
+		{
+			return getAttributeValue("@overwrite") == "true";
+		}
+
+		private var destFile:File;
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {

@@ -37,22 +37,18 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var _property:String;
+        private function get property():String
+		{
+			return getNullOrAttributeValue("@property");
+		}
         
         public function getValue(context:Object):Object
         {
-			processAttributes(xml.attributes(), context);
-
-			if (_property == null) return false;
+			this.context = context;
+			if (property == null) return false;
             
-            return context.hasOwnProperty(_property);
+            return context.hasOwnProperty(property);
         }
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "property")
-                _property = value;
-        }
-        
+                
     }
 }

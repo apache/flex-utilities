@@ -36,21 +36,20 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var text:String;
+        private var _text:String;
+		private function get text():String
+		{
+			if (_text != null)
+				return _text;
+			
+			return getAttributeValue("@message");
+		}
         
         public function setText(text:String):void
         {
-            this.text = text;    
+            _text = text;    
         }
         
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "message")
-                text = value;
-            else
-                super.processAttribute(name, value);
-        }
-
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);

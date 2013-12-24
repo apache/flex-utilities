@@ -38,19 +38,16 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var fileName:String;
-        private var dirName:String;
+        private function get fileName():String
+		{
+			return getAttributeValue("@file");
+		}
+		
+        private function get dirName():String
+		{
+			return getAttributeValue("@dir");
+		}
         
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "file")
-                fileName = value;
-            else if (name == "dir")
-                dirName = value;
-            else
-                super.processAttribute(name, value);
-        }
-
         override protected function actOnFile(dir:String, fileName:String):void
         {
             var srcName:String;

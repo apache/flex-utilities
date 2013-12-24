@@ -29,6 +29,7 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
+    import org.apache.flex.xml.ITagHandler;
     import org.as3commons.zip.Zip;
     import org.as3commons.zip.ZipEvent;
     import org.as3commons.zip.ZipFile;
@@ -46,27 +47,40 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var src:String;
-        private var dest:String;
-        private var overwrite:Boolean;
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "src")
-                src = value;
-            else if (name == "dest")
-                dest = value;
-            else if (name == "overwrite")
-                overwrite = value == "true";
-            else
-                super.processAttribute(name, value);
-        }
+		private function get src():String
+		{
+			return getAttributeValue("@src");
+		}
+		
+		private function get dest():String
+		{
+			return getAttributeValue("@dest");
+		}
+		
+		private function get overwrite():Boolean
+		{
+			return getAttributeValue("@overwrite") == "true";
+		}
         
         private var destFile:File;
+		private var patternSet:PatternSet;
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
+			if (numChildren > 0)
+			{
+				// look for a patternset
+				for (var i:int = 0; i < numChildren; i++)
+				{
+					var child:ITagHandler = getChildAt(i);
+					if (child is PatternSet)
+					{
+						patternSet = child as PatternSet;
+						break;
+					}
+				}
+			}
          
             var srcFile:File = File.applicationDirectory.resolvePath(src);
             destFile = File.applicationDirectory.resolvePath(dest);
@@ -102,6 +116,11 @@ package org.apache.flex.ant.tags
         private function onFileLoaded(e:ZipEvent):void {
             try {
                 var fzf:ZipFile = e.file;
+				if (patternSet)
+				{
+					if (!(patternSet.matches(fzf.filename)))
+						return;
+				}
                 var f:File = destFile.resolvePath(fzf.filename);
                 var fs:FileStream = new FileStream();
                 
@@ -109,7 +128,7 @@ package org.apache.flex.ant.tags
                     // Is a directory, not a file. Dont try to write anything into it.
                     return;
                 }
-                
+                				
                 fs.open(f, FileMode.WRITE);
                 fs.writeBytes(fzf.content);
                 fs.close();

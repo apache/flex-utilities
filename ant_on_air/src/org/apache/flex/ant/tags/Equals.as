@@ -38,15 +38,29 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var arg1:String;
-        private var arg2:String;
-        private var casesensitive:Boolean;
-        private var trim:Boolean;
+        private function get arg1():String
+		{
+			return getAttributeValue("@arg1");
+		}
+		
+        private function get arg2():String
+		{
+			return getAttributeValue("@arg2");
+		}
+		
+        private function get casesensitive():Boolean
+		{
+			return getAttributeValue("@casesensitive") == "true";
+		}
+		
+        private function get trim():Boolean
+		{
+			return getAttributeValue("@trim") == "true";
+		}
         
         public function getValue(context:Object):Object
         {
-			processAttributes(xml.attributes(), context);
-
+			this.context = context;
 			var val1:String = arg1;
             var val2:String = arg2;
             if (casesensitive)
@@ -61,18 +75,6 @@ package org.apache.flex.ant.tags
             }
             return val1 == val2;
         }
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "arg1")
-                arg1 = value;
-            else if (name == "arg2")
-                arg2 = value;
-            else if (name == "casesensitive")
-                casesensitive = value == "true";
-            else if (name == "trim")
-                trim = value == "true";
-        }
-        
+                
     }
 }

@@ -39,7 +39,7 @@ package org.apache.flex.ant.tags
         
         public function getValue(context:Object):Object
         {
-			processAttributes(xml.attributes(), context);
+			this.context = context;
             ant.processChildren(xml, this);
             if (numChildren == 1)
             {

@@ -40,25 +40,27 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var text:String;
-        private var validArgs:Array;
-        private var property:String;
-        private var defaultValue:String;
+        private function get text():String
+		{
+			return getAttributeValue("@message");
+		}
+		
+        private function get validArgs():Array
+		{
+			var val:String = getNullOrAttributeValue("@validargs");
+			return val == null ? null : val.split(",");
+		}
+		
+        private function get property():String
+		{
+			return getAttributeValue("@addproperty");
+		}
+		
+        private function get defaultValue():String
+		{
+			return getAttributeValue("@defaultvalue");
+		}
         
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "message")
-                text = value;
-            else if (name == "validargs")
-                validArgs = value.split("");
-            else if (name == "addproperty")
-                property = value;
-            else if (name == "defaultvalue")
-                defaultValue = value;
-            else
-                super.processAttribute(name, value);
-        }
-
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);

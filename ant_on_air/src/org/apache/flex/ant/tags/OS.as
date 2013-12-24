@@ -39,22 +39,19 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var _family:String;
+        private function get family():String
+		{
+			return getNullOrAttributeValue("@family");
+		}
         
         public function getValue(context:Object):Object
         {
-			processAttributes(xml.attributes(), context);
+			this.context = context;
 			
-            if (_family == null) return false;
+            if (family == null) return false;
             
-            return Capabilities.os.toLowerCase().indexOf(_family.toLowerCase()) != -1;
+            return Capabilities.os.toLowerCase().indexOf(family.toLowerCase()) != -1;
         }
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "family")
-                _family = value;
-        }
-        
+                
     }
 }

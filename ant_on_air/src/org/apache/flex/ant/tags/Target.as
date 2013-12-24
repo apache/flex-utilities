@@ -37,29 +37,21 @@ package org.apache.flex.ant.tags
         {
         }
                 
-        private var project:Project;
-		private var ifProperty:String;
-		private var unlessProperty:String;
+		private function get ifProperty():String
+		{
+			return getNullOrAttributeValue("@if");
+		}
 		
-        private var _depends:String;
-        
+		private function get unlessProperty():String
+		{
+			return getNullOrAttributeValue("@unless");
+		}
+		
         public function get depends():String
         {
-            return _depends;
+            return getNullOrAttributeValue("@depends");
         }
-                
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "depends")
-                _depends = value;
-			else if (name == "if")
-				ifProperty = value;
-			else if (name == "unless")
-				unlessProperty = value;
-            else
-                super.processAttribute(name, value);
-        }
-        
+                        
         private var dependsList:Array;
         
         private function processDepends():Boolean
@@ -73,7 +65,7 @@ package org.apache.flex.ant.tags
             while (dependsList.length > 0)
             {
                 var depend:String = dependsList.shift();
-                var t:Target = project.getTarget(depend);
+                var t:Target = ant.project.getTarget(depend);
                 if (!t.execute(callbackMode, context))
                 {
                     t.addEventListener(Event.COMPLETE, dependCompleteHandler);
@@ -86,6 +78,12 @@ package org.apache.flex.ant.tags
         
         private function dependCompleteHandler(event:Event):void
         {
+			if (!ant.project.status)
+			{
+				if (!inExecute)
+					dispatchEvent(new Event(Event.COMPLETE));
+				return;
+			}
             processDepends();
         }
         
@@ -97,9 +95,9 @@ package org.apache.flex.ant.tags
 			
             inExecute = true;
             this.callbackMode = callbackMode;
-            if (_depends)
+            if (depends)
             {
-                dependsList = _depends.split(",");
+                dependsList = depends.split(",");
                 if (!processDepends())
                 {
                     inExecute = false;

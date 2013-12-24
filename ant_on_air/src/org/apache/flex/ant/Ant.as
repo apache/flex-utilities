@@ -80,11 +80,24 @@ package org.apache.flex.ant
             return true;
         }
     
+		private var _functionToCall:Function;
+		
         /**
          *  Set by various classes to defer processing in callbackMode
          */
-        public var functionToCall:Function;
+        public function set functionToCall(value:Function):void
+		{
+			if (parentAnt)
+				parentAnt.functionToCall = value;
+			else
+				_functionToCall = value;
+		}
         
+		public function get functionToCall():Function
+		{
+			return _functionToCall;
+		}
+		
         /**
          *  If you set callbackMode = true, you must call this method until you receive
          *  the Event.COMPLETE 
@@ -105,6 +118,7 @@ package org.apache.flex.ant
         public var progressClass:Object;
         
         private var context:Object;
+		public var parentAnt:Ant;
         public var ant:Ant;
         public var project:Project;
 		

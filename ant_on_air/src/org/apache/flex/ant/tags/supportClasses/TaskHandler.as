@@ -28,7 +28,11 @@ package org.apache.flex.ant.tags.supportClasses
         {
         }
         
-        public var failonerror:Boolean = true;
+        public function get failonerror():Boolean
+		{
+			var val:String = getNullOrAttributeValue("@failonerror");
+			return val == null ? true : val == "true";
+		}
         
         protected var callbackMode:Boolean;
         
@@ -42,17 +46,9 @@ package org.apache.flex.ant.tags.supportClasses
         {
             this.callbackMode = callbackMode;
 			this.context = context;
-			processAttributes(xml.attributes(), context);
             ant.processChildren(xml, this);
             return true;
         }
         
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "failonerror")
-                failonerror = value == "true";
-            else
-                super.processAttribute(name, value);
-        }
     }
 }

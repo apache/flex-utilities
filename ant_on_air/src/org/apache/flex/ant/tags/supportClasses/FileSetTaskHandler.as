@@ -22,7 +22,6 @@ package org.apache.flex.ant.tags.supportClasses
     import flash.events.ProgressEvent;
     import flash.filesystem.File;
     
-    import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.FileSet;
     
     /**
@@ -105,6 +104,12 @@ package org.apache.flex.ant.tags.supportClasses
                     }
                 }
             }
+			
+			if (current == numChildren)
+			{
+				dispatchEvent(new Event(Event.COMPLETE));
+				return;
+			}
         }
 
         private function actOnList():void

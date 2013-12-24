@@ -45,28 +45,33 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var file:String;
-        private var toDir:String;
-        private var fileExt:String = ".md5";
-        private var verifyproperty:String;
-        private var readbuffersize:int = 8192;
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "file")
-                file = value;
-            else if (name == "todir")
-                toDir = value;
-            else if (name == "fileext")
-                fileExt = value;
-            else if (name == "verifyproperty")
-                verifyproperty = value;
-            else if (name == "readbuffersize")
-                verifyproperty = value;
-            else
-                super.processAttribute(name, value);
-        }
-        
+        private function get file():String
+		{
+			return getAttributeValue("@file");
+		}
+		
+        private function get toDir():String
+		{
+			return getAttributeValue("@todir");
+		}
+		
+        private function get fileExt():String
+		{
+			var val:String = getNullOrAttributeValue("@fileext");
+			return val == null ? ".md5" : val;
+		}
+		
+        private function get verifyproperty():String
+		{
+			return getAttributeValue("@verifyproperty");
+		}
+		
+        private function get readbuffersize():int
+		{
+			var val:String = getNullOrAttributeValue("@readbuffersize");
+			return val == null ? 8192 : int(val);
+		}
+                
         private var md5:MD5Stream;
         private var fs:FileStream;
         
@@ -74,7 +79,7 @@ package org.apache.flex.ant.tags
         {
             super.execute(callbackMode, context);
          
-            var f:File = File.applicationDirectory.resolvePath(file);
+            var f:File = File.applicationDirectory.resolvePath(this.file);
             fs = new FileStream();
             fs.open(f, FileMode.READ);
             md5 = new MD5Stream();

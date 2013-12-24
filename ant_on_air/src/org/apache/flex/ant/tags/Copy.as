@@ -24,6 +24,7 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.FileSetTaskHandler;
+    import org.apache.flex.xml.ITagHandler;
     
     [Mixin]
     public class Copy extends FileSetTaskHandler
@@ -38,27 +39,62 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var fileName:String;
-        private var toFileName:String;
-        private var toDirName:String;
-        private var overwrite:Boolean;
+        private function get fileName():String
+		{
+			return getAttributeValue("@file");
+		}
+		
+        private function get toFileName():String
+		{
+			return getAttributeValue("@toFile");
+		}
+		
+        private function get toDirName():String
+		{
+			return getAttributeValue("@toDir");
+		}
+		
+        private function get overwrite():Boolean
+		{
+			return getAttributeValue("@overwrite") == "true";
+		}
+		
+		private var mapper:GlobMapper;
         
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "file")
-                fileName = value;
-            else if (name == "toFile")
-                toFileName = value;
-            else if (name == "toDir")
-                toDirName = value;
-            else if (name == "overwrite")
-                overwrite = value == "true";
-            else
-                super.processAttribute(name, value);
-        }
-
+		private function mapFileName(name:String):String
+		{
+			var from:String = mapper.from;
+			if (from.indexOf(".*") == -1)
+				from = from.replace("*", ".*");
+			var regex:RegExp = new RegExp(from);
+			var results:Array = name.match(regex);
+			if (results && results.length == 1)
+			{
+				name = mapper.to.replace("*", results[0]);
+				return name;
+			}
+			return null;
+		}
+		
+		private var searchedForMapper:Boolean;
+		
         override protected function actOnFile(dir:String, fileName:String):void
         {
+			if (!searchedForMapper)
+			{
+				// look for a mapper
+				for (var i:int = 0; i < numChildren; i++)
+				{
+					var child:ITagHandler = getChildAt(i);
+					if (child is GlobMapper)
+					{
+						mapper = child as GlobMapper;
+						break;
+					}
+				}
+				searchedForMapper = true;
+			}
+
             var srcName:String;
             if (dir)
                 srcName = dir + File.separator + fileName;
@@ -66,6 +102,13 @@ package org.apache.flex.ant.tags
                 srcName = fileName;
             var srcFile:File = File.applicationDirectory.resolvePath(srcName);
             
+			if (mapper)
+			{
+				fileName = mapFileName(fileName);
+				if (fileName == null)
+					return;
+			}
+			
             var destName:String;
             if (toDirName)
                 destName = toDirName + File.separator + fileName;

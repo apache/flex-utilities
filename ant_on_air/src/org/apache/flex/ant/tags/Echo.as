@@ -18,6 +18,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
+    import flash.filesystem.File;
+    import flash.filesystem.FileMode;
+    import flash.filesystem.FileStream;
+    
     import mx.core.IFlexModuleFactory;
     
     import org.apache.flex.ant.Ant;
@@ -37,25 +41,38 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var text:String;
+		private var _text:String;
+		
+        private function get text():String
+		{
+			if (_text != null)
+				return _text;
+			
+			return getAttributeValue("@text");
+		}
+		private function get fileName():String
+		{
+			return getNullOrAttributeValue("@file");
+		}
         
         public function setText(text:String):void
         {
-            this.text = text;    
+            _text = text;    
         }
         
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "message")
-                text = value;
-            else
-                super.processAttribute(name, value);
-        }
-
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
-            ant.output(ant.getValue(text, context));
+			if (fileName != null)
+			{
+				var f:File = new File(fileName);
+				var fs:FileStream = new FileStream();
+				fs.open(f, FileMode.WRITE);
+				fs.writeUTFBytes(ant.getValue(text, context));
+				fs.close();
+			}
+			else
+	            ant.output(ant.getValue(text, context));
             return true;
         }
     }

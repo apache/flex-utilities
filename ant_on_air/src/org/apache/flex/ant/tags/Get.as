@@ -34,7 +34,6 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-    import org.apache.flex.xml.ITagHandler;
     
     [Mixin]
     public class Get extends TaskHandler
@@ -49,21 +48,20 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var src:String;
-        private var dest:String;
-        private var skipexisting:Boolean;
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "src")
-                src = value;
-            else if (name == "dest")
-                dest = value;
-            else if (name == "skipexisting")
-                skipexisting = value == "true";
-            else
-                super.processAttribute(name, value);
-        }
+        private function get src():String
+		{
+			return getAttributeValue("@src");
+		}
+		
+        private function get dest():String
+		{
+			return getAttributeValue("@dest");
+		}
+		
+        private function get skipexisting():Boolean
+		{
+			return getAttributeValue("@skipexisting") == "true";
+		}
         
         private var urlLoader:URLLoader;
         

@@ -89,41 +89,34 @@ package org.apache.flex.ant.tags
             return true;
         }
         
-        private var fileName:String;
-        private var value:String;
-        private var envPrefix:String;
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "file")
-            {
-                fileName = value;
-            }
-            else if (name == "value")
-            {
-                this.value = value;
-            }
-            else if (name == "environment")
-            {
-                envPrefix = value;
-            }
-            else
-                super.processAttribute(name, value);
-        }
-        
+        private function get fileName():String
+		{
+			return getNullOrAttributeValue("@file");
+		}
+		
+        private function get value():String
+		{
+			return getAttributeValue("@value");
+		}
+		
+        private function get envPrefix():String
+		{
+			return getNullOrAttributeValue("@environment");
+		}
+                
         private var process:NativeProcess;
         
         public function requestEnvironmentVariables():void
         {
             var file:File = File.applicationDirectory;
-            if (Capabilities.os.indexOf('Mac OS') > -1)
+            if (Capabilities.os.toLowerCase().indexOf('win') == -1)
                 file = new File("/bin/bash");
             else
                 file = file.resolvePath("C:\\Windows\\System32\\cmd.exe");
             var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
             nativeProcessStartupInfo.executable = file;
             var args:Vector.<String> = new Vector.<String>();
-            if (Capabilities.os.indexOf('Mac OS') > -1)
+            if (Capabilities.os.toLowerCase().indexOf('win') == -1)
                 args.push("-c");
 			else
 				args.push("/c");

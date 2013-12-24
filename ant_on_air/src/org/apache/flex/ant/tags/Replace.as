@@ -18,7 +18,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
-    import flash.events.Event;
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
@@ -27,7 +26,6 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-    import org.apache.flex.xml.ITagHandler;
     
     [Mixin]
     public class Replace extends TaskHandler
@@ -42,21 +40,20 @@ package org.apache.flex.ant.tags
             super();
         }
         
-        private var file:String;
-        private var token:String;
-        private var value:String;
-        
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "file")
-                file = value;
-            else if (name == "token")
-                token = value;
-            else if (name == "value")
-                this.value = value;
-            else
-                super.processAttribute(name, value);
-        }
+        private function get file():String
+		{
+			return getAttributeValue("@file");
+		}
+		
+        private function get token():String
+		{
+			return getNullOrAttributeValue("@token");
+		}
+		
+        private function get value():String
+		{
+			return getAttributeValue("@value");
+		}
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
@@ -67,8 +64,30 @@ package org.apache.flex.ant.tags
             fs.open(f, FileMode.READ);
             var s:String = fs.readUTFBytes(fs.bytesAvailable);
             fs.close();
-            var regex:RegExp = new RegExp(token, "g");
-            s = s.replace(regex, value);
+			var tokens:Vector.<RegExp> = new Vector.<RegExp>();
+			var reps:Vector.<String> = new Vector.<String>();
+            var regex:RegExp;
+			if (token != null)
+			{
+				regex = new RegExp(token, "g");
+				tokens.push(regex);
+				reps.push(value);
+			}
+			if (numChildren > 0)
+			{
+				for (var i:int = 0; i < numChildren; i++)
+				{
+					var rf:ReplaceFilter = getChildAt(i) as ReplaceFilter;
+					regex = new RegExp(rf.token, "g");
+					tokens.push(regex);
+					reps.push(rf.value);
+				}
+			}
+			var n:int = tokens.length;
+			for (i = 0; i < n; i++)
+			{
+				s = s.replace(tokens[i], reps[i]);				
+			}
             fs.open(f, FileMode.WRITE);
             fs.writeUTFBytes(s);
             fs.close();

@@ -26,7 +26,6 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-    import org.apache.flex.xml.XMLTagProcessor;
     
     [Mixin]
     public class XmlProperty extends TaskHandler
@@ -88,23 +87,15 @@ package org.apache.flex.ant.tags
             }
         }
         
-        private var fileName:String;
-        private var collapse:Boolean;
+        private function get fileName():String
+		{
+			return getAttributeValue("@file");
+		}
+		
+        private function get collapse():Boolean
+		{
+			return getAttributeValue("@collapseAttributes") == "true";
+		}
         
-        override protected function processAttribute(name:String, value:String):void
-        {
-            if (name == "file")
-            {
-                fileName = value;
-            }
-            else if (name == "collapseAttributes")
-            {
-                collapse = value == "true";
-            }
-            else
-                super.processAttribute(name, value);
-        }
-        
-
     } 
 }
