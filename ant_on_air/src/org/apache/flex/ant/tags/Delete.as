@@ -21,10 +21,12 @@ package org.apache.flex.ant.tags
     import flash.filesystem.File;
     
     import mx.core.IFlexModuleFactory;
+    import mx.resources.ResourceManager;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.FileSetTaskHandler;
     
+	[ResourceBundle("ant")]
     [Mixin]
     public class Delete extends FileSetTaskHandler
     {
@@ -61,21 +63,29 @@ package org.apache.flex.ant.tags
             else
                 delFile.deleteFile();
         }
-        
+		
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             var retVal:Boolean = super.execute(callbackMode, context);
             if (numChildren > 0)
                 return retVal;
-            
+
+			var s:String;
+			
             if (fileName)
             {
                 var delFile:File = File.applicationDirectory.resolvePath(fileName);
+				s = ResourceManager.getInstance().getString('ant', 'DELETEFILE');
+				s = s.replace("%1", delFile.nativePath);
+				ant.output(ant.formatOutput("delete", s));
                 delFile.deleteFile();
             }
             else if (dirName)
             {
                 var delDir:File = File.applicationDirectory.resolvePath(dirName);
+				s = ResourceManager.getInstance().getString('ant', 'DELETEDIR');
+				s = s.replace("%1", delDir.nativePath);
+				ant.output(ant.formatOutput("delete", s));
                 delDir.deleteDirectory(true);
             }            
             return true;

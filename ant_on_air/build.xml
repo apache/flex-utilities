@@ -97,6 +97,7 @@
             fork="true"
             maxmemory="512m">
             <source-path path-element="${SOURCE_DIR}"/>
+            <source-path path-element="${basedir}/locale/{locale}"/>
 			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
             <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
             <external-library-path file="${basedir}/../installer/libs" append="true"/>
@@ -125,6 +126,7 @@
             maxmemory="512m">
 			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
             <source-path path-element="${SOURCE_DIR}"/>
+            <source-path path-element="${basedir}/locale/{locale}"/>
             <library-path file="${basedir}/../installer/libs" append="true"/>
 		</mxmlc>
         <delete dir="${basedir}/tests/temp" failonerror="false" />

@@ -21,11 +21,13 @@ package org.apache.flex.ant.tags
     import flash.filesystem.File;
     
     import mx.core.IFlexModuleFactory;
+    import mx.resources.ResourceManager;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.FileSetTaskHandler;
     import org.apache.flex.xml.ITagHandler;
     
+	[ResourceBundle("ant")]
     [Mixin]
     public class Copy extends FileSetTaskHandler
     {
@@ -119,6 +121,14 @@ package org.apache.flex.ant.tags
             srcFile.copyTo(destFile, overwrite);
         }
         
+		override protected function outputTotal(total:int):void
+		{
+			var s:String = ResourceManager.getInstance().getString('ant', 'COPYFILES');
+			s = s.replace("%1", total.toString());
+			s = s.replace("%2", toDirName);
+			ant.output(ant.formatOutput("copy", s));
+		}
+		
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             var retVal:Boolean = super.execute(callbackMode, context);
@@ -131,6 +141,10 @@ package org.apache.flex.ant.tags
             //var resolveName:String = destFile.nativePath.substr(destFile.nativePath.lastIndexOf(File.separator) + 1);
             //destDir.resolvePath(resolveName);
             
+			var s:String = ResourceManager.getInstance().getString('ant', 'COPY');
+			s = s.replace("%1", "1");
+			s = s.replace("%2", destFile.nativePath);
+			ant.output(ant.formatOutput("copy", s));
             srcFile.copyTo(destFile, overwrite);
             return true;
         }

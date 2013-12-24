@@ -114,6 +114,7 @@ package org.apache.flex.ant.tags
         {
             if (!ant.project.status)
                 return true;
+			ant.output("\n" + name + ":");
             return processSteps();
         }
         

@@ -72,7 +72,7 @@ package org.apache.flex.ant.tags
 				fs.close();
 			}
 			else
-	            ant.output(ant.getValue(text, context));
+	            ant.output(ant.formatOutput("echo", ant.getValue(text, context)));
             return true;
         }
     }

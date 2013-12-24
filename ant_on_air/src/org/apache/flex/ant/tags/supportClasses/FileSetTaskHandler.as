@@ -75,10 +75,17 @@ package org.apache.flex.ant.tags.supportClasses
                     }
                 }
             }
+			if (numChildren)
+				outputTotal(totalFiles);
             actOnFileSets();
             return !callbackMode;
         }
         
+		protected function outputTotal(total:int):void
+		{
+			
+		}
+		
         private function actOnFileSets():void
         {
             if (current == numChildren)

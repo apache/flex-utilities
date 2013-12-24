@@ -21,10 +21,12 @@ package org.apache.flex.ant.tags
     import flash.filesystem.File;
     
     import mx.core.IFlexModuleFactory;
+	import mx.resources.ResourceManager;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
     
+	[ResourceBundle("ant")]
     [Mixin]
     public class Mkdir extends TaskHandler
     {
@@ -50,6 +52,9 @@ package org.apache.flex.ant.tags
             var dir:File = new File(_dir);
             dir.createDirectory();
             
+			var s:String = ResourceManager.getInstance().getString('ant', 'MKDIR');
+			s = s.replace("%1", dir.nativePath);
+			ant.output(ant.formatOutput("mkdir", s));
             return true;
         }
         

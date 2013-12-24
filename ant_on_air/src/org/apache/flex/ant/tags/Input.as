@@ -64,10 +64,12 @@ package org.apache.flex.ant.tags
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
+			var s:String = "";
             if (text)
-                ant.output(ant.getValue(text, context));
+                s += ant.getValue(text, context);
             if (validArgs)
-                ant.output("[" + validArgs + "]");
+                s += " (" + validArgs + ")";
+			ant.output(ant.formatOutput("input", s));
             ant.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
             return false;
         }

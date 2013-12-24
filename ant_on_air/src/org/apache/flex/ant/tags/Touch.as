@@ -23,10 +23,12 @@ package org.apache.flex.ant.tags
     import flash.filesystem.FileStream;
     
     import mx.core.IFlexModuleFactory;
+    import mx.resources.ResourceManager;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
     
+	[ResourceBundle("ant")]
     [Mixin]
     public class Touch extends TaskHandler
     {
@@ -44,7 +46,11 @@ package org.apache.flex.ant.tags
             super.execute(callbackMode, context);
 			
             var f:File = new File(fileName);
-            var fs:FileStream = new FileStream();
+			var s:String = ResourceManager.getInstance().getString('ant', 'TOUCH');
+			s = s.replace("%1", f.nativePath);
+			ant.output(ant.formatOutput("touch", s));
+
+			var fs:FileStream = new FileStream();
             fs.open(f, FileMode.APPEND);
             fs.close();
             return true;

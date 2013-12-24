@@ -140,6 +140,6 @@ limitations under the License.
     <s:layout>
         <s:VerticalLayout />
     </s:layout>
-    <mx:TextArea id="console" width="100%" height="100%" />
+    <mx:TextArea id="console" width="100%" height="100%" fontFamily="Courier New" />
     <mx:ProgressBar id="pb" width="100%" mode="event" label="" />
 </s:WindowedApplication>

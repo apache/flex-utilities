@@ -27,10 +27,12 @@ package org.apache.flex.ant.tags
     import flash.system.Capabilities;
     
     import mx.core.IFlexModuleFactory;
+    import mx.resources.ResourceManager;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
     
+	[ResourceBundle("ant")]
     [Mixin]
     public class Untar extends TaskHandler
     {
@@ -93,7 +95,12 @@ package org.apache.flex.ant.tags
             startupInfo.executable = tar;
             startupInfo.arguments = arguments;
             
-            _process = new NativeProcess();
+			var s:String = ResourceManager.getInstance().getString('ant', 'UNZIP');
+			s = s.replace("%1", source.nativePath);
+			s = s.replace("%2", destFile.nativePath);
+			ant.output(ant.formatOutput("untar", s));
+
+			_process = new NativeProcess();
             _process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, unTarFileProgress);
             _process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, unTarError);
             _process.addEventListener(NativeProcessExitEvent.EXIT, unTarComplete);

@@ -31,10 +31,12 @@ package org.apache.flex.ant.tags
     import flash.utils.ByteArray;
     
     import mx.core.IFlexModuleFactory;
+    import mx.resources.ResourceManager;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
     
+	[ResourceBundle("ant")]
     [Mixin]
     public class Get extends TaskHandler
     {
@@ -75,6 +77,12 @@ package org.apache.flex.ant.tags
                 if (destFile.exists)
                     return true;
             }
+			var s:String = ResourceManager.getInstance().getString('ant', 'GETTING');
+			s = s.replace("%1", src);
+			ant.output(ant.formatOutput("get", s));
+			s = ResourceManager.getInstance().getString('ant', 'GETTO');
+			s = s.replace("%1", getDestFile().nativePath);
+			ant.output(ant.formatOutput("get", s));
             
             urlLoader = new URLLoader();
             urlLoader.load(new URLRequest(src));

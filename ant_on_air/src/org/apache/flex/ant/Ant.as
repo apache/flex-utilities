@@ -191,6 +191,15 @@ package org.apache.flex.ant
             }
             return input;
         }
+		
+		public static const spaces:String = "           ";
+		
+		public function formatOutput(tag:String, data:String):String
+		{
+			var s:String = spaces.substr(0, Math.max(spaces.length - tag.length - 2, 0)) +
+				"[" + tag + "] " + data;
+			return s;
+		}
         
 		public static function log(s:String, level:int):void
 		{

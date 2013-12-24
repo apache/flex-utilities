@@ -26,6 +26,7 @@ package org.apache.flex.ant.tags
     import flash.utils.ByteArray;
     
     import mx.core.IFlexModuleFactory;
+    import mx.resources.ResourceManager;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
@@ -34,6 +35,7 @@ package org.apache.flex.ant.tags
     import org.as3commons.zip.ZipEvent;
     import org.as3commons.zip.ZipFile;
     
+	[ResourceBundle("ant")]
     [Mixin]
     public class Unzip extends TaskHandler
     {
@@ -85,6 +87,11 @@ package org.apache.flex.ant.tags
             var srcFile:File = File.applicationDirectory.resolvePath(src);
             destFile = File.applicationDirectory.resolvePath(dest);
 
+			var s:String = ResourceManager.getInstance().getString('ant', 'UNZIP');
+			s = s.replace("%1", srcFile.nativePath);
+			s = s.replace("%2", destFile.nativePath);
+			ant.output(ant.formatOutput("unzip", s));
+			
             unzip(srcFile);
             return true;
         }
