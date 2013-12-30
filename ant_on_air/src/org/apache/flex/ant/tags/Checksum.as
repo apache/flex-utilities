@@ -31,7 +31,7 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-
+    
     [Mixin]
     public class Checksum extends TaskHandler
     {
@@ -39,47 +39,67 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["checksum"] = Checksum;
         }
-
+        
         public function Checksum()
         {
             super();
         }
         
         private function get file():String
-		{
-			return getAttributeValue("@file");
-		}
-		
+        {
+            return getAttributeValue("@file");
+        }
+        
         private function get toDir():String
-		{
-			return getAttributeValue("@todir");
-		}
-		
+        {
+            return getAttributeValue("@todir");
+        }
+        
         private function get fileExt():String
-		{
-			var val:String = getNullOrAttributeValue("@fileext");
-			return val == null ? ".md5" : val;
-		}
-		
+        {
+            var val:String = getNullOrAttributeValue("@fileext");
+            return val == null ? ".md5" : val;
+        }
+        
+        private function get property():String
+        {
+            return getNullOrAttributeValue("@property");
+        }
+        
         private function get verifyproperty():String
-		{
-			return getAttributeValue("@verifyproperty");
-		}
-		
+        {
+            return getNullOrAttributeValue("@verifyproperty");
+        }
+        
         private function get readbuffersize():int
-		{
-			var val:String = getNullOrAttributeValue("@readbuffersize");
-			return val == null ? 8192 : int(val);
-		}
-                
+        {
+            var val:String = getNullOrAttributeValue("@readbuffersize");
+            return val == null ? 8192 : int(val);
+        }
+        
         private var md5:MD5Stream;
         private var fs:FileStream;
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
-         
-            var f:File = File.applicationDirectory.resolvePath(this.file);
+            
+            try {
+                var f:File = File.applicationDirectory.resolvePath(this.file);
+            } 
+            catch (e:Error)
+            {
+                ant.output(this.file);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                dispatchEvent(new Event(Event.COMPLETE));
+                return true;							
+            }
+            
+            if (!f.exists)
+                return true;
+            
             fs = new FileStream();
             fs.open(f, FileMode.READ);
             md5 = new MD5Stream();
@@ -109,31 +129,58 @@ package org.apache.flex.ant.tags
         private function sumComplete():void
         {
             sum = md5.complete();
-            var sumFile:File = getSumFile();
-            var fs:FileStream = new FileStream();
-            if (verifyproperty)
+            if (verifyproperty && property)
             {
-                fs.open(sumFile, FileMode.READ);
-                var expected:String = fs.readUTFBytes(fs.bytesAvailable);
-                fs.close();                
-                if (sum != expected)
-                    context[verifyproperty] = "false";
-                else
+                if (sum == property)
                     context[verifyproperty] = "true";
+                else
+                    context[verifyproperty] = "false";
+            }
+            else if (!toDir && property)
+            {
+                context[property] = sum;				
             }
             else
             {
-                fs.open(sumFile, FileMode.WRITE);
-                fs.writeUTFBytes(sum);
-                fs.close();                
+                var sumFile:File = getSumFile();
+                if (sumFile)
+                {
+                    var fs:FileStream = new FileStream();
+                    if (verifyproperty)
+                    {
+                        fs.open(sumFile, FileMode.READ);
+                        var expected:String = fs.readUTFBytes(fs.bytesAvailable);
+                        fs.close();                
+                        if (sum != expected)
+                            context[verifyproperty != null ? verifyproperty : property] = "false";
+                        else
+                            context[verifyproperty != null ? verifyproperty : property] = "true";
+                    }
+                    else
+                    {
+                        fs.open(sumFile, FileMode.WRITE);
+                        fs.writeUTFBytes(sum);
+                        fs.close();                
+                    }
+                }            
             }
-            
             dispatchEvent(new Event(Event.COMPLETE));
         }
         
         private function getSumFile():File
         {
-            var sumFile:File = File.applicationDirectory.resolvePath(toDir);
+            try {
+                var sumFile:File = File.applicationDirectory.resolvePath(toDir);
+            } 
+            catch (e:Error)
+            {
+                ant.output(toDir);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return null;							
+            }
+            
             if (sumFile.isDirectory)
             {
                 var fileName:String = file + fileExt;
@@ -146,6 +193,6 @@ package org.apache.flex.ant.tags
                 sumFile = sumFile.resolvePath(fileName);
             }
             return sumFile;
-       }
+        }
     }
 }

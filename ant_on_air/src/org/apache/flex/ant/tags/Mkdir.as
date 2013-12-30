@@ -49,7 +49,19 @@ package org.apache.flex.ant.tags
         {
             super.execute(callbackMode, context);
             
-            var dir:File = new File(_dir);
+			try
+			{
+	            var dir:File = new File(_dir);
+			} 
+			catch (e:Error)
+			{
+				ant.output(_dir);
+				ant.output(e.message);
+				if (failonerror)
+					ant.project.status = false;
+				return true;							
+			}
+
             dir.createDirectory();
             
 			var s:String = ResourceManager.getInstance().getString('ant', 'MKDIR');

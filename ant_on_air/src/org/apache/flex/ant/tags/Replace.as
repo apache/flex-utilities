@@ -34,64 +34,76 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["replace"] = Replace;
         }
-
+        
         public function Replace()
         {
             super();
         }
         
         private function get file():String
-		{
-			return getAttributeValue("@file");
-		}
-		
+        {
+            return getAttributeValue("@file");
+        }
+        
         private function get token():String
-		{
-			return getNullOrAttributeValue("@token");
-		}
-		
+        {
+            return getNullOrAttributeValue("@token");
+        }
+        
         private function get value():String
-		{
-			return getAttributeValue("@value");
-		}
+        {
+            return getAttributeValue("@value");
+        }
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
-
-            var f:File = File.applicationDirectory.resolvePath(file);
+            
+            try {
+                var f:File = File.applicationDirectory.resolvePath(file);
+            } 
+            catch (e:Error)
+            {
+                ant.output(file);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return true;							
+            }
+            
             var fs:FileStream = new FileStream();
             fs.open(f, FileMode.READ);
             var s:String = fs.readUTFBytes(fs.bytesAvailable);
             fs.close();
-			var tokens:Vector.<RegExp> = new Vector.<RegExp>();
-			var reps:Vector.<String> = new Vector.<String>();
+            var tokens:Vector.<RegExp> = new Vector.<RegExp>();
+            var reps:Vector.<String> = new Vector.<String>();
             var regex:RegExp;
-			if (token != null)
-			{
-				regex = new RegExp(token, "g");
-				tokens.push(regex);
-				reps.push(value);
-			}
-			if (numChildren > 0)
-			{
-				for (var i:int = 0; i < numChildren; i++)
-				{
-					var rf:ReplaceFilter = getChildAt(i) as ReplaceFilter;
-					regex = new RegExp(rf.token, "g");
-					tokens.push(regex);
-					reps.push(rf.value);
-				}
-			}
-			var n:int = tokens.length;
-			for (i = 0; i < n; i++)
-			{
-				s = s.replace(tokens[i], reps[i]);				
-			}
+            if (token != null)
+            {
+                regex = new RegExp(token, "g");
+                tokens.push(regex);
+                reps.push(value);
+            }
+            if (numChildren > 0)
+            {
+                for (var i:int = 0; i < numChildren; i++)
+                {
+                    var rf:ReplaceFilter = getChildAt(i) as ReplaceFilter;
+                    rf.setContext(context);
+                    regex = new RegExp(rf.token, "g");
+                    tokens.push(regex);
+                    reps.push(rf.value);
+                }
+            }
+            var n:int = tokens.length;
+            for (i = 0; i < n; i++)
+            {
+                s = s.replace(tokens[i], reps[i]);				
+            }
             fs.open(f, FileMode.WRITE);
             fs.writeUTFBytes(s);
             fs.close();
             return true;
         }
-   }
+    }
 }

@@ -35,82 +35,102 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["ant"] = AntTask;
         }
-
+        
         public function AntTask()
         {
             super();
         }
         
         private function get file():String
-		{
-			return getAttributeValue("@antfile");
-		}
-		
+        {
+            return getAttributeValue("@antfile");
+        }
+        
         private function get dir():String
-		{
-			return getAttributeValue("@dir");
-		}
-		
+        {
+            return getAttributeValue("@dir");
+        }
+        
         private function get target():String
-		{
-			return getAttributeValue("@target");
-		}
-                
-		private var subant:Ant;
-		
+        {
+            return getAttributeValue("@target");
+        }
+        
+        private var subant:Ant;
+        
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
-	
-			// I think properties set in the sub-script to not affect the main script
-			// so clone the properties here
-			var subContext:Object = {};
-			for (var p:String in context)
-				subContext[p] = context[p];
-			if (subContext.hasOwnProperty("targets"))
-				delete subContext["targets"];
-			if (target)
-				subContext["targets"] = target;
-			
-			subant = new Ant();
-			subant.parentAnt = ant;
-			subant.output = ant.output;
-			var file:File = File.applicationDirectory;
-			file = file.resolvePath(dir + File.separator + this.file);
-			if (!subant.processXMLFile(file, subContext, true))
-			{
-				subant.addEventListener("statusChanged", statusHandler);
-				subant.addEventListener(Event.COMPLETE, completeHandler);
-				subant.addEventListener(ProgressEvent.PROGRESS, progressEventHandler);
-				// redispatch keyboard events off of ant so input task can see them
-				ant.addEventListener(KeyboardEvent.KEY_DOWN, ant_keyDownHandler);
-				return false;
-			}
-			else
-				completeHandler(null);
+            
+            // I think properties set in the sub-script to not affect the main script
+            // so clone the properties here
+            var subContext:Object = {};
+            for (var p:String in context)
+                subContext[p] = context[p];
+            if (subContext.hasOwnProperty("targets"))
+                delete subContext["targets"];
+            if (target)
+                subContext["targets"] = target;
+            
+            subant = new Ant();
+            subant.parentAnt = ant;
+            subant.output = ant.output;
+            var file:File = File.applicationDirectory;
+            try {
+                file = file.resolvePath(dir + File.separator + this.file);
+            } 
+            catch (e:Error)
+            {
+                ant.output(dir + File.separator + this.file);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return true;							
+            }
+            
+            if (!subant.processXMLFile(file, subContext, true))
+            {
+                subant.addEventListener("statusChanged", statusHandler);
+                subant.addEventListener(Event.COMPLETE, completeHandler);
+                subant.addEventListener(ProgressEvent.PROGRESS, progressEventHandler);
+                // redispatch keyboard events off of ant so input task can see them
+                ant.addEventListener(KeyboardEvent.KEY_DOWN, ant_keyDownHandler);
+                return false;
+            }
+            else
+                completeHandler(null);
             return true;
         }
-		
-		private function completeHandler(event:Event):void
-		{
-			dispatchEvent(event);
-		}
-		
-		private function statusHandler(event:Event):void
-		{
-			ant.project.status = subant.project.status;
-			dispatchEvent(new Event(Event.COMPLETE));
-		}
-		
-		private function progressEventHandler(event:ProgressEvent):void
-		{
-			ant.dispatchEvent(event);
-		}
-		
-		private function ant_keyDownHandler(event:KeyboardEvent):void
-		{
-			subant.dispatchEvent(event);
-		}
-		
+        
+        private function completeHandler(event:Event):void
+        {
+            event.target.removeEventListener("statusChanged", statusHandler);
+            event.target.removeEventListener(Event.COMPLETE, completeHandler);
+            event.target.removeEventListener(ProgressEvent.PROGRESS, progressEventHandler);
+            ant.removeEventListener(KeyboardEvent.KEY_DOWN, ant_keyDownHandler);
+            
+            dispatchEvent(event);
+        }
+        
+        private function statusHandler(event:Event):void
+        {
+            event.target.removeEventListener("statusChanged", statusHandler);
+            event.target.removeEventListener(Event.COMPLETE, completeHandler);
+            event.target.removeEventListener(ProgressEvent.PROGRESS, progressEventHandler);
+            ant.removeEventListener(KeyboardEvent.KEY_DOWN, ant_keyDownHandler);
+            ant.project.status = subant.project.status;
+            dispatchEvent(new Event(Event.COMPLETE));
+        }
+        
+        private function progressEventHandler(event:ProgressEvent):void
+        {
+            ant.dispatchEvent(event);
+        }
+        
+        private function ant_keyDownHandler(event:KeyboardEvent):void
+        {
+            subant.dispatchEvent(event);
+        }
+        
     }
 }

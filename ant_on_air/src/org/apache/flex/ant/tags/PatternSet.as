@@ -33,63 +33,64 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["patternset"] = PatternSet;
         }
-
+        
         public function PatternSet()
         {
             super();
         }
-             
-		private var includes:Vector.<String>;
-		private var excludes:Vector.<String>;
-		
-		private var processedChildren:Boolean;
-		
+        
+        private var includes:Vector.<String>;
+        private var excludes:Vector.<String>;
+        
+        private var processedChildren:Boolean;
+        
         public function matches(path:String):Boolean
         {
-			if (!processedChildren)
-			{
-	            ant.processChildren(xml, this);
-				processedChildren = true;
-			}
-			
-			if (numChildren == 0)
-				return true;
-			
-			if (includes == null)
-			{
-	            var n:int = numChildren;
-	            var includes:Vector.<String> = new Vector.<String>();
-	            var excludes:Vector.<String> = new Vector.<String>();
-	            for (var i:int = 0; i < n; i++)
-	            {
-	                var tag:NamedTagHandler = getChildAt(i) as NamedTagHandler;
-	                if (tag is FileSetInclude)
-	                    includes.push(tag.name);
-	                else if (tag is FileSetExclude)
-	                    excludes.push(tag.name);
-	                else
-	                    throw new BuildException("Unsupported Tag at index " + i);
-	            }
-			}
-			var result:Boolean = false;
-			for each (var inc:String in includes)
-			{
-				if (SelectorUtils.match(inc, path))
-				{
-					result = true;
-					break;
-				}
-			}
-			for each (var exc:String in excludes)
-			{
-				if (SelectorUtils.match(exc, path))
-				{
-					result = false;
-					break;
-				}
-			}
+            if (!processedChildren)
+            {
+                ant.processChildren(xml, this);
+                processedChildren = true;
+            }
+            
+            if (numChildren == 0)
+                return true;
+            
+            if (includes == null)
+            {
+                var n:int = numChildren;
+                var includes:Vector.<String> = new Vector.<String>();
+                var excludes:Vector.<String> = new Vector.<String>();
+                for (var i:int = 0; i < n; i++)
+                {
+                    var tag:NamedTagHandler = getChildAt(i) as NamedTagHandler;
+                    tag.setContext(context);
+                    if (tag is FileSetInclude)
+                        includes.push(tag.name);
+                    else if (tag is FileSetExclude)
+                        excludes.push(tag.name);
+                    else
+                        throw new BuildException("Unsupported Tag at index " + i);
+                }
+            }
+            var result:Boolean = false;
+            for each (var inc:String in includes)
+            {
+                if (SelectorUtils.match(inc, path))
+                {
+                    result = true;
+                    break;
+                }
+            }
+            for each (var exc:String in excludes)
+            {
+                if (SelectorUtils.match(exc, path))
+                {
+                    result = false;
+                    break;
+                }
+            }
             return result;
         }
-                
+        
     }
 }

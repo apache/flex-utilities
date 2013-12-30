@@ -46,31 +46,31 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["project"] = Project;
         }
-
+        
         public function Project()
         {
         }
         
-		private var _status:Boolean;
+        private var _status:Boolean;
         /**
          *  true if tasks completed successfully.
          *  Do not monitor this property to determine if the project is done executing.
          *  This property is set to true and a failing task sets it to false.
          */
         public function get status():Boolean
-		{
-			return _status;
-		}
-		
-		public function set status(value:Boolean):void
-		{
-			if (_status != value)
-			{
-				_status = value;
-				ant.dispatchEvent(new Event("statusChanged"));
-			}
-		}
-                
+        {
+            return _status;
+        }
+        
+        public function set status(value:Boolean):void
+        {
+            if (_status != value)
+            {
+                _status = value;
+                ant.dispatchEvent(new Event("statusChanged"));
+            }
+        }
+        
         public function get basedir():String
         {
             return getAttributeValue("@basedir");
@@ -81,16 +81,16 @@ package org.apache.flex.ant.tags
             return getAttributeValue("@default");
         }
         
+        public var refids:Object = {};
+        
         private var targets:Array;
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-			super.execute(callbackMode, context);
-			
+            super.execute(callbackMode, context);
+            
             this.callbackMode = callbackMode;
-			
-            context.basedir = basedir;
-			
+            
             status = true;
             
             if (context.targets == null)
@@ -150,7 +150,7 @@ package org.apache.flex.ant.tags
                     dispatchEvent(new Event(Event.COMPLETE));
                     return true;
                 }
-                    
+                
             }
             if (targets.length == 0)
                 dispatchEvent(new Event(Event.COMPLETE));
@@ -192,11 +192,13 @@ package org.apache.flex.ant.tags
         
         private function completeHandler(event:Event):void
         {
+            event.target.removeEventListener(Event.COMPLETE, completeHandler);
             executeTargets();
         }
         
         private function childCompleteHandler(event:Event):void
         {
+            event.target.removeEventListener(Event.COMPLETE, childCompleteHandler);
             executeChildren();
         }
         

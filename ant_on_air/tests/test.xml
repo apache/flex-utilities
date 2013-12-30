@@ -64,7 +64,7 @@
     <target name="copy-test" >
 		<echo>FLEX_HOME is ${FLEX_HOME}. DEBUG is ${DEBUG_FLAG}. The OS is ${theOS}</echo>
         <mkdir dir="${basedir}/temp" />
-        <copy file="${basedir}/test.xml" toFile="${basedir}/temp/copied.xml" />
+        <copy file="${basedir}/test.xml" tofile="${basedir}/temp/copied.xml" />
         <available file="${basedir}/temp/copied.xml" property="copied.doesnt.exist" value="got copied" />
         <fail message="test.xml was not copied to temp/copied.xml">
             <condition>
@@ -74,7 +74,7 @@
             </condition>
         </fail>
         <echo>copied ${copied.doesnt.exist}.  Should say: got copied</echo>
-        <copy toDir="${basedir}/temp">
+        <copy todir="${basedir}/temp">
             <fileset dir="${basedir}/../src">
                 <include name="**/**" />
                 <exclude name="**/Ant.as" />

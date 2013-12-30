@@ -34,7 +34,7 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["propertyfile"] = PropertyFile;
         }
-
+        
         public function PropertyFile()
         {
         }
@@ -42,14 +42,26 @@ package org.apache.flex.ant.tags
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
-			
-            var f:File = new File(fileName);
+            
+            try {
+                var f:File = new File(fileName);
+            } 
+            catch (e:Error)
+            {
+                ant.output(fileName);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return true;							
+            }
+            
             var fs:FileStream = new FileStream();
             fs.open(f, FileMode.WRITE);
             var n:int = numChildren;
             for (var i:int = 0; i < n; i++)
             {
                 var entry:Entry = getChildAt(i) as Entry;
+                entry.setContext(context);
                 if (entry)
                 {
                     var s:String = entry.key + "=" + entry.value + "\n";
@@ -61,9 +73,9 @@ package org.apache.flex.ant.tags
         }
         
         private function get fileName():String
-		{
-			return getAttributeValue("@file");
-		}
-
+        {
+            return getAttributeValue("@file");
+        }
+        
     } 
 }

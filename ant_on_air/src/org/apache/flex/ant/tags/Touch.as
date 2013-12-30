@@ -28,7 +28,7 @@ package org.apache.flex.ant.tags
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
     
-	[ResourceBundle("ant")]
+    [ResourceBundle("ant")]
     [Mixin]
     public class Touch extends TaskHandler
     {
@@ -36,7 +36,7 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["touch"] = Touch;
         }
-
+        
         public function Touch()
         {
         }
@@ -44,22 +44,33 @@ package org.apache.flex.ant.tags
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
-			
-            var f:File = new File(fileName);
-			var s:String = ResourceManager.getInstance().getString('ant', 'TOUCH');
-			s = s.replace("%1", f.nativePath);
-			ant.output(ant.formatOutput("touch", s));
-
-			var fs:FileStream = new FileStream();
+            
+            try {
+                var f:File = new File(fileName);
+            } 
+            catch (e:Error)
+            {
+                ant.output(fileName);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return true;							
+            }
+            
+            var s:String = ResourceManager.getInstance().getString('ant', 'TOUCH');
+            s = s.replace("%1", f.nativePath);
+            ant.output(ant.formatOutput("touch", s));
+            
+            var fs:FileStream = new FileStream();
             fs.open(f, FileMode.APPEND);
             fs.close();
             return true;
         }
         
         private function get fileName():String
-		{
-			return getAttributeValue("@file");
-		}        
-
+        {
+            return getAttributeValue("@file");
+        }        
+        
     } 
 }

@@ -34,16 +34,27 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["xmlproperty"] = XmlProperty;
         }
-
+        
         public function XmlProperty()
         {
         }
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-			super.execute(callbackMode, context);
-			
-            var f:File = new File(fileName);
+            super.execute(callbackMode, context);
+            
+            try {
+                var f:File = new File(fileName);
+            } 
+            catch (e:Error)
+            {
+                ant.output(fileName);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return true;							
+            }
+            
             var fs:FileStream = new FileStream();
             fs.open(f, FileMode.READ);
             var data:String = fs.readUTFBytes(fs.bytesAvailable);
@@ -70,6 +81,9 @@ package org.apache.flex.ant.tags
                 else if (node.nodeKind() == "element")
                 {
                     key = prefix + "." + node.name();
+                    var id:String = node.@id.toString();
+                    if (id)
+                        ant.project.refids[id] = key;
                     createProperties(node, key);
                 }            
             }
@@ -88,14 +102,14 @@ package org.apache.flex.ant.tags
         }
         
         private function get fileName():String
-		{
-			return getAttributeValue("@file");
-		}
-		
+        {
+            return getAttributeValue("@file");
+        }
+        
         private function get collapse():Boolean
-		{
-			return getAttributeValue("@collapseAttributes") == "true";
-		}
+        {
+            return getAttributeValue("@collapseAttributes") == "true";
+        }
         
     } 
 }

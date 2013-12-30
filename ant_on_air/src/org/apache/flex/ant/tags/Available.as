@@ -33,39 +33,47 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["available"] = Available;
         }
-
+        
         public function Available()
         {
             super();
         }
         
         private function get file():String
-		{
-			return getNullOrAttributeValue("@file");
-		}
-		
+        {
+            return getNullOrAttributeValue("@file");
+        }
+        
         private function get type():String
-		{
-			return getNullOrAttributeValue("@type");
-		}
-		
+        {
+            return getNullOrAttributeValue("@type");
+        }
+        
         private function get property():String
-		{
-			return getNullOrAttributeValue("@property");
-		}
-		
+        {
+            return getNullOrAttributeValue("@property");
+        }
+        
         private function get value():String
-		{
-			return getNullOrAttributeValue("@value");
-		}
+        {
+            return getNullOrAttributeValue("@value");
+        }
         
         public function getValue(context:Object):Object
         {
-			this.context = context;
-			
+            this.context = context;
+            
             if (this.file == null) return false;
             
-            var file:File = new File(this.file);
+            try
+            {
+                var file:File = new File(this.file);
+            } 
+            catch (e:Error)
+            {
+                return false;							
+            }
+            
             if (!file.exists)
                 return false;
             
@@ -74,18 +82,18 @@ package org.apache.flex.ant.tags
             
             return true;
         }
-
+        
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
             var avail:Object = getValue(context);
-			if (avail)
-			{
-	            if (!context.hasOwnProperty(property))
-	                context[property] = value != null ? value : true;
-			}			
+            if (avail)
+            {
+                if (!context.hasOwnProperty(property))
+                    context[property] = value != null ? value : true;
+            }			
             return true;
         }
-                
+        
     }
 }

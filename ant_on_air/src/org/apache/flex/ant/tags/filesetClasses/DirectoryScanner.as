@@ -113,7 +113,7 @@ package org.apache.flex.ant.tags.filesetClasses
      *
      */
     public class DirectoryScanner
-        /* implements FileScanner, SelectorScanner, ResourceFactory*/ {
+    /* implements FileScanner, SelectorScanner, ResourceFactory*/ {
         
         /**
          * Patterns which should be excluded by default.
@@ -130,49 +130,49 @@ package org.apache.flex.ant.tags.filesetClasses
         protected static const DEFAULTEXCLUDES:Vector.<String> = Vector.<String>([
             // Miscellaneous typical temporary files
             SelectorUtils.DEEP_TREE_MATCH + "/*~",
-                SelectorUtils.DEEP_TREE_MATCH + "/#*#",
-                SelectorUtils.DEEP_TREE_MATCH + "/.#*",
-                SelectorUtils.DEEP_TREE_MATCH + "/%*%",
-                SelectorUtils.DEEP_TREE_MATCH + "/._*",
-                
-                // CVS
-                SelectorUtils.DEEP_TREE_MATCH + "/CVS",
-                SelectorUtils.DEEP_TREE_MATCH + "/CVS/" + SelectorUtils.DEEP_TREE_MATCH,
-                SelectorUtils.DEEP_TREE_MATCH + "/.cvsignore",
-                
-                // SCCS
-                SelectorUtils.DEEP_TREE_MATCH + "/SCCS",
-                SelectorUtils.DEEP_TREE_MATCH + "/SCCS/" + SelectorUtils.DEEP_TREE_MATCH,
-                
-                // Visual SourceSafe
-                SelectorUtils.DEEP_TREE_MATCH + "/vssver.scc",
-                
-                // Subversion
-                SelectorUtils.DEEP_TREE_MATCH + "/.svn",
-                SelectorUtils.DEEP_TREE_MATCH + "/.svn/" + SelectorUtils.DEEP_TREE_MATCH,
-                
-                // Git
-                SelectorUtils.DEEP_TREE_MATCH + "/.git",
-                SelectorUtils.DEEP_TREE_MATCH + "/.git/" + SelectorUtils.DEEP_TREE_MATCH,
-                SelectorUtils.DEEP_TREE_MATCH + "/.gitattributes",
-                SelectorUtils.DEEP_TREE_MATCH + "/.gitignore",
-                SelectorUtils.DEEP_TREE_MATCH + "/.gitmodules",
-                
-                // Mercurial
-                SelectorUtils.DEEP_TREE_MATCH + "/.hg",
-                SelectorUtils.DEEP_TREE_MATCH + "/.hg/" + SelectorUtils.DEEP_TREE_MATCH,
-                SelectorUtils.DEEP_TREE_MATCH + "/.hgignore",
-                SelectorUtils.DEEP_TREE_MATCH + "/.hgsub",
-                SelectorUtils.DEEP_TREE_MATCH + "/.hgsubstate",
-                SelectorUtils.DEEP_TREE_MATCH + "/.hgtags",
-                
-                // Bazaar
-                SelectorUtils.DEEP_TREE_MATCH + "/.bzr",
-                SelectorUtils.DEEP_TREE_MATCH + "/.bzr/" + SelectorUtils.DEEP_TREE_MATCH,
-                SelectorUtils.DEEP_TREE_MATCH + "/.bzrignore",
-                
-                // Mac
-                SelectorUtils.DEEP_TREE_MATCH + "/.DS_Store"
+            SelectorUtils.DEEP_TREE_MATCH + "/#*#",
+            SelectorUtils.DEEP_TREE_MATCH + "/.#*",
+            SelectorUtils.DEEP_TREE_MATCH + "/%*%",
+            SelectorUtils.DEEP_TREE_MATCH + "/._*",
+            
+            // CVS
+            SelectorUtils.DEEP_TREE_MATCH + "/CVS",
+            SelectorUtils.DEEP_TREE_MATCH + "/CVS/" + SelectorUtils.DEEP_TREE_MATCH,
+            SelectorUtils.DEEP_TREE_MATCH + "/.cvsignore",
+            
+            // SCCS
+            SelectorUtils.DEEP_TREE_MATCH + "/SCCS",
+            SelectorUtils.DEEP_TREE_MATCH + "/SCCS/" + SelectorUtils.DEEP_TREE_MATCH,
+            
+            // Visual SourceSafe
+            SelectorUtils.DEEP_TREE_MATCH + "/vssver.scc",
+            
+            // Subversion
+            SelectorUtils.DEEP_TREE_MATCH + "/.svn",
+            SelectorUtils.DEEP_TREE_MATCH + "/.svn/" + SelectorUtils.DEEP_TREE_MATCH,
+            
+            // Git
+            SelectorUtils.DEEP_TREE_MATCH + "/.git",
+            SelectorUtils.DEEP_TREE_MATCH + "/.git/" + SelectorUtils.DEEP_TREE_MATCH,
+            SelectorUtils.DEEP_TREE_MATCH + "/.gitattributes",
+            SelectorUtils.DEEP_TREE_MATCH + "/.gitignore",
+            SelectorUtils.DEEP_TREE_MATCH + "/.gitmodules",
+            
+            // Mercurial
+            SelectorUtils.DEEP_TREE_MATCH + "/.hg",
+            SelectorUtils.DEEP_TREE_MATCH + "/.hg/" + SelectorUtils.DEEP_TREE_MATCH,
+            SelectorUtils.DEEP_TREE_MATCH + "/.hgignore",
+            SelectorUtils.DEEP_TREE_MATCH + "/.hgsub",
+            SelectorUtils.DEEP_TREE_MATCH + "/.hgsubstate",
+            SelectorUtils.DEEP_TREE_MATCH + "/.hgtags",
+            
+            // Bazaar
+            SelectorUtils.DEEP_TREE_MATCH + "/.bzr",
+            SelectorUtils.DEEP_TREE_MATCH + "/.bzr/" + SelectorUtils.DEEP_TREE_MATCH,
+            SelectorUtils.DEEP_TREE_MATCH + "/.bzrignore",
+            
+            // Mac
+            SelectorUtils.DEEP_TREE_MATCH + "/.DS_Store"
         ]);
         
         /**
@@ -404,7 +404,7 @@ package org.apache.flex.ant.tags.filesetClasses
          */
         public function DirectoryScanner() {
         }
-                
+        
         /**
          * Test whether or not a given path matches the start of a given
          * pattern up to the first "**".
@@ -424,10 +424,10 @@ package org.apache.flex.ant.tags.filesetClasses
          * pattern up to the first "**".
          */
         protected static function matchPatternStart(pattern:String, str:String,
-            isCaseSensitive:Boolean = true):Boolean {
-                return SelectorUtils.matchPatternStart(pattern, str, isCaseSensitive);
-            }
-                
+                                                    isCaseSensitive:Boolean = true):Boolean {
+            return SelectorUtils.matchPatternStart(pattern, str, isCaseSensitive);
+        }
+        
         /**
          * Test whether or not a given path matches a given pattern.
          *
@@ -442,9 +442,9 @@ package org.apache.flex.ant.tags.filesetClasses
          *         or <code>false</code> otherwise.
          */
         protected static function matchPath(pattern:String, str:String,
-            isCaseSensitive:Boolean = true):Boolean {
-                return SelectorUtils.matchPath(pattern, str, isCaseSensitive);
-            }
+                                            isCaseSensitive:Boolean = true):Boolean {
+            return SelectorUtils.matchPath(pattern, str, isCaseSensitive);
+        }
         
         /**
          * Test whether or not a string matches against a pattern.
@@ -464,9 +464,9 @@ package org.apache.flex.ant.tags.filesetClasses
          *         or <code>false</code> otherwise.
          */
         protected static function match(pattern:String, str:String,
-            isCaseSensitive:Boolean = true):Boolean{
-                return SelectorUtils.match(pattern, str, isCaseSensitive);
-            }
+                                        isCaseSensitive:Boolean = true):Boolean{
+            return SelectorUtils.match(pattern, str, isCaseSensitive);
+        }
         
         
         /**
@@ -479,7 +479,7 @@ package org.apache.flex.ant.tags.filesetClasses
          * @since Ant 1.6
          */
         public static function getDefaultExcludes():Vector.<String> {
-                return defaultExcludes.slice();
+            return defaultExcludes.slice();
         }
         
         /**
@@ -526,14 +526,14 @@ package org.apache.flex.ant.tags.filesetClasses
          * @since Ant 1.6
          */
         public static function resetDefaultExcludes():Vector.<String> {
-                var arr:Vector.<String> = defaultExcludes;
-                if (!arr)
-                    arr = new Vector.<String>();
-                arr.length = 0;
-                for (var i:int = 0; i < DEFAULTEXCLUDES.length; i++) {
-                    arr.push(DEFAULTEXCLUDES[i]);
-                }
-                return arr;
+            var arr:Vector.<String> = defaultExcludes;
+            if (!arr)
+                arr = new Vector.<String>();
+            arr.length = 0;
+            for (var i:int = 0; i < DEFAULTEXCLUDES.length; i++) {
+                arr.push(DEFAULTEXCLUDES[i]);
+            }
+            return arr;
         }
         
         /**
@@ -550,7 +550,7 @@ package org.apache.flex.ant.tags.filesetClasses
             else
                 setBasedirFile(basedir == null ? null
                     : new File(basedir.replace('/', File.separator).replace(
-                    '\\', File.separator)));
+                        '\\', File.separator)));
         }
         
         /**
@@ -562,7 +562,7 @@ package org.apache.flex.ant.tags.filesetClasses
         public function setBasedirFile(basedir:File):void {
             this.basedir = basedir;
         }
-
+        
         /**
          * Return the base directory to be scanned.
          * This is the directory which is scanned recursively.
@@ -762,64 +762,64 @@ package org.apache.flex.ant.tags.filesetClasses
         {
             var savedBase:File = basedir;
             try {
-                    illegal = null;
-                    clearResults();
-                    
-                    // set in/excludes to reasonable defaults if needed:
-                    var nullIncludes:Boolean = (includes == null);
-                    includes = nullIncludes
-                        ? Vector.<String>([SelectorUtils.DEEP_TREE_MATCH]) : includes;
-                    var nullExcludes:Boolean = (excludes == null);
-                    excludes = nullExcludes ? new Vector.<String>(0) : excludes;
-                    
-                    if (basedir != null && !followSymlinks
-                        && basedir.isSymbolicLink) {
-                        notFollowedSymlinks.push(basedir.nativePath);
-                        basedir = null;
+                illegal = null;
+                clearResults();
+                
+                // set in/excludes to reasonable defaults if needed:
+                var nullIncludes:Boolean = (includes == null);
+                includes = nullIncludes
+                    ? Vector.<String>([SelectorUtils.DEEP_TREE_MATCH]) : includes;
+                var nullExcludes:Boolean = (excludes == null);
+                excludes = nullExcludes ? new Vector.<String>(0) : excludes;
+                
+                if (basedir != null && !followSymlinks
+                    && basedir.isSymbolicLink) {
+                    notFollowedSymlinks.push(basedir.nativePath);
+                    basedir = null;
+                }
+                
+                if (basedir == null) {
+                    // if no basedir and no includes, nothing to do:
+                    if (nullIncludes) {
+                        return;
                     }
-                    
-                    if (basedir == null) {
-                        // if no basedir and no includes, nothing to do:
-                        if (nullIncludes) {
-                            return;
-                        }
-                    } else {
-                        if (!basedir.exists) {
-                            if (errorOnMissingDir) {
-                                illegal = new IllegalStateException("basedir "
-                                    + basedir
-                                    + DOES_NOT_EXIST_POSTFIX);
-                            } else {
-                                // Nothing to do - basedir does not exist
-                                return;
-                            }
-                        } else if (!basedir.isDirectory) {
+                } else {
+                    if (!basedir.exists) {
+                        if (errorOnMissingDir) {
                             illegal = new IllegalStateException("basedir "
                                 + basedir
-                                + " is not a"
-                                + " directory.");
-                        }
-                        if (illegal != null) {
-                            throw illegal;
-                        }
-                    }
-                    if (isIncludedPath(TokenizedPath.EMPTY_PATH)) {
-                        if (!isExcludedPath(TokenizedPath.EMPTY_PATH)) {
-                            if (isSelected("", basedir)) {
-                                dirsIncluded.push("");
-                            } else {
-                                dirsDeselected.push("");
-                            }
+                                + DOES_NOT_EXIST_POSTFIX);
                         } else {
-                            dirsExcluded.push("");
+                            // Nothing to do - basedir does not exist
+                            return;
+                        }
+                    } else if (!basedir.isDirectory) {
+                        illegal = new IllegalStateException("basedir "
+                            + basedir
+                            + " is not a"
+                            + " directory.");
+                    }
+                    if (illegal != null) {
+                        throw illegal;
+                    }
+                }
+                if (isIncludedPath(TokenizedPath.EMPTY_PATH)) {
+                    if (!isExcludedPath(TokenizedPath.EMPTY_PATH)) {
+                        if (isSelected("", basedir)) {
+                            dirsIncluded.push("");
+                        } else {
+                            dirsDeselected.push("");
                         }
                     } else {
-                        dirsNotIncluded.push("");
+                        dirsExcluded.push("");
                     }
-                    checkIncludePatterns();
-                    clearCaches();
-                    includes = nullIncludes ? null : includes;
-                    excludes = nullExcludes ? null : excludes;
+                } else {
+                    dirsNotIncluded.push("");
+                }
+                checkIncludePatterns();
+                clearCaches();
+                includes = nullIncludes ? null : includes;
+                excludes = nullExcludes ? null : excludes;
             } catch (ex:IOException) {
                 throw new BuildException(ex.message);
             } catch (e:Error) {
@@ -848,14 +848,10 @@ package org.apache.flex.ant.tags.filesetClasses
                         pattern;
                 }
             }
-            for each (var entry:Object in includeNonPatterns) {
-                for (var p:String in entry)
-                {
-                    pattern = p;
-                    break;
-                }
+            for (var p:String in includeNonPatterns) {
+                pattern = p;
                 if (!shouldSkipPattern(pattern)) {
-                    newroots[entry[pattern]] = pattern;
+                    newroots[includeNonPatterns[pattern]] = pattern;
                 }
             }
             
@@ -875,7 +871,7 @@ package org.apache.flex.ant.tags.filesetClasses
                 }
                 // only scan directories that can include matched files or
                 // directories
-                for (entry in newroots) {
+                for (var entry:Object in newroots) {
                     var currentPath:TokenizedPath;
                     currentPath = entry as TokenizedPath;
                     var currentelement:String = currentPath.toString();
@@ -942,7 +938,7 @@ package org.apache.flex.ant.tags.filesetClasses
                             }
                         } else {
                             var originalpattern:String;
-                                originalpattern = newroots[entry] as String;
+                            originalpattern = newroots[entry] as String;
                             var included:Boolean = isCaseSensitive()
                                 ? originalpattern == currentelement
                                 : originalpattern.toUpperCase() == currentelement.toUpperCase();
@@ -1005,28 +1001,28 @@ package org.apache.flex.ant.tags.filesetClasses
         protected function slowScan():void 
         {
             try {
-                    // set in/excludes to reasonable defaults if needed:
-                    var nullIncludes:Boolean = (includes == null);
-                    includes = nullIncludes
-                        ? Vector.<String>([SelectorUtils.DEEP_TREE_MATCH]) : includes;
-                    var nullExcludes:Boolean = (excludes == null);
-                    excludes = nullExcludes ? new Vector.<String>(0) : excludes;
-                    
-                    var excl:Vector.<String> = dirsExcluded.slice();
-                    
-                    var notIncl:Vector.<String> = dirsNotIncluded.slice();
-                    
-                    ensureNonPatternSetsReady();
-                    
-                    processSlowScan(excl);
-                    processSlowScan(notIncl);
-                    clearCaches();
-                    includes = nullIncludes ? null : includes;
-                    excludes = nullExcludes ? null : excludes;
+                // set in/excludes to reasonable defaults if needed:
+                var nullIncludes:Boolean = (includes == null);
+                includes = nullIncludes
+                    ? Vector.<String>([SelectorUtils.DEEP_TREE_MATCH]) : includes;
+                var nullExcludes:Boolean = (excludes == null);
+                excludes = nullExcludes ? new Vector.<String>(0) : excludes;
+                
+                var excl:Vector.<String> = dirsExcluded.slice();
+                
+                var notIncl:Vector.<String> = dirsNotIncluded.slice();
+                
+                ensureNonPatternSetsReady();
+                
+                processSlowScan(excl);
+                processSlowScan(notIncl);
+                clearCaches();
+                includes = nullIncludes ? null : includes;
+                excludes = nullExcludes ? null : excludes;
             } finally {
-                    haveSlowResults = true;
-                    slowScanning = false;
-                    slowScanLock.notifyAll();
+                haveSlowResults = true;
+                slowScanning = false;
+                slowScanLock.notifyAll();
             }
         }
         
@@ -1100,107 +1096,107 @@ package org.apache.flex.ant.tags.filesetClasses
             }
             var arr2:Array = [];
             for each (var f:File in arr)
-                arr2.push(f.name);
+            arr2.push(f.name);
             var newfiles:Vector.<String> = Vector.<String>(arr2);;
             _scandir(dir, path, fast, newfiles, new Vector.<String>());
         }
         
         private function _scandir(dir:File, path:TokenizedPath, fast:Boolean,
-            newfiles:Vector.<String>, directoryNamesFollowed:Vector.<String>):void {
-                var vpath:String = path.toString();
-                if (vpath.length > 0 && vpath.charAt(vpath.length - 1) != File.separator) {
-                    vpath += File.separator;
-                }
-                
-                // avoid double scanning of directories, can only happen in fast mode
-                if (fast && hasBeenScanned(vpath)) {
-                    return;
-                }
-                if (!followSymlinks) {
-                    var noLinks:Vector.<String> = new Vector.<String>();
-                    for (i = 0; i < newfiles.length; i++) {
-                        try {
-                            if (new File(dir + File.separator + newfiles[i]).isSymbolicLink) {
-                                var name:String = vpath + newfiles[i];
-                                var file:File = new File(dir.nativePath + File.separator + newfiles[i]);
-                                (file.isDirectory
-                                    ? dirsExcluded : filesExcluded).push(name);
-                                if (!isExcluded(name)) {
-                                    notFollowedSymlinks.push(file.nativePath);
-                                }
-                            } else {
-                                noLinks.push(newfiles[i]);
+                                  newfiles:Vector.<String>, directoryNamesFollowed:Vector.<String>):void {
+            var vpath:String = path.toString();
+            if (vpath.length > 0 && vpath.charAt(vpath.length - 1) != File.separator) {
+                vpath += File.separator;
+            }
+            
+            // avoid double scanning of directories, can only happen in fast mode
+            if (fast && hasBeenScanned(vpath)) {
+                return;
+            }
+            if (!followSymlinks) {
+                var noLinks:Vector.<String> = new Vector.<String>();
+                for (i = 0; i < newfiles.length; i++) {
+                    try {
+                        if (new File(dir + File.separator + newfiles[i]).isSymbolicLink) {
+                            var name:String = vpath + newfiles[i];
+                            var file:File = new File(dir.nativePath + File.separator + newfiles[i]);
+                            (file.isDirectory
+                                ? dirsExcluded : filesExcluded).push(name);
+                            if (!isExcluded(name)) {
+                                notFollowedSymlinks.push(file.nativePath);
                             }
-                        } catch (ioe:IOException) {
-                            var msg:String = "IOException caught while checking "
-                                + "for links, couldn't get canonical path!";
-                            // will be caught and redirected to Ant's logging system
-                            Ant.currentAnt.output(msg);
+                        } else {
                             noLinks.push(newfiles[i]);
                         }
+                    } catch (ioe:IOException) {
+                        var msg:String = "IOException caught while checking "
+                            + "for links, couldn't get canonical path!";
+                        // will be caught and redirected to Ant's logging system
+                        Ant.currentAnt.output(msg);
+                        noLinks.push(newfiles[i]);
                     }
-                    newfiles = noLinks.slice();
-                } else {
-                    directoryNamesFollowed.unshift(dir.nativePath);
                 }
-                
-                for (var i:int = 0; i < newfiles.length; i++) {
-                    name = vpath + newfiles[i];
-                    var newPath:TokenizedPath = new TokenizedPath("").initAsChild(path, newfiles[i]);
-                    file = new File(dir.nativePath + File.separator + newfiles[i]);
-                    var arr:Array = null;
-                    var arr2:Array = [];
-                    var children:Vector.<String> = null;
-                    if (file.isDirectory)
-                    {
-                        arr = file.getDirectoryListing();
-                        for each (var f:File in arr)
-                            arr2.push(f.name);
-                        children = Vector.<String>(arr2);
+                newfiles = noLinks.slice();
+            } else {
+                directoryNamesFollowed.unshift(dir.nativePath);
+            }
+            
+            for (var i:int = 0; i < newfiles.length; i++) {
+                name = vpath + newfiles[i];
+                var newPath:TokenizedPath = new TokenizedPath("").initAsChild(path, newfiles[i]);
+                file = new File(dir.nativePath + File.separator + newfiles[i]);
+                var arr:Array = null;
+                var arr2:Array = [];
+                var children:Vector.<String> = null;
+                if (file.isDirectory)
+                {
+                    arr = file.getDirectoryListing();
+                    for each (var f:File in arr)
+                    arr2.push(f.name);
+                    children = Vector.<String>(arr2);
+                }
+                if (children == null || (children.length == 0 && !file.isDirectory)) {
+                    if (isIncludedPath(newPath)) {
+                        accountForIncludedFile(newPath, file);
+                    } else {
+                        everythingIncluded = false;
+                        filesNotIncluded.push(name);
                     }
-                    if (children == null || (children.length == 0 && !file.isDirectory)) {
-                        if (isIncludedPath(newPath)) {
-                            accountForIncludedFile(newPath, file);
-                        } else {
-                            everythingIncluded = false;
-                            filesNotIncluded.push(name);
-                        }
-                    } else { // dir
-                        
-                        if (followSymlinks
-                            && causesIllegalSymlinkLoop(newfiles[i], dir,
-                                directoryNamesFollowed)) {
-                            // will be caught and redirected to Ant's logging system
-                            Ant.currentAnt.output("skipping symbolic link "
-                                + file.nativePath
-                                + " -- too many levels of symbolic"
-                                + " links.");
-                            notFollowedSymlinks.push(file.nativePath);
-                            continue;
-                        }
-                        
-                        if (isIncludedPath(newPath)) {
-                            accountForIncludedDir(newPath, file, fast, children,
+                } else { // dir
+                    
+                    if (followSymlinks
+                        && causesIllegalSymlinkLoop(newfiles[i], dir,
+                            directoryNamesFollowed)) {
+                        // will be caught and redirected to Ant's logging system
+                        Ant.currentAnt.output("skipping symbolic link "
+                            + file.nativePath
+                            + " -- too many levels of symbolic"
+                            + " links.");
+                        notFollowedSymlinks.push(file.nativePath);
+                        continue;
+                    }
+                    
+                    if (isIncludedPath(newPath)) {
+                        accountForIncludedDir(newPath, file, fast, children,
+                            directoryNamesFollowed);
+                    } else {
+                        everythingIncluded = false;
+                        dirsNotIncluded.push(name);
+                        if (fast && couldHoldIncludedPath(newPath)
+                            && !contentsExcluded(newPath)) {
+                            _scandir(file, newPath, fast, children,
                                 directoryNamesFollowed);
-                        } else {
-                            everythingIncluded = false;
-                            dirsNotIncluded.push(name);
-                            if (fast && couldHoldIncludedPath(newPath)
-                                && !contentsExcluded(newPath)) {
-                                _scandir(file, newPath, fast, children,
-                                    directoryNamesFollowed);
-                            }
-                        }
-                        if (!fast) {
-                            _scandir(file, newPath, fast, children, directoryNamesFollowed);
                         }
                     }
-                }
-                
-                if (followSymlinks) {
-                    directoryNamesFollowed.shift();
+                    if (!fast) {
+                        _scandir(file, newPath, fast, children, directoryNamesFollowed);
+                    }
                 }
             }
+            
+            if (followSymlinks) {
+                directoryNamesFollowed.shift();
+            }
+        }
         
         /**
          * Process included file.
@@ -1220,36 +1216,46 @@ package org.apache.flex.ant.tags.filesetClasses
          * @param fast whether to perform fast scans.
          */
         private function accountForIncludedDir(name:TokenizedPath,
-            file:File, fast:Boolean,
-            children:Vector.<String> = null,
-            directoryNamesFollowed:Vector.<String> = null):void {
-                processIncluded(name, file, dirsIncluded, dirsExcluded, dirsDeselected);
-                if (fast && couldHoldIncludedPath(name) && !contentsExcluded(name)) {
-                    _scandir(file, name, fast, children, directoryNamesFollowed);
+                                               file:File, fast:Boolean,
+                                               children:Vector.<String> = null,
+                                               directoryNamesFollowed:Vector.<String> = null):void {
+            processIncluded(name, file, dirsIncluded, dirsExcluded, dirsDeselected);
+            if (fast && couldHoldIncludedPath(name) && !contentsExcluded(name)) {
+                if (directoryNamesFollowed == null)
+                    directoryNamesFollowed = new Vector.<String>();
+                if (children == null)
+                {
+                    var listing:Array = file.getDirectoryListing();
+                    var nameList:Array = [];
+                    for each (var f:File in listing)
+                    nameList.push(f.name);
+                    children = Vector.<String>(nameList);
                 }
+                _scandir(file, name, fast, children, directoryNamesFollowed);
             }
+        }
         
         private function processIncluded(path:TokenizedPath,
-            file:File, inc:Vector.<String>, exc:Vector.<String>,
-            des:Vector.<String>):void {
-                var name:String = path.toString();
-                if (inc.indexOf(name) != -1 || 
-                    exc.indexOf(name) != -1 || 
-                    des.indexOf(name) != -1) {
-                    return;
-                }
-                
-                var included:Boolean = false;
-                if (isExcludedPath(path)) {
-                    exc.push(name);
-                } else if (isSelected(name, file)) {
-                    included = true;
-                    inc.push(name);
-                } else {
-                    des.push(name);
-                }
-                everythingIncluded = everythingIncluded || included;
+                                         file:File, inc:Vector.<String>, exc:Vector.<String>,
+                                         des:Vector.<String>):void {
+            var name:String = path.toString();
+            if (inc.indexOf(name) != -1 || 
+                exc.indexOf(name) != -1 || 
+                des.indexOf(name) != -1) {
+                return;
             }
+            
+            var included:Boolean = false;
+            if (isExcludedPath(path)) {
+                exc.push(name);
+            } else if (isSelected(name, file)) {
+                included = true;
+                inc.push(name);
+            } else {
+                des.push(name);
+            }
+            everythingIncluded = everythingIncluded || included;
+        }
         
         /**
          * Test whether or not a name matches against at least one include
@@ -1331,11 +1337,11 @@ package org.apache.flex.ant.tags.filesetClasses
          *         include pattern, or <code>false</code> otherwise.
          */
         private function couldHoldIncludedWithIncludes(tokenizedName:TokenizedPath,
-            tokenizedInclude:TokenizedPattern):Boolean {
-                return tokenizedInclude.matchStartOf(tokenizedName, isCaseSensitive())
-                    && isMorePowerfulThanExcludes(tokenizedName.toString())
-                    && isDeeper(tokenizedInclude, tokenizedName);
-            }
+                                                       tokenizedInclude:TokenizedPattern):Boolean {
+            return tokenizedInclude.matchStartOf(tokenizedName, isCaseSensitive())
+                && isMorePowerfulThanExcludes(tokenizedName.toString())
+                && isDeeper(tokenizedInclude, tokenizedName);
+        }
         
         /**
          * Verify that a pattern specifies files deeper
@@ -1458,7 +1464,7 @@ package org.apache.flex.ant.tags.filesetClasses
          */
         public function getIncludedFiles():Vector.<String> {
             var files:Vector.<String>;
-                files = filesIncluded.slice();
+            files = filesIncluded.slice();
             files.sort(0);
             return files;
         }
@@ -1535,7 +1541,7 @@ package org.apache.flex.ant.tags.filesetClasses
          */
         public function getIncludedDirectories():Vector.<String> {
             var directories:Vector.<String>;
-                directories = dirsIncluded.slice();
+            directories = dirsIncluded.slice();
             directories.sort(0);
             return directories;
         }
@@ -1611,7 +1617,7 @@ package org.apache.flex.ant.tags.filesetClasses
          */
         public function getNotFollowedSymlinks():Vector.<String> {
             var links:Vector.<String>;
-                links = notFollowedSymlinks.slice();
+            links = notFollowedSymlinks.slice();
             links.sort(0);
             return links;
         }
@@ -1726,42 +1732,42 @@ package org.apache.flex.ant.tags.filesetClasses
          * @since Ant 1.8.0
          */
         private function causesIllegalSymlinkLoop(dirName:String, parent:File,
-            directoryNamesFollowed:Vector.<String>):Boolean {
-                try {
-                    if (directoryNamesFollowed.length >= maxLevelsOfSymlinks
-                        && CollectionUtils.frequency(directoryNamesFollowed, dirName)
-                        >= maxLevelsOfSymlinks
-                        && new File(parent.nativePath + File.separator + dirName).isSymbolicLink) {
-                        
-                        var files:Vector.<String> = new Vector.<String>();
-                        var f:File = FILE_UTILS.resolveFile(parent, dirName);
-                        f.canonicalize();
-                        var target:String = f.nativePath;
-                        files.push(target);
-                        
-                        var relPath:String = "";
-                        for each (var dir:String in directoryNamesFollowed) {
-                            relPath += "../";
-                            if (dirName == dir) {
-                                f = FILE_UTILS.resolveFile(parent, relPath + dir);
-                                f.canonicalize();
-                                files.push(f.nativePath);
-                                if (files.length > maxLevelsOfSymlinks
-                                    && CollectionUtils.frequency(files, target)
-                                    > maxLevelsOfSymlinks) {
-                                    return true;
-                                }
+                                                  directoryNamesFollowed:Vector.<String>):Boolean {
+            try {
+                if (directoryNamesFollowed.length >= maxLevelsOfSymlinks
+                    && CollectionUtils.frequency(directoryNamesFollowed, dirName)
+                    >= maxLevelsOfSymlinks
+                    && new File(parent.nativePath + File.separator + dirName).isSymbolicLink) {
+                    
+                    var files:Vector.<String> = new Vector.<String>();
+                    var f:File = FILE_UTILS.resolveFile(parent, dirName);
+                    f.canonicalize();
+                    var target:String = f.nativePath;
+                    files.push(target);
+                    
+                    var relPath:String = "";
+                    for each (var dir:String in directoryNamesFollowed) {
+                        relPath += "../";
+                        if (dirName == dir) {
+                            f = FILE_UTILS.resolveFile(parent, relPath + dir);
+                            f.canonicalize();
+                            files.push(f.nativePath);
+                            if (files.length > maxLevelsOfSymlinks
+                                && CollectionUtils.frequency(files, target)
+                                > maxLevelsOfSymlinks) {
+                                return true;
                             }
                         }
-                        
                     }
-                    return false;
-                } catch (ex:IOException) {
-                    throw new BuildException("Caught error while checking for"
-                        + " symbolic links" + ex.message);
+                    
                 }
                 return false;
+            } catch (ex:IOException) {
+                throw new BuildException("Caught error while checking for"
+                    + " symbolic links" + ex.message);
             }
+            return false;
+        }
         
     }
 }

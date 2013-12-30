@@ -26,7 +26,7 @@ package org.apache.flex.ant.tags
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.FileSetTaskHandler;
     
-	[ResourceBundle("ant")]
+    [ResourceBundle("ant")]
     [Mixin]
     public class Delete extends FileSetTaskHandler
     {
@@ -34,21 +34,21 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["delete"] = Delete;
         }
-
+        
         public function Delete()
         {
             super();
         }
         
         private function get fileName():String
-		{
-			return getAttributeValue("@file");
-		}
-		
+        {
+            return getAttributeValue("@file");
+        }
+        
         private function get dirName():String
-		{
-			return getAttributeValue("@dir");
-		}
+        {
+            return getAttributeValue("@dir");
+        }
         
         override protected function actOnFile(dir:String, fileName:String):void
         {
@@ -57,35 +57,68 @@ package org.apache.flex.ant.tags
                 srcName = dir + File.separator + fileName;
             else
                 srcName = fileName;
-            var delFile:File = File.applicationDirectory.resolvePath(srcName);
+            try {
+                var delFile:File = File.applicationDirectory.resolvePath(srcName);
+            } 
+            catch (e:Error)
+            {
+                ant.output(fileName);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return;							
+            }
+            
             if (delFile.isDirectory)
                 delFile.deleteDirectory(true);
             else
                 delFile.deleteFile();
         }
-		
+        
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             var retVal:Boolean = super.execute(callbackMode, context);
             if (numChildren > 0)
                 return retVal;
-
-			var s:String;
-			
+            
+            var s:String;
+            
             if (fileName)
             {
-                var delFile:File = File.applicationDirectory.resolvePath(fileName);
-				s = ResourceManager.getInstance().getString('ant', 'DELETEFILE');
-				s = s.replace("%1", delFile.nativePath);
-				ant.output(ant.formatOutput("delete", s));
+                try {
+                    var delFile:File = File.applicationDirectory.resolvePath(fileName);
+                } 
+                catch (e:Error)
+                {
+                    ant.output(fileName);
+                    ant.output(e.message);
+                    if (failonerror)
+                        ant.project.status = false;
+                    return true;							
+                }
+                
+                s = ResourceManager.getInstance().getString('ant', 'DELETEFILE');
+                s = s.replace("%1", delFile.nativePath);
+                ant.output(ant.formatOutput("delete", s));
                 delFile.deleteFile();
             }
             else if (dirName)
             {
-                var delDir:File = File.applicationDirectory.resolvePath(dirName);
-				s = ResourceManager.getInstance().getString('ant', 'DELETEDIR');
-				s = s.replace("%1", delDir.nativePath);
-				ant.output(ant.formatOutput("delete", s));
+                try {
+                    var delDir:File = File.applicationDirectory.resolvePath(dirName);
+                } 
+                catch (e:Error)
+                {
+                    ant.output(fileName);
+                    ant.output(e.message);
+                    if (failonerror)
+                        ant.project.status = false;
+                    return true;							
+                }
+                
+                s = ResourceManager.getInstance().getString('ant', 'DELETEDIR');
+                s = s.replace("%1", delDir.nativePath);
+                ant.output(ant.formatOutput("delete", s));
                 delDir.deleteDirectory(true);
             }            
             return true;

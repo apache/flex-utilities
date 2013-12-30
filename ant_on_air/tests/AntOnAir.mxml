@@ -37,10 +37,21 @@ limitations under the License.
             private function checkargs(event:InvokeEvent):void
             {
 				var targets:Array = [];
+
+				var nextIsAntFile:Boolean;
 				
                 for each (var s:String in event.arguments)
 				{
-					if (s.indexOf("-f ") != -1)
+					if (s == "-f")
+					{
+						nextIsAntFile = true;
+					}
+					else if (nextIsAntFile)
+					{
+						nextIsAntFile = false;
+						antfilename = s;
+					}
+					else if (s.indexOf("-f ") != -1)
 					{
 						antfilename = s.substr(3);
 					}

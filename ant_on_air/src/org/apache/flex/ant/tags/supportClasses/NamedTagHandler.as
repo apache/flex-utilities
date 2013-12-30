@@ -27,17 +27,12 @@ package org.apache.flex.ant.tags.supportClasses
         {
         }
         
-        private var _name:String;
-        
         /**
          *  The name property.
          */
         public function get name():String
         {
-			if (_name == null && xml != null)
-				_name = xml.@name.toString();
-			
-            return _name;
+            return getNullOrAttributeValue("@name");
         }
         
     }

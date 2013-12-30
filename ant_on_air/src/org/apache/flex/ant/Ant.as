@@ -70,6 +70,21 @@ package org.apache.flex.ant
                 context = {};
             this.context = context;
             var project:Project = processXMLTag(xml) as Project;
+            var basedir:String = project.basedir;
+            if (basedir == "")
+                basedir = ".";
+            try {
+                basedir = file.parent.resolvePath(basedir).nativePath;
+            } 
+            catch (e:Error)
+            {
+                ant.output(basedir);
+                ant.output(e.message);
+                ant.project.status = false;
+                return true;							
+            }
+            
+            context.basedir = basedir;
             this.project = project;
             if (!project.execute(callbackMode, context))
             {
@@ -134,6 +149,7 @@ package org.apache.flex.ant
 		
         private function completeHandler(event:Event):void
         {
+            event.target.removeEventListener(Event.COMPLETE, completeHandler);
             dispatchEvent(event);
         }
         
@@ -171,14 +187,7 @@ package org.apache.flex.ant
                     if (c != -1)
                     {
                         var token:String = input.substring(i + 2, c);
-						if (token == "basedir")
-						{
-							var basedir:String = context.basedir;
-							rep = file.parent.resolvePath(basedir).nativePath;
-							input = input.replace("${" + token + "}", rep);
-							i += rep.length - token.length - 3;
-						}
-						else if (context.hasOwnProperty(token))
+                        if (context.hasOwnProperty(token))
                         {
                             var rep:String = context[token];
                             input = input.replace("${" + token + "}", rep);

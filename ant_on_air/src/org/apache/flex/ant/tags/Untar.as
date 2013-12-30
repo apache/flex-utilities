@@ -32,7 +32,7 @@ package org.apache.flex.ant.tags
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
     
-	[ResourceBundle("ant")]
+    [ResourceBundle("ant")]
     [Mixin]
     public class Untar extends TaskHandler
     {
@@ -40,36 +40,59 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["untar"] = Untar;
         }
-
+        
         public function Untar()
         {
             super();
         }
         
         private function get src():String
-		{
-			return getAttributeValue("@src");
-		}
-		
+        {
+            return getAttributeValue("@src");
+        }
+        
         private function get dest():String
-		{
-			return getAttributeValue("@dest");
-		}
-		
+        {
+            return getAttributeValue("@dest");
+        }
+        
         private function get overwrite():Boolean
-		{
-			return getAttributeValue("@overwrite") == "true";
-		}
-
-		private var destFile:File;
+        {
+            return getAttributeValue("@overwrite") == "true";
+        }
+        
+        private var destFile:File;
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
-         
-            var srcFile:File = File.applicationDirectory.resolvePath(src);
-            destFile = File.applicationDirectory.resolvePath(dest);
-
+            
+            try {
+                var srcFile:File = File.applicationDirectory.resolvePath(src);
+            } 
+            catch (e:Error)
+            {
+                ant.output(src);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return true;							
+            }
+            
+            try {
+                destFile = File.applicationDirectory.resolvePath(dest);
+                if (!destFile.exists)
+                    destFile.createDirectory();
+            } 
+            catch (e:Error)
+            {
+                ant.output(dest);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return true;							
+            }
+            
             untar(srcFile);
             return false;
         }
@@ -95,12 +118,12 @@ package org.apache.flex.ant.tags
             startupInfo.executable = tar;
             startupInfo.arguments = arguments;
             
-			var s:String = ResourceManager.getInstance().getString('ant', 'UNZIP');
-			s = s.replace("%1", source.nativePath);
-			s = s.replace("%2", destFile.nativePath);
-			ant.output(ant.formatOutput("untar", s));
-
-			_process = new NativeProcess();
+            var s:String = ResourceManager.getInstance().getString('ant', 'UNZIP');
+            s = s.replace("%1", source.nativePath);
+            s = s.replace("%2", destFile.nativePath);
+            ant.output(ant.formatOutput("untar", s));
+            
+            _process = new NativeProcess();
             _process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, unTarFileProgress);
             _process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, unTarError);
             _process.addEventListener(NativeProcessExitEvent.EXIT, unTarComplete);
@@ -125,6 +148,6 @@ package org.apache.flex.ant.tags
             _process.exit(true);
             dispatchEvent(new Event(Event.COMPLETE));
         }
-
+        
     }
 }

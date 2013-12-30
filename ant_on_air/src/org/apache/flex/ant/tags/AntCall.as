@@ -32,47 +32,49 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["antcall"] = AntCall;
         }
-
+        
         public function AntCall()
         {
             super();
         }
         
         private function get target():String
-		{
-			return getAttributeValue("@target");
-		}
+        {
+            return getAttributeValue("@target");
+        }
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-			super.execute(callbackMode, context);
-			
-			// I think properties set in the sub-script to not affect the main script
-			// so clone the properties here
-			var subContext:Object = {};
-			for (var p:String in context)
-				subContext[p] = context[p];
-
-			if (numChildren > 0)
-			{
-				for (var i:int = 0; i < numChildren; i++)
-				{
-					var param:Param = getChildAt(i) as Param;
-					subContext[param.name] = param.value;
-				}
-			}
-			var t:Target = ant.project.getTarget(target);
-			if (!t.execute(callbackMode, subContext))
-			{
-				t.addEventListener(Event.COMPLETE, completeHandler);
-				return false;
-			}
+            super.execute(callbackMode, context);
+            
+            // I think properties set in the sub-script to not affect the main script
+            // so clone the properties here
+            var subContext:Object = {};
+            for (var p:String in context)
+                subContext[p] = context[p];
+            
+            if (numChildren > 0)
+            {
+                for (var i:int = 0; i < numChildren; i++)
+                {
+                    var param:Param = getChildAt(i) as Param;
+                    param.setContext(context);
+                    subContext[param.name] = param.value;
+                }
+            }
+            var t:Target = ant.project.getTarget(target);
+            if (!t.execute(callbackMode, subContext))
+            {
+                t.addEventListener(Event.COMPLETE, completeHandler);
+                return false;
+            }
             return true;
         }
-		
-		private function completeHandler(event:Event):void
-		{
-			dispatchEvent(event);
-		}
+        
+        private function completeHandler(event:Event):void
+        {
+            event.target.removeEventListener(Event.COMPLETE, completeHandler);
+            dispatchEvent(event);
+        }
     }
 }

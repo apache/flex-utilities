@@ -35,16 +35,27 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["loadproperties"] = LoadProperties;
         }
-
+        
         public function LoadProperties()
         {
         }
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-			super.execute(callbackMode, context);
-			
-            var f:File = new File(fileName);
+            super.execute(callbackMode, context);
+            
+            try {
+                var f:File = new File(fileName);
+            } 
+            catch (e:Error)
+            {
+                ant.output(fileName);
+                ant.output(e.message);
+                if (failonerror)
+                    ant.project.status = false;
+                return true;							
+            }
+            
             var fs:FileStream = new FileStream();
             fs.open(f, FileMode.READ);
             var data:String = fs.readUTFBytes(fs.bytesAvailable);
@@ -73,9 +84,9 @@ package org.apache.flex.ant.tags
         }
         
         private function get fileName():String
-		{
-			return getAttributeValue("@srcFile");
-		}        
-
+        {
+            return getAttributeValue("@srcFile");
+        }        
+        
     } 
 }

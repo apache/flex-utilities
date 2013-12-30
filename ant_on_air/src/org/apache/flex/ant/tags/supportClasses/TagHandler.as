@@ -47,6 +47,14 @@ package org.apache.flex.ant.tags.supportClasses
         protected var context:Object;
         
         /**
+         *  Set the context
+         */
+        public function setContext(context:Object):void
+        {
+            this.context = context;
+        }
+        
+        /**
          *  The xml node for this tag
          */
         protected var xml:XML;
@@ -60,19 +68,19 @@ package org.apache.flex.ant.tags.supportClasses
             this.xml = xml;
         }
         
-		protected function getAttributeValue(name:String):String
-		{
-			return ant.getValue(xml[name].toString(), context);	
-		}
-		
-		protected function getNullOrAttributeValue(name:String):String
-		{
-			var xmlList:XMLList = xml[name];
-			if (xmlList.length() == 0)
-				return null;
-			
-			return ant.getValue(xml[name].toString(), context);	
-		}
-		
+        protected function getAttributeValue(name:String):String
+        {
+            return ant.getValue(xml[name].toString(), context);	
+        }
+        
+        protected function getNullOrAttributeValue(name:String):String
+        {
+            var xmlList:XMLList = xml[name];
+            if (xmlList.length() == 0)
+                return null;
+            
+            return ant.getValue(xml[name].toString(), context);	
+        }
+        
     }
 }

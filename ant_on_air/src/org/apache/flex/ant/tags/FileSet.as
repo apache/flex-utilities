@@ -34,7 +34,7 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["fileset"] = FileSet;
         }
-
+        
         public function FileSet()
         {
             super();
@@ -51,7 +51,7 @@ package org.apache.flex.ant.tags
         {
             if (_value) return _value;
             this.context = context;
-			
+            
             ant.processChildren(xml, this);
             var ds:DirectoryScanner = new DirectoryScanner();
             var n:int = numChildren;
@@ -60,6 +60,7 @@ package org.apache.flex.ant.tags
             for (var i:int = 0; i < n; i++)
             {
                 var tag:NamedTagHandler = getChildAt(i) as NamedTagHandler;
+                tag.setContext(context);
                 if (tag is FileSetInclude)
                     includes.push(tag.name);
                 else if (tag is FileSetExclude)

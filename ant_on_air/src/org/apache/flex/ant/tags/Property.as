@@ -42,44 +42,89 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["property"] = Property;
         }
-
+        
         public function Property()
         {
         }
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-			super.execute(callbackMode, context);
-			
-            if (name && value && !context.hasOwnProperty(name))
-                context[name] = value;
+            super.execute(callbackMode, context);
+            
+            if (name && (value || location || refid) && !context.hasOwnProperty(name))
+            {
+                if (value)
+                    context[name] = value;
+                else if (refid)
+                    context[name] = context[ant.project.refids[refid]];
+                else
+                    context[name] = location;
+            }
             else if (fileName != null)
             {
-                var f:File = new File(fileName);
-                var fs:FileStream = new FileStream();
-                fs.open(f, FileMode.READ);
-                var data:String = fs.readUTFBytes(fs.bytesAvailable);
-                var propLines:Array = data.split("\n");
-                for each (var line:String in propLines)
+                try {
+                    var f:File = new File(fileName);
+                } 
+                catch (e:Error)
                 {
-                    var parts:Array = line.split("=");
-                    if (parts.length >= 2)
-                    {
-                        var key:String = StringUtil.trim(parts[0]);
-                        var val:String;
-                        if (parts.length == 2)
-                            val = parts[1];
-                        else
-                        {
-                            parts.shift();
-                            val = parts.join("=");
-                        }
-                        if (!context.hasOwnProperty(key))
-                            context[key] = val;
-                    }
-                    
+                    ant.output(fileName);
+                    ant.output(e.message);
+                    if (failonerror)
+                        ant.project.status = false;
+                    return true;							
                 }
-                fs.close();                
+                
+                if (f.exists)
+                {
+                    var fs:FileStream = new FileStream();
+                    fs.open(f, FileMode.READ);
+                    var data:String = fs.readUTFBytes(fs.bytesAvailable);
+                    var propLines:Array = data.split("\n");
+                    var collectingParts:Boolean;
+                    var val:String;
+                    var key:String;
+                    for each (var line:String in propLines)
+                    {
+                        if (line.charAt(line.length - 1) == "\r")
+                            line = line.substr(0, line.length - 1);
+                        if (collectingParts)
+                        {
+                            if (line.charAt(line.length - 1) == "\\")
+                                val += line.substr(0, line.length - 1);
+                            else
+                            {
+                                collectingParts = false;
+                                val += line;
+                                val = StringUtil.trim(val);
+                                val = val.replace(/\\n/g, "\n");
+                                if (!context.hasOwnProperty(key))
+                                    context[key] = val;
+                            }
+                            continue;
+                        }
+                        var parts:Array = line.split("=");
+                        if (parts.length >= 2)
+                        {
+                            key = StringUtil.trim(parts[0]);
+                            if (parts.length == 2)
+                                val = parts[1];
+                            else
+                            {
+                                parts.shift();
+                                val = parts.join("=");
+                            }
+                            if (val.charAt(val.length - 1) == "\\")
+                            {
+                                collectingParts = true;
+                                val = val.substr(0, val.length - 1);
+                            }
+                            else if (!context.hasOwnProperty(key))
+                                context[key] = StringUtil.trim(val);
+                        }
+                        
+                    }
+                    fs.close();                
+                }
             }
             else if (envPrefix != null)
             {
@@ -90,20 +135,30 @@ package org.apache.flex.ant.tags
         }
         
         private function get fileName():String
-		{
-			return getNullOrAttributeValue("@file");
-		}
-		
+        {
+            return getNullOrAttributeValue("@file");
+        }
+        
+        private function get refid():String
+        {
+            return getNullOrAttributeValue("@refid");
+        }
+        
         private function get value():String
-		{
-			return getAttributeValue("@value");
-		}
-		
+        {
+            return getNullOrAttributeValue("@value");
+        }
+        
+        private function get location():String
+        {
+            return getNullOrAttributeValue("@location");
+        }
+        
         private function get envPrefix():String
-		{
-			return getNullOrAttributeValue("@environment");
-		}
-                
+        {
+            return getNullOrAttributeValue("@environment");
+        }
+        
         private var process:NativeProcess;
         
         public function requestEnvironmentVariables():void
@@ -118,8 +173,8 @@ package org.apache.flex.ant.tags
             var args:Vector.<String> = new Vector.<String>();
             if (Capabilities.os.toLowerCase().indexOf('win') == -1)
                 args.push("-c");
-			else
-				args.push("/c");
+            else
+                args.push("/c");
             args.push("set");
             nativeProcessStartupInfo.arguments = args;
             process = new NativeProcess();
@@ -128,12 +183,12 @@ package org.apache.flex.ant.tags
             process.start(nativeProcessStartupInfo);
             process.addEventListener(NativeProcessExitEvent.EXIT, exitHandler);
         }
-         
+        
         private function exitHandler(event:NativeProcessExitEvent):void
         {
             dispatchEvent(new Event(Event.COMPLETE));
         }
-
+        
         private function onOutputErrorData(event:ProgressEvent):void 
         { 
             var stdError:IDataInput = process.standardError; 
@@ -147,16 +202,17 @@ package org.apache.flex.ant.tags
             var data:String = stdOut.readUTFBytes(process.standardOutput.bytesAvailable); 
             trace("Got: ", data); 
             var propLines:Array;
-			if (Capabilities.os.indexOf('Mac OS') > -1)
-				propLines = data.split("\n");
-			else
-				propLines = data.split("\r\n");
+            if (Capabilities.os.indexOf('Mac OS') > -1)
+                propLines = data.split("\n");
+            else
+                propLines = data.split("\r\n");
+            var prefix:String = envPrefix;
             for each (var line:String in propLines)
             {
                 var parts:Array = line.split("=");
                 if (parts.length >= 2)
                 {
-                    var key:String = StringUtil.trim(parts[0]);
+                    var key:String = envPrefix + "." + StringUtil.trim(parts[0]);
                     var val:String;
                     if (parts.length == 2)
                         val = parts[1];
@@ -170,6 +226,6 @@ package org.apache.flex.ant.tags
                 }
             }
         }
-
+        
     } 
 }

@@ -43,7 +43,7 @@ package org.apache.flex.ant.tags.supportClasses
         /**
          *  Do the work.
          *  TaskHandlers lazily create their children
-		 *  and attributes so
+         *  and attributes so
          *  super.execute() should be called before
          *  doing any real work. 
          */
@@ -75,17 +75,17 @@ package org.apache.flex.ant.tags.supportClasses
                     }
                 }
             }
-			if (numChildren)
-				outputTotal(totalFiles);
+            if (numChildren)
+                outputTotal(totalFiles);
             actOnFileSets();
             return !callbackMode;
         }
         
-		protected function outputTotal(total:int):void
-		{
-			
-		}
-		
+        protected function outputTotal(total:int):void
+        {
+            
+        }
+        
         private function actOnFileSets():void
         {
             if (current == numChildren)
@@ -102,7 +102,18 @@ package org.apache.flex.ant.tags.supportClasses
                     var list:Vector.<String> = fs.getValue(context) as Vector.<String>;
                     if (list)
                     {
-                        currentDir = new File(fs.dir);
+                        try {
+                            currentDir = new File(fs.dir);
+                        } 
+                        catch (e:Error)
+                        {
+                            ant.output(fs.dir);
+                            ant.output(e.message);
+                            if (failonerror)
+                                ant.project.status = false;
+                            dispatchEvent(new Event(Event.COMPLETE));
+                            return;							
+                        }
                         currentFile = 0;
                         currentList = list;
                         actOnList();
@@ -111,14 +122,14 @@ package org.apache.flex.ant.tags.supportClasses
                     }
                 }
             }
-			
-			if (current == numChildren)
-			{
-				dispatchEvent(new Event(Event.COMPLETE));
-				return;
-			}
+            
+            if (current == numChildren)
+            {
+                dispatchEvent(new Event(Event.COMPLETE));
+                return;
+            }
         }
-
+        
         private function actOnList():void
         {
             if (currentFile == currentList.length)

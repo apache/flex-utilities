@@ -35,25 +35,25 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["echo"] = Echo;
         }
-
+        
         public function Echo()
         {
             super();
         }
         
-		private var _text:String;
-		
+        private var _text:String;
+        
         private function get text():String
-		{
-			if (_text != null)
-				return _text;
-			
-			return getAttributeValue("@text");
-		}
-		private function get fileName():String
-		{
-			return getNullOrAttributeValue("@file");
-		}
+        {
+            if (_text != null)
+                return _text;
+            
+            return getAttributeValue("@message");
+        }
+        private function get fileName():String
+        {
+            return getNullOrAttributeValue("@file");
+        }
         
         public function setText(text:String):void
         {
@@ -63,16 +63,27 @@ package org.apache.flex.ant.tags
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
-			if (fileName != null)
-			{
-				var f:File = new File(fileName);
-				var fs:FileStream = new FileStream();
-				fs.open(f, FileMode.WRITE);
-				fs.writeUTFBytes(ant.getValue(text, context));
-				fs.close();
-			}
-			else
-	            ant.output(ant.formatOutput("echo", ant.getValue(text, context)));
+            if (fileName != null)
+            {
+                try {
+                    var f:File = new File(fileName);
+                } 
+                catch (e:Error)
+                {
+                    ant.output(fileName);
+                    ant.output(e.message);
+                    if (failonerror)
+                        ant.project.status = false;
+                    return true;							
+                }
+                
+                var fs:FileStream = new FileStream();
+                fs.open(f, FileMode.WRITE);
+                fs.writeUTFBytes(ant.getValue(text, context));
+                fs.close();
+            }
+            else
+                ant.output(ant.formatOutput("echo", ant.getValue(text, context)));
             return true;
         }
     }

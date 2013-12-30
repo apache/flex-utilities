@@ -42,71 +42,72 @@ package org.apache.flex.ant.tags
         {
             Ant.antTagProcessors["exec"] = Exec;
         }
-
+        
         public function Exec()
         {
         }
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
-			super.execute(callbackMode, context);
-			
-			var thisOS:String = Capabilities.os.toLowerCase();
-			var osArr:Array = osFamily.split(",");
-			var ok:Boolean = false;
-			for each (var p:String in osArr)
-			{
-				if (thisOS.indexOf(p.toLowerCase()) != -1)
-				{
-					ok = true;
-					break;
-				}
-			}
-			if (!ok) return true;
-			
-			var file:File = File.applicationDirectory;
-			if (Capabilities.os.toLowerCase().indexOf('win') == -1)
-				file = new File("/bin/bash");
-			else
-				file = file.resolvePath("C:\\Windows\\System32\\cmd.exe");
-			var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
-			nativeProcessStartupInfo.executable = file;
-			var args:Vector.<String> = new Vector.<String>();
-			if (Capabilities.os.toLowerCase().indexOf('win') == -1)
-				args.push("-c");
-			else
-				args.push("/c");
-			if (numChildren > 0)
-			{
-				var arg:Arg = getChildAt(0) as Arg;
-				args.push(fileName + " " + arg.value);
-			}
-			else
-				args.push(fileName);
-			nativeProcessStartupInfo.arguments = args;
-			process = new NativeProcess();
-			process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onOutputData); 
-			process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onOutputErrorData); 
-			process.start(nativeProcessStartupInfo);
-			process.addEventListener(NativeProcessExitEvent.EXIT, exitHandler);
-
-			return false;
+            super.execute(callbackMode, context);
+            
+            var thisOS:String = Capabilities.os.toLowerCase();
+            var osArr:Array = osFamily.split(",");
+            var ok:Boolean = false;
+            for each (var p:String in osArr)
+            {
+                if (thisOS.indexOf(p.toLowerCase()) != -1)
+                {
+                    ok = true;
+                    break;
+                }
+            }
+            if (!ok) return true;
+            
+            var file:File = File.applicationDirectory;
+            if (Capabilities.os.toLowerCase().indexOf('win') == -1)
+                file = new File("/bin/bash");
+            else
+                file = file.resolvePath("C:\\Windows\\System32\\cmd.exe");
+            var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+            nativeProcessStartupInfo.executable = file;
+            var args:Vector.<String> = new Vector.<String>();
+            if (Capabilities.os.toLowerCase().indexOf('win') == -1)
+                args.push("-c");
+            else
+                args.push("/c");
+            if (numChildren > 0)
+            {
+                var arg:Arg = getChildAt(0) as Arg;
+                arg.setContext(context);
+                args.push(fileName + " " + arg.value);
+            }
+            else
+                args.push(fileName);
+            nativeProcessStartupInfo.arguments = args;
+            process = new NativeProcess();
+            process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onOutputData); 
+            process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onOutputErrorData); 
+            process.start(nativeProcessStartupInfo);
+            process.addEventListener(NativeProcessExitEvent.EXIT, exitHandler);
+            
+            return false;
         }
         
         private function get fileName():String
-		{
-			return getAttributeValue("@executable");
-		}
-		
+        {
+            return getAttributeValue("@executable");
+        }
+        
         private function get osFamily():String
-		{
-			return getAttributeValue("@osfamily");
-		}
-		
+        {
+            return getAttributeValue("@osfamily");
+        }
+        
         private function get outputProperty():String
-		{
-			return getAttributeValue("@outputproperty");
-		}
+        {
+            return getAttributeValue("@outputproperty");
+        }
         
         private var process:NativeProcess;
         
@@ -114,7 +115,7 @@ package org.apache.flex.ant.tags
         {
             dispatchEvent(new Event(Event.COMPLETE));
         }
-
+        
         private function onOutputErrorData(event:ProgressEvent):void 
         { 
             var stdError:IDataInput = process.standardError; 
@@ -127,9 +128,9 @@ package org.apache.flex.ant.tags
             var stdOut:IDataInput = process.standardOutput; 
             var data:String = stdOut.readUTFBytes(process.standardOutput.bytesAvailable); 
             trace("Got: ", data);
-			if (outputProperty)
-				context[outputProperty] = data;
+            if (outputProperty)
+                context[outputProperty] = data;
         }
-
+        
     } 
 }
