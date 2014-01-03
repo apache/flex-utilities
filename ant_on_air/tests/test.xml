@@ -74,6 +74,16 @@
             </condition>
         </fail>
         <echo>copied ${copied.doesnt.exist}.  Should say: got copied</echo>
+        <move file="${basedir}/temp/copied.xml" toFile="${basedir}/temp/moved.xml" />
+        <available file="${basedir}/temp/moved.xml" property="moved.doesnt.exist" value="got moved" />
+        <fail message="copied.xml was not moved to temp/moved.xml">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/moved.xml" />
+                </not>
+            </condition>
+        </fail>
+        <echo>moved ${moved.doesnt.exist}.  Should say: got moved</echo>
         <copy todir="${basedir}/temp">
             <fileset dir="${basedir}/../src">
                 <include name="**/**" />
