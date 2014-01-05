@@ -75,13 +75,11 @@ package org.apache.flex.ant.tags
             fs.open(f, FileMode.READ);
             var s:String = fs.readUTFBytes(fs.bytesAvailable);
             fs.close();
-            var tokens:Vector.<RegExp> = new Vector.<RegExp>();
+            var tokens:Vector.<String> = new Vector.<String>();
             var reps:Vector.<String> = new Vector.<String>();
-            var regex:RegExp;
             if (token != null)
             {
-                regex = new RegExp(token, "g");
-                tokens.push(regex);
+                tokens.push(token);
                 reps.push(value);
             }
             if (numChildren > 0)
@@ -90,15 +88,15 @@ package org.apache.flex.ant.tags
                 {
                     var rf:ReplaceFilter = getChildAt(i) as ReplaceFilter;
                     rf.setContext(context);
-                    regex = new RegExp(rf.token, "g");
-                    tokens.push(regex);
+                    tokens.push(rf.token);
                     reps.push(rf.value);
                 }
             }
             var n:int = tokens.length;
             for (i = 0; i < n; i++)
             {
-                s = s.replace(tokens[i], reps[i]);				
+                while (s.indexOf(tokens[i]) != -1)
+                    s = s.replace(tokens[i], reps[i]);				
             }
             fs.open(f, FileMode.WRITE);
             fs.writeUTFBytes(s);
