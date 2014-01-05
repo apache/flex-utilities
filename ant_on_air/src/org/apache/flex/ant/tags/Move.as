@@ -149,10 +149,10 @@ package org.apache.flex.ant.tags
         
         override protected function outputTotal(total:int):void
         {
-            var s:String = ResourceManager.getInstance().getString('ant', 'COPYFILES');
+            var s:String = ResourceManager.getInstance().getString('ant', 'MOVEFILES');
             s = s.replace("%1", total.toString());
             s = s.replace("%2", toDirName);
-            ant.output(ant.formatOutput("copy", s));
+            ant.output(ant.formatOutput("move", s));
         }
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
@@ -173,12 +173,21 @@ package org.apache.flex.ant.tags
                 return true;							
             }
             
+            var destFileName:String;
+            if (toDirName)
+            {
+                var stem:String = srcFile.nativePath.substr(srcFile.parent.nativePath.length);
+                destFileName = toDirName + stem;
+            }
+            else
+                destFileName = toFileName;
+            
             try {
-                var destFile:File = File.applicationDirectory.resolvePath(toFileName);
+                var destFile:File = File.applicationDirectory.resolvePath(destFileName);
             } 
             catch (e:Error)
             {
-                ant.output(toFileName);
+                ant.output(destFileName);
                 ant.output(e.message);
                 if (failonerror)
                     ant.project.status = false;
@@ -189,11 +198,11 @@ package org.apache.flex.ant.tags
             //var resolveName:String = destFile.nativePath.substr(destFile.nativePath.lastIndexOf(File.separator) + 1);
             //destDir.resolvePath(resolveName);
             
-            var s:String = ResourceManager.getInstance().getString('ant', 'COPY');
+            var s:String = ResourceManager.getInstance().getString('ant', 'MOVE');
             s = s.replace("%1", "1");
             s = s.replace("%2", destFile.nativePath);
-            ant.output(ant.formatOutput("copy", s));
-            srcFile.copyTo(destFile, overwrite);
+            ant.output(ant.formatOutput("move", s));
+            srcFile.moveTo(destFile, overwrite);
             return true;
         }
     }

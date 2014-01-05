@@ -107,14 +107,14 @@
             </condition>
         </fail>
         <echo>Project.as ${project.doesnt.exist}. Should say: got copied</echo>
-        <delete file="${basedir}/temp/copied.xml" />
-        <available file="${basedir}/temp/copied.xml" property="copied.doesnt.exist.after.delete" value="didn't get deleted" />
-        <fail message="temp/copied.xml was not deleted">
+        <delete file="${basedir}/temp/moved.xml" />
+        <available file="${basedir}/temp/moved.xml" property="moved.doesnt.exist.after.delete" value="didn't get deleted" />
+        <fail message="temp/moved.xml was not deleted">
             <condition>
-                <available file="${basedir}/temp/copied.xml" />
+                <available file="${basedir}/temp/moved.xml" />
             </condition>
         </fail>
-        <echo>copied.xml ${copied.doesnt.exist.after.delete}. Should NOT say: didn't get deleted</echo>
+        <echo>moved.xml ${moved.doesnt.exist.after.delete}. Should NOT say: didn't get deleted</echo>
         <get src="http://archive.apache.org/dist/creadur/apache-rat-0.10/apache-rat-0.10-src.zip"
             dest="${basedir}/temp" />
         <fail message="apache-rat-0.10-src.zip was not copied to temp">
@@ -244,7 +244,7 @@
         </fail>
         <delete dir="${basedir}/temp" />
         <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" property="project.doesnt.exist.after.delete" value="didn't get deleted" />
-        <fail message="temp/copied.xml was not deleted">
+        <fail message="temp/Project.as was not deleted">
             <condition>
                 <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" />
             </condition>
