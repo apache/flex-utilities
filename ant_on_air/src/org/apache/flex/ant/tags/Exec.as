@@ -24,8 +24,6 @@ package org.apache.flex.ant.tags
     import flash.events.NativeProcessExitEvent;
     import flash.events.ProgressEvent;
     import flash.filesystem.File;
-    import flash.filesystem.FileMode;
-    import flash.filesystem.FileStream;
     import flash.system.Capabilities;
     import flash.utils.IDataInput;
     
@@ -56,6 +54,8 @@ package org.apache.flex.ant.tags
             var ok:Boolean = false;
             for each (var p:String in osArr)
             {
+                if (p.toLowerCase() == "windows")
+                    p = "win";
                 if (thisOS.indexOf(p.toLowerCase()) != -1)
                 {
                     ok = true;
@@ -78,13 +78,26 @@ package org.apache.flex.ant.tags
                 args.push("/c");
             if (numChildren > 0)
             {
-                var arg:Arg = getChildAt(0) as Arg;
-                arg.setContext(context);
-                args.push(fileName + " " + arg.value);
+                var cmdline:String = fileName;
+                for (var i:int = 0; i < numChildren; i++)
+                {
+                    var arg:Arg = getChildAt(i) as Arg;
+                    arg.setContext(context);
+                    cmdline += " " + quoteIfNeeded(arg.value);
+                }
+                args.push(cmdline);
             }
             else
                 args.push(fileName);
             nativeProcessStartupInfo.arguments = args;
+            if (dir)
+            {
+                var wd:File;
+                wd = File.applicationDirectory;
+                wd = wd.resolvePath(dir);
+                nativeProcessStartupInfo.workingDirectory = wd;
+            }
+            
             process = new NativeProcess();
             process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onOutputData); 
             process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onOutputErrorData); 
@@ -92,6 +105,11 @@ package org.apache.flex.ant.tags
             process.addEventListener(NativeProcessExitEvent.EXIT, exitHandler);
             
             return false;
+        }
+        
+        private function get dir():String
+        {
+            return getNullOrAttributeValue("@dir");
         }
         
         private function get fileName():String
@@ -129,8 +147,15 @@ package org.apache.flex.ant.tags
             var data:String = stdOut.readUTFBytes(process.standardOutput.bytesAvailable); 
             trace("Got: ", data);
             if (outputProperty)
-                context[outputProperty] = data;
+                context[outputProperty] = StringUtil.trim(data);
         }
-        
+      
+        private function quoteIfNeeded(s:String):String
+        {
+            // has spaces but no quotes
+            if (s.indexOf(" ") != -1 && s.indexOf('"') == -1)
+                return '"' + s + '"';
+            return s;
+        }
     } 
 }
