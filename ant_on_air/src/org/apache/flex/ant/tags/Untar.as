@@ -18,11 +18,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
+    import com.probertson.utils.GZIPEncoder;
+    import de.ketzler.utils.SimpleUntar;
+    
     import flash.desktop.NativeProcess;
     import flash.desktop.NativeProcessStartupInfo;
     import flash.events.Event;
-    import flash.events.NativeProcessExitEvent;
     import flash.events.ProgressEvent;
+    import flash.events.NativeProcessExitEvent;
     import flash.filesystem.File;
     import flash.system.Capabilities;
     
@@ -61,6 +64,11 @@ package org.apache.flex.ant.tags
             return getAttributeValue("@overwrite") == "true";
         }
         
+        private function get compression():String
+        {
+            return getNullOrAttributeValue("@compression");
+        }
+        
         private var destFile:File;
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
@@ -93,14 +101,19 @@ package org.apache.flex.ant.tags
                 return true;							
             }
             
-            untar(srcFile);
-            return false;
+            return untar(srcFile);
         }
         
         private var _process:NativeProcess;
         
-        private function untar(source:File):void 
+        private function untar(source:File):Boolean 
         {
+            if (Capabilities.os.indexOf("Win") != -1)
+            {
+                winUntar(source);
+                return true;
+            }
+            
             var tar:File;
             var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
             var arguments:Vector.<String> = new Vector.<String>();
@@ -128,6 +141,9 @@ package org.apache.flex.ant.tags
             _process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, unTarError);
             _process.addEventListener(NativeProcessExitEvent.EXIT, unTarComplete);
             _process.start(startupInfo);
+            
+            return false;
+
         }
         
         private function unTarError(event:Event):void {
@@ -148,6 +164,22 @@ package org.apache.flex.ant.tags
             _process.exit(true);
             dispatchEvent(new Event(Event.COMPLETE));
         }
-        
+     
+        private function winUntar(source:File):void
+        {
+            if (compression == "gzip")
+            {
+                var tarName:String = source.nativePath + ".tar";
+                var tarFile:File = File.applicationDirectory.resolvePath(tarName);
+                var gz:GZIPEncoder = new GZIPEncoder();
+                gz.uncompressToFile(source, tarFile);
+                source = tarFile;
+            }
+            var su:SimpleUntar = new SimpleUntar();
+            su.sourcePath = source.nativePath;
+            su.targetPath = destFile.nativePath;
+            su.extract();
+            dispatchEvent(new Event(Event.COMPLETE));
+        }
     }
 }
