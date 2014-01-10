@@ -363,46 +363,54 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function setXMLVariables():Boolean {
 			var data:XML = XML(_loader.data);
-			var version:Number = Number(data.version.toString());
-			var files:XMLList = data.files.file;
 			var keepGoing:Boolean = true;
 			
 			_latestVersion = data.version.latest.toString();
 			
-			installerAppPath = files.(@name == 'SDKInstallerApp').@path.toString();
-			installerAppFileName = files.(@name == 'SDKInstallerApp').@file.toString();
+			installerAppPath = data.installer.(@name == 'SDKInstallerApp').@path.toString();
+			installerAppFileName = data.installer.(@name == 'SDKInstallerApp').@file.toString();
 			
-			_mirrorURLCGI = files.(@name == 'MirrorURLCGI').@file.toString();
+			_mirrorURLCGI = data.mirror.(@name == 'MirrorURLCGI').@file.toString();
 			
-			var airVersions:Array = files.(@name == 'Versions').@airVersions.toString().split(",");
-			var selected:String = files.(@name == 'Versions').@airDefault.toString();
-			for each (var airVersion:String in airVersions) {
-				if (!_os.isLinux()|| Number(airVersion) <= 2.6) {
-					AIR_VERSIONS.addItem({label:"AIR " + airVersion, version:airVersion});
-				}
-			}
-			
-			if (_os.isLinux()) {
-				AIR_VERSION = "2.6";
+            var name:String;
+            var versionString:String;
+            
+            var airData:XMLList = data.airsdk[_os.os].versions;
+            var airVersionList:XMLList = airData[0].children();
+			var airVersions:Array = [];
+			var selected:String = airData[0]["@default"].toString();
+			for each (var airVersion:XML in airVersionList) {
+                name = airVersion.name().toString();
+                versionString = name.substr(7);
+                airVersions.push(versionString);
+				AIR_VERSIONS.addItem({label:"AIR " + versionString, version: versionString});
 			}
 			
 			if (this.airVersion.selectedIndex == -1) {
 				this.airVersion.selectedIndex = airVersions.indexOf(selected);	
 			}
 			
-			var flexVersions:Array = files.(@name == 'FlexVersions').@versions.toString().split(",");
-			for each (var flexVersion:String in flexVersions) {
-				var shortName:String = files.(@name == flexVersion).@file.toString();
-				var fileName:String = shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
-				var label:String = "Flex SDK " + flexVersion;
-				var ver:String = fileName.substr(Constants.SDK_BINARY_FILE_NAME_PREFIX.length).split("-")[0];
-				var path:String = files.(@name == flexVersion).@path.toString();
-				FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, path:path});
-			}
-			var selectedFlexVersion:String = files.(@name == 'FlexVersions').@default.toString();
+            var flexData:XMLList = data.products.children();
+            var selectedFlexVersion:int;
+            for each (var productData:XML in flexData)
+            {
+                var productName:String = productData.@name.toString();
+                var productPrefix:String = productData.@prefix.toString();
+                var productVersionList:XMLList = productData.versions.children();
+                for each (var productVersion:XML in productVersionList) {
+                    var shortName:String = productVersion.@file.toString();
+                    var fileName:String = shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
+                    var label:String = productName + " " + productVersion.name().toString();
+                    var ver:String = fileName.substr(productPrefix.length).split("-")[0];
+                    var path:String = productVersion.@path.toString();
+                    if (productVersion["@default"].length() == 1)
+                        selectedFlexVersion = FLEX_VERSIONS.length;
+                    FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, path:path});
+                }
+            }
 			
 			if (this.flexVersion.selectedIndex == -1) {
-				this.flexVersion.selectedIndex = getIndexOfFlexVersion(selectedFlexVersion);
+				this.flexVersion.selectedIndex = selectedFlexVersion;
 			}
 			
 			var selectedFlexVersionObject:Object = this.flexVersion.selectedItem;
@@ -413,12 +421,17 @@ variables are not required because the locations of these pieces are known.
 				keepGoing = false;
 			}
 			
-			var flashPlayerVersions:Array = files.(@name == 'Versions').@flashPlayerVersions.toString().split(",");
-			selected = files.(@name == 'Versions').@flashPlayerDefault.toString();
-			for each (var flashPlayerVersion:String in flashPlayerVersions) {
-				if (!_os.isLinux() || Number(flashPlayerVersion) <= 11.2) {
-					var swfVersion:String = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@swfversion.toString();
-					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + flashPlayerVersion, version:flashPlayerVersion, swfVersion:swfVersion});
+            var flashData:XMLList = data.flashsdk.versions;
+            var flashVersionList:XMLList = flashData[0].children();
+            var flashPlayerVersions:Array = [];
+            selected = flashData[0]["@default"].toString();
+			for each (var flashVersion:XML in flashVersionList) {
+                name = flashVersion.name().toString();
+                versionString = name.substr(7);
+                flashPlayerVersions.push(versionString);
+				if (!_os.isLinux() || Number(versionString) <= 11.2) {
+					var swfVersion:String = flashVersion.swfversion.toString();
+					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + versionString, version:versionString, swfVersion:swfVersion});
 				}
 			}
 			
@@ -426,70 +439,70 @@ variables are not required because the locations of these pieces are known.
 				this.flashPlayerVersion.selectedIndex = flashPlayerVersions.indexOf(selected);	
 			}
 			
-			ADOBE_AIR_SDK_WIN_FILE = files.(@name == 'AdobeAIRSDKWin' + AIR_VERSION).@file.toString();
-			ADOBE_AIR_SDK_WIN_URL = files.(@name == 'AdobeAIRSDKWin' + AIR_VERSION).@path.toString();
+			ADOBE_AIR_SDK_WIN_FILE = data.airsdk.windows.versions["version" + AIR_VERSION].file.toString();
+			ADOBE_AIR_SDK_WIN_URL = data.airsdk.windows.versions["version" + AIR_VERSION].path.toString();
 			if (_os.isWindows() && (!ADOBE_AIR_SDK_WIN_FILE || !ADOBE_AIR_SDK_WIN_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_WINDOWS);
 				keepGoing = false;
 			}
 			ADOBE_AIR_SDK_WIN_URL += ADOBE_AIR_SDK_WIN_FILE;
 			
-			ADOBE_AIR_SDK_MAC_FILE = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@file.toString();
-			ADOBE_AIR_SDK_MAC_URL = files.(@name == 'AdobeAIRSDKMac' + AIR_VERSION).@path.toString();
+			ADOBE_AIR_SDK_MAC_FILE = data.airsdk.mac.versions["version" + AIR_VERSION].file.toString();
+			ADOBE_AIR_SDK_MAC_URL = data.airsdk.mac.versions["version" + AIR_VERSION].path.toString();
 			if (_os.isMac() && (!ADOBE_AIR_SDK_MAC_FILE || !ADOBE_AIR_SDK_MAC_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_MAC);
 				keepGoing = false;
 			}
 			ADOBE_AIR_SDK_MAC_URL += ADOBE_AIR_SDK_MAC_FILE;
 			
-			ADOBE_AIR_SDK_LINUX_FILE = files.(@name == 'AdobeAIRSDKLin' + AIR_VERSION).@file.toString();
-			ADOBE_AIR_SDK_LINUX_URL = files.(@name == 'AdobeAIRSDKLin' + AIR_VERSION).@path.toString();
+			ADOBE_AIR_SDK_LINUX_FILE = data.airsdk.linux.versions["version" + AIR_VERSION].file.toString();
+			ADOBE_AIR_SDK_LINUX_URL = data.airsdk.linux.versions["version" + AIR_VERSION].path.toString();
 			if (_os.isLinux() && (!ADOBE_AIR_SDK_LINUX_FILE || !ADOBE_AIR_SDK_LINUX_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_LINUX);
 				keepGoing = false;
 			}
 			ADOBE_AIR_SDK_LINUX_URL += ADOBE_AIR_SDK_LINUX_FILE;
 			
-			ADOBE_FB_GLOBALPLAYER_SWC_FILE = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@file.toString();
-			ADOBE_FB_GLOBALPLAYER_SWC_URL = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@path.toString();
-			FLASH_PLAYER_SWF_VERSION = files.(@name == 'FlashPlayer' + FLASH_PLAYER_VERSION).@swfversion.toString();
+			ADOBE_FB_GLOBALPLAYER_SWC_FILE = data.flashsdk.versions["version" + FLASH_PLAYER_VERSION].file.toString();
+			ADOBE_FB_GLOBALPLAYER_SWC_URL = data.flashsdk.versions["version" + FLASH_PLAYER_VERSION].path.toString();
+			FLASH_PLAYER_SWF_VERSION = data.flashsdk.versions["version" + FLASH_PLAYER_VERSION].swfversion.toString();
 			if (!ADOBE_FB_GLOBALPLAYER_SWC_FILE || !ADOBE_FB_GLOBALPLAYER_SWC_URL) {
 				log(_viewResourceConstants.ERROR_INVALID_FLASH_PLAYER_SWC_URL);
 				keepGoing = false;
 			}
 			ADOBE_FB_GLOBALPLAYER_SWC_URL += ADOBE_FB_GLOBALPLAYER_SWC_FILE;
 			
-			SWF_OBJECT_FILE = files.(@name == 'swfobject').@file.toString();
-			SWF_OBJECT_URL = files.(@name == 'swfobject').@path.toString();
+			SWF_OBJECT_FILE = data.swfobject.@file.toString();
+			SWF_OBJECT_URL = data.swfobject.@path.toString();
 			
 			//Supporting OSMF 2.0 from 4.11 onwards.  
 			if(APACHE_FLEX_BIN_DISTRO_VERSION == "4.9.1" || APACHE_FLEX_BIN_DISTRO_VERSION == "4.10.0" )
 			{
-				OSMF_SWC_FILE = files.(@name == 'OSMF_SWC').@file.toString();
-				OSMF_SWC_URL = files.(@name == 'OSMF_SWC').@path.toString();
+				OSMF_SWC_FILE = data.OSMF_SWC.@file.toString();
+				OSMF_SWC_URL = data.OSMF_SWC.@path.toString();
 				_useOSMF2 = false;
 			}
 			else
 			{
-				OSMF_SWC_FILE = files.(@name == 'OSMF_SWC_2.0').@file.toString();
-				OSMF_SWC_URL = files.(@name == 'OSMF_SWC_2.0').@path.toString();
+				OSMF_SWC_FILE = data["OSMF_SWC_2.0"].@file.toString();
+				OSMF_SWC_URL = data["OSMF_SWC_2.0"].@path.toString();
 				_useOSMF2 = true;
 			}
 			
-			BLAZEDS_FILE = files.(@name == 'BlazeDS').@file.toString();
-			BLAZEDS_URL = files.(@name == 'BlazeDS').@path.toString();
+			BLAZEDS_FILE = data.BlazeDS.@file.toString();
+			BLAZEDS_URL = data.BlazeDS.@path.toString();
 			
-			AFE_FILE = files.(@name == 'afe').@file.toString();
-			AFE_URL = files.(@name == 'afe').@path.toString();
+			AFE_FILE = data.fontswf.afe.@file.toString();
+			AFE_URL = data.fontswf.afe.@path.toString();
 			
-			AGLJ40_FILE = files.(@name == 'aglj40').@file.toString();
-			AGLJ40_URL = files.(@name == 'aglj40').@path.toString();
+			AGLJ40_FILE = data.fontswf.aglj40.@file.toString();
+			AGLJ40_URL = data.fontswf.aglj40.@path.toString();
 			
-			FLEX_FONTKIT_FILE = files.(@name == 'flex-fontkit').@file.toString();
-			FLEX_FONTKIT_URL = files.(@name == 'flex-fontkit').@path.toString();
+			FLEX_FONTKIT_FILE = data.fontswf["flex-fontkit"].@file.toString();
+			FLEX_FONTKIT_URL = data.fontswf["flex-fontkit"].@path.toString();
 			
-			RIDEAU_FILE = files.(@name == 'rideau').@file.toString();
-			RIDEAU_URL = files.(@name == 'rideau').@path.toString();
+			RIDEAU_FILE = data.fontswf.rideau.@file.toString();
+			RIDEAU_URL = data.fontswf.rideau.@path.toString();
 			
 			
 			return keepGoing;
@@ -512,19 +525,6 @@ variables are not required because the locations of these pieces are known.
 			{
 				_useMirror = true;
 			}
-		}
-		
-		protected function getIndexOfFlexVersion(ver:String):int
-		{
-			for (var i:int=0; i<FLEX_VERSIONS.length; i++)
-			{
-				var obj:Object = FLEX_VERSIONS.getItemAt(i);
-				if(obj.label == "Flex SDK " + ver)
-				{
-					return i;
-				}
-			}
-			return -1;
 		}
 		
 		private function useMirrorPath(path:String):String {

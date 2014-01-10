@@ -44,17 +44,17 @@ limitations under the License.
          - path is relative to mirror URL; don't use starting slash
          - use http based url if you want to use an absolute url instead of mirror
          - remove the extension from the file name -->
-        <ApacheFlexSDK name="Apache Flex SDK">
+        <ApacheFlexSDK name="Apache Flex SDK" prefix="apache-flex-sdk-">
             <versions>
-                <version4.9.1 id="4.9.1" path="http://archive.apache.org/dist/flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin" />
-                <version4.10.0 id="4.10.0" path="http://archive.apache.org/dist/flex/4.10.0/binaries/" file="apache-flex-sdk-4.10.0-bin" />
-                <version4.11.0 id="4.11.0" path="http://archive.apache.org/dist/flex/4.11.0/binaries/" file="apache-flex-sdk-4.11.0-bin" />
+                <4.9.1 id="4.9.1" path="http://archive.apache.org/dist/flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin" />
+                <4.10.0 id="4.10.0" path="http://archive.apache.org/dist/flex/4.10.0/binaries/" file="apache-flex-sdk-4.10.0-bin" />
+                <4.11.0 id="4.11.0" path="flex/4.11.0/binaries/" file="apache-flex-sdk-4.11.0-bin" default="true"/>
                 <Nightly id="Nightly" path="https://builds.apache.org/job/flex-sdk_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-sdk-4.11.0-bin" />
             </versions>
         </ApacheFlexSDK>
-        <ApacheFlexJS name="Apache FlexJS" >
+        <ApacheFlexJS name="Apache FlexJS" prefix="apache-flex-flexjs-">
             <versions>
-                <Nightly id="FlexJSNightly" path="https://builds.apache.org/job/flex-asjs_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-flexjs-0.0.1-bin" />
+                <Nightly id="FlexJSNightly" path="https://builds.apache.org/job/flex-asjs_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-flexjs-4.0.1-bin" />
             </versions>
         </ApacheFlexJS>
     </products>
