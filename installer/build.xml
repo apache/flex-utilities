@@ -52,6 +52,22 @@
         <os family="unix"/>
     </condition>
 
+    <condition property="adl" value="adl.exe">
+        <os family="windows"/>
+    </condition>
+
+    <condition property="adl" value="adl">
+        <os family="mac"/>
+    </condition>
+
+    <condition property="runtime" value="win">
+        <os family="windows"/>
+    </condition>
+
+    <condition property="runtime" value="mac">
+        <os family="mac"/>
+    </condition>
+
     <!--
         Properties are immutable so value frozen first time property is set.
         If AIR_HOME is not set on the command line with -DAIR_HOME=/path/to/air/sdk on the
@@ -148,7 +164,7 @@
         <delete file="${basedir}/rat.report" failOnError="false"/>
     </target>
 
-    <target name="cleanup" description="Cleans up old files.">
+    <target name="cleanup" description="Cleans up old files." unless="no.cleanup">
         <delete dir="${BUILD_DIR}" failOnError="false" includeEmptyDirs="true" />
     </target>
 
@@ -519,5 +535,18 @@
 			<arg value="${RELEASE_DIR}/${binary.kit}.${extension}" />
 		</exec>
 	</target>
+
+    <target name="debug" >
+        <copy file="${SOURCE_DIR}/${APP_NAME}-app.xml" todir="${BUILD_DIR}" />
+        <mkdir dir="${BUILD_DIR}/installer" />
+        <copy file="${SOURCE_DIR}/installer/sdk-installer-config-4.0.xml" todir="${BUILD_DIR}/installer" />
+        <exec executable="${AIR_HOME}/bin/${adl}" dir="${BUILD_DIR}" failonerror="true">
+            <arg value="-runtime" />
+            <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
+            <arg value="${BUILD_DIR}/${APP_NAME}-app.xml" />
+            <arg value="--" />
+            <arg value="-config=installer/sdk-installer-config-4.0.xml" />
+        </exec>
+    </target>
 
 </project>
