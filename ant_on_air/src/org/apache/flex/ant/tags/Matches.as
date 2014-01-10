@@ -50,7 +50,10 @@ package org.apache.flex.ant.tags
         public function getValue(context:Object):Object
         {
 			this.context = context;
-			var regex:RegExp = new RegExp(pattern);
+			var pat:String = pattern;
+			if (pat.indexOf(".*") == -1)
+				pat = pat.replace("*", ".*");
+			var regex:RegExp = new RegExp(pat);
 			var results:Array = string.match(regex);
 			return results && results.length > 0;
         }

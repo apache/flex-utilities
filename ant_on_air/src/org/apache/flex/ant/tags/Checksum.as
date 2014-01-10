@@ -112,6 +112,7 @@ package org.apache.flex.ant.tags
         {
             if (fs.bytesAvailable == 0)
             {
+				fs.close();
                 sumComplete();
                 return;
             }
