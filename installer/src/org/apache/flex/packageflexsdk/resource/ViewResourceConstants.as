@@ -138,6 +138,15 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 		return _eventDispatcher.dispatchEvent(event);
 	}
 	
+    //----------------------------------
+    //    hasProperty
+    //----------------------------------
+    
+    override flash_proxy function hasProperty(name:*):Boolean
+    {
+        return _content[name] != null;
+    }
+    
 	//----------------------------------
 	//    getProperty
 	//----------------------------------
@@ -156,6 +165,15 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 		return _content[name];
 	}
 	
+    //----------------------------------
+    //    setProperty
+    //----------------------------------
+    
+    override flash_proxy function setProperty(name:*, value:*):void
+    {
+        _content[name] = value;    
+    }
+    
 	//----------------------------------
 	//    hasEventListener
 	//----------------------------------

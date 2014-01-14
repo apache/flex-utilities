@@ -48,41 +48,47 @@ variables are not required because the locations of these pieces are known.
 	<fx:Style source="assets/styles/InstallApacheFlexStyle.css"/> 
 	
 	<fx:Script><![CDATA[
-		import flash.globalization.LocaleID;
-		import flash.globalization.StringTools;
-		
-		import mx.collections.ArrayCollection;
-		import mx.core.IFlexDisplayObject;
-		import mx.events.FlexEvent;
-		import mx.managers.PopUpManager;
-		import mx.rpc.events.FaultEvent;
-		import mx.rpc.events.ResultEvent;
-		import mx.rpc.http.HTTPService;
-		import mx.utils.StringUtil;
-		
-		import spark.events.IndexChangeEvent;
-		import spark.events.TextOperationEvent;
-		
-		import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
-		import org.apache.flex.packageflexsdk.model.OS;
-		import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
-		import org.apache.flex.packageflexsdk.util.CalcButtonWidth;
-		import org.apache.flex.packageflexsdk.util.MD5CompareUtil;
-		import org.apache.flex.packageflexsdk.view.UpdaterDialog;
-		import org.apache.flex.packageflexsdk.view.components.AdobeLicense;
-		import org.apache.flex.packageflexsdk.view.components.ConsoleWindow;
-		import org.apache.flex.packageflexsdk.view.components.MPLLicense;
-		import org.apache.flex.packageflexsdk.view.events.InstallItemSelectionEvent;
-		import org.apache.flex.utilities.common.Constants;
-		import org.apache.flex.utilities.common.MirrorURLUtil;
-		import org.apache.flex.utilities.common.interfaces.ILog;
-		import org.apache.flex.utilities.common.vo.LogMessagesVO;
-		import org.as3commons.zip.Zip;
-		import org.as3commons.zip.ZipEvent;
-		import org.as3commons.zip.ZipFile;
-		import org.osmf.utils.OSMFStrings;
-		
-		import ws.tink.spark.controls.StepItem;
+        import flash.globalization.LocaleID;
+        import flash.globalization.StringTools;
+        
+        import mx.collections.ArrayCollection;
+        import mx.core.IFlexDisplayObject;
+        import mx.events.FlexEvent;
+        import mx.events.PropertyChangeEvent;
+        import mx.managers.PopUpManager;
+        import mx.rpc.events.FaultEvent;
+        import mx.rpc.events.ResultEvent;
+        import mx.rpc.http.HTTPService;
+        import mx.utils.StringUtil;
+        
+        import spark.events.IndexChangeEvent;
+        import spark.events.TextOperationEvent;
+        
+        import AntClasses; AntClasses;
+        import org.apache.flex.ant.Ant;
+        import org.apache.flex.ant.tags.Checksum;
+        import org.apache.flex.ant.tags.Copy;
+        import org.apache.flex.ant.tags.Get;
+        import org.apache.flex.packageflexsdk.model.InstallerComponentVO;
+        import org.apache.flex.packageflexsdk.model.OS;
+        import org.apache.flex.packageflexsdk.resource.ViewResourceConstants;
+        import org.apache.flex.packageflexsdk.util.CalcButtonWidth;
+        import org.apache.flex.packageflexsdk.util.MD5CompareUtil;
+        import org.apache.flex.packageflexsdk.view.UpdaterDialog;
+        import org.apache.flex.packageflexsdk.view.components.AdobeLicense;
+        import org.apache.flex.packageflexsdk.view.components.ConsoleWindow;
+        import org.apache.flex.packageflexsdk.view.components.MPLLicense;
+        import org.apache.flex.packageflexsdk.view.events.InstallItemSelectionEvent;
+        import org.apache.flex.utilities.common.Constants;
+        import org.apache.flex.utilities.common.MirrorURLUtil;
+        import org.apache.flex.utilities.common.interfaces.ILog;
+        import org.apache.flex.utilities.common.vo.LogMessagesVO;
+        import org.as3commons.zip.Zip;
+        import org.as3commons.zip.ZipEvent;
+        import org.as3commons.zip.ZipFile;
+        import org.osmf.utils.OSMFStrings;
+        
+        import ws.tink.spark.controls.StepItem;
 		
 		private var _mirrorURLCGI:String;
 		private var _useMirror:Boolean = true;
@@ -105,8 +111,10 @@ variables are not required because the locations of these pieces are known.
 		 */
 		private var APACHE_FLEX_BIN_DISTRO_PATH:String;
 		private var APACHE_FLEX_BIN_DISTRO_FILE:String;
+        private var APACHE_FLEX_BIN_INSTALLER_FILE:String = "installer-config.xml";
 		private var APACHE_FLEX_BIN_DISTRO_FILE_SHORT:String;
 		private var APACHE_FLEX_BIN_DISTRO_URL:String;
+        private var APACHE_FLEX_BIN_INSTALLER_URL:String;
 		[Bindable] private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
 		[Bindable] private var APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY:String = "";
 		
@@ -201,7 +209,15 @@ variables are not required because the locations of these pieces are known.
 		
 		private var languageOverride:String;
 		private var configOverride:String = "";
-		
+        
+        private var usingXML:Object;
+		private var licensePropertyMap:Object = {};
+        private var progressLabels:XML;
+        private var installStepsData:XMLList;
+        private var stepIDs:Vector.<String> = new Vector.<String>();
+        private var stepLabels:Vector.<String> = new Vector.<String>();
+        private var currentStep:int = 0;
+        
 		[Bindable]
 		private var _viewResourceConstants:ViewResourceConstants;
 		[Bindable]
@@ -214,6 +230,32 @@ variables are not required because the locations of these pieces are known.
 		private var _currentLicenseLabel:String;
 		[Bindable]
 		public var _messages:ArrayCollection = new ArrayCollection();
+        
+        private var _lastPublicMessage:String;
+        public function get lastPublicMessage():String
+        {
+            return _lastPublicMessage;
+        }
+        public function set lastPublicMessage(s:String):void
+        {
+            _lastPublicMessage = s;
+            dispatchEvent(new Event("messageChanged"));
+        }
+        
+        [Bindable("messageChanged")]
+        public function get lastFilteredPublicMessage():String
+        {
+            var s:String = lastPublicMessage;
+            if (s.indexOf("[") != -1)
+            {
+                var c:int = s.indexOf("] ");
+                if (c != -1)
+                {
+                    return s.substr(c + 1);
+                }
+            }
+            return s;
+        }
 		
 		private function getInvoke():void {
 			var nativeApplication:NativeApplication = NativeApplication.nativeApplication;
@@ -549,8 +591,10 @@ variables are not required because the locations of these pieces are known.
 				if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX
 					&& APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) != Constants.FILE_PREFIX) {
 					APACHE_FLEX_BIN_DISTRO_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
+                    APACHE_FLEX_BIN_INSTALLER_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
 				} else {
 					APACHE_FLEX_BIN_DISTRO_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
+                    APACHE_FLEX_BIN_INSTALLER_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
 				}
 				
 				if (installerAppPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX) {
@@ -562,9 +606,6 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function main():void {
-			
-			initiateInstallStepsActivity();
-			initializeInstallerComponentsDataProvider();
 			
 			if (shouldUpdate()) {
 				doUpdate();
@@ -619,7 +660,7 @@ variables are not required because the locations of these pieces are known.
 				resetInstallStepsActivity();
 				addOptionalComponentsToInstallSteps();
 				this.currentState = "installState";
-				install();
+    			install();
 			}
 		}
 		
@@ -632,11 +673,87 @@ variables are not required because the locations of these pieces are known.
 			log("AIR version " + AIR_VERSION);
 			log("Flash Player version " + FLASH_PLAYER_VERSION);
 			
-			currentState = "directoryState";
+            var req:URLRequest = new URLRequest(APACHE_FLEX_BIN_INSTALLER_URL);
+            var loader:URLLoader = new URLLoader();
+            loader.dataFormat = URLLoaderDataFormat.TEXT;
+            loader.addEventListener(Event.COMPLETE, handleInstallerXMLLoaded);
+            loader.addEventListener(ErrorEvent.ERROR, handleInstallerXMLError);
+            loader.addEventListener(IOErrorEvent.IO_ERROR, handleInstallerXMLError);
+            
+            loader.load(req);            
 		}
 		
-		
 		protected function handleFirstStepNextBtnClick(event:MouseEvent):void {
+            showOptionsState();
+        }
+        
+        protected function handleInstallerXMLLoaded(event:Event):void {
+            var data:XML = XML(event.target.data);
+            var localeList:Array = resourceManager.localeChain;
+            _installerComponentsDataProvider = new ArrayCollection();
+            var compList:XMLList = data.component;
+            for each (var comp:XML in compList)
+            {
+                var vo:InstallerComponentVO = new InstallerComponentVO(getLocalizedString(comp, "label"),
+                    getLocalizedString(comp, "message"), getLocalizedString(comp, "license"),
+                    getLocalizedString(comp, "licenseURL"),
+                    comp.@id.toString(), comp.@required.toString() == "true");
+                licensePropertyMap[comp.@property.toString()] = vo;
+                _installerComponentsDataProvider.addItem(vo);
+            }
+            usingXML = true;
+            // progressLabels = data.progressLabels[0];
+            installStepsData = data.steps.step;
+            var strings:XMLList = data.strings.string;
+            for each (var x:XML in strings)
+            {
+                var id:String = x.@id.toString();
+                if (id in _viewResourceConstants)
+                {
+                    var val:String = getLocalizedString(x, null);
+                    _viewResourceConstants[id] = val;
+                    var pce:PropertyChangeEvent = PropertyChangeEvent.createUpdateEvent(this, id, "", val);
+                    _viewResourceConstants.dispatchEvent(pce);
+                }
+            }
+            currentState = "directoryState";
+        }
+        
+        private function getLocalizedString(xml:XML, propName:String):String
+        {
+            var compBundle:XMLList;
+            for each (var locale:String in resourceManager.localeChain)
+            {
+                compBundle = xml[locale];
+                if (compBundle.length() == 1)
+                {
+                    if (propName)
+                    {
+                        var xmlList:XMLList = compBundle[0][propName];
+                        if (xmlList.length() == 1)
+                        {
+                            return xmlList[0].toString();
+                        }
+                    }
+                    else
+                    {
+                        var s:String = compBundle[0].toString();
+                        if (s.length > 0)
+                            return s;
+                    }
+                }
+            }
+            return "";
+        }
+        
+        protected function handleInstallerXMLError(event:Event):void {
+            initiateInstallStepsActivity();
+            initializeInstallerComponentsDataProvider();
+            
+            currentState = "directoryState";
+        }
+        
+        protected function showOptionsState():void {
 			currentState = "optionsState";
 		}
 		
@@ -662,6 +779,27 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function addOptionalComponentsToInstallSteps():void {
+            if (usingXML)
+            {
+                _installationSteps = new ArrayCollection();
+
+                _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_CREATE_DIRECTORIES));
+                _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK));
+                _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_VERIFY_FLEX_SDK));
+                _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_UNZIP_FLEX_SDK));
+
+                for each (var stepData:XML in installStepsData) {
+                    var propName:String = stepData.@property.toString();
+                    if (!propName || InstallerComponentVO(licensePropertyMap[propName]).selected)
+                    {
+                        var si:StepItem = new StepItem(getLocalizedString(stepData, null));
+                        _installationSteps.addItem(si);
+                        stepIDs.push(stepData.@id.toString());
+                        stepLabels.push(si.label);
+                    }
+                }
+                return;
+            }
 			for each (var obj:InstallerComponentVO in _installerComponentsDataProvider) {
 				if (!obj.required && obj.selected) {
 					_installationSteps.addItem(new StepItem(obj.label));
@@ -884,13 +1022,19 @@ variables are not required because the locations of these pieces are known.
 				for each(var file:File in files) {
 					file.copyTo(_flexHomeDir.resolvePath(file.name));
 				}
-				
-				if (_os.isMac()) {
-					downloadAIRRuntimeKitForMac();
-				}
-				else {
-					downloadAIRRuntimeKitForLinux();
-				}
+				if (usingXML)
+                {
+                    runInstallerScript();
+                }
+                else
+                {
+    				if (_os.isMac()) {
+    					downloadAIRRuntimeKitForMac();
+    				}
+    				else {
+    					downloadAIRRuntimeKitForLinux();
+    				}
+                }
 			}
 		}
 		
@@ -899,6 +1043,85 @@ variables are not required because the locations of these pieces are known.
 			abortInstallation();
 		}
 		
+        protected function runInstallerScript():void
+        {
+            ant = new Ant();
+            ant.output = output;
+            var file:File;
+            file = _flexHomeDir.resolvePath("installer.xml");
+            addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+            var context:Object = { installer: true };
+            if (configOverride != "") {
+                context["xml.properties"] = configOverride;
+            }
+            for (var p:String in licensePropertyMap)            
+            {
+                if (InstallerComponentVO(licensePropertyMap[p]).selected)
+                    context[p] = true;                    
+            }
+            if (!ant.processXMLFile(file, context, true))
+            {
+                ant.addEventListener(Event.COMPLETE, completeHandler);
+                ant.addEventListener(ProgressEvent.PROGRESS, progressEventHandler);
+            }
+            else
+                completeHandler(null);
+        }
+        
+        private function progressEventHandler(event:ProgressEvent):void
+        {
+            progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
+            /*
+            if (ant.progressClass is Copy)
+            {
+                progressBar.label = getLocalizedString(progressLabels, "Copy");
+            }
+            else if (ant.progressClass is Get)
+            {
+                progressBar.label = getLocalizedString(progressLabels, "Get");                    
+            }
+            else if (ant.progressClass is Checksum)
+            {
+                progressBar.label = getLocalizedString(progressLabels, "Checksum");                    
+            }
+            */
+        }
+        
+        private function completeHandler(event:Event):void
+        {
+            if (!Ant.currentAnt.project.status)
+                updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
+            else if (currentStep == stepLabels.length)
+                updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
+        
+            cleanup(!Ant.currentAnt.project.status);
+        }
+        
+        private var ant:Ant;
+        
+        private function output(s:String):void
+        {
+            var isPublic:Boolean = true;
+            if (s.indexOf(":") != -1)
+            {
+                // target output is a newline then the target name then a colon
+                if (currentStep < stepLabels.length && "\n" + stepIDs[currentStep] + ":" == s)
+                {
+                    if (currentStep > 0)
+                        updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
+                    if (currentStep < stepLabels.length)
+                        updateActivityStep(stepLabels[currentStep++], StepItem.ACTIVE);
+                }
+                isPublic = false;
+            }
+            log(s, -1, isPublic);
+        }
+                
+        private function enterFrameHandler(event:Event):void
+        {
+            ant.doCallback();
+        }
+                
 		protected function downloadAIRRuntimeKitForWindows():void {
 			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
 			
@@ -1784,9 +2007,11 @@ variables are not required because the locations of these pieces are known.
 			}
 		}
 		
-		private function log(text:String, position:int = -1):void {
+		private function log(text:String, position:int = -1, isPublic:Boolean = true):void {
 			if (position == -1) {
 				_messages.addItem(text);
+                if (isPublic)
+                    lastPublicMessage = text;
 			} else {
 				_messages.addItemAt(text, position);
 			}
@@ -1868,8 +2093,10 @@ variables are not required because the locations of these pieces are known.
 			if (length == 1) {
 				var explodedPath:Array = File(filesArray[0]).url.split("/");
 				
-				// the .DS_Store file doesn't bother anybody, so we can safely ignore it
-				result = explodedPath[explodedPath.length - 1] == ".DS_Store";
+				// the .DS_Store file doesn't bother anybody, so we can safely ignore it.
+                // also ignore local.properties so you an override install settings
+				result = explodedPath[explodedPath.length - 1] == ".DS_Store" ||
+                    explodedPath[explodedPath.length - 1] == "local.properties";
 			}
 			
 			return result;
@@ -2196,7 +2423,7 @@ variables are not required because the locations of these pieces are known.
 		<controls1:MultiStepProgressIndicator
 			steps="{_installationSteps}"/>
 		<s:Label id="lastMessage"
-				 text="{_messages.getItemAt(_messages.length-1)}"
+				 text="{lastFilteredPublicMessage}"
 				 fontFamily="openSansLightItalic"
 				 textAlign="center"
 				 width="80%"
