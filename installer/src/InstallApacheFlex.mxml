@@ -231,30 +231,35 @@ variables are not required because the locations of these pieces are known.
 		[Bindable]
 		public var _messages:ArrayCollection = new ArrayCollection();
         
+        private var _lastTag:String;
         private var _lastPublicMessage:String;
-        public function get lastPublicMessage():String
-        {
-            return _lastPublicMessage;
-        }
         public function set lastPublicMessage(s:String):void
         {
-            _lastPublicMessage = s;
+            var tag:String;
+            var c:int;
+            
+            c = s.indexOf("[");
+            if (c != -1)
+            {
+                var c2:int = s.indexOf("] ");
+                if (c2 != -1)
+                {
+                    tag = s.substring(c + 1, c2);
+                    s = s.substr(c2 + 2);
+                }
+            }
+            if (tag && tag == _lastTag && tag == "get")
+                _lastPublicMessage += "\n" + s;
+            else
+                _lastPublicMessage = s;
+            _lastTag = tag;
             dispatchEvent(new Event("messageChanged"));
         }
         
         [Bindable("messageChanged")]
         public function get lastFilteredPublicMessage():String
         {
-            var s:String = lastPublicMessage;
-            if (s.indexOf("[") != -1)
-            {
-                var c:int = s.indexOf("] ");
-                if (c != -1)
-                {
-                    return s.substr(c + 1);
-                }
-            }
-            return s;
+            return _lastPublicMessage;
         }
 		
 		private function getInvoke():void {
@@ -1054,6 +1059,10 @@ variables are not required because the locations of these pieces are known.
             if (configOverride != "") {
                 context["xml.properties"] = configOverride;
             }
+            if (resourceManager.localeChain.length > 1)
+            {
+                context["bundle"] = resourceManager.localeChain[0];
+            }
             for (var p:String in licensePropertyMap)            
             {
                 if (InstallerComponentVO(licensePropertyMap[p]).selected)
@@ -1102,7 +1111,7 @@ variables are not required because the locations of these pieces are known.
         private function output(s:String):void
         {
             var isPublic:Boolean = true;
-            if (s.indexOf(":") != -1)
+            if (s.indexOf(":") != -1 && s.charAt(0) == "\n")
             {
                 // target output is a newline then the target name then a colon
                 if (currentStep < stepLabels.length && "\n" + stepIDs[currentStep] + ":" == s)
