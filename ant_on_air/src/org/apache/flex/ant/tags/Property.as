@@ -98,7 +98,7 @@ package org.apache.flex.ant.tags
                                 val = StringUtil.trim(val);
                                 val = val.replace(/\\n/g, "\n");
                                 if (!context.hasOwnProperty(key))
-                                    context[key] = val;
+                                    context[key] = ant.getValue(val, context);
                             }
                             continue;
                         }
@@ -119,7 +119,7 @@ package org.apache.flex.ant.tags
                                 val = val.substr(0, val.length - 1);
                             }
                             else if (!context.hasOwnProperty(key))
-                                context[key] = StringUtil.trim(val);
+                                context[key] = ant.getValue(StringUtil.trim(val), context);
                         }
                         
                     }

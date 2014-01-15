@@ -195,6 +195,11 @@ package org.apache.flex.ant
                         }
                     }
                 }
+                else if (i > 0 && input.charAt(i - 1) == "$")
+                {
+                    input = input.substring(0, i - 1) + input.substring(i);
+                    i++;
+                }                    
                 i++;
                 i = input.indexOf("${", i);
             }
