@@ -126,7 +126,7 @@ package org.apache.flex.ant.tags
                 }
                 if (newlocation)
                 {
-                    ant.output(ant.formatOutput("get", "redirected to: " + newlocation));
+                    ant.output(ant.formatOutput("get", "Redirected to: " + newlocation));
                     var urlRequest:URLRequest = new URLRequest(newlocation);
                     var refHeader:URLRequestHeader = new URLRequestHeader("Referer", src);
                     urlRequest.requestHeaders.push(refHeader);
