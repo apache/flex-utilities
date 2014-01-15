@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
+    import flash.events.Event;
     import flash.filesystem.File;
     
     import mx.core.IFlexModuleFactory;
@@ -155,6 +156,9 @@ package org.apache.flex.ant.tags
             ant.output(ant.formatOutput("move", s));
         }
         
+        private var srcFile:File;
+        private var destFile:File;
+
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             var retVal:Boolean = super.execute(callbackMode, context);
@@ -162,7 +166,7 @@ package org.apache.flex.ant.tags
                 return retVal;
             
             try {
-                var srcFile:File = File.applicationDirectory.resolvePath(fileName);
+                srcFile = File.applicationDirectory.resolvePath(fileName);
             } 
             catch (e:Error)
             {
@@ -183,7 +187,7 @@ package org.apache.flex.ant.tags
                 destFileName = toFileName;
             
             try {
-                var destFile:File = File.applicationDirectory.resolvePath(destFileName);
+                destFile = File.applicationDirectory.resolvePath(destFileName);
             } 
             catch (e:Error)
             {
@@ -202,8 +206,20 @@ package org.apache.flex.ant.tags
             s = s.replace("%1", "1");
             s = s.replace("%2", destFile.nativePath);
             ant.output(ant.formatOutput("move", s));
-            srcFile.moveTo(destFile, overwrite);
+            if (callbackMode)
+            {
+                ant.functionToCall = doMove;
+                return false;
+            }
+            
+            doMove();
             return true;
+        }
+        
+        protected function doMove():void
+        {
+            srcFile.moveTo(destFile, overwrite);
+            dispatchEvent(new Event(Event.COMPLETE));
         }
     }
 }
