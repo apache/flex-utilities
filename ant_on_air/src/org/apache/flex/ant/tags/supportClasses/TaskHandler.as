@@ -36,6 +36,8 @@ package org.apache.flex.ant.tags.supportClasses
         
         protected var callbackMode:Boolean;
         
+        protected var processedChildren:Boolean;
+        
         /**
          *  Do the work.
          *  TaskHandlers lazily create their children so
@@ -46,7 +48,11 @@ package org.apache.flex.ant.tags.supportClasses
         {
             this.callbackMode = callbackMode;
 			this.context = context;
-            ant.processChildren(xml, this);
+            if (!processedChildren)
+            {
+                ant.processChildren(xml, this);
+                processedChildren = true;
+            }
             return true;
         }
         

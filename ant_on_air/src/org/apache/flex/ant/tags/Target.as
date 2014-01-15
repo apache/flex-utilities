@@ -94,6 +94,7 @@ package org.apache.flex.ant.tags
         {
             super.execute(callbackMode, context);
             
+            current = 0;
             inExecute = true;
             this.callbackMode = callbackMode;
             if (depends)
