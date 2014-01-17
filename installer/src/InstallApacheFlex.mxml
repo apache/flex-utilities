@@ -450,7 +450,10 @@ variables are not required because the locations of these pieces are known.
                 for each (var productVersion:XML in productVersionList) {
                     var shortName:String = productVersion.@file.toString();
                     var fileName:String = shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
-                    var label:String = productName + " " + productVersion.name().toString();
+                    versionString = productVersion.name().toString();
+                    if (versionString.charAt(0) == "v")
+                        versionString = versionString.substr(1);
+                    var label:String = productName + " " + versionString;
                     var ver:String = fileName.substr(productPrefix.length).split("-")[0];
                     var path:String = productVersion.@path.toString();
                     if (productVersion["@default"].length() == 1)

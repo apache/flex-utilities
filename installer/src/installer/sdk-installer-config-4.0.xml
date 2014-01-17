@@ -46,9 +46,9 @@ limitations under the License.
          - remove the extension from the file name -->
         <ApacheFlexSDK name="Apache Flex SDK" prefix="apache-flex-sdk-">
             <versions>
-                <4.9.1 id="4.9.1" path="http://archive.apache.org/dist/flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin" />
-                <4.10.0 id="4.10.0" path="http://archive.apache.org/dist/flex/4.10.0/binaries/" file="apache-flex-sdk-4.10.0-bin" />
-                <4.11.0 id="4.11.0" path="flex/4.11.0/binaries/" file="apache-flex-sdk-4.11.0-bin" default="true"/>
+                <v4.9.1 id="4.9.1" path="http://archive.apache.org/dist/flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin" />
+                <v4.10.0 id="4.10.0" path="http://archive.apache.org/dist/flex/4.10.0/binaries/" file="apache-flex-sdk-4.10.0-bin" />
+                <v4.11.0 id="4.11.0" path="flex/4.11.0/binaries/" file="apache-flex-sdk-4.11.0-bin" default="true"/>
                 <Nightly id="Nightly" path="https://builds.apache.org/job/flex-sdk_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-sdk-4.12.0-bin" />
             </versions>
         </ApacheFlexSDK>
