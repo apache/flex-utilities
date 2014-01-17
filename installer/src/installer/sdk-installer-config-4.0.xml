@@ -49,14 +49,24 @@ limitations under the License.
                 <4.9.1 id="4.9.1" path="http://archive.apache.org/dist/flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin" />
                 <4.10.0 id="4.10.0" path="http://archive.apache.org/dist/flex/4.10.0/binaries/" file="apache-flex-sdk-4.10.0-bin" />
                 <4.11.0 id="4.11.0" path="flex/4.11.0/binaries/" file="apache-flex-sdk-4.11.0-bin" default="true"/>
-                <Nightly id="Nightly" path="https://builds.apache.org/job/flex-sdk_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-sdk-4.11.0-bin" />
+                <Nightly id="Nightly" path="https://builds.apache.org/job/flex-sdk_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-sdk-4.12.0-bin" />
             </versions>
         </ApacheFlexSDK>
         <ApacheFlexJS name="Apache FlexJS" prefix="apache-flex-flexjs-">
             <versions>
-                <Nightly id="FlexJSNightly" path="https://builds.apache.org/job/flex-asjs_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-flexjs-4.0.1-bin" />
+                <Nightly id="FlexJSNightly" path="https://builds.apache.org/job/flex-asjs/lastSuccessfulBuild/artifact/out/" file="apache-flex-flexjs-4.0.1-bin" />
             </versions>
         </ApacheFlexJS>
+        <ApacheFlexFalcon name="Apache Flex Falcon" prefix="apache-flex-falcon-" overlay="true">
+            <versions>
+                <Nightly id="FlexFalconNightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falcon-0.0.1-bin" />
+            </versions>
+        </ApacheFlexFalcon>
+        <ApacheFlexFalconJX name="Apache Flex FalconJX" prefix="apache-flex-falconjx-" overlay="true">
+            <versions>
+                <Nightly id="FlexFalconJXNightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falconjx-0.0.1-bin" />
+            </versions>
+        </ApacheFlexFalconJX>
     </products>
     <airsdk>
         <linux>
@@ -117,6 +127,10 @@ limitations under the License.
                     <path id="air.sdk.path.windows.3.9">http://airdownload.adobe.com/air/win/download/3.9/</path>
                     <file id="air.sdk.file.windows.3.9">AdobeAIRSDK.zip</file>
                 </version3.9>
+                <version4.0>
+                    <path id="air.sdk.path.windows.4.0">http://airdownload.adobe.com/air/win/download/4.0/</path>
+                    <file id="air.sdk.file.windows.4.0">AdobeAIRSDK.zip</file>
+                </version4.0>
             </versions>
         </windows>
         <mac>
@@ -169,6 +183,10 @@ limitations under the License.
                     <path id="air.sdk.path.mac.3.9">http://airdownload.adobe.com/air/mac/download/3.9/</path>
                     <file id="air.sdk.file.mac.3.9">AdobeAIRSDK.tbz2</file>
                 </version3.9>
+                <version4.0>
+                    <path id="air.sdk.path.mac.4.0">http://airdownload.adobe.com/air/mac/download/4.0/</path>
+                    <file id="air.sdk.file.mac.4.0">AdobeAIRSDK.tbz2</file>
+                </version4.0>
             </versions>
         </mac>
     </airsdk>
@@ -234,6 +252,11 @@ limitations under the License.
                 <file id="flash.sdk.file.11.9">playerglobal11_9.swc</file>
                 <swfversion id="flash.sdk.swfversion.11.9">22</swfversion>
             </version11.9>
+            <version12.0>
+                <path id="flash.sdk.path.12.0">http://download.macromedia.com/get/flashplayer/updaters/12/</path>
+                <file id="flash.sdk.file.12.0">playerglobal12_0.swc</file>
+                <swfversion id="flash.sdk.swfversion.11.9">23</swfversion>
+            </version12.0>
         </versions>
     </flashsdk>
 
