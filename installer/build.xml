@@ -32,7 +32,7 @@
     <property name="kit.prefix" value="apache-flex-sdk-installer-${installer.version}"/>
     <property name="source.kit" value="${kit.prefix}-src"/>
     <property name="binary.kit" value="${kit.prefix}-bin"/>
-    <property name="LOCAL_CONFIG_FILE" value="installer/sdk-installer-config-4.0.xml" />
+    <property name="LOCAL_CONFIG_FILE" value="${basedir}/src/installer/sdk-installer-config-4.0.xml" />
 
     <!--
         Properties are immutable so value frozen first time property is set.
@@ -69,6 +69,11 @@
         <os family="mac"/>
     </condition>
 
+    <condition property="LOCAL_CONFIG_URL" value="file:///${LOCAL_CONFIG_FILE}">
+        <os family="windows"/>
+    </condition>
+    <property name="LOCAL_CONFIG_URL" value="file://${LOCAL_CONFIG_FILE}" />
+    
     <!--
         Properties are immutable so value frozen first time property is set.
         If AIR_HOME is not set on the command line with -DAIR_HOME=/path/to/air/sdk on the
@@ -541,13 +546,12 @@
     <target name="debug" >
         <copy file="${SOURCE_DIR}/${APP_NAME}-app.xml" todir="${BUILD_DIR}" />
         <mkdir dir="${BUILD_DIR}/installer" />
-        <copy file="${SOURCE_DIR}/installer/sdk-installer-config-4.0.xml" todir="${BUILD_DIR}/installer" />
         <exec executable="${AIR_HOME}/bin/${adl}" dir="${BUILD_DIR}" failonerror="true">
             <arg value="-runtime" />
             <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
             <arg value="${BUILD_DIR}/${APP_NAME}-app.xml" />
             <arg value="--" />
-            <arg value="-config=${LOCAL_CONFIG_FILE}" />
+            <arg value="-config=${LOCAL_CONFIG_URL}" />
         </exec>
     </target>
 
