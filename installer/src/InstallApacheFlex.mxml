@@ -1145,11 +1145,13 @@ variables are not required because the locations of these pieces are known.
         
         private function completeHandler(event:Event):void
         {
-            if (!Ant.currentAnt.project.status)
-                updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
-            else if (currentStep == stepLabels.length)
-                updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
-        
+            if (currentStep > 0)
+            {
+                if (!Ant.currentAnt.project.status)
+                    updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
+                else if (currentStep == stepLabels.length)
+                    updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
+            }        
             cleanup(!Ant.currentAnt.project.status);
         }
         
