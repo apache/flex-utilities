@@ -111,7 +111,7 @@ variables are not required because the locations of these pieces are known.
 		 */
 		private var APACHE_FLEX_BIN_DISTRO_PATH:String;
 		private var APACHE_FLEX_BIN_DISTRO_FILE:String;
-        private var APACHE_FLEX_BIN_INSTALLER_FILE:String = "installer-config.xml";
+        private var APACHE_FLEX_BIN_INSTALLER_FILE:String;
 		private var APACHE_FLEX_BIN_DISTRO_FILE_SHORT:String;
 		private var APACHE_FLEX_BIN_DISTRO_URL:String;
         private var APACHE_FLEX_BIN_INSTALLER_URL:String;
@@ -210,7 +210,9 @@ variables are not required because the locations of these pieces are known.
 		private var languageOverride:String;
 		private var configOverride:String = "";
         
+        private var overlaying:Boolean;
         private var usingXML:Object;
+        private var additionalProps:Object = {};
 		private var licensePropertyMap:Object = {};
         private var progressLabels:XML;
         private var installStepsData:XMLList;
@@ -444,6 +446,7 @@ variables are not required because the locations of these pieces are known.
                 var productName:String = productData.@name.toString();
                 var productPrefix:String = productData.@prefix.toString();
                 var productVersionList:XMLList = productData.versions.children();
+                var isOverlay:Boolean = productData.@overlay.toString() == "true";
                 for each (var productVersion:XML in productVersionList) {
                     var shortName:String = productVersion.@file.toString();
                     var fileName:String = shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
@@ -452,7 +455,8 @@ variables are not required because the locations of these pieces are known.
                     var path:String = productVersion.@path.toString();
                     if (productVersion["@default"].length() == 1)
                         selectedFlexVersion = FLEX_VERSIONS.length;
-                    FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, path:path});
+                    FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, 
+                        path:path, overlay: isOverlay, prefix: productPrefix});
                 }
             }
 			
@@ -564,6 +568,8 @@ variables are not required because the locations of these pieces are known.
 			APACHE_FLEX_BIN_DISTRO_FILE = selectedFlexVersionObject.fileName;
 			APACHE_FLEX_BIN_DISTRO_PATH = selectedFlexVersionObject.path;
 			
+            APACHE_FLEX_BIN_INSTALLER_FILE = selectedFlexVersionObject.prefix + "installer-config.xml";
+            
 			// ApacheFlex is full URL so download directly and dont use mirror useful for testing release candidates
 			if (APACHE_FLEX_BIN_DISTRO_PATH.indexOf("http") == 0) {
 				_useMirror = false;
@@ -720,6 +726,11 @@ variables are not required because the locations of these pieces are known.
                     var pce:PropertyChangeEvent = PropertyChangeEvent.createUpdateEvent(this, id, "", val);
                     _viewResourceConstants.dispatchEvent(pce);
                 }
+            }
+            var props:XMLList = data.properties.property;
+            for each (x in props)
+            {
+                additionalProps[x.@name.toString()] = x.@value.toString();
             }
             currentState = "directoryState";
         }
@@ -886,19 +897,32 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function flexSDKDirSelected(event:Event):void {
 			var selectedDir:File = File(event.target);
-			
-			if (isDirectoryEmpty(selectedDir)) {
-				_flexHome = selectedDir.nativePath;
-				flexSDKTxtInput.text = _flexHome;
-				nextBtn.enabled = true;
-				_langSelect.enabled = true;
-				flexSDKTxtInput.errorString = "";
-				flexSDKTxtInput.prompt = _viewResourceConstants.SELECT_PATH_PROMPT;
-			} else {
-				nextBtn.enabled = false;
-				flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_DIR_NOT_EMPTY;
-				flexSDKTxtInput.prompt = _viewResourceConstants.ERROR_DIR_NOT_EMPTY;
-			}
+			var overlay:Boolean = flexVersion.selectedItem.overlay;
+            overlaying = overlay;
+			if (!overlay)
+            {
+                if (isDirectoryEmpty(selectedDir)) {
+    				_flexHome = selectedDir.nativePath;
+    				flexSDKTxtInput.text = _flexHome;
+    				nextBtn.enabled = true;
+    				_langSelect.enabled = true;
+    				flexSDKTxtInput.errorString = "";
+    				flexSDKTxtInput.prompt = _viewResourceConstants.SELECT_PATH_PROMPT;
+    			} else {
+    				nextBtn.enabled = false;
+    				flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_DIR_NOT_EMPTY;
+    				flexSDKTxtInput.prompt = _viewResourceConstants.ERROR_DIR_NOT_EMPTY;
+    			}
+            }
+            else
+            {
+                _flexHome = selectedDir.nativePath;
+                flexSDKTxtInput.text = _flexHome;
+                nextBtn.enabled = true;
+                _langSelect.enabled = true;
+                flexSDKTxtInput.errorString = "";
+                flexSDKTxtInput.prompt = _viewResourceConstants.SELECT_PATH_PROMPT;                
+            }
 		}
 		
 		protected function handleFlexSDXTxtInputChange(event:TextOperationEvent):void {
@@ -927,8 +951,9 @@ variables are not required because the locations of these pieces are known.
 			updateActivityStep(_viewResourceConstants.STEP_CREATE_DIRECTORIES, StepItem.ACTIVE);
 			
 			try {
-				log(_viewResourceConstants.INFO_CREATING_FLEX_HOME);
-				_flexHomeDir = createFolder(_flexHome);
+                if (!overlaying)
+    				log(_viewResourceConstants.INFO_CREATING_FLEX_HOME);
+                _flexHomeDir = createFolder(_flexHome);
 				log(_viewResourceConstants.INFO_CREATING_TEMP_DIR);
 				_flexTemp = _flexHome + File.separator + "temp";
 				_flexTempDir = createFolder(_flexTemp);
@@ -1019,13 +1044,19 @@ variables are not required because the locations of these pieces are known.
 			updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.COMPLETE);
 			
 			if (_os.isWindows()) {
-				downloadAIRRuntimeKitForWindows();
+                if (usingXML)
+                    runInstallerScript();
+                else
+    				downloadAIRRuntimeKitForWindows();
 			} else {
-				/* Copy all files from the unarchived directory to the root */
-				var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
-				var files:Array = directory.getDirectoryListing();
-				for each(var file:File in files) {
-					file.copyTo(_flexHomeDir.resolvePath(file.name));
+                if (!overlaying)
+                {
+    				/* Copy all files from the unarchived directory to the root */
+    				var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
+    				var files:Array = directory.getDirectoryListing();
+    				for each(var file:File in files) {
+    					file.copyTo(_flexHomeDir.resolvePath(file.name));
+                    }
 				}
 				if (usingXML)
                 {
@@ -1053,7 +1084,17 @@ variables are not required because the locations of these pieces are known.
             ant = new Ant();
             ant.output = output;
             var file:File;
-            file = _flexHomeDir.resolvePath("installer.xml");
+            if (overlaying)
+            {
+                if (_os.isWindows())
+                    file = _flexTempDir.resolvePath("installer.xml");
+                else {
+                    var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
+                    file = directory.resolvePath("installer.xml");
+                }
+            }
+            else
+                file = _flexHomeDir.resolvePath("installer.xml");
             addEventListener(Event.ENTER_FRAME, enterFrameHandler);
             var context:Object = { installer: true };
             if (configOverride != "") {
@@ -1068,6 +1109,9 @@ variables are not required because the locations of these pieces are known.
                 if (InstallerComponentVO(licensePropertyMap[p]).selected)
                     context[p] = true;                    
             }
+            for (p in additionalProps)
+                context[p] = additionalProps[p];
+            
             if (!ant.processXMLFile(file, context, true))
             {
                 ant.addEventListener(Event.COMPLETE, completeHandler);
@@ -1827,7 +1871,8 @@ variables are not required because the locations of these pieces are known.
 		private function createFolder(path:String):File {
 			var dir:File = new File(path);
 			
-			dir.createDirectory();
+            if (!dir.exists)
+    			dir.createDirectory();
 			
 			return dir;
 		}
@@ -1911,7 +1956,11 @@ variables are not required because the locations of these pieces are known.
 		private function onFileLoaded(e:ZipEvent):void {
 			try {
 				var fzf:ZipFile = e.file;
-				var f:File = _flexHomeDir.resolvePath(fzf.filename);
+				var f:File;
+                if (overlaying)
+                    f = _flexTempDir.resolvePath(fzf.filename);
+                else
+                    f = _flexHomeDir.resolvePath(fzf.filename);
 				var fs:FileStream = new FileStream();
 				
 				if (isDirectory(fzf)) {
