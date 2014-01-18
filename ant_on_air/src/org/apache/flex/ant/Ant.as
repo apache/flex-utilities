@@ -91,7 +91,8 @@ package org.apache.flex.ant
                 project.addEventListener(Event.COMPLETE, completeHandler);
                 return false;                
             }
-			Ant.ants.pop();
+			if (Ant.ants.length > 1)
+				Ant.ants.pop();
             return true;
         }
     
@@ -149,6 +150,8 @@ package org.apache.flex.ant
 		
         private function completeHandler(event:Event):void
         {
+			if (Ant.ants.length > 1)
+				Ant.ants.pop();
             event.target.removeEventListener(Event.COMPLETE, completeHandler);
             dispatchEvent(event);
         }
