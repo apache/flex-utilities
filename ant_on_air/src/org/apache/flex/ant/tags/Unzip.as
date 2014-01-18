@@ -172,6 +172,7 @@ package org.apache.flex.ant.tags
                 fs.close();
                 
             } catch (error:Error) {
+				ant.output(error.message);
                 if (failonerror)
                     ant.project.status = false;
             }
