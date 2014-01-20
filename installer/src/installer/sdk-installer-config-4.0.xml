@@ -28,7 +28,7 @@ limitations under the License.
 -->
 <config>
 	<version>
-		<latest>2.7.0</latest>
+		<latest>3.0.0</latest>
 	</version>
     <!-- SDK Installer Application binary distribution
      Notes:
