@@ -150,6 +150,7 @@ package org.apache.flex.ant.tags
             ant.project.status = false;
             dispatchEvent(new Event(Event.COMPLETE));
             event.preventDefault();
+			urlLoader = null;
         }
         
         private function securityErrorHandler(event:SecurityErrorEvent):void
@@ -158,6 +159,7 @@ package org.apache.flex.ant.tags
             ant.project.status = false;
             dispatchEvent(new Event(Event.COMPLETE));
             event.preventDefault();
+			urlLoader = null;
         }
         
         private function progressHandler(event:ProgressEvent):void
@@ -177,6 +179,7 @@ package org.apache.flex.ant.tags
                 fs.close();
             }            
             dispatchEvent(new Event(Event.COMPLETE));
+			urlLoader = null;
         }
         
         private function getDestFile():File

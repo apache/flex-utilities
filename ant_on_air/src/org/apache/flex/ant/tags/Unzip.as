@@ -170,6 +170,9 @@ package org.apache.flex.ant.tags
                 fs.open(f, FileMode.WRITE);
                 fs.writeBytes(fzf.content);
                 fs.close();
+				
+				// attempt to shrink bytearray so memory doesn't store every uncompressed byte
+				fzf.setContent(null, false);
                 
             } catch (error:Error) {
 				ant.output(error.message);
