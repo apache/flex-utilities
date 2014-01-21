@@ -46,25 +46,25 @@ limitations under the License.
          - remove the extension from the file name -->
         <ApacheFlexSDK name="Apache Flex SDK" prefix="apache-flex-sdk-">
             <versions>
-                <v4.9.1 id="4.9.1" path="http://archive.apache.org/dist/flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin" />
-                <v4.10.0 id="4.10.0" path="http://archive.apache.org/dist/flex/4.10.0/binaries/" file="apache-flex-sdk-4.10.0-bin" />
-                <v4.11.0 id="4.11.0" path="flex/4.11.0/binaries/" file="apache-flex-sdk-4.11.0-bin" default="true"/>
-                <Nightly id="Nightly" path="https://builds.apache.org/job/flex-sdk_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-sdk-4.12.0-bin" />
+                <versionA id="4.9.1" version="4.9.1" path="http://archive.apache.org/dist/flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin" />
+                <versionB id="4.10.0" version="4.10.0" path="http://archive.apache.org/dist/flex/4.10.0/binaries/" file="apache-flex-sdk-4.10.0-bin" />
+                <versionC id="4.11.0" version="4.11.0" path="flex/4.11.0/binaries/" file="apache-flex-sdk-4.11.0-bin" default="true"/>
+                <Nightly id="Nightly" version="Nightly" path="https://builds.apache.org/job/flex-sdk_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-sdk-4.12.0-bin" />
             </versions>
         </ApacheFlexSDK>
         <ApacheFlexJS name="Apache FlexJS" prefix="apache-flex-flexjs-">
             <versions>
-                <Nightly id="FlexJSNightly" path="https://builds.apache.org/job/flex-asjs/lastSuccessfulBuild/artifact/out/" file="apache-flex-flexjs-4.0.1-bin" />
+                <Nightly id="FlexJSNightly" version="Nightly" path="https://builds.apache.org/job/flex-asjs/lastSuccessfulBuild/artifact/out/" file="apache-flex-flexjs-4.0.1-bin" />
             </versions>
         </ApacheFlexJS>
         <ApacheFlexFalcon name="Apache Flex Falcon" prefix="apache-flex-falcon-" overlay="true">
             <versions>
-                <Nightly id="FlexFalconNightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falcon-0.0.1-bin" />
+                <Nightly id="FlexFalconNightly" version="Nightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falcon-0.0.1-bin" />
             </versions>
         </ApacheFlexFalcon>
         <ApacheFlexFalconJX name="Apache Flex FalconJX" prefix="apache-flex-falconjx-" overlay="true">
             <versions>
-                <Nightly id="FlexFalconJXNightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falconjx-0.0.1-bin" />
+                <Nightly id="FlexFalconJXNightly" version="Nightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falconjx-0.0.1-bin" />
             </versions>
         </ApacheFlexFalconJX>
     </products>
