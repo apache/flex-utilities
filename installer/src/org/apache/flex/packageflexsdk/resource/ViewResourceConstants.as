@@ -97,7 +97,7 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 	{
 		_eventDispatcher = new EventDispatcher();
 		
-		RuntimeLocale.instance.installResources();
+		//RuntimeLocale.instance.installResources();
 	}
 		
 	//--------------------------------------------------------------------------

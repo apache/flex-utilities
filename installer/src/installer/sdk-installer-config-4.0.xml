@@ -30,6 +30,17 @@ limitations under the License.
 	<version>
 		<latest>3.0.0</latest>
 	</version>
+    <languages>
+        <locale1 id="de_DE" name="Deutsch" path="http://flex.apache.org/properties/de_DE.properties"/>
+        <locale2 id="en_US" name="English (US)" path="http://flex.apache.org/properties/en_US.properties"/>
+        <locale3 id="en_AU" name="English (AU)" path="http://flex.apache.org/properties/en_AU.properties"/>
+        <locale4 id="en_GB" name="English (GB)" path="http://flex.apache.org/properties/en_GB.properties"/>
+        <locale5 id="es_ES" name="Español (ES)" path="http://flex.apache.org/properties/es_ES.properties"/>
+        <locale6 id="fr_FR" name="Français" path="http://flex.apache.org/properties/fr_FR.properties"/>
+        <locale7 id="el_GR" name="Greek" path="http://flex.apache.org/properties/el_GR.properties"/>
+        <locale8 id="nl_NL" name="Nederlands" path="http://flex.apache.org/properties/nl_NL.properties"/>
+        <locale9 id="pt_BR" name="Português" path="http://flex.apache.org/properties/pt_BR.properties"/>
+    </languages>
     <!-- SDK Installer Application binary distribution
      Notes:
      - use full URL when binaries are NOT released yet, else use

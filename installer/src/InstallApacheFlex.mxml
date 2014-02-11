@@ -56,6 +56,7 @@ variables are not required because the locations of these pieces are known.
         import mx.events.FlexEvent;
         import mx.events.PropertyChangeEvent;
         import mx.managers.PopUpManager;
+        import mx.resources.ResourceBundle;
         import mx.rpc.events.FaultEvent;
         import mx.rpc.events.ResultEvent;
         import mx.rpc.http.HTTPService;
@@ -222,6 +223,8 @@ variables are not required because the locations of these pieces are known.
         
 		[Bindable]
 		private var _viewResourceConstants:ViewResourceConstants;
+        [Bindable]
+        private var supportedLanguages:ArrayCollection = new ArrayCollection();
 		[Bindable]
 		private var _installationSteps:ArrayCollection = new ArrayCollection();
 		[Bindable]
@@ -292,12 +295,6 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function handleApplicationComplete(event:FlexEvent):void {
-			_langSelect.dataProvider = ViewResourceConstants.supportedLanguages;
-			_langSelect.selectedIndex = getIndexOfEnUS();
-			defineResourceManagerDefaultLanguage();
-			
-			updateWindow();
-			
 			loadXML();
 		}
 		
@@ -307,10 +304,6 @@ variables are not required because the locations of these pieces are known.
 		 * on the screen
 		 */
 		private function defineResourceManagerDefaultLanguage():void {
-			resourceManager.localeChain = [ ViewResourceConstants.DEFAULT_LANGUAGE ];
-			_viewResourceConstants = ViewResourceConstants.instance;
-			_viewResourceConstants.update();
-			setButtonWidths();
 			selectDefaultLanguage();
 		}
 		
@@ -331,14 +324,87 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function selectDefaultLanguage():void {
-			var supportedLanguages:ArrayCollection = ViewResourceConstants.supportedLanguages;
-			
-			var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
-			
-			if (languageOverride) {
-				userLocale = languageOverride;
-			}
-			
+            loadLanguage("en_US", loadUSComplete);
+        }
+        
+        private function loadUSComplete():void
+        {
+            var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
+            
+            if (languageOverride) {
+                userLocale = languageOverride;
+            }
+            
+            loadDefaultLanguage(userLocale);
+        }
+        
+        private function loadDefaultLanguage(userLocale:String):void
+        {
+            loadLanguage(userLocale, defaultLanguageLoaded);
+        }
+        
+        private var languageURL:String;
+        
+        private function loadLanguage(userLocale:String, completeFunction:Function):void
+        {
+            var n:int = supportedLanguages.length;
+            for (var i:int = 0; i < n; i++) {
+                if (supportedLanguages[i].data == userLocale) {
+                    var url:URLRequest = new URLRequest(supportedLanguages[i].path);
+                    var urlLoader:URLLoader = new URLLoader();
+                    urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
+                    urlLoader.addEventListener(IOErrorEvent.IO_ERROR, languageLoadErrorHandler);
+                    urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, languageLoadErrorHandler);
+                    urlLoader.addEventListener(Event.COMPLETE, function(e:Event):void {
+                        installLanguage(userLocale, urlLoader.data);
+                        completeFunction();
+                        });
+                    urlLoader.load(url);
+                    break;
+                }
+            }
+        }
+        
+        private function installLanguage(userLocale:String, data:String):void
+        {
+            var resource:ResourceBundle = new ResourceBundle(userLocale, ViewResourceConstants.BUNDLE_NAME);
+            var variables:Array;
+            if (data.indexOf("\r\n") != -1)
+                variables = data.split("\r\n");
+            else
+                variables = data.split("\n");
+            for each (var p:String in variables)
+            {
+                var c:int = p.indexOf("=");
+                if (c != -1)
+                {
+                    var key:String = p.substr(0, c);
+                    var value:String = p.substr(c+1);
+                    while (value.indexOf("\\n") != -1)
+                        value = value.replace("\\n", "\n");
+                    resource.content[key] = value;
+                }
+            }
+            
+            resourceManager.addResourceBundle(resource);                
+        }
+        
+        private function languageLoadErrorHandler(event:Event):void
+        {
+            log("Unable to load language file" + languageURL);
+            log(event.toString());
+            abortInstallation();            
+        }
+        
+        private function defaultLanguageLoaded():void {
+            resourceManager.localeChain = [ ViewResourceConstants.DEFAULT_LANGUAGE ];
+            
+            var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
+            
+            if (languageOverride) {
+                userLocale = languageOverride;
+            }
+            
 			var n:int = supportedLanguages.length;
 			for (var i:int = 0; i < n; i++) {
 				if (supportedLanguages[i].data == userLocale) {
@@ -349,11 +415,19 @@ variables are not required because the locations of these pieces are known.
 					break;
 				}
 			}
+            _viewResourceConstants = ViewResourceConstants.instance;
+            
 			resourceManager.addEventListener(Event.CHANGE, _viewResourceConstants.update);
 			
 			_viewResourceConstants.update();
 			setButtonWidths();
 			
+            updateWindow();
+            
+            _mirrorURLUtil.logMessages = new LogMessagesVO(_viewResourceConstants.FETCH_MIRROR_CGI, _viewResourceConstants.FETCH_MIRROR_CGI_DONE,
+                _viewResourceConstants.FETCH_MIRROR_CGI_ERROR);
+            
+            _mirrorURLUtil.getMirrorURL(Constants.APACHE_FLEX_URL + _mirrorURLCGI, getMirrorURLResultHandler);
 		}
 		
 		protected function updateWindow():void {
@@ -397,11 +471,9 @@ variables are not required because the locations of these pieces are known.
 			checkValidOS();
 			
 			if (setXMLVariables()) {
-				updateWindowTitle();
-				_mirrorURLUtil.logMessages = new LogMessagesVO(_viewResourceConstants.FETCH_MIRROR_CGI, _viewResourceConstants.FETCH_MIRROR_CGI_DONE,
-					_viewResourceConstants.FETCH_MIRROR_CGI_ERROR);
-				
-				_mirrorURLUtil.getMirrorURL(Constants.APACHE_FLEX_URL + _mirrorURLCGI, getMirrorURLResultHandler);
+                _langSelect.dataProvider = supportedLanguages;
+                _langSelect.selectedIndex = getIndexOfEnUS();
+                defineResourceManagerDefaultLanguage();
 			}
 		}
 		
@@ -423,6 +495,13 @@ variables are not required because the locations of these pieces are known.
 			
             var name:String;
             var versionString:String;
+            
+            var languages:XMLList = data.languages.children();
+            for each (var lang:XML in languages)
+            {
+                var item:Object = {label: lang.@name.toString(), data: lang.@id.toString(), path: lang.@path.toString() };
+                supportedLanguages.addItem(item);
+            }
             
             var airData:XMLList = data.airsdk[_os.os].versions;
             var airVersionList:XMLList = airData[0].children();
@@ -1780,12 +1859,18 @@ variables are not required because the locations of these pieces are known.
 			
 			if (_langSelect.selectedItem["data"] == defaultLanguage) {
 				resourceManager.localeChain = [ defaultLanguage ];
+                resourceManager.update();
+                setButtonWidths();
 			} else {
-				resourceManager.localeChain = [ _langSelect.selectedItem["data"], defaultLanguage ];
-			}
-			
-			resourceManager.update();
-			setButtonWidths();
+                loadLanguage(_langSelect.selectedItem["data"], _langSelect_changeCompleteHandler);
+            }
+        }
+        
+        private function _langSelect_changeCompleteHandler():void {
+            var defaultLanguage:String = ViewResourceConstants.DEFAULT_LANGUAGE;
+			resourceManager.localeChain = [ _langSelect.selectedItem["data"], defaultLanguage ];
+            resourceManager.update();
+            setButtonWidths();			
 		}
 		
 		override protected function resourcesChanged():void {
