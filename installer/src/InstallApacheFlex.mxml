@@ -2390,7 +2390,7 @@ variables are not required because the locations of these pieces are known.
 				paddingLeft="10"/>
 		</s:layout>
 		<s:HGroup verticalAlign="middle">
-			<s:Label text="Select Flex version" width="200" fontFamily="openSansBold" />
+			<s:Label text="{_viewResourceConstants.INFO_SELECT_FLEX}" width="200" fontFamily="openSansBold" />
 			<s:DropDownList id="flexVersion"
 							dataProvider="{FLEX_VERSIONS}"
 							labelField="label"
@@ -2403,7 +2403,7 @@ variables are not required because the locations of these pieces are known.
 			</s:DropDownList>
 		</s:HGroup>
 		<s:HGroup verticalAlign="middle">
-			<s:Label text="Select AIR version" width="200" fontFamily="openSansBold" />
+			<s:Label text="{_viewResourceConstants.INFO_SELECT_AIR}" width="200" fontFamily="openSansBold" />
 			<s:DropDownList id="airVersion"
 							dataProvider="{AIR_VERSIONS}"
 							width="200"
@@ -2415,7 +2415,7 @@ variables are not required because the locations of these pieces are known.
 			</s:DropDownList>
 		</s:HGroup>
 		<s:HGroup verticalAlign="middle">
-			<s:Label text="Select Flash Player version" width="200" fontFamily="openSansBold" />
+			<s:Label text="{_viewResourceConstants.INFO_SELECT_FLASH}" width="200" fontFamily="openSansBold" />
 			<s:DropDownList id="flashPlayerVersion"
 							width="200"
 							dataProvider="{FLASH_PLAYER_VERSIONS}"
