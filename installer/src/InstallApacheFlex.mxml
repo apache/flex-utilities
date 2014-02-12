@@ -1218,7 +1218,8 @@ variables are not required because the locations of these pieces are known.
 		protected function md5VerificationProgressHandler(event:ProgressEvent):void {
             if (debugMode)
                 log("md5 progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
-			progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
+            if (event.bytesTotal > 0)
+    			progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
 		}
 		
 		protected function handleApacheFlexSDKDownloadError(event:* = null):void {
@@ -1354,7 +1355,8 @@ variables are not required because the locations of these pieces are known.
         {
             if (debugMode)
                 log("progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
-            progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
+            if (event.bytesTotal > 0)
+                progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
             /*
             if (ant.progressClass is Copy)
             {
@@ -1404,7 +1406,7 @@ variables are not required because the locations of these pieces are known.
             else if (s.indexOf("[echo] ") != -1)
             {
                 s = s.substr(s.indexOf("[echo] ") + 7);
-                isPublic = false;
+                //isPublic = false;
                 skipLog = false;
             }
             log(s, -1, isPublic, skipLog);
@@ -2165,11 +2167,14 @@ variables are not required because the locations of these pieces are known.
 		private function handleDownloadProgress(event:ProgressEvent):void {
 			var bytesTotal:int = event.bytesTotal;
 			var bytesLoaded:int = event.bytesLoaded;
-			var percentLoaded:int = Math.round(bytesLoaded * 100 / bytesTotal);
-            if (debugMode)
-                log("download progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
-			
-			progressBar.percent = percentLoaded;
+            if (event.bytesTotal > 0)
+            {
+    			var percentLoaded:int = Math.round(bytesLoaded * 100 / bytesTotal);
+                if (debugMode)
+                    log("download progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
+    			
+    			progressBar.percent = percentLoaded;
+            }
 		}
 		
 		private function handleDownloadComplete(event:Event):void {
