@@ -227,5 +227,15 @@ package org.apache.flex.ant
          *  Output for Echo.  Defaults to trace().
          */
         public var output:Function = function(s:String):void { trace(s) };
+        
+        /**
+         *  Whether Get uses a download cache
+         */
+        public static var usingDownloadCache:Boolean;
+        
+        /**
+         *  The folder Get uses as a download cache
+         */
+        public static var downloadCacheFolder:String;
     }
 }

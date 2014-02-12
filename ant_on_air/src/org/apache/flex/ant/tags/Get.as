@@ -86,7 +86,22 @@ package org.apache.flex.ant.tags
             s = s.replace("%1", getDestFile().nativePath);
             ant.output(ant.formatOutput("get", s));
             
-            var urlRequest:URLRequest = new URLRequest(src);
+            var actualSrc:String = src;
+            if (Ant.usingDownloadCache)
+            {
+                if (src.indexOf("http") == 0)
+                {
+                    var c:int = src.indexOf("/");
+                    c = src.indexOf("/", c + 1);
+                    c = src.indexOf("/", c + 1);
+                    // that should find the slash after the server.
+                    var cacheFile:File = File.applicationStorageDirectory.resolvePath(Ant.downloadCacheFolder);
+                    cacheFile = cacheFile.resolvePath(src.substr(c + 1));
+                    if (cacheFile.exists)
+                        actualSrc = cacheFile.url;
+                }
+            }
+            var urlRequest:URLRequest = new URLRequest(actualSrc);
             urlRequest.followRedirects = false;
             urlRequest.userAgent = "Java";	// required to get sourceforge redirects to do the right thing
             urlLoader = new URLLoader();
@@ -177,7 +192,22 @@ package org.apache.flex.ant.tags
                 fs.open(destFile, FileMode.WRITE);
                 fs.writeBytes(urlLoader.data as ByteArray);
                 fs.close();
-            }            
+            }
+            if (Ant.usingDownloadCache)
+            {
+                if (src.indexOf("http") == 0)
+                {
+                    var c:int = src.indexOf("/");
+                    c = src.indexOf("/", c + 1);
+                    c = src.indexOf("/", c + 1);
+                    // that should find the slash after the server.
+                    var cacheFile:File = File.applicationStorageDirectory.resolvePath(Ant.downloadCacheFolder);
+                    cacheFile = cacheFile.resolvePath(src.substr(c + 1));
+                    if (!cacheFile.exists)
+                        destFile.copyTo(cacheFile);
+                }
+            }
+
             dispatchEvent(new Event(Event.COMPLETE));
 			urlLoader = null;
         }
