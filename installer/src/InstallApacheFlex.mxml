@@ -47,6 +47,56 @@ variables are not required because the locations of these pieces are known.
 	<fx:Style source="assets/styles/ApacheFlexToolsStyle.css"/>
 	<fx:Style source="assets/styles/InstallApacheFlexStyle.css"/> 
 	
+    <fx:Declarations>
+        <fx:Component className="CacheDialog" >
+            <s:TitleWindow title="Download Cache Configuration" width="400" height="300">
+                <fx:Script>
+                    <![CDATA[
+                        import mx.managers.PopUpManager;
+                        
+                        private function browseFolders():void
+                        {
+                            var file:File;
+                            if (folder.text.length > 0)
+                                file = File.applicationStorageDirectory.resolvePath(folder.text);
+                            else
+                                file = File.applicationStorageDirectory;
+                            file.browseForDirectory("Download Cache Folder");
+                            file.addEventListener(Event.SELECT, folderSelected);
+                        }
+                        
+                        private function folderSelected(event:Event):void
+                        {
+                            folder.text = event.target.nativePath;
+                        }
+                        
+                        private function closeUp():void
+                        {
+                            PopUpManager.removePopUp(this);
+                        }
+                        
+                        private function updateCache():void
+                        {
+                            dispatchEvent(new Event(Event.COMPLETE));
+                            closeUp();
+                        }
+                    ]]>
+                </fx:Script>
+                <s:VGroup width="100%">
+                    <s:CheckBox id="cb" label="Use Download Cache" />
+                    <s:HGroup width="100%">
+                        <s:Label text="Cache Folder: " />
+                        <s:TextInput id="folder" width="100%"/>
+                        <s:Button label="Browse..." click="browseFolders()" />
+                    </s:HGroup>
+                    <s:HGroup>
+                        <s:Button label="OK" click="updateCache()" />
+                        <s:Button label="Cancel" click="closeUp()" />
+                    </s:HGroup>
+                </s:VGroup>
+            </s:TitleWindow>
+        </fx:Component>
+    </fx:Declarations>
 	<fx:Script><![CDATA[
         import flash.globalization.LocaleID;
         import flash.globalization.StringTools;
@@ -95,7 +145,11 @@ variables are not required because the locations of these pieces are known.
 		private var _useMirror:Boolean = true;
 		private var _latestVersion:String;
 		private var loggedVersion:Boolean;
-        private var debugMode:Boolean = true;
+        private var debugMode:Boolean = false;
+        private var showDevBuilds:Boolean = false;
+        private var usingDownloadCache:Boolean;
+        private var downloadCacheFolder:String;
+        private var firstTime:Boolean = true;
         
 		public var installerAppPath:String;
 		public var installerAppFileName:String;
@@ -297,6 +351,12 @@ variables are not required because the locations of these pieces are known.
                     debugMode = true;
                 }
 			}
+            var so:SharedObject = SharedObject.getLocal("InstallApacheFlex");
+            if (so.data.usingDownloadCache)
+            {
+                usingDownloadCache = true;
+                downloadCacheFolder = so.data.downloadCacheFolder;
+            }
 		}
 		
 		protected function handleApplicationComplete(event:FlexEvent):void {
@@ -487,94 +547,151 @@ variables are not required because the locations of these pieces are known.
 				log(_viewResourceConstants.ERROR_UNSUPPORTED_OPERATING_SYSTEM);
 		}
 		
+        private function devBuildFilterFunction(o:Object):Boolean
+        {
+            return !o.devBuild;
+        }
+        
+        private function devBuildShowHandler(event:Event):void
+        {
+            var item:Object = flexVersion.selectedItem;
+            FLEX_VERSIONS.filterFunction = null;
+            FLEX_VERSIONS.refresh();   
+            flexVersion.selectedItem = item;
+        }
+
+        private function downloadCacheHandler(event:Event):void
+        {
+            var dlg:CacheDialog = new CacheDialog();
+            dlg.addEventListener(Event.COMPLETE, updateDownloadCache);
+            PopUpManager.addPopUp(dlg, this, true);
+            dlg.cb.selected = usingDownloadCache;
+            dlg.folder.text = downloadCacheFolder;
+        }
+        
+        private function updateDownloadCache(event:Event):void
+        {
+            downloadCacheFolder = event.target.folder.text;
+            usingDownloadCache = event.target.cb.selected;
+            var so:SharedObject = SharedObject.getLocal("InstallApacheFlex");
+            so.data.usingDownloadCache = usingDownloadCache;
+            so.data.downloadCacheFolder = downloadCacheFolder;
+        }
+        
 		protected function setXMLVariables():Boolean {
-			var data:XML = XML(_loader.data);
-			var keepGoing:Boolean = true;
-			
-			_latestVersion = data.version.latest.toString();
-			
-			installerAppPath = data.installer.(@name == 'SDKInstallerApp').@path.toString();
-			installerAppFileName = data.installer.(@name == 'SDKInstallerApp').@file.toString();
-			
-			_mirrorURLCGI = data.mirror.(@name == 'MirrorURLCGI').@file.toString();
-			
-            var name:String;
-            var versionString:String;
-            
-            var languages:XMLList = data.languages.children();
-            for each (var lang:XML in languages)
+            var data:XML = XML(_loader.data);
+            var keepGoing:Boolean = true;
+            if (firstTime)
             {
-                var item:Object = {label: lang.@name.toString(), data: lang.@id.toString(), path: lang.@path.toString() };
-                supportedLanguages.addItem(item);
-            }
-            
-            var airData:XMLList = data.airsdk[_os.os].versions;
-            var airVersionList:XMLList = airData[0].children();
-			var airVersions:Array = [];
-			var selected:String = airData[0]["@default"].toString();
-			for each (var airVersion:XML in airVersionList) {
-                name = airVersion.name().toString();
-                versionString = name.substr(7);
-                airVersions.push(versionString);
-				AIR_VERSIONS.addItem({label:"AIR " + versionString, version: versionString});
-			}
-			
-			if (this.airVersion.selectedIndex == -1) {
-				this.airVersion.selectedIndex = airVersions.indexOf(selected);	
-			}
-			
-            var flexData:XMLList = data.products.children();
-            var selectedFlexVersion:int;
-            for each (var productData:XML in flexData)
-            {
-                var productName:String = productData.@name.toString();
-                var productPrefix:String = productData.@prefix.toString();
-                var productVersionList:XMLList = productData.versions.children();
-                var isOverlay:Boolean = productData.@overlay.toString() == "true";
-                for each (var productVersion:XML in productVersionList) {
-                    var shortName:String = productVersion.@file.toString();
-                    var fileName:String = shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
-                    versionString = productVersion.@version.toString();
-                    var label:String = productName + " " + versionString;
-                    var ver:String = fileName.substr(productPrefix.length).split("-")[0];
-                    var path:String = productVersion.@path.toString();
-                    if (productVersion["@default"].length() == 1)
-                        selectedFlexVersion = FLEX_VERSIONS.length;
-                    FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, 
-                        path:path, overlay: isOverlay, prefix: productPrefix});
+                firstTime = false;
+    			
+    			_latestVersion = data.version.latest.toString();
+    			
+    			installerAppPath = data.installer.(@name == 'SDKInstallerApp').@path.toString();
+    			installerAppFileName = data.installer.(@name == 'SDKInstallerApp').@file.toString();
+    			
+    			_mirrorURLCGI = data.mirror.(@name == 'MirrorURLCGI').@file.toString();
+                
+                var customMenuItem1:ContextMenuItem = new ContextMenuItem("Show Dev Builds");
+                customMenuItem1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, devBuildShowHandler);
+                var customMenuItem2:ContextMenuItem = new ContextMenuItem("Configure Download Cache");
+                customMenuItem2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, downloadCacheHandler);
+                
+                var contextMenuCustomItems:Array = ContextMenu(contextMenu).customItems;
+                contextMenuCustomItems.push(customMenuItem1);
+                contextMenuCustomItems.push(customMenuItem2);
+                			
+                var name:String;
+                var versionString:String;
+                
+                var languages:XMLList = data.languages.children();
+                for each (var lang:XML in languages)
+                {
+                    var item:Object = {label: lang.@name.toString(), data: lang.@id.toString(), path: lang.@path.toString() };
+                    supportedLanguages.addItem(item);
                 }
+                
+                var airData:XMLList = data.airsdk[_os.os].versions;
+                var airVersionList:XMLList = airData[0].children();
+    			var airVersions:Array = [];
+    			var selected:String = airData[0]["@default"].toString();
+    			for each (var airVersion:XML in airVersionList) {
+                    name = airVersion.name().toString();
+                    versionString = name.substr(7);
+                    airVersions.push(versionString);
+                    var airPath:String = airVersion.path.toString();
+                    var airFile:String = airVersion.file.toString();
+    				AIR_VERSIONS.addItem({label:"AIR " + versionString, version: versionString, path: airPath, file: airFile});
+    			}
+    			
+    			if (this.airVersion.selectedIndex == -1) {
+    				this.airVersion.selectedIndex = airVersions.indexOf(selected);	
+    			}
+    			
+                var flexData:XMLList = data.products.children();
+                var selectedFlexVersion:int;
+                for each (var productData:XML in flexData)
+                {
+                    var productName:String = productData.@name.toString();
+                    var productPrefix:String = productData.@prefix.toString();
+                    var productVersionList:XMLList = productData.versions.children();
+                    var isOverlay:Boolean = productData.@overlay.toString() == "true";
+                    var needsAIR:Boolean = productData.@needsAIR.toString() != "false"
+                    var needsFlash:Boolean = productData.@needsFlash.toString() != "false"
+                    for each (var productVersion:XML in productVersionList) {
+                        var shortName:String = productVersion.@file.toString();
+                        var fileName:String = shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
+                        versionString = productVersion.@version.toString();
+                        var label:String = productName + " " + versionString;
+                        var ver:String = fileName.substr(productPrefix.length).split("-")[0];
+                        var path:String = productVersion.@path.toString();
+                        var devBuild:Boolean = productVersion.@dev.toString() == "true";
+                        if (productVersion["@default"].length() == 1)
+                            selectedFlexVersion = FLEX_VERSIONS.length;
+                        FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, 
+                            path:path, overlay: isOverlay, prefix: productPrefix,
+                            needsAIR: needsAIR, needsFlash: needsFlash, devBuild: devBuild});
+                    }
+                }
+    			
+                FLEX_VERSIONS.filterFunction = devBuildFilterFunction;
+                FLEX_VERSIONS.refresh();
+                flexVersion.validateNow();
+                
+    			if (this.flexVersion.selectedIndex == -1) {
+    				this.flexVersion.selectedIndex = selectedFlexVersion;
+    			}
+                
+    			var selectedFlexVersionObject:Object = this.flexVersion.selectedItem;
+    			updateFlexVersionStrings(selectedFlexVersionObject);
+    			
+    			if (!APACHE_FLEX_BIN_DISTRO_FILE || !APACHE_FLEX_BIN_DISTRO_PATH) {
+    				log(_viewResourceConstants.ERROR_INVALID_SDK_URL);
+    				keepGoing = false;
+    			}
+    			
+                var flashData:XMLList = data.flashsdk.versions;
+                var flashVersionList:XMLList = flashData[0].children();
+                var flashPlayerVersions:Array = [];
+                selected = flashData[0]["@default"].toString();
+    			for each (var flashVersion:XML in flashVersionList) {
+                    name = flashVersion.name().toString();
+                    versionString = name.substr(7);
+                    flashPlayerVersions.push(versionString);
+    				if (!_os.isLinux() || Number(versionString) <= 11.2) {
+    					var swfVersion:String = flashVersion.swfversion.toString();
+                        var flashPath:String = flashVersion.path.toString();
+                        var flashFile:String = flashVersion.file.toString();
+    					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + versionString, version:versionString, swfVersion:swfVersion,
+                                                                path: flashPath, file: flashFile});
+    				}
+    			}
+    			
+    			if (this.flashPlayerVersion.selectedIndex == -1) {
+    				this.flashPlayerVersion.selectedIndex = flashPlayerVersions.indexOf(selected);	
+    			}
             }
-			
-			if (this.flexVersion.selectedIndex == -1) {
-				this.flexVersion.selectedIndex = selectedFlexVersion;
-			}
-			
-			var selectedFlexVersionObject:Object = this.flexVersion.selectedItem;
-			updateFlexVersionStrings(selectedFlexVersionObject);
-			
-			if (!APACHE_FLEX_BIN_DISTRO_FILE || !APACHE_FLEX_BIN_DISTRO_PATH) {
-				log(_viewResourceConstants.ERROR_INVALID_SDK_URL);
-				keepGoing = false;
-			}
-			
-            var flashData:XMLList = data.flashsdk.versions;
-            var flashVersionList:XMLList = flashData[0].children();
-            var flashPlayerVersions:Array = [];
-            selected = flashData[0]["@default"].toString();
-			for each (var flashVersion:XML in flashVersionList) {
-                name = flashVersion.name().toString();
-                versionString = name.substr(7);
-                flashPlayerVersions.push(versionString);
-				if (!_os.isLinux() || Number(versionString) <= 11.2) {
-					var swfVersion:String = flashVersion.swfversion.toString();
-					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + versionString, version:versionString, swfVersion:swfVersion});
-				}
-			}
-			
-			if (this.flashPlayerVersion.selectedIndex == -1) {
-				this.flashPlayerVersion.selectedIndex = flashPlayerVersions.indexOf(selected);	
-			}
-			
+            
 			ADOBE_AIR_SDK_WIN_FILE = data.airsdk.windows.versions["version" + AIR_VERSION].file.toString();
 			ADOBE_AIR_SDK_WIN_URL = data.airsdk.windows.versions["version" + AIR_VERSION].path.toString();
 			if (_os.isWindows() && (!ADOBE_AIR_SDK_WIN_FILE || !ADOBE_AIR_SDK_WIN_URL)) {
@@ -979,7 +1096,10 @@ variables are not required because the locations of these pieces are known.
 		protected function handleFlexVersionChange(event:Event):void {
 			/*APACHE_FLEX_BIN_DISTRO_VERSION =  flexVersion.selectedItem.version;
 			APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY = flexVersion.selectedItem.label;*/
-			updateFlexVersionStrings(flexVersion.selectedItem);
+            var item:Object = flexVersion.selectedItem;
+            airVersion.enabled = item.needsAIR;
+            flashPlayerVersion.enabled = item.needsFlash;
+			updateFlexVersionStrings(item);
 			updatePaths();
 			updateWindowTitle();
 		}
@@ -1096,7 +1216,8 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function md5VerificationProgressHandler(event:ProgressEvent):void {
-            //log("md5 progress " + event.bytesLoaded + "  " + event.bytesTotal);
+            if (debugMode)
+                log("md5 progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
 			progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
 		}
 		
@@ -1180,6 +1301,9 @@ variables are not required because the locations of these pieces are known.
         {
             ant = new Ant();
             ant.output = output;
+            Ant.usingDownloadCache = usingDownloadCache;
+            Ant.downloadCacheFolder = downloadCacheFolder;
+            
             var file:File;
             if (overlaying)
             {
@@ -1209,6 +1333,14 @@ variables are not required because the locations of these pieces are known.
             for (p in additionalProps)
                 context[p] = additionalProps[p];
             
+            context["air.sdk.url.path"] = airVersion.selectedItem.path;
+            context["air.sdk.url.file"] = airVersion.selectedItem.file;
+            if (flashPlayerVersion.selectedItem.flashPath)
+            {
+                context["flash.sdk.url.path"] = flashPlayerVersion.selectedItem.path;
+                context["flash.sdk.url.file"] = flashPlayerVersion.selectedItem.file;
+            }
+            
             if (!ant.processXMLFile(file, context, true))
             {
                 ant.addEventListener(Event.COMPLETE, completeHandler);
@@ -1220,7 +1352,8 @@ variables are not required because the locations of these pieces are known.
         
         private function progressEventHandler(event:ProgressEvent):void
         {
-            //log("progress " + event.bytesLoaded + "  " + event.bytesTotal);
+            if (debugMode)
+                log("progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
             progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
             /*
             if (ant.progressClass is Copy)
@@ -1255,7 +1388,7 @@ variables are not required because the locations of these pieces are known.
         private function output(s:String):void
         {
             var isPublic:Boolean = true;
-            var skipLog:Boolean = true;
+            var skipLog:Boolean = !debugMode;
             if (s.indexOf(":") != -1 && s.charAt(0) == "\n")
             {
                 // target output is a newline then the target name then a colon
@@ -2033,7 +2166,8 @@ variables are not required because the locations of these pieces are known.
 			var bytesTotal:int = event.bytesTotal;
 			var bytesLoaded:int = event.bytesLoaded;
 			var percentLoaded:int = Math.round(bytesLoaded * 100 / bytesTotal);
-            //log("download progress " + event.bytesLoaded + "  " + event.bytesTotal);
+            if (debugMode)
+                log("download progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
 			
 			progressBar.percent = percentLoaded;
 		}
