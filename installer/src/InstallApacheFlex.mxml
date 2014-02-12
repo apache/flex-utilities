@@ -94,7 +94,9 @@ variables are not required because the locations of these pieces are known.
 		private var _mirrorURLCGI:String;
 		private var _useMirror:Boolean = true;
 		private var _latestVersion:String;
-		
+		private var loggedVersion:Boolean;
+        private var debugMode:Boolean = true;
+        
 		public var installerAppPath:String;
 		public var installerAppFileName:String;
 		
@@ -291,6 +293,9 @@ variables are not required because the locations of these pieces are known.
 				if (s.indexOf("-config=") == 0) {
 					configOverride = s.substring(8);
 				}
+                if (s.indexOf("-debug") == 0) {
+                    debugMode = true;
+                }
 			}
 		}
 		
@@ -678,24 +683,31 @@ variables are not required because the locations of these pieces are known.
 			
 			if (_mirrorURLUtil.errorOccurred) {
 				abortInstallation();
+                main();
 			} else {
-				if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX
-					&& APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) != Constants.FILE_PREFIX) {
-					APACHE_FLEX_BIN_DISTRO_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
-                    APACHE_FLEX_BIN_INSTALLER_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
-				} else {
-					APACHE_FLEX_BIN_DISTRO_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
-                    APACHE_FLEX_BIN_INSTALLER_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
-				}
-				
-				if (installerAppPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX) {
-					installerAppPath = useMirrorPath(_mirrorURLUtil.mirrorURL) + installerAppPath;
-				}
+                updatePaths();
 			}
 			
-			main();
 		}
-		
+
+        protected function updatePaths():void
+        {
+            if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX
+                && APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) != Constants.FILE_PREFIX) {
+                APACHE_FLEX_BIN_DISTRO_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
+                APACHE_FLEX_BIN_INSTALLER_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
+            } else {
+                APACHE_FLEX_BIN_DISTRO_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
+                APACHE_FLEX_BIN_INSTALLER_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
+            }
+            
+            if (installerAppPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX) {
+                installerAppPath = useMirrorPath(_mirrorURLUtil.mirrorURL) + installerAppPath;
+            }
+            
+            main();
+        }
+        
 		protected function main():void {
 			
 			if (shouldUpdate()) {
@@ -710,9 +722,13 @@ variables are not required because the locations of these pieces are known.
 			var xmlns:Namespace = new Namespace(applicationDescriptor.namespace());
 			var currentVersion:String = applicationDescriptor.xmlns::versionNumber.toString();
 			
-			// Log the Installer version to help with any support issues that arise.
-			log("Version " + currentVersion + " (" + _os.os + ")", 0);
-			
+            if (!loggedVersion)
+            {
+    			// Log the Installer version to help with any support issues that arise.
+    			log("Version " + currentVersion + " (" + _os.os + ")", 0);
+                loggedVersion = true;
+            }
+            
 			var availBuildNumbers:Array = _latestVersion.split(".");
 			var currentBuildNumbers:Array = currentVersion.split(".");
 			
@@ -964,7 +980,7 @@ variables are not required because the locations of these pieces are known.
 			/*APACHE_FLEX_BIN_DISTRO_VERSION =  flexVersion.selectedItem.version;
 			APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY = flexVersion.selectedItem.label;*/
 			updateFlexVersionStrings(flexVersion.selectedItem);
-			getMirrorURLResultHandler();
+			updatePaths();
 			updateWindowTitle();
 		}
 		
@@ -1080,6 +1096,7 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function md5VerificationProgressHandler(event:ProgressEvent):void {
+            //log("md5 progress " + event.bytesLoaded + "  " + event.bytesTotal);
 			progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
 		}
 		
@@ -1203,6 +1220,7 @@ variables are not required because the locations of these pieces are known.
         
         private function progressEventHandler(event:ProgressEvent):void
         {
+            //log("progress " + event.bytesLoaded + "  " + event.bytesTotal);
             progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
             /*
             if (ant.progressClass is Copy)
@@ -1237,6 +1255,7 @@ variables are not required because the locations of these pieces are known.
         private function output(s:String):void
         {
             var isPublic:Boolean = true;
+            var skipLog:Boolean = true;
             if (s.indexOf(":") != -1 && s.charAt(0) == "\n")
             {
                 // target output is a newline then the target name then a colon
@@ -1249,7 +1268,13 @@ variables are not required because the locations of these pieces are known.
                 }
                 isPublic = false;
             }
-            log(s, -1, isPublic);
+            else if (s.indexOf("[echo] ") != -1)
+            {
+                s = s.substr(s.indexOf("[echo] ") + 7);
+                isPublic = false;
+                skipLog = false;
+            }
+            log(s, -1, isPublic, skipLog);
         }
                 
         private function enterFrameHandler(event:Event):void
@@ -2008,6 +2033,7 @@ variables are not required because the locations of these pieces are known.
 			var bytesTotal:int = event.bytesTotal;
 			var bytesLoaded:int = event.bytesLoaded;
 			var percentLoaded:int = Math.round(bytesLoaded * 100 / bytesTotal);
+            //log("download progress " + event.bytesLoaded + "  " + event.bytesTotal);
 			
 			progressBar.percent = percentLoaded;
 		}
@@ -2153,9 +2179,10 @@ variables are not required because the locations of these pieces are known.
 			}
 		}
 		
-		private function log(text:String, position:int = -1, isPublic:Boolean = true):void {
+		private function log(text:String, position:int = -1, isPublic:Boolean = true, skipLog:Boolean = false):void {
 			if (position == -1) {
-				_messages.addItem(text);
+                if (!skipLog)
+    				_messages.addItem(text);
                 if (isPublic)
                     lastPublicMessage = text;
 			} else {
