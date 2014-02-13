@@ -1979,7 +1979,7 @@ variables are not required because the locations of these pieces are known.
 				}
 			}
 			if (allComponentsInstalled) {
-				tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
+				tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
 				cleanup(false);
 			}
 		}
@@ -1991,7 +1991,11 @@ variables are not required because the locations of these pieces are known.
 				log(_viewResourceConstants.ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY);
 			}
 			
-			if (!isAbort) {
+			if (isAbort) {
+				tracker.trackInstallerFailure(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
+			}
+			else
+			{
 				log(_viewResourceConstants.INFO_INSTALLATION_COMPLETE);
 				updateUIHandleInstallationComplete();
 			}
