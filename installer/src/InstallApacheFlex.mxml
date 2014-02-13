@@ -1392,7 +1392,7 @@ variables are not required because the locations of these pieces are known.
         
         private function output(s:String):void
         {
-            var isPublic:Boolean = true;
+            var isPublic:Boolean = false;
             var skipLog:Boolean = !debugMode;
             if (s.indexOf(":") != -1 && s.charAt(0) == "\n")
             {
@@ -1409,7 +1409,7 @@ variables are not required because the locations of these pieces are known.
             else if (s.indexOf("[echo] ") != -1)
             {
                 s = s.substr(s.indexOf("[echo] ") + 7);
-                //isPublic = false;
+                isPublic = true;
                 skipLog = false;
             }
             log(s, -1, isPublic, skipLog);
