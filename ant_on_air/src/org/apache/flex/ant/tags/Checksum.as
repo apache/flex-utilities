@@ -117,7 +117,7 @@ package org.apache.flex.ant.tags
                 return;
             }
             var ba:ByteArray = new ByteArray();
-            fs.readBytes(ba, 0, Math.max(readbuffersize, fs.bytesAvailable));
+            fs.readBytes(ba, 0, Math.min(readbuffersize, fs.bytesAvailable));
             md5.update(ba);
             ant.functionToCall = getSum;
             ant.progressClass = this;
