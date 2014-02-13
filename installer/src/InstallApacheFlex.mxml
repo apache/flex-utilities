@@ -140,6 +140,7 @@ variables are not required because the locations of these pieces are known.
         import org.osmf.utils.OSMFStrings;
         
         import ws.tink.spark.controls.StepItem;
+        import ws.tink.spark.skins.controls.InstallApacheFlexSkin;
 		
 		private var _mirrorURLCGI:String;
 		private var _useMirror:Boolean = true;
@@ -636,8 +637,9 @@ variables are not required because the locations of these pieces are known.
                     var productPrefix:String = productData.@prefix.toString();
                     var productVersionList:XMLList = productData.versions.children();
                     var isOverlay:Boolean = productData.@overlay.toString() == "true";
-                    var needsAIR:Boolean = productData.@needsAIR.toString() != "false"
-                    var needsFlash:Boolean = productData.@needsFlash.toString() != "false"
+                    var needsAIR:Boolean = productData.@needsAIR.toString() != "false";
+                    var needsFlash:Boolean = productData.@needsFlash.toString() != "false";
+                    var icon:String = productData.@icon.toString();
                     for each (var productVersion:XML in productVersionList) {
                         var shortName:String = productVersion.@file.toString();
                         var fileName:String = shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
@@ -650,7 +652,7 @@ variables are not required because the locations of these pieces are known.
                             selectedFlexVersion = FLEX_VERSIONS.length;
                         FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, 
                             path:path, overlay: isOverlay, prefix: productPrefix,
-                            needsAIR: needsAIR, needsFlash: needsFlash, devBuild: devBuild});
+                            needsAIR: needsAIR, needsFlash: needsFlash, devBuild: devBuild, icon: icon});
                     }
                 }
     			
@@ -1102,6 +1104,7 @@ variables are not required because the locations of these pieces are known.
 			updateFlexVersionStrings(item);
 			updatePaths();
 			updateWindowTitle();
+            InstallApacheFlexSkin(skin).textIcon.source = item.icon;
 		}
 		
 		protected function browseForSDK(event:MouseEvent):void {

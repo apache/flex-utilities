@@ -63,17 +63,17 @@ limitations under the License.
                 <Nightly id="Nightly" version="Nightly" path="https://builds.apache.org/job/flex-sdk_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-sdk-4.12.0-bin" dev="true"/>
             </versions>
         </ApacheFlexSDK>
-        <ApacheFlexJS name="Apache FlexJS" prefix="apache-flex-flexjs-">
+        <ApacheFlexJS name="Apache FlexJS" prefix="apache-flex-flexjs-" icon="http://flex.apache.org/icons/apache_flexjs_logo_text.png">
             <versions>
                 <Nightly id="FlexJSNightly" version="Nightly" path="https://builds.apache.org/job/flex-asjs/lastSuccessfulBuild/artifact/out/" file="apache-flex-flexjs-4.0.1-bin" dev="true"/>
             </versions>
         </ApacheFlexJS>
-        <ApacheFlexFalcon name="Apache Flex Falcon" prefix="apache-flex-falcon-" overlay="true" needsAIR="false" needsFlash="false">
+        <ApacheFlexFalcon name="Apache Flex Falcon" prefix="apache-flex-falcon-" overlay="true" needsAIR="false" needsFlash="false" icon="http://flex.apache.org/icons/apache_flexfalcon_logo_text.png">
             <versions>
                 <Nightly id="FlexFalconNightly" version="Nightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falcon-0.0.1-bin" dev="true"/>
             </versions>
         </ApacheFlexFalcon>
-        <ApacheFlexFalconJX name="Apache Flex FalconJX" prefix="apache-flex-falconjx-" overlay="true" needsAIR="false" needsFlash="false">
+        <ApacheFlexFalconJX name="Apache Flex FalconJX" prefix="apache-flex-falconjx-" overlay="true" needsAIR="false" needsFlash="false" icon="http://flex.apache.org/icons/apache_flexfalcon_logo_text.png">
             <versions>
                 <Nightly id="FlexFalconJXNightly" version="Nightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falconjx-0.0.1-bin" dev="true"/>
             </versions>
