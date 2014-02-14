@@ -814,7 +814,7 @@ variables are not required because the locations of these pieces are known.
             if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX
                 && APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) != Constants.FILE_PREFIX) {
                 APACHE_FLEX_BIN_DISTRO_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
-                APACHE_FLEX_BIN_INSTALLER_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
+                APACHE_FLEX_BIN_INSTALLER_URL = MD5CompareUtil.MD5_DOMAIN + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
             } else {
                 APACHE_FLEX_BIN_DISTRO_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
                 APACHE_FLEX_BIN_INSTALLER_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
@@ -1384,7 +1384,9 @@ variables are not required because the locations of these pieces are known.
                     updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
                 else if (currentStep == stepLabels.length)
                     updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
-            }        
+            }
+            if (Ant.currentAnt.project.status)
+                tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
             cleanup(!Ant.currentAnt.project.status);
         }
         
