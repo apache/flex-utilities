@@ -31,15 +31,15 @@ limitations under the License.
 		<latest>3.0.0</latest>
 	</version>
     <languages>
-        <locale1 id="de_DE" name="Deutsch" path="http://flex.apache.org/properties/de_DE.properties"/>
-        <locale2 id="en_US" name="English (US)" path="http://flex.apache.org/properties/en_US.properties"/>
-        <locale3 id="en_AU" name="English (AU)" path="http://flex.apache.org/properties/en_AU.properties"/>
-        <locale4 id="en_GB" name="English (GB)" path="http://flex.apache.org/properties/en_GB.properties"/>
-        <locale5 id="es_ES" name="Español (ES)" path="http://flex.apache.org/properties/es_ES.properties"/>
-        <locale6 id="fr_FR" name="Français" path="http://flex.apache.org/properties/fr_FR.properties"/>
-        <locale7 id="el_GR" name="Greek" path="http://flex.apache.org/properties/el_GR.properties"/>
-        <locale8 id="nl_NL" name="Nederlands" path="http://flex.apache.org/properties/nl_NL.properties"/>
-        <locale9 id="pt_BR" name="Português" path="http://flex.apache.org/properties/pt_BR.properties"/>
+        <locale1 id="de_DE" name="Deutsch" path="http://flex.apache.org/installer/properties/de_DE.properties"/>
+        <locale2 id="en_US" name="English (US)" path="http://flex.apache.org/installer/properties/en_US.properties"/>
+        <locale3 id="en_AU" name="English (AU)" path="http://flex.apache.org/installer/properties/en_AU.properties"/>
+        <locale4 id="en_GB" name="English (GB)" path="http://flex.apache.org/installer/properties/en_GB.properties"/>
+        <locale5 id="es_ES" name="Español (ES)" path="http://flex.apache.org/installer/properties/es_ES.properties"/>
+        <locale6 id="fr_FR" name="Français" path="http://flex.apache.org/installer/properties/fr_FR.properties"/>
+        <locale7 id="el_GR" name="Greek" path="http://flex.apache.org/installer/properties/el_GR.properties"/>
+        <locale8 id="nl_NL" name="Nederlands" path="http://flex.apache.org/installer/properties/nl_NL.properties"/>
+        <locale9 id="pt_BR" name="Português" path="http://flex.apache.org/installer/properties/pt_BR.properties"/>
     </languages>
     <!-- SDK Installer Application binary distribution
      Notes:
@@ -55,25 +55,26 @@ limitations under the License.
          - path is relative to mirror URL; don't use starting slash
          - use http based url if you want to use an absolute url instead of mirror
          - remove the extension from the file name -->
-        <ApacheFlexSDK name="Apache Flex SDK" prefix="apache-flex-sdk-">
+        <ApacheFlexSDK name="Apache Flex SDK" prefix="apache-flex-sdk-" icon="http://flex.apache.org/installer/icons/apache_flex_logo_text.png">
             <versions>
                 <versionA id="4.9.1" version="4.9.1" path="http://archive.apache.org/dist/flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin" />
                 <versionB id="4.10.0" version="4.10.0" path="http://archive.apache.org/dist/flex/4.10.0/binaries/" file="apache-flex-sdk-4.10.0-bin" />
                 <versionC id="4.11.0" version="4.11.0" path="flex/4.11.0/binaries/" file="apache-flex-sdk-4.11.0-bin" default="true"/>
+                <versionC id="4.12.0" version="4.12.0 RC2" path="https://dist.apache.org/repos/dist/dev/flex/sdk/4.12.0/rc2/binaries" file="apache-flex-sdk-4.12.0-bin" dev="true"/>
                 <Nightly id="Nightly" version="Nightly" path="https://builds.apache.org/job/flex-sdk_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-sdk-4.12.0-bin" dev="true"/>
             </versions>
         </ApacheFlexSDK>
-        <ApacheFlexJS name="Apache FlexJS" prefix="apache-flex-flexjs-">
+        <ApacheFlexJS name="Apache FlexJS" prefix="apache-flex-flexjs-" icon="http://flex.apache.org/installer/icons/apache_flexjs_logo_text.png">
             <versions>
                 <Nightly id="FlexJSNightly" version="Nightly" path="https://builds.apache.org/job/flex-asjs/lastSuccessfulBuild/artifact/out/" file="apache-flex-flexjs-4.0.1-bin" dev="true"/>
             </versions>
         </ApacheFlexJS>
-        <ApacheFlexFalcon name="Apache Flex Falcon" prefix="apache-flex-falcon-" overlay="true" needsAIR="false" needsFlash="false">
+        <ApacheFlexFalcon name="Apache Flex Falcon" prefix="apache-flex-falcon-" overlay="true" needsAIR="false" needsFlash="false" icon="http://flex.apache.org/installer/icons/apache_flexfalcon_logo_text.png">
             <versions>
                 <Nightly id="FlexFalconNightly" version="Nightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falcon-0.0.1-bin" dev="true"/>
             </versions>
         </ApacheFlexFalcon>
-        <ApacheFlexFalconJX name="Apache Flex FalconJX" prefix="apache-flex-falconjx-" overlay="true" needsAIR="false" needsFlash="false">
+        <ApacheFlexFalconJX name="Apache Flex FalconJX" prefix="apache-flex-falconjx-" overlay="true" needsAIR="false" needsFlash="false" icon="http://flex.apache.org/installer/icons/apache_flexfalcon_logo_text.png">
             <versions>
                 <Nightly id="FlexFalconJXNightly" version="Nightly" path="https://builds.apache.org/job/flex-falcon/lastSuccessfulBuild/artifact/out/" file="apache-flex-falconjx-0.0.1-bin" dev="true"/>
             </versions>

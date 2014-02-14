@@ -41,6 +41,7 @@ public class Constants
 	public static const CONFIG_XML_NAME:String = "installer/sdk-installer-config-4.0.xml";
 	public static const DISCLAIMER_PATH:String = "about-binaries.html";
 	public static const INSTALLER_TRACK_SUCCESS:String = "track-installer.html";
+	public static const INSTALLER_TRACK_FAILURE:String = "track-installer.html?failure=true";
 	
 	
 	public static const SDK_BINARY_FILE_NAME_PREFIX:String = "apache-flex-sdk-";
