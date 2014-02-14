@@ -355,7 +355,21 @@
             </fileset>
         </copy>
 
-		<copy todir="${BUILD_DIR}/temp/${INSTALLER_PROJECT_NAME}" includeEmptyDirs="false">
+        <copy todir="${BUILD_DIR}/temp/ant_on_air/src" includeEmptyDirs="false">
+            <fileset dir="${basedir}/../ant_on_air/src">
+            </fileset>
+        </copy>
+        <copy todir="${BUILD_DIR}/temp/ant_on_air/locale" includeEmptyDirs="false">
+            <fileset dir="${basedir}/../ant_on_air/locale">
+            </fileset>
+        </copy>
+        <copy todir="${BUILD_DIR}/temp/ant_on_air/tests" includeEmptyDirs="false">
+            <fileset dir="${basedir}/../ant_on_air/tests">
+                <exclude name="*.swf" />
+            </fileset>
+        </copy>
+
+        <copy todir="${BUILD_DIR}/temp/${INSTALLER_PROJECT_NAME}" includeEmptyDirs="false">
 			<fileset dir="${basedir}">
 				<exclude name="*.p12"/>
 				<exclude name="*.password"/>
