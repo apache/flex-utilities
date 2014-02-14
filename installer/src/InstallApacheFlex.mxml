@@ -441,6 +441,9 @@ variables are not required because the locations of these pieces are known.
                 variables = data.split("\n");
             for each (var p:String in variables)
             {
+                if (p.charAt(0) == "#")
+                    continue;
+                
                 var c:int = p.indexOf("=");
                 if (c != -1)
                 {
