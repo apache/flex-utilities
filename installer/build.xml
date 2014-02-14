@@ -24,6 +24,7 @@
     <property environment="env"/>
 
     <!--location of property file -->
+    <property file="${basedir}/local.properties" />
     <property file="${basedir}/build.properties" description="Properties for Apache Flex SDK Installer project" />
     <property file="${basedir}/build.number"/>
 	<property file="${CERT_PASSWORD_FILE}"/>
