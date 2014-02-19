@@ -38,6 +38,7 @@ limitations under the License.
         <locale5 id="es_ES" name="Español (ES)" path="http://flex.apache.org/installer/properties/es_ES.properties"/>
         <locale6 id="fr_FR" name="Français" path="http://flex.apache.org/installer/properties/fr_FR.properties"/>
         <locale7 id="el_GR" name="Greek" path="http://flex.apache.org/installer/properties/el_GR.properties"/>
+        <locale5 id="ko_KR" name="Korean" path="http://flex.apache.org/installer/properties/ko_KR.properties"/>
         <locale8 id="nl_NL" name="Nederlands" path="http://flex.apache.org/installer/properties/nl_NL.properties"/>
         <locale9 id="pt_BR" name="Português" path="http://flex.apache.org/installer/properties/pt_BR.properties"/>
     </languages>
