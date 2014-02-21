@@ -1340,9 +1340,11 @@ variables are not required because the locations of these pieces are known.
             for (p in additionalProps)
                 context[p] = additionalProps[p];
             
+            context["air.sdk.version"] = AIR_VERSION;
             context["air.sdk.url.path"] = airVersion.selectedItem.path;
             context["air.sdk.url.file"] = airVersion.selectedItem.file;
-            if (flashPlayerVersion.selectedItem.flashPath)
+            context["flash.sdk.version"] = FLASH_PLAYER_VERSION;
+            if (flashPlayerVersion.selectedItem.path)
             {
                 context["flash.sdk.url.path"] = flashPlayerVersion.selectedItem.path;
                 context["flash.sdk.url.file"] = flashPlayerVersion.selectedItem.file;
