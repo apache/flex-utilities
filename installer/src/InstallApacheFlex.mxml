@@ -620,12 +620,12 @@ variables are not required because the locations of these pieces are known.
     			var airVersions:Array = [];
     			var selected:String = airData[0]["@default"].toString();
     			for each (var airVersion:XML in airVersionList) {
-                    name = airVersion.name().toString();
-                    versionString = name.substr(7);
+                    var displayVersion:String = airVersion.@displayVersion.toString();
+                    versionString = airVersion.@version.toString();
                     airVersions.push(versionString);
                     var airPath:String = airVersion.path.toString();
                     var airFile:String = airVersion.file.toString();
-    				AIR_VERSIONS.addItem({label:"AIR " + versionString, version: versionString, path: airPath, file: airFile});
+    				AIR_VERSIONS.addItem({label:"AIR " + displayVersion, version: versionString, path: airPath, file: airFile});
     			}
     			
     			if (this.airVersion.selectedIndex == -1) {
@@ -680,14 +680,14 @@ variables are not required because the locations of these pieces are known.
                 var flashPlayerVersions:Array = [];
                 selected = flashData[0]["@default"].toString();
     			for each (var flashVersion:XML in flashVersionList) {
-                    name = flashVersion.name().toString();
-                    versionString = name.substr(7);
+                    displayVersion = flashVersion.@displayVersion.toString();
+                    versionString = flashVersion.@version.toString();
                     flashPlayerVersions.push(versionString);
     				if (!_os.isLinux() || Number(versionString) <= 11.2) {
     					var swfVersion:String = flashVersion.swfversion.toString();
                         var flashPath:String = flashVersion.path.toString();
                         var flashFile:String = flashVersion.file.toString();
-    					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + versionString, version:versionString, swfVersion:swfVersion,
+    					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + displayVersion, version:versionString, swfVersion:swfVersion,
                                                                 path: flashPath, file: flashFile});
     				}
     			}
@@ -697,33 +697,33 @@ variables are not required because the locations of these pieces are known.
     			}
             }
             
-			ADOBE_AIR_SDK_WIN_FILE = data.airsdk.windows.versions["version" + AIR_VERSION].file.toString();
-			ADOBE_AIR_SDK_WIN_URL = data.airsdk.windows.versions["version" + AIR_VERSION].path.toString();
+			ADOBE_AIR_SDK_WIN_FILE = data.airsdk.windows.versions.children().(@version==AIR_VERSION).file.toString();
+			ADOBE_AIR_SDK_WIN_URL = data.airsdk.windows.versions.children().(@version==AIR_VERSION).path.toString();
 			if (_os.isWindows() && (!ADOBE_AIR_SDK_WIN_FILE || !ADOBE_AIR_SDK_WIN_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_WINDOWS);
 				keepGoing = false;
 			}
 			ADOBE_AIR_SDK_WIN_URL += ADOBE_AIR_SDK_WIN_FILE;
 			
-			ADOBE_AIR_SDK_MAC_FILE = data.airsdk.mac.versions["version" + AIR_VERSION].file.toString();
-			ADOBE_AIR_SDK_MAC_URL = data.airsdk.mac.versions["version" + AIR_VERSION].path.toString();
+			ADOBE_AIR_SDK_MAC_FILE = data.airsdk.mac.versions.children().(@version==AIR_VERSION).file.toString();
+			ADOBE_AIR_SDK_MAC_URL = data.airsdk.mac.versions.children().(@version==AIR_VERSION).path.toString();
 			if (_os.isMac() && (!ADOBE_AIR_SDK_MAC_FILE || !ADOBE_AIR_SDK_MAC_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_MAC);
 				keepGoing = false;
 			}
 			ADOBE_AIR_SDK_MAC_URL += ADOBE_AIR_SDK_MAC_FILE;
 			
-			ADOBE_AIR_SDK_LINUX_FILE = data.airsdk.linux.versions["version" + AIR_VERSION].file.toString();
-			ADOBE_AIR_SDK_LINUX_URL = data.airsdk.linux.versions["version" + AIR_VERSION].path.toString();
+			ADOBE_AIR_SDK_LINUX_FILE = data.airsdk.linux.versions.children().(@version==AIR_VERSION).file.toString();
+			ADOBE_AIR_SDK_LINUX_URL = data.airsdk.linux.versions.children().(@version==AIR_VERSION).path.toString();
 			if (_os.isLinux() && (!ADOBE_AIR_SDK_LINUX_FILE || !ADOBE_AIR_SDK_LINUX_URL)) {
 				log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_LINUX);
 				keepGoing = false;
 			}
 			ADOBE_AIR_SDK_LINUX_URL += ADOBE_AIR_SDK_LINUX_FILE;
 			
-			ADOBE_FB_GLOBALPLAYER_SWC_FILE = data.flashsdk.versions["version" + FLASH_PLAYER_VERSION].file.toString();
-			ADOBE_FB_GLOBALPLAYER_SWC_URL = data.flashsdk.versions["version" + FLASH_PLAYER_VERSION].path.toString();
-			FLASH_PLAYER_SWF_VERSION = data.flashsdk.versions["version" + FLASH_PLAYER_VERSION].swfversion.toString();
+			ADOBE_FB_GLOBALPLAYER_SWC_FILE = data.flashsdk.versions.children().(@version==FLASH_PLAYER_VERSION).file.toString();
+			ADOBE_FB_GLOBALPLAYER_SWC_URL = data.flashsdk.versions.children().(@version==FLASH_PLAYER_VERSION).path.toString();
+			FLASH_PLAYER_SWF_VERSION = data.flashsdk.versions.children().(@version==FLASH_PLAYER_VERSION).swfversion.toString();
 			if (!ADOBE_FB_GLOBALPLAYER_SWC_FILE || !ADOBE_FB_GLOBALPLAYER_SWC_URL) {
 				log(_viewResourceConstants.ERROR_INVALID_FLASH_PLAYER_SWC_URL);
 				keepGoing = false;
