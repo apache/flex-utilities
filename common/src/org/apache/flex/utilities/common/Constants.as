@@ -48,6 +48,7 @@ public class Constants
 	
 	public static const URL_PREFIX:String = "http://";
 	public static const FILE_PREFIX:String = "file://";
+    public static const HTTPS_PREFIX:String = "https://";
 	
 	public static const SOURCEFORGE_DL_URL:String = ".dl.sourceforge.net/project/";
 	public static const SOURCEFORGE_DOWNLOAD_URL:String = "http://downloads.sourceforge.net/project/" +
