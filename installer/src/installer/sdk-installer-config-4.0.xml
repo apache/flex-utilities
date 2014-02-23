@@ -61,7 +61,7 @@ limitations under the License.
                 <versionA id="4.9.1" version="4.9.1" path="http://archive.apache.org/dist/flex/4.9.1/binaries/" file="apache-flex-sdk-4.9.1-bin" />
                 <versionB id="4.10.0" version="4.10.0" path="http://archive.apache.org/dist/flex/4.10.0/binaries/" file="apache-flex-sdk-4.10.0-bin" />
                 <versionC id="4.11.0" version="4.11.0" path="flex/4.11.0/binaries/" file="apache-flex-sdk-4.11.0-bin" default="true"/>
-                <versionD id="4.12.0" version="4.12.0 RC2" path="https://dist.apache.org/repos/dist/dev/flex/sdk/4.12.0/rc2/binaries" file="apache-flex-sdk-4.12.0-bin" dev="true"/>
+                <versionD id="4.12.0" version="4.12.0 RC2" path="https://dist.apache.org/repos/dist/dev/flex/sdk/4.12.0/rc2/binaries/" file="apache-flex-sdk-4.12.0-bin" dev="true"/>
                 <Nightly id="Nightly" version="Nightly" path="https://builds.apache.org/job/flex-sdk_release/lastSuccessfulBuild/artifact/out/" file="apache-flex-sdk-4.12.0-bin" dev="true"/>
             </versions>
         </ApacheFlexSDK>
