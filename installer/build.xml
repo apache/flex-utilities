@@ -355,6 +355,12 @@
             </fileset>
         </copy>
 
+        <copy todir="${BUILD_DIR}/temp/ant_on_air" includeEmptyDirs="false">
+            <fileset dir="${basedir}/../ant_on_air">
+                <include name="build.properties" />
+                <include name="build.xml" />
+            </fileset>
+        </copy>
         <copy todir="${BUILD_DIR}/temp/ant_on_air/src" includeEmptyDirs="false">
             <fileset dir="${basedir}/../ant_on_air/src">
             </fileset>
