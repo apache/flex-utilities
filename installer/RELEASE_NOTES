@@ -20,6 +20,10 @@ limitations under the License.
 Apache Flex
 Copyright 2013 The Apache Software Foundation
 
+Apache Flex SDK Installer 3.0
+1. Now uses external localized strings
+2. Added support for install scripts based on Apache Ant
+
 Apache Flex SDK Installer 2.7
 1. Added support for OSMF2.0 [http://blogs.adobe.com/osmf/2012/03/osmf-2-0-now-available.html]
 	From Apache Flex 4.11.0 onwards, support for OSMF2.0 has been added.  
