@@ -576,6 +576,19 @@
         </exec>
     </target>
 
+    <target name="debug-locale" >
+        <copy file="${SOURCE_DIR}/${APP_NAME}-app.xml" todir="${BUILD_DIR}" />
+        <mkdir dir="${BUILD_DIR}/installer" />
+        <exec executable="${AIR_HOME}/bin/${adl}" dir="${BUILD_DIR}" failonerror="true">
+            <arg value="-runtime" />
+            <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
+            <arg value="${BUILD_DIR}/${APP_NAME}-app.xml" />
+            <arg value="--" />
+            <arg value="-config=${LOCAL_CONFIG_URL}" />
+            <arg value="-language=${TEST_LOCALE}" />
+        </exec>
+    </target>
+
     <target name="debug-for-real" >
         <copy file="${SOURCE_DIR}/${APP_NAME}-app.xml" todir="${BUILD_DIR}" />
         <mkdir dir="${BUILD_DIR}/installer" />

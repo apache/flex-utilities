@@ -49,7 +49,8 @@ variables are not required because the locations of these pieces are known.
 	
     <fx:Declarations>
         <fx:Component className="CacheDialog" >
-            <s:TitleWindow title="Download Cache Configuration" width="400" height="300">
+            <s:TitleWindow title="Download Cache Configuration" width="400" height="130" 
+                           backgroundColor="0xDDDDDD" close="closeUp()">
                 <fx:Script>
                     <![CDATA[
                         import mx.managers.PopUpManager;
@@ -82,16 +83,16 @@ variables are not required because the locations of these pieces are known.
                         }
                     ]]>
                 </fx:Script>
-                <s:VGroup width="100%">
-                    <s:CheckBox id="cb" label="Use Download Cache" />
-                    <s:HGroup width="100%">
+                <s:VGroup left="10" top="10" right="10">
+                    <s:CheckBox id="cb" label="Cache Downloaded Files" />
+                    <s:HGroup width="100%" verticalAlign="baseline">
                         <s:Label text="Cache Folder: " />
-                        <s:TextInput id="folder" width="100%"/>
-                        <s:Button label="Browse..." click="browseFolders()" />
+                        <s:TextInput id="folder" width="100%" enabled="{cb.selected}"/>
+                        <s:Button label="Browse..." click="browseFolders()" styleName="genericBtnStyle" enabled="{cb.selected}"/>
                     </s:HGroup>
-                    <s:HGroup>
-                        <s:Button label="OK" click="updateCache()" />
-                        <s:Button label="Cancel" click="closeUp()" />
+                    <s:HGroup horizontalAlign="center" width="100%" >
+                        <s:Button label="OK" click="updateCache()" styleName="genericBtnStyle" />
+                        <s:Button label="Cancel" click="closeUp()" styleName="genericBtnStyle" />
                     </s:HGroup>
                 </s:VGroup>
             </s:TitleWindow>
@@ -151,6 +152,8 @@ variables are not required because the locations of these pieces are known.
         private var usingDownloadCache:Boolean;
         private var downloadCacheFolder:String;
         private var firstTime:Boolean = true;
+        private var legacy:Boolean = true;
+        private var nocache:Boolean = true;
         
 		public var installerAppPath:String;
 		public var installerAppFileName:String;
@@ -353,11 +356,8 @@ variables are not required because the locations of these pieces are known.
                 }
 			}
             var so:SharedObject = SharedObject.getLocal("InstallApacheFlex");
-            if (so.data.usingDownloadCache)
-            {
-                usingDownloadCache = true;
-                downloadCacheFolder = so.data.downloadCacheFolder;
-            }
+            usingDownloadCache = so.data.usingDownloadCache;
+            downloadCacheFolder = so.data.downloadCacheFolder;
 		}
 		
 		protected function handleApplicationComplete(event:FlexEvent):void {
@@ -426,9 +426,10 @@ variables are not required because the locations of these pieces are known.
                         completeFunction();
                         });
                     urlLoader.load(url);
-                    break;
+                    return;
                 }
             }
+            completeFunction();
         }
         
         private function installLanguage(userLocale:String, data:String):void
@@ -473,6 +474,7 @@ variables are not required because the locations of these pieces are known.
             if (languageOverride) {
                 userLocale = languageOverride;
             }
+            log("Using Locale:" + userLocale);
             
 			var n:int = supportedLanguages.length;
 			for (var i:int = 0; i < n; i++) {
@@ -556,6 +558,11 @@ variables are not required because the locations of these pieces are known.
             return !o.devBuild;
         }
         
+        private function debugModeHandler(event:Event):void
+        {
+            debugMode = true;
+        }
+        
         private function devBuildShowHandler(event:Event):void
         {
             var item:Object = flexVersion.selectedItem;
@@ -569,6 +576,7 @@ variables are not required because the locations of these pieces are known.
             var dlg:CacheDialog = new CacheDialog();
             dlg.addEventListener(Event.COMPLETE, updateDownloadCache);
             PopUpManager.addPopUp(dlg, this, true);
+            PopUpManager.centerPopUp(dlg);
             dlg.cb.selected = usingDownloadCache;
             dlg.folder.text = downloadCacheFolder;
         }
@@ -580,6 +588,7 @@ variables are not required because the locations of these pieces are known.
             var so:SharedObject = SharedObject.getLocal("InstallApacheFlex");
             so.data.usingDownloadCache = usingDownloadCache;
             so.data.downloadCacheFolder = downloadCacheFolder;
+            so.flush();
         }
         
 		protected function setXMLVariables():Boolean {
@@ -600,10 +609,13 @@ variables are not required because the locations of these pieces are known.
                 customMenuItem1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, devBuildShowHandler);
                 var customMenuItem2:ContextMenuItem = new ContextMenuItem("Configure Download Cache");
                 customMenuItem2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, downloadCacheHandler);
+                var customMenuItem3:ContextMenuItem = new ContextMenuItem("Enable Verbose Logging");
+                customMenuItem3.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugModeHandler);
                 
                 var contextMenuCustomItems:Array = ContextMenu(contextMenu).customItems;
                 contextMenuCustomItems.push(customMenuItem1);
                 contextMenuCustomItems.push(customMenuItem2);
+                contextMenuCustomItems.push(customMenuItem3);
                 			
                 var name:String;
                 var versionString:String;
@@ -651,10 +663,12 @@ variables are not required because the locations of these pieces are known.
                         var ver:String = fileName.substr(productPrefix.length).split("-")[0];
                         var path:String = productVersion.@path.toString();
                         var devBuild:Boolean = productVersion.@dev.toString() == "true";
+                        var legacy:Boolean = productVersion.@legacy.toString() == "true";
+                        var nocache:Boolean = productVersion.@nocache.toString() == "true";
                         if (productVersion["@default"].length() == 1)
                             selectedFlexVersion = FLEX_VERSIONS.length;
                         FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, 
-                            path:path, overlay: isOverlay, prefix: productPrefix,
+                            path:path, overlay: isOverlay, prefix: productPrefix, legacy: legacy, nocache: nocache,
                             needsAIR: needsAIR, needsFlash: needsFlash, devBuild: devBuild, icon: icon});
                     }
                 }
@@ -774,7 +788,8 @@ variables are not required because the locations of these pieces are known.
 			
 			APACHE_FLEX_BIN_DISTRO_FILE = selectedFlexVersionObject.fileName;
 			APACHE_FLEX_BIN_DISTRO_PATH = selectedFlexVersionObject.path;
-			
+			legacy =  selectedFlexVersionObject.legacy;
+            nocache = selectedFlexVersionObject.nocache;
             APACHE_FLEX_BIN_INSTALLER_FILE = selectedFlexVersionObject.prefix + "installer-config.xml";
             
 			// ApacheFlex is full URL so download directly and dont use mirror useful for testing release candidates
@@ -903,14 +918,19 @@ variables are not required because the locations of these pieces are known.
 			log("AIR version " + AIR_VERSION);
 			log("Flash Player version " + FLASH_PLAYER_VERSION);
 			
-            var req:URLRequest = new URLRequest(APACHE_FLEX_BIN_INSTALLER_URL);
-            var loader:URLLoader = new URLLoader();
-            loader.dataFormat = URLLoaderDataFormat.TEXT;
-            loader.addEventListener(Event.COMPLETE, handleInstallerXMLLoaded);
-            loader.addEventListener(ErrorEvent.ERROR, handleInstallerXMLError);
-            loader.addEventListener(IOErrorEvent.IO_ERROR, handleInstallerXMLError);
-            
-            loader.load(req);            
+            if (!legacy)
+            {
+                var req:URLRequest = new URLRequest(APACHE_FLEX_BIN_INSTALLER_URL);
+                var loader:URLLoader = new URLLoader();
+                loader.dataFormat = URLLoaderDataFormat.TEXT;
+                loader.addEventListener(Event.COMPLETE, handleInstallerXMLLoaded);
+                loader.addEventListener(ErrorEvent.ERROR, handleInstallerXMLError);
+                loader.addEventListener(IOErrorEvent.IO_ERROR, handleInstallerXMLError);
+                
+                loader.load(req);          
+            }
+            else
+                showDirectoryState();
 		}
 		
 		protected function handleFirstStepNextBtnClick(event:MouseEvent):void {
@@ -982,6 +1002,11 @@ variables are not required because the locations of these pieces are known.
         }
         
         protected function handleInstallerXMLError(event:Event):void {
+            showDirectoryState();
+        }
+        
+        protected function showDirectoryState():void
+        {
             initiateInstallStepsActivity();
             initializeInstallerComponentsDataProvider();
             
@@ -1195,7 +1220,7 @@ variables are not required because the locations of these pieces are known.
 			try {
 				log(_viewResourceConstants.INFO_DOWNLOADING_FLEX_SDK + APACHE_FLEX_BIN_DISTRO_URL);
 				_apacheFlexSDKCompressedFile = File.userDirectory.resolvePath(_flexTemp + File.separator + APACHE_FLEX_BIN_DISTRO_FILE);
-				copyOrDownload(APACHE_FLEX_BIN_DISTRO_URL, handleApacheFlexSDKDownload, _apacheFlexSDKCompressedFile, handleApacheFlexSDKDownloadError);
+				copyOrDownload(APACHE_FLEX_BIN_DISTRO_URL, handleApacheFlexSDKDownload, _apacheFlexSDKCompressedFile, handleApacheFlexSDKDownloadError, nocache);
 			} catch (e:Error) {
 				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
 				log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY + "(error: " + e.message);
@@ -2140,11 +2165,11 @@ variables are not required because the locations of these pieces are known.
 			return dir;
 		}
 		
-		private function copyOrDownload(url:String, handlerFunction:Function, dest:File = null, errorFunction:Function = null):void {
+		private function copyOrDownload(url:String, handlerFunction:Function, dest:File = null, errorFunction:Function = null, nocache:Boolean = false):void {
 			if (url.search("http") == 0) {
-				download(url, handlerFunction, errorFunction);
+				download(url, handlerFunction, errorFunction, nocache);
 			} else if (url.search("file://") == 0) {
-				download(url, handlerFunction, errorFunction);
+				download(url, handlerFunction, errorFunction, nocache);
 			} else {
 				var source:File = new File(url);
 				
@@ -2159,8 +2184,32 @@ variables are not required because the locations of these pieces are known.
 			}
 		}
 		
-		private function download(url:String, handlerFunction:Function, errorFunction:Function = null):void {
+		private function download(url:String, handlerFunction:Function, errorFunction:Function = null, nocache:Boolean = false):void {
 			var loader:URLLoader = new URLLoader();
+            if (usingDownloadCache && !nocache)
+            {
+                var cacheURL:String
+                if (url.indexOf(useMirrorPath(_mirrorURLUtil.mirrorURL)) != -1)
+                    cacheURL = url.substr(useMirrorPath(_mirrorURLUtil.mirrorURL).length);
+                else
+                {
+                    if (url.indexOf("http") == 0)
+                    {
+                        var c:int = url.indexOf("/");
+                        c = url.indexOf("/", c + 1);
+                        c = url.indexOf("/", c + 1);
+                        // that should find the slash after the server.
+                        cacheURL = url.substr(c + 1);
+                    }
+                }
+                if (cacheURL)
+                {
+                   var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
+                   cacheFile = cacheFile.resolvePath(cacheURL);
+                   if (cacheFile.exists)
+                       url = cacheFile.url;
+                }
+            }
 			var req:URLRequest = new URLRequest(url);
 			//Wait for 5 minutes before aborting download attempt.  Adobe download sites as well as some Apache mirrors are extremely slow.
 			req.idleTimeout = 300000;
@@ -2168,6 +2217,43 @@ variables are not required because the locations of these pieces are known.
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
 			loader.addEventListener(Event.COMPLETE, handlerFunction, false, 0, true);
 			loader.addEventListener(Event.COMPLETE, handleDownloadComplete, false, 0, true);
+            if (usingDownloadCache)
+                loader.addEventListener(Event.COMPLETE, function (event:Event):void
+                {
+                    var cacheURL:String
+                    if (url.indexOf(useMirrorPath(_mirrorURLUtil.mirrorURL)) != -1)
+                        cacheURL = url.substr(useMirrorPath(_mirrorURLUtil.mirrorURL).length);
+                    else
+                    {
+                        if (url.indexOf("http") == 0)
+                        {
+                            var c:int = url.indexOf("/");
+                            c = url.indexOf("/", c + 1);
+                            c = url.indexOf("/", c + 1);
+                            // that should find the slash after the server.
+                            cacheURL = url.substr(c + 1);
+                        }
+                    }
+                    if (cacheURL && !nocache)
+                    {
+                        var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
+                        cacheFile = cacheFile.resolvePath(cacheURL);
+                        if (!cacheFile.exists)
+                        {
+                            var fs:FileStream = new FileStream();
+                            fs.open(cacheFile, FileMode.WRITE);
+                            var srcData:ByteArray = ByteArray(loader.data);
+                            srcData.position = 0;
+                            var ba:ByteArray = new ByteArray();
+                            srcData.readBytes(ba, 0, srcData.length);
+                            ba.position = 0;
+                            fs.writeBytes(ba, 0, ba.length);
+                            fs.close();
+                        }
+                    }
+                    
+                }, false, 100, true);
+                
 			progressBar.percent = 0;
 			
 			if (errorFunction != null) {
@@ -2342,6 +2428,8 @@ variables are not required because the locations of these pieces are known.
 			} else {
 				_messages.addItemAt(text, position);
 			}
+            if (debugMode)
+                trace(text);
 		}
 		
 		private function showConsole(event:Event):void {
