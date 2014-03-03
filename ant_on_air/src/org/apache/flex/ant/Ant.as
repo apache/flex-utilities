@@ -42,6 +42,11 @@ package org.apache.flex.ant
         }
         
         /**
+         *  Special property used to disable caching temporarily in Get task 
+         */
+        public static const DO_NOT_CACHE_NEXT_GET:String = "do-not-cache-next-get";
+        
+        /**
          *  @private
          *  The file being processed.  Used to determine basedir. 
          */

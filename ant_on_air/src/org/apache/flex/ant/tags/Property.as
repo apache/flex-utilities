@@ -51,6 +51,13 @@ package org.apache.flex.ant.tags
         {
             super.execute(callbackMode, context);
             
+            if (name == Ant.DO_NOT_CACHE_NEXT_GET)
+            {
+                // special case this flag.  Overwrite if already defined
+                context[name] = value;
+                return true;
+            }
+            
             if (name && (value || location || refid) && !context.hasOwnProperty(name))
             {
                 if (value)

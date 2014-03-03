@@ -68,10 +68,17 @@ package org.apache.flex.ant.tags
         }
         
         private var urlLoader:URLLoader;
+        private var doNotCacheNextGet:Boolean;
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
+            
+            if (context[Ant.DO_NOT_CACHE_NEXT_GET])
+            {
+                doNotCacheNextGet = true;
+                context[Ant.DO_NOT_CACHE_NEXT_GET] = false;
+            }
             
             if (skipexisting)
             {
@@ -89,6 +96,8 @@ package org.apache.flex.ant.tags
             var actualSrc:String = src;
             if (Ant.usingDownloadCache)
             {
+                if (context.verbose)
+                    ant.output(ant.formatOutput("get", "download cache is enabled"));
                 if (src.indexOf("http") == 0)
                 {
                     var c:int = src.indexOf("/");
@@ -97,8 +106,20 @@ package org.apache.flex.ant.tags
                     // that should find the slash after the server.
                     var cacheFile:File = File.applicationStorageDirectory.resolvePath(Ant.downloadCacheFolder);
                     cacheFile = cacheFile.resolvePath(src.substr(c + 1));
+                    if (context.verbose)
+                        ant.output(ant.formatOutput("get", "cached file is " + cacheFile.url));
                     if (cacheFile.exists)
+                    {
                         actualSrc = cacheFile.url;
+                        if (context.verbose)
+                            ant.output(ant.formatOutput("get", "found file in cache"));
+                    }
+                    else
+                    {
+                        if (context.verbose)
+                            ant.output(ant.formatOutput("get", "did not find file in cache"));
+                        
+                    }
                 }
             }
             var urlRequest:URLRequest = new URLRequest(actualSrc);
@@ -193,8 +214,15 @@ package org.apache.flex.ant.tags
                 fs.writeBytes(urlLoader.data as ByteArray);
                 fs.close();
             }
-            if (Ant.usingDownloadCache)
+            if (context.verbose && doNotCacheNextGet)
+                ant.output(ant.formatOutput("get", "caching disabled by do-not-cache-next-get"));
+            if (Ant.usingDownloadCache && !doNotCacheNextGet)
             {
+                if (context.verbose)
+                {
+                    ant.output(ant.formatOutput("get", "Download complete, cache is enabled"));
+                    ant.output(ant.formatOutput("get", "Source url is: " + src));
+                }
                 if (src.indexOf("http") == 0)
                 {
                     var c:int = src.indexOf("/");
@@ -203,8 +231,19 @@ package org.apache.flex.ant.tags
                     // that should find the slash after the server.
                     var cacheFile:File = File.applicationStorageDirectory.resolvePath(Ant.downloadCacheFolder);
                     cacheFile = cacheFile.resolvePath(src.substr(c + 1));
+                    if (context.verbose)
+                        ant.output(ant.formatOutput("get", "cached file is " + cacheFile.url));
                     if (!cacheFile.exists)
+                    {
+                        if (context.verbose)
+                            ant.output(ant.formatOutput("get", "adding file to cache"));
                         destFile.copyTo(cacheFile);
+                    }
+                    else
+                    {
+                        if (context.verbose)
+                            ant.output(ant.formatOutput("get", "file already in cache"));                        
+                    }
                 }
             }
 
