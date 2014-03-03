@@ -158,6 +158,11 @@ variables are not required because the locations of these pieces are known.
 		public var installerAppPath:String;
 		public var installerAppFileName:String;
 		
+        // loader needs to be in instance var otherwise it can get GC'd.
+        // We only load one thing at a time, so we can all share this
+        // var
+        private var loader:URLLoader;
+        
 		/**
 		 * Utility Singleton Instances
 		 */
@@ -921,7 +926,7 @@ variables are not required because the locations of these pieces are known.
             if (!legacy)
             {
                 var req:URLRequest = new URLRequest(APACHE_FLEX_BIN_INSTALLER_URL);
-                var loader:URLLoader = new URLLoader();
+                loader = new URLLoader();
                 loader.dataFormat = URLLoaderDataFormat.TEXT;
                 loader.addEventListener(Event.COMPLETE, handleInstallerXMLLoaded);
                 loader.addEventListener(ErrorEvent.ERROR, handleInstallerXMLError);
@@ -1370,6 +1375,8 @@ variables are not required because the locations of these pieces are known.
             context["air.sdk.url.path"] = airVersion.selectedItem.path;
             context["air.sdk.url.file"] = airVersion.selectedItem.file;
             context["flash.sdk.version"] = FLASH_PLAYER_VERSION;
+            if (debugMode)
+                context["verbose"] = true;
             if (flashPlayerVersion.selectedItem.path)
             {
                 context["flash.sdk.url.path"] = flashPlayerVersion.selectedItem.path;
@@ -1868,12 +1875,38 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function downloadOSMF2SWC():void
 		{
+            var url:String;
 			var httpService:HTTPService = new HTTPService();
 			httpService.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
-			httpService.url = Constants.SOURCEFORGE_DOWNLOAD_URL + OSMF_SWC_URL + OSMF_SWC_FILE;
-			httpService.addEventListener(ResultEvent.RESULT, getMirrorInfo);
-			httpService.addEventListener(FaultEvent.FAULT, handleOSMFSWCUnzipError);
-			httpService.send();
+			url = httpService.url = Constants.SOURCEFORGE_DOWNLOAD_URL + OSMF_SWC_URL + OSMF_SWC_FILE;
+            var cacheURL:String;
+            if (url.indexOf("http") == 0)
+            {
+                var c:int = url.indexOf("/");
+                c = url.indexOf("/", c + 1);
+                c = url.indexOf("/", c + 1);
+                // that should find the slash after the server.
+                cacheURL = url.substr(c + 1);
+                if (debugMode)
+                    log("http caching.  url = " + cacheURL);                        
+            }
+            var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
+            cacheFile = cacheFile.resolvePath(cacheURL);
+            if (debugMode)
+                log("searching cache for " + cacheFile.url);                        
+            if (cacheFile.exists)
+            {
+                if (debugMode)
+                    log("found file in cache");                        
+                url = cacheFile.url;
+                actuallyDownloadOSMF2SWC(new URLRequest(url));
+            }
+            else
+            {
+    			httpService.addEventListener(ResultEvent.RESULT, getMirrorInfo);
+    			httpService.addEventListener(FaultEvent.FAULT, handleOSMFSWCUnzipError);
+    			httpService.send();
+            }
 		}
 		
 		protected function getMirrorInfo(event:ResultEvent):void
@@ -1888,8 +1921,14 @@ variables are not required because the locations of these pieces are known.
 			var req:URLRequest = new URLRequest(mirrorURL);
 			req.requestHeaders = [ new URLRequestHeader('Referer', refererURL) ];
 			
-			var loader:URLLoader = new URLLoader();
+            actuallyDownloadOSMF2SWC(req);
+        }
+        
+        protected function actuallyDownloadOSMF2SWC(req:URLRequest):void
+        {
+			loader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
+            loader.addEventListener(Event.COMPLETE, cacheOSMF2SWC);
 			loader.addEventListener(Event.COMPLETE, handleOSMFSWCFileDownloaded);
 			loader.addEventListener(ErrorEvent.ERROR, handleOSMFSWCInstallError);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, handleOSMFSWCInstallError);
@@ -1897,6 +1936,46 @@ variables are not required because the locations of these pieces are known.
 			loader.load(req);
 		}
 		
+        protected function cacheOSMF2SWC(event:Event):void {
+            var url:String;
+            url  = Constants.SOURCEFORGE_DOWNLOAD_URL + OSMF_SWC_URL + OSMF_SWC_FILE;
+            var cacheURL:String;
+            if (url.indexOf("http") == 0)
+            {
+                var c:int = url.indexOf("/");
+                c = url.indexOf("/", c + 1);
+                c = url.indexOf("/", c + 1);
+                // that should find the slash after the server.
+                cacheURL = url.substr(c + 1);
+                if (debugMode)
+                    log("http caching.  url = " + cacheURL);                        
+            }
+            if (cacheURL)
+            {
+                var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
+                cacheFile = cacheFile.resolvePath(cacheURL);
+                if (debugMode)
+                    log("caching " + cacheFile.url);                        
+                if (!cacheFile.exists)
+                {
+                    var fs:FileStream = new FileStream();
+                    fs.open(cacheFile, FileMode.WRITE);
+                    var srcData:ByteArray = ByteArray(loader.data);
+                    srcData.position = 0;
+                    var ba:ByteArray = new ByteArray();
+                    srcData.readBytes(ba, 0, srcData.length);
+                    ba.position = 0;
+                    fs.writeBytes(ba, 0, ba.length);
+                    fs.close();
+                }
+                else
+                {
+                    if (debugMode)
+                        log("file was already in cache");                        
+                }
+            }
+        }
+        
 		protected function handleOSMFSWCFileDownloaded(event:Event):void {
 			try {
 				writeFileToDirectory(_osmfSWCFile, event.target.data);
@@ -2185,12 +2264,24 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		private function download(url:String, handlerFunction:Function, errorFunction:Function = null, nocache:Boolean = false):void {
-			var loader:URLLoader = new URLLoader();
+			loader = new URLLoader();
+            if (debugMode)
+            {
+                log("downloading " + url);
+                if (usingDownloadCache)
+                    log("using download cache");
+                if (nocache)
+                    log("not caching this download");
+            }                
             if (usingDownloadCache && !nocache)
             {
                 var cacheURL:String
-                if (url.indexOf(useMirrorPath(_mirrorURLUtil.mirrorURL)) != -1)
+                if (_useMirror && url.indexOf(useMirrorPath(_mirrorURLUtil.mirrorURL)) != -1)
+                {
                     cacheURL = url.substr(useMirrorPath(_mirrorURLUtil.mirrorURL).length);
+                    if (debugMode)
+                        log("mirror caching.  url = " + cacheURL);                        
+                }
                 else
                 {
                     if (url.indexOf("http") == 0)
@@ -2200,14 +2291,22 @@ variables are not required because the locations of these pieces are known.
                         c = url.indexOf("/", c + 1);
                         // that should find the slash after the server.
                         cacheURL = url.substr(c + 1);
+                        if (debugMode)
+                            log("http caching.  url = " + cacheURL);                        
                     }
                 }
                 if (cacheURL)
                 {
                    var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
                    cacheFile = cacheFile.resolvePath(cacheURL);
+                   if (debugMode)
+                       log("searching cache for " + cacheFile.url);                        
                    if (cacheFile.exists)
+                   {
+                       if (debugMode)
+                           log("found file in cache");                        
                        url = cacheFile.url;
+                   }
                 }
             }
 			var req:URLRequest = new URLRequest(url);
@@ -2215,14 +2314,18 @@ variables are not required because the locations of these pieces are known.
 			req.idleTimeout = 300000;
 			
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
-			loader.addEventListener(Event.COMPLETE, handlerFunction, false, 0, true);
-			loader.addEventListener(Event.COMPLETE, handleDownloadComplete, false, 0, true);
             if (usingDownloadCache)
                 loader.addEventListener(Event.COMPLETE, function (event:Event):void
                 {
+                    if (debugMode)
+                        log("download complete preparing to cache");                        
                     var cacheURL:String
-                    if (url.indexOf(useMirrorPath(_mirrorURLUtil.mirrorURL)) != -1)
+                    if (_useMirror && url.indexOf(useMirrorPath(_mirrorURLUtil.mirrorURL)) != -1)
+                    {
                         cacheURL = url.substr(useMirrorPath(_mirrorURLUtil.mirrorURL).length);
+                        if (debugMode)
+                            log("mirror caching.  url = " + cacheURL);                        
+                    }
                     else
                     {
                         if (url.indexOf("http") == 0)
@@ -2232,12 +2335,16 @@ variables are not required because the locations of these pieces are known.
                             c = url.indexOf("/", c + 1);
                             // that should find the slash after the server.
                             cacheURL = url.substr(c + 1);
+                            if (debugMode)
+                                log("http caching.  url = " + cacheURL);                        
                         }
                     }
                     if (cacheURL && !nocache)
                     {
                         var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
                         cacheFile = cacheFile.resolvePath(cacheURL);
+                        if (debugMode)
+                            log("caching " + cacheFile.url);                        
                         if (!cacheFile.exists)
                         {
                             var fs:FileStream = new FileStream();
@@ -2250,10 +2357,17 @@ variables are not required because the locations of these pieces are known.
                             fs.writeBytes(ba, 0, ba.length);
                             fs.close();
                         }
+                        else
+                        {
+                            if (debugMode)
+                                log("file was already in cache");                        
+                        }
                     }
                     
-                }, false, 100, true);
-                
+                });
+            loader.addEventListener(Event.COMPLETE, handlerFunction, false, 0, true);
+            loader.addEventListener(Event.COMPLETE, handleDownloadComplete, false, 0, true);
+             
 			progressBar.percent = 0;
 			
 			if (errorFunction != null) {
