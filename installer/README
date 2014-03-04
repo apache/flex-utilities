@@ -83,13 +83,19 @@ Overview:
   command line mode with the optional command line parameter: -config=<path to config file>
 
 - If building the app for Linux, open InstallApacheFlex-app.xml and change the Adobe AIR 
-  namespace from http://ns.adobe.com/air/application/3.4 to 
+  namespace from http://ns.adobe.com/air/application/4.0 to 
   http://ns.adobe.com/air/application/2.6  This is because AIR 2.6 is the latest available 
   version on Linux.  
 	
 ==========================================================================================
 How to build the installer using ANT (no Flash Builder or any other IDE required):
 ==========================================================================================
+
+0.  Make sure you have the right version of the Adobe AIR SDK.  Apache Flex Installer
+    3.0 uses Adobe AIR SDK 4.0.  If you want to use an older version of the AIR SDK,
+    you will have to change the namespace in the following files:
+	installer/src/InstallApacheFlex-app.xml
+	ant_on_air/tests/AntOnAIR-app.xml.
 
 1.  Unzip the source distribution.  You should see the 'installer' directory and the 
     'common' and 'ant_on_air' directories in the root.
