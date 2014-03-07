@@ -106,7 +106,8 @@ variables are not required because the locations of these pieces are known.
         import mx.core.IFlexDisplayObject;
         import mx.events.FlexEvent;
         import mx.events.PropertyChangeEvent;
-        import mx.managers.PopUpManager;
+        import mx.managers.CursorManager;
+        import mx.managers.PopUpManager;        
         import mx.resources.ResourceBundle;
         import mx.rpc.events.FaultEvent;
         import mx.rpc.events.ResultEvent;
@@ -366,6 +367,8 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function handleApplicationComplete(event:FlexEvent):void {
+            CursorManager.setBusyCursor();
+            updateWindow();
 			loadXML();
 		}
 		
@@ -391,7 +394,8 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		private function updateWindowTitle():void {
-			this.nativeWindow.title = StringUtil.substitute(_viewResourceConstants.INFO_WINDOW_TITLE, [APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY]);
+            if (_viewResourceConstants)
+    			this.nativeWindow.title = StringUtil.substitute(_viewResourceConstants.INFO_WINDOW_TITLE, [APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY]);
 		}
 		
 		protected function selectDefaultLanguage():void {
@@ -504,6 +508,7 @@ variables are not required because the locations of these pieces are known.
                 _viewResourceConstants.FETCH_MIRROR_CGI_ERROR);
             
             _mirrorURLUtil.getMirrorURL(Constants.APACHE_FLEX_URL + _mirrorURLCGI, getMirrorURLResultHandler);
+            CursorManager.removeBusyCursor();
 		}
 		
 		protected function updateWindow():void {
@@ -1879,34 +1884,35 @@ variables are not required because the locations of these pieces are known.
 			var httpService:HTTPService = new HTTPService();
 			httpService.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
 			url = httpService.url = Constants.SOURCEFORGE_DOWNLOAD_URL + OSMF_SWC_URL + OSMF_SWC_FILE;
-            var cacheURL:String;
-            if (url.indexOf("http") == 0)
+            if (usingDownloadCache)
             {
-                var c:int = url.indexOf("/");
-                c = url.indexOf("/", c + 1);
-                c = url.indexOf("/", c + 1);
-                // that should find the slash after the server.
-                cacheURL = url.substr(c + 1);
+                var cacheURL:String;
+                if (url.indexOf("http") == 0)
+                {
+                    var c:int = url.indexOf("/");
+                    c = url.indexOf("/", c + 1);
+                    c = url.indexOf("/", c + 1);
+                    // that should find the slash after the server.
+                    cacheURL = url.substr(c + 1);
+                    if (debugMode)
+                        log("http caching.  url = " + cacheURL);                        
+                }
+                var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
+                cacheFile = cacheFile.resolvePath(cacheURL);
                 if (debugMode)
-                    log("http caching.  url = " + cacheURL);                        
+                    log("searching cache for " + cacheFile.url);                        
+                if (cacheFile.exists)
+                {
+                    if (debugMode)
+                        log("found file in cache");                        
+                    url = cacheFile.url;
+                    actuallyDownloadOSMF2SWC(new URLRequest(url));
+                    return;
+                }
             }
-            var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
-            cacheFile = cacheFile.resolvePath(cacheURL);
-            if (debugMode)
-                log("searching cache for " + cacheFile.url);                        
-            if (cacheFile.exists)
-            {
-                if (debugMode)
-                    log("found file in cache");                        
-                url = cacheFile.url;
-                actuallyDownloadOSMF2SWC(new URLRequest(url));
-            }
-            else
-            {
-    			httpService.addEventListener(ResultEvent.RESULT, getMirrorInfo);
-    			httpService.addEventListener(FaultEvent.FAULT, handleOSMFSWCUnzipError);
-    			httpService.send();
-            }
+			httpService.addEventListener(ResultEvent.RESULT, getMirrorInfo);
+			httpService.addEventListener(FaultEvent.FAULT, handleOSMFSWCUnzipError);
+			httpService.send();
 		}
 		
 		protected function getMirrorInfo(event:ResultEvent):void
@@ -1928,7 +1934,8 @@ variables are not required because the locations of these pieces are known.
         {
 			loader = new URLLoader();
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
-            loader.addEventListener(Event.COMPLETE, cacheOSMF2SWC);
+            if (usingDownloadCache)
+                loader.addEventListener(Event.COMPLETE, cacheOSMF2SWC);
 			loader.addEventListener(Event.COMPLETE, handleOSMFSWCFileDownloaded);
 			loader.addEventListener(ErrorEvent.ERROR, handleOSMFSWCInstallError);
 			loader.addEventListener(IOErrorEvent.IO_ERROR, handleOSMFSWCInstallError);
