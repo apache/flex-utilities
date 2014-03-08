@@ -234,7 +234,10 @@ package org.apache.flex.ant
         public var output:Function = function(s:String):void { trace(s) };
         
         /**
-         *  Whether Get uses a download cache
+         *  Whether Get uses a download cache.  Note that the cache simply
+         *  escapes the portion of the URL after the domain and some
+         *  file systems like Windows have a path length restriction
+         *  so you may need to shorten URLs for really long URLs.
          */
         public static var usingDownloadCache:Boolean;
         

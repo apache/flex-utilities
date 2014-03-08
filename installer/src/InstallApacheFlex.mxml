@@ -1898,7 +1898,7 @@ variables are not required because the locations of these pieces are known.
                         log("http caching.  url = " + cacheURL);                        
                 }
                 var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
-                cacheFile = cacheFile.resolvePath(cacheURL);
+                cacheFile = cacheFile.resolvePath(escape(cacheURL));
                 if (debugMode)
                     log("searching cache for " + cacheFile.url);                        
                 if (cacheFile.exists)
@@ -1960,7 +1960,7 @@ variables are not required because the locations of these pieces are known.
             if (cacheURL)
             {
                 var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
-                cacheFile = cacheFile.resolvePath(cacheURL);
+                cacheFile = cacheFile.resolvePath(escape(cacheURL));
                 if (debugMode)
                     log("caching " + cacheFile.url);                        
                 if (!cacheFile.exists)
@@ -2305,7 +2305,7 @@ variables are not required because the locations of these pieces are known.
                 if (cacheURL)
                 {
                    var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
-                   cacheFile = cacheFile.resolvePath(cacheURL);
+                   cacheFile = cacheFile.resolvePath(escape(cacheURL));
                    if (debugMode)
                        log("searching cache for " + cacheFile.url);                        
                    if (cacheFile.exists)
@@ -2349,7 +2349,7 @@ variables are not required because the locations of these pieces are known.
                     if (cacheURL && !nocache)
                     {
                         var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
-                        cacheFile = cacheFile.resolvePath(cacheURL);
+                        cacheFile = cacheFile.resolvePath(escape(cacheURL));
                         if (debugMode)
                             log("caching " + cacheFile.url);                        
                         if (!cacheFile.exists)

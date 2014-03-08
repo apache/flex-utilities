@@ -105,7 +105,7 @@ package org.apache.flex.ant.tags
                     c = src.indexOf("/", c + 1);
                     // that should find the slash after the server.
                     var cacheFile:File = File.applicationStorageDirectory.resolvePath(Ant.downloadCacheFolder);
-                    cacheFile = cacheFile.resolvePath(src.substr(c + 1));
+                    cacheFile = cacheFile.resolvePath(escape(src.substr(c + 1)));
                     if (context.verbose)
                         ant.output(ant.formatOutput("get", "cached file is " + cacheFile.url));
                     if (cacheFile.exists)
@@ -230,7 +230,7 @@ package org.apache.flex.ant.tags
                     c = src.indexOf("/", c + 1);
                     // that should find the slash after the server.
                     var cacheFile:File = File.applicationStorageDirectory.resolvePath(Ant.downloadCacheFolder);
-                    cacheFile = cacheFile.resolvePath(src.substr(c + 1));
+                    cacheFile = cacheFile.resolvePath(escape(src.substr(c + 1)));
                     if (context.verbose)
                         ant.output(ant.formatOutput("get", "cached file is " + cacheFile.url));
                     if (!cacheFile.exists)
