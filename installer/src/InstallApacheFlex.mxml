@@ -144,6 +144,10 @@ variables are not required because the locations of these pieces are known.
         import ws.tink.spark.controls.StepItem;
         import ws.tink.spark.skins.controls.InstallApacheFlexSkin;
 		
+        // embed us strings so we can always have them if we can't get to the locale files
+        [Embed(source="properties/en_US.properties",mimeType="application/octet-stream")]
+        private var en_US_Properties:Class;
+        
 		private var _mirrorURLCGI:String;
 		private var _useMirror:Boolean = true;
 		private var _latestVersion:String;
@@ -155,6 +159,7 @@ variables are not required because the locations of these pieces are known.
         private var firstTime:Boolean = true;
         private var legacy:Boolean = true;
         private var nocache:Boolean = true;
+        private var wasAborted:Boolean;
         
 		public var installerAppPath:String;
 		public var installerAppFileName:String;
@@ -398,10 +403,19 @@ variables are not required because the locations of these pieces are known.
     			this.nativeWindow.title = StringUtil.substitute(_viewResourceConstants.INFO_WINDOW_TITLE, [APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY]);
 		}
 		
-		protected function selectDefaultLanguage():void {
-            loadLanguage("en_US", loadUSComplete);
+		protected function selectDefaultLanguageInEmergency():void {
+            loadLanguage("en_US", loadUSInEmergencyComplete);
         }
         
+        private function loadUSInEmergencyComplete():void
+        {
+            _viewResourceConstants = ViewResourceConstants.instance;
+            _viewResourceConstants.update();
+        }
+        
+        protected function selectDefaultLanguage():void {
+            loadLanguage("en_US", loadUSComplete);
+        }
         private function loadUSComplete():void
         {
             var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
@@ -419,22 +433,37 @@ variables are not required because the locations of these pieces are known.
         }
         
         private var languageURL:String;
+        private var languageID:String;
         
         private function loadLanguage(userLocale:String, completeFunction:Function):void
         {
+            if (languageURL && loader) // busy loading another language
+                loader.close();
+            
+            if (userLocale == "en_US")
+            {
+                var ba:ByteArray = new en_US_Properties() as ByteArray;
+                var data:String = ba.readUTFBytes(ba.bytesAvailable);
+                installLanguage(userLocale, data);
+                completeFunction();
+                return;
+            }
             var n:int = supportedLanguages.length;
             for (var i:int = 0; i < n; i++) {
                 if (supportedLanguages[i].data == userLocale) {
-                    var url:URLRequest = new URLRequest(supportedLanguages[i].path);
-                    var urlLoader:URLLoader = new URLLoader();
-                    urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
-                    urlLoader.addEventListener(IOErrorEvent.IO_ERROR, languageLoadErrorHandler);
-                    urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, languageLoadErrorHandler);
-                    urlLoader.addEventListener(Event.COMPLETE, function(e:Event):void {
-                        installLanguage(userLocale, urlLoader.data);
+                    languageID = userLocale;
+                    languageURL = supportedLanguages[i].path;
+                    var url:URLRequest = new URLRequest(languageURL);
+                    loader = new URLLoader();
+                    loader.dataFormat = URLLoaderDataFormat.TEXT;
+                    loader.addEventListener(IOErrorEvent.IO_ERROR, languageLoadErrorHandler);
+                    loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, languageLoadErrorHandler);
+                    loader.addEventListener(Event.COMPLETE, function(e:Event):void {
+                        languageURL = null;
+                        installLanguage(userLocale, loader.data);
                         completeFunction();
                         });
-                    urlLoader.load(url);
+                    loader.load(url);
                     return;
                 }
             }
@@ -470,7 +499,7 @@ variables are not required because the locations of these pieces are known.
         
         private function languageLoadErrorHandler(event:Event):void
         {
-            log("Unable to load language file" + languageURL);
+            log("Unable to load language file " + languageURL);
             log(event.toString());
             abortInstallation();            
         }
@@ -509,6 +538,8 @@ variables are not required because the locations of these pieces are known.
             
             _mirrorURLUtil.getMirrorURL(Constants.APACHE_FLEX_URL + _mirrorURLCGI, getMirrorURLResultHandler);
             CursorManager.removeBusyCursor();
+            
+            checkValidOS();            
 		}
 		
 		protected function updateWindow():void {
@@ -533,7 +564,8 @@ variables are not required because the locations of these pieces are known.
 			try {
 				_loader.load(request);
 			} catch (error:Error) {
-				log("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+                selectDefaultLanguageInEmergency();
+                log("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
 				log(_viewResourceConstants.ERROR_CONFIG_XML_LOAD + error.errorID + " " + error.message);
 				abortInstallation();
 			}
@@ -543,14 +575,13 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function xmlError(event:IOErrorEvent):void {
-			log("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+            selectDefaultLanguageInEmergency();
+			log("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);            
 			log(_viewResourceConstants.ERROR_CONFIG_XML_LOAD + event.errorID);
 			abortInstallation();
 		}
 		
 		protected function xmlLoaded(event:Event):void {
-			checkValidOS();
-			
 			if (setXMLVariables()) {
                 _langSelect.dataProvider = supportedLanguages;
                 _langSelect.selectedIndex = getIndexOfEnUS();
@@ -602,7 +633,16 @@ variables are not required because the locations of these pieces are known.
         }
         
 		protected function setXMLVariables():Boolean {
-            var data:XML = XML(_loader.data);
+            try 
+            {
+                var data:XML = XML(_loader.data);
+            } 
+            catch (e:Error)
+            {
+                log("Error parsing configuration file");
+                abortInstallation();
+                return false;
+            }
             var keepGoing:Boolean = true;
             if (firstTime)
             {
@@ -1012,7 +1052,8 @@ variables are not required because the locations of these pieces are known.
         }
         
         protected function handleInstallerXMLError(event:Event):void {
-            showDirectoryState();
+            log("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
+            abortInstallation();
         }
         
         protected function showDirectoryState():void
@@ -1421,13 +1462,10 @@ variables are not required because the locations of these pieces are known.
         
         private function completeHandler(event:Event):void
         {
-            if (currentStep > 0)
-            {
-                if (!Ant.currentAnt.project.status)
-                    updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
-                else if (currentStep == stepLabels.length)
-                    updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
-            }
+            if (!Ant.currentAnt.project.status)
+                updateActivityStep(stepLabels[currentStep], StepItem.ERROR);
+            else if (currentStep == stepLabels.length)
+                updateActivityStep(stepLabels[currentStep], StepItem.COMPLETE);
             if (Ant.currentAnt.project.status)
                 tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
             cleanup(!Ant.currentAnt.project.status);
@@ -2107,16 +2145,19 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function cleanup(isAbort:Boolean = false):void {
-			try {
+            CursorManager.removeBusyCursor();
+            if (!_viewResourceConstants)
+                selectDefaultLanguageInEmergency();
+            try {
 				_flexTempDir.deleteDirectory(true);
 			} catch (e:Error) {
-				log(_viewResourceConstants.ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY);
+    			log(_viewResourceConstants.ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY);
 			}
 			
 			if (isAbort) {
 				tracker.trackInstallerFailure(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
 			}
-			else
+			else if (!wasAborted)
 			{
 				log(_viewResourceConstants.INFO_INSTALLATION_COMPLETE);
 				updateUIHandleInstallationComplete();
@@ -2133,11 +2174,16 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function abortInstallation():void {
+            if (currentState != "installState")
+                showConsole(null);
+            
+            directoryBtn.enabled = false;
 			browseBtn.enabled = false;
 			installBtn.enabled = false;
+            wasAborted = true;
 			cleanup(true);
-			log(_viewResourceConstants.INFO_ABORT_INSTALLATION);
-			firstStepGroup.title = secondStepGroup.title = thirdStepGroup.title = _viewResourceConstants.INFO_ABORT_INSTALLATION;
+            log(_viewResourceConstants.INFO_ABORT_INSTALLATION);
+            firstStepGroup.title = secondStepGroup.title = thirdStepGroup.title = _viewResourceConstants.INFO_ABORT_INSTALLATION;
 		}
 		
 		protected function _langSelect_changeHandler(event:IndexChangeEvent):void {
@@ -2154,7 +2200,7 @@ variables are not required because the locations of these pieces are known.
         
         private function _langSelect_changeCompleteHandler():void {
             var defaultLanguage:String = ViewResourceConstants.DEFAULT_LANGUAGE;
-			resourceManager.localeChain = [ _langSelect.selectedItem["data"], defaultLanguage ];
+			resourceManager.localeChain = [ languageID, defaultLanguage ];
             resourceManager.update();
             setButtonWidths();			
 		}
@@ -2555,7 +2601,6 @@ variables are not required because the locations of these pieces are known.
 		
 		private function showConsole(event:Event):void {
 			var console:ConsoleWindow = new ConsoleWindow();
-			
 			console.messages = _messages;
 			console.open();
 			console.nativeWindow.x = this.nativeWindow.x + this.nativeWindow.width / 2 - console.nativeWindow.width / 2;
@@ -2665,6 +2710,7 @@ variables are not required because the locations of these pieces are known.
 			fs.close();
 			return contents.version + "." + contents.build;
 		}
+        
 	]]></fx:Script>
 	
 	<fx:Declarations>
