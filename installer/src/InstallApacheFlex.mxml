@@ -375,6 +375,7 @@ variables are not required because the locations of these pieces are known.
             CursorManager.setBusyCursor();
             updateWindow();
 			loadXML();
+            logVersion();
 		}
 		
 		/**
@@ -902,7 +903,22 @@ variables are not required because the locations of these pieces are known.
 				doUpdate();
 			}
 		}
-		
+
+        private function logVersion():void
+        {
+            if (!loggedVersion)
+            {
+                //Current version
+                var applicationDescriptor:XML = NativeApplication.nativeApplication.applicationDescriptor;
+                var xmlns:Namespace = new Namespace(applicationDescriptor.namespace());
+                var currentVersion:String = applicationDescriptor.xmlns::versionNumber.toString();
+
+                // Log the Installer version to help with any support issues that arise.
+                log("Version " + currentVersion + " (" + _os.os + ")", 0);
+                loggedVersion = true;
+            }
+        }
+        
 		protected function shouldUpdate():Boolean {
 			var shouldUpdate:Boolean = false;
 			//Current version
@@ -910,12 +926,7 @@ variables are not required because the locations of these pieces are known.
 			var xmlns:Namespace = new Namespace(applicationDescriptor.namespace());
 			var currentVersion:String = applicationDescriptor.xmlns::versionNumber.toString();
 			
-            if (!loggedVersion)
-            {
-    			// Log the Installer version to help with any support issues that arise.
-    			log("Version " + currentVersion + " (" + _os.os + ")", 0);
-                loggedVersion = true;
-            }
+            logVersion();
             
 			var availBuildNumbers:Array = _latestVersion.split(".");
 			var currentBuildNumbers:Array = currentVersion.split(".");
@@ -1464,8 +1475,8 @@ variables are not required because the locations of these pieces are known.
         {
             if (!Ant.currentAnt.project.status)
                 updateActivityStep(stepLabels[currentStep], StepItem.ERROR);
-            else if (currentStep == stepLabels.length)
-                updateActivityStep(stepLabels[currentStep], StepItem.COMPLETE);
+            else if (currentStep == stepLabels.length && currentStep > 0)
+                updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
             if (Ant.currentAnt.project.status)
                 tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
             cleanup(!Ant.currentAnt.project.status);
