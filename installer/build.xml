@@ -267,6 +267,7 @@
             debug="${DEBUG_FLAG}"
             failonerror="true"
             fork="true"
+            link-report="${BUILD_DIR}/${APP_NAME}.lnk.xml"
             maxmemory="512m">
             <source-path path-element="${SOURCE_DIR}"/>
             <source-path path-element="${COMMON_SOURCE_DIR}"/>
@@ -392,6 +393,7 @@
 				<exclude name="**/.flexLibProperties"/>
                 <exclude name="**/.project"/>
                 <exclude name="**/.idea/**"/>
+				<exclude name="local.properties"/>
 				<!-- These are bumped up to the top-level release directory.  -->
                 <exclude name="DISCLAIMER"/>
                 <exclude name="LICENSE"/>
