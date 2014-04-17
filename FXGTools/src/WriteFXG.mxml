@@ -22,6 +22,7 @@ limitations under the License.
 					   xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="windowedapplication1_creationCompleteHandler(event)">
 	<fx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			
 			private var sourceFile:File = new File();			
@@ -31,13 +32,12 @@ limitations under the License.
 			private var sourceStream:FileStream;
 			private var sourceString:String;
 			private var sourceXML:XML;
-			private var xml1:XML = <afx:foo xmlns:afx="http://ns.apache.org/flex/2012" />;
-			private var afxns:Namespace = xml1.namespace();
-			private var xml2:XML = <flm:foo xmlns:flm="http://ns.adobe.com/flame/2008" />;
-			private var flmns:Namespace = xml2.namespace();
-			private var fxgns:Namespace = new Namespace("http://ns.adobe.com/fxg/2008");
-			private var originalNameQName:QName = new QName(flmns, "originalName");
-			
+			private var fxgNS:Namespace = new Namespace(null,"http://ns.adobe.com/fxg/2008");
+			private var flmNS:Namespace = new Namespace("flm","http://ns.adobe.com/flame/2008");
+			private var aiNS:Namespace = new Namespace("ai","http://ns.adobe.com/ai/2009");
+			private var ateNS:Namespace = new Namespace("ate","http://ns.adobe.com/ate/2009");
+			private var dNS:Namespace = new Namespace("d","http://ns.adobe.com/fxg/2008/dt");
+
 			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
 			{
 				XML.ignoreComments = false;
@@ -92,12 +92,7 @@ limitations under the License.
 			
 			private function makeFXGFiles():void
 			{
-				default xml namespace = fxgns;
-				/*var topGroups:XMLList = sourceXML.Group;
-				if (topGroups.length() > 1)
-				errorLabel.text = "Unexpected: More than one top-level group";
-				topTags = topGroups.children();
-				numTags = topTags.length();*/
+				default xml namespace = fxgNS;
 				
 				var syms:XMLList = sourceXML.Library.children();
 				var n:int = syms.length();
@@ -121,8 +116,8 @@ limitations under the License.
 					writeStream.open(destFile, FileMode.WRITE);
 					writeStream.writeUTFBytes(newFXG.toXMLString());
 					writeStream.close();
-					
 				}
+				Alert.show("FXG creation complete!","Process complete");
 			}
 			
 			private function getNewFXG(v:XML):XML
@@ -132,7 +127,6 @@ limitations under the License.
 				var newName:String = newFXG.@name
 				// change name from 'Definition' to 'Graphic'
 				newFXG.setName("Graphic");
-				newFXG.addNamespace(flmns);
 				
 				// delete name attribute
 				delete newFXG.@name;
@@ -140,15 +134,9 @@ limitations under the License.
 				// add version
 				newFXG.@version = "2.0";
 				newFXG.setChildren(childFXG);
-				//newFXG.removeNamespace("aaa");
+				newFXG = removeCruft(newFXG);
 				return newFXG;
 			}
-			
-			/*private function optimizeFXG():void
-			{
-			readFile();
-			optimize();
-			}*/
 			
 			private function optimizeFXG(v:XML):XML
 			{
@@ -171,32 +159,6 @@ limitations under the License.
 				return outputXML;
 			}
 			
-			private function optimize():void{
-				var children:XMLList = sourceXML.children();
-				var outputXML:XML = getNewFXG(sourceXML);
-				if(children.length() == 1)
-				{
-					sourceXML = simplify(children[0]);
-				}
-				else
-				{
-					for each (var child:XML in children)
-					{
-						if(child.localName() != "Private")
-						{
-							outputXML.appendChild(simplify(child));	
-						}
-					}
-				}
-				// write out file
-				var destFile:File = new File(sourceDir + slash + "fxg" + slash + sourceFile.name);
-				var writeStream:FileStream = new FileStream();
-				writeStream.open(destFile, FileMode.WRITE);
-				writeStream.writeUTFBytes(outputXML.toXMLString());
-				writeStream.close();
-				
-			}
-			
 			private function simplify(v:XML):XML
 			{
 				if(v.localName() == "Group")
@@ -214,6 +176,29 @@ limitations under the License.
 				{
 					return v;
 				}
+			}
+			
+			private function removeCruft(v:XML):XML
+			{
+				//Remove unused attributes
+				var attributes:XMLList = v.attributes();
+				for(var i:int=attributes.length()-1; i>=0; i--)
+				{
+					var attribute:XML = attributes[i];
+					var ns:Namespace = attribute.namespace();
+					if(ns.uri == aiNS.uri || ns.uri == flmNS.uri || ns.uri == ateNS.uri || ns.uri == dNS.uri)
+					{
+						use namespace ns;
+						delete attributes[i];
+					}
+				}
+				//Process children
+				for each (var child:XML in v.children())
+				{
+					removeCruft(child);					
+				}
+
+				return v;
 			}
 			
 		]]>
