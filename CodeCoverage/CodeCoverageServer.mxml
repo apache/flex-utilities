@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+                       xmlns:s="library://ns.adobe.com/flex/spark" 
+                       xmlns:mx="library://ns.adobe.com/flex/mx"
+                       applicationComplete="setupLC()"
+                       enterFrame="updateStuff()" close="closeHandler(event)"
+                       >
+    <fx:Declarations>
+        <!-- Place non-visual elements (e.g., services, value objects) here -->
+    </fx:Declarations>
+    <!-- preloadSWF=/Users/aharui/CodeCoveragePreloadSWF.swf -->
+    <fx:Script>
+        <![CDATA[
+            import mx.controls.Alert;
+            
+            private var lc:LocalConnection;
+            private var file:File;
+            private var fs:FileStream;
+            
+            private var stringMap:Array = [];
+            private var lineMap:Array = [];
+            
+            private var so:SharedObject;
+            
+            private function setupLC():void
+            {
+                lc = new LocalConnection();
+                lc.client = this;
+                lc.allowDomain('*');
+                lc.connect("_CodeCoverageLC");
+                
+                file = File.userDirectory;
+                file = file.resolvePath("codecoverage.txt");
+                fs = new FileStream();
+                fs.open(file, FileMode.APPEND);
+                
+                so = SharedObject.getLocal("CodeCoverageServer");
+                if (so.data.mmcfg)
+                    mmPath.text = so.data.mmcfg;
+                else
+                    mmPath.text = File.userDirectory.nativePath + File.separator + "mm.cfg";
+                
+                if (so.data.swfpath)
+                    swfPath.text = so.data.swfpath;
+                else
+                    swfPath.text = File.userDirectory.nativePath + File.separator + "CodeCoveragePreloadSWF.swf";
+                
+                applyConfig();
+            }
+            
+            private var mmFile:File;
+            
+            private function search():void
+            {
+                mmFile = new File(File.userDirectory.nativePath);
+                mmFile.browseForOpen("Path to mm.cfg");
+                mmFile.addEventListener(Event.SELECT, selectHandler);
+            }
+            
+            private function selectHandler(event:Event):void
+            {
+                mmPath.text = mmFile.nativePath;
+            }
+            
+            private var swfFile:File;
+            
+            private function searchSWF():void
+            {
+                swfFile = new File(File.userDirectory.nativePath);
+                swfFile.browseForOpen("Path to CodeCoveragePreloadSWF.swf");
+                swfFile.addEventListener(Event.SELECT, selectSWFHandler);
+            }
+            
+            private function selectSWFHandler(event:Event):void
+            {
+                swfPath.text = swfFile.nativePath;
+            }
+
+            private function saveConfig():void
+            {
+                so.data.mmcfg = mmPath.text;
+                so.data.swfpath = swfPath.text;
+                
+                applyConfig();
+            }
+            
+            private const PRELOAD_SWF:String = "preloadSWF=";
+            private function applyConfig():void
+            {
+                if (mmPath.text.length == 0)
+                    return;
+                if (!mmFile)
+                    mmFile = new File();
+                
+                mmFile.nativePath = mmPath.text;
+                if (!mmFile.exists)
+                {
+                    Alert.show("mm.cfg not found", "Error");
+                    return;
+                }
+                
+                if (!swfFile)
+                    swfFile = new File();
+                
+                swfFile.nativePath = swfPath.text;
+                if (!swfFile.exists)
+                {
+                    Alert.show("CodeCoveragePreloadSWF.swf not found", "Error");
+                    return;
+                }
+                
+                var fs:FileStream = new FileStream();
+                fs.open(mmFile, FileMode.UPDATE);
+                var text:String = fs.readUTFBytes(fs.bytesAvailable);
+                var lineSep:String = "\r\n";
+                if (text.indexOf(lineSep) == -1)
+                {
+                    lineSep = "\r";
+                    if (text.indexOf(lineSep) == -1)
+                    {
+                        lineSep = "\n";
+                    }
+                }
+                var lines:Array = text.split(lineSep);
+                var n:int = lines.length;
+                for (var i:int = 0; i < n; i++)
+                {
+                    if (lines[i].indexOf(PRELOAD_SWF) != -1)
+                    {
+                        lines.splice(i, 1);
+                        i--;
+                        n--
+                    }
+                }
+                if (lines[n - 1].length == 0)
+                    lines.pop();
+                lines.push(PRELOAD_SWF + swfFile.nativePath);
+                lines.push("");
+                text = lines.join(lineSep);
+                fs.position = 0;
+                fs.truncate();
+                fs.writeUTFBytes(text);
+                fs.close();
+            }
+            
+            private var count:int = 0;
+            
+            public function reset():void
+            {
+                if (stringMap.length > 0)
+                {
+                    // codecoverpreloadswf is first one
+                    var s:String = stringMap[0];
+                    stringMap = [s];
+                    lineMap = [{}];
+                }
+                else
+                {
+                    stringMap = [];
+                    lineMap = [{}];
+                }
+            }
+            
+            public function newString(file_name:String):void
+            {
+                stringMap.push(file_name);
+                lineMap.push({});
+                //trace(file_name);
+            }
+            
+            private var s:String = "";
+            
+            public function debugline(string_ids:String, linenums:String):void
+            {
+                var ids:Array = string_ids.split(" ");
+                var lines:Array = linenums.split(" ");
+                var n:int = ids.length;
+                for (var i:int = 0; i < n; i++)
+                {
+                    ++count;
+                    if (stringMap[ids[i]] == undefined)
+                        s += ids[i] + ':' + rightJustify(lines[i]) + "\n";
+                    else if (lineMap[ids[i]][lines[i]] == undefined)
+                    {
+                        lineMap[ids[i]][lines[i]] = 1;
+                        s += '"' + stringMap[ids[i]] + '":' + rightJustify(lines[i]) + "\n";
+                    }
+                }
+            }
+            
+            private var padding:String = "                ";
+            
+            private function rightJustify(num:String):String
+            {
+                var i:int = 8 - num.length;
+                var pad:String = padding.substr(0, i);
+                return pad + num;
+            }
+
+            private function updateStuff():void
+            {
+                if (count > 0)
+                {
+                    fs.writeUTFBytes(s);
+                    s = "";
+                    numlines.text = count.toString();
+                }
+            }
+            
+            protected function closeHandler(event:Event):void
+            {
+                mmFile.nativePath = mmPath.text;
+                if (!mmFile.exists)
+                {
+                    Alert.show("mm.cfg not found", "Error");
+                    return;
+                }
+                swfFile.nativePath = swfPath.text;
+                if (!swfFile.exists)
+                {
+                    Alert.show("CodeCoveragePreloadSWF.swf not found", "Error");
+                    return;
+                }
+                
+                var fs:FileStream = new FileStream();
+                fs.open(mmFile, FileMode.UPDATE);
+                var text:String = fs.readUTFBytes(fs.bytesAvailable);
+                var lineSep:String = "\r\n";
+                if (text.indexOf(lineSep) == -1)
+                {
+                    lineSep = "\r";
+                    if (text.indexOf(lineSep) == -1)
+                    {
+                        lineSep = "\n";
+                    }
+                }
+                var lines:Array = text.split(lineSep);
+                var n:int = lines.length;
+                for (var i:int = 0; i < n; i++)
+                {
+                    if (lines[i].indexOf(PRELOAD_SWF) != -1)
+                    {
+                        lines.splice(i, 1);
+                        i--;
+                        n--;
+                    }
+                }
+                if (lines[n - 1].length > 0)
+                    lines.push("");
+                text = lines.join(lineSep);
+                fs.position = 0;
+                fs.truncate();
+                fs.writeUTFBytes(text);
+                fs.close();
+            }
+            
+        ]]>
+    </fx:Script>
+    <s:layout>
+        <s:VerticalLayout />
+    </s:layout>
+    <s:HGroup width="100%">
+        <s:Label text="Path to mm.cfg: " />
+        <s:TextInput id="mmPath" width="100%" />
+        <s:Button label="Search..." click="search()" />
+    </s:HGroup>
+    <s:HGroup width="100%">
+        <s:Label text="Path to CodeCoveragePreloadSWF.swf: " />
+        <s:TextInput id="swfPath" width="100%" />
+        <s:Button label="Search..." click="searchSWF()" />
+    </s:HGroup>
+    <s:Button label="Save Configuration" click="saveConfig()" />
+    <s:HGroup>
+        <s:Label text="Num Lines:" />
+        <s:Label id="numlines" />
+    </s:HGroup>
+</s:WindowedApplication>
