@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- Christophe Coenraets, http://coenraets.org -->
+<s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" width="100%" height="163"
+		 backgroundColor="#F0F0F0"
+		 creationComplete="completeHandler()"
+		 resize="redraw()">
+
+	<fx:Script>
+		<![CDATA[
+			
+			protected var _data:Array;
+			
+			protected var min:Number;
+			[Bindable] protected var max:Number;
+
+			protected function completeHandler():void
+			{
+				data = [
+					80236, 85639, 82364, 72369, 69523, 85632, 86352, 82562, 87523, 89658, 96853, 106256,
+					112045, 100258, 112584, 86352, 86523, 108532, 110253, 120145, 116325, 114856, 110256, 111857,
+					112852, 115632, 128632, 121741, 92365, 95638, 132800, 128963, 125698, 112587, 121856, 126874,
+					131569, 97563, 98563, 100235, 110523, 119536, 121532, 117563, 125963, 139523, 131856, 138972,
+					125639, 103698, 130856, 147523, 110263, 125698, 145962, 138653, 131568, 111258, 125693, 161984
+				];
+
+			}
+			
+			public function set data(data:Array):void
+			{
+				_data = data;
+				min = data[0];
+				max = data[0];
+				for (var i:int=1; i<data.length; i++)
+				{
+					if (data[i]<min) min = data[i];
+					if (data[i]>max) max = data[i];
+				}
+				redraw();
+			}
+			
+			public function redraw():void
+			{
+				if (!data) return;
+
+				var pathData:String="";
+				
+				var xPos:Number;
+				var yPos:Number;
+				for (var i:int=0; i<data.length; i++)
+				{
+					yPos = height - (data[i] - min) / (max - min) * height;
+					xPos = width / 11 * i;
+					pathData += (pathData == ""?"M ":" L ") + xPos + " " + yPos;
+				}
+				path.data = pathData;
+			}
+			
+			public function get data():Array
+			{
+				return _data;
+			}
+
+		]]>
+	</fx:Script>
+
+	<s:Line left="0" right="0" top="40">
+		<s:stroke>
+			<s:SolidColorStroke color="#DCDCDC"/>
+		</s:stroke>
+	</s:Line>
+
+	<s:Line left="0" right="0" top="81">
+		<s:stroke>
+			<s:SolidColorStroke color="#DCDCDC"/>
+		</s:stroke>
+	</s:Line>
+
+	<s:Line left="0" right="0" top="122">
+		<s:stroke>
+			<s:SolidColorStroke color="#DCDCDC"/>
+		</s:stroke>
+	</s:Line>
+
+	<s:Line top="0" bottom="0" left="{width/2}">
+		<s:stroke>
+			<s:SolidColorStroke color="#DCDCDC"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line top="0" bottom="0" left="{width/4}">
+		<s:stroke>
+			<s:SolidColorStroke color="#DCDCDC"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line top="0" bottom="0" right="{width/4}">
+		<s:stroke>
+			<s:SolidColorStroke color="#DCDCDC"/>
+		</s:stroke>
+	</s:Line>
+	
+	<s:Path id="path" width="100%" height="100%">
+		<s:stroke>  
+			<s:SolidColorStroke weight="1" color="#FF5900" />  
+		</s:stroke>  
+	</s:Path>
+
+</s:SkinnableContainer>

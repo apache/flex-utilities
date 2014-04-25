@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- Christophe Coenraets, http://coenraets.org -->
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:charts="charts.*" 
+		 currentState="grid"
+		 mouseDown="rotateContent()"
+		 resize="resizeHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.core.FlexGlobals;
+			import mx.events.ResizeEvent;
+			
+			[Bindable]
+			protected var items:ArrayCollection = new ArrayCollection([
+				{label: "Net Worth", value: 161984, change: -2.37},
+				{label: "Last Month", value: 165915, change: 10.98},
+				{label: "6 Months Ago", value: 145962, change: 16.56},
+				{label: "Last Year", value: 138972, change: 8.36}
+			]);
+			
+			[Bindable]
+			protected var chartLeft:int;
+			
+			protected function resizeHandler(event:ResizeEvent):void
+			{
+				if (FlexGlobals.topLevelApplication.width < 600)
+				{
+					if (currentState == "gridAndLine" || currentState == "gridAndBar" ) 
+						currentState = "grid";
+				}
+				else
+				{
+					if (currentState == "grid" || currentState == "line")
+					{
+						currentState = "gridAndLine";
+						chartLeft = 432;
+					}
+					else if  (currentState == "bar")
+					{
+						currentState = "gridAndBar";
+						chartLeft = 432;
+					}
+				}
+			}
+			
+			protected function rotateContent():void
+			{
+				if (currentState == "grid")
+				{
+					currentState = "line";
+					chartLeft = 171;
+				}
+				else if (currentState == "line")
+				{
+					currentState = "bar";
+					chartLeft = 171;
+				}
+				else if (currentState == "bar")
+				{
+					currentState = "grid";
+				}
+				else if (currentState == "gridAndLine")
+				{
+					currentState = "gridAndBar";
+					chartLeft = 432;
+				}
+				else if (currentState == "gridAndBar")
+				{
+					currentState = "gridAndLine";
+					chartLeft = 432;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<s:states>
+		<s:State name="grid" />
+		<s:State name="line" />
+		<s:State name="bar" />
+		<s:State name="gridAndLine" />
+		<s:State name="gridAndBar" />
+	</s:states>
+	
+	<s:transitions>
+		<s:Transition fromState="gridAndLine" toState="gridAndBar" autoReverse="true">
+			<s:Parallel>
+				<s:Rotate3D target="{line}" angleXFrom="0" angleXTo="0" angleZFrom="0" duration="350" autoCenterTransform="true" angleYTo="180" angleYFrom="0" autoCenterProjection="true" angleZTo="0"/>
+				<s:Fade target="{line}" startDelay="200" duration="50"/>
+				<s:Fade target="{bar}" startDelay="250" duration="100"/>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="gridAndBar" toState="gridAndLine" autoReverse="true">
+			<s:Parallel>
+				<s:Rotate3D target="{bar}" angleXFrom="0" angleXTo="0" angleZFrom="0" duration="350" autoCenterTransform="true" angleYTo="180" angleYFrom="0" autoCenterProjection="true" angleZTo="0"/>
+				<s:Fade target="{bar}" startDelay="200" duration="50"/>
+				<s:Fade target="{line}" startDelay="250" duration="100"/>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="grid" toState="line" autoReverse="true">
+			<s:Parallel>
+				<s:Rotate3D target="{grid}" angleXFrom="0" angleXTo="0" angleZFrom="0" duration="350" autoCenterTransform="true" angleYTo="180" angleYFrom="0" autoCenterProjection="true" angleZTo="0"/>
+				<s:Fade target="{grid}" startDelay="200" duration="50"/>
+				<s:Fade target="{line}" startDelay="250" duration="100"/>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="line" toState="bar" autoReverse="true">
+			<s:Parallel>
+				<s:Rotate3D target="{line}" angleXFrom="0" angleXTo="0" angleZFrom="0" duration="350" autoCenterTransform="true" angleYTo="180" angleYFrom="0" autoCenterProjection="true" angleZTo="0"/>
+				<s:Fade target="{line}" startDelay="200" duration="50"/>
+				<s:Fade target="{bar}" startDelay="250" duration="100"/>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="bar" toState="grid" autoReverse="true">
+			<s:Parallel>
+				<s:Rotate3D target="{bar}" angleXFrom="0" angleXTo="0" angleZFrom="0" duration="350" autoCenterTransform="true" angleYTo="180" angleYFrom="0" autoCenterProjection="true" angleZTo="0"/>
+				<s:Fade target="{bar}" startDelay="200" duration="50"/>
+				<s:Fade target="{grid}" startDelay="250" duration="100"/>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	
+	<s:DataGroup id="headers" dataProvider="{items}" width="170">
+		<s:layout>
+			<s:VerticalLayout gap="1"/>
+		</s:layout>
+		<s:itemRenderer>
+			<fx:Component>
+				<s:DataRenderer width="100%">
+					<s:Label text="{data.label}:" backgroundColor="#919191" height="40" verticalAlign="middle" width="100%" textAlign="right" paddingRight="8"/>
+					<s:Rect width="4" height="40">
+						<s:fill>
+							<s:SolidColor color="#FF5900"/>
+						</s:fill>
+					</s:Rect>
+				</s:DataRenderer>
+			</fx:Component>
+		</s:itemRenderer>
+	</s:DataGroup>
+	
+	<s:DataGroup id="grid" includeIn="grid,gridAndBar,gridAndLine" dataProvider="{items}" itemRenderer="renderers.AssetSummaryRenderer" 
+				 left="171" width.gridAndBar="250" width.gridAndLine="260" width.grid="100%">
+		<s:layout>
+			<s:VerticalLayout gap="1"/>
+		</s:layout>
+	</s:DataGroup>
+	
+	<charts:SummaryChart id="line" includeIn="line,gridAndLine" right="0" top="0" left="{chartLeft}"/>
+	<charts:BarChart id="bar" includeIn="bar,gridAndBar" right="0" top="0" left="{chartLeft}"/>
+	
+</s:Group>

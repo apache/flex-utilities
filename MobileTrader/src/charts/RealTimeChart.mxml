@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- Christophe Coenraets, http://coenraets.org -->
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark">
+
+	<fx:Script>
+		<![CDATA[
+
+			import model.Stock;
+			
+			import mx.binding.utils.ChangeWatcher;
+			import mx.collections.ArrayCollection;
+			
+			[Bindable]
+			public var _stock:Stock;
+			
+			[Bindable] protected var minValue:Number;
+			[Bindable] protected var maxValue:Number;
+			
+			protected var minTime:Number;
+			protected var maxTime:Number;
+			
+			protected var changeWatcher:ChangeWatcher;
+			
+			public function set stock(stock:Stock):void
+			{
+				_stock = stock;
+				changeWatcher = ChangeWatcher.watch(_stock, "last", drawChart, false, true);
+				callLater(drawChart);
+			}
+			
+			public function drawChart(e:Event=null):void
+			{
+				var history:ArrayCollection = _stock.history;
+				minValue = history[0].last;
+				maxValue = history[0].last;
+				var i:int;
+				for (i=1; i<history.length; i++)
+				{
+					if (history[i].last < minValue) minValue = history[i].last;
+					if (history[i].last > maxValue) maxValue = history[i].last;
+				}
+				
+				var pathData:String = "";
+				
+				var length:int = history.length;				
+				
+				for (i=0; i<length; i++)
+				{
+					var yPos:Number = width - (history[i].last - minValue) / (maxValue - minValue) * width;
+					var xPos:Number = (i - 0) / (length - 1) * width;
+					pathData += (i==0 ? "M " : " L ") + xPos + " " + yPos;
+				}
+				path.data = pathData;
+				
+			}
+
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:NumberFormatter id="nf" fractionalDigits="2" trailingZeros="true"/>
+	</fx:Declarations>
+	
+	<s:states>
+		<s:State name="default"/>
+		<s:State name="landscape"/>
+	</s:states>
+	<s:Line top="0" left="60" right="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="#999999"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line top="{height/4}" left="60" right="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="#999999"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line top="{height/4*2}" left="60" right="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="#999999"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line top="{height/4*3}" left="60" right="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="#999999"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line bottom="0" left="60" right="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="#999999"/>
+		</s:stroke>
+	</s:Line>
+
+	<s:Label top="-8" left="4" text="{nf.format(maxValue)}" fontSize="16" />
+	<s:Label top="{height/4-8}" left="4" text="{nf.format(minValue + (maxValue-minValue)/4*3)}" fontSize="16"/>
+	<s:Label top="{height/4*2-8}" left="4" text="{nf.format(minValue + (maxValue-minValue)/2)}" fontSize="16"/>
+	<s:Label top="{height/4*3-8}" left="4" text="{nf.format(minValue + (maxValue-minValue)/4)}" fontSize="16"/>
+	<s:Label bottom="-8" left="4" text="{nf.format(minValue)}" fontSize="16" />
+	
+	<s:Path id="path" width="100%" height="100%">
+		<s:stroke>  
+			<s:SolidColorStroke weight="1" color="#FF5900" />  
+		</s:stroke>  
+	</s:Path> 
+		
+</s:Group>

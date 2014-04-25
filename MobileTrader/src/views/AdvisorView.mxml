@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- Christophe Coenraets, http://coenraets.org -->
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:cs="http://ns.adobe.com/rtc"
+		destructionPolicy="never"
+		currentState="logon"
+		xmlns:charts="charts.*">
+	
+	<fx:Script>
+		
+		<![CDATA[
+			import com.adobe.rtc.events.SessionEvent;
+			
+			import mx.collections.ArrayCollection;
+			import mx.core.FlexGlobals;
+			
+		protected var cameraIndex:int;	
+			
+		protected function login():void
+		{
+			session.roomURL = FlexGlobals.topLevelApplication.roomURL;
+			cameraIndex=cameraList.selectedIndex;
+			session.login();
+			currentState = "connecting";
+			cameraList.selectedIndex = -1;
+		}
+		
+		protected function session_synchronizationChange(event:SessionEvent):void
+		{
+			if (session.isSynchronized)
+			{
+				currentState = "default";
+				webCam.publisher.cameraNameIndex = ""+cameraIndex;
+				webCam.startWebcam();
+			}
+			else 
+			{
+				currentState = "logon";
+			}
+		}
+			
+		]]>
+
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="logon"/>
+		<s:State name="default"/>
+		<s:State name="connecting"/>
+		<s:State name="error"/>
+	</s:states>
+	
+	<fx:Declarations>
+		<cs:AdobeHSAuthenticator id="auth" userName="user"/>
+		<cs:ConnectSession id="session" authenticator="{auth}"
+						   synchronizationChange="session_synchronizationChange(event)"
+						   error="currentState='error'"/>
+	</fx:Declarations>
+	
+	<cs:WebCamera id="webCam" top="0" left="0" width="200" bottom="0" includeIn="default" connectSession="{session}"/>
+	
+	<charts:CollaborativePortfolioChart top="8" left="200" bottom="0" right="0" includeIn="default" session="{session}"/>
+
+	<cs:SharedCursorPane top="8" left="202" bottom="0" right="0" includeIn="default" connectSession="{session}"/>
+
+	<s:Label text="Select a camera:" top="20" left="20" right="20" includeIn="logon"/>
+	
+	<s:List id="cameraList" dataProvider="{new ArrayCollection(Camera.names)}" top="60" left="20" right="20" bottom="100" borderVisible="true" includeIn="logon"
+			alternatingItemColors="{[0xFFFFFF, 0xFFFFFF]}"
+			change="login()"/>
+	
+	<s:Button label="Collaboration Settings" includeIn="logon" left="20" right="20" bottom="20" height="60" click="navigator.pushView(SettingsView)"/>
+	
+	<s:Label text="We can't find your financial advisor." horizontalCenter="0" verticalCenter="-14" includeIn="error"/>
+	<s:Label text="Check your network connection." horizontalCenter="0" verticalCenter="14" includeIn="error"/>
+	
+	<s:Button label="OK" left="20" right="20" bottom="20" height="80" includeIn="error" 
+			  click="currentState='logon'"/>
+	
+	<s:Group verticalCenter="0" horizontalCenter="0" height="150" includeIn="connecting" >
+		<s:Rect top="0" bottom="0" left="0" right="0" radiusX="4" radiusY="4" alpha=".5">
+			<s:fill>
+				<s:SolidColor color="#000000"/>
+			</s:fill>
+		</s:Rect>
+		<s:Label text="Connecting to financial advisor..." fontSize="24" color="#FFFFFF" verticalCenter="-20" left="20" right="20"/>
+		<s:BusyIndicator verticalCenter="28" horizontalCenter="0"/> 
+	</s:Group>
+	
+</s:View>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- Christophe Coenraets, http://coenraets.org -->
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 width="100%" height="100%" clipAndEnableScrolling="true"
+		 creationComplete="completeHandler()"
+		 resize="redraw()" xmlns:charts="charts.*">
+
+	<fx:Script>
+		<![CDATA[
+			import spark.effects.Move;
+			
+			protected var _data:Array;
+			
+			protected var min:Number;
+			[Bindable] protected var max:Number;
+			
+			public function set data(data:Array):void
+			{
+				_data = data;
+				min = data[0];
+				max = data[0];
+				for (var i:int=1; i<data.length; i++)
+				{
+					if (data[i]<min) min = data[i];
+					if (data[i]>max) max = data[i];
+				}
+				redraw();
+			}
+			
+			public function get data():Array
+			{
+				return _data;
+			}
+
+			protected function completeHandler():void
+			{
+				data = [
+					80236, 85639, 82364, 72369, 69523, 85632, 86352, 82562, 87523, 89658, 96853, 106256,
+					112045, 100258, 112584, 86352, 86523, 108532, 110253, 120145, 116325, 114856, 110256, 111857,
+					112852, 115632, 128632, 121741, 92365, 95638, 132800, 128963, 125698, 112587, 121856, 126874,
+					131569, 97563, 98563, 100235, 110523, 119536, 121532, 117563, 125963, 139523, 131856, 138972,
+					125639, 103698, 130856, 147523, 110263, 125698, 145962, 138653, 131568, 111258, 125693, 161984
+				];
+
+				Multitouch.inputMode = MultitouchInputMode.GESTURE;
+				rect.addEventListener(TransformGestureEvent.GESTURE_ZOOM, function(e:TransformGestureEvent):void{zoom(e.scaleX)});
+				
+			}
+			
+			protected function zoom(scaleX:Number):void
+			{
+				var w:Number = path.width * scaleX;
+				if (scaleX>1)
+					path.width = w > width*5 ? width*5 : w;
+				else
+				{
+					path.width = w < width ? width : w;
+					if (path.x + path.width < width) path.x = width - path.width;
+				}
+			}
+			
+			protected function redraw():void
+			{
+				if (!data) return;
+
+				var pathData:String = "M 0 " + height;
+				
+				var xPos:Number;
+				var yPos:Number;
+				for (var i:int=0; i<data.length; i++)
+				{
+					yPos = height - data[i] / max * height;
+					xPos = width / 11 * i;
+					pathData += " L " + xPos + " " + yPos;
+				}
+				pathData += "L " + xPos + " " + height + " z";
+				path.data = pathData;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:CurrencyFormatter id="cf" useCurrencySymbol="true" currencySymbol="$" fractionalDigits="0"/>
+		<s:DateTimeFormatter id="df" dateTimePattern="MM/yy"/>
+		<charts:AxisArrayList id="hAxisData" step="-12" max="60"/>
+	</fx:Declarations>
+
+	<s:Line top="8" left="60" right="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="#999999"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line verticalCenter="8" left="60" right="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="#999999"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line top="{rect.height/4+8}" left="60" right="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="#999999"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line top="{rect.height/4*3+8}" left="60" right="0">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="#999999"/>
+		</s:stroke>
+	</s:Line>
+	
+	<s:Label top="0" left="4" text="{cf.format(max)}" fontSize="16"/>
+	<s:Label top="{rect.height/4}" left="4" text="{cf.format(max/4*3)}" fontSize="16"/>
+	<s:Label top="{rect.height/4*3}" left="4" text="{cf.format(max/4)}" fontSize="16"/>
+	<s:Label verticalCenter="8" left="4" text="{cf.format(max/2)}" fontSize="16"/>
+	
+	<s:Scroller id="scroller" top="8" bottom="0" left="0" right="0">
+
+		<s:Group id="rect" top="0" bottom="0" left="0" right="0"  effectEnd="trace('%%effectEnd '+path.x);" mouseUp="trace('up '+rect.x)">
+			
+			<s:DataGroup dataProvider="{hAxisData}" top="0" bottom="0" left="0" right="0">
+				<s:itemRenderer>
+					<fx:Component>
+						<s:DataRenderer height="{outerDocument.rect.height}" width="{Math.round(outerDocument.path.width/outerDocument.hAxisData.length)}">
+							<s:Label text="{outerDocument.df.format(new Date(new Date().time - 2592000000 * Number(data)))}" right="4" bottom="4" fontSize="16"/>
+							<s:Line right="24" top="0" bottom="24">
+								<s:stroke>
+									<s:SolidColorStroke color="#999999" weight="1"/>
+								</s:stroke>
+							</s:Line>
+						</s:DataRenderer>
+					</fx:Component>
+				</s:itemRenderer>
+				<s:layout>
+					<s:HorizontalLayout gap="0"/>
+				</s:layout>
+			</s:DataGroup>
+			
+			<s:Path id="path" width="{width*5}" height="100%">
+				
+				<s:stroke>
+					<s:SolidColorStroke color="#00719b" weight="1"/>
+				</s:stroke>
+				<s:fill>
+					<s:LinearGradient rotation="90">
+						<s:GradientEntry color="#00BAFF" ratio="0" alpha=".5"/>                
+						<s:GradientEntry color="#00719b" ratio="1" alpha=".5"/>
+					</s:LinearGradient>
+				</s:fill>
+				
+			</s:Path>
+	
+		</s:Group>
+		
+	</s:Scroller>
+	
+</s:Group>
