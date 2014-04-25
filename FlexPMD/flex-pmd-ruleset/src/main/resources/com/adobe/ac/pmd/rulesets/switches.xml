@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ruleset name="Switches Rules" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+	
+	<description>
+      The Architecture ruleset contains a collection of good practices around architecture.
+	</description>
+	
+	<rule
+		class="com.adobe.ac.pmd.rules.switchrules.SwitchStatementsShouldHaveDefaultRule"
+		message="A switch statement does not contain a default statement">
+		<description>Switch statements should have a default label in order to detect corner cases.</description>
+		<priority>1</priority>
+		<example>
+public class Foo 
+{
+   public funciton bar() : void 
+   {
+      var  x : int = 2;
+      switch (x) 
+      {
+         case 2: var j : int = 8;
+      }
+   }
+}     
+      </example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.switchrules.NestedSwitchRule"
+		message="Switch must not be nested">
+		<description>As a general practice, switch statement should not be used. Prefer using inheritance. It is even harder to read when switch statements are nested.</description>
+		<priority>3</priority>
+		<example>
+public function foo( a : Number, b : Number ) : void
+{
+    switch( a )
+    {
+       case 1:
+          break;
+       case 2:                   
+          switch ( b ) 
+          {
+            case 3 :
+               break;
+            case 4 :
+               break;
+          }
+          break;                     
+    }
+}
+      </example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.switchrules.NonBreakableSwitchCaseRule"
+		message="Switch case must include break statement">
+		<priority>1</priority>
+		<example>
+switch(event.type){
+  case GoogleSearchPanel.LAUNCH_GOOGLE_WEB_SEARCH:
+	  googleResquest.url = ""; // VIOLATION
+  case GoogleSearchPanel.LAUNCH_GOOGLE_IMAGE_SEARCH:                   
+  case GoogleSearchPanel.LAUNCH_GOOGLE_IMAGE_SEARCH2:                   
+	  googleResquest.url = "";
+	  break;
+  default:
+	  return;
+}
+      </example>
+	</rule>
+
+	
+	<rule
+		class="com.adobe.ac.pmd.rules.switchrules.TooFewBrancheInSwitchStatementRule"
+		message="There are too few branches in this switch statement ({0} minimum, but {1} actual)">
+		<description>Switch statements are designed for complex branches, and allow branches to share treatment. Using a switch for only 2 branches is ill advised, as switches are not as easy to understand as if. In this case, it's most likely is a good idea to use a if statement</description>
+		<priority>5</priority>
+		<properties>
+			<property name="minimum">
+				<value>3</value>
+			</property>
+		</properties>
+		<example>
+      </example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.switchrules.IdenticalSwitchCasesRule"
+		message="Two switch cases should not be identical">
+		<priority>1</priority>
+	</rule>
+		
+</ruleset>

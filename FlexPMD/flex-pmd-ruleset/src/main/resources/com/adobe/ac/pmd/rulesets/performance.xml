@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ruleset name="Performance Rules" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+	
+	<description>
+      This Ruleset contains a collection of good practices related to the performance (CPU and memory).
+  </description>
+  
+	<rule class="com.adobe.ac.pmd.rules.performance.DynamicFiltersUsedInPopup"
+		message="A popup should not use dynamic filters">
+		<description>Prefer using embed filters in assets</description>
+		<priority>3</priority>
+		<example>
+      </example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.performance.CyclomaticComplexityRule"
+		message="This method is too complex. Maximum complexity is {0}, but its cyclomatic complexity was {1}">
+		<priority>3</priority>
+		<properties>
+			<property name="maximum">
+				<value>10</value>
+			</property>
+		</properties>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.performance.HeavyConstructorRule"
+		message="Constructor must be as lightweight as possible. No control statement allowed, whereas a cyclomatic complexe of {0} has been detected">
+		<description><![CDATA[The Just-In-Time compiler does not compile constructors. Make them as lightweight as possible, or move the complexity of the code to a method called by the constructor. Then the complexity will be compiled by the JIT.]]></description>
+		<priority>3</priority>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.performance.CreationPolicySetToAllRule"
+		message="creationPolicy to ALL impacts the performance significantly">
+		<priority>1</priority>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.performance.BindableClassRule"
+		message="Globally bindable classes can lead to unexpected behaviour especially when you have a setter to a property, and hits the performance of the application">
+		<priority>3</priority>	
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.performance.AvoidInstanciationInLoopRule"
+		message="Instanciating a variable in a loop can be expensive">
+		<description></description>
+		<priority>5</priority>
+		<example>
+      </example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.performance.AvoidDeclarationInLoopRule"
+		message="Declaring a variable in a loop can be expensive">
+		<description></description>
+		<priority>5</priority>
+		<example>
+      </example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.performance.DeeplyNestedIfRule"
+		message="Nested if statements are not a good design">
+		<priority>3</priority>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.performance.RecursiveStyleManagerRule"
+		message="Detect calls to the StyleManager that don’t pass “false” as the second parameter">
+		<description>A recursive style manager call can be a very expensive operation, causing parts of the UI to flicker visibly. Instead it is preferable to defer the creation of parts of the UI that depend on a runtime CSS SWF until after the SWF has been loaded. In this case a recursive call is not required.</description>
+		<priority>3</priority>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.performance.AvoidUsingMathFloorRule"
+		message="VM will automatically do the rounding when using an int, so it should be : var position:int = floatingValue;">
+		<priority>5</priority>
+		<example>
+var position:Number = Math.floor ( floatingValue ); 
+		</example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.performance.AvoidUsingMathCeilRule"
+		message="VM will automatically do the rounding when using an int, so should be : var position:int = floatingValue + 1;">
+		<priority>5</priority>
+		<example>
+var position:Number = Math.ceil ( floatingValue );
+		</example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.performance.AvoidUsingMathRoundRule"
+		message="manual calculation will be much faster : var position:int = (floatingValue > 0.0) ? int(floatingValue + 0.5) : int(floatingValue - 0.5);">
+		<priority>5</priority>
+		<example>
+var position:Number = Math.round ( floatingValue );
+		</example>
+	</rule>
+
+</ruleset>

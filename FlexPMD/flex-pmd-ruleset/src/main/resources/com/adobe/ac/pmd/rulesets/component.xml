@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ruleset name="Custom component rules" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+	
+	<description>
+      The Component Ruleset contains a collection of good practices related to custom component development.
+   </description>
+   
+	<rule
+		class="com.adobe.ac.pmd.rules.component.UpdateChildrenNumberInUpdateDisplayListRule"
+		message="Flex specific - Do not add or remove displayable children from updateDisplayList">
+		<description>UpdateDisplayList is called everytime a child is invalidated. So calling addChild or removeChild in this function could be really CPU consuming</description>
+		<priority>1</priority>
+		<example></example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.component.CallLaterDirectlyRule"
+		message="Flex specific - Don't call 'callLater' explicitly">
+		<description>If you needed to call 'callLater' explicitly, then you probably did not extend the correct component life cycle.</description>
+		<priority>1</priority>
+	</rule>
+	
+</ruleset>

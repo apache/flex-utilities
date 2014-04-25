@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ruleset name="Cairngorm Rules" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+	<description>
+      The Cairngorm Ruleset contains a collection of good practices related to Cairngorm.
+    </description>
+    
+	<rule class="com.adobe.ac.pmd.rules.cairngorm.BindableModelLocatorRule"
+		message="A modelLocator must not be Bindable at a class level">
+		<description>A bindable ModelLocator could leads to performance issues due to bindings</description>
+		<priority>1</priority>
+		<example>
+[Bindable]
+public class BindableModelLocator // VIOLATION 
+{      
+}      
+      </example>
+	</rule>
+	
+	<rule
+		class="com.adobe.ac.pmd.rules.cairngorm.ReferenceModelLocatorOutsideTheMainApplicationRule"
+		message="The ModelLocator should be only accessible from the main application file">
+		<description>The ModelLocator should be only accessible from the main application file. Then sub-models should be injected to the nested views.</description>
+		<priority>3</priority>
+		<example>
+package business
+{
+   import model.MyModelLocator; // VIOLATION
+   
+   public class MyBusinessClass 
+   {
+   } 
+}
+      </example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.cairngorm.FatControllerRule"
+		message="A FrontController must nor add all its commands within the Controller constructor">
+		<description>Try split them into methods where you add commands depending on their functional area.</description>
+		<priority>3</priority>
+		<example>
+package control
+{
+   import control.GetItems1Command;
+   import control.GetItems1Event;
+   import control.GetItems2Command;
+   import control.GetItems2Event;
+   // A lot of other imports
+   
+   public class MyFrontController // VIOLATION
+   {
+      public function MyFrontController()
+      {
+         addCommand( 
+            GetItems1Event.EVENT_NAME,
+            GetItems1Command );
+
+         addCommand( 
+            GetItems2Event.EVENT_NAME,
+            GetItems2Command );
+
+         // A lot of other addCommand
+      }
+   } 
+}
+      </example>
+	</rule>
+
+	<rule
+		class="com.adobe.ac.pmd.rules.cairngorm.BadCairngormEventNameFormatRule"
+		message="A Cairngorm event name should contain the function area name before the actual event name">
+		<description>You would have something like 'productManagement.getProducts' as an event name.</description>
+		<priority>3</priority>
+		<example>
+
+public class UncorrectConstructorEvent extends CairngormEvent
+{
+   public function UncorrectConstructorEvent( model : IModel )
+   {
+      super( "eventName", model ); // VIOLATION. It should be "functionalArea.eventName" instead
+   }
+}
+public class UncorrectConstantEvent extends CairngormEnterpriseEvent
+{
+   public static const EVENT_NAME : String = "eventName";
+   
+   public function UncorrectConstantEvent( model : IModel )
+   {
+      super( EVENT_NAME, model ); // VIOLATION
+   }
+}
+       </example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.cairngorm.CairngormEventDispatcherCallExplicitlyRule"
+		  message="CairngormEventDispatcher is called explicitly. {0}">
+		  <priority>3</priority>
+		  <example>
+		  <![CDATA[
+public function foo() : void
+{
+   CairngormEventDispatcher.getInstance().dispatchEvent(new Event(CONSTANT)); // VIOLATION <- use cairngormEvent.dispatch();
+   CairngormEventDispatcher.getInstance().addEventListener(CONSTANT, onHearing); // VIOLATION <- MVC broken
+}  
+		  ]]>
+		  </example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.cairngorm.ModelLocatorReferencedMoreThanOncePerClassRule"
+		message="Only one reference of ModelLocator is allowed per class">
+		<priority>3</priority>
+	</rule>
+
+</ruleset>

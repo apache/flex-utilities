@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<psf version="2.0">
+<provider id="org.eclipse.team.svn.core.svnnature">
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/as3-parser,as3-parser,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-ant-task,flex-pmd-ant-task,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-command-line,flex-pmd-command-line,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-command-line-api,flex-pmd-command-line-api,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-core,flex-pmd-core,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-maven-plugin,flex-pmd-maven-plugin,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-parent,flex-pmd-parent,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-ruleset,flex-pmd-ruleset,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-ruleset-api,flex-pmd-ruleset-api,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-ruleset-creator,flex-pmd-ruleset-creator,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+<project reference="1.0.1,http://opensource.adobe.com/svn/opensource/flexpmd/trunk/flex-pmd-test-resources,flex-pmd-test-resources,9086ed584429001e1adebee11572accd;http://opensource.adobe.com/svn/opensource/flexpmd;http://opensource.adobe.com/svn/opensource/flexpmd;branches;tags;trunk;true;a9308255-753e-0410-a2e9-80b3fbc4fff6;http://opensource.adobe.com/svn/opensource;;false;;;22"/>
+</provider>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="flex-pmd-clients" name="flex-pmd-clients">
+<item elementID="=flex-pmd-maven-plugin" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/flex-pmd-ruleset-creator" type="4"/>
+<item elementID="=flex-pmd-ant-task" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=flex-pmd-command-line" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=flex-pmd-command-line-api" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+<workingSets editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" label="flex-pmd-core" name="flex-pmd-core">
+<item elementID="=flex-pmd-core" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=flex-pmd-ruleset-api" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=flex-pmd-parent" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=flex-pmd-test-resources" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=as3-parser" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+<item elementID="=flex-pmd-ruleset" factoryID="org.eclipse.jdt.ui.PersistableJavaElementFactory"/>
+</workingSets>
+</psf>

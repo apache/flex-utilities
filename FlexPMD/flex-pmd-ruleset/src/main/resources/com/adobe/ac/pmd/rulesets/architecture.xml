@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ruleset name="Architecture Rules" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+	
+	<description>
+      The Architecture ruleset contains a collection of good practices around architecture.
+	</description>
+	
+	<rule class="com.adobe.ac.pmd.rules.architecture.ViewComponentReferencedInModelRule"
+		message="A view component should not be referenced in a model class">
+		<description></description>
+		<priority>3</priority>
+		<example>
+package com.adobe.ac
+{
+   import mx.controls.ComboBox; // VIOLATION
+
+   public class MyModelClass
+   {
+   }
+} 		
+      </example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.architecture.MonkeyPatchingRule"
+		message="This class looks to be duplicated with a SDK class">
+		<description>Monkey patching can be a risky undertaking because it is not using intended extensibility points and thus may have unintended consequences or make migration to newer versions of the SDK more difficult</description>
+		<priority>1</priority>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.architecture.UseInternalClassOutsideApiClass"
+		message="This class imports an internal class ({0}) from another function area ({1})">
+		<description>If you have different functionalities, you probably don't want every class of each to be accessible from any other functional areas.
+So you probably want to use this packaging:
+[org].[project].func1.api
+[org].[project].func1.restricted
+[org].[project].func2.api
+[org].[project].func2.restricted
+This rule makes sure that no restricted classes is accessed from outside its own function area.
+ </description>
+		<priority>1</priority>
+		<example>
+package functional
+{
+	import functional.func1.api.Func1ExposedClass;
+	import functional.func1.restricted.Func1RestrictedClass; // VIOLATION
+	import functional.func2.api.Func2ExposedClass;
+	import functional.func2.restricted.Func2RestrictedClass; // VIOLATION
+	
+	public class FunctionClient
+	{
+	}
+}
+package functional.func1.api
+
+{
+	import functional.func1.restricted.Func1RestrictedClass; 
+	import functional.func2.api.Func2ExposedClass;
+	import functional.func2.restricted.Func2RestrictedClass; // VIOLATION
+	
+	public class Func1ExposedClass
+	{
+	}
+}
+package functional.func1.restricted
+{
+	import functional.func1.api.Func1ExposedClass;
+	import functional.func2.api.Func2ExposedClass;
+	import functional.func2.restricted.Func2RestrictedClass; // VIOLATION
+	
+	public class Func1RestrictedClass
+	{
+	}
+}
+package functional.func2.api
+{
+	import functional.func1.api.Func1ExposedClass;
+	import functional.func1.restricted.Func1RestrictedClass; // VIOLATION
+	import functional.func2.restricted.Func2RestrictedClass;
+	
+	public class Func2ExposedClass
+	{
+	}
+}
+package functional.func2.restricted
+{
+	import functional.func1.api.Func1ExposedClass;
+	import functional.func1.restricted.Func1RestrictedClass; // VIOLATION
+	import functional.func2.api.Func2ExposedClass;
+	
+	public class Func2RestrictedClass
+	{
+	}
+}		
+		</example>
+	</rule>
+
+</ruleset>

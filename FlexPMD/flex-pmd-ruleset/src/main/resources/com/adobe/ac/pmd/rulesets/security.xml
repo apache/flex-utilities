@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ruleset name="Security Rules" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+	
+	<description>
+      The Security AS3 Ruleset contains a collection of best practices related to secure code.
+    </description>
+    
+	<rule class="com.adobe.ac.pmd.rules.security.InsecureExactSettingsRule"
+		message="Security.exactSettings is set to an insecure value">
+		<description>The security.exactSettings value should remain set at the default true value. Setting this value to false could make the SWF vulnerable to cross-domain attacks.</description>
+		<priority>1</priority>
+		<example>
+			//exactSettings should be left as the default
+   			Security.exactSettings = true;
+      	</example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.security.AllowAllSecureDomainRule"
+		message="Security.allowDomain is set to an insecure value">
+		<description>The security.allowDomain value of "*" will allow any domain to cross-script into the domain of this SWF and exercise its functionality.</description>
+		<priority>1</priority>
+		<example>
+			//The allowDomain settings should be specific
+   			Security.allowDomain("www.example.org");
+      	</example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.security.LocalConnectionStarRule"
+		message="LocalConnection.allowDomain is set to an insecure value">
+		<description>The LocalConnection.allowDomain value of "*" will allow any domain to connect to this SWF and call its functions.</description>
+		<priority>1</priority>
+		<example>
+			//The allowDomain setting should be specific
+   			LocalConnection.allowDomain("www.example.org");
+      	</example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.security.AllowInsecureDomainRule"
+		message="Potentially unnecessary use of allowInsecureDomain">
+		<description>Using allowInsecureDomain will allow untrusted content from an HTTP site to inject data into a trusted HTTPS connection which may comprimise the integrity of the HTTPS connection. The use of allowDomain is preferred.</description>
+		<priority>1</priority>
+		<example>
+			//Use the allowDomain setting instead
+   			LocalConnection.allowDomain("www.example.org");
+			Security.allowDomain("www.example.org");
+      	</example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.security.LSOSecureFalseRule"
+		message="The secure flag is set to false">
+		<description>If this SWF is being served over HTTPS then the secure flag should be set to true. This can help prevent sensitive SSL protected information from being shared within insecure HTTP content. If this SWF is served over HTTP then you can ignore this warning.</description>
+		<priority>5</priority>
+		<example>
+			//Setting secure values for LSOs
+   			LSO.getLocal(name, null, true);
+      	</example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.security.ImportLoadBestPracticeRule"
+		message="Set allowCodeImport to false when import loading images">
+		<description>If this loader is only intended to load image files (GIF,JPG,PNG) then be sure to set the allowCodeImport value to false. Setting this flag will reduce the chances of an untrusted SWF gaining access to your site. If your intent is to load a SWF, the URL for the request is a static value for a trusted site and/or you have already set the allowCodeImport flag, then you can ignore this warning.</description>
+		<priority>5</priority>
+	</rule>
+	
+</ruleset>

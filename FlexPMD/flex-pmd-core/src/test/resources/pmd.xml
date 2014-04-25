@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<pmd version="4.2.1" timestamp="Fri Aug 08 08:31:02 PDT 2008">
+   <file name="C:/Documents and Settings/Administrator/.hudson/jobs/FlexPmd/workspace/flex-pmd-core/target/test-classes/test/AbstractRowData.as">
+      <violation beginline="41" endline="121" begincolumn="7" endcolumn="7" rule="TooManyFunction" ruleset="Basic As3 Rules" package="" class="AbstractRowData.as" externalInfoUrl="" priority="1">A constructor should not have a return type</violation>
+      <violation beginline="41" endline="118" begincolumn="7" endcolumn="7" rule="TooManyFunction" ruleset="Basic As3 Rules" package="" class="AbstractRowData.as" externalInfoUrl="" priority="1">A constructor should not have a return type</violation>
+      <violation beginline="29" endline="29" begincolumn="9" endcolumn="29" rule="PackageCase" ruleset="Basic Common Flex Rules" package="" class="AbstractRowData.as" externalInfoUrl="" priority="3">A package name should be lower case</violation>
+      <violation beginline="44" endline="44" begincolumn="0" endcolumn="44" rule="DeadCode" ruleset="Basic Common Flex Rules" package="" class="AbstractRowData.as" externalInfoUrl="" priority="3">There are some dead code here.</violation>
+      <violation beginline="49" endline="62" begincolumn="0" endcolumn="9" rule="DeadCode" ruleset="Basic Common Flex Rules" package="" class="AbstractRowData.as" externalInfoUrl="" priority="3">There are some dead code here.</violation>
+      <violation beginline="98" endline="100" begincolumn="12" endcolumn="10" rule="EmptyIfStmt" ruleset="Basic Common Flex Rules" package="" class="AbstractRowData.as" externalInfoUrl="" priority="3">No statements in this if statement</violation>
+      <violation beginline="101" endline="101" begincolumn="0" endcolumn="36" rule="DispatchHardCodedEventName" ruleset="Basic Common Flex Rules" package="" class="AbstractRowData.as" externalInfoUrl="" priority="3">DispatchEvent function must dispatch constant strings</violation>
+      <violation beginline="102" endline="102" begincolumn="0" endcolumn="38" rule="DispatchHardCodedEventName" ruleset="Basic Common Flex Rules" package="" class="AbstractRowData.as" externalInfoUrl="" priority="3">DispatchEvent function must dispatch constant strings</violation>
+      <violation beginline="97" endline="97" begincolumn="0" endcolumn="57" rule="TooShortVariable" ruleset="Basic Common Flex Rules" package="" class="AbstractRowData.as" externalInfoUrl="" priority="5">This variable name is too short</violation>
+   </file>
+   <file name="C:/Documents and Settings/Administrator/.hudson/jobs/FlexPmd/workspace/flex-pmd-core/target/test-classes/test/com/adobe/ac/ncss/BigModel.as">
+      <violation beginline="5" endline="28" begincolumn="7" endcolumn="7" rule="TooManyFunction" ruleset="Basic As3 Rules" package="com.adobe.ac.ncss" class="BigModel.as" externalInfoUrl="" priority="1">A constructor should not have a return type</violation>
+      <violation beginline="8" endline="8" begincolumn="0" endcolumn="22" rule="TooShortVariable" ruleset="Basic Common Flex Rules" package="com.adobe.ac.ncss" class="BigModel.as" externalInfoUrl="" priority="5">This variable name is too short</violation>
+   </file>
+   <file name="C:/Documents and Settings/Administrator/.hudson/jobs/FlexPmd/workspace/flex-pmd-core/target/test-classes/test/com/adobe/ac/ncss/event/DynamicCustomEvent.as">
+      <violation beginline="3" endline="3" begincolumn="0" endcolumn="43" rule="DynamicClass" ruleset="Basic As3 Rules" package="com.adobe.ac.ncss.event" class="DynamicCustomEvent.as" externalInfoUrl="" priority="1">A class must not be dynamic</violation>
+      <violation beginline="5" endline="5" begincolumn="0" endcolumn="31" rule="PublicVariableInCustomEvent" ruleset="Basic As3 Rules" package="com.adobe.ac.ncss.event" class="DynamicCustomEvent.as" externalInfoUrl="" priority="3">No public variables should be inside a custom event</violation>
+   </file>
+   <file name="C:/Documents and Settings/Administrator/.hudson/jobs/FlexPmd/workspace/flex-pmd-core/target/test-classes/test/com/adobe/ac/ncss/event/FirstCustomEvent.as">
+      <violation beginline="0" endline="0" begincolumn="0" endcolumn="0" rule="EventMissingCloneFunction" ruleset="Basic As3 Rules" package="com.adobe.ac.ncss.event" class="FirstCustomEvent.as" externalInfoUrl="" priority="1">The clone event must be overiden in a custom event</violation>
+      <violation beginline="5" endline="5" begincolumn="0" endcolumn="31" rule="PublicVariableInCustomEvent" ruleset="Basic As3 Rules" package="com.adobe.ac.ncss.event" class="FirstCustomEvent.as" externalInfoUrl="" priority="3">No public variables should be inside a custom event</violation>
+   </file>
+   <file name="C:/Documents and Settings/Administrator/.hudson/jobs/FlexPmd/workspace/flex-pmd-core/target/test-classes/test/com/adobe/ac/ncss/mxml/IterationsList.mxml">
+      <violation beginline="18" endline="18" begincolumn="0" endcolumn="72" rule="MoreThanTwoEntryPointsInMxml" ruleset="Basic MXML Rules" package="com.adobe.ac.ncss.mxml" class="IterationsList.mxml" externalInfoUrl="" priority="3">There are more than 2 public variables in this MXML component</violation>
+      <violation beginline="18" endline="18" begincolumn="0" endcolumn="72" rule="MoreThanOneEntryPointInMxml" ruleset="Basic MXML Rules" package="com.adobe.ac.ncss.mxml" class="IterationsList.mxml" externalInfoUrl="" priority="5">There are more than 1 public variable in this MXML component</violation>
+      <violation beginline="20" endline="20" begincolumn="0" endcolumn="86" rule="TooShortVariable" ruleset="Basic Common Flex Rules" package="com.adobe.ac.ncss.mxml" class="IterationsList.mxml" externalInfoUrl="" priority="5">This variable name is too short</violation>
+      <violation beginline="31" endline="31" begincolumn="0" endcolumn="51" rule="TooShortVariable" ruleset="Basic Common Flex Rules" package="com.adobe.ac.ncss.mxml" class="IterationsList.mxml" externalInfoUrl="" priority="5">This variable name is too short</violation>
+   </file>
+   <file name="C:/Documents and Settings/Administrator/.hudson/jobs/FlexPmd/workspace/flex-pmd-core/target/test-classes/test/com/adobe/ac/ncss/SearchBarEvent.as">
+      <violation beginline="0" endline="0" begincolumn="0" endcolumn="0" rule="EventMissingCloneFunction" ruleset="Basic As3 Rules" package="com.adobe.ac.ncss" class="SearchBarEvent.as" externalInfoUrl="" priority="1">The clone event must be overiden in a custom event</violation>
+   </file>
+   <file name="C:/Documents and Settings/Administrator/.hudson/jobs/FlexPmd/workspace/flex-pmd-core/target/test-classes/test/com/adobe/ac/ncss/event/SecondCustomEvent.as">
+      <violation beginline="0" endline="0" begincolumn="0" endcolumn="0" rule="EventMissingCloneFunction" ruleset="Basic As3 Rules" package="com.adobe.ac.ncss.event" class="SecondCustomEvent.as" externalInfoUrl="" priority="1">The clone event must be overiden in a custom event</violation>
+   </file>
+   <file name="C:/Documents and Settings/Administrator/.hudson/jobs/FlexPmd/workspace/flex-pmd-core/target/test-classes/test/com/adobe/ac/ncss/TestResult.as">
+      <violation beginline="61" endline="64" begincolumn="0" endcolumn="11" rule="DeadCode" ruleset="Basic Common Flex Rules" package="com.adobe.ac.ncss" class="TestResult.as" externalInfoUrl="" priority="3">There are some dead code here.</violation>
+   </file>
+   <file name="C:/Documents and Settings/Administrator/.hudson/jobs/FlexPmd/workspace/flex-pmd-core/target/test-classes/test/com/adobe/ac/ncss/VoidConstructor.as">
+      <violation beginline="6" endline="7" begincolumn="7" endcolumn="10" rule="ConstructorNonEmptyReturnType" ruleset="Basic As3 Rules" package="com.adobe.ac.ncss" class="VoidConstructor.as" externalInfoUrl="" priority="3">A constructor should not have a return type</violation>
+      <violation beginline="8" endline="8" begincolumn="0" endcolumn="22" rule="TooShortVariable" ruleset="Basic Common Flex Rules" package="com.adobe.ac.ncss" class="VoidConstructor.as" externalInfoUrl="" priority="5">This variable name is too short</violation>
+   </file>
+</pmd>
