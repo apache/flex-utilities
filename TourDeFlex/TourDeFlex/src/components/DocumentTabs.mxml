@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:TabNavigator xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:local="components.*"
+					   width="100%" height="100%" styleName="documentTabs" selectedTabTextStyleName="documentTabSelected">
+
+	<mx:Script>
+	<![CDATA[
+		import classes.Document;
+		import mx.controls.HTML;
+		import mx.containers.VBox;
+		
+		public var needHtmlHack:Boolean = false; // This is a total hack to work around TWO bugs in Flex.  Ask Greg Wilson for details
+				
+		public function addTabs(documents:Array, localRootPath:String):void
+		{
+			this.selectedIndex = 0;
+			this.validateNow();
+			this.removeAllChildren();
+						
+			for each(var document:Document in documents)
+				this.addTab(document.name, document.path, document.openLinksExternal, localRootPath);
+		}
+		
+		// There is a bug in the Flex 3.2 html control where the default font is set too large.  This method puts it back to the desired default of 11px.
+		public function changeDefaultFont(e:Event):void {
+			var frames:Object = e.target.htmlLoader.window.document.getElementsByTagName("frame");
+			if (frames.length == 0)
+			{
+				// document does not have frames
+				if(e.target.htmlLoader.window.document.getElementsByTagName("body")[0])
+					e.target.htmlLoader.window.document.getElementsByTagName("body")[0].style.fontSize="11px";
+			}
+			else
+			{
+				// document has frames... change style for document in each frame
+				for (var i:int=0;i<frames.length;i++)
+				{
+					if(frames[i].contentDocument.getElementsByTagName("body")[0])
+						frames[i].contentDocument.getElementsByTagName("body")[0].style.fontSize="11px";
+				}
+			}
+			e.target.visible = true;
+		}
+	
+		public function removeCleanup(e:Event):void {
+			if (this.needHtmlHack) {
+				//trace("CLEANUP");
+				e.target.htmlText = ""; // Hack - GAW - forces any loaded SWFs to stop
+			}
+		}
+
+		
+		public function addTab(name:String, path:String, openLinksExternal:String, localRootPath:String):void
+		{
+			var tab:VBox = new VBox();
+			tab.percentWidth = 100;
+			tab.percentHeight = 100;
+			if(name.length == 0)
+				tab.label = getFileName(path);
+			else
+				tab.label = name;
+			this.addChild(tab);
+			
+			var html_illustration:HTML = new HTML();
+			html_illustration.percentWidth = 100;
+			html_illustration.percentHeight = 100;
+			html_illustration.visible = false;   // Set to true after changeDefaultFont
+			html_illustration.addEventListener(Event.COMPLETE,changeDefaultFont);
+			html_illustration.addEventListener(Event.REMOVED_FROM_STAGE, removeCleanup);
+			tab.addChild(html_illustration);	
+			
+			if (openLinksExternal.toLowerCase() == "true") 
+			{
+				html_illustration.htmlLoader.navigateInSystemBrowser = true; // Open links in default browser
+			}
+			
+			if(path.toLowerCase().indexOf("http") == 0)
+			{
+				if(Config.IS_ONLINE)
+					html_illustration.location = path;
+				else
+					html_illustration.location = Config.OFFLINE_URL;
+			}
+			else
+			{
+				html_illustration.location = localRootPath + path;
+			}
+		}
+		
+		private function getFileName(path:String):String
+		{
+			var fileName:String = "";
+			var slashPos:int = path.lastIndexOf("/");
+			var backslashPos:int = path.lastIndexOf("\\");
+			
+			if(slashPos > 0)
+				fileName = path.substr(slashPos+1); 
+			else if(backslashPos > 0)	
+				fileName = path.substr(backslashPos+1);	
+			else
+				fileName = "Document";
+				
+			return fileName;
+		}
+		
+	]]>
+	</mx:Script>
+
+</mx:TabNavigator>

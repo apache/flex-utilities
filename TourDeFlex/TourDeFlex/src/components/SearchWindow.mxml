@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<WipeWindow xmlns="components.*" xmlns:mx="http://www.adobe.com/2006/mxml" horizontalAlign="right" creationComplete="init()">
+	
+	<mx:Script>
+	<![CDATA[		
+		//--------------------------------------------------------------------------
+		//  Imports
+		//--------------------------------------------------------------------------	
+		import classes.ObjectData;
+		import mx.core.EdgeMetrics;
+		import mx.containers.GridItem;
+		import mx.containers.GridRow;
+		import mx.utils.StringUtil;
+		import mx.events.CollectionEvent;
+		import mx.controls.CheckBox;
+
+		//--------------------------------------------------------------------------
+		//  Variables/properties
+		//--------------------------------------------------------------------------		
+		public var objectData:ObjectData;
+		public static const SEARCH_SUBMIT:String = "searchSubmit";
+
+		public function set searchTagsData(tags:Array):void
+		{
+			var tagCounter:int = 0;
+			
+			for each(var row:GridRow in grid_tags.getChildren())
+			{
+				for each(var col:GridItem in row.getChildren())
+				{
+					var checkBox:CheckBox = CheckBox(col.getChildAt(0));
+					
+					var tagTotal:String = "";
+					if(tags[tagCounter][1] && tags[tagCounter][1].toString().length > 0)
+						tagTotal = "  (" + tags[tagCounter][1] + ")";
+						
+					checkBox.label = tags[tagCounter][0] + tagTotal;
+					checkBox.data = tags[tagCounter][0];
+					checkBox.addEventListener(Event.CHANGE, checkBox_tag_change);
+					checkBox.styleName = "tagCheckBox";
+					checkBox.visible = true;			
+					tagCounter++;
+					if(tagCounter == tags.length)
+						break;
+				}
+				if(tagCounter == tags.length)
+					break;				
+			}				
+		}
+		
+		//--------------------------------------------------------------------------
+		//  Grid creation
+		//--------------------------------------------------------------------------	
+		private function init():void
+		{
+			createTagGrid();
+		}
+		
+		private function createTagGrid():void
+		{
+			for(var rows:int=0; rows<14; rows++)
+			{
+				var row:GridRow = new GridRow();
+				row.percentWidth = 100;
+				row.percentHeight = 100;			
+				
+				for(var cols:int=0; cols<4; cols++)
+				{
+					var col:GridItem = new GridItem();
+					col.percentWidth = 100;
+					col.percentHeight = 100;
+					
+					if(cols == 0 && rows == 0)
+						col.styleName = "tagGridFirstRowItem"
+					else if(rows == 0)
+						col.styleName = "tagGridFirstRow";
+					else if(cols == 0)
+						col.styleName = "tagGridFirstItem";
+					else
+						col.styleName = "tagGridItem";		
+
+					var checkBox:CheckBox = new CheckBox();
+					checkBox.visible = false;
+					
+					col.addChild(checkBox);
+					row.addChild(col);
+				}
+				grid_tags.addChild(row);
+			}
+		}
+		
+		//--------------------------------------------------------------------------
+		//  Search controls
+		//--------------------------------------------------------------------------		
+		public function clear():void
+		{
+			textInput_search.text = "";			
+			clearGridTags();
+		}
+		
+		private function button_clear_click(event:MouseEvent):void
+		{
+			objectData.filterList("");
+			clear();
+		}
+		
+		private function clearGridTags():void
+		{
+			for each(var row:GridRow in grid_tags.getChildren())
+			{
+				for each(var col:GridItem in row.getChildren())
+				{					
+					var checkBox:CheckBox = CheckBox(col.getChildAt(0));
+					checkBox.selected = false;
+				}
+			}
+		}
+		
+		private function textBox_submit(event:Event):void
+		{
+			clearGridTags();
+			
+			objectData.filterList(textInput_search.text);
+			dispatchEvent(new Event(SEARCH_SUBMIT, true));
+		}
+		
+		private function checkBox_tag_change(event:Event):void
+		{	
+			textInput_search.text = "";		
+			var searchTerms:String = "";
+			
+			for each(var row:GridRow in grid_tags.getChildren())
+			{
+				for each(var col:GridItem in row.getChildren())
+				{					
+					var checkBox:CheckBox = CheckBox(col.getChildAt(0));
+					if(checkBox.visible && checkBox.selected)
+						searchTerms += checkBox.data + " ";
+				}
+			}
+	
+			objectData.filterList(StringUtil.trim(searchTerms), true);
+			dispatchEvent(new Event(SEARCH_SUBMIT, true));			
+		}
+		
+		//--------------------------------------------------------------------------
+		//--------------------------------------------------------------------------		
+		
+	]]>
+	</mx:Script>
+	
+	<mx:Metadata>
+		[Event(name="searchSubmit", type="flash.events.Event")]
+	</mx:Metadata>
+	
+	<mx:HBox width="100%" paddingLeft="10">
+	
+		<mx:VBox>
+			<mx:Label text="Search:" styleName="headingLabel" />
+			<mx:HBox>
+				<TextBoxSearch id="textInput_search" width="240" textSubmit="textBox_submit(event)" />
+				<mx:Button id="button_clear" label="Reset" click="button_clear_click(event)" />
+			</mx:HBox>
+		</mx:VBox>
+
+		<mx:HBox width="100%" horizontalAlign="right">
+			<mx:Button click="{this.visible = false}" styleName="closeButton" />
+		</mx:HBox>
+
+	</mx:HBox>
+
+	<mx:Spacer height="5" />
+
+	<mx:VBox styleName="searchWindowTagBox" width="100%" height="100%">
+		<mx:Label text="Popular Tags:" styleName="headingLabel" />
+		<mx:Grid id="grid_tags" width="100%" height="100%" styleName="searchWindowTags" verticalGap="0" horizontalGap="0" />		
+	</mx:VBox>
+		
+</WipeWindow>

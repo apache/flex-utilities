@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+      contributor license agreements.  See the NOTICE file distributed with
+      this work for additional information regarding copyright ownership.
+      The ASF licenses this file to You under the Apache License, Version 2.0
+      (the "License"); you may not use this file except in compliance with
+      the License.  You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+  -->
+
+<!-- Simple example to demonstrate the ToggleButtonBar control. -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+
+    <mx:Script>
+        <![CDATA[
+
+            import mx.events.ItemClickEvent;
+
+            // Event handler function to print a message
+            // describing the selected Button control.
+    		private function clickHandler(event:ItemClickEvent):void {
+    		    myTA.text="Selected button index: " + String(event.index) +
+    		        "\n" + "Selected button label: " + event.label;
+            }
+        ]]>
+    </mx:Script>
+
+    <mx:Panel title="ToggleButtonBar Control Example" height="75%" width="75%"
+        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+
+        <mx:Label width="100%" color="blue"
+            text="Select a button in the ToggleButtonBar control."/>
+
+        <mx:TextArea id="myTA" width="100%" height="100%"/>
+
+        <mx:ToggleButtonBar itemClick="clickHandler(event);">
+            <mx:dataProvider>
+                <mx:Array>
+                    <mx:String>Flash</mx:String>
+                    <mx:String>Director</mx:String>
+                    <mx:String>Dreamweaver</mx:String>
+                    <mx:String>ColdFusion</mx:String>
+                </mx:Array>
+            </mx:dataProvider>
+        </mx:ToggleButtonBar>
+    </mx:Panel>
+</mx:Application>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<index>
+	<title>Source of Sample-AIR2-Globalization</title>
+	<nodes>
+		<node label="libs">
+			<node label="flashplayer10_globalswc.zip" url="source/libs/flashplayer10_globalswc.zip"/>
+			<node label="playerglobal.swc" url="source/libs/playerglobal.swc"/>
+		</node>
+		<node label="src">
+			<node icon="packageIcon" label="skins" expanded="true">
+				<node icon="mxmlIcon" label="TDFPanelSkin.mxml" url="source/skins/TDFPanelSkin.mxml.html"/>
+			</node>
+			<node label="CurrencyFormatterSample-app.xml" url="source/CurrencyFormatterSample-app.xml.txt"/>
+			<node icon="mxmlAppIcon" selected="true" label="CurrencyFormatterSample.mxml" url="source/CurrencyFormatterSample.mxml.html"/>
+			<node label="DateFormatterSample-app.xml" url="source/DateFormatterSample-app.xml.txt"/>
+			<node icon="mxmlIcon" label="DateFormatterSample.mxml" url="source/DateFormatterSample.mxml.html"/>
+			<node label="NumberFormatterSample-app.xml" url="source/NumberFormatterSample-app.xml.txt"/>
+			<node icon="mxmlIcon" label="NumberFormatterSample.mxml" url="source/NumberFormatterSample.mxml.html"/>
+			<node label="test-app.xml" url="source/test-app.xml.txt"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 596K)" url="Sample-AIR2-Globalization.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="500" height="430" horizontalScrollPolicy="off" verticalScrollPolicy="off" click="closeAbout()">
+	
+	<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		
+		public var isOpen:Boolean = false;
+		
+		public function set url(value:String):void
+		{
+			html_view.htmlLoader.navigateInSystemBrowser = true;
+			html_view.location = value;			
+		}
+		
+		public function closeAbout():void {
+			isOpen = false;
+			parentApplication.setFocus(); 
+			PopUpManager.removePopUp(this)
+		}
+		
+	]]>
+	</mx:Script>
+
+	<mx:Parallel id="aboutEffect">
+		<mx:Fade alphaFrom="0" alphaTo="1" duration="300"/>
+		<mx:Blur blurXFrom="300" blurXTo="0" duration="700"/>
+	</mx:Parallel>
+
+	<mx:Parallel id="shadowEffect">
+		<mx:Fade duration="1000"/>
+		<mx:Blur blurXFrom="0" blurYFrom="0" blurXTo="20" blurYTo="20" duration="500"/>
+		<mx:Fade duration="1000"/>
+	</mx:Parallel>
+
+	<mx:Canvas x="15" y="15" backgroundColor="black" backgroundAlpha="0.5" width="434" height="368" addedEffect="shadowEffect"/>
+	<mx:HTML x="0" y="0" id="html_view" width="439" height="368" addedEffect="aboutEffect" verticalScrollPolicy="off" horizontalScrollPolicy="off" />
+	
+</mx:Canvas>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						xmlns:s="library://ns.adobe.com/flex/spark" 
+						xmlns:mx="library://ns.adobe.com/flex/mx" 
+						creationComplete="init()" styleName="plain" width="100%" height="100%">
+	
+	<!-- LINK TO ARTICLE: http://www.adobe.com/devnet/air/flex/articles/using_mic_api.html -->
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.audio.format.WAVWriter;
+			
+			import flash.events.SampleDataEvent;
+			import flash.media.Microphone;
+			import flash.media.Sound;
+			import flash.utils.ByteArray;
+			
+			import mx.collections.ArrayCollection;
+			
+			[Bindable] 
+			private var microphoneList:ArrayCollection;
+			protected var microphone:Microphone;
+			
+			[Bindable]
+			protected var isRecording:Boolean = false;
+			
+			[Bindable]
+			protected var isPlaying:Boolean = false;
+			
+			[Bindable]
+			protected var soundData:ByteArray;
+			protected var sound:Sound;
+			protected var channel:SoundChannel;
+			
+			protected function init():void
+			{
+				microphoneList = new ArrayCollection(Microphone.names);
+				cbMicChoices.selectedIndex=0;
+			}
+			
+			protected function startRecording():void
+			{
+				isRecording = true;
+				microphone = Microphone.getMicrophone(cbMicChoices.selectedIndex);
+				microphone.rate = 44;
+				microphone.gain = 100;
+				soundData = new ByteArray();
+				trace("Recording");
+				microphone.addEventListener(SampleDataEvent.SAMPLE_DATA, onSampleDataReceived);
+			
+			}
+			
+			protected function stopRecording():void
+			{
+				isRecording = false;
+				trace("Stopped recording");
+				microphone.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleDataReceived);
+			}
+			
+			private function onSampleDataReceived(event:SampleDataEvent):void
+			{
+				while(event.data.bytesAvailable)
+				{
+					var sample:Number = event.data.readFloat();
+					soundData.writeFloat(sample);
+				}
+			}
+			
+			protected function soundCompleteHandler(event:Event):void
+			{
+				isPlaying = false;
+			}
+			
+			protected function startPlaying():void
+			{
+				isPlaying = true
+				soundData.position = 0;
+				sound = new Sound();
+				sound.addEventListener(SampleDataEvent.SAMPLE_DATA, sound_sampleDataHandler);
+				channel = sound.play();
+				channel.addEventListener(Event.SOUND_COMPLETE, soundCompleteHandler);	
+			}
+			
+			protected function sound_sampleDataHandler(event:SampleDataEvent):void
+			{
+				if (!soundData.bytesAvailable > 0)
+				{
+					return;
+				}
+				
+				for (var i:int = 0; i < 8192; i++)
+				{
+					var sample:Number = 0;
+					
+					if (soundData.bytesAvailable > 0)
+					{
+						sample = soundData.readFloat();
+					}
+					event.data.writeFloat(sample); 
+					event.data.writeFloat(sample);  
+				}
+				
+			}
+			
+			protected function stopPlaying():void
+			{
+				channel.stop();
+				isPlaying = false;
+			}
+			protected function save():void
+			{
+				var docsDir:File = File.documentsDirectory;
+				try
+				{
+					docsDir.browseForSave("Save As");
+					docsDir.addEventListener(Event.SELECT, saveFile);
+				}
+				catch (error:Error)
+				{
+					trace("Save failed:", error.message);
+				}
+
+
+			}
+			protected function saveFile(event:Event):void
+			{
+				var outputStream:FileStream = new FileStream();
+				var wavWriter:WAVWriter = new WAVWriter();
+				var newFile:File = event.target as File;
+				
+				if (!newFile.exists)
+				{
+					soundData.position = 0;  // rewind to the beginning of the sample
+					
+					wavWriter.numOfChannels = 1; // set the inital properties of the Wave Writer
+					wavWriter.sampleBitRate = 16;
+					wavWriter.samplingRate = 44100;
+					outputStream.open(newFile, FileMode.WRITE);  //write out our file to disk.
+					wavWriter.processSamples(outputStream, soundData, 44100, 1); // convert our ByteArray to a WAV file.
+					outputStream.close();
+				}
+			}
+			
+			protected function toggleRecording():void
+			{
+				if (isRecording)
+				{
+					isRecording = false;
+					btnRecord.label = "Record";
+					stopRecording();
+				}
+				else
+				{
+					isRecording = true;
+					btnRecord.label = "Stop Recording";
+					startRecording();
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Panel skinClass="skins.TDFPanelSkin" width="100%" height="100%" title="Microphone Support">
+		<s:Label left="10" top="7" width="80%" verticalAlign="justify" color="#323232" 
+				 text="The new Microphone support allows you to record audio such as voice memo's using a built-in or external mic. The Microphone.names
+property will return the list of all available sound input devices found (see init method in code):"/>
+		<s:VGroup top="70" horizontalAlign="center" horizontalCenter="0">
+			<s:Label text="Select the microphone input device to use:"/>
+			<s:ComboBox id="cbMicChoices" dataProvider="{microphoneList}" selectedIndex="0"/>
+		</s:VGroup>
+		<s:VGroup top="130" horizontalCenter="0">
+			<s:Label text="Start recording audio by clicking the Record button:"/>
+			<s:HGroup horizontalCenter="0" verticalAlign="middle">
+				<s:Button id="btnRecord" label="Record" click="toggleRecording()" enabled="{!isPlaying}"/>
+				<s:Button id="btnPlay" label="Play" click="startPlaying()" enabled="{!isRecording}"/>
+				<s:Button label="Save Audio Clip" click="save()"  horizontalCenter="0"/>
+			</s:HGroup>
+		</s:VGroup>
+	</s:Panel>
+	
+</mx:Module>

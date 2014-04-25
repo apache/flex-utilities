@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+      contributor license agreements.  See the NOTICE file distributed with
+      this work for additional information regarding copyright ownership.
+      The ASF licenses this file to You under the Apache License, Version 2.0
+      (the "License"); you may not use this file except in compliance with
+      the License.  You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+  -->
+
+<!-- Simple example to demonstrate the HSlider control. -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+
+    <mx:Script>
+        <![CDATA[
+   
+          private var imageWidth:Number=0;
+          private var imageHeight:Number=0;
+          
+          // Event handler function to change the image size.
+          private function changeSize():void
+	      {
+	         phoneImage.width=uint(imageWidth*hSlider.value/100);
+	         phoneImage.height=uint(imageHeight*hSlider.value/100);
+	      }
+        ]]>
+    </mx:Script>
+
+    <mx:Panel id="panel" title="HSlider Control Example" height="100%" width="95%" 
+        paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+
+        <mx:HBox height="100%" width="100%">
+            <mx:Image id="phoneImage" source="@Embed('assets/Nokia_6630.png')" 
+                creationComplete="imageWidth=phoneImage.width; imageHeight=phoneImage.height;" />
+        </mx:HBox>
+
+        <mx:Label color="blue" text="Drag the slider to resize the image."/>
+
+        <mx:HSlider id="hSlider" minimum="0" maximum="100" value="100" 
+            dataTipPlacement="top" 
+            tickColor="black" 
+            snapInterval="1" tickInterval="10" 
+            labels="['0%','100%']" 
+            allowTrackClick="true" 
+            liveDragging="true"
+            change="changeSize();"/>
+    </mx:Panel>
+</mx:Application>   
+       

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Module	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			xmlns:s="library://ns.adobe.com/flex/spark" 
+			xmlns:mx="library://ns.adobe.com/flex/mx" 
+			styleName="plain" width="100%" height="100%">
+	<fx:Script>
+		<![CDATA[
+			import flash.globalization.LastOperationStatus;
+			import flash.globalization.LocaleID;
+			import flash.globalization.NumberFormatter;
+			import flash.globalization.NumberParseResult;
+			
+			import mx.collections.ArrayCollection;
+			protected var locale:String;
+			
+			[Bindable]
+			protected var locales:ArrayCollection = new ArrayCollection([
+				{label:"Default Locale", data:LocaleID.DEFAULT},
+				{label:"Swedish", data:"sv_SE"}, 
+				{label:"Dutch", data:"nl_NL"},
+				{label:"French", data:"fr_FR"},
+				{label:"German", data:"de_DE"},
+				{label:"Japanese", data:"ja_JP"}, 
+				{label:"Korean", data:"ko_KR"}, 
+				{label:"US-English", data:"en_US"},
+			]);
+			
+			protected function parseNumber():void
+			{
+				ta.text="";
+				
+				if (ddl.selectedIndex == -1)
+					locale = LocaleID.DEFAULT;
+				else locale = ddl.selectedItem.data
+					
+				var nf:NumberFormatter = new NumberFormatter(locale);
+				ta.text += "Locale selected: " + locale + " Actual LocaleID Name: " + nf.actualLocaleIDName  + "\n\n";
+				
+				var parseResult:NumberParseResult = nf.parse(num.text);
+				if (nf.lastOperationStatus == LastOperationStatus.NO_ERROR ) {
+					ta.text +="The value of Parsed Number:" + parseResult.value +"\n";
+				}
+				var parsedNumber:Number = nf.parseNumber(num.text);
+				if (nf.lastOperationStatus == LastOperationStatus.NO_ERROR ) {
+					ta.text+="The value of Parsed Number:" + parsedNumber +"\n";
+				}
+				ta.text += "\n\nLast Operation Status: " + nf.lastOperationStatus + "\n";   
+			}
+			protected function formatNumber():void
+			{
+				ta.text="";
+				
+				if (ddl.selectedIndex == -1)
+					locale = LocaleID.DEFAULT;
+				else locale = ddl.selectedItem.data
+					
+				var nf:NumberFormatter = new NumberFormatter(locale);
+				ta.text += "Locale selected: " + locale + " - Actual locale name: " + nf.actualLocaleIDName  + "\n\n"; 
+				ta.text += "Formatted Number: " + nf.formatNumber(Number(num.text))+"\n";
+				ta.text += "Formatted Integer: " + nf.formatInt(Number(num.text))+"\n";
+				ta.text += "Formatted Unsigned Integer: " + nf.formatUint(Number(num.text))+"\n";
+							
+				ta.text += "\n\nLast Operation Status: " + nf.lastOperationStatus+"\n";   
+				
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Panel skinClass="skins.TDFPanelSkin" width="100%" height="100%" title="Number Formatting/Parsing by Locale">
+		<s:VGroup top="10" left="12">
+			<s:Label text="Enter a number with commas, decimals or negative"/>
+			<s:Label text="(for example: 123,456,789.123):"/>
+			<s:TextInput id="num"/>
+			<s:DropDownList id="ddl" dataProvider="{locales}" prompt="Select locale..." width="200"/>
+			<s:HGroup>
+				<s:Button label="Parse" click="parseNumber()"/>
+				<s:Button label="Format" click="formatNumber()"/>
+			</s:HGroup>
+		</s:VGroup>
+		<s:VGroup right="20" top="10">
+			<s:Label text="Console:"/>
+			<s:TextArea id="ta" width="350" editable="false" />
+		</s:VGroup>
+		<s:Label width="95%" verticalAlign="justify" color="#323232" bottom="25" horizontalCenter="0" 
+				 text="This sample will format or parse a number with the selected locale. The last operation status
+will indicate if an error occurred in formatting or parsing. "/>
+	</s:Panel>
+</mx:Module>

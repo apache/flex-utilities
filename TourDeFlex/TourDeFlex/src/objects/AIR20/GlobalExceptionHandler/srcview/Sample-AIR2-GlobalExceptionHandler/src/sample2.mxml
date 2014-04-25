@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" 
+					   creationComplete="init()"
+					   styleName="plain" width="100%" height="100%">
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.events.UncaughtErrorEvent;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			private function init():void
+			{
+				loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, errorHandler);
+			}
+			
+			private function errorHandler(e:UncaughtErrorEvent):void {
+				e.preventDefault();
+				Alert.show("An error has occurred and been caught by the global error handler: " + e.error.toString(), "My Global Error Handler");
+			}
+			
+			private function loadFileWithHandling():void
+			{
+				var f:File = File.documentsDirectory.resolvePath("http://tourdeflex.adobe.com/file-that-doesnt-exist.txt");
+				// The above file did not load, so when we try to access a property on it an error will be thrown
+				try {
+					Alert.show("File " + f.creationDate);
+				}
+				catch (ex:Error)
+				{
+					Alert.show("Error occurred loading files: " + ex.message, "My Specific File Loading Handler");
+				}
+			}
+			
+			private function loadFileWithoutHandling():void
+			{
+				var f:File = File.documentsDirectory.resolvePath("http://tourdeflex.adobe.com/file-that-doesnt-exist.txt");
+				// The above file did not load, so when a property is accessed an error will be thrown
+				Alert.show("File creation date " + f.creationDate);
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Panel width="100%" height="100%" skinClass="skins.TDFPanelSkin" title="Global Error Handler Sample">
+		<s:VGroup top="10" left="10" gap="12">
+			<s:Label width="400" verticalAlign="justify" color="#323232" 
+					 text="This sample for showing the Global Error Handling feature tries to load various files from remote locations that it assumes
+are there. In the case where one might have been deleted or corrupt, the error is now caught. Note: any error that is not surrounded by try/catch that occurs
+can be handled in this manner where you have one global error handler for all uncaught errors."/>
+			<s:Label bottom="200" left="40" text="Click on the buttons below to create an error to be handled:"/>
+			<s:HGroup bottom="170" left="40">
+				<s:Button label="Load File with error handling" click="loadFileWithHandling()"/>
+				<s:Button label="Load File without error handling" click="loadFileWithoutHandling()"/>
+			</s:HGroup>	
+		</s:VGroup>
+			
+	</s:Panel>
+	
+</mx:Module>

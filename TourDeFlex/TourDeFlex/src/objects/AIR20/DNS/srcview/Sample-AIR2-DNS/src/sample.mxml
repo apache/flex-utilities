@@ -1,0 +1,126 @@
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<mx:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   styleName="plain" width="100%" height="100%">
+	
+	<!-- Based on sample here: http://www.insideria.com/2009/10/air-2-enhancements-complete-ov.html -->
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.events.DNSResolverEvent;
+			import flash.net.dns.ARecord;
+			import flash.net.dns.DNSResolver;
+			import flash.net.dns.MXRecord;
+			import flash.net.dns.PTRRecord;
+			
+			import mx.controls.Alert;
+			
+			import skins.TDFPanelSkin;
+			
+			protected var resolver:DNSResolver;
+			
+			protected function startLookup(host:String, isARecordSelected:Boolean, isMXRecordSelected:Boolean ):void
+			{
+				this.output.text = "";
+				if (isARecordSelected) lookup( host + ".", ARecord );
+				if (isMXRecordSelected) lookup( host, MXRecord );
+			}
+			
+			protected function reverseLookup(host:String, recordType:Class):void
+			{
+				output.text = "";
+				trace("Record Type " + recordType);
+				if (ipAddress.text != null && ipAddress.text.length >0)
+					lookup(host,recordType);
+				else Alert.show("Please enter a valid IP address.");
+			}
+			
+			protected function lookup(host:String, recordType:Class):void
+			{
+				resolver = new DNSResolver();
+				resolver.addEventListener( DNSResolverEvent.LOOKUP, lookupComplete );
+				resolver.addEventListener( ErrorEvent.ERROR, lookupError );
+				resolver.lookup(host, recordType);
+			}
+			
+			private function lookupComplete(event:DNSResolverEvent):void
+			{
+				
+				resolver.removeEventListener( DNSResolverEvent.LOOKUP, lookupComplete );
+				resolver.removeEventListener( ErrorEvent.ERROR, lookupError );                
+				
+				setOutput( "Querying host: " + event.host );
+				setOutput( "Record type: " +  flash.utils.getQualifiedClassName( event.resourceRecords[0] ) +
+					", count: " + event.resourceRecords.length );
+				
+				for each( var record:* in event.resourceRecords )
+				{
+					if (record is ARecord) setOutput( "ARecord: " + record.name + " : " + record.address );
+					if (record is MXRecord) setOutput( "MXRecord: " + record.name + " : " + record.exchange + ", " + record.preference );
+					if (record is PTRRecord) setOutput( "PTRRecord: " + record.name + " : " + record.ptrdName );
+				}
+			}
+			
+			private function setOutput(message:String):void
+			{
+				resolver.removeEventListener( DNSResolverEvent.LOOKUP, lookupComplete );
+				resolver.removeEventListener( ErrorEvent.ERROR, lookupError );    
+				output.text = message + "\n" + output.text;
+			}
+			
+			private function lookupError( error:ErrorEvent ):void
+			{
+				Alert.show("Error: " + error.text );
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Panel title="DNS Lookup" skinClass="skins.TDFPanelSkin" width="100%" height="100%">
+		<s:layout>
+			<s:VerticalLayout paddingLeft="8" paddingTop="8" paddingBottom="8" paddingRight="8"/>
+		</s:layout>
+		<s:HGroup left="5" top="5">
+			<s:VGroup>
+				<s:HGroup>
+					<s:CheckBox id="cbARecord" label="ARecord" selected="true"/>
+					<s:CheckBox id="cbMXRecord" label="MX Record" selected="true"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="middle">
+					<s:Label text="Host name: "/>
+					<s:TextInput id="domain" text="cnn.com"/>
+					<s:Button label="Lookup DNS" click="startLookup(domain.text, cbARecord.selected, cbMXRecord.selected)"/>
+				</s:HGroup>
+			</s:VGroup>
+			<s:VGroup right="30" top="10">
+				<s:Label text="IP Address (127.0.0.1 for example):"/>
+				<s:TextInput id="ipAddress" restrict="0-9."/>
+				<s:Button label="Reverse DNS Lookup" click="reverseLookup(ipAddress.text, PTRRecord)"/>
+			</s:VGroup>	
+		</s:HGroup>
+		<s:HGroup width="500" bottom="60" horizontalCenter="0">
+			<s:Label text="Console:"/>
+			<s:TextArea id="output" editable="false" width="70%" height="100"/>	
+		</s:HGroup>
+		<s:Label width="95%" verticalAlign="justify" color="#323232" horizontalCenter="0" bottom="20" 
+				 text="The DNS Lookup functionality in AIR 2.0 allows you to lookup the Domain Name Server information for a given URL."/>
+	</s:Panel>
+</mx:Module>

@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+      contributor license agreements.  See the NOTICE file distributed with
+      this work for additional information regarding copyright ownership.
+      The ASF licenses this file to You under the Apache License, Version 2.0
+      (the "License"); you may not use this file except in compliance with
+      the License.  You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+  -->
+
+<!-- Simple example to demonstrate the States class. -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+
+    <!-- Define one view state, in addition to the base state.-->
+    <mx:states>
+        <mx:State name="Register">
+            <mx:AddChild relativeTo="{loginForm}" position="lastChild">
+                <mx:target>
+                    <mx:FormItem id="confirm" label="Confirm:">
+                        <mx:TextInput/>
+                    </mx:FormItem>
+                </mx:target>
+            </mx:AddChild>
+            <mx:SetProperty target="{loginPanel}" name="title" value="Register"/>
+            <mx:SetProperty target="{loginButton}" name="label" value="Register"/>
+            <mx:SetStyle target="{loginButton}" 
+                name="color" value="blue"/>
+            <mx:RemoveChild target="{registerLink}"/>
+            <mx:AddChild relativeTo="{spacer1}" position="before">
+                <mx:target>
+                    <mx:LinkButton id="loginLink" label="Return to Login" click="currentState=''"/>
+                </mx:target>
+            </mx:AddChild>
+        </mx:State>
+    </mx:states>
+
+    <!-- Define a Panel container that defines the login form.-->
+    <mx:Panel title="Login" id="loginPanel" 
+        horizontalScrollPolicy="off" verticalScrollPolicy="off"
+        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+
+        <mx:Text width="100%" color="blue"
+            text="Click the 'Need to Register?' link to change state. Click the 'Return to Login' link to return to the base state."/>
+
+        <mx:Form id="loginForm" >
+            <mx:FormItem label="Username:">
+                <mx:TextInput/>
+            </mx:FormItem>
+            <mx:FormItem label="Password:">
+                <mx:TextInput/>
+            </mx:FormItem>
+        </mx:Form>
+        <mx:ControlBar>
+            <mx:LinkButton id="registerLink"  label="Need to Register?"
+                click="currentState='Register'"/>
+            <mx:Spacer width="100%" id="spacer1"/>
+            <mx:Button label="Login" id="loginButton"/>
+        </mx:ControlBar>
+    </mx:Panel>
+</mx:Application>

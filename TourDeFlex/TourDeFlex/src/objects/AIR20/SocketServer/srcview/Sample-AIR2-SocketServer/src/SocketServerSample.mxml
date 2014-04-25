@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="100%" height="100%" styleName="plain">
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.events.Event;
+			import flash.events.MouseEvent;
+			import flash.events.ProgressEvent;
+			import flash.events.ServerSocketConnectEvent;
+			import flash.net.ServerSocket;
+			import flash.net.Socket;
+			import flash.utils.ByteArray;
+			
+			import mx.controls.Alert;
+			
+			private var serverSocket:ServerSocket;
+			
+			private function listen():void
+			{
+				try
+				{
+					serverSocket = new ServerSocket();
+					serverSocket.addEventListener(Event.CONNECT, socketConnectHandler);
+					serverSocket.addEventListener(Event.CLOSE,socketCloseHandler);
+					serverSocket.bind(Number(port.text));
+					serverSocket.listen();					
+					log.text += "Listening on port " + port.text + "...\n";
+					
+				}
+				catch (error:Error)
+				{
+					Alert.show("Port " + port.text + " may be in use. Enter another port number and try again.\n(" +
+						error.message +")", "Error");
+				}
+			}
+			
+			private function socketConnectHandler(event:ServerSocketConnectEvent):void
+			{
+				var socket:Socket = event.socket;
+				log.text += "Socket connection established on port " + port.text + "...\n";
+				socket.addEventListener(ProgressEvent.SOCKET_DATA, socketDataHandler);
+			}
+			
+			private function socketDataHandler(event:ProgressEvent):void
+			{
+				try
+				{
+					var socket:Socket = event.target as Socket;
+					var bytes:ByteArray = new ByteArray();
+					socket.readBytes(bytes);
+					log.text += ""+bytes;
+					socket.flush();
+				}
+				catch (error:Error)
+				{
+					Alert.show(error.message, "Error");
+				}
+			}
+			
+			protected function buttonClose_clickHandler(event:MouseEvent):void
+			{
+				try {
+					serverSocket.close();
+				}
+				catch (error:Error)
+				{
+					Alert.show(error.message, "Error on close");
+				}
+			}
+			protected function socketCloseHandler(e:Event):void
+			{
+				log.text += "Socket Closed";
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8">
+		<s:Label text="Start listening over a socket connection by clicking the listen button."/>
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Port:"/>
+			<s:TextInput id="port" text="1235" width="50"/>
+			<s:Button label="Listen" click="listen()"/>
+			<s:Button label="Close Socket" click="buttonClose_clickHandler(event)"/>
+		</s:HGroup>
+		
+		<s:TextArea id="log" width="100%" height="100%" />
+	</s:VGroup>
+	
+</mx:Module>

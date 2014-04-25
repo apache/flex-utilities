@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()" width="100%" height="100%" verticalGap="0" styleName="qStartStyle"  >
+	
+	<mx:Script>
+	<![CDATA[
+		import mx.events.CloseEvent;
+		import mx.core.FlexSprite;
+		import mx.managers.PopUpManager;
+		import TopPanels4_fla.MainTimeline;
+		
+		public static const CLOSE_EVENT:String = "close";
+		
+		private function init():void
+		{
+			html_quickStart.htmlLoader.navigateInSystemBrowser = true;
+			html_quickStart.htmlText = "<BR><BR><BR><CENTER>Loading...</CENTER>";
+			this.systemManager.addEventListener(MouseEvent.CLICK, modal_click);		
+		}		
+		
+		private function modal_click(event:MouseEvent):void
+		{
+			if(event.target is FlexSprite && FlexSprite(event.target).name == "modalWindow")
+				PopUpManager.removePopUp(this);
+		}
+		
+		public function set location(value:String):void
+		{
+			if(html_quickStart)
+				html_quickStart.location = value;
+		}
+		
+		public function clearContents():void
+		{
+			html_quickStart.htmlText = "";
+		}
+	]]>
+	</mx:Script>
+	
+	<mx:Style>
+		.qStartStyle{
+			backgroundImage: Embed(skinClass='QuickStartPanel');
+			backgroundSize: "100%";
+		}
+		.closeHTML{
+			skin: Embed(skinClass='CloseHTMLButton');
+		}
+		.linkButton{
+			icon: Embed(skinClass='LinkIcon');
+			color: #314983;
+			textRollOverColor: #323232;
+			fontWeight: normal;
+		}
+	</mx:Style>
+
+	<mx:Metadata>
+		[Event(name="close", type="mx.events.CloseEvent")]
+	</mx:Metadata>
+	
+	<mx:VBox height="100%" width="100%" paddingBottom="5" paddingLeft="6" paddingRight="6" paddingTop="5">
+		<mx:HTML id="html_quickStart" height="100%" width="100%" horizontalScrollPolicy="off" />
+	</mx:VBox>		
+
+
+</mx:VBox>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" backgroundColor="#000000" horizontalScrollPolicy="off" verticalScrollPolicy="off" remove="video_intro.stop()" >
+	
+	<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+
+		private var videoLength:int;
+
+		private function setVolume(event:Event):void
+		{
+			if(event.target.selected)
+			{
+				video_intro.volume = 0;
+			}
+			else
+			{
+				video_intro.volume = 1;
+				video_intro.playheadTime = 0;
+				video_intro.play();
+			}
+			//so.data.mute = ev.target.selected;
+		}
+		
+		private function checkBox_skip_click(event:Event):void
+		{
+			if(event.target.selected)
+			{				
+				video_intro_complete();
+			}
+			else
+			{
+				video_intro.playheadTime = 0;
+				video_intro.play();
+			}
+			//so.data.skip = event.target.selected;
+		}
+		
+		private function video_intro_complete():void
+		{		
+			//Preferences.preferencesXml.Splash.@skip = checkBox_skip.selected.toString(); -- no longer save skip - GAW
+			video_intro.playheadTime = video_intro.totalTime;
+			video_intro.stop();
+			//PopUpManager.removePopUp(this);
+			//Preferences.save();
+		}
+		
+	]]>
+	</mx:Script>
+
+	<mx:VideoDisplay id="video_intro" width="678" height="568" source="{Config.SPLASH_URL}" 
+		autoPlay="true" borderThickness="2" borderColor="black" borderStyle="inset"
+		autoBandWidthDetection="false" bufferTime="0.1" volume="0" complete="video_intro_complete()" rollOver="panel_options.visible=true;"
+		rollOut="panel_options.visible=false;" autoRewind="false" />
+	
+	<mx:Panel id="panel_options" width="90" height="35" color="0xFFFFFF" backgroundAlpha="0.6" backgroundColor="0x000000" borderColor="0x000000" layout="horizontal" borderAlpha="0.6"
+		borderThicknessTop="1" borderThicknessBottom="10" headerHeight="10" cornerRadius="5" x="{(video_intro.width/2)-(panel_options.width/2)}"
+		y="{(video_intro.height - 70)}" horizontalAlign="center" verticalAlign="middle"  horizontalGap="20" visible="false" 
+		roundedBottomCorners="true" rollOver="panel_options.visible=true;" >		 
+		 
+		<mx:CheckBox id="checkBox_mute" label="MUTE" selected="true" click="setVolume(event);"  textRollOverColor="0x55C0FF" textSelectedColor="0xACACAC" />
+		<!-- Removed - GAW
+		<mx:VRule height="20" alpha="0.5" />
+		<mx:Button id="checkBox_skip" label="SKIP" click="checkBox_skip_click(event);" textRollOverColor="0x55C0FF" textSelectedColor="0xACACAC" />
+		-->
+	</mx:Panel>
+	
+</mx:Canvas>
