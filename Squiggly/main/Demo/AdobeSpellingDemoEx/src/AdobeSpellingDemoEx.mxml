@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- Simple example to demonstrate the Spark TextArea control. -->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/mx" viewSourceURL="srcview/index.html" applicationComplete="init()">
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.linguistics.spelling.SpellUI;
+			import com.adobe.linguistics.spelling.framework.SpellingConfiguration;
+			import com.adobe.linguistics.spelling.framework.ResourceTable;
+			
+			
+			public function init():void
+			{
+				var resourceTable:ResourceTable = new ResourceTable();
+				resourceTable.setResource("en_US", {rule:"data/en_US.aff", dict:"data/en_US.dic"});
+				resourceTable.setResource("es_ES", {rule:"data/es_ES.aff", dict:"data/es_ES.dic"});
+				resourceTable.setResource("it_IT", {rule:"data/it_IT.aff", dict:"data/it_IT.dic"});
+				resourceTable.setResource("pt_PT", {rule:"data/pt_PT.aff", dict:"data/pt_PT.dic"});	
+				SpellingConfiguration.resourceTable = resourceTable;
+			}
+		]]>
+	</fx:Script>
+	
+	<mx:Label text="Squiggly Spell Checker Flex Demo v0.3" fontSize="30"/>
+	
+	<mx:TabNavigator width="70%" height="100%" fontSize="25">
+		<s:NavigatorContent label="English" width="100%" height="100%">
+			<s:TextArea id="ta_en" width="100%" height="100%" 
+						 text="I know Enlish. Use the context menu to see the suggestions of the missbelled word. "
+						 creationComplete="SpellUI.enableSpelling(ta_en, 'en_US');"/>
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Spanish" width="100%" height="100%">
+			<s:TextArea id="ta_es" width="100%" height="100%" 
+						 text="Sé esbañol. Utilice el menú contextual para ver las sugerencias de la palabra mal eskrita. "
+						 creationComplete="SpellUI.enableSpelling(ta_es, 'es_ES');" />
+		</s:NavigatorContent>
+		<s:NavigatorContent label="Portuguese" width="100%" height="100%">
+			<s:TextArea id="ta_pt" width="100%" height="100%" 
+						 text="Eu sei Portoguês. Use o menu de contexto para ver as sugestões da palavra grafada incorectamente."
+						 creationComplete="SpellUI.enableSpelling(ta_pt, 'pt_PT');"/>
+		</s:NavigatorContent>	
+		<s:NavigatorContent label="Italian" width="100%" height="100%">
+			<s:TextArea id="ta_it" width="100%" height="100%" 
+						 text="So italianou. Utilizzare il menu di scelta rapida per visualizzare le suggestioni della parola erreta. "
+						 creationComplete="SpellUI.enableSpelling(ta_it, 'it_IT');"/>
+		</s:NavigatorContent>
+	</mx:TabNavigator>
+</s:Application>

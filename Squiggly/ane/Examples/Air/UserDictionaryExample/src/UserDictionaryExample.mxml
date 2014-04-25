@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" horizontalAlign="left" initialize="init()">
+<mx:Script>
+	<![CDATA[
+
+
+	import com.adobe.linguistics.spelling.HunspellDictionary;
+	import com.adobe.linguistics.spelling.SpellChecker;
+	import com.adobe.linguistics.spelling.UserDictionary;
+		
+	
+	private var ud:UserDictionary;
+	private var _newdict:HunspellDictionary = new HunspellDictionary();
+	private var sp:SpellChecker;
+	private function init():void {
+		_newdict.addEventListener(Event.COMPLETE, handleLoadComplete);
+		_newdict.load("dictionaries/en_US/en_US.aff", "dictionaries/en_US/en_US.dic");
+	}
+		
+	private function handleLoadComplete(evt:Event):void
+	{
+		sp = new SpellChecker(_newdict);
+	}
+
+	private function checkWord():void {
+		if( sp.checkWord( inputWord.text ) )
+			result.text = "Result:correct";
+		else
+			result.text = "Result:wrong";
+	}
+		
+	public function updateWordList():void
+	{
+		wordList.text = "";
+		
+		var wl:Vector.<String> = ud.wordList;
+		for each(var w:String in wl)
+		{
+			wordList.text += w + "\n";
+		}
+		
+	}
+	
+	
+	public function loadDict():void
+	{
+		var inFile:File = File.desktopDirectory;
+		inFile = inFile.resolvePath(filename.text);
+		if (inFile.exists)
+		{		
+			var inStream:FileStream = new FileStream();
+			inStream.open(inFile, FileMode.READ);
+			ud = new UserDictionary(inStream.readObject() as Vector.<String>);
+			inStream.close();  	
+			result1.text = "File loaded";	
+		}
+		else
+		{
+			ud = new UserDictionary();
+			result1.text = "File created";
+		}		
+		updateWordList();
+		sp.addUserDictionary(ud);
+	}
+	
+	public function saveDict():void
+	{
+		var outFile:File = File.desktopDirectory;
+		outFile = outFile.resolvePath(filename.text);
+		var outStream:FileStream = new FileStream();
+		outStream.open(outFile, FileMode.WRITE);
+		outStream.writeObject(ud.wordList);
+		outStream.close();
+		result1.text = "File saved"
+	}
+	
+	public function addWord():void
+	{
+		ud.addWord(word.text);
+		updateWordList();
+	}
+	
+	public function removeWord():void
+	{
+		ud.removeWord(word.text);
+		updateWordList();
+	}
+	
+	]]>
+</mx:Script>		
+	<mx:HBox>
+		<mx:TextInput id="filename" text="mywords.ud"/>
+		<mx:Button id="load" label="Load/New dictionary" click="loadDict()" />
+		<mx:Button id="save" label="Save dictionary" click="saveDict()" />
+		<mx:Label id="result1" text="Result:"/> 
+	</mx:HBox>	
+	<mx:HBox>
+		<mx:TextInput id="word" text="myword"/>
+		<mx:Button id="add" label="Add Word" click="addWord()" />
+		<mx:Button id="remove" label="Remove word" click="removeWord()" />
+		<mx:Label id="result2" text="Result:"/> 
+	</mx:HBox>
+	<mx:TextArea id="wordList" height="100" width="100"/>
+	
+	<mx:TextInput id="inputWord" text ="test" keyUp="checkWord()"/>
+	<mx:Button id="check" label="Check Word" click="checkWord()"  />
+	<mx:Label id ="result" text="Result:"/>
+</mx:WindowedApplication>

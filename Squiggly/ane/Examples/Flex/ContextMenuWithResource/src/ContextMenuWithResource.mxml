@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" initialize="init();">
+	<mx:Script>
+		<![CDATA[
+
+			import com.adobe.linguistics.spelling.SpellUI;
+			
+			[Bindable]
+			private var uiLocales:Array = ["en_US", "es_ES" ];
+			
+			private function uiLocaleChange():void
+			{
+				resourceManager.localeChain = [ localeComboBox.selectedItem ];
+				updateContextMenuForLocaleChange();
+			}
+				
+			private function updateContextMenuForLocaleChange():void
+			{
+				var contextMenu:Object = 
+					{add:resourceManager.getString('SquigglyContextMenu', 'add'),
+					 enable:resourceManager.getString('SquigglyContextMenu', 'enable'),
+					 disable:resourceManager.getString('SquigglyContextMenu', 'disable')};
+				SpellUI.setSpellingMenuEntries(contextMenu);
+			}
+			
+			private function init():void
+			{
+				SpellUI.enableSpelling(ta, "en_US");
+			}
+		]]>
+    </mx:Script>
+    
+    <mx:Metadata>
+    	[ResourceBundle("SquigglyContextMenu")]
+    </mx:Metadata>
+	<mx:Label text="Example for contextMenu customization with resource" fontSize="30"/>
+	<mx:HBox>
+		<mx:Text text="Locale for Squiggly contextMenu" color="blue"/>	
+		<mx:ComboBox id="localeComboBox" dataProvider="{uiLocales}" change="uiLocaleChange()"/>
+	</mx:HBox>
+	<mx:TextArea id="ta" width="50%" height="50%" fontSize="30" y="50" text="Sé esbañol. Utilice el menú contextual para ver las sugerencias de la palabra mal eskrita."/>
+</mx:Application>

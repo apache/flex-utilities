@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+
+<!-- Demonstrate some example controls.  This example does not attempt to create a control for every property in the TextLayoutFramework -->
+
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+		 height="570" label="Text Editor Example" backgroundColor="#FFFFFF"
+		 horizontalScrollPolicy="off" initialize="init()" verticalScrollPolicy="on">
+	<mx:Script>
+		<![CDATA[
+
+			import com.adobe.linguistics.spelling.SpellUIForTLF;
+			import com.adobe.linguistics.spelling.framework.SpellingService;
+			import com.adobe.linguistics.spelling.ui.IHighlighter;
+			import com.adobe.linguistics.spelling.ui.IWordProcessor;
+			import com.adobe.linguistics.utils.Token;
+			
+			import flash.display.Sprite;
+			import flash.system.Capabilities;
+			
+			import flashx.textLayout.container.ContainerController;
+			import flashx.textLayout.conversion.TextConverter;
+			import flashx.textLayout.edit.EditManager;
+			import flashx.textLayout.edit.ElementRange;
+			import flashx.textLayout.edit.IEditManager;
+			import flashx.textLayout.edit.SelectionState;
+			import flashx.textLayout.elements.Configuration;
+			import flashx.textLayout.elements.TextFlow;
+			import flashx.textLayout.events.SelectionEvent;
+			import flashx.textLayout.events.StatusChangeEvent;
+			import flashx.textLayout.formats.BlockProgression;
+			import flashx.textLayout.formats.Direction;
+			import flashx.textLayout.formats.ITextLayoutFormat;
+			import flashx.textLayout.formats.TextAlign;
+			import flashx.textLayout.formats.TextLayoutFormat;
+			import flashx.textLayout.formats.VerticalAlign;
+			import flashx.textLayout.tlf_internal;
+			import flashx.undo.UndoManager;
+			
+			// the textFlow being worked on
+			private var _textFlow:TextFlow = null;
+			private var _myContainerController:MyContainerController=null;
+			// container to hold the text
+			private var _container:Sprite = null;
+			// ///////////////////////////////////////
+			// data providers for enumerated list boxes
+			// ///////////////////////////////////////
+			static private const textAlignData:Array = [
+				{ label:"Justify",	data:TextAlign.JUSTIFY},
+				{ label:"Left",		data:TextAlign.LEFT},
+				{ label:"Right",	data:TextAlign.RIGHT},
+				{ label:"Center",	data:TextAlign.CENTER},
+				{ label:"End",		data:TextAlign.END},
+				{ label:"Start",	data:TextAlign.START}
+			];
+			static private const verticalAlignData:Array = [
+				{ label:"Bottom",	data:VerticalAlign.BOTTOM },
+				{ label:"Justify",	data:VerticalAlign.JUSTIFY },
+				{ label:"Middle",	data:VerticalAlign.MIDDLE },
+				{ label:"Top",		data:VerticalAlign.TOP }
+			];
+			
+			static private const blockProgressionData:Array = [
+				{ label:"TopToBottom",	data:BlockProgression.TB },
+				{ label:"RightToleft",	data:BlockProgression.RL }
+			];
+			
+			static private const directionData:Array = [
+				{ label:"LeftToRight",	data:Direction.LTR },
+				{ label:"RightToleft",	data:Direction.RTL }
+			];
+			
+			/** 
+			 * initialization
+			 */
+			private function init():void
+			{
+				// create a sprite to hold the TextLines
+				_container = new Sprite();
+				textArea.rawChildren.addChild(_container);
+				
+				fontFamily.dataProvider = populateFontFamily();
+				
+				versionInfo.text = "Vellum: 3.x"  + (Configuration.tlf_internal::debugCodeEnabled ? " Debug" : " Release") 
+					+ ", Flex: " + mx_internal::VERSION
+					+ ", Player: " + Capabilities.version;
+			}
+			
+			/**
+			* Create an array of available font families
+			*/ 
+			static private function populateFontFamily():Array
+			{
+				// really this returns an array of fonts - would be nice to strip it down to just the families
+				var fonts:Array = Font.enumerateFonts(true);
+				var fontfamily:Array = new Array();
+				fonts.sortOn("fontName", Array.CASEINSENSITIVE);
+				for(var i:int = 0; i< fonts.length; i++)
+				{
+					// trace(fonts[i].fontName);
+					fontfamily.push({label: fonts[i].fontName, data: fonts[i].fontName});
+				}
+				return fontfamily;
+			}
+			
+			/** called to set the size of this panel */
+			public function setSize(w:int,h:int):void
+			{
+				this.width = w;
+				this.height = h;
+				textArea.width = width;
+				textArea.height = height > bottomTabs.height ? this.height-bottomTabs.height : 0;
+				if (_textFlow)
+				{
+					_textFlow.flowComposer.getControllerAt(0).setCompositionSize(textArea.width,textArea.height);
+					_textFlow.flowComposer.updateAllControllers();
+				}
+			}
+			
+			/** called when the bottom tabs finally gets sized. */
+			private function bottomTabsResize():void
+			{
+				setSize(width,height);
+			}
+			
+			/** The TextFlow to edit. */
+			public function get textFlow():TextFlow
+			{ return _textFlow; }
+			
+			public function set textFlow(newFlow:TextFlow):void
+			{
+				// clear any old flow if present
+				if (_textFlow)
+				{
+					_textFlow.flowComposer = null;
+					_textFlow = null;
+				}
+				_textFlow = newFlow;
+				if (_textFlow)
+				{
+					_myContainerController=new MyContainerController(_container,textArea.width,textArea.height);
+					_textFlow.flowComposer.addController(_myContainerController);
+					
+					// setup event listeners for selection changed and ILG loaded
+					_textFlow.addEventListener(SelectionEvent.SELECTION_CHANGE,selectionChangeListener,false,0,true);
+					_textFlow.addEventListener(StatusChangeEvent.INLINE_GRAPHIC_STATUS_CHANGE,graphicStatusChangeEvent,false,0,true);
+					
+					// make _textFlow editable with undo 
+					_textFlow.interactionManager = new EditManager(new UndoManager());
+					// initialize with a selection before the first character
+					_textFlow.interactionManager.selectRange(0,0);
+					
+					// compose the new textFlow and give it focus
+					_textFlow.flowComposer.updateAllControllers();
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			
+			/** Receives an event any time an ILG with a computed size finishes loading. */
+ 			private function graphicStatusChangeEvent(evt:StatusChangeEvent):void
+			{
+				// recompose if the evt is from an element in this textFlow
+				if (_textFlow && evt.element.getTextFlow() == _textFlow)
+					_textFlow.flowComposer.updateAllControllers();
+			}	
+			
+			/** Receives an event any time the selection is changed.  Update the UI */
+			private function selectionChangeListener(e:SelectionEvent):void
+ 			{
+ 				var selectionState:SelectionState = e.selectionState;
+ 				var selectedElementRange:ElementRange = ElementRange.createElementRange(selectionState.textFlow, selectionState.absoluteStart, selectionState.absoluteEnd);
+ 				// set display according to the values at the beginning of the selection range.  For point selection/characterFormat use getCommonCharacterFormat as that tracks pending attributes waiting for the next character
+ 				var characterFormat:ITextLayoutFormat = _textFlow.interactionManager.activePosition == _textFlow.interactionManager.anchorPosition ? _textFlow.interactionManager.getCommonCharacterFormat() : selectedElementRange.characterFormat;
+ 				var paragraphFormat:ITextLayoutFormat = selectedElementRange.paragraphFormat;
+ 				var containerFormat:ITextLayoutFormat = selectedElementRange.containerFormat;
+ 				
+ 				updateComboBox(fontFamily,characterFormat.fontFamily);
+ 				fontSize.text = characterFormat.fontSize.toString();
+ 				lineHeight.text = characterFormat.lineHeight.toString();
+ 				
+ 				updateComboBox(textAlign,paragraphFormat.textAlign);
+ 				textIndent.text = paragraphFormat.textIndent.toString();
+ 				
+ 				columnCount.text = containerFormat.columnCount.toString();
+ 				columnGap.text = containerFormat.columnGap.toString();
+ 				updateComboBox(verticalAlign,containerFormat.verticalAlign);
+ 				
+ 				updateComboBox(blockProgression,_textFlow.computedFormat.blockProgression);
+ 				updateComboBox(directionBox,_textFlow.computedFormat.direction);
+ 			}
+ 			
+ 			/** Helper function to update a comboBox in the UI */
+ 			private function updateComboBox(box:ComboBox,val:String):void
+ 			{
+ 				for (var i:int = 0; i < box.dataProvider.length; i++)
+ 				{
+ 					if (box.dataProvider[i].data == val)
+ 					{
+ 						box.selectedIndex = i;
+ 						return;
+ 					}
+ 				}
+ 				box.text = val;
+ 			}
+ 			
+ 			/**
+ 			 * These functions are helpers for the various widgets to actually perform the operations on the TextFlow
+ 			 */
+			private function changeFontFamily(newFontFamily:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var cf:TextLayoutFormat = new TextLayoutFormat();
+					cf.fontFamily = newFontFamily;
+					IEditManager(_textFlow.interactionManager).applyLeafFormat(cf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			private function changeFontSize(newFontSize:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var cf:TextLayoutFormat = new TextLayoutFormat();
+					cf.fontSize = newFontSize;
+					IEditManager(_textFlow.interactionManager).applyLeafFormat(cf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			private function changeLeading(newLeading:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var cf:TextLayoutFormat = new TextLayoutFormat();
+					cf.lineHeight = newLeading;
+					IEditManager(_textFlow.interactionManager).applyLeafFormat(cf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			
+			private function changeTextAlign(newAlign:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var pf:TextLayoutFormat = new TextLayoutFormat();
+					pf.textAlign = newAlign;
+					IEditManager(_textFlow.interactionManager).applyParagraphFormat(pf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			
+			private function changeTextIndent(newIndent:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var pf:TextLayoutFormat = new TextLayoutFormat();
+					pf.textIndent = newIndent;
+					IEditManager(_textFlow.interactionManager).applyParagraphFormat(pf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			
+			private function changeColumnCount(newCount:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var cf:TextLayoutFormat = new TextLayoutFormat();
+					cf.columnCount = newCount;
+					IEditManager(_textFlow.interactionManager).applyContainerFormat(cf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			
+			private function changeColumnGap(newGap:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var cf:TextLayoutFormat = new TextLayoutFormat();
+					cf.columnGap = newGap;
+					IEditManager(_textFlow.interactionManager).applyContainerFormat(cf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			
+			private function changeVerticalAlign(newAlign:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var cf:TextLayoutFormat = new TextLayoutFormat();
+					cf.verticalAlign = newAlign;
+					IEditManager(_textFlow.interactionManager).applyContainerFormat(cf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			
+			private function changeBlockProgression(newProgression:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var cf:TextLayoutFormat = new TextLayoutFormat();
+					cf.blockProgression = newProgression;
+					IEditManager(_textFlow.interactionManager).applyFormatToElement(_textFlow,cf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+			
+			/** Set direction on the rootElement.  This effects both columnDirection and default reading order. */
+			private function changeDirection(newDirection:String):void
+			{
+				if (_textFlow && _textFlow.interactionManager is IEditManager)
+				{
+					var pf:TextLayoutFormat = new TextLayoutFormat();
+					pf.direction = newDirection;
+					IEditManager(_textFlow.interactionManager).applyFormatToElement(_textFlow,pf);
+					_textFlow.interactionManager.setFocus();
+				}
+			}
+	
+			protected function doSpell():void
+			{
+				if(spellLang.text)
+					SpellUIForTLF.enableSpelling(_textFlow,spellLang.text );
+				_myContainerController.language=spellLang.text;
+			}
+			
+			protected function undoSpell():void
+			{
+				SpellUIForTLF.disableSpelling(_textFlow);
+				_myContainerController.setFuncsNull();
+			}
+			
+			
+		]]>
+	</mx:Script>
+	<!-- <mx:VBox horizontalScrollPolicy="off" verticalScrollPolicy="off" width="100%" height="100%"> -->
+		<mx:TabNavigator id="bottomTabs" width="100%" creationPolicy="all" paddingLeft="4" paddingBottom="8" backgroundColor="#D9D9D9" color="#202020" horizontalScrollPolicy="on" verticalScrollPolicy="on" resize="bottomTabsResize()">
+			<mx:HBox label="Text" backgroundColor="#D9D9D9" width="496" horizontalScrollPolicy="off" verticalScrollPolicy="off" >
+				<mx:Label text="Font:"/>
+				<mx:ComboBox id="fontFamily" editable="true" enter="changeFontFamily(fontFamily.text)"  close="changeFontFamily(fontFamily.text)" width="200"/>
+				<mx:Label text="Size:"/>
+				<mx:TextInput id="fontSize" enter="changeFontSize(fontSize.text)" width="40"/>
+				<mx:Label text="LineHeight:"/>
+				<mx:TextInput id="lineHeight" enter="changeLeading(lineHeight.text)" width="40"/>
+			</mx:HBox>
+			<mx:HBox label="Para" backgroundColor="#D9D9D9" width="496">
+				<mx:Label text="Alignment:"/>
+				<mx:ComboBox id="textAlign" close="changeTextAlign(textAlign.selectedItem.data)" dataProvider="{textAlignData}"/>
+				<mx:Label text="FirstLineIdent:"/>
+				<mx:TextInput id="textIndent" enter="changeTextIndent(textIndent.text)" width="40"/>
+			</mx:HBox>
+			<mx:HBox label="Container" backgroundColor="#D9D9D9" width="496">
+				<mx:Label text="Columns:"/>
+				<mx:TextInput id="columnCount" toolTip="auto or a number" enter="changeColumnCount(columnCount.text)" width="40"/>
+				<mx:Label text="Gap:"/>
+				<mx:TextInput id="columnGap" toolTip="a number" enter="changeColumnGap(columnGap.text)" width="40"/>
+				<mx:Label text="VerticalAlignment:"/>
+				<mx:ComboBox id="verticalAlign" close="changeVerticalAlign(verticalAlign.selectedItem.data)" dataProvider="{verticalAlignData}"/>
+			</mx:HBox>
+			<mx:HBox label="Flow" backgroundColor="#D9D9D9" width="496">
+				<mx:Label text="Progression:"/>
+				<mx:ComboBox id="blockProgression" close="changeBlockProgression(blockProgression.selectedItem.data)" dataProvider="{blockProgressionData}"/>
+				<mx:Label text="Direction:"/>
+				<mx:ComboBox id="directionBox" close="changeDirection(directionBox.selectedItem.data)" dataProvider="{directionData}"/>
+			</mx:HBox>
+			<mx:HBox label="Version" backgroundColor="#D9D9D9" width="496">
+				<mx:TextInput id="versionInfo" editable="false" width="100%"/>
+			</mx:HBox>
+			<mx:HBox label="Spelling" backgroundColor="#D9D9D9" width="496">
+				<mx:TextInput text="en_US" id="spellLang" editable="true" width="20%"/>
+				<mx:Button id="spellBut" label="Enable Spelling" click="doSpell()"/>
+				<mx:Button id="unspellBut" label="Disable Spelling" click="undoSpell()"/>
+			</mx:HBox>
+		</mx:TabNavigator>
+	<mx:Canvas id="textArea" width="520" height="400"/>
+	<!-- </mx:VBox> -->
+</mx:VBox>

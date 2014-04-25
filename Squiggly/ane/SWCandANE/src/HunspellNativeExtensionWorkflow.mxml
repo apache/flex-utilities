@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   >
+	<s:layout>
+		<s:VerticalLayout paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10"/>
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.linguistics.extensions.HunspellNativeExtension;
+			
+			import mx.events.FlexEvent;
+			
+			private static const HUNSPELL_INIT_FAIL:int= -1
+			private static const RESOURCE_FILES_MISSING:int= -2
+			private static const HUNSPELL_INIT_SUCCESS:int= 1
+				
+			private var ext:HunspellNativeExtension;
+			private var isInit:Boolean;
+			private var locale:String;
+			private var dicPath:String;
+			protected function initHandler(event:Event):void
+			{
+				locale=localeInput.text;
+				trace(locale);
+				dicPath="C:\\Program Files\\Common Files\\adobe\\linguistics\\Museüß";
+				trace(dicPath);
+				initInputs.text="Entered lnguage="+locale+" Dictionary Path: "+dicPath;
+				ext = new HunspellNativeExtension();
+				var result:int=ext.initHunspellObject(locale, dicPath);
+				trace(result);
+				if(result==HUNSPELL_INIT_SUCCESS)
+				{
+					isInit=true;
+				}
+				else
+					{
+					isInit=false;
+					if(result==RESOURCE_FILES_MISSING) trace("RESOURCE_FILES_MISSING");
+					if(result==HUNSPELL_INIT_FAIL) trace("HUNSPELL_INIT_FAIL");
+					}
+				trace("application complete");
+			}
+			
+			protected function deInitHandler(event:Event):void{
+				ext.deInitHunspellNativeExtension();
+				ext=null;
+				initInputs.text="Hunspell Native Extension Disposed";
+			}
+			protected function talkBack(event:Event):void
+			{
+				if(isInit)
+				{
+				talkb.text= ext.talkBack(inputField.text);
+				}
+				else
+				{
+					talkb.text= "Not Inited";
+				}
+			}
+			
+			protected function clickHandler(event:MouseEvent):void
+			{
+				suggestionsField.text="";
+				if(isInit)
+				{
+					if(ext.checkWord(inputField.text, locale)==0)
+					{
+						outputField.text = "false"; 
+						var suggArray:Array=ext.getSuggestions(inputField.text, locale);
+						for each (var sugg:String in suggArray)
+						suggestionsField.text += "\n"+ sugg;
+					}
+					else
+					{
+						outputField.text = "true"; 
+					}
+				}
+				else
+					outputField.text = " Error";
+				trace("click handler");
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label text="Enter Language: "/>
+	<s:TextInput text="de_DE" id="localeInput" width="119"/>
+	<s:HGroup>
+		<s:Button width="20%" label="Init application" click="initHandler(event)"/>
+		<s:Button width="20%" label="De-Init application" click="deInitHandler(event)"/>	
+	</s:HGroup>
+	<s:Label id="initInputs"/>
+	<s:Label text="Enter Word:"/>
+	<s:TextInput id="inputField" width="50%"/>
+	<s:Button label="Talk back" width="20%" click="talkBack(event)"/>
+	<s:Label id="talkb" text="Label"/>
+	<s:Button width="20%" label="Check Word" click="clickHandler(event)"/>
+	<s:Label text="Output:"/>
+	<s:TextInput id="outputField" width="50%"/>
+	<s:TextArea id="suggestionsField" />
+</s:WindowedApplication>
