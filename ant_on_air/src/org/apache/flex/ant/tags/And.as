@@ -42,16 +42,20 @@ package org.apache.flex.ant.tags
             ant.processChildren(xml, this);
             if (numChildren > 0)
             {
-                var value:IValueTagHandler = getChildAt(0) as IValueTagHandler;
-                // get the value from the children
-                var val:Object = IValueTagHandler(value).getValue(context);
-                if (!(val == "true" || val == true))
-                {
-                    return false;
-                }
+				var n:int = numChildren;
+				for (var i:int = 0; i < n; i++)
+				{
+	                var value:IValueTagHandler = getChildAt(i) as IValueTagHandler;
+	                // get the value from the children
+	                var val:Object = IValueTagHandler(value).getValue(context);
+	                if (!(val == "true" || val == true))
+	                {
+	                    return false;
+	                }
+				}
 				return true;
             }
-            return false;
+			return false;
         }
     }
 }

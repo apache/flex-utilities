@@ -52,12 +52,34 @@
             <isset property="env.FLEX_HOME" />
         </and>
     </condition>
-    
+
+    <condition property="should_fail" value="success" >
+        <and>
+            <matches string="foobar" pattern=".*bar" />
+            <not>
+                <isset property="env.FLEX_HOME" />
+            </not>
+        </and>
+    </condition>
+
 	<target name="subant">
         <antcall target="paramtest">
             <param name="foo" value="bar" />
         </antcall>
-        <echo>subant reported ${success}</echo>
+        <echo>subant reported 'and' test 1: ${success} should be 'success'</echo>
+        <fail message="and test 1 failed" >
+            <condition>
+                <not>
+                    <equals arg1="success" arg2="${success}" />
+                </not>
+            </condition>
+        </fail>
+        <echo>subant reported 'and' test 2: ${should_fail} should not be defined</echo>
+        <fail message="and test 2 failed" >
+            <condition>
+                <equals arg1="success" arg2="${should_fail}" />
+            </condition>
+        </fail>
     </target>
     
     <target name="paramtest">
