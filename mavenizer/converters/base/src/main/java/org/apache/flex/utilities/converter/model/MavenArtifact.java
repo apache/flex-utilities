@@ -23,10 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: cdutz
- * Date: 01.07.12
- * Time: 12:31
+ * Created by cdutz on 01.07.2012.
  */
 public class MavenArtifact {
 

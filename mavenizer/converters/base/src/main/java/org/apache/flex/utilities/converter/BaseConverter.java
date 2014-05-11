@@ -47,10 +47,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Created with IntelliJ IDEA.
- * User: cdutz
- * Date: 11.05.12
- * Time: 14:53
+ * Created by cdutz on 11.05.2012.
  */
 public abstract class BaseConverter {
 
