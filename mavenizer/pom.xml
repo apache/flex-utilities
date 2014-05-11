@@ -22,9 +22,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.flexmojos.oss</groupId>
+    <groupId>org.apache.flex.utilities.converter</groupId>
     <artifactId>flex-sdk-converter</artifactId>
-    <version>1.0</version>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <properties>
+        <mavenVersion>3.1.0</mavenVersion>
+        <aetherVersion>0.9.0.M4</aetherVersion>
+        <wagonVersion>2.2</wagonVersion>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>cdutz</id>
+            <name>Christofer Dutz</name>
+        </developer>
+        <developer>
+            <id>fthomas</id>
+            <name>Frederic Thomas</name>
+        </developer>
+        <developer>
+            <id>josebarragan</id>
+            <name>Jose Barragan</name>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
@@ -42,22 +63,65 @@
             <artifactId>commons-compress</artifactId>
             <version>1.4</version>
         </dependency>
-    </dependencies>
 
-    <developers>
-        <developer>
-            <id>cdutz</id>
-            <name>Christofer Dutz</name>
-        </developer>
-        <developer>
-            <id>fthomas</id>
-            <name>Frederic Thomas</name>
-        </developer>
-        <developer>
-            <id>josebarragan</id>
-            <name>Jose Barragan</name>
-        </developer>
-    </developers>
+        <!-- Needed for Aether Repository Client -->
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-api</artifactId>
+            <version>${aetherVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-util</artifactId>
+            <version>${aetherVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-impl</artifactId>
+            <version>${aetherVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-spi</artifactId>
+            <version>${aetherVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-connector-basic</artifactId>
+            <version>${aetherVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-transport-file</artifactId>
+            <version>${aetherVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-transport-http</artifactId>
+            <version>${aetherVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-transport-wagon</artifactId>
+            <version>${aetherVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-transport-classpath</artifactId>
+            <version>${aetherVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-aether-provider</artifactId>
+            <version>${mavenVersion}</version>
+        </dependency>
+        <!-- Add support for scp and sftp protocols in the SDKInVMDeployer -->
+        <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh</artifactId>
+            <version>${wagonVersion}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
