@@ -33,22 +33,9 @@
         <wagonVersion>2.2</wagonVersion>
     </properties>
 
-    <developers>
-        <developer>
-            <id>cdutz</id>
-            <name>Christofer Dutz</name>
-        </developer>
-        <developer>
-            <id>fthomas</id>
-            <name>Frederic Thomas</name>
-        </developer>
-        <developer>
-            <id>josebarragan</id>
-            <name>Jose Barragan</name>
-        </developer>
-    </developers>
-
     <modules>
+        <module>core</module>
+        <module>retrievers</module>
         <module>converters</module>
         <module>deployers</module>
     </modules>
