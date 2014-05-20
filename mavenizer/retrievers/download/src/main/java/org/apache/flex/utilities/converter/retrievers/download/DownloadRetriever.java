@@ -1,12 +1,28 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.flex.utilities.converter.retrievers.download;
 
 import org.apache.flex.utilities.converter.retrievers.BaseRetriever;
 import org.apache.flex.utilities.converter.retrievers.exceptions.RetrieverException;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SDKType;
+import org.codehaus.plexus.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -17,7 +33,13 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.IOException;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 
 /**
  * Created by cdutz on 18.05.2014.
@@ -27,43 +49,97 @@ public class DownloadRetriever extends BaseRetriever {
     public static final String FLEX_INSTALLER_CONFIG_URL =
             "http://flex.apache.org/installer/sdk-installer-config-4.0.xml";
 
-    @Override
-    public void retrieve(PlatformType platformType, SDKType type, String version) throws RetrieverException {
-        final String url = getBinaryUrl(platformType, type, version);
-        System.out.println(url);
+    public File retrieve(SDKType type, String version) throws RetrieverException {
+        return retrieve(type, version, null);
     }
 
-    protected String getBinaryUrl(PlatformType platformType, SDKType sdkType, String version) throws RetrieverException {
+    @Override
+    public File retrieve(SDKType type, String version, PlatformType platformType) throws RetrieverException {
+        try {
+            // Define the source.
+            final URL sourceUrl = new URL(getBinaryUrl(type, version, platformType));
+            final URLConnection connection = sourceUrl.openConnection();
+            final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
+
+            // Create a temp target file.
+            final File targetFile = File.createTempFile(type.toString() + "-" + version +
+                    ((platformType != null) ? "-" + platformType : "") + "-", ".bin");
+            final FileOutputStream fos = new FileOutputStream(targetFile);
+
+            // Do the copying.
+            final long expectedSize = connection.getContentLength();
+            long transferedSize = 0L;
+            System.out.println("Downloading " + type + " version " + version +
+                    ((platformType != null) ? " for platform " + platformType : ""));
+            if(expectedSize > 1014 * 1024) {
+                System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
+            } else {
+                System.out.println("Expected size: " + (expectedSize / 1024 ) + "KB");
+            }
+            while (transferedSize < expectedSize) {
+                transferedSize += fos.getChannel().transferFrom(rbc, transferedSize, 1 << 20);
+                final int transferedPercent = (int) Math.round(
+                        ((double) transferedSize / (double) expectedSize) * (double) 100);
+                final int segmentsTransferred = transferedPercent / 2;
+                final int segmentsRest = 50 - segmentsTransferred;
+                System.out.print("\r" + String.format("%3d", transferedPercent) + "% [" +
+                        StringUtils.repeat("=", segmentsTransferred) +
+                        ((segmentsRest > 0) ? ">" + StringUtils.repeat(" ", segmentsRest - 1) : "") + "]");
+            }
+            System.out.println();
+            System.out.println("Finished");
+            fos.close();
+
+            return targetFile;
+        } catch (MalformedURLException e) {
+            throw new RetrieverException("Error downloading archive.", e);
+        } catch (FileNotFoundException e) {
+            throw new RetrieverException("Error downloading archive.", e);
+        } catch (IOException e) {
+            throw new RetrieverException("Error downloading archive.", e);
+        }
+    }
+
+    protected String getBinaryUrl(SDKType sdkType, String version, PlatformType platformType)
+            throws RetrieverException {
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
             final Document doc = builder.parse(FLEX_INSTALLER_CONFIG_URL);
 
             //Evaluate XPath against Document itself
-            final String expression = getUrlXpath(platformType, sdkType, version);
+            final String expression = getUrlXpath(sdkType, version, platformType);
             final XPath xPath = XPathFactory.newInstance().newXPath();
             final Element artifactElement = (Element) xPath.evaluate(
                     expression, doc.getDocumentElement(), XPathConstants.NODE);
             final StringBuilder stringBuilder = new StringBuilder();
-            if(sdkType == SDKType.FLEX) {
+            if (sdkType == SDKType.FLEX) {
                 final String path = artifactElement.getAttribute("path");
                 final String file = artifactElement.getAttribute("file");
-                if(!path.startsWith("http://")) {
+                if (!path.startsWith("http://")) {
                     stringBuilder.append("http://archive.apache.org/dist/");
                 }
-                stringBuilder.append(path).append(file);
+                stringBuilder.append(path);
+                if(!path.endsWith("/")) {
+                    stringBuilder.append("/");
+                }
+                stringBuilder.append(file).append(".zip");
             } else {
                 final NodeList pathElements = artifactElement.getElementsByTagName("path");
                 final NodeList fileElements = artifactElement.getElementsByTagName("file");
-                if((pathElements.getLength() != 1) && (fileElements.getLength() != 1)) {
+                if ((pathElements.getLength() != 1) && (fileElements.getLength() != 1)) {
                     throw new RetrieverException("Invalid document structure.");
                 }
-                stringBuilder.append(pathElements.item(0).getTextContent());
+                final String path = pathElements.item(0).getTextContent();
+                stringBuilder.append(path);
+                if(!path.endsWith("/")) {
+                    stringBuilder.append("/");
+                }
                 stringBuilder.append(fileElements.item(0).getTextContent());
             }
 
             return stringBuilder.toString();
-        } catch(ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             throw new RetrieverException("Error parsing 'sdk-installer-config-4.0.xml'", e);
         } catch (SAXException e) {
             throw new RetrieverException("Error parsing 'sdk-installer-config-4.0.xml'", e);
@@ -74,7 +150,8 @@ public class DownloadRetriever extends BaseRetriever {
         }
     }
 
-    protected String getUrlXpath(PlatformType platformType, SDKType sdkType, String version) {
+    protected String getUrlXpath(SDKType sdkType, String version, PlatformType platformType)
+            throws RetrieverException {
         final StringBuilder stringBuilder = new StringBuilder();
         switch (sdkType) {
             case FLEX:
@@ -82,6 +159,9 @@ public class DownloadRetriever extends BaseRetriever {
                 break;
             case AIR:
                 stringBuilder.append("//*[@id='air.sdk.version.");
+                if (platformType == null) {
+                    throw new RetrieverException("You need to specify the platformType parameter for AIR SDKs.");
+                }
                 switch (platformType) {
                     case WINDOWS:
                         stringBuilder.append("windows");
@@ -106,60 +186,63 @@ public class DownloadRetriever extends BaseRetriever {
     public static void main(String[] args) throws Exception {
         final DownloadRetriever retriever = new DownloadRetriever();
 
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLEX, "4.9.1");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLEX, "4.10.0");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLEX, "4.11.0");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLEX, "4.12.0");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLEX, "4.12.1");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLEX, "Nightly");
+        // Test the retrieval of Flex SDKs
+        retriever.retrieve(SDKType.FLEX, "4.9.1");
+        retriever.retrieve(SDKType.FLEX, "4.10.0");
+        retriever.retrieve(SDKType.FLEX, "4.11.0");
+        retriever.retrieve(SDKType.FLEX, "4.12.0");
+        retriever.retrieve(SDKType.FLEX, "4.12.1");
+        retriever.retrieve(SDKType.FLEX, "Nightly");
 
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "2.6");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "2.6");
-        retriever.retrieve(PlatformType.LINUX, SDKType.AIR, "2.6");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "2.7");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "2.7");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.0");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.0");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.1");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.1");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.2");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.2");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.3");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.3");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.4");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.4");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.5");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.5");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.6");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.6");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.7");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.7");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.8");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.8");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "3.9");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "3.9");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "4.0");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "4.0");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "13.0");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "13.0");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.AIR, "14.0");
-        retriever.retrieve(PlatformType.MAC, SDKType.AIR, "14.0");
+        // Test the retrieval of AIR SDKs
+        retriever.retrieve(SDKType.AIR, "2.6", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "2.6", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "2.6", PlatformType.LINUX);
+        retriever.retrieve(SDKType.AIR, "2.7", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "2.7", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.0", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.0", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.1", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.1", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.2", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.2", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.3", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.3", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.4", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.4", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.5", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.5", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.6", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.6", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.7", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.7", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.8", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.8", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "3.9", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "3.9", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "4.0", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "4.0", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "13.0", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "13.0", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "14.0", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "14.0", PlatformType.MAC);
 
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "10.2");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "10.3");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.0");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.1");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.2");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.3");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.4");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.5");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.6");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.7");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.8");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "11.9");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "12.0");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "13.0");
-        retriever.retrieve(PlatformType.WINDOWS, SDKType.FLASH, "14.0");
+        // Test the retrieval of Flash SDKs
+        retriever.retrieve(SDKType.FLASH, "10.2");
+        retriever.retrieve(SDKType.FLASH, "10.3");
+        retriever.retrieve(SDKType.FLASH, "11.0");
+        retriever.retrieve(SDKType.FLASH, "11.1");
+        retriever.retrieve(SDKType.FLASH, "11.2");
+        retriever.retrieve(SDKType.FLASH, "11.3");
+        retriever.retrieve(SDKType.FLASH, "11.4");
+        retriever.retrieve(SDKType.FLASH, "11.5");
+        retriever.retrieve(SDKType.FLASH, "11.6");
+        retriever.retrieve(SDKType.FLASH, "11.7");
+        retriever.retrieve(SDKType.FLASH, "11.8");
+        retriever.retrieve(SDKType.FLASH, "11.9");
+        retriever.retrieve(SDKType.FLASH, "12.0");
+        retriever.retrieve(SDKType.FLASH, "13.0");
+        retriever.retrieve(SDKType.FLASH, "14.0");
 
     }
 
