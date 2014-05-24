@@ -69,7 +69,8 @@ public class FlashConverter extends BaseConverter implements Converter {
         // Create a list of all libs that should belong to the Flash SDK runtime.
         final File directory = new File(rootSourceDirectory, "runtimes" + File.separator + "player");
         if(!directory.exists() || !directory.isDirectory()) {
-            throw new ConverterException("Runtime directory does not exist.");
+            System.out.println("Skipping runtime generation.");
+            return;
         }
         final List<File> playerVersions = new ArrayList<File>();
         playerVersions.addAll(Arrays.asList(directory.listFiles(new FlashRuntimeFilter())));

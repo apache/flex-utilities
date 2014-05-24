@@ -20,7 +20,7 @@ import org.apache.flex.utilities.converter.retrievers.BaseRetriever;
 import org.apache.flex.utilities.converter.retrievers.exceptions.RetrieverException;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SDKType;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.flex.utilities.converter.retrievers.utils.ProgressBar;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -68,12 +68,17 @@ public class DownloadRetriever extends BaseRetriever {
 
             // Create a temp target file.
             final File targetFile = File.createTempFile(type.toString() + "-" + version +
-                    ((platformType != null) ? "-" + platformType : "") + "-", ".bin");
+                    ((platformType != null) ? "-" + platformType : "") + "-",
+                    sourceUrl.getFile().substring(sourceUrl.getFile().lastIndexOf(".")));
             final FileOutputStream fos = new FileOutputStream(targetFile);
 
-            // Do the copying.
+            ////////////////////////////////////////////////////////////////////////////////
+            // Do the downloading.
+            ////////////////////////////////////////////////////////////////////////////////
+
             final long expectedSize = connection.getContentLength();
             long transferedSize = 0L;
+            System.out.println("===========================================================");
             System.out.println("Downloading " + type + " version " + version +
                     ((platformType != null) ? " for platform " + platformType : ""));
             if(expectedSize > 1014 * 1024) {
@@ -81,21 +86,33 @@ public class DownloadRetriever extends BaseRetriever {
             } else {
                 System.out.println("Expected size: " + (expectedSize / 1024 ) + "KB");
             }
+            final ProgressBar progressBar = new ProgressBar(expectedSize);
             while (transferedSize < expectedSize) {
                 transferedSize += fos.getChannel().transferFrom(rbc, transferedSize, 1 << 20);
-                final int transferedPercent = (int) Math.round(
-                        ((double) transferedSize / (double) expectedSize) * (double) 100);
-                final int segmentsTransferred = transferedPercent / 2;
-                final int segmentsRest = 50 - segmentsTransferred;
-                System.out.print("\r" + String.format("%3d", transferedPercent) + "% [" +
-                        StringUtils.repeat("=", segmentsTransferred) +
-                        ((segmentsRest > 0) ? ">" + StringUtils.repeat(" ", segmentsRest - 1) : "") + "]");
+                progressBar.updateProgress(transferedSize);
             }
-            System.out.println();
-            System.out.println("Finished");
             fos.close();
+            System.out.println();
+            System.out.println("Finished downloading.");
+            System.out.println("===========================================================");
 
-            return targetFile;
+            ////////////////////////////////////////////////////////////////////////////////
+            // Do the extracting.
+            ////////////////////////////////////////////////////////////////////////////////
+
+            if(type.equals(SDKType.FLASH)) {
+                return targetFile;
+            } else {
+                System.out.println("Extracting archive to temp directory.");
+                final File targetDirectory = new File(targetFile.getParent(),
+                        targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
+                unpack(targetFile, targetDirectory);
+                System.out.println();
+                System.out.println("Finished extracting.");
+                System.out.println("===========================================================");
+
+                return targetDirectory;
+            }
         } catch (MalformedURLException e) {
             throw new RetrieverException("Error downloading archive.", e);
         } catch (FileNotFoundException e) {
@@ -117,6 +134,10 @@ public class DownloadRetriever extends BaseRetriever {
             final XPath xPath = XPathFactory.newInstance().newXPath();
             final Element artifactElement = (Element) xPath.evaluate(
                     expression, doc.getDocumentElement(), XPathConstants.NODE);
+            if(artifactElement == null) {
+                throw new RetrieverException("Could not find " + sdkType.toString() + " SDK with version " + version);
+            }
+
             final StringBuilder stringBuilder = new StringBuilder();
             if (sdkType == SDKType.FLEX) {
                 final String path = artifactElement.getAttribute("path");
@@ -260,13 +281,13 @@ public class DownloadRetriever extends BaseRetriever {
         retriever.retrieve(SDKType.AIR, "4.0", PlatformType.WINDOWS);
         retriever.retrieve(SDKType.AIR, "4.0", PlatformType.MAC);
         retriever.retrieve(SDKType.AIR, "13.0", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "13.0", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "14.0", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "14.0", PlatformType.MAC);*/
+        retriever.retrieve(SDKType.AIR, "13.0", PlatformType.MAC);*/
+        //retriever.retrieve(SDKType.AIR, "14.0", PlatformType.WINDOWS);
+        retriever.retrieve(SDKType.AIR, "14.0", PlatformType.MAC);
 
         // Test the retrieval of Flash SDKs
-        retriever.retrieve(SDKType.FLASH, "10.2");
-        /*retriever.retrieve(SDKType.FLASH, "10.3");
+        /*retriever.retrieve(SDKType.FLASH, "10.2");
+        retriever.retrieve(SDKType.FLASH, "10.3");
         retriever.retrieve(SDKType.FLASH, "11.0");
         retriever.retrieve(SDKType.FLASH, "11.1");
         retriever.retrieve(SDKType.FLASH, "11.2");
