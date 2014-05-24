@@ -221,7 +221,7 @@ public class DownloadRetriever extends BaseRetriever {
         if(type.equals(SDKType.FLASH)) {
             question = questionProps.getProperty("ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC");
         } else if(type.equals(SDKType.AIR)) {
-            question = questionProps.getProperty("ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC");
+            question = questionProps.getProperty("ASK_ADOBE_AIR_SDK");
         } else {
             throw new RetrieverException("Unknown SDKType");
         }
