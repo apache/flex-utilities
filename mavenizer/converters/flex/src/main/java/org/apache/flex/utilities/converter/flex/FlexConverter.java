@@ -153,8 +153,10 @@ public class FlexConverter extends BaseConverter implements Converter {
         // add this to the mobile package.
         if("mobile".equals(directory.getName())) {
             final File mobileExperimental = new File(directory.getParent(), "experimental_mobile.swc");
-            final MavenArtifact artifact = resolveArtifact(mobileExperimental, artifactGroupId, flexSdkVersion);
-            framework.addDependency(artifact);
+            if(mobileExperimental.exists()) {
+                final MavenArtifact artifact = resolveArtifact(mobileExperimental, artifactGroupId, flexSdkVersion);
+                framework.addDependency(artifact);
+            }
         }
         // Write this artifact to file.
         writeArtifact(framework);
