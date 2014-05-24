@@ -40,6 +40,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Properties;
 
 /**
  * Created by cdutz on 18.05.2014.
@@ -56,6 +57,10 @@ public class DownloadRetriever extends BaseRetriever {
     @Override
     public File retrieve(SDKType type, String version, PlatformType platformType) throws RetrieverException {
         try {
+            if (type.equals(SDKType.FLASH) || type.equals(SDKType.AIR)) {
+                confirmLicenseAcceptance(type);
+            }
+
             // Define the source.
             final URL sourceUrl = new URL(getBinaryUrl(type, version, platformType));
             final URLConnection connection = sourceUrl.openConnection();
@@ -183,19 +188,51 @@ public class DownloadRetriever extends BaseRetriever {
         return stringBuilder.toString();
     }
 
+    protected void confirmLicenseAcceptance(SDKType type) throws RetrieverException {
+        final Properties questionProps = new Properties();
+        try {
+            questionProps.load(DownloadRetriever.class.getClassLoader().getResourceAsStream("message.properties"));
+        } catch (IOException e) {
+            throw new RetrieverException("Error reading message.properties file", e);
+        }
+
+        final String question;
+        if(type.equals(SDKType.FLASH)) {
+            question = questionProps.getProperty("ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC");
+        } else if(type.equals(SDKType.AIR)) {
+            question = questionProps.getProperty("ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC");
+        } else {
+            throw new RetrieverException("Unknown SDKType");
+        }
+        System.out.println(question);
+        System.out.print(questionProps.getProperty("DO_YOU_ACCEPT_QUESTION") + " ");
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            final String answer = reader.readLine();
+            if (!"YES".equalsIgnoreCase(answer)) {
+                System.out.println("You have to accept the license agreement in order to proceed.");
+                throw new RetrieverException("You have to accept the license agreement in order to proceed.");
+            }
+        } catch(IOException e) {
+            throw new RetrieverException("Couldn't read from Stdin.");
+        }
+    }
+
+
+
     public static void main(String[] args) throws Exception {
         final DownloadRetriever retriever = new DownloadRetriever();
 
         // Test the retrieval of Flex SDKs
-        retriever.retrieve(SDKType.FLEX, "4.9.1");
+        /*retriever.retrieve(SDKType.FLEX, "4.9.1");
         retriever.retrieve(SDKType.FLEX, "4.10.0");
         retriever.retrieve(SDKType.FLEX, "4.11.0");
         retriever.retrieve(SDKType.FLEX, "4.12.0");
         retriever.retrieve(SDKType.FLEX, "4.12.1");
-        retriever.retrieve(SDKType.FLEX, "Nightly");
+        retriever.retrieve(SDKType.FLEX, "Nightly");*/
 
         // Test the retrieval of AIR SDKs
-        retriever.retrieve(SDKType.AIR, "2.6", PlatformType.WINDOWS);
+        /*retriever.retrieve(SDKType.AIR, "2.6", PlatformType.WINDOWS);
         retriever.retrieve(SDKType.AIR, "2.6", PlatformType.MAC);
         retriever.retrieve(SDKType.AIR, "2.6", PlatformType.LINUX);
         retriever.retrieve(SDKType.AIR, "2.7", PlatformType.WINDOWS);
@@ -225,11 +262,11 @@ public class DownloadRetriever extends BaseRetriever {
         retriever.retrieve(SDKType.AIR, "13.0", PlatformType.WINDOWS);
         retriever.retrieve(SDKType.AIR, "13.0", PlatformType.MAC);
         retriever.retrieve(SDKType.AIR, "14.0", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "14.0", PlatformType.MAC);
+        retriever.retrieve(SDKType.AIR, "14.0", PlatformType.MAC);*/
 
         // Test the retrieval of Flash SDKs
         retriever.retrieve(SDKType.FLASH, "10.2");
-        retriever.retrieve(SDKType.FLASH, "10.3");
+        /*retriever.retrieve(SDKType.FLASH, "10.3");
         retriever.retrieve(SDKType.FLASH, "11.0");
         retriever.retrieve(SDKType.FLASH, "11.1");
         retriever.retrieve(SDKType.FLASH, "11.2");
@@ -242,7 +279,7 @@ public class DownloadRetriever extends BaseRetriever {
         retriever.retrieve(SDKType.FLASH, "11.9");
         retriever.retrieve(SDKType.FLASH, "12.0");
         retriever.retrieve(SDKType.FLASH, "13.0");
-        retriever.retrieve(SDKType.FLASH, "14.0");
+        retriever.retrieve(SDKType.FLASH, "14.0");*/
 
     }
 
