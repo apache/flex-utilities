@@ -17,6 +17,7 @@
 package org.apache.flex.utilities.converter.core;
 
 import org.apache.flex.utilities.converter.air.AirConverter;
+import org.apache.flex.utilities.converter.exceptions.ConverterException;
 import org.apache.flex.utilities.converter.flash.FlashConverter;
 import org.apache.flex.utilities.converter.flex.FlexConverter;
 
@@ -46,12 +47,24 @@ public class SDKConverter {
             }
         }
 
-        final FlexConverter flexConverter = new FlexConverter(sourceDirectory, targetDirectory);
-        flexConverter.convert();
-        final AirConverter airConverter = new AirConverter(sourceDirectory, targetDirectory);
-        airConverter.convert();
-        final FlashConverter flashConverter = new FlashConverter(sourceDirectory, targetDirectory);
-        flashConverter.convert();
+        try {
+            final FlexConverter flexConverter = new FlexConverter(sourceDirectory, targetDirectory);
+            flexConverter.convert();
+        } catch(ConverterException e) {
+            System.out.println("Skipping generation of FLEX SDK");
+        }
+        try {
+            final AirConverter airConverter = new AirConverter(sourceDirectory, targetDirectory);
+            airConverter.convert();
+        } catch(ConverterException e) {
+            System.out.println("Skipping generation of AIR SDK");
+        }
+        try {
+            final FlashConverter flashConverter = new FlashConverter(sourceDirectory, targetDirectory);
+            flashConverter.convert();
+        } catch(ConverterException e) {
+            System.out.println("Skipping generation of Flash SDK");
+        }
     }
 
 }
