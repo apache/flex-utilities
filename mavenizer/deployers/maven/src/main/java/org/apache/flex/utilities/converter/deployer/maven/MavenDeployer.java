@@ -14,6 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.flex.utilities.converter.deployer.maven;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,8 @@ import java.util.List;
  * @author Frederic Thomas
  * @author Jose Barragan
  */
-public class SDKDeployer {
+public class MavenDeployer {
+
     private String directory;
     private String repositoryId;
     private String url;
@@ -36,7 +39,7 @@ public class SDKDeployer {
     /**
      * @param parameters
      */
-    public SDKDeployer(String[] parameters) {
+    public MavenDeployer(String[] parameters) {
         super();
         this.directory = parameters[0];
         this.repositoryId = parameters[1];
@@ -50,13 +53,13 @@ public class SDKDeployer {
             System.exit(0);
         }
 
-        SDKDeployer deployer = new SDKDeployer(args);
+        MavenDeployer deployer = new MavenDeployer(args);
         deployer.start();
     }
 
     private static void printUsage() {
-        System.out.println("\nUsage: java -cp flex-sdk-converter-1.0.jar SDKDeployer \"directory\" \"repositoryId\" \"url\" \"mvn\"\n");
-        System.out.println("The SDKDeployer needs 4 ordered parameters separated by spaces:");
+        System.out.println("\nUsage: java -cp flex-sdk-converter-1.0.jar org.apache.flex.utilities.converter.deployer.maven.SDKDeployer \"directory\" \"repositoryId\" \"url\" \"mvn\"\n");
+        System.out.println("The org.apache.flex.utilities.converter.deployer.maven.SDKDeployer needs 4 ordered parameters separated by spaces:");
         System.out.println("\t1- directory: The path to the directory to deploy.");
         System.out.println("\t2- repositoryId: Server Id to map on the <id> under <server> section of settings.xml.");
         System.out.println("\t3- url: URL where the artifacts will be deployed.");

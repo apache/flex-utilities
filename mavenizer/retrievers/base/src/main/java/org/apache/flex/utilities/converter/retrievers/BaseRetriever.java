@@ -16,13 +16,13 @@
  */
 package org.apache.flex.utilities.converter.retrievers;
 
-import com.google.common.io.CountingInputStream;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
+import org.apache.commons.compress.utils.CountingInputStream;
 import org.apache.flex.utilities.converter.retrievers.exceptions.RetrieverException;
 import org.apache.flex.utilities.converter.retrievers.utils.ProgressBar;
 
@@ -84,7 +84,7 @@ public abstract class BaseRetriever implements Retriever {
                         int count;
                         while ((count = archiveInputStream.read(data, 0, BUFFER_MAX)) != -1) {
                             dest.write(data, 0, count);
-                            progressBar.updateProgress(inputStream.getCount());
+                            progressBar.updateProgress(inputStream.getBytesRead());
                         }
                     } finally {
                         if(dest != null) {
@@ -94,7 +94,7 @@ public abstract class BaseRetriever implements Retriever {
                     }
                 }
 
-                progressBar.updateProgress(inputStream.getCount());
+                progressBar.updateProgress(inputStream.getBytesRead());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
