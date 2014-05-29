@@ -35,6 +35,9 @@ package org.apache.flex.ant.tags
     [Mixin]
     public class Checksum extends TaskHandler
     {
+		//private static var DEFAULT_READBUFFER_SIZE:int = 8192;
+		private static var DEFAULT_READBUFFER_SIZE:int = 32768;
+		
         public static function init(mf:IFlexModuleFactory):void
         {
             Ant.antTagProcessors["checksum"] = Checksum;
@@ -52,7 +55,7 @@ package org.apache.flex.ant.tags
         
         private function get toDir():String
         {
-            return getAttributeValue("@todir");
+            return getNullOrAttributeValue("@todir");
         }
         
         private function get fileExt():String
@@ -74,7 +77,7 @@ package org.apache.flex.ant.tags
         private function get readbuffersize():int
         {
             var val:String = getNullOrAttributeValue("@readbuffersize");
-            return val == null ? 8192 : int(val);
+            return val == null ? DEFAULT_READBUFFER_SIZE : int(val);
         }
         
         private var md5:MD5Stream;
@@ -92,7 +95,10 @@ package org.apache.flex.ant.tags
                 ant.output(this.file);
                 ant.output(e.message);
                 if (failonerror)
+				{
+					ant.project.failureMessage = e.message;
                     ant.project.status = false;
+				}
                 dispatchEvent(new Event(Event.COMPLETE));
                 return true;							
             }
@@ -171,14 +177,24 @@ package org.apache.flex.ant.tags
         private function getSumFile():File
         {
             try {
-                var sumFile:File = File.applicationDirectory.resolvePath(toDir);
+                var sumFile:File;
+				if (toDir)
+					sumFile = File.applicationDirectory.resolvePath(toDir);
+				else
+				{
+					var f:File = File.applicationDirectory.resolvePath(this.file);
+					sumFile = f.parent;
+				}
             } 
             catch (e:Error)
             {
                 ant.output(toDir);
                 ant.output(e.message);
                 if (failonerror)
+				{					
+					ant.project.failureMessage = e.message;
                     ant.project.status = false;
+				}				
                 return null;							
             }
             
