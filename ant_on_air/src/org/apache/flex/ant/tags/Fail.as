@@ -67,7 +67,10 @@ package org.apache.flex.ant.tags
                 }
             }
             if (text)
+			{
                 ant.output(ant.getValue(text, context));
+				ant.project.failureMessage = ant.getValue(text, context);
+			}
             ant.project.status = false;
             return true;
         }

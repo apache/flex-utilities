@@ -85,6 +85,7 @@ package org.apache.flex.ant
             {
                 ant.output(basedir);
                 ant.output(e.message);
+				ant.project.failureMessage = e.message;
                 ant.project.status = false;
                 return true;							
             }
@@ -97,7 +98,16 @@ package org.apache.flex.ant
                 return false;                
             }
 			if (Ant.ants.length > 1)
+			{
+				var status:Boolean = ant.project.status;
+				var failureMessage:String = ant.project.failureMessage;
 				Ant.ants.pop();
+				if (!status)
+				{
+					currentAnt.project.status = status;
+					currentAnt.project.failureMessage = failureMessage;
+				}
+			}
             return true;
         }
     
@@ -156,7 +166,16 @@ package org.apache.flex.ant
         private function completeHandler(event:Event):void
         {
 			if (Ant.ants.length > 1)
+			{
+				var status:Boolean = ant.project.status;
+				var failureMessage:String = ant.project.failureMessage;
 				Ant.ants.pop();
+				if (!status)
+				{
+					currentAnt.project.status = status;
+					currentAnt.project.failureMessage = failureMessage;
+				}
+			}
             event.target.removeEventListener(Event.COMPLETE, completeHandler);
             dispatchEvent(event);
         }

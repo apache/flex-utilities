@@ -82,8 +82,11 @@ package org.apache.flex.ant.tags
             {
                 ant.output(src);
                 ant.output(e.message);
-                if (failonerror)
-                    ant.project.status = false;
+				if (failonerror)
+				{
+					ant.project.failureMessage = e.message;
+					ant.project.status = false;
+				}
                 return true;							
             }
             
@@ -96,8 +99,11 @@ package org.apache.flex.ant.tags
             {
                 ant.output(dest);
                 ant.output(e.message);
-                if (failonerror)
-                    ant.project.status = false;
+				if (failonerror)
+				{
+					ant.project.failureMessage = e.message;
+					ant.project.status = false;
+				}
                 return true;							
             }
             
@@ -149,8 +155,11 @@ package org.apache.flex.ant.tags
         private function unTarError(event:Event):void {
             var output:String = _process.standardError.readUTFBytes(_process.standardError.bytesAvailable);
             ant.output(output);
-            if (failonerror)
-                ant.project.status = false;
+			if (failonerror)
+			{
+				ant.project.failureMessage = output;
+				ant.project.status = false;
+			}
             dispatchEvent(new Event(Event.COMPLETE));
         }
         

@@ -71,6 +71,28 @@ package org.apache.flex.ant.tags
             }
         }
         
+		private var _failureMessage:String;
+		/**
+		 *  null if tasks completed successfully.
+		 *  if status == false, then this will be
+		 *  set if a <fail> message set status to false
+		 *  or some other condition set status to false.
+		 *  
+		 */
+		public function get failureMessage():String
+		{
+			return _failureMessage;
+		}
+		
+		public function set failureMessage(value:String):void
+		{
+			if (_failureMessage != value)
+			{
+				_failureMessage = value;
+				ant.dispatchEvent(new Event("failureMessageChanged"));
+			}
+		}
+		
         public function get basedir():String
         {
             return getAttributeValue("@basedir");

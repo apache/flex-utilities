@@ -93,8 +93,11 @@ package org.apache.flex.ant.tags
             {
                 ant.output(src);
                 ant.output(e.message);
-                if (failonerror)
-                    ant.project.status = false;
+				if (failonerror)
+				{
+					ant.project.failureMessage = e.message;
+					ant.project.status = false;
+				}
                 return true;							
             }
             
@@ -107,8 +110,11 @@ package org.apache.flex.ant.tags
             {
                 ant.output(dest);
                 ant.output(e.message);
-                if (failonerror)
-                    ant.project.status = false;
+				if (failonerror)
+				{
+					ant.project.failureMessage = e.message;
+					ant.project.status = false;
+				}
                 return true;							
             }
             
@@ -176,8 +182,11 @@ package org.apache.flex.ant.tags
                 
             } catch (error:Error) {
 				ant.output(error.message);
-                if (failonerror)
-                    ant.project.status = false;
+				if (failonerror)
+				{
+					ant.project.failureMessage = error.message;
+					ant.project.status = false;
+				}
             }
         }
         
@@ -195,8 +204,11 @@ package org.apache.flex.ant.tags
             fzip.removeEventListener(ZipEvent.FILE_LOADED, onFileLoaded);
             fzip.removeEventListener(Event.COMPLETE, onUnzipComplete);            
             fzip.removeEventListener(ErrorEvent.ERROR, onUnzipError);
-            if (failonerror)
-                ant.project.status = false;
+			if (failonerror)
+			{
+				ant.project.failureMessage = event.toString();
+				ant.project.status = false;
+			}
         }
     }
 }

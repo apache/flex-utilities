@@ -183,6 +183,7 @@ package org.apache.flex.ant.tags
         private function ioErrorEventHandler(event:IOErrorEvent):void
         {
             ant.output(event.toString());
+			ant.project.failureMessage = ant.formatOutput("get", event.toString());
             ant.project.status = false;
             dispatchEvent(new Event(Event.COMPLETE));
             event.preventDefault();
@@ -192,6 +193,7 @@ package org.apache.flex.ant.tags
         private function securityErrorHandler(event:SecurityErrorEvent):void
         {
             ant.output(event.toString());
+			ant.project.failureMessage = ant.formatOutput("get", event.toString());
             ant.project.status = false;
             dispatchEvent(new Event(Event.COMPLETE));
             event.preventDefault();
@@ -261,7 +263,10 @@ package org.apache.flex.ant.tags
                 ant.output(dest);
                 ant.output(e.message);
                 if (failonerror)
+				{
+					ant.project.failureMessage = ant.formatOutput("get", e.message);
                     ant.project.status = false;
+				}
                 return null;							
             }
             
@@ -282,7 +287,10 @@ package org.apache.flex.ant.tags
                     ant.output(fileName);
                     ant.output(e.message);
                     if (failonerror)
+					{
+						ant.project.failureMessage = ant.formatOutput("get", e.message);						
                         ant.project.status = false;
+					}
                     return null;							
                 }
                 

@@ -69,6 +69,7 @@ package org.apache.flex.ant.tags.supportClasses
                     {
                         if (failonerror)
                         {
+							ant.project.failureMessage = e.message;
                             ant.project.status = false;
                             return true;
                         }
@@ -109,8 +110,11 @@ package org.apache.flex.ant.tags.supportClasses
                         {
                             ant.output(fs.dir);
                             ant.output(e.message);
-                            if (failonerror)
-                                ant.project.status = false;
+							if (failonerror)
+							{
+								ant.project.failureMessage = e.message;
+								ant.project.status = false;
+							}
                             dispatchEvent(new Event(Event.COMPLETE));
                             return;							
                         }
