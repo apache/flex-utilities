@@ -153,6 +153,7 @@ variables are not required because the locations of these pieces are known.
 		private var _latestVersion:String;
 		private var loggedVersion:Boolean;
         private var debugMode:Boolean = false;
+		private var logProgressEvents:Boolean = false;
         private var showDevBuilds:Boolean = false;
         private var usingDownloadCache:Boolean;
         private var downloadCacheFolder:String;
@@ -292,6 +293,11 @@ variables are not required because the locations of these pieces are known.
         private var stepLabels:Vector.<String> = new Vector.<String>();
         private var currentStep:int = 0;
         
+		private var customMenuItem1:ContextMenuItem = new ContextMenuItem("Show Dev Builds");
+		private var customMenuItem2:ContextMenuItem = new ContextMenuItem("Configure Download Cache...");
+		private var customMenuItem3:ContextMenuItem = new ContextMenuItem("Enable Verbose Logging");
+		private var customMenuItem4:ContextMenuItem = new ContextMenuItem("Enable Progress Logging");
+		
 		[Bindable]
 		private var _viewResourceConstants:ViewResourceConstants;
         [Bindable]
@@ -502,7 +508,7 @@ variables are not required because the locations of these pieces are known.
         {
             log("Unable to load language file " + languageURL);
             log(event.toString());
-            abortInstallation();            
+            abortInstallation("Unable to load language file " + languageURL);            
         }
         
         private function defaultLanguageLoaded():void {
@@ -568,7 +574,7 @@ variables are not required because the locations of these pieces are known.
                 selectDefaultLanguageInEmergency();
                 log("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
 				log(_viewResourceConstants.ERROR_CONFIG_XML_LOAD + error.errorID + " " + error.message);
-				abortInstallation();
+				abortInstallation("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
 			}
 			
 			_loader.addEventListener(IOErrorEvent.IO_ERROR, xmlError, false, 0, true);
@@ -579,7 +585,7 @@ variables are not required because the locations of these pieces are known.
             selectDefaultLanguageInEmergency();
 			log("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);            
 			log(_viewResourceConstants.ERROR_CONFIG_XML_LOAD + event.errorID);
-			abortInstallation();
+			abortInstallation("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME + " " + event.toString());
 		}
 		
 		protected function xmlLoaded(event:Event):void {
@@ -603,14 +609,22 @@ variables are not required because the locations of these pieces are known.
         private function debugModeHandler(event:Event):void
         {
             debugMode = true;
+			customMenuItem3.caption = "Verbose Logging Enabled";
         }
         
+		private function debugProgressHandler(event:Event):void
+		{
+			logProgressEvents = true;
+			customMenuItem4.caption = "Logging Progress Events";
+		}
+		
         private function devBuildShowHandler(event:Event):void
         {
             var item:Object = flexVersion.selectedItem;
             FLEX_VERSIONS.filterFunction = null;
             FLEX_VERSIONS.refresh();   
             flexVersion.selectedItem = item;
+			customMenuItem1.caption = "Showing Dev Builds";
         }
 
         private function downloadCacheHandler(event:Event):void
@@ -641,7 +655,7 @@ variables are not required because the locations of these pieces are known.
             catch (e:Error)
             {
                 log("Error parsing configuration file");
-                abortInstallation();
+                abortInstallation("Error parsing configuration file");
                 return false;
             }
             var keepGoing:Boolean = true;
@@ -656,17 +670,16 @@ variables are not required because the locations of these pieces are known.
     			
     			_mirrorURLCGI = data.mirror.(@name == 'MirrorURLCGI').@file.toString();
                 
-                var customMenuItem1:ContextMenuItem = new ContextMenuItem("Show Dev Builds");
-                customMenuItem1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, devBuildShowHandler);
-                var customMenuItem2:ContextMenuItem = new ContextMenuItem("Configure Download Cache");
-                customMenuItem2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, downloadCacheHandler);
-                var customMenuItem3:ContextMenuItem = new ContextMenuItem("Enable Verbose Logging");
-                customMenuItem3.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugModeHandler);
-                
+				customMenuItem1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, devBuildShowHandler);
+				customMenuItem2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, downloadCacheHandler);
+				customMenuItem3.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugModeHandler);
+				customMenuItem4.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugProgressHandler);
+				
                 var contextMenuCustomItems:Array = ContextMenu(contextMenu).customItems;
                 contextMenuCustomItems.push(customMenuItem1);
                 contextMenuCustomItems.push(customMenuItem2);
                 contextMenuCustomItems.push(customMenuItem3);
+				contextMenuCustomItems.push(customMenuItem4);
                 			
                 var name:String;
                 var versionString:String;
@@ -870,7 +883,7 @@ variables are not required because the locations of these pieces are known.
 			}
 			
 			if (_mirrorURLUtil.errorOccurred) {
-				abortInstallation();
+				abortInstallation("mirrorURLUtil.errorOccurred");
                 main();
 			} else {
                 updatePaths();
@@ -1064,7 +1077,7 @@ variables are not required because the locations of these pieces are known.
         
         protected function handleInstallerXMLError(event:Event):void {
             log("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
-            abortInstallation();
+            abortInstallation("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
         }
         
         protected function showDirectoryState():void
@@ -1272,7 +1285,7 @@ variables are not required because the locations of these pieces are known.
 			} catch (e:Error) {
 				updateActivityStep(_viewResourceConstants.STEP_CREATE_DIRECTORIES, StepItem.ERROR);
 				log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY);
-				abortInstallation();
+				abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY);
 			}
 		}
 		
@@ -1286,7 +1299,7 @@ variables are not required because the locations of these pieces are known.
 			} catch (e:Error) {
 				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
 				log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY + "(error: " + e.message);
-				abortInstallation();
+				abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY + "(error: " + e.message);
 			}
 			
 		}
@@ -1296,7 +1309,7 @@ variables are not required because the locations of these pieces are known.
 				writeFileToDirectory(_apacheFlexSDKCompressedFile, event.target.data);
 			} catch (e:Error) {
 				updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
-				abortInstallation();
+				abortInstallation("handleApacheFlexSDKDownload " + e.message);
 			}
 			
 			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.COMPLETE);
@@ -1310,7 +1323,7 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function md5VerificationProgressHandler(event:ProgressEvent):void {
-            if (debugMode)
+            if (logProgressEvents)
                 log("md5 progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
             if (event.bytesTotal > 0)
     			progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
@@ -1319,7 +1332,7 @@ variables are not required because the locations of these pieces are known.
 		protected function handleApacheFlexSDKDownloadError(event:* = null):void {
 			updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
 			log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK);
-			abortInstallation();
+			abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK);
 		}
 		
 		protected function uncompressApacheFlexSDK():void {
@@ -1328,7 +1341,7 @@ variables are not required because the locations of these pieces are known.
 				
 				log(_viewResourceConstants.ERROR_VERIFY_FLEX_SDK);
 				
-				abortInstallation();
+				abortInstallation(_viewResourceConstants.ERROR_VERIFY_FLEX_SDK);
 				return;
 			} else {
 				updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.COMPLETE);
@@ -1348,7 +1361,7 @@ variables are not required because the locations of these pieces are known.
 				}
 			} catch (e:Error) {
 				updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.ERROR);
-				abortInstallation();
+				abortInstallation(_viewResourceConstants.STEP_UNZIP_FLEX_SDK + " " + e.message);
 			}
 		}
 		
@@ -1389,16 +1402,14 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function handleApacheFlexSDKZipFileUnzipError(error:ErrorEvent = null):void {
 			updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.ERROR);
-			abortInstallation();
+			abortInstallation(_viewResourceConstants.STEP_UNZIP_FLEX_SDK + " " + error.toString());
 		}
 		
         protected function runInstallerScript():void
         {
             ant = new Ant();
             ant.output = output;
-            Ant.usingDownloadCache = usingDownloadCache;
-            Ant.downloadCacheFolder = downloadCacheFolder;
-            
+			
             var file:File;
             if (overlaying)
             {
@@ -1413,6 +1424,11 @@ variables are not required because the locations of these pieces are known.
                 file = _flexHomeDir.resolvePath("installer.xml");
             addEventListener(Event.ENTER_FRAME, enterFrameHandler);
             var context:Object = { installer: true };
+			if (usingDownloadCache)
+			{
+				context["usingDownloadCache"] = usingDownloadCache;
+				context["downloadCacheFolder"] = downloadCacheFolder;
+			}
             if (configOverride != "") {
                 context["xml.properties"] = configOverride;
             }
@@ -1439,7 +1455,7 @@ variables are not required because the locations of these pieces are known.
                 context["flash.sdk.url.path"] = flashPlayerVersion.selectedItem.path;
                 context["flash.sdk.url.file"] = flashPlayerVersion.selectedItem.file;
             }
-            
+			
             if (!ant.processXMLFile(file, context, true))
             {
                 ant.addEventListener(Event.COMPLETE, completeHandler);
@@ -1451,7 +1467,7 @@ variables are not required because the locations of these pieces are known.
         
         private function progressEventHandler(event:ProgressEvent):void
         {
-            if (debugMode)
+            if (logProgressEvents)
                 log("progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
             if (event.bytesTotal > 0)
                 progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
@@ -1474,12 +1490,19 @@ variables are not required because the locations of these pieces are known.
         private function completeHandler(event:Event):void
         {
             if (!Ant.currentAnt.project.status)
-                updateActivityStep(stepLabels[currentStep], StepItem.ERROR);
+			{
+				log(Ant.currentAnt.project.failureMessage);
+				if (currentStep > 0)
+	                updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
+			}
             else if (currentStep == stepLabels.length && currentStep > 0)
                 updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
             if (Ant.currentAnt.project.status)
                 tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
-            cleanup(!Ant.currentAnt.project.status);
+			if (Ant.currentAnt.project.failureMessage)
+ 	            cleanup(!Ant.currentAnt.project.status, "&info=" + escape(Ant.currentAnt.project.failureMessage));
+			else
+			    cleanup(!Ant.currentAnt.project.status);
         }
         
         private var ant:Ant;
@@ -1506,6 +1529,12 @@ variables are not required because the locations of these pieces are known.
                 isPublic = true;
                 skipLog = false;
             }
+			else if (s.indexOf("[fail] ") != -1)
+			{
+				s = s.substr(s.indexOf("[fail] ") + 7);
+				isPublic = true;
+				skipLog = false;
+			}
             log(s, -1, isPublic, skipLog);
         }
                 
@@ -2155,7 +2184,7 @@ variables are not required because the locations of these pieces are known.
 			}
 		}
 		
-		protected function cleanup(isAbort:Boolean = false):void {
+		protected function cleanup(isAbort:Boolean = false, abortInfo:String = ""):void {
             CursorManager.removeBusyCursor();
             if (!_viewResourceConstants)
                 selectDefaultLanguageInEmergency();
@@ -2166,7 +2195,8 @@ variables are not required because the locations of these pieces are known.
 			}
 			
 			if (isAbort) {
-				tracker.trackInstallerFailure(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
+				tracker.trackInstallerFailure(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, 
+					_os.os + abortInfo);
 			}
 			else if (!wasAborted)
 			{
@@ -2184,7 +2214,7 @@ variables are not required because the locations of these pieces are known.
 			thirdStepGroup.title = _viewResourceConstants.INFO_INSTALLATION_COMPLETE;
 		}
 		
-		protected function abortInstallation():void {
+		protected function abortInstallation(reason:String = ""):void {
             if (currentState != "installState")
                 showConsole(null);
             
@@ -2192,7 +2222,7 @@ variables are not required because the locations of these pieces are known.
 			browseBtn.enabled = false;
 			installBtn.enabled = false;
             wasAborted = true;
-			cleanup(true);
+			cleanup(true, reason);
             log(_viewResourceConstants.INFO_ABORT_INSTALLATION);
             firstStepGroup.title = secondStepGroup.title = thirdStepGroup.title = _viewResourceConstants.INFO_ABORT_INSTALLATION;
 		}
@@ -2449,7 +2479,7 @@ variables are not required because the locations of these pieces are known.
             if (event.bytesTotal > 0)
             {
     			var percentLoaded:int = Math.round(bytesLoaded * 100 / bytesTotal);
-                if (debugMode)
+                if (logProgressEvents)
                     log("download progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
     			
     			progressBar.percent = percentLoaded;
