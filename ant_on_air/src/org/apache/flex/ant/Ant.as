@@ -42,11 +42,6 @@ package org.apache.flex.ant
         }
         
         /**
-         *  Special property used to disable caching temporarily in Get task 
-         */
-        public static const DO_NOT_CACHE_NEXT_GET:String = "do-not-cache-next-get";
-        
-        /**
          *  @private
          *  The file being processed.  Used to determine basedir. 
          */
@@ -252,17 +247,5 @@ package org.apache.flex.ant
          */
         public var output:Function = function(s:String):void { trace(s) };
         
-        /**
-         *  Whether Get uses a download cache.  Note that the cache simply
-         *  escapes the portion of the URL after the domain and some
-         *  file systems like Windows have a path length restriction
-         *  so you may need to shorten URLs for really long URLs.
-         */
-        public static var usingDownloadCache:Boolean;
-        
-        /**
-         *  The folder Get uses as a download cache
-         */
-        public static var downloadCacheFolder:String;
     }
 }
