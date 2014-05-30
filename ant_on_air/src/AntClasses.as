@@ -30,6 +30,7 @@ package
             import org.apache.flex.ant.tags.Available; Available;
             import org.apache.flex.ant.tags.Checksum; Checksum;
             import org.apache.flex.ant.tags.Condition; Condition;
+            import org.apache.flex.ant.tags.Contains; Contains;
             import org.apache.flex.ant.tags.Copy; Copy;
             import org.apache.flex.ant.tags.Delete; Delete;
             import org.apache.flex.ant.tags.Echo; Echo;
@@ -54,6 +55,7 @@ package
             import org.apache.flex.ant.tags.PropertyFile; PropertyFile;
             import org.apache.flex.ant.tags.Replace; Replace;
 			import org.apache.flex.ant.tags.Touch; Touch;
+            import org.apache.flex.ant.tags.TStamp; TStamp;
             import org.apache.flex.ant.tags.Untar; Untar;
             import org.apache.flex.ant.tags.Unzip; Unzip;
             import org.apache.flex.ant.tags.XmlProperty; XmlProperty;

@@ -50,6 +50,10 @@
     </condition>
 
 	<target name="test" depends="copy-test,confirm-delete,delete-test">
+        <tstamp />
+        <echo>${DSTAMP}</echo>
+        <echo>${TSTAMP}</echo>
+        <echo>${TODAY}</echo>
         <exec executable="where.exe" osfamily="windows" outputproperty="java.executable" failonerror="true">
             <arg value="java"/>
         </exec>
