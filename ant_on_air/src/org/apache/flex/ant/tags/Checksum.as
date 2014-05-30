@@ -28,6 +28,7 @@ package org.apache.flex.ant.tags
     import flash.utils.ByteArray;
     
     import mx.core.IFlexModuleFactory;
+    import mx.utils.StringUtil;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
@@ -157,6 +158,7 @@ package org.apache.flex.ant.tags
                     {
                         fs.open(sumFile, FileMode.READ);
                         var expected:String = fs.readUTFBytes(fs.bytesAvailable);
+                        expected = StringUtil.trim(expected);
                         fs.close();                
                         if (sum != expected)
                             context[verifyproperty != null ? verifyproperty : property] = "false";
