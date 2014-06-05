@@ -36,7 +36,7 @@ package org.apache.flex.ant.tags
     [Mixin]
     public class Checksum extends TaskHandler
     {
-		private static var DEFAULT_READBUFFER_SIZE:int = 20 * 1024 * 1024;
+		private static var DEFAULT_READBUFFER_SIZE:int = 2 * 1024 * 1024;
 		
         public static function init(mf:IFlexModuleFactory):void
         {
