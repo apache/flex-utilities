@@ -51,7 +51,7 @@ import java.util.zip.ZipOutputStream;
  */
 public abstract class BaseConverter {
 
-    protected static final Map<String, MavenArtifact> checksums = new HashMap<String, MavenArtifact>();
+    protected final Map<String, MavenArtifact> checksums = new HashMap<String, MavenArtifact>();
 
     protected static final String MAVEN_SCHEMA_URI = "http://maven.apache.org/POM/4.0.0";
     protected static final String MAVEN_CENTRAL_SHA_1_QUERY_URL = "http://search.maven.org/solrsearch/select?rows=20&wt=json&q=1:";
@@ -306,10 +306,10 @@ public abstract class BaseConverter {
             if((metadata.getDependencies() != null) && !metadata.getDependencies().isEmpty()) {
                 final Element dependencies = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencies");
                 root.appendChild(dependencies);
-                final Element dependencyManagement = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencyManagement");
+                /*final Element dependencyManagement = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencyManagement");
                 final Element dependencyManagementDependencies = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencies");
                 dependencyManagement.appendChild(dependencyManagementDependencies);
-                root.appendChild(dependencyManagement);
+                root.appendChild(dependencyManagement);*/
 
                 final Map<String, MavenArtifact> dependencyIndex = new HashMap<String, MavenArtifact>();
                 for(final MavenArtifact dependencyMetadata : metadata.getDependencies()) {
@@ -323,6 +323,9 @@ public abstract class BaseConverter {
                     Element dependencyArtifactId = pom.createElementNS(MAVEN_SCHEMA_URI, "artifactId");
                     dependencyArtifactId.setTextContent(dependencyMetadata.getArtifactId());
                     dependency.appendChild(dependencyArtifactId);
+                    Element dependencyVersion = pom.createElementNS(MAVEN_SCHEMA_URI, "version");
+                    dependencyVersion.setTextContent(dependencyMetadata.getVersion());
+                    dependency.appendChild(dependencyVersion);
                     Element dependencyPackaging = pom.createElementNS(MAVEN_SCHEMA_URI, "type");
                     dependencyPackaging.setTextContent(dependencyMetadata.getPackaging());
                     dependency.appendChild(dependencyPackaging);
@@ -333,20 +336,20 @@ public abstract class BaseConverter {
                     }
 
                     // Configure the dependency including version in the dependency management section of the pom.
-                    dependency = pom.createElementNS(MAVEN_SCHEMA_URI, "dependency");
+                    /*dependency = pom.createElementNS(MAVEN_SCHEMA_URI, "dependency");
                     dependencyGroupId = pom.createElementNS(MAVEN_SCHEMA_URI, "groupId");
                     dependencyGroupId.setTextContent(dependencyMetadata.getGroupId());
                     dependency.appendChild(dependencyGroupId);
                     dependencyArtifactId = pom.createElementNS(MAVEN_SCHEMA_URI, "artifactId");
                     dependencyArtifactId.setTextContent(dependencyMetadata.getArtifactId());
                     dependency.appendChild(dependencyArtifactId);
-                    Element dependencyVersion = pom.createElementNS(MAVEN_SCHEMA_URI, "version");
+                    dependencyVersion = pom.createElementNS(MAVEN_SCHEMA_URI, "version");
                     dependencyVersion.setTextContent(dependencyMetadata.getVersion());
                     dependency.appendChild(dependencyVersion);
                     dependencyPackaging = pom.createElementNS(MAVEN_SCHEMA_URI, "type");
                     dependencyPackaging.setTextContent(dependencyMetadata.getPackaging());
                     dependency.appendChild(dependencyPackaging);
-                    dependencyManagementDependencies.appendChild(dependency);
+                    dependencyManagementDependencies.appendChild(dependency);*/
 
                     dependencyIndex.put(dependencyMetadata.getArtifactId(), dependencyMetadata);
                 }

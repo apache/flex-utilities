@@ -149,6 +149,14 @@ public class FlexConverter extends BaseConverter implements Converter {
                 framework.addDependency(artifact);
             }
         }
+
+        // Forcefully add the mx library to the rest of the framework.
+        if("libs".equals(directory.getName())) {
+            final File mxSwc = new File(directory, "mx/mx.swc");
+            final MavenArtifact artifact = resolveArtifact(mxSwc, artifactGroupId, flexSdkVersion);
+            framework.addDependency(artifact);
+        }
+
         // If we are in the "mobile" directory and the paren contains an "experimental_mobile.swc" file,
         // add this to the mobile package.
         if("mobile".equals(directory.getName())) {
@@ -166,7 +174,8 @@ public class FlexConverter extends BaseConverter implements Converter {
         children.addAll(Arrays.asList(directory.listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
-                return pathname.isDirectory() && !"player".equals(pathname.getName());
+                return pathname.isDirectory() && !"player".equals(pathname.getName()) &&
+                        !"mx".equals(pathname.getName());
             }
         })));
         for(final File childDirectory : children) {
@@ -200,7 +209,7 @@ public class FlexConverter extends BaseConverter implements Converter {
     @Override
     protected void writeArtifact(MavenArtifact artifact) throws ConverterException {
         if(!"pom".equals(artifact.getPackaging())) {
-            // Copy the rsls too.
+            // Copy the rsls.
             final File rslSourceFile = getRsl(artifact.getArtifactId());
             if(rslSourceFile != null) {
                 final File rslTargetFile = new File(
@@ -209,7 +218,7 @@ public class FlexConverter extends BaseConverter implements Converter {
                 copyFile(rslSourceFile, rslTargetFile);
             }
 
-            // Copy the swzc too.
+            // Copy the swzc.
             final File signedRslSourceFile = getSignedRsl(artifact.getArtifactId());
             if(signedRslSourceFile != null) {
                 final File signedRslTargetFile = new File(
@@ -218,7 +227,7 @@ public class FlexConverter extends BaseConverter implements Converter {
                 copyFile(signedRslSourceFile, signedRslTargetFile);
             }
 
-            // Copy the language resources too.
+            // Copy the language resources.
             final Map<String, File> resourceBundles = getResourceBundles(artifact.getArtifactId());
             if(!resourceBundles.isEmpty() &&
                     artifact.getBinaryTargetFile(rootTargetDirectory, MavenArtifact.DEFAULT_CLASSIFIER) != null) {
@@ -248,13 +257,25 @@ public class FlexConverter extends BaseConverter implements Converter {
                 }
             }
 
-            // Add source zips ...
+            // Add source zips.
             final File sourceArtifactSourceFile = generateSourceArtifact(artifact.getArtifactId());
             if(sourceArtifactSourceFile != null) {
                 final File sourceArtifactTargetFile = new File(
                         artifact.getBinaryTargetFile(rootTargetDirectory, MavenArtifact.DEFAULT_CLASSIFIER).getParent(),
                         artifact.getArtifactId() + "-" + artifact.getVersion() + "-sources.jar");
                 copyFile(sourceArtifactSourceFile, sourceArtifactTargetFile);
+            }
+
+            // If this is the asdoc artifact, create the templates.zip for that.
+            if("asdoc".equals(artifact.getArtifactId())) {
+                final File asdocTemplatesZipSourceFile = generateAsdocTemplatesZip();
+                if (asdocTemplatesZipSourceFile != null) {
+                    final File asdocTemplatesZipTargetFile = new File(
+                            artifact.getBinaryTargetFile(
+                                    rootTargetDirectory, MavenArtifact.DEFAULT_CLASSIFIER).getParent(),
+                            artifact.getArtifactId() + "-" + artifact.getVersion() + "-template.zip");
+                    copyFile(asdocTemplatesZipSourceFile, asdocTemplatesZipTargetFile);
+                }
             }
         }
 
@@ -285,6 +306,34 @@ public class FlexConverter extends BaseConverter implements Converter {
                     return targetFile;
                 } catch(IOException e) {
                     throw new ConverterException("Error creating source archive.", e);
+                }
+            }
+        }
+        return null;
+    }
+
+    protected File generateAsdocTemplatesZip() throws ConverterException {
+        final File templatesDirectory = new File(rootSourceDirectory, "asdoc/templates");
+
+        if (templatesDirectory.listFiles() != null) {
+            final File sourceFiles[] = templatesDirectory.listFiles();
+            if (sourceFiles != null) {
+                final File zipInputFiles[] = new File[sourceFiles.length + 1];
+                System.arraycopy(sourceFiles, 0, zipInputFiles, 0, sourceFiles.length);
+
+                try {
+                    // Create a temp file.
+                    final File targetFile = File.createTempFile("temp-asdoc-templates", "zip");
+
+                    JarOutputStream jar = new JarOutputStream(new FileOutputStream(targetFile));
+                    for (final File file : zipInputFiles) {
+                        addFileToZip(jar, file, templatesDirectory);
+                    }
+                    jar.close();
+
+                    return targetFile;
+                } catch(IOException e) {
+                    throw new ConverterException("Error creating asdoc-templates archive.", e);
                 }
             }
         }
@@ -326,7 +375,7 @@ public class FlexConverter extends BaseConverter implements Converter {
                     final String themeName = themeDirectory.getName().toLowerCase();
                     final File themeFile = new File(themeDirectory, themeName + ".swc");
 
-                    File targetSwcFile = null;
+                    final File targetSwcFile;
                     if(themeFile.exists()) {
                         targetSwcFile = themeFile;
                     } else {
