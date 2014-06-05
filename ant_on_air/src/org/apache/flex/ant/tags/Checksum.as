@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
-    import com.adobe.crypto.MD5Stream;
+    import org.apache.flex.crypto.MD5Stream;
     
     import flash.events.Event;
     import flash.events.ProgressEvent;
@@ -36,8 +36,7 @@ package org.apache.flex.ant.tags
     [Mixin]
     public class Checksum extends TaskHandler
     {
-		//private static var DEFAULT_READBUFFER_SIZE:int = 8192;
-		private static var DEFAULT_READBUFFER_SIZE:int = 32768;
+		private static var DEFAULT_READBUFFER_SIZE:int = 20 * 1024 * 1024;
 		
         public static function init(mf:IFlexModuleFactory):void
         {
@@ -83,6 +82,7 @@ package org.apache.flex.ant.tags
         
         private var md5:MD5Stream;
         private var fs:FileStream;
+        private var totalLength:int;
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
@@ -109,34 +109,33 @@ package org.apache.flex.ant.tags
             
             fs = new FileStream();
             fs.open(f, FileMode.READ);
+            totalLength = fs.bytesAvailable;
             md5 = new MD5Stream();
             md5.resetFields();
-            getSum();
-            return false;
+            return getSum();
         }
         
-        private function getSum():void
+        private function getSum():Boolean
         {
-            if (fs.bytesAvailable == 0)
+            if (fs.bytesAvailable < DEFAULT_READBUFFER_SIZE)
             {
-				fs.close();
                 sumComplete();
-                return;
+                return true;
             }
-            var ba:ByteArray = new ByteArray();
-            fs.readBytes(ba, 0, Math.min(readbuffersize, fs.bytesAvailable));
-            md5.update(ba);
+            md5.update(fs, DEFAULT_READBUFFER_SIZE);
             ant.functionToCall = getSum;
             ant.progressClass = this;
             ant.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, 
                 fs.position, fs.position + fs.bytesAvailable));
+            return false;
         }
         
         private var sum:String;
         
         private function sumComplete():void
         {
-            sum = md5.complete();
+            sum = md5.complete(fs, totalLength);
+            fs.close();
             if (verifyproperty && property)
             {
                 if (sum == property)

@@ -86,10 +86,6 @@
         <mkdir dir="${basedir}/external/de/ketzler/utils/untar" />
         <get src="http://as3-simple-untar.googlecode.com/svn/trunk/src/de/ketzler/utils/untar/UntarFileInfo.as" dest="${basedir}/external/de/ketzler/utils/untar/UntarFileInfo.as" skipexisting="true" />
         <get src="http://as3-simple-untar.googlecode.com/svn/trunk/src/de/ketzler/utils/untar/UntarHeaderBlock.as" dest="${basedir}/external/de/ketzler/utils/untar/UntarHeaderBlock.as" skipexisting="true" />
-        <mkdir dir="${basedir}/external/com/adobe/crypto" />
-        <get src="https://raw.github.com/mikechambers/as3corelib/master/src/com/adobe/crypto/MD5Stream.as" dest="${basedir}/external/com/adobe/crypto/MD5Stream.as" skipexisting="true" />
-        <mkdir dir="${basedir}/external/com/adobe/utils" />
-        <get src="https://raw.github.com/mikechambers/as3corelib/master/src/com/adobe/utils/IntUtil.as" dest="${basedir}/external/com/adobe/utils/IntUtil.as" skipexisting="true" />
         <mkdir dir="${basedir}/external/com/probertson/utils" />
         <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/CRC32Generator.as" dest="${basedir}/external/com/probertson/utils/CRC32Generator.as" skipexisting="true" />
         <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/GZIPBytesEncoder.as" dest="${basedir}/external/com/probertson/utils/GZIPBytesEncoder.as" skipexisting="true" />
