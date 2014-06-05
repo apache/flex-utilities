@@ -42,6 +42,11 @@ package org.apache.flex.ant.tags.supportClasses
             return children[index];
         }
         
+        public function removeChildren():void
+        {
+            children = null;
+        }
+        
         public function get numChildren():int
         {
             if (!children) return 0;

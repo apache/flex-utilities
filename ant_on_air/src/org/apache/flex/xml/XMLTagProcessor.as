@@ -63,6 +63,8 @@ package org.apache.flex.xml
          */
         public function processChildren(xml:XML, parentTag:IParentTagHandler):void
         {
+            parentTag.removeChildren();
+            
             var xmlList:XMLList = xml.children();
             var n:int = xmlList.length();
             for (var i:int = 0; i < n; i++)

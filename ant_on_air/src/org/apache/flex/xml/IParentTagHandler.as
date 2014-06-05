@@ -38,6 +38,11 @@ package org.apache.flex.xml
         function getChildAt(index:int):ITagHandler;
         
         /**
+         *  Remove all children
+         */        
+        function removeChildren():void;
+        
+        /**
          *  The number of children.
          *  @return int The number of children. 
          */
