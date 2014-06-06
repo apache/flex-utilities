@@ -172,6 +172,8 @@ package org.apache.flex.ant.tags
                     }
                 }            
             }
+            ant.dispatchEvent(new ProgressEvent(ProgressEvent.PROGRESS, false, false, 
+                totalLength, totalLength));
             dispatchEvent(new Event(Event.COMPLETE));
         }
         
