@@ -566,6 +566,22 @@
 		</exec>
 	</target>
 
+	<target name="sign_exe" description="sign exe when on mac" >
+		<exec executable="gpg" output="${RELEASE_DIR}/${binary.kit}.exe.md5">
+			<arg value="--print-md" />
+			<arg value="MD5" />
+			<arg value="release/${binary.kit}.exe" />
+		</exec>
+
+		<exec executable="gpg">
+			<arg value="--armor" />
+			<arg value="--output" />
+			<arg value="${RELEASE_DIR}/${binary.kit}.exe.asc" />
+			<arg value="--detach-sig" />
+			<arg value="${RELEASE_DIR}/${binary.kit}.exe" />
+		</exec>
+	</target>
+
     <target name="debug" >
         <copy file="${SOURCE_DIR}/${APP_NAME}-app.xml" todir="${BUILD_DIR}" />
         <mkdir dir="${BUILD_DIR}/installer" />
