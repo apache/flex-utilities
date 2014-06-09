@@ -523,11 +523,7 @@
     </target>
 
 	<target name="sign" >
-		<exec executable="gpg" output="${RELEASE_DIR}/${source.kit}.zip.md5">
-			<arg value="--print-md" />
-			<arg value="MD5" />
-			<arg value="release/${source.kit}.zip" />
-		</exec>
+		<checksum file="${RELEASE_DIR}/${source.kit}.zip" algorithm="md5" forceOverwrite="yes" />
 
 		<exec executable="gpg">
 			<arg value="--armor" />
@@ -537,11 +533,7 @@
 			<arg value="${RELEASE_DIR}/${source.kit}.zip" />
 		</exec>
 
-		<exec executable="gpg" output="${RELEASE_DIR}/${source.kit}.tar.gz.md5">
-			<arg value="--print-md" />
-			<arg value="MD5" />
-			<arg value="release/${source.kit}.tar.gz" />
-		</exec>
+		<checksum file="${RELEASE_DIR}/${source.kit}.tar.gz" algorithm="md5" forceOverwrite="yes" />
 
 		<exec executable="gpg">
 			<arg value="--armor" />
@@ -551,11 +543,7 @@
 			<arg value="${RELEASE_DIR}/${source.kit}.tar.gz" />
 		</exec>
 
-		<exec executable="gpg" output="${RELEASE_DIR}/${binary.kit}.${extension}.md5">
-			<arg value="--print-md" />
-			<arg value="MD5" />
-			<arg value="release/${binary.kit}.${extension}" />
-		</exec>
+		<checksum file="${RELEASE_DIR}/${binary.kit}.${extension}" algorithm="md5" forceOverwrite="yes" />
 
 		<exec executable="gpg">
 			<arg value="--armor" />
@@ -567,11 +555,7 @@
 	</target>
 
 	<target name="sign_exe" description="sign exe when on mac" >
-		<exec executable="gpg" output="${RELEASE_DIR}/${binary.kit}.exe.md5">
-			<arg value="--print-md" />
-			<arg value="MD5" />
-			<arg value="release/${binary.kit}.exe" />
-		</exec>
+		<checksum file="${RELEASE_DIR}/${binary.kit}.exe" algorithm="md5" forceOverwrite="yes" />
 
 		<exec executable="gpg">
 			<arg value="--armor" />
