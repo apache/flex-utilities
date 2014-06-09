@@ -1491,7 +1491,8 @@ variables are not required because the locations of these pieces are known.
         {
             if (!Ant.currentAnt.project.status)
 			{
-				log(Ant.currentAnt.project.failureMessage);
+                var msg:String = Ant.currentAnt.project.failureMessage;
+				log(msg ? msg : "no failure message provided");
 				if (currentStep > 0)
 	                updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
 			}
