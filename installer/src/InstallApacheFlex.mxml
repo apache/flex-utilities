@@ -148,6 +148,8 @@ variables are not required because the locations of these pieces are known.
         [Embed(source="properties/en_US.properties",mimeType="application/octet-stream")]
         private var en_US_Properties:Class;
         
+        private var cleanedUp:Boolean;
+        
 		private var _mirrorURLCGI:String;
 		private var _useMirror:Boolean = true;
 		private var _latestVersion:String;
@@ -2186,6 +2188,11 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function cleanup(isAbort:Boolean = false, abortInfo:String = ""):void {
+			if (cleanedUp)
+				return;
+				
+			cleanedUp = true;
+			
             CursorManager.removeBusyCursor();
             if (!_viewResourceConstants)
                 selectDefaultLanguageInEmergency();
