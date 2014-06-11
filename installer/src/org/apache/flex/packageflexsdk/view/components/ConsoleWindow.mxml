@@ -34,7 +34,7 @@ limitations under the License.
         [Bindable]
         public var messages:ArrayCollection = new ArrayCollection();
 
-        protected function closeWindow(event:MouseEvent):void {
+        public function closeWindow(event:MouseEvent):void {
             close();
         }
 

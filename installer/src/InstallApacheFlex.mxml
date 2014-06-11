@@ -2648,8 +2648,10 @@ variables are not required because the locations of these pieces are known.
                 trace(text);
 		}
 		
+		private var console:ConsoleWindow;
 		private function showConsole(event:Event):void {
-			var console:ConsoleWindow = new ConsoleWindow();
+			if (!console || console.closed)
+				console = new ConsoleWindow();
 			console.messages = _messages;
 			console.open();
 			console.nativeWindow.x = this.nativeWindow.x + this.nativeWindow.width / 2 - console.nativeWindow.width / 2;
@@ -2677,6 +2679,8 @@ variables are not required because the locations of these pieces are known.
 		private function closeApplication(event:Event):void {
 			// TODO only enable close button when finished or when an error occurs
 			// TODO anything we need to clean up?
+			if (console && !console.closed)
+				console.closeWindow(null);
 			cleanup();
 			close();
 		}
