@@ -67,6 +67,11 @@ package org.apache.flex.ant.tags
             return getAttributeValue("@skipexisting") == "true";
         }
         
+		private function get ignoreerrors():Boolean
+		{
+			return getAttributeValue("@ignoreerrors") == "true";
+		}
+		
         private var urlLoader:URLLoader;
         
         override public function execute(callbackMode:Boolean, context:Object):Boolean
@@ -148,8 +153,11 @@ package org.apache.flex.ant.tags
         private function ioErrorEventHandler(event:IOErrorEvent):void
         {
             ant.output(event.toString());
-			ant.project.failureMessage = ant.formatOutput("get", event.toString());
-            ant.project.status = false;
+			if (!ignoreerrors)
+			{
+				ant.project.failureMessage = ant.formatOutput("get", event.toString());
+	            ant.project.status = false;
+			}
             dispatchEvent(new Event(Event.COMPLETE));
             event.preventDefault();
 			urlLoader = null;
@@ -158,8 +166,11 @@ package org.apache.flex.ant.tags
         private function securityErrorHandler(event:SecurityErrorEvent):void
         {
             ant.output(event.toString());
-			ant.project.failureMessage = ant.formatOutput("get", event.toString());
-            ant.project.status = false;
+			if (!ignoreerrors)
+			{
+				ant.project.failureMessage = ant.formatOutput("get", event.toString());
+    	        ant.project.status = false;
+			}
             dispatchEvent(new Event(Event.COMPLETE));
             event.preventDefault();
 			urlLoader = null;
