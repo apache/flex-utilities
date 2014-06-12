@@ -383,8 +383,24 @@ variables are not required because the locations of these pieces are known.
             CursorManager.setBusyCursor();
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
             updateWindow();
-			loadXML();
+			var hasInternet:Boolean = false;
+			var networkAdapters:Vector.<NetworkInterface> = NetworkInfo.networkInfo.findInterfaces();
+			for each (var networkAdapter:NetworkInterface in networkAdapters)
+			{
+				if (networkAdapter.active)
+				{
+					hasInternet = true;
+					break;
+				}
+			}
+			if (hasInternet)
+				loadXML();
             logVersion();
+			if (!hasInternet)
+			{
+				log("Internet connection unavailable");
+				abortInstallation("Internet connection unavailable.");
+			}
 		}
 		
 		private function uncaughtErrorHandler(event:UncaughtErrorEvent):void
@@ -565,6 +581,7 @@ variables are not required because the locations of these pieces are known.
 			
 			_viewResourceConstants.update();
 			setButtonWidths();
+			directoryBtn.enabled = true;
 			
             updateWindow();
             
@@ -622,7 +639,8 @@ variables are not required because the locations of these pieces are known.
 			if (setXMLVariables()) {
                 _langSelect.dataProvider = supportedLanguages;
                 _langSelect.selectedIndex = getIndexOfEnUS();
-                defineResourceManagerDefaultLanguage();
+				_langSelect.enabled = true;
+				defineResourceManagerDefaultLanguage();
 			}
 		}
 		
@@ -2871,6 +2889,7 @@ variables are not required because the locations of these pieces are known.
 				 fontFamily="openSansSemibold"
 				 verticalAlign="middle"/>
 		<s:DropDownList id="_langSelect"
+						enabled="false"
 						fontFamily="openSansSemibold"
 						change="_langSelect_changeHandler(event)">
 			<s:layout>
@@ -2955,6 +2974,7 @@ variables are not required because the locations of these pieces are known.
 					  height="32"
 					  right="10"
 					  label="{_viewResourceConstants.BTN_LABEL_NEXT}"
+					  enabled="false"
 					  click="handleZeroStepNextBtnClick(event)"/>
 		</s:controlBarContent>
 	</s:Panel>
