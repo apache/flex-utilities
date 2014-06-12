@@ -590,7 +590,9 @@ variables are not required because the locations of these pieces are known.
 			if (configOverride != "") {
 				request = new URLRequest(configOverride);
 			} else {
-				request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+				var d:Date = new Date();
+				var ts:String = d.getTime().toString();
+				request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME + "?ts=" + ts);
 				//request = new URLRequest(Constants.CONFIG_XML_NAME);
 			}
 			
@@ -2678,6 +2680,9 @@ variables are not required because the locations of these pieces are known.
 		private function showConsole(event:Event):void {
 			if (!console || console.closed)
 				console = new ConsoleWindow();
+			else if (console)
+				console.orderToFront();
+				
 			console.messages = _messages;
 			console.open();
 			console.nativeWindow.x = this.nativeWindow.x + this.nativeWindow.width / 2 - console.nativeWindow.width / 2;
