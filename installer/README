@@ -35,9 +35,10 @@ Overview:
     - Adobe BlazeDS
     - Adobe embedded font support
  
-- The Apache Flex SDK Installer 3.0 adds the ability to install virtually anything that
-  can be installed via an Apache Ant script.  The list of choices to install are
-  described in installer/src/installer/sdk-installer-config-4.0.xml and posted to
+- The Apache Flex SDK Installer 3.0 and later supports the ability to install 
+  virtually anything that can be installed via an Apache Ant script.  The list 
+  of choices to install are described in 
+  installer/src/installer/sdk-installer-config-4.0.xml and posted to
   http://flex.apache.org/installer/sdk-installer-config-4.0.xml.  By default, the
   installer looks there to determine the list of choices.  Once a selection is made,
   the installer then looks in the folder of the install package for a -config.xml file
@@ -71,6 +72,9 @@ Overview:
   
 - Then the rest of the external dependencies and the optional files (if selected by user) 
   are downloaded and copied into the appropriate locations.  
+
+- If you experience problems with the install, please try again, but right-click
+  and select "Verbose Logging" to add more information to the log. 
 
 - From the 2.6 version, you can select the version of Adobe Flash Player and Adobe AIR SDK
   the installer downloads.
