@@ -91,7 +91,7 @@ variables are not required because the locations of these pieces are known.
                         <s:Button label="Browse..." click="browseFolders()" styleName="genericBtnStyle" enabled="{cb.selected}"/>
                     </s:HGroup>
                     <s:HGroup horizontalAlign="center" width="100%" >
-                        <s:Button label="OK" click="updateCache()" styleName="genericBtnStyle" />
+                        <s:Button label="OK" click="updateCache()" enabled="{cb.selected == false || folder.text.length > 0}" styleName="genericBtnStyle" />
                         <s:Button label="Cancel" click="closeUp()" styleName="genericBtnStyle" />
                     </s:HGroup>
                 </s:VGroup>
@@ -381,11 +381,37 @@ variables are not required because the locations of these pieces are known.
 		
 		protected function handleApplicationComplete(event:FlexEvent):void {
             CursorManager.setBusyCursor();
+			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
             updateWindow();
 			loadXML();
             logVersion();
 		}
 		
+		private function uncaughtErrorHandler(event:UncaughtErrorEvent):void
+		{
+			if (currentStep > 0)
+				updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
+			if (event.error is Error)
+			{
+				var error:Error = event.error as Error;
+				log(error.message);
+				log(error.getStackTrace(), -1, false);
+				abortInstallation(error.message + "\n" + error.getStackTrace());
+			}
+			else if (event.error is ErrorEvent)
+			{
+				var errorEvent:ErrorEvent = event.error as ErrorEvent;
+				log(errorEvent.text);
+				abortInstallation(errorEvent.text);
+			}
+			else
+			{
+				// a non-Error, non-ErrorEvent type was thrown and uncaught
+				log(event.toString());
+				abortInstallation(event.toString());
+			}
+		}
+
 		/**
 		 * Define on ResourceManager all keys for translation.
 		 * If some key is not present on any other language selected by user, the default value will be displayed
