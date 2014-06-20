@@ -2682,7 +2682,9 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		private function log(text:String, position:int = -1, isPublic:Boolean = true, skipLog:Boolean = false):void {
-			if (position == -1) {
+            if (text == null)
+                text = "";
+            if (position == -1) {
                 if (!skipLog)
     				_messages.addItem(text);
                 if (isPublic)
