@@ -113,10 +113,16 @@ public class AirConverter extends BaseConverter implements Converter {
         final List<File> files = new ArrayList<File>();
         files.addAll(Arrays.asList(directory.listFiles(new AirRuntimeFilter())));
 
-        // Generate artifacts for every jar in the input directories.
+        // Generate artifacts for every jar in the input directories (Actually this is only one file).
         for(final File sourceFile : files) {
             final MavenArtifact artifact = resolveArtifact(sourceFile, "com.adobe.air.runtime", airSdkVersion);
             runtime.addDependency(artifact);
+        }
+
+        // Zip up the AIR runtime directory.
+        final MavenArtifact airRuntimeArtifact = generateAirRuntimeArtifact(rootSourceDirectory);
+        if(airRuntimeArtifact != null) {
+            runtime.addDependency(airRuntimeArtifact);
         }
 
         // Write this artifact to file.
@@ -161,7 +167,38 @@ public class AirConverter extends BaseConverter implements Converter {
     //
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
+    protected MavenArtifact generateAirRuntimeArtifact(File rootDirectory) throws ConverterException {
+        final MavenArtifact airRuntimeArtifact = new MavenArtifact();
+        airRuntimeArtifact.setGroupId("com.adobe.air.runtime");
+        airRuntimeArtifact.setArtifactId("air-runtime");
+        airRuntimeArtifact.setVersion(airSdkVersion);
+        airRuntimeArtifact.setPackaging("zip");
+
+        final File runtimeRoot = new File(rootDirectory, "runtimes.air".replace(".", File.separator));
+        final File[] platforms = runtimeRoot.listFiles();
+        if(platforms != null) {
+            for (final File platform : platforms) {
+                if (!platform.isDirectory()) {
+                   continue;
+                }
+                final String platformName = platform.getName();
+                try {
+                   final File zip = File.createTempFile("AirRuntime-" + platformName + "-" + airSdkVersion, "zip");
+                   generateZip(platform.listFiles(), zip);
+                   airRuntimeArtifact.addBinaryArtifact(platformName, zip);
+                } catch (IOException e) {
+                   throw new ConverterException("Error creating runtime zip.", e);
+                }
+            }
+        } else {
+            return null;
+        }
+
+        writeArtifact(airRuntimeArtifact);
+        return airRuntimeArtifact;
+    }
+
+   /**
      * Get the version of an AIR SDK from the content of the SDK directory.
      *
      * @return version string for the current AIR SDK

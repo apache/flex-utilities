@@ -277,112 +277,6 @@ public abstract class BaseConverter {
         } catch (Exception e) {
             throw new ConverterException("Error generating template output.", e);
         }
-
-        /*final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        final DocumentBuilder builder;
-        try {
-            builder = factory.newDocumentBuilder();
-            DOMImplementation domImpl = builder.getDOMImplementation();
-            final Document pom = domImpl.createDocument(MAVEN_SCHEMA_URI, "project", null);
-
-            final Element root = pom.getDocumentElement();
-            final Element modelVersion = pom.createElementNS(MAVEN_SCHEMA_URI, "modelVersion");
-            modelVersion.setTextContent("4.0.0");
-            root.appendChild(modelVersion);
-            final Element groupId = pom.createElementNS(MAVEN_SCHEMA_URI, "groupId");
-            groupId.setTextContent(metadata.getGroupId());
-            root.appendChild(groupId);
-            final Element artifactId = pom.createElementNS(MAVEN_SCHEMA_URI, "artifactId");
-            artifactId.setTextContent(metadata.getArtifactId());
-            root.appendChild(artifactId);
-            final Element version = pom.createElementNS(MAVEN_SCHEMA_URI, "version");
-            version.setTextContent(metadata.getVersion());
-            root.appendChild(version);
-            final Element packaging = pom.createElementNS(MAVEN_SCHEMA_URI, "packaging");
-            packaging.setTextContent(metadata.getPackaging());
-            root.appendChild(packaging);
-
-            // Output dependency data.
-            if((metadata.getDependencies() != null) && !metadata.getDependencies().isEmpty()) {
-                final Element dependencies = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencies");
-                root.appendChild(dependencies);
-                final Element dependencyManagement = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencyManagement");
-                final Element dependencyManagementDependencies = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencies");
-                dependencyManagement.appendChild(dependencyManagementDependencies);
-                root.appendChild(dependencyManagement);
-
-                final Map<String, MavenArtifact> dependencyIndex = new HashMap<String, MavenArtifact>();
-                for(final MavenArtifact dependencyMetadata : metadata.getDependencies()) {
-                    Element dependency = pom.createElementNS(MAVEN_SCHEMA_URI, "dependency");
-                    dependencies.appendChild(dependency);
-
-                    // Generate the normal dependency.
-                    Element dependencyGroupId = pom.createElementNS(MAVEN_SCHEMA_URI, "groupId");
-                    dependencyGroupId.setTextContent(dependencyMetadata.getGroupId());
-                    dependency.appendChild(dependencyGroupId);
-                    Element dependencyArtifactId = pom.createElementNS(MAVEN_SCHEMA_URI, "artifactId");
-                    dependencyArtifactId.setTextContent(dependencyMetadata.getArtifactId());
-                    dependency.appendChild(dependencyArtifactId);
-                    Element dependencyVersion = pom.createElementNS(MAVEN_SCHEMA_URI, "version");
-                    dependencyVersion.setTextContent(dependencyMetadata.getVersion());
-                    dependency.appendChild(dependencyVersion);
-                    Element dependencyPackaging = pom.createElementNS(MAVEN_SCHEMA_URI, "type");
-                    dependencyPackaging.setTextContent(dependencyMetadata.getPackaging());
-                    dependency.appendChild(dependencyPackaging);
-                    if(dependencyMetadata.getClassifier() != null) {
-                        final Element dependencyClassifier = pom.createElementNS(MAVEN_SCHEMA_URI, "classifier");
-                        dependencyClassifier.setTextContent(dependencyMetadata.getClassifier());
-                        dependency.appendChild(dependencyClassifier);
-                    }
-
-                    // Configure the dependency including version in the dependency management section of the pom.
-                    dependency = pom.createElementNS(MAVEN_SCHEMA_URI, "dependency");
-                    dependencyGroupId = pom.createElementNS(MAVEN_SCHEMA_URI, "groupId");
-                    dependencyGroupId.setTextContent(dependencyMetadata.getGroupId());
-                    dependency.appendChild(dependencyGroupId);
-                    dependencyArtifactId = pom.createElementNS(MAVEN_SCHEMA_URI, "artifactId");
-                    dependencyArtifactId.setTextContent(dependencyMetadata.getArtifactId());
-                    dependency.appendChild(dependencyArtifactId);
-                    Element dependencyVersion = pom.createElementNS(MAVEN_SCHEMA_URI, "version");
-                    dependencyVersion.setTextContent(dependencyMetadata.getVersion());
-                    dependency.appendChild(dependencyVersion);
-                    dependencyPackaging = pom.createElementNS(MAVEN_SCHEMA_URI, "type");
-                    dependencyPackaging.setTextContent(dependencyMetadata.getPackaging());
-                    dependency.appendChild(dependencyPackaging);
-                    dependencyManagementDependencies.appendChild(dependency);
-
-                    dependencyIndex.put(dependencyMetadata.getArtifactId(), dependencyMetadata);
-                }
-
-                // Output the rb.swc dependencies.
-                if(metadata.getLibrariesWithResourceBundles() != null) {
-                    for(final String artifactWithResourceBundle : metadata.getLibrariesWithResourceBundles()) {
-                        final MavenArtifact dependencyMetadata = dependencyIndex.get(artifactWithResourceBundle);
-                        if(dependencyMetadata != null) {
-                            final Element dependency = pom.createElementNS(MAVEN_SCHEMA_URI, "dependency");
-                            dependencies.appendChild(dependency);
-
-                            final Element dependencyGroupId = pom.createElementNS(MAVEN_SCHEMA_URI, "groupId");
-                            dependencyGroupId.setTextContent(dependencyMetadata.getGroupId());
-                            dependency.appendChild(dependencyGroupId);
-                            final Element dependencyArtifactId = pom.createElementNS(MAVEN_SCHEMA_URI, "artifactId");
-                            dependencyArtifactId.setTextContent(dependencyMetadata.getArtifactId());
-                            dependency.appendChild(dependencyArtifactId);
-                            final Element dependencyVersion = pom.createElementNS(MAVEN_SCHEMA_URI, "version");
-                            dependencyVersion.setTextContent(dependencyMetadata.getVersion());
-                            dependency.appendChild(dependencyVersion);
-                            final Element dependencyPackaging = pom.createElementNS(MAVEN_SCHEMA_URI, "type");
-                            dependencyPackaging.setTextContent("rb.swc");
-                            dependency.appendChild(dependencyPackaging);
-                        }
-                    }
-                }
-            }
-            return pom;
-        } catch (ParserConfigurationException e) {
-            throw new ConverterException("Error creating pom document.", e);
-        }*/
     }
 
     protected void writeDummy(final File targetFile) throws ConverterException {
@@ -481,6 +375,62 @@ public abstract class BaseConverter {
             final File binarySourceFile = artifact.getBinarySourceFile(classifier);
             final File binaryTargetFile = artifact.getBinaryTargetFile(rootTargetDirectory, classifier);
             copyFile(binarySourceFile, binaryTargetFile);
+        }
+    }
+
+    protected void generateZip(File[] sourceFiles, File targetFile) throws ConverterException {
+        if((sourceFiles == null) || (sourceFiles.length == 0)) {
+            return;
+        }
+        final File rootDir = sourceFiles[0].getParentFile();
+        final File zipInputFiles[] = new File[sourceFiles.length];
+        System.arraycopy(sourceFiles, 0, zipInputFiles, 0, sourceFiles.length);
+
+        try {
+            // Add all the content to a zip-file.
+            final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(targetFile));
+            for (final File file : zipInputFiles) {
+                addFileToZip(zipOutputStream, file, rootDir);
+            }
+            zipOutputStream.close();
+        } catch(IOException e) {
+            throw new ConverterException("Error generating " + targetFile.getName() + " zip.", e);
+        }
+    }
+
+    private void addFileToZip(ZipOutputStream zipOutputStream, File inputFile, File rootDirectory)
+          throws ConverterException {
+
+        if (inputFile == null) {
+            return;
+        }
+
+        // If this is a directory, add all it's children.
+        if (inputFile.isDirectory()) {
+            final File directoryContent[] = inputFile.listFiles();
+            if (directoryContent != null) {
+                for (final File file : directoryContent) {
+                    addFileToZip(zipOutputStream, file, rootDirectory);
+                }
+            }
+        }
+        // If this is a file, add it to the zips output.
+        else {
+            byte[] buf = new byte[1024];
+            try {
+                final FileInputStream in = new FileInputStream(inputFile);
+                final String zipPath = inputFile.getAbsolutePath().substring(
+                      rootDirectory.getAbsolutePath().length() + 1).replace("\\", "/");
+                zipOutputStream.putNextEntry(new ZipEntry(zipPath));
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    zipOutputStream.write(buf, 0, len);
+                }
+                zipOutputStream.closeEntry();
+                in.close();
+            } catch(IOException e) {
+                throw new ConverterException("Error adding files to zip.", e);
+            }
         }
     }
 
