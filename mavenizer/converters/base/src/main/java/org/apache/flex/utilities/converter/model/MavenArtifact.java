@@ -114,7 +114,11 @@ public class MavenArtifact {
         binaryArtifacts.put(classifier, binaryArtifact);
     }
 
-    public File getPomTargetFile(File targetRootDirectory) {
+   public boolean hasBinaryArtifact(String classifier) {
+      return binaryArtifacts != null && binaryArtifacts.containsKey(classifier);
+   }
+
+   public File getPomTargetFile(File targetRootDirectory) {
         final String fileName = groupId.replace(".", File.separator) + File.separator + artifactId + File.separator +
                 version + File.separator + artifactId + "-" + version + ((classifier != null) ? "-" + classifier : "") +
                 ".pom";
@@ -144,6 +148,21 @@ public class MavenArtifact {
             return new File(targetRootDirectory, fileName);
         }
         return null;
+    }
+
+    public boolean hasDependencies() {
+        return (dependencies != null) && (!dependencies.isEmpty());
+    }
+
+    public boolean isAtLeastOneDependencyRsl() {
+        if(dependencies != null) {
+           for(final MavenArtifact dependency : dependencies) {
+              if(dependency.hasBinaryArtifact("rsl")) {
+                 return true;
+              }
+           }
+        }
+        return false;
     }
 
 }

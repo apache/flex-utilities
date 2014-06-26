@@ -19,7 +19,7 @@ package org.apache.flex.utilities.converter.retrievers.download;
 import org.apache.flex.utilities.converter.retrievers.BaseRetriever;
 import org.apache.flex.utilities.converter.retrievers.exceptions.RetrieverException;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
-import org.apache.flex.utilities.converter.retrievers.types.SDKType;
+import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 import org.apache.flex.utilities.converter.retrievers.utils.ProgressBar;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -50,14 +50,14 @@ public class DownloadRetriever extends BaseRetriever {
     public static final String FLEX_INSTALLER_CONFIG_URL =
             "http://flex.apache.org/installer/sdk-installer-config-4.0.xml";
 
-    public File retrieve(SDKType type, String version) throws RetrieverException {
+    public File retrieve(SdkType type, String version) throws RetrieverException {
         return retrieve(type, version, null);
     }
 
     @Override
-    public File retrieve(SDKType type, String version, PlatformType platformType) throws RetrieverException {
+    public File retrieve(SdkType type, String version, PlatformType platformType) throws RetrieverException {
         try {
-            if (type.equals(SDKType.FLASH) || type.equals(SDKType.AIR)) {
+            if (type.equals(SdkType.FLASH) || type.equals(SdkType.AIR)) {
                 confirmLicenseAcceptance(type);
             }
 
@@ -100,7 +100,7 @@ public class DownloadRetriever extends BaseRetriever {
             // Do the extracting.
             ////////////////////////////////////////////////////////////////////////////////
 
-            if(type.equals(SDKType.FLASH)) {
+            if(type.equals(SdkType.FLASH)) {
                 return targetFile;
             } else {
                 System.out.println("Extracting archive to temp directory.");
@@ -122,7 +122,7 @@ public class DownloadRetriever extends BaseRetriever {
         }
     }
 
-    protected String getBinaryUrl(SDKType sdkType, String version, PlatformType platformType)
+    protected String getBinaryUrl(SdkType sdkType, String version, PlatformType platformType)
             throws RetrieverException {
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -139,7 +139,7 @@ public class DownloadRetriever extends BaseRetriever {
             }
 
             final StringBuilder stringBuilder = new StringBuilder();
-            if (sdkType == SDKType.FLEX) {
+            if (sdkType == SdkType.FLEX) {
                 final String path = artifactElement.getAttribute("path");
                 final String file = artifactElement.getAttribute("file");
                 if (!path.startsWith("http://")) {
@@ -176,7 +176,7 @@ public class DownloadRetriever extends BaseRetriever {
         }
     }
 
-    protected String getUrlXpath(SDKType sdkType, String version, PlatformType platformType)
+    protected String getUrlXpath(SdkType sdkType, String version, PlatformType platformType)
             throws RetrieverException {
         final StringBuilder stringBuilder = new StringBuilder();
         switch (sdkType) {
@@ -209,7 +209,7 @@ public class DownloadRetriever extends BaseRetriever {
         return stringBuilder.toString();
     }
 
-    protected void confirmLicenseAcceptance(SDKType type) throws RetrieverException {
+    protected void confirmLicenseAcceptance(SdkType type) throws RetrieverException {
         final Properties questionProps = new Properties();
         try {
             questionProps.load(DownloadRetriever.class.getClassLoader().getResourceAsStream("message.properties"));
@@ -218,9 +218,9 @@ public class DownloadRetriever extends BaseRetriever {
         }
 
         final String question;
-        if(type.equals(SDKType.FLASH)) {
+        if(type.equals(SdkType.FLASH)) {
             question = questionProps.getProperty("ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC");
-        } else if(type.equals(SDKType.AIR)) {
+        } else if(type.equals(SdkType.AIR)) {
             question = questionProps.getProperty("ASK_ADOBE_AIR_SDK");
         } else {
             throw new RetrieverException("Unknown SDKType");
@@ -283,7 +283,7 @@ public class DownloadRetriever extends BaseRetriever {
         retriever.retrieve(SDKType.AIR, "13.0", PlatformType.WINDOWS);
         retriever.retrieve(SDKType.AIR, "13.0", PlatformType.MAC);*/
         //retriever.retrieve(SDKType.AIR, "14.0", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "14.0", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "14.0", PlatformType.MAC);
 
         // Test the retrieval of Flash SDKs
         /*retriever.retrieve(SDKType.FLASH, "10.2");

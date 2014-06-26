@@ -216,6 +216,7 @@ public class FlexConverter extends BaseConverter implements Converter {
                         artifact.getBinaryTargetFile(rootTargetDirectory, MavenArtifact.DEFAULT_CLASSIFIER).getParent(),
                         artifact.getArtifactId() + "-" + artifact.getVersion() + ".swf");
                 copyFile(rslSourceFile, rslTargetFile);
+                artifact.addBinaryArtifact("rsl", rslSourceFile);
             }
 
             // Copy the swzc.
@@ -225,6 +226,7 @@ public class FlexConverter extends BaseConverter implements Converter {
                         artifact.getBinaryTargetFile(rootTargetDirectory, MavenArtifact.DEFAULT_CLASSIFIER).getParent(),
                         artifact.getArtifactId() + "-" + artifact.getVersion() + ".swz");
                 copyFile(signedRslSourceFile, signedRslTargetFile);
+                artifact.addBinaryArtifact("caching", rslSourceFile);
             }
 
             // Copy the language resources.

@@ -19,7 +19,7 @@ package org.apache.flex.utilities.converter.core;
 import org.apache.flex.utilities.converter.air.AirConverter;
 import org.apache.flex.utilities.converter.retrievers.download.DownloadRetriever;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
-import org.apache.flex.utilities.converter.retrievers.types.SDKType;
+import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 
 import java.io.File;
 
@@ -42,7 +42,7 @@ public class AirDownloader {
         }
 
         final DownloadRetriever downloadRetriever = new DownloadRetriever();
-        final File airSDKSourceDirectory = downloadRetriever.retrieve(SDKType.AIR, version, platformType);
+        final File airSDKSourceDirectory = downloadRetriever.retrieve(SdkType.AIR, version, platformType);
 
         final AirConverter airConverter = new AirConverter(airSDKSourceDirectory, targetDirectory);
         airConverter.convert();

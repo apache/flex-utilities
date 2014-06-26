@@ -22,20 +22,13 @@ import com.sun.jersey.api.client.WebResource;
 
 import org.apache.flex.utilities.converter.exceptions.ConverterException;
 import org.apache.flex.utilities.converter.model.MavenArtifact;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jettison.json.JSONTokener;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -43,6 +36,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -53,13 +47,14 @@ public abstract class BaseConverter {
 
     protected final Map<String, MavenArtifact> checksums = new HashMap<String, MavenArtifact>();
 
-    protected static final String MAVEN_SCHEMA_URI = "http://maven.apache.org/POM/4.0.0";
     protected static final String MAVEN_CENTRAL_SHA_1_QUERY_URL = "http://search.maven.org/solrsearch/select?rows=20&wt=json&q=1:";
     // Artifactory: "http://server:port/artifactory/api/search/checksum?repos=libs-release-local&md5=04040c7c184620af0a0a8a3682a75eb7
     // Nexus: "http://repository.sonatype.org/service/local/data_index?a=04040c7c184620af0a0a8a3682a75eb7"
 
     protected File rootSourceDirectory;
     protected File rootTargetDirectory;
+
+    private VelocityEngine velocityEngine;
 
     protected BaseConverter(File rootSourceDirectory, File rootTargetDirectory) throws ConverterException {
         if(rootSourceDirectory == null) {
@@ -71,6 +66,21 @@ public abstract class BaseConverter {
 
         this.rootSourceDirectory = rootSourceDirectory;
         this.rootTargetDirectory = rootTargetDirectory;
+
+        try {
+            // Load some initial properties from the classpath.
+            final Properties properties = new Properties();
+            final InputStream propertyInputStream =
+                  getClass().getClassLoader().getResourceAsStream("velocity.properties");
+            if(propertyInputStream != null) {
+                properties.load(propertyInputStream);
+            }
+
+            // Instantiate the engine that will be used for every generation.
+            velocityEngine = new VelocityEngine(properties);
+        } catch (Exception e) {
+            throw new ConverterException("Error initializing the velocity template engine.", e);
+        }
     }
 
     public void convert() throws ConverterException {
@@ -225,59 +235,50 @@ public abstract class BaseConverter {
         }
     }
 
-    /*protected void appendArtifact(MavenMetadata artifactMetadata, Element dependencies) {
-        final Document doc = dependencies.getOwnerDocument();
-        final Element dependency = doc.createElementNS(MAVEN_SCHEMA_URI, "dependency");
-        dependencies.appendChild(dependency);
-
-        final Element groupId = doc.createElementNS(MAVEN_SCHEMA_URI, "groupId");
-        groupId.setTextContent(artifactMetadata.getGroupId());
-        dependency.appendChild(groupId);
-        final Element artifactId = doc.createElementNS(MAVEN_SCHEMA_URI, "artifactId");
-        artifactId.setTextContent(artifactMetadata.getArtifactId());
-        dependency.appendChild(artifactId);
-        final Element version = doc.createElementNS(MAVEN_SCHEMA_URI, "version");
-        version.setTextContent(artifactMetadata.getVersion());
-        dependency.appendChild(version);
-        if(!artifactMetadata.getPackaging().equals("jar")) {
-            final Element packaging = doc.createElementNS(MAVEN_SCHEMA_URI, "type");
-            packaging.setTextContent(artifactMetadata.getPackaging());
-            dependency.appendChild(packaging);
-        }
-    }*/
-
     protected void writePomArtifact(MavenArtifact pomData) throws ConverterException {
-        final Document pomDoc = createPomDocument(pomData);
         final File outputFile = pomData.getPomTargetFile(rootTargetDirectory);
-        writeDocument(pomDoc, outputFile);
+        createPomDocument(pomData, outputFile);
     }
 
-    protected void writeDocument(Document doc, File outputFile) throws ConverterException {
-        final Source source = new DOMSource(doc);
-        final File outputDirectory = outputFile.getParentFile();
-        if(!outputDirectory.exists()) {
-            if(!outputDirectory.mkdirs()) {
-                throw new RuntimeException("Could not create directory: " + outputDirectory.getAbsolutePath());
-            }
-        }
-
-        final Result result = new StreamResult(outputFile);
-
-        final Transformer transformer;
+    protected void createPomDocument(final MavenArtifact metadata, File outputFile) throws ConverterException {
         try {
-            transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-            transformer.transform(source, result);
-        } catch (TransformerConfigurationException e) {
-            throw new ConverterException("Error writing xml document.", e);
-        } catch (TransformerException e) {
-            throw new ConverterException("Error writing xml document.", e);
-        }
-    }
+            // Build a context to hold the model
+            final VelocityContext velocityContext = new VelocityContext();
+            velocityContext.put("artifact", metadata);
 
-    protected Document createPomDocument(final MavenArtifact metadata) throws ConverterException {
-        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            // Try to get a template "templates/{type}.vm".
+            final String templateName;
+            if(velocityEngine.resourceExists("templates/" + metadata.getPackaging() + ".vm")) {
+               templateName = "templates/" + metadata.getPackaging() + ".vm";
+            } else if(velocityEngine.resourceExists("templates/default.vm")) {
+               templateName = "templates/default.vm";
+            } else {
+               throw new ConverterException("No template found for generating pom output.");
+            }
+
+            // Prepare an output stream to which the output can be generated.
+            FileWriter writer = null;
+            try {
+                if(!outputFile.getParentFile().exists()) {
+                    if(!outputFile.getParentFile().mkdirs()) {
+                        throw new ConverterException("Could not create template output directory.");
+                    }
+                }
+
+                writer = new FileWriter(outputFile);
+
+                // Have velocity generate the output for the template.
+                velocityEngine.mergeTemplate(templateName, "utf-8", velocityContext, writer);
+            } finally {
+                if(writer != null) {
+                    writer.close();
+                }
+            }
+        } catch (Exception e) {
+            throw new ConverterException("Error generating template output.", e);
+        }
+
+        /*final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         final DocumentBuilder builder;
         try {
@@ -306,10 +307,10 @@ public abstract class BaseConverter {
             if((metadata.getDependencies() != null) && !metadata.getDependencies().isEmpty()) {
                 final Element dependencies = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencies");
                 root.appendChild(dependencies);
-                /*final Element dependencyManagement = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencyManagement");
+                final Element dependencyManagement = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencyManagement");
                 final Element dependencyManagementDependencies = pom.createElementNS(MAVEN_SCHEMA_URI, "dependencies");
                 dependencyManagement.appendChild(dependencyManagementDependencies);
-                root.appendChild(dependencyManagement);*/
+                root.appendChild(dependencyManagement);
 
                 final Map<String, MavenArtifact> dependencyIndex = new HashMap<String, MavenArtifact>();
                 for(final MavenArtifact dependencyMetadata : metadata.getDependencies()) {
@@ -336,20 +337,20 @@ public abstract class BaseConverter {
                     }
 
                     // Configure the dependency including version in the dependency management section of the pom.
-                    /*dependency = pom.createElementNS(MAVEN_SCHEMA_URI, "dependency");
+                    dependency = pom.createElementNS(MAVEN_SCHEMA_URI, "dependency");
                     dependencyGroupId = pom.createElementNS(MAVEN_SCHEMA_URI, "groupId");
                     dependencyGroupId.setTextContent(dependencyMetadata.getGroupId());
                     dependency.appendChild(dependencyGroupId);
                     dependencyArtifactId = pom.createElementNS(MAVEN_SCHEMA_URI, "artifactId");
                     dependencyArtifactId.setTextContent(dependencyMetadata.getArtifactId());
                     dependency.appendChild(dependencyArtifactId);
-                    dependencyVersion = pom.createElementNS(MAVEN_SCHEMA_URI, "version");
+                    Element dependencyVersion = pom.createElementNS(MAVEN_SCHEMA_URI, "version");
                     dependencyVersion.setTextContent(dependencyMetadata.getVersion());
                     dependency.appendChild(dependencyVersion);
                     dependencyPackaging = pom.createElementNS(MAVEN_SCHEMA_URI, "type");
                     dependencyPackaging.setTextContent(dependencyMetadata.getPackaging());
                     dependency.appendChild(dependencyPackaging);
-                    dependencyManagementDependencies.appendChild(dependency);*/
+                    dependencyManagementDependencies.appendChild(dependency);
 
                     dependencyIndex.put(dependencyMetadata.getArtifactId(), dependencyMetadata);
                 }
@@ -381,7 +382,7 @@ public abstract class BaseConverter {
             return pom;
         } catch (ParserConfigurationException e) {
             throw new ConverterException("Error creating pom document.", e);
-        }
+        }*/
     }
 
     protected void writeDummy(final File targetFile) throws ConverterException {

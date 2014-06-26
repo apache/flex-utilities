@@ -26,7 +26,7 @@ import java.io.File;
 /**
  * Created by cdutz on 24.05.2014.
  */
-public class SDKConverter {
+public class SdkConverter {
 
     public static void main(String[] args) throws Exception {
         if(args.length != 2) {

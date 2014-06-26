@@ -18,7 +18,7 @@ package org.apache.flex.utilities.converter.core;
 
 import org.apache.flex.utilities.converter.flash.FlashConverter;
 import org.apache.flex.utilities.converter.retrievers.download.DownloadRetriever;
-import org.apache.flex.utilities.converter.retrievers.types.SDKType;
+import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 
 import java.io.File;
 
@@ -37,7 +37,7 @@ public class FlashDownloader {
         final File targetDirectory = new File(args[1]);
 
         final DownloadRetriever downloadRetriever = new DownloadRetriever();
-        final File playerglobalSourceFile = downloadRetriever.retrieve(SDKType.FLASH, version);
+        final File playerglobalSourceFile = downloadRetriever.retrieve(SdkType.FLASH, version);
 
         final File tempSdkRoot = new File(playerglobalSourceFile.getParent(),
                 playerglobalSourceFile.getName().substring(0, playerglobalSourceFile.getName().length() - 4) +
