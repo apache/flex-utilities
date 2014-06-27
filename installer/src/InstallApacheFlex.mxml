@@ -563,7 +563,7 @@ variables are not required because the locations of these pieces are known.
             if (languageOverride) {
                 userLocale = languageOverride;
             }
-            log("Using Locale:" + userLocale);
+            log("Using Locale: " + userLocale);
             
 			var n:int = supportedLanguages.length;
 			for (var i:int = 0; i < n; i++) {
@@ -2297,6 +2297,7 @@ variables are not required because the locations of these pieces are known.
             var defaultLanguage:String = ViewResourceConstants.DEFAULT_LANGUAGE;
 			resourceManager.localeChain = [ languageID, defaultLanguage ];
             resourceManager.update();
+            log("Using Locale: " + languageID);
             setButtonWidths();			
 		}
 		
