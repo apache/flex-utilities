@@ -77,7 +77,7 @@ limitations under the License.
 			<s:VerticalLayout gap="0" horizontalAlign="justify" />
 		</s:layout>
 	</s:List>
-	<s:Button label="COPY LOG"
+	<s:Button label="{ViewResourceConstants.instance.BTN_LABEL_COPY_LOG}"
 			  click="handleCopyBtnClick(event)"
 			  styleName="genericBtnStyle"
 			  left="7.5"
