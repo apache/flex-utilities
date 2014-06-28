@@ -8,18 +8,6 @@
     <packaging>${artifact.packaging}</packaging>
 
 #if ( $artifact.hasDependencies() )
-    <dependencies>
-#foreach( $dependency in $artifact.dependencies )
-        <dependency>
-            <groupId>${dependency.groupId}</groupId>
-            <artifactId>${dependency.artifactId}</artifactId>
-#if ($dependency.packaging != "jar")
-            <type>${dependency.packaging}</type>
-#end
-        </dependency>
-#end
-    </dependencies>
-
 #if ( $artifact.isAtLeastOneDependencyRsl() )
     <profiles>
         <profile>
@@ -29,7 +17,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
 
-            <dependencyManagement>
+            <dependencies>
 #foreach( $dependency in $artifact.dependencies )
                 <dependency>
                     <groupId>${dependency.groupId}</groupId>
@@ -40,7 +28,7 @@
 #end
                 </dependency>
 #end
-            </dependencyManagement>
+            </dependencies>
         </profile>
 
         <profile>
@@ -53,7 +41,7 @@
                 </property>
             </activation>
 
-            <dependencyManagement>
+            <dependencies>
 #foreach( $dependency in $artifact.dependencies )
                 <dependency>
                     <groupId>${dependency.groupId}</groupId>
@@ -67,11 +55,11 @@
 #end
                 </dependency>
 #end
-            </dependencyManagement>
+            </dependencies>
         </profile>
     </profiles>
 #else
-    <dependencyManagement>
+    <dependencies>
 #foreach( $dependency in $artifact.dependencies )
         <dependency>
             <groupId>${dependency.groupId}</groupId>
@@ -82,7 +70,7 @@
 #end
         </dependency>
 #end
-    </dependencyManagement>
+    </dependencies>
 #end
 #end
 

@@ -17,7 +17,6 @@
 package org.apache.flex.utilities.converter.core;
 
 import org.apache.flex.utilities.converter.air.AirConverter;
-import org.apache.flex.utilities.converter.exceptions.ConverterException;
 import org.apache.flex.utilities.converter.flash.FlashConverter;
 import org.apache.flex.utilities.converter.flex.FlexConverter;
 
