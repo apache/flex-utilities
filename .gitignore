@@ -11,6 +11,7 @@
 *.iml
 *.ipr
 *.iws
+atlassian-ide-plugin.xml
 
 # building
 target
