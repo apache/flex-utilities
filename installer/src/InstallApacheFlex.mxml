@@ -154,6 +154,7 @@ variables are not required because the locations of these pieces are known.
 		private var _useMirror:Boolean = true;
 		private var _latestVersion:String;
 		private var loggedVersion:Boolean;
+        private var logFile:String;
         private var debugMode:Boolean = false;
 		private var logProgressEvents:Boolean = false;
         private var showDevBuilds:Boolean = false;
@@ -372,6 +373,10 @@ variables are not required because the locations of these pieces are known.
 				}
                 if (s.indexOf("-debug") == 0) {
                     debugMode = true;
+                }
+                if (s.indexOf("-log=") == 0) {
+                    debugMode = true;
+                    logFile = s.substring(5);
                 }
 			}
             var so:SharedObject = SharedObject.getLocal("InstallApacheFlex");
@@ -731,6 +736,7 @@ variables are not required because the locations of these pieces are known.
                 			
                 var name:String;
                 var versionString:String;
+                var versionID:String;
                 
                 var languages:XMLList = data.languages.children();
                 for each (var lang:XML in languages)
@@ -746,10 +752,14 @@ variables are not required because the locations of these pieces are known.
     			for each (var airVersion:XML in airVersionList) {
                     var displayVersion:String = airVersion.@displayVersion.toString();
                     versionString = airVersion.@version.toString();
+                    versionID = null;
+                    if (airVersion.@versionID.length() > 0)
+                        versionID = airVersion.@versionID.toString();
                     airVersions.push(versionString);
                     var airPath:String = airVersion.path.toString();
                     var airFile:String = airVersion.file.toString();
-    				AIR_VERSIONS.addItem({label:"AIR " + displayVersion, version: versionString, path: airPath, file: airFile});
+    				AIR_VERSIONS.addItem({label:"AIR " + displayVersion, version: versionString, versionID: versionID, 
+                                            path: airPath, file: airFile});
     			}
     			
     			if (this.airVersion.selectedIndex == -1) {
@@ -779,7 +789,7 @@ variables are not required because the locations of these pieces are known.
                         var nocache:Boolean = productVersion.@nocache.toString() == "true";
                         if (productVersion["@default"].length() == 1)
                             selectedFlexVersion = FLEX_VERSIONS.length;
-                        FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver, 
+                        FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver,
                             path:path, overlay: isOverlay, prefix: productPrefix, legacy: legacy, nocache: nocache,
                             needsAIR: needsAIR, needsFlash: needsFlash, devBuild: devBuild, icon: icon});
                     }
@@ -808,13 +818,16 @@ variables are not required because the locations of these pieces are known.
     			for each (var flashVersion:XML in flashVersionList) {
                     displayVersion = flashVersion.@displayVersion.toString();
                     versionString = flashVersion.@version.toString();
+                    versionID = null;
+                    if (productVersion.@versionID.length() > 0)
+                        versionID = productVersion.@versionID.toString();
                     flashPlayerVersions.push(versionString);
     				if (!_os.isLinux() || Number(versionString) <= 11.2) {
     					var swfVersion:String = flashVersion.swfversion.toString();
                         var flashPath:String = flashVersion.path.toString();
                         var flashFile:String = flashVersion.file.toString();
     					FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + displayVersion, version:versionString, swfVersion:swfVersion,
-                                                                path: flashPath, file: flashFile});
+                            versionID: versionID, path: flashPath, file: flashFile});
     				}
     			}
     			
@@ -1493,9 +1506,13 @@ variables are not required because the locations of these pieces are known.
                 context[p] = additionalProps[p];
             
             context["air.sdk.version"] = AIR_VERSION;
+            if (airVersion.selectedItem.versionID)
+                context["air.sdk.versionID"] = airVersion.selectedItem.versionID;
             context["air.sdk.url.path"] = airVersion.selectedItem.path;
             context["air.sdk.url.file"] = airVersion.selectedItem.file;
             context["flash.sdk.version"] = FLASH_PLAYER_VERSION;
+            if (flashPlayerVersion.selectedItem.versionID)
+                context["flash.sdk.versionID"] = flashPlayerVersion.selectedItem.versionID;
             if (debugMode)
                 context["verbose"] = true;
             if (flashPlayerVersion.selectedItem.path)
@@ -2695,6 +2712,14 @@ variables are not required because the locations of these pieces are known.
 			}
             if (debugMode)
                 trace(text);
+            if (logFile)
+            {
+                var f:File = new File(logFile);
+                var fs:FileStream = new FileStream();
+                fs.open(f, FileMode.APPEND);
+                fs.writeUTFBytes(text + "\n");
+                fs.close();
+            }
 		}
 		
 		private var console:ConsoleWindow;
