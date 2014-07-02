@@ -96,10 +96,25 @@ package org.apache.flex.ant.tags
                 }
             }
             var n:int = tokens.length;
+            var c:int = 0;
             for (i = 0; i < n; i++)
             {
-                while (s.indexOf(tokens[i]) != -1)
-                    s = s.replace(tokens[i], reps[i]);				
+                var cur:int = 0;
+                // only look at the portion we haven't looked at yet.
+                // otherwise certain kinds of replacements can
+                // cause infinite looping, like replacing
+                // 'foo' with 'food'
+                do
+                {
+                    c = s.indexOf(tokens[i], cur) 
+                    if (c != -1)
+                    {
+                        var firstHalf:String = s.substr(0, c);
+                        var secondHalf:String = s.substr(c);
+                        s = firstHalf + secondHalf.replace(tokens[i], reps[i]);
+                        cur = c + 1;
+                    }
+                } while (c != -1)
             }
             fs.open(f, FileMode.WRITE);
             fs.writeUTFBytes(s);

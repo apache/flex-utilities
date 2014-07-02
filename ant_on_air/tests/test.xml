@@ -185,6 +185,7 @@
         <propertyfile file="${basedir}/temp/custom.properties" >
             <entry key="somekey" value="somevalue" />
             <entry key="somekey1" value="somevalue1" />
+            <entry key="looptest" value="foo" />
         </propertyfile>
         <fail message="propertyfile did not result in expected file">
             <condition>
@@ -194,6 +195,7 @@
             </condition>
         </fail>
         <replace file="${basedir}/temp/custom.properties" token="somekey" value="replacedkey" />
+        <replace file="${basedir}/temp/custom.properties" token="foo" value="food" />
         <replace file="${basedir}/temp/custom.properties">
             <replacefilter token="key" value="ky" />
         </replace>
@@ -214,6 +216,13 @@
             <condition>
                 <not>
                     <equals arg1="${replacedky1}" arg2="somevalue1" />
+                </not>
+            </condition>
+        </fail>
+        <fail message="replace did not work: did not find food">
+            <condition>
+                <not>
+                    <equals arg1="${looptest}" arg2="food" />
                 </not>
             </condition>
         </fail>
