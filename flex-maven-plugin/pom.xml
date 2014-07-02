@@ -58,10 +58,43 @@
     </developers>
 
     <scm>
-        <developerConnection>
-            scm:git:https://git-wip-us.apache.org/repos/asf/flex-utilities.git
-        </developerConnection>
+        <connection>scm:git:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</connection>
+        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</developerConnection>
+        <url>https://git-wip-us.apache.org/repos/asf/flex-sdk/repo?p=flex-utilities.git;a=tree</url>
     </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>apache.releases.https</id>
+            <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>apache.snapshots.https</id>
+            <url>https://repository.apache.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>Users Mailing List</name>
+            <subscribe>users-subscribe@flex.apache.org</subscribe>
+            <unsubscribe>users-unsubscribe@flex.apache.org</unsubscribe>
+            <post>users@flex.apache.org</post>
+            <archive>http://markmail.org/search/+list:org.apache.incubator.flex-users</archive>
+        </mailingList>
+        <mailingList>
+            <name>Development Mailing List</name>
+            <subscribe>dev-subscribe@flex.apache.org</subscribe>
+            <unsubscribe>dev-unsubscribe@flex.apache.org</unsubscribe>
+            <post>dev@flex.apache.org</post>
+            <archive>http://markmail.org/search/+list:org.apache.incubator.flex-dev</archive>
+        </mailingList>
+    </mailingLists>
+
+    <issueManagement>
+        <system>Apache Flex Jira</system>
+        <url>https://issues.apache.org/jira/browse/FLEX</url>
+    </issueManagement>
 
     <properties>
         <project.encoding>UTF-8</project.encoding>
@@ -69,12 +102,6 @@
         <jdk.version>1.6</jdk.version>
         <maven.version>3.1.1</maven.version>
     </properties>
-
-    <modules>
-        <module>plugins</module>
-        <module>components</module>
-        <module>testsuite</module>
-    </modules>
 
     <build>
         <plugins>
@@ -118,5 +145,76 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <profiles>
+        <!--
+            Default profile building the entire plugin as well as executing any tests.
+        -->
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <modules>
+                <module>plugins</module>
+                <module>components</module>
+                <module>testsuite</module>
+            </modules>
+        </profile>
+
+        <!--
+            Minimal profile building only the plugin as well as the plugins direct dependencies.
+            When updating the version of this plugin the maven build will fail for all modules
+            depending on the plugin itself. Using the minimal profile for the first build will make
+            sure the plugin is available in the local maven repository.
+        -->
+        <profile>
+            <id>minimal</id>
+
+            <modules>
+                <module>plugins</module>
+            </modules>
+        </profile>
+
+        <!--
+            Additionally to building everything and running all tests, this profile will also
+            generate the plugin documentation and reports. This is usually a time-consuming
+            task, that should not be run every time a build is performed.
+        -->
+        <profile>
+            <id>release</id>
+
+            <modules>
+                <module>plugins</module>
+                <module>components</module>
+                <module>testsuite</module>
+            </modules>
+
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-plugin-plugin</artifactId>
+                        <version>3.2</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <configuration>
+                            <minmemory>128m</minmemory>
+                            <maxmemory>512m</maxmemory>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jxr-plugin</artifactId>
+                        <version>2.4</version>
+                    </plugin>
+                </plugins>
+            </reporting>
+        </profile>
+    </profiles>
 
 </project>

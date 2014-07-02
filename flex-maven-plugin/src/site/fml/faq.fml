@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs id="FAQ" title="Frequently Asked Questions">
+    <part id="General">
+        <faq id="question">
+            <question>What is the difference between the flex-maven-plugin and flexmojos-maven-plugin?</question>
+            <answer>
+                <p>
+                    Flexmojos was developed for Adobe Flex and supports versions down to 1.x. This added a lot of compatability problems that made maintaining the plugin very hard. But the even more important part was due to it's licensing it was almost impossible to donate Flexmojos to Apache Flex. Creating a new plugin that is developed directly for Apache Flex and the new Falcon compiler resolves those licensing issues, gets rid of compatibility code and allows us to release the plugin together with the rest of the Flex framework.
+                </p>
+            </answer>
+        </faq>
+    </part>
+</faqs>
