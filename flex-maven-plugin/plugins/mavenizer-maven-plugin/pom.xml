@@ -24,18 +24,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache.flex.maven.plugin.plugins</groupId>
+        <groupId>org.apache.flex.maven.plugin</groupId>
         <artifactId>plugins</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <!-- This package name is intentional -->
-    <groupId>org.apache.maven.plugins</groupId>
     <artifactId>mavenizer-maven-plugin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
-    <name>Flex-Maven-Plugin / Plugins / flex-mavenizer-plugin</name>
+    <name>Flex-Maven-Plugin / Plugins / mavenizer-maven-plugin</name>
 
     <build>
         <plugins>
