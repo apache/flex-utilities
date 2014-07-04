@@ -3140,7 +3140,7 @@ variables are not required because the locations of these pieces are known.
 				 text="{lastFilteredPublicMessage}"
 				 fontFamily="openSansLightItalic"
 				 textAlign="center"
-				 width="80%"
+				 width="80%" height="100%"
 				 horizontalCenter="0"/>
 		<controls:ProgressBar id="progressBar"
 							  width="60%"
