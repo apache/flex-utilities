@@ -19,6 +19,7 @@
 package org.apache.flex.ant.tags
 {
     import flash.events.Event;
+    import flash.net.LocalConnection;
     
     import mx.core.IFlexModuleFactory;
     
@@ -124,6 +125,19 @@ package org.apache.flex.ant.tags
         
         private function processSteps():Boolean
         {
+            // try forcing GC before each step
+            try {
+                var lc1:LocalConnection = new LocalConnection();
+                var lc2:LocalConnection = new LocalConnection();
+                
+                lc1.connect("name");
+                lc2.connect("name");
+            }
+            catch (error:Error)
+            {
+            }
+            
+
             if (ifProperty != null)
             {
                 if (!context.hasOwnProperty(ifProperty))
