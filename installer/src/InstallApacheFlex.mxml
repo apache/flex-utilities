@@ -2500,8 +2500,7 @@ variables are not required because the locations of these pieces are known.
                        log("searching cache for " + cacheFile.url);                        
                    if (cacheFile.exists)
                    {
-                       if (debugMode)
-                           log("found file in cache");                        
+                       log(_viewResourceConstants.INFO_USING_CACHED_FILE + " " + cacheFile.url);                        
                        url = cacheFile.url;
                    }
                 }
