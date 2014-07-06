@@ -25,6 +25,8 @@ Apache Flex SDK Installer 3.1
 2. Reports more information when an install fails or is aborted.
 3. Caching is now implemented in the ant scripts.  This means that Apache Flex SDK
    4.12.1 and earlier will not use the download cache and may install more slowly.
+4. Minor UI/usability improvements
+5. Installer log now saved to disk in installation directory
 
 Apache Flex SDK Installer 3.0
 1. Now uses external localized strings
