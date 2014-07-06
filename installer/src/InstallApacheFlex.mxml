@@ -201,7 +201,7 @@ variables are not required because the locations of these pieces are known.
 		 *
 		 */
 		[Bindable] private var AIR_VERSIONS:ArrayCollection = new ArrayCollection();
-		private var AIR_VERSION:String = "3.1";
+		private var AIR_VERSION:String = "14.0";
 		private var ADOBE_AIR_SDK_WIN_FILE:String;
 		private var ADOBE_AIR_SDK_WIN_URL:String;
 		private var ADOBE_AIR_SDK_MAC_FILE:String;
@@ -2282,6 +2282,20 @@ variables are not required because the locations of these pieces are known.
 				log(_viewResourceConstants.INFO_INSTALLATION_COMPLETE);
 				updateUIHandleInstallationComplete();
 			}
+			
+			saveLogToDisk();
+		}
+		
+		protected function saveLogToDisk():void {
+			var file:File = file = _flexHomeDir.resolvePath("installer.log");
+			var fs:FileStream = new FileStream();
+            
+			fs.open(file, FileMode.WRITE);
+			for each (var message:String in _messages) {
+            	fs.writeUTFBytes(message);
+				fs.writeUTFBytes("\n");
+			}
+            fs.close();
 		}
 		
 		protected function updateUIHandleInstallationComplete():void {
@@ -2301,8 +2315,8 @@ variables are not required because the locations of these pieces are known.
 			browseBtn.enabled = false;
 			installBtn.enabled = false;
             wasAborted = true;
+			log(_viewResourceConstants.INFO_ABORT_INSTALLATION);
 			cleanup(true, reason);
-            log(_viewResourceConstants.INFO_ABORT_INSTALLATION);
             firstStepGroup.title = secondStepGroup.title = thirdStepGroup.title = _viewResourceConstants.INFO_ABORT_INSTALLATION;
 		}
 		
