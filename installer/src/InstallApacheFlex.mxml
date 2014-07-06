@@ -399,7 +399,9 @@ variables are not required because the locations of these pieces are known.
 				}
 			}
 			if (hasInternet)
+			{
 				loadXML();
+			}
             logVersion();
 			if (!hasInternet)
 			{
@@ -2260,10 +2262,13 @@ variables are not required because the locations of these pieces are known.
 			cleanedUp = true;
 			
             CursorManager.removeBusyCursor();
-            if (!_viewResourceConstants)
+            if (!_viewResourceConstants) {
                 selectDefaultLanguageInEmergency();
+			}
             try {
-				_flexTempDir.deleteDirectory(true);
+				if (_flexTempDir) {
+					_flexTempDir.deleteDirectory(true);
+				}
 			} catch (e:Error) {
     			log(_viewResourceConstants.ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY);
 			}
