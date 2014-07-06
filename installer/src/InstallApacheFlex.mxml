@@ -1045,6 +1045,8 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function handleZeroStepNextBtnClick(event:MouseEvent):void {	
+			directoryBtn.enabled = false;
+			
 			AIR_VERSION = airVersion.selectedItem.version;
 			FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.version;
 			
@@ -1064,8 +1066,9 @@ variables are not required because the locations of these pieces are known.
                 
                 loader.load(req);          
             }
-            else
+            else {
                 showDirectoryState();
+			}
 		}
 		
 		protected function handleFirstStepNextBtnClick(event:MouseEvent):void {
