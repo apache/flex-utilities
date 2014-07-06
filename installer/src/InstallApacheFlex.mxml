@@ -2287,15 +2287,24 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		protected function saveLogToDisk():void {
+			if (!_flexHomeDir) {
+				return;	
+			}
+			
 			var file:File = file = _flexHomeDir.resolvePath("installer.log");
 			var fs:FileStream = new FileStream();
             
-			fs.open(file, FileMode.WRITE);
-			for each (var message:String in _messages) {
-            	fs.writeUTFBytes(message);
-				fs.writeUTFBytes("\n");
+			try {
+				fs.open(file, FileMode.WRITE);
+				for each (var message:String in _messages) {
+	            	fs.writeUTFBytes(message);
+					fs.writeUTFBytes("\n");
+				}
+	            fs.close();
 			}
-            fs.close();
+			catch (e:Error) {
+    			// TODO log error?
+			}
 		}
 		
 		protected function updateUIHandleInstallationComplete():void {
