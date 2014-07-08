@@ -46,11 +46,18 @@
 		<os family="mac"/>
     </condition>
 
-    <condition property="success" value="success" >
+    <condition property="and_success" value="success" >
         <and>
             <matches string="foobar" pattern=".*bar" />
             <isset property="env.FLEX_HOME" />
         </and>
+    </condition>
+	
+    <condition property="or_success" value="success" >
+        <or>
+            <matches string="foobar" pattern=".*bar" />
+            <isset property="env.NONEXISTANT" />
+        </or>
     </condition>
 
     <condition property="should_fail" value="success" >
