@@ -53,9 +53,23 @@
         </and>
     </condition>
 	
+    <condition property="and_failure" value="success" >
+        <and>
+            <matches string="foobar" pattern=".*bar" />
+            <isset property="env.NONEXISTANT" />
+        </and>
+    </condition>
+	
     <condition property="or_success" value="success" >
         <or>
             <matches string="foobar" pattern=".*bar" />
+            <isset property="env.NONEXISTANT" />
+        </or>
+    </condition>
+	
+    <condition property="or_failure" value="success" >
+        <or>
+            <matches string="foobar" pattern=".*fred" />
             <isset property="env.NONEXISTANT" />
         </or>
     </condition>
@@ -73,16 +87,36 @@
         <antcall target="paramtest">
             <param name="foo" value="bar" />
         </antcall>
-        <echo>subant reported 'and' test 1: ${success} should be 'success'</echo>
+        <echo>subant reported 'and' test 1: ${and_success} should be 'success'</echo>
         <fail message="and test 1 failed" >
             <condition>
                 <not>
-                    <equals arg1="success" arg2="${success}" />
+                    <equals arg1="success" arg2="${and_success}" />
                 </not>
             </condition>
         </fail>
-        <echo>subant reported 'and' test 2: ${should_fail} should not be defined</echo>
+		<echo>subant reported 'or' test 2: ${or_success} should be 'success'</echo>
         <fail message="and test 2 failed" >
+            <condition>
+                <not>
+                    <equals arg1="success" arg2="${or_success}" />
+                </not>
+            </condition>
+        </fail>
+		<echo>subant reported 'and' test 3: ${and_failure} should not be 'success'</echo>
+        <fail message="and test 3 failed" >
+            <condition>
+            	<equals arg1="success" arg2="${and_failure}" />
+            </condition>
+        </fail>
+		<echo>subant reported 'or' test 4: ${or_failure} should not be 'success'</echo>
+        <fail message="and test 4 failed" >
+            <condition>
+                <equals arg1="success" arg2="${or_failure}" />
+            </condition>
+        </fail>
+        <echo>subant reported 'isset' test 5: ${should_fail} should not be defined</echo>
+        <fail message="and test 5 failed" >
             <condition>
                 <equals arg1="success" arg2="${should_fail}" />
             </condition>
