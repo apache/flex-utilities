@@ -1050,12 +1050,21 @@ variables are not required because the locations of these pieces are known.
 			directoryBtn.enabled = false;
 			
 			AIR_VERSION = airVersion.selectedItem.version;
+			var airVersionID:String = airVersion.selectedItem.versionID;
 			FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.version;
+			var flashVersionID:String = flashPlayerVersion.selectedItem.versionID;
 			
 			setXMLVariables(); // as AIR and Flash version may of changed
 			
-			log("AIR version " + AIR_VERSION);
-			log("Flash Player version " + FLASH_PLAYER_VERSION);
+			if (airVersionID)
+				log("AIR version " + airVersionID);
+			else
+				log("AIR version " + AIR_VERSION);
+			
+			if (flashVersionID)
+				log("Flash Player version " + flashVersionID);
+			else
+				log("Flash Player version " + FLASH_PLAYER_VERSION);
 			
             if (!legacy)
             {
