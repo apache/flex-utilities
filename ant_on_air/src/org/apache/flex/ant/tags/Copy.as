@@ -151,7 +151,20 @@ package org.apache.flex.ant.tags
                 return;							
             }
             
-            srcFile.copyTo(destFile, overwrite);
+            try {
+                srcFile.copyTo(destFile, overwrite);
+            }
+            catch (e:Error)
+            {
+                ant.output(destName);
+                ant.output(e.message);
+                if (failonerror)
+                {
+                    ant.project.failureMessage = e.message;
+                    ant.project.status = false;
+                }
+                return;							
+            }
         }
         
         override protected function outputTotal(total:int):void
@@ -215,7 +228,19 @@ package org.apache.flex.ant.tags
                 return false;
             }
             
-            doCopy();
+            try {
+                doCopy();
+            }
+            catch (e:Error)
+            {
+                ant.output(toFileName);
+                ant.output(e.message);
+                if (failonerror)
+                {
+                    ant.project.failureMessage = e.message;
+                    ant.project.status = false;
+                }
+            }
             return true;
         }
         
