@@ -614,8 +614,6 @@ variables are not required because the locations of these pieces are known.
 			if (configOverride != "") {
 				request = new URLRequest(configOverride);
 			} else {
-				var d:Date = new Date();
-				var ts:String = d.getTime().toString();
 				request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
 				//request = new URLRequest(Constants.CONFIG_XML_NAME);
 			}
@@ -821,8 +819,8 @@ variables are not required because the locations of these pieces are known.
                     displayVersion = flashVersion.@displayVersion.toString();
                     versionString = flashVersion.@version.toString();
                     versionID = null;
-                    if (productVersion.@versionID.length() > 0)
-                        versionID = productVersion.@versionID.toString();
+                    if (flashVersion.@versionID.length() > 0)
+                        versionID = flashVersion.@versionID.toString();
                     flashPlayerVersions.push(versionString);
     				if (!_os.isLinux() || Number(versionString) <= 11.2) {
     					var swfVersion:String = flashVersion.swfversion.toString();
