@@ -49,6 +49,7 @@ package
             import org.apache.flex.ant.tags.Mkdir; Mkdir;
             import org.apache.flex.ant.tags.Move; Move;
             import org.apache.flex.ant.tags.Not; Not;
+			import org.apache.flex.ant.tags.Or; Or;
             import org.apache.flex.ant.tags.OS; OS;
 			import org.apache.flex.ant.tags.Param; Param;
             import org.apache.flex.ant.tags.Property; Property;
