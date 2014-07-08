@@ -52,7 +52,7 @@ package org.apache.flex.ant.tags
 	                // get the value from the children
 	                var val:Object = IValueTagHandler(value).getValue(context);
 					
-					result = result && (val == "true" || val == true);
+					result = result || (val == "true" || val == true);
 					
 					if (result)
 						return true;
