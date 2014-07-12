@@ -42,6 +42,7 @@
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addClasspath>true</addClasspath>
+                            <mainClass>org.apache.flex.utilities.converter.core.SdkConverter</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Implementation-Build>${project.version}</Implementation-Build>
