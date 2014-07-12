@@ -8,57 +8,6 @@
     <packaging>${artifact.packaging}</packaging>
 
 #if ( $artifact.hasDependencies() )
-#if ( $artifact.isAtLeastOneDependencyRsl() )
-    <profiles>
-        <profile>
-            <id>default</id>
-
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-
-            <dependencies>
-#foreach( $dependency in $artifact.dependencies )
-                <dependency>
-                    <groupId>${dependency.groupId}</groupId>
-                    <artifactId>${dependency.artifactId}</artifactId>
-                    <version>${dependency.version}</version>
-#if ($dependency.packaging != "jar")
-                    <type>${dependency.packaging}</type>
-#end
-                </dependency>
-#end
-            </dependencies>
-        </profile>
-
-        <profile>
-            <id>flex-rsl</id>
-
-            <activation>
-                <property>
-                    <name>flex.framework.scope</name>
-                    <value>rsl</value>
-                </property>
-            </activation>
-
-            <dependencies>
-#foreach( $dependency in $artifact.dependencies )
-                <dependency>
-                    <groupId>${dependency.groupId}</groupId>
-                    <artifactId>${dependency.artifactId}</artifactId>
-                    <version>${dependency.version}</version>
-#if ($dependency.packaging != "jar")
-                    <type>${dependency.packaging}</type>
-#end
-#if ($dependency.packaging == "swc" && $dependency.hasBinaryArtifact('rsl'))
-                    <scope>rsl</scope>
-#end
-                </dependency>
-#end
-            </dependencies>
-        </profile>
-    </profiles>
-#else
     <dependencies>
 #foreach( $dependency in $artifact.dependencies )
         <dependency>
@@ -71,7 +20,16 @@
         </dependency>
 #end
     </dependencies>
+
+    <dependencyManagement>
+#foreach( $dependency in $artifact.dependencies )
+        <dependency>
+            <groupId>${dependency.groupId}</groupId>
+            <artifactId>${dependency.artifactId}</artifactId>
+            <version>${dependency.version}</version>
+        </dependency>
 #end
+    </dependencyManagement>
 #end
 
 </project>
