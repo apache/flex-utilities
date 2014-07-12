@@ -42,7 +42,7 @@
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.apache.flex.utilities.converter.core.SdkConverter</mainClass>
+                            <mainClass>org.apache.flex.utilities.converter.deployer.aether.AetherDeployer</mainClass>
                         </manifest>
                         <manifestEntries>
                             <Implementation-Build>${project.version}</Implementation-Build>
@@ -51,7 +51,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>flex-sdk-converter-${project.version}</finalName>
+                    <finalName>aether-deployer-${project.version}-full</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
