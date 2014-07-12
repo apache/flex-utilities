@@ -22,13 +22,15 @@
     </dependencies>
 
     <dependencyManagement>
+        <dependencies>
 #foreach( $dependency in $artifact.dependencies )
-        <dependency>
-            <groupId>${dependency.groupId}</groupId>
-            <artifactId>${dependency.artifactId}</artifactId>
-            <version>${dependency.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>${dependency.groupId}</groupId>
+                <artifactId>${dependency.artifactId}</artifactId>
+                <version>${dependency.version}</version>
+            </dependency>
 #end
+        </dependencies>
     </dependencyManagement>
 #end
 
