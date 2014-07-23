@@ -24,7 +24,7 @@
         paddingTop="10" paddingLeft="10">
 
         <mx:Label color="blue" text="Image embedded in the application."/>
-        <mx:Image source="@Embed('assets/Nokia_6630.png')"/>
+        <mx:Image source="@Embed('assets/ApacheFlexLogo.png')"/>
 
     </mx:Panel>
 </mx:Application>          

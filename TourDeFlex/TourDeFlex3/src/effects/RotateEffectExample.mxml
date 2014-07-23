@@ -46,11 +46,11 @@
         paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">
 
         <mx:VBox id="myVB" width="50%" horizontalAlign="center">
-            <mx:Label text="Nokia 9930"  
+            <mx:Label text="Apache Flex"  
                 fontFamily="MyMyriad" fontSize="14"/>
 
             <mx:Image id="img" 
-                source="@Embed(source='assets/Nokia_6630.png')"/>
+                source="@Embed(source='assets/ApacheFlexLogo.png')"/>
         </mx:VBox>
 
         <mx:Text width="50%" color="blue" 

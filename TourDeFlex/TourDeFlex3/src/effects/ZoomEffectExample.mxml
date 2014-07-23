@@ -45,7 +45,7 @@
             text="Move the mouse over the image to enlarge it. Move the mouse off of the image to shrink it."/>
 
         <mx:Image id="img"
-            source="@Embed(source='assets/Nokia_6630.png')"
+            source="@Embed(source='assets/ApacheFlexLogo.png')"
             scaleX=".5" scaleY=".5"
             rollOver="doZoom(event)"
             rollOut="doZoom(event)"/>
