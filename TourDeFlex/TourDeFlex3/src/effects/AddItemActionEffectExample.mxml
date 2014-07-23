@@ -79,7 +79,7 @@
         <!-- This TileList uses a custom data change effect -->
         <mx:TileList id="tlist0" 
             height="100%" width="100%" 
-            fontSize="18" fontStyle="bold"
+            fontSize="18" fontWeight="bold"
             columnCount="4" rowCount="4" 
             direction="horizontal" 
             dataProvider="{myDP}" 
