@@ -21,7 +21,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
     backgroundGradientColors="[0xCCCCCC, 0x66CCFF]"
     backgroundColor="0xCCCCCC"
-    horizontalAlign="center" verticalAlign="center"
+    horizontalAlign="center" verticalAlign="middle"
     applicationComplete="appComplete();">
 
     <mx:Script>
