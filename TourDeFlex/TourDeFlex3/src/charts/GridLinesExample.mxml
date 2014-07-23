@@ -45,7 +45,7 @@
             </mx:horizontalAxis>
                 
             <mx:backgroundElements>
-               <mx:GridLines direction="horizontal">
+               <mx:GridLines gridDirection="horizontal">
                     <mx:horizontalStroke>
                         <mx:Stroke weight="1"/>
                     </mx:horizontalStroke>
