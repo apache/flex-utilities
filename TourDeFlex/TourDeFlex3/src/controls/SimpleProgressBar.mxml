@@ -49,7 +49,7 @@
             text="Click the button to increment the progress bar." />
         <mx:Button id="Speed" label="Run" click="runit();"/>
             
-        <mx:ProgressBar id="bar" labelPlacement="bottom" themeColor="#F20D7A"
+        <mx:ProgressBar id="bar" labelPlacement="bottom"
             minimum="0" visible="true" maximum="100" label="CurrentProgress 0%" 
             direction="right" mode="manual" width="100%"/>
 
