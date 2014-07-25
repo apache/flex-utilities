@@ -49,7 +49,7 @@
 		<os family="windows"/>
     </condition>
 
-	<target name="test" depends="copy-test,confirm-delete,delete-test">
+	<target name="test" depends="copy-test,confirm-delete,delete-test,freespace-test">
         <tstamp />
         <echo>${DSTAMP}</echo>
         <echo>${TSTAMP}</echo>
@@ -318,5 +318,8 @@
     <target name="compile" 
         description="Compiles the SWC.">
     </target>
-
+	
+    <target name="freespace-test" description="Runs the free sapce test">
+        <ant dir="${basedir}" antfile="freespace.xml" />
+    </target>
 </project>
