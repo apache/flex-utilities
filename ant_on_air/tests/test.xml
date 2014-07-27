@@ -49,7 +49,7 @@
 		<os family="windows"/>
     </condition>
 
-	<target name="test" depends="copy-test,confirm-delete,delete-test,freespace-test">
+	<target name="test" depends="copy-test,confirm-delete,delete-test,freespace-test,true-false-test">
         <tstamp />
         <echo>${DSTAMP}</echo>
         <echo>${TSTAMP}</echo>
@@ -65,7 +65,7 @@
         <echo>Test is complete</echo>
     </target>
     
-    <target name="copy-test" >
+    <target name="copy-test">
 		<echo>FLEX_HOME is ${FLEX_HOME}. DEBUG is ${DEBUG_FLAG}. The OS is ${theOS}</echo>
         <mkdir dir="${basedir}/temp" />
         <copy file="${basedir}/test.xml" tofile="${basedir}/temp/copied.xml" />
@@ -245,11 +245,10 @@
                 </not>
             </condition>
         </fail>
-        <echo>Touch test ${touch.test}. Should say: passed</echo>
-        
+        <echo>Touch test ${touch.test}. Should say: passed</echo>     
     </target>
     
-    <target name="delete-test" >
+    <target name="delete-test">
         <fail message="you were supposed to hit 'y'" >
             <condition>
                 <equals arg1="n" arg2="${oktodelete}" />
@@ -286,6 +285,50 @@
             </condition>
         </fail>
 	</target>
+	
+    <target name="true-false-test">
+        <fail message="istrue isn't true">
+            <condition>
+                <not>
+                    <and>
+                    	<istrue value="true" />
+                    	<istrue value="on" />
+                    	<istrue value="yes" />
+                    </and>
+                </not>
+            </condition>
+        </fail>
+        <fail message="istrue is false">
+            <condition>
+                <or>
+                	<istrue value="false" />
+                	<istrue value="off" />
+                	<istrue value="no" />
+                </or>
+            </condition>
+        </fail>
+        <fail message="isfalse isn't false">
+            <condition>
+            	<not>
+	            	<and>
+	                	<isfalse value="false" />
+	                	<isfalse value="off" />
+	                	<isfalse value="no" />
+	                </and>
+            	</not>
+            </condition>
+        </fail>
+        <fail message="isfalse is true">
+            <condition>
+            	<or>
+                   	<isfalse value="true" />
+                   	<isfalse value="on" />
+                   	<isfalse value="yes" />
+                </or>
+            </condition>
+        </fail>
+        <echo>All istrue / isfalse tests pass</echo>
+    </target>
 
     <target name="macunzip" unless="isWindows">
         <mkdir dir="${basedir}/temp/untar" />
