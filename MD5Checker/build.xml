@@ -84,12 +84,14 @@
     </condition>
 
 	<target name="main" depends="build">
-        <exec executable="${AIR_HOME}/bin/adl.exe" osfamily="windows" resultproperty="md5result" failonerror="false">
+        <exec executable="${AIR_HOME}/bin/adl.exe" dir="${basedir}/src" osfamily="windows" resultproperty="md5result" failonerror="false">
             <arg value="-runtime"/>
             <arg value="${AIR_HOME}/runtimes/air/win"/>
 			<arg value="${basedir}/src/MD5Checker-app.xml"/>
+			<arg value="--" />
+			<arg value="-log=${basedir}/MD5CheckerLog.txt"/>
         </exec>
-        <exec executable="${AIR_HOME}/bin/adl" osfamily="mac" resultproperty="md5result" failonerror="false">
+        <exec executable="${AIR_HOME}/bin/adl" dir="${basedir}/src" osfamily="mac" resultproperty="md5result" failonerror="false">
             <arg value="-runtime"/>
             <arg value="${AIR_HOME}/runtimes/air/mac"/>
 			<arg value="${basedir}/src/MD5Checker-app.xml"/>
