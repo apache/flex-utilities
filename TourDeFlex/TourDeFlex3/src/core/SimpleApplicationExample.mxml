@@ -19,7 +19,6 @@
 <!-- Simple example to demonstrate the Application container. -->
 
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
-    backgroundGradientColors="[0xCCCCCC, 0x66CCFF]"
     backgroundColor="0xCCCCCC"
     horizontalAlign="center" verticalAlign="middle"
     applicationComplete="appComplete();">
@@ -43,10 +42,10 @@
     </mx:Script>
 
     <mx:ApplicationControlBar dock="true">
-        <mx:Button label="Set Solid Fill" 
-            click="this.setStyle('backgroundGradientColors', [0xCCCCCC, 0xCCCCCC]);"/>
-        <mx:Button label="Set Gradient Fill" 
-            click="this.setStyle('backgroundGradientColors', [0xCCCCCC, 0x66CCFF]);"/>
+        <mx:Button label="Set Grey Solid Fill" 
+            click="this.setStyle('backgroundColor', 0xCCCCCC);"/>
+        <mx:Button label="Set Blue Solid Fill" 
+            click="this.setStyle('backgroundColor', 0x66CCFF);"/>
     </mx:ApplicationControlBar> 
 
     <mx:Panel title="Application Container Example" backgroundColor="0x9CB0BA"
