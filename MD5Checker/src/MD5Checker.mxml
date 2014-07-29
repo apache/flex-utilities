@@ -181,6 +181,7 @@ limitations under the License.
                 urlRequest.followRedirects = true;
                 urlRequest.cacheResponse = false;
                 urlRequest.method = URLRequestMethod.HEAD;
+                urlRequest.userAgent = "Java";
                 urlHeadLoader.dataFormat = URLLoaderDataFormat.BINARY;
                 urlHeadLoader.addEventListener(Event.COMPLETE, headcompleteHandler);
                 urlHeadLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,headstatusHandler);
