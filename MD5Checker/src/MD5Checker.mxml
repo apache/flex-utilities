@@ -107,7 +107,6 @@ limitations under the License.
                     data.push(item);
                 }
                 
-                /*
                 xmlList = xml.airsdk.windows.versions.children();
                 for each (node in xmlList)
                 {
@@ -135,7 +134,6 @@ limitations under the License.
                     item.node = node;
                     data.push(item);
                 }
-                */
                 dg.dataProvider = new ArrayList(data);
                 checkSums();
             }
