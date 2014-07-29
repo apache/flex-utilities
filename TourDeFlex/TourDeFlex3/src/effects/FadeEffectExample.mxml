@@ -17,18 +17,15 @@
   -->
 
 <!-- Simple example to demonstrate the Fade effect. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
-    initialize="Font.registerFont(myriad_font);">
-
-    <mx:Script>
-        <![CDATA[
-        
-            import flash.text.Font;
-            
-            [Embed("assets/MyriadWebPro.ttf", fontName="MyMyriad")]
-            public var myriad_font:Class;
-        ]]>
-    </mx:Script>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+	
+	<mx:Style>
+	     @font-face {
+	        src:url("../assets/OpenSans-Regular.ttf");
+	        fontFamily: OpenSans;
+			embedAsCFF: false;
+	     }    
+	</mx:Style>
     
     <mx:Fade id="fadeOut" duration="1000" alphaFrom="1.0" alphaTo="0.0"/>
     <mx:Fade id="fadeIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
@@ -40,7 +37,7 @@
             text="Use the Fade effect to show or hide the text and image. Use an embedded font when applying the Fade effect to text."/>
 
         <mx:Label text="Apache Flex"  
-            fontFamily="MyMyriad" fontSize="14"
+            fontFamily="OpenSans" fontSize="14"
             visible="{cb1.selected}"
             hideEffect="{fadeOut}" showEffect="{fadeIn}"/>
             

@@ -17,17 +17,10 @@
   -->
 
 <!-- Simple example to demonstrate the Rotate effect. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
-    initialize="Font.registerFont(myriad_font);">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
 
     <mx:Script>
         <![CDATA[
-
-            import flash.text.Font;
-            
-            [Embed("assets/MyriadWebPro.ttf", fontName="MyMyriad")]
-            public var myriad_font:Class;
-
             [Bindable]
             public var angle:int=0;
 
@@ -39,6 +32,14 @@
       ]]>
     </mx:Script>
 
+	<mx:Style>
+	     @font-face {
+	        src:url("../assets/OpenSans-Regular.ttf");
+	        fontFamily: OpenSans;
+			embedAsCFF: false;
+	     }    
+	</mx:Style>
+
     <mx:Rotate id="rotate" angleFrom="{angle-45}" angleTo="{angle}" target="{myVB}"/>
 
     <mx:Panel title="Rotate Effect Example" horizontalAlign="center" 
@@ -47,7 +48,7 @@
 
         <mx:VBox id="myVB" width="50%" horizontalAlign="center">
             <mx:Label text="Apache Flex"  
-                fontFamily="MyMyriad" fontSize="14"/>
+                fontFamily="OpenSans" fontSize="14"/>
 
             <mx:Image id="img" 
                 source="@Embed(source='assets/ApacheFlexLogo.png')"/>
