@@ -19,18 +19,23 @@
 -->
 
 <project name="freespace" basedir="." default="test">
-    
+
+	<condition property="partition" value="c:">
+        <os family="windows"/>
+    </condition>
+	<property name="partition" value="/" />
+	
     <target name="test">
 		<!-- likely to be true -->
 	    <condition property="just_right" value="success">
 	    	<and>
-	    		<hasfreespace partition="/" needed="1K" />
-	    		<hasfreespace partition="/" needed="10K" />
-	    		<hasfreespace partition="/" needed="100K" />
-	    		<hasfreespace partition="/" needed="1M" />
-	    		<hasfreespace partition="/" needed="10M" />
-	    		<hasfreespace partition="/" needed="100M" />
-	    		<hasfreespace partition="/" needed="1G" />
+	    		<hasfreespace partition="${partition}" needed="1K" />
+	    		<hasfreespace partition="${partition}" needed="10K" />
+	    		<hasfreespace partition="${partition}" needed="100K" />
+	    		<hasfreespace partition="${partition}" needed="1M" />
+	    		<hasfreespace partition="${partition}" needed="10M" />
+	    		<hasfreespace partition="${partition}" needed="100M" />
+	    		<hasfreespace partition="${partition}" needed="1G" />
 	    	</and>
 	    </condition>
 	    		
@@ -46,13 +51,13 @@
 		<!-- likely to be true -->
 	    <condition property="too_big" value="success">
 	    	<and>
-	    		<hasfreespace partition="/" needed="1G" />
-	    		<hasfreespace partition="/" needed="10G" />
-	    		<hasfreespace partition="/" needed="100G" />
-	    		<hasfreespace partition="/" needed="1T" />
-	    		<hasfreespace partition="/" needed="10T" />
-	    		<hasfreespace partition="/" needed="100T" />
-	    		<hasfreespace partition="/" needed="1P" />
+	    		<hasfreespace partition="${partition}" needed="1G" />
+	    		<hasfreespace partition="${partition}" needed="10G" />
+	    		<hasfreespace partition="${partition}" needed="100G" />
+	    		<hasfreespace partition="${partition}" needed="1T" />
+	    		<hasfreespace partition="${partition}" needed="10T" />
+	    		<hasfreespace partition="${partition}" needed="100T" />
+	    		<hasfreespace partition="${partition}" needed="1P" />
 	    	</and>
 	    </condition>
 	    	
