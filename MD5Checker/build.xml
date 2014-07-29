@@ -118,7 +118,7 @@
     <target name="build" depends="load-task" description="compile it">
 
         <!-- compile the basic tests -->
-        <mxmlc fork="true"
+        <mxmlc fork="true" debug="true"
                file="${basedir}/src/MD5Checker.mxml">
             <jvmarg line="-Xms64m -Xmx384m -ea -Dapple.awt.UIElement=true"/>
             <load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>

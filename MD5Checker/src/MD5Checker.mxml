@@ -213,7 +213,7 @@ limitations under the License.
                             lastModified = header.value;
                             foundLastModified = true;
                         }
-                        else if (header.name == "Etag" && lastModified == null)
+                        else if ((header.name == "Etag" || header.name == "ETag") && lastModified == null)
                         {
                             lastModified = header.value;
                             foundLastModified = true;
