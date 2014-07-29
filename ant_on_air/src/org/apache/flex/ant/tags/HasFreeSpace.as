@@ -49,6 +49,8 @@ package org.apache.flex.ant.tags
 		
 		public function getValue(context:Object):Object
         {
+            this.context = context;
+            
             var file:File = new File(partition);
 			var space:Number = file.spaceAvailable;
 			var postfix:String = needed.substr(-1,1);
