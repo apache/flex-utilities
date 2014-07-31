@@ -33,6 +33,17 @@
         <wagonVersion>2.2</wagonVersion>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>apache.releases.https</id>
+            <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>apache.snapshots.https</id>
+            <url>https://repository.apache.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <modules>
         <module>core</module>
         <module>retrievers</module>
