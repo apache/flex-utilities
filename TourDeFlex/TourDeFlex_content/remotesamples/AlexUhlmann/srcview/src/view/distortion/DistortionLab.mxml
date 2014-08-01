@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:VBox 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:sides="view.sides.*" 
+	horizontalAlign="center">
+			
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.ac.mxeffects.DistortionConstants;
+			import com.adobe.ac.util.DisplayObjectBounds;
+			import com.adobe.ac.mxeffects.Distortion;
+			import mx.core.UIComponent;
+			
+			private var distort : Distortion;
+			private var leftDistort : Distortion;
+			private var rightDistort : Distortion;
+			private var lastDirection : String;
+						
+			private function create() : void
+			{
+				var container : UIComponent = new UIComponent();
+				
+				var mode : String;
+				if( popupModeRadioButton.selected )
+				{
+					mode = DistortionConstants.POPUP;
+				}
+				else if( replaceModeRadioButton.selected )
+				{
+					mode = DistortionConstants.REPLACE;
+				}
+				else if( addModeRadioButton.selected )
+				{
+					mode = DistortionConstants.ADD;
+				}
+				else if( overwriteModeRadioButton.selected )
+				{
+					mode = DistortionConstants.OVERWRITE;
+				}
+				distort = new Distortion( target );		
+				distort.buildMode = mode;
+				distort.smooth = speedModeRadioButton.selected;
+
+				if( renderModeGroup.selectedValue == "Sides" )
+				{
+					if( percentageModeRadioButton.selected )
+					{
+						distort.renderSides( 100, 100, 100, 100 );
+					}
+					else
+					{
+						distort.renderSidesInPixels( 100, 100, 100, 100 );
+					}
+				}
+				else
+				{
+					if( percentageModeRadioButton.selected )
+					{
+						distort.renderCorners( new Point( 100, 100 ), 
+											new Point( 100, 100 ), 
+											new Point( 100, 100 ), 
+											new Point( 100, 100 ) );
+					}
+					else
+					{
+						distort.renderCornersInPixels( new Point( 100, 100 ), 
+											new Point( 100, 100 ), 
+											new Point( 100, 100 ), 
+											new Point( 100, 100 ) );
+					}					
+				}
+			}
+			
+			private function destroy() : void
+			{
+				destroyDefaultDistortion();
+				destroyGateDistortion();
+			}
+
+			private function destroyDefaultDistortion() : void
+			{
+				if( distort != null )
+				{
+					distort.destroy();
+					distort = null;					
+				}				
+			}		
+			
+			private function destroyGateDistortion() : void
+			{
+				if( leftDistort != null )
+				{
+					leftDistort.destroy();
+					leftDistort = null;
+					rightDistort.destroy();
+					rightDistort = null;
+				}				
+			}		
+			
+			private function getDefaultDistortion() : void
+			{
+				if( distort == null ) create();
+				destroyGateDistortion();
+			}
+			
+			private function getGateDistortion() : void
+			{
+				if( leftDistort == null ) initGateDistortion();
+				destroyDefaultDistortion();
+			}
+			
+			private function initGateDistortion() : void
+			{
+				var direction : String = String( directionGroup.selectedValue );
+				
+				var leftRect : Rectangle;
+				var rightRect : Rectangle;
+				if( direction == DistortionConstants.LEFT || direction == DistortionConstants.RIGHT )
+				{
+					leftRect = new Rectangle( 0, 0 );
+					leftRect.width = target.width / 2;
+					leftRect.height = target.height;
+					rightRect = new Rectangle( leftRect.width, 0 );
+					rightRect.width = leftRect.width;
+					rightRect.height = leftRect.height;							
+				}
+				else if( direction == DistortionConstants.TOP || direction == DistortionConstants.BOTTOM )
+				{
+					leftRect = new Rectangle( 0, 0 );
+					leftRect.width = target.width;
+					leftRect.height = target.height / 2;
+					rightRect = new Rectangle( 0, leftRect.height );
+					rightRect.width = leftRect.width;
+					rightRect.height = leftRect.height;								
+				}
+				leftDistort = new Distortion( target, leftRect );
+				leftDistort.buildMode = DistortionConstants.POPUP;
+				leftDistort.smooth = speedModeRadioButton.selected;
+				rightDistort = new Distortion( target, rightRect );
+				rightDistort.buildMode = DistortionConstants.POPUP;
+				rightDistort.smooth = speedModeRadioButton.selected;
+			}
+			
+			private function renderSide() : void
+			{
+				getDefaultDistortion();
+				if( percentageModeRadioButton.selected )
+				{
+					distort.renderSides( left.value, top.value, right.value, bottom.value );
+				}
+				else
+				{
+					distort.renderSidesInPixels( left.value, top.value, right.value, bottom.value );
+				}
+			}
+			
+			private function renderCorner() : void
+			{
+				getDefaultDistortion();
+				if( percentageModeRadioButton.selected )
+				{
+					distort.renderCorners( new Point( topLeftX.value, topLeftY.value ), 
+											new Point( topRightX.value, topRightY.value ), 
+											new Point( bottomRightX.value, bottomRightY.value ), 
+											new Point( bottomLeftX.value, bottomLeftY.value ) );
+				}
+				else
+				{
+					distort.renderCornersInPixels( new Point( topLeftX.value, topLeftY.value ), 
+											new Point( topRightX.value, topRightY.value ), 
+											new Point( bottomRightX.value, bottomRightY.value ),
+											new Point( bottomLeftX.value, bottomLeftY.value ) );
+				}
+			}
+			
+			private function flipFront() : void
+			{
+				getDefaultDistortion();
+				var percentage : Number = flipFrontSlider.value;
+				var direction : String = String( directionGroup.selectedValue );
+				distort.flipFront( percentage, direction, Number( distortionValue.text ) );
+			}
+			
+			private function flipBack() : void
+			{
+				getDefaultDistortion();
+				var percentage : Number = flipBackSlider.value;
+				var direction : String = String( directionGroup.selectedValue );			
+				distort.flipBack( percentage, direction, Number( distortionValue.text ) );
+			}
+			
+			private function push() : void
+			{
+				getDefaultDistortion();
+				var percentage : Number = pushSlider.value;
+				var direction : String = String( directionGroup.selectedValue );			
+				distort.push( percentage, direction, Number( distortionValue.text ) );
+			}
+			
+			private function pop() : void
+			{
+				getDefaultDistortion();
+				var percentage : Number = popSlider.value;
+				var direction : String = String( directionGroup.selectedValue );			
+				distort.pop( percentage, direction, Number( distortionValue.text ) );
+			}
+			
+			private function openDoor() : void
+			{
+				getDefaultDistortion();
+				var percentage : Number = openDoorSlider.value;
+				var direction : String = String( directionGroup.selectedValue );			
+				distort.openDoor( percentage, direction, Number( distortionValue.text ) );
+			}
+			
+			private function closeDoor() : void
+			{
+				getDefaultDistortion();
+				var percentage : Number = closeDoorSlider.value;
+				var direction : String = String( directionGroup.selectedValue );			
+				distort.closeDoor( percentage, direction, Number( distortionValue.text ) );
+			}
+			
+			private function openGate() : void
+			{				
+				var direction : String = String( directionGroup.selectedValue );
+				
+				if( lastDirection != direction )
+				{
+					destroyGateDistortion();
+					getGateDistortion();	
+					lastDirection = direction;		
+				}
+				
+				var percentage : Number = openGateSlider.value;
+				
+				leftDistort.openDoor( percentage, direction, Number( distortionValue.text ) );
+				rightDistort.openDoor( percentage, 
+											rightDistort.reverseDirection( direction ), 
+											Number( distortionValue.text ) );
+			}
+									
+			private function closeGate() : void
+			{
+				var direction : String = String( directionGroup.selectedValue );
+				
+				if( lastDirection != direction )
+				{
+					destroyGateDistortion();
+					getGateDistortion();	
+					lastDirection = direction;		
+				}
+				
+				var percentage : Number = closeGateSlider.value;
+				
+				leftDistort.closeDoor( percentage, direction, Number( distortionValue.text ) );
+				rightDistort.closeDoor( percentage, 
+											rightDistort.reverseDirection( direction ), 
+											Number( distortionValue.text ) );								
+			}
+						
+			private function changeSliderDefaultValues() : void
+			{
+				if( renderParamModeGroup.selectedValue == "Percentage" )
+				{
+					if( renderModeGroup.selectedValue == "Sides" )
+					{
+						left.value = 100;
+						top.value = 100;
+						right.value = 100;
+						bottom.value = 100;
+					}
+					else
+					{
+						topLeftX.value = 100;
+						topLeftY.value = 100;
+						topRightX.value = 100;
+						topRightY.value = 100;
+						bottomRightX.value = 100;
+						bottomRightY.value = 100;
+						bottomLeftX.value = 100;
+						bottomLeftY.value = 100;									
+					}
+				}
+				else
+				{
+					var bounds : DisplayObjectBounds = new DisplayObjectBounds();
+					bounds.getBounds( target );
+					if( renderModeGroup.selectedValue == "Sides" )
+					{
+						left.value = bounds.height;
+						top.value = bounds.width;
+						right.value = bounds.height;
+						bottom.value = bounds.width;
+					}
+					else
+					{
+						topLeftX.value = bounds.topLeft.x;
+						topLeftY.value = bounds.topLeft.y;
+						topRightX.value = bounds.topRight.x;
+						topRightY.value = bounds.topRight.y;
+						bottomRightX.value = bounds.bottomRight.x;
+						bottomRightY.value = bounds.bottomRight.y;
+						bottomLeftX.value = bounds.bottomLeft.x;
+						bottomLeftY.value = bounds.bottomLeft.y;
+					}				
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox>
+		<mx:Button label="create" click="create()"/>
+		<mx:Button label="destroy" click="destroy()"/>
+	</mx:HBox>
+	<mx:Form>
+		<mx:FormItem label="Distortion Mode" direction="horizontal">			
+			<mx:RadioButtonGroup id="renderModeGroup"/>
+			<mx:RadioButton id="effectsModeRadioButton" groupName="renderModeGroup" label="Effects" selected="true"/>
+			<mx:RadioButton id="sideModeRadioButton" groupName="renderModeGroup" label="Sides" />
+			<mx:RadioButton id="cornerModeRadioButton" groupName="renderModeGroup" label="Corners"/>			
+		</mx:FormItem>
+		<mx:FormItem label="Container Mode" direction="horizontal">			
+			<mx:RadioButtonGroup id="buildModeGroup"/>
+			<mx:RadioButton id="replaceModeRadioButton" groupName="buildModeGroup" label="REPLACE" selected="true"/>
+			<mx:RadioButton id="popupModeRadioButton" groupName="buildModeGroup" label="POPUP"/>
+			<mx:RadioButton id="addModeRadioButton" groupName="buildModeGroup" label="ADD"/>
+			<mx:RadioButton id="overwriteModeRadioButton" groupName="buildModeGroup" label="OVERWRITE"/>
+		</mx:FormItem>
+		<mx:FormItem label="Render API Mode" direction="horizontal">			
+			<mx:RadioButtonGroup id="renderParamModeGroup" change="changeSliderDefaultValues();"/>
+			<mx:RadioButton id="percentageModeRadioButton" groupName="renderParamModeGroup" label="Percentage" selected="true"/>
+			<mx:RadioButton id="valueModeRadioButton" groupName="renderParamModeGroup" label="Value"/>				
+		</mx:FormItem>
+		<mx:FormItem label="Smoothing" direction="horizontal">			
+			<mx:RadioButtonGroup id="smoothModeGroup"/>
+			<mx:RadioButton id="speedModeRadioButton" groupName="smoothModeGroup" label="true" selected="true"/>
+			<mx:RadioButton id="qualityModeRadioButton" groupName="smoothModeGroup" label="false"/>			
+		</mx:FormItem>
+	</mx:Form>	
+	<mx:HBox>
+		<mx:Form enabled="{ effectsModeRadioButton.selected }" fontWeight="bold">
+			<mx:FormItem label="Direction" direction="horizontal">
+				<mx:RadioButtonGroup id="directionGroup"/>
+				<mx:RadioButton id="leftDirectionRadioButton" groupName="directionGroup" label="LEFT" selected="true"/>
+				<mx:RadioButton id="topDirectionRadioButton" groupName="directionGroup" label="TOP"/>			
+				<mx:RadioButton id="rightDirectionRadioButton" groupName="directionGroup" label="RIGHT"/>
+				<mx:RadioButton id="bottomDirectionRadioButton" groupName="directionGroup" label="BOTTOM"/>			
+			</mx:FormItem>
+			<mx:FormItem label="Distortion">
+				<mx:TextInput id="distortionValue" width="30" text="20" restrict="0-9"/>
+			</mx:FormItem>			
+			<mx:FormItem label="Flip" direction="horizontal">
+				<mx:HSlider id="flipFrontSlider" minimum="0" maximum="100" value="0" liveDragging="true" change="flipFront();"/>		
+				<mx:HSlider id="flipBackSlider" minimum="0" maximum="100" value="0" liveDragging="true" change="flipBack();"/>		
+			</mx:FormItem>
+			<mx:FormItem label="Push" direction="horizontal">
+				<mx:HSlider id="pushSlider" minimum="0" maximum="100" value="0" liveDragging="true" change="push();"/>		
+			</mx:FormItem>			
+			<mx:FormItem label="Pop" direction="horizontal">
+				<mx:HSlider id="popSlider" minimum="0" maximum="100" value="0" liveDragging="true" change="pop();"/>		
+			</mx:FormItem>
+			<mx:FormItem label="Door" direction="horizontal">
+				<mx:Label text="open" fontWeight="normal"/>
+				<mx:HSlider id="openDoorSlider" minimum="0" maximum="100" value="0" liveDragging="true" change="openDoor();"/>		
+				<mx:Label text="close" fontWeight="normal"/>
+				<mx:HSlider id="closeDoorSlider" minimum="0" maximum="100" value="0" liveDragging="true" change="closeDoor();"/>		
+			</mx:FormItem>
+			<mx:FormItem label="Gate" direction="horizontal">
+				<mx:Label text="open" fontWeight="normal"/>
+				<mx:HSlider id="openGateSlider" minimum="0" maximum="100" value="0" liveDragging="true" change="openGate();"/>		
+				<mx:Label text="close" fontWeight="normal"/>
+				<mx:HSlider id="closeGateSlider" minimum="0" maximum="100" value="0" liveDragging="true" change="closeGate();"/>		
+			</mx:FormItem>		
+		</mx:Form>
+		
+		<mx:VBox enabled="{ sideModeRadioButton.selected }">	
+			<mx:HSlider id="left" minimum="0" maximum="200" value="100" liveDragging="true" change="renderSide();"/>
+			<mx:HSlider id="top" minimum="0" maximum="200" value="100" liveDragging="true" change="renderSide();"/>
+			<mx:HSlider id="right" minimum="0" maximum="200" value="100" liveDragging="true" change="renderSide();"/>
+			<mx:HSlider id="bottom" minimum="0" maximum="200" value="100" liveDragging="true" change="renderSide();"/>		
+		</mx:VBox>
+		<mx:VBox enabled="{ cornerModeRadioButton.selected }">
+			<mx:HSlider id="topLeftX" minimum="0" maximum="200" value="100" liveDragging="true" change="renderCorner();"/>
+			<mx:HSlider id="topLeftY" minimum="0" maximum="200" value="100" liveDragging="true" change="renderCorner();"/>
+			<mx:HSlider id="topRightX" minimum="0" maximum="200" value="100" liveDragging="true" change="renderCorner();"/>
+			<mx:HSlider id="topRightY" minimum="0" maximum="200" value="100" liveDragging="true" change="renderCorner();"/>		
+			<mx:HSlider id="bottomRightX" minimum="0" maximum="200" value="100" liveDragging="true" change="renderCorner();"/>
+			<mx:HSlider id="bottomRightY" minimum="0" maximum="200" value="100" liveDragging="true" change="renderCorner();"/>
+			<mx:HSlider id="bottomLeftX" minimum="0" maximum="200" value="100" liveDragging="true" change="renderCorner();"/>
+			<mx:HSlider id="bottomLeftY" minimum="0" maximum="200" value="100" liveDragging="true" change="renderCorner();"/>
+		</mx:VBox>
+	</mx:HBox>
+	<mx:Canvas clipContent="false">
+		<sides:Login 
+			id="target" />
+	</mx:Canvas>
+</mx:VBox>

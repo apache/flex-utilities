@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+
+<!--- The default skin class for a Spark NumericStepper component. The skin for the text input field on a NumericStepper
+component is defined by the NumericStepperTextInputSkin class.  
+
+       @see spark.components.NumericStepper
+       @see spark.skins.spark.NumericStepperTextInputSkin
+        
+      @langversion 3.0
+      @playerversion Flash 10
+      @playerversion AIR 1.5
+      @productversion Flex 4
+-->
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+      xmlns:fb="http://ns.adobe.com/flashbuilder/2009" minHeight="23" minWidth="40" 
+      alpha.disabled="0.5" height="100" width="120">
+
+    <fx:Metadata>
+    <![CDATA[ 
+        /** 
+         * @copy spark.skins.spark.ApplicationSkin#hostComponent
+         */
+        [HostComponent("spark.components.NumericStepper")]
+    ]]>
+    </fx:Metadata> 
+	<!--<fx:Script>
+		<![CDATA[
+			import flash.globalization.NumberFormatter;
+			
+			import mx.events.FlexEvent;
+			
+			import spark.skins.spark.NumericStepperIncrementButtonSkin;
+
+			// customize display of the text to show a leading zero
+			protected function textDisplay_valueCommitHandler(event:FlexEvent):void
+			{
+				if (textDisplay.text.length == 1)
+					textDisplay.text = "0"+textDisplay.text;
+			}
+
+		]]>
+	</fx:Script>-->
+    
+	<!--
+		NOTE: this skin file contains sub-parts that may continue to react to
+		Style code.  To remove this behavior create new copies of those skins
+		and remove the styles.
+	-->
+    <s:states>
+        <s:State name="normal" />
+        <s:State name="disabled" />
+    </s:states>
+
+    <!--- The default class is NumericStepperIncrementButtonSkin.
+           @copy spark.components.Spinner#incrementButton
+           @see spark.skins.spark.NumericStepperIncrementButtonSkin -->
+    <s:Button id="incrementButton" right="0" top="0" height="50%" 
+               skinClass="com.devgirl.runtracker.skins.IncrementSkin" width.normal="65" top.normal="0" right.normal="0"/>
+              
+    <!--- The default class is NumericStepperDecrementButtonSkin.
+            @copy spark.components.Spinner#decrementButton
+            @see spark.skins.spark.NumericStepperDecrementButtonSkin -->
+    <s:Button id="decrementButton" right="0" bottom="0" height="50%" 
+                skinClass="com.devgirl.runtracker.skins.DecrementSkin" width.normal="65" bottom.normal="0" right.normal="0"/>
+                           
+    <!--- The default class is NumericStepperTextInputSkin.
+            @copy spark.components.NumericStepper#textDisplay
+            @see spark.skins.spark.NumericStepperTextInputSkin -->
+    <s:TextInput id="textDisplay" restrict="0-9" 
+				 skinClass="com.devgirl.runtracker.skins.NumericStepperTextInputSkin" fontSize="32" fontFamily="Verdana" 
+				 left="0" x="-13" right="60" height="100" top="0" y="0" bottom="0" width="10" color="0x000000"/>
+        
+</s:SparkSkin>

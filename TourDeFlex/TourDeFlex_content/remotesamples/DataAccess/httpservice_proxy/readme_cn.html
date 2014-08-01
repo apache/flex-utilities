@@ -1,0 +1,35 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>使用 HTTPService 时，LiveCycle Data Services ES 或 BlazeDS 服务器不是必需的。默认情况下，应用程序会尝试直接连接在 HTTPService url 属性中指定的域。这种情况发生的前提是要满足以下两个条件之一：</p>
+<ol>
+<li>在 HTTPService url 属性中指定的域是下载应用程序的域。 </li>
+<li>在 HTTPService url 属性中指定的域中，可以使用授权访问应用程序来源域的 crossdomain.xml 文件。</li>
+
+  </ol>
+<p>如果希望应用程序访问其它域中提供的服务，而该域中并没有部署 crossdomain.xml 文件（例如，由于您并不拥有该目标域），则可以将 HTTPService 的 <strong>useProxy</strong> 属性设置为&ldquo;<strong>true</strong>&rdquo;，如本示例中所示。在本例中，将请求发送到 LiveCycle Data Services ES 代理，该代理代表客户端应用程序向目标域发出请求。对于对服务的访问，该配置还提供更多控制。例如，可以对代理进行配置，要求在访问服务之前进行身份验证、记录对服务的访问等等。 </p>
+<p>使用代理时，可以在 HTTPService <strong>destination</strong> 属性中指定逻辑名称，而不用在 url 属性中指定硬编码的值。然后在 WEB-INF/flex/proxy-config.xml 中将该逻辑名称映射为实际 URL。打开 WEB-INF/flex/proxy-config.xml 可查看目录目标的配置情况。</p>
+
+
+</body>
+</html>

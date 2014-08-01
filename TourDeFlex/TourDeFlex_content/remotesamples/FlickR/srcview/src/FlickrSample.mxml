@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" horizontalAlign="center" verticalAlign="middle"
+	backgroundGradientColors="[0x000000,0x323232]" applicationComplete="init()" width="100%" height="100%" viewSourceURL="srcview/index.html">
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.webapis.flickr.events.FlickrResultEvent;
+			import com.adobe.webapis.flickr.*;
+			
+			import mx.controls.Alert;
+			
+			private var service:FlickrService;
+			
+			[Bindable]
+			private var queriedUser:String = "tourdeflex";
+			
+			[Bindable]
+			private var photosArray:Array;
+			
+			[Bindable]
+			private var flickrId:String;
+			
+			private function init():void
+			{
+				/**
+				 * You need to provide your own API keys here in order for the
+				 * test to run.
+				 *
+				 * http://www.flickr.com/services/api/auth.howto.desktop.html
+				 */
+				var api_key:String = "751f582371cc0a7b8dcad2cec9cbbb93";
+				service = new FlickrService( api_key );
+				service.secret = "0873947da5d8cb53";
+				service.addEventListener( FlickrResultEvent.AUTH_GET_FROB, onAuthGetFrob );
+				service.auth.getFrob();
+			}
+			
+			private function onAuthGetFrob( event:FlickrResultEvent ):void {
+				if (event.success) {
+					var frob:String = String( event.data.frob );
+					onGet(null);
+				}
+			}
+			
+			/**
+			 * Note: This API requires the userid/pw to be logged in thru the flickr website to access
+			 * 		 many methods, but some public methods are available just by username, such as below.
+			 */
+			private function onGet(event:Event):void
+			{
+				if (userid.text!=null && userid.text.length >0) {
+					service.addEventListener( FlickrResultEvent.PEOPLE_FIND_BY_USERNAME,onPeopleFindByUsername);
+					service.people.findByUsername( userid.text );
+				}
+				else Alert.show("Please enter a flickr userid.");
+			}
+			
+			private function onPeopleFindByUsername(event:FlickrResultEvent):void
+			{
+				var user:User = event.data.user;
+				if (user != null) {
+					flickrId = user.nsid;
+					service.addEventListener(FlickrResultEvent.PEOPLE_GET_PUBLIC_PHOTOS, genericResponseHandler);
+					service.people.getPublicPhotos(flickrId);
+					queriedUser=userid.text;
+				}
+				else {
+					Alert.show("Flickr userid " + userid.text + " not found.");
+					this.queriedUser = "";
+					this.resultPanel.title="";
+					this.dgData.dataProvider = new Array(); //clear the dg
+				}
+			}
+			
+			
+			/**
+			 * Generically handle the response to a flickr method call - just output
+			 * the information in the event to the screen.
+			 */
+			private function genericResponseHandler( event:FlickrResultEvent ):void 
+			{
+				if ( event.success ) {
+					if (event.data.photos is PagedPhotoList) 
+					{
+						var list:PagedPhotoList = PagedPhotoList(event.data.photos);
+						this.dgData.dataProvider = list.photos;
+					}
+				} 
+				else {
+					// Encountered some kind of error on Flickr...
+					var e:FlickrError = FlickrError( event.data.error );
+					Alert.show("Flickr API error: " + e.errorMessage);
+					
+				}
+			}
+			public function createUrl(server:String, photoId:String, secret:String):String
+			{
+				// Create the URL to the thumbnail based on the photo info
+				var url:String = "http://farm4.static.flickr.com/"+server+"/"+photoId+"_"+secret+"_t.jpg";
+				return url;
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox width="420" height="100%">
+		<mx:HBox>
+			<mx:Label text="Flickr Userid:" color="#FFFFFF"/>
+			<mx:TextInput id="userid" width="200"  enter="onGet(event)" text="Tourdeflex" color="#000000"/>
+	        <mx:Button id="btnSearch" label="Get My Photos" click="onGet(event)" color="#000000"/>
+		</mx:HBox>	
+		
+		<mx:Panel id="resultPanel" title="{queriedUser + '\'s Public Photos'}" width="100%" height="100%" color="#FFFFFF" >
+		<mx:DataGrid id="dgData" dataProvider="{photosArray}" width="100%" height="100%" doubleClickEnabled="true" alternatingItemColors="[0xFFFFFF,0xEEEEEE]"
+			doubleClick="navigateToURL(new URLRequest('http://flickr.com'))" variableRowHeight="true" color="#000000">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Image" width="80">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Image source="{outerDocument.createUrl(data.server,data.id,data.secret)}" horizontalAlign="center" verticalAlign="middle"/>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn dataField="title" headerText="Title" width="300"/>
+			</mx:columns>
+		</mx:DataGrid>
+		</mx:Panel>	
+	</mx:VBox>
+	
+</mx:Application>

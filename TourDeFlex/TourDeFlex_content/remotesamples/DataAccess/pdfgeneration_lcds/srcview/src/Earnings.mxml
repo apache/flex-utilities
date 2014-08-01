@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" backgroundColor="0x00FFFFFF">
+
+	<mx:Script>
+		<![CDATA[
+			
+	    import mx.collections.ArrayCollection;
+	    import mx.core.IFlexDisplayObject;
+	
+	    [Bindable]
+	    public var earnings:ArrayCollection = new ArrayCollection([
+	    {Year:2003, Earnings:1.59},
+	    {Year:2004, Earnings:1.85},
+	    {Year:2005, Earnings:2.01},
+	    {Year:2006, Earnings:2.59}]);
+	
+	    override public function finishPrint(state:Object, target:IFlexDisplayObject):void
+	    {
+	        earningsChart.finishPrint(state, target);
+	    }
+	
+	    override public function prepareToPrint(target:IFlexDisplayObject):Object
+	    {
+	        return earningsChart.prepareToPrint(target);
+	    }
+			
+		]]>
+	</mx:Script>
+
+    <mx:Label id="earningsLabel" text="Annual Earnings" styleName="h2"/>
+    <mx:ColumnChart id="earningsChart" height="100%" width="100%"
+        paddingLeft="5" paddingRight="5" 
+        showDataTips="true" dataProvider="{earnings}">
+        <mx:horizontalAxis>
+            <mx:CategoryAxis categoryField="Year"/>
+        </mx:horizontalAxis>
+        <mx:series>
+            <mx:ColumnSeries xField="Year" yField="Earnings" displayName="Earnings"/>
+        </mx:series>
+    </mx:ColumnChart>
+
+</mx:VBox>

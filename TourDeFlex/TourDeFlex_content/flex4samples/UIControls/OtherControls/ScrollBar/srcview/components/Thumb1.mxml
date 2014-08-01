@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:d="http://ns.adobe.com/fxg/2008/dt">
+
+    <fx:Metadata>
+    	[HostComponent("spark.components.Button")]
+    </fx:Metadata> 
+    
+    <s:states>
+        <s:State name="up"/>
+        <s:State name="over"/>
+        <s:State name="down"/>
+        <s:State name="disabled"/>
+    </s:states>
+
+    <!-- background -->
+    <s:Rect x="0.5" y="0.5" width="24" height="14">
+        <s:stroke>
+            <s:SolidColorStroke color="0x3D5D92" weight="1"/>
+        </s:stroke>
+        <s:fill>
+            <s:SolidColor color="0xFFFFFF" />
+        </s:fill>
+    </s:Rect>
+
+    <!-- Gripper -->
+    <s:Group y="4.0" x="9.0">
+        <s:Rect width="7" height="6">
+            <s:fill>
+                <s:SolidColor color="0xFFFFFF"  />
+            </s:fill>
+        </s:Rect>
+        <s:Line x="0.5" y="0.5" xFrom="1" xTo="1" yFrom="0" yTo="6">
+            <s:stroke>
+                <s:SolidColorStroke color="0x3D5D92" pixelHinting="true" weight="1"/>
+            </s:stroke>
+        </s:Line>
+        <s:Line x="0.5" y="0.5" xFrom="4" xTo="4" yFrom="0" yTo="6">
+            <s:stroke>
+                <s:SolidColorStroke color="0x3D5D92" pixelHinting="true" weight="1"/>
+            </s:stroke>
+        </s:Line>
+        <s:Line x="0.5" y="0.5" xFrom="7" xTo="7" yFrom="0" yTo="6">
+            <s:stroke>
+                <s:SolidColorStroke color="0x3D5D92" pixelHinting="true" weight="1"/>
+            </s:stroke>
+        </s:Line>
+    </s:Group>
+
+</s:Skin>

@@ -1,0 +1,82 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Tour de Flex Download</title>
+	<!-- SWFObject embed by Geoff Stearns geoff@deconcept.com http://blog.deconcept.com/swfobject/ -->
+	<script type="text/javascript" src="swfobject.js"></script>
+	<style>
+	TD {font-size: 10pt;}
+	H2 {font-family: Arial;}
+	</style>
+	
+</head>
+<body color="#FFFFFF" bgcolor="#000000" text="#000000" link="#000000" vlink="#000000" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
+<center>
+<!-- BEGIN EMBED CODE -->
+	
+	<!-- IMPORTANT: Make sure you also copy the swfobject script tag from the head above -->
+	
+	<div id="flashcontent" style="width:215px; height:180px;">
+		<strong>Please upgrade your Flash Player</strong>
+	</div>
+
+	<script type="text/javascript">
+		// <![CDATA[
+		
+		// version 9.0.115 or greater is required for launching AIR apps.
+		var so = new SWFObject("AIRInstallBadge.swf", "Badge", "215", "180", "9.0.115", "#323232");
+		so.useExpressInstall('expressinstall.swf');
+		
+		// these parameters are required for badge install:
+		so.addVariable("airversion", "1.5"); // version of AIR runtime required
+		so.addVariable("appname", "Tour de Flex"); // application name to display to the user
+		so.addVariable("appurl", "http://download.macromedia.com/pub/developer/air/TourDeFlex.air"); // absolute URL (beginning with http or https) of the application ".air" file
+		
+		// these parameters are required to support launching apps from the badge (but optional for install):
+		so.addVariable("appid", "com.pe.tourdeflex.adobe"); // the qualified application ID (ex. com.gskinner.air.MyApplication)
+		so.addVariable("pubid", ""); // publisher id
+		
+		// this parameter is required in addition to the above to support upgrading from the badge:
+		so.addVariable("appversion", "1.2.3"); // AIR application version
+		
+		// these parameters are optional:
+		so.addVariable("imageurl", "tdfx_badge.jpg"); // URL for an image (JPG, PNG, GIF) or SWF to display in the badge (205px wide, 170px high)
+		so.addVariable("appinstallarg", "installed from web"); // passed to the application when it is installed from the badge
+		so.addVariable("applauncharg", "launched from web"); // passed to the application when it is launched from the badge
+		so.addVariable("helpurl", "help.html"); // optional url to a page containing additional help, displayed in the badge's help screen
+		so.addVariable("hidehelp", "true"); // hides the help icon if "true"
+		so.addVariable("skiptransition", "false"); // skips the initial transition if "true"
+		so.addVariable("titlecolor", "#00AAFF"); // changes the color of titles
+		so.addVariable("buttonlabelcolor", "#AAAAAA"); // changes the color of the button label
+		so.addVariable("appnamecolor", "#AAAAAA"); // changes the color of the application name if the image is not specified or loaded
+		
+		// these parameters allow you to override the default text in the badge:
+		// supported strings: str_error, str_err_params, str_err_airunavailable, str_err_airswf, str_loading, str_install, str_launch, str_upgrade, str_close, str_launching, str_launchingtext, str_installing, str_installingtext, str_tryagain, str_beta3, str_beta3text, str_help, str_helptext
+		so.addVariable("str_err_airswf", "<u>Running locally?</u><br/><br/>The AIR proxy swf won't load properly when this demo is run from the local file system."); // overrides the error text when the AIR proxy swf fails to load
+		
+		so.write("flashcontent");
+		
+		// ]]>
+	</script>
+
+<!-- END EMBED CODE -->
+</center>	
+</body>
+</html>

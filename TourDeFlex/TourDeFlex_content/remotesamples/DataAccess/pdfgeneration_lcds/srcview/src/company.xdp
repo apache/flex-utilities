@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<?xfa generator="AdobeLiveCycleDesigner_V8.0" APIVersion="2.5.6290.0"?>
+<xdp:xdp xmlns:xdp="http://ns.adobe.com/xdp/" timeStamp="2007-03-20T22:02:46Z" uuid="7aa55ae0-07a8-4c53-82fd-3fed5981320d">
+<template xmlns="http://www.xfa.org/schema/xfa-template/2.5/">
+   <?formServer defaultPDFRenderFormat acrobat8.0dynamic?>
+   <?formServer allowRenderCaching 0?>
+   <?formServer formModel both?>
+   <subform layout="tb" locale="en_US" name="CompanyReport">
+      <pageSet>
+         <pageArea id="Page1" name="Page1">
+            <contentArea h="756pt" w="576pt" x="0.25in" y="0.25in"/>
+            <medium long="792pt" short="612pt" stock="letter"/>
+            <?templateDesigner expand 1?></pageArea>
+         <?templateDesigner expand 1?></pageSet>
+      <subform h="756pt" w="576pt">
+         <field h="6mm" name="PrintButton1" w="28.575mm" x="174.625mm">
+            <?templateDesigner isPrintObject true?>
+            <ui>
+               <button/>
+            </ui>
+            <font typeface="Myriad Pro"/>
+            <caption>
+               <value>
+                  <text>Print Form</text>
+               </value>
+               <para hAlign="center" vAlign="middle"/>
+               <font typeface="Myriad Pro"/>
+            </caption>
+            <border hand="right">
+               <?templateDesigner StyleID apbx2?>
+               <edge stroke="raised"/>
+               <fill>
+                  <color value="212,208,200"/>
+               </fill>
+            </border>
+            <bind match="none"/>
+            <event activity="click">
+               <script contentType="application/x-javascript">xfa.host.print(1, "0", (xfa.host.numPages -1).toString(), 0, 1, 0, 0, 0);</script>
+            </event>
+         </field>
+         <field h="57.15mm" name="EarningsImage" w="66.675mm" x="127mm" y="34.925mm">
+            <ui>
+               <imageEdit/>
+            </ui>
+            <event activity="initialize">
+               <script>$.access = "readOnly"</script>
+            </event>
+         </field>
+         <field h="82.55mm" name="BalanceSheetImage" w="184.15mm" x="9.525mm" y="104.775mm">
+            <ui>
+               <imageEdit/>
+            </ui>
+            <event activity="initialize">
+               <script>$.access = "readOnly"</script>
+            </event>
+         </field>
+         <field access="readOnly" h="2.25in" name="OverviewText" w="4.375in" x="9.525mm" y="34.925mm">
+            <ui>
+               <textEdit multiLine="1">
+                  <border presence="hidden">
+                     <?templateDesigner StyleID aped0?></border>
+                  <margin/>
+               </textEdit>
+            </ui>
+            <font baselineShift="0pt" size="12pt" typeface="Myriad Pro"/>
+            <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+            <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt"/>
+            <caption reserve="0in">
+               <font typeface="Myriad Pro"/>
+               <para vAlign="middle"/>
+            </caption>
+         </field>
+         <field access="readOnly" h="0.375in" name="TitleText" w="7.25in" x="9.525mm" y="19.05mm">
+            <ui>
+               <textEdit>
+                  <border presence="hidden">
+                     <?templateDesigner StyleID aped0?></border>
+                  <margin/>
+               </textEdit>
+            </ui>
+            <font baselineShift="0pt" size="20pt" typeface="Myriad Pro"/>
+            <margin bottomInset="0.5mm" leftInset="0.5mm" rightInset="0.5mm" topInset="0.5mm"/>
+            <para marginLeft="0pt" marginRight="0pt" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt"/>
+            <caption reserve="0in">
+               <font typeface="Myriad Pro"/>
+               <para vAlign="middle"/>
+            </caption>
+            <bind match="dataRef" ref="$data.MyKey"/>
+         </field>
+         <?templateDesigner expand 1?></subform>
+      <proto/>
+      <?templateDesigner expand 1?>
+      <?renderCache.subset "Myriad Pro" 0 0 ISO-8859-1 4 36 9 000100270031004A004E004F005000530055 FPimnort?></subform>
+   <?templateDesigner Grid show:1, snap:1, units:0, color:ff8080, origin:(0,0), interval:(125000,125000)?>
+   <?templateDesigner Zoom 104?>
+   <?originalXFAVersion http://www.xfa.org/schema/xfa-template/2.4/?>
+   <?templateDesigner Rulers horizontal:1, vertical:1, guidelines:1, crosshairs:0?>
+   <?templateDesigner DefaultLanguage FormCalc?>
+   <?templateDesigner DefaultRunAt client?>
+   <?templateDesigner DefaultPreviewType interactive?>
+   <?templateDesigner XDPPreviewFormat 12?></template>
+<config xmlns="http://www.xfa.org/schema/xci/1.0/">
+   <agent name="designer">
+      <destination>pdf</destination>
+      <pdf>
+         <!--  [0..n]  -->
+         <fontInfo/>
+      </pdf>
+   </agent>
+   <trace>
+      <area name="font" level="1"/>
+   </trace>
+   <present>
+      <!--  [0..n]  -->
+      <destination>pdf</destination>
+      <pdf>
+         <!--  [0..n]  -->
+         <fontInfo>
+            <embed>1</embed>
+         </fontInfo>
+         <version>1.65</version>
+         <creator>Adobe Designer 7.1</creator>
+         <producer>Adobe Designer 7.1</producer>
+         <scriptModel>XFA</scriptModel>
+         <interactive>1</interactive>
+         <tagged>1</tagged>
+         <compression>
+            <level>6</level>
+            <compressLogicalStructure>1</compressLogicalStructure>
+         </compression>
+      </pdf>
+      <xdp>
+         <packets>*</packets>
+      </xdp>
+      <common>
+         <log>
+            <to>memory</to>
+            <mode>overwrite</mode>
+         </log>
+         <template>
+            <base>C:\dev\depot\flex\enterprise\apps\j2ee\dev\features\pdf\</base>
+         </template>
+      </common>
+      <output>
+         <to>uri</to>
+         <uri>C:\dev\depot\flex\enterprise\apps\j2ee\dev\features\pdf\company.pdf</uri>
+      </output>
+      <cache>
+         <macroCache/>
+      </cache>
+   </present>
+   <acrobat>
+      <acrobat7>
+         <dynamicRender>forbidden</dynamicRender>
+      </acrobat7>
+      <common>
+         <locale/>
+         <data>
+            <adjustData/>
+            <xsl>
+               <uri/>
+            </xsl>
+            <outputXSL>
+               <uri/>
+            </outputXSL>
+         </data>
+         <template>
+            <base>C:\dev\depot\flex\enterprise\apps\j2ee\dev\features\pdf\</base>
+            <relevant/>
+            <uri/>
+         </template>
+      </common>
+   </acrobat>
+</config>
+<localeSet xmlns="http://www.xfa.org/schema/xfa-locale-set/2.1/">
+   <locale desc="English (United States)" name="en_US">
+      <calendarSymbols name="gregorian">
+         <monthNames>
+            <month>January</month>
+            <month>February</month>
+            <month>March</month>
+            <month>April</month>
+            <month>May</month>
+            <month>June</month>
+            <month>July</month>
+            <month>August</month>
+            <month>September</month>
+            <month>October</month>
+            <month>November</month>
+            <month>December</month>
+         </monthNames>
+         <monthNames abbr="1">
+            <month>Jan</month>
+            <month>Feb</month>
+            <month>Mar</month>
+            <month>Apr</month>
+            <month>May</month>
+            <month>Jun</month>
+            <month>Jul</month>
+            <month>Aug</month>
+            <month>Sep</month>
+            <month>Oct</month>
+            <month>Nov</month>
+            <month>Dec</month>
+         </monthNames>
+         <dayNames>
+            <day>Sunday</day>
+            <day>Monday</day>
+            <day>Tuesday</day>
+            <day>Wednesday</day>
+            <day>Thursday</day>
+            <day>Friday</day>
+            <day>Saturday</day>
+         </dayNames>
+         <dayNames abbr="1">
+            <day>Sun</day>
+            <day>Mon</day>
+            <day>Tue</day>
+            <day>Wed</day>
+            <day>Thu</day>
+            <day>Fri</day>
+            <day>Sat</day>
+         </dayNames>
+         <meridiemNames>
+            <meridiem>AM</meridiem>
+            <meridiem>PM</meridiem>
+         </meridiemNames>
+         <eraNames>
+            <era>BC</era>
+            <era>AD</era>
+         </eraNames>
+      </calendarSymbols>
+      <datePatterns>
+         <datePattern name="full">EEEE, MMMM D, YYYY</datePattern>
+         <datePattern name="long">MMMM D, YYYY</datePattern>
+         <datePattern name="med">MMM D, YYYY</datePattern>
+         <datePattern name="short">M/D/YY</datePattern>
+      </datePatterns>
+      <timePatterns>
+         <timePattern name="full">h:MM:SS A Z</timePattern>
+         <timePattern name="long">h:MM:SS A Z</timePattern>
+         <timePattern name="med">h:MM:SS A</timePattern>
+         <timePattern name="short">h:MM A</timePattern>
+      </timePatterns>
+      <dateTimeSymbols>GyMdkHmsSEDFwWahKzZ</dateTimeSymbols>
+      <numberPatterns>
+         <numberPattern name="numeric">z,zz9.zzz</numberPattern>
+         <numberPattern name="currency">$z,zz9.99|($z,zz9.99)</numberPattern>
+         <numberPattern name="percent">z,zz9%</numberPattern>
+      </numberPatterns>
+      <numberSymbols>
+         <numberSymbol name="decimal">.</numberSymbol>
+         <numberSymbol name="grouping">,</numberSymbol>
+         <numberSymbol name="percent">%</numberSymbol>
+         <numberSymbol name="minus">-</numberSymbol>
+         <numberSymbol name="zero">0</numberSymbol>
+      </numberSymbols>
+      <currencySymbols>
+         <currencySymbol name="symbol">$</currencySymbol>
+         <currencySymbol name="isoname">USD</currencySymbol>
+         <currencySymbol name="decimal">.</currencySymbol>
+      </currencySymbols>
+   </locale>
+</localeSet>
+<xfa:datasets xmlns:xfa="http://www.xfa.org/schema/xfa-data/1.0/">
+   <xfa:data xfa:dataNode="dataGroup"/>
+</xfa:datasets>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 4.0-c316 44.251264, Sun Sep 17 2006 17:15:19">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description xmlns:xap="http://ns.adobe.com/xap/1.0/" xmlns:xapMM="http://ns.adobe.com/xap/1.0/mm/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:pdf="http://ns.adobe.com/pdf/1.3/" rdf:about="" xap:ModifyDate="2006-12-20T18:35:31-05:00" xap:CreateDate="2006-12-20T18:35:31-05:00" xap:MetadataDate="2006-12-20T18:35:31-05:00" xap:CreatorTool="Adobe Designer 7.1" xapMM:DocumentID="uuid:fce04cbf-e912-4f5a-8ce7-05c4a90d5801" xapMM:InstanceID="uuid:b46f3261-492f-41f5-976b-edce10c7977e" dc:format="application/pdf" pdf:Producer="Adobe Designer 7.1"/>
+   </rdf:RDF>
+</x:xmpmeta>
+<xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve">
+   <annots/>
+</xfdf>
+<PDFSecurity print="1" printHighQuality="1" change="1" modifyAnnots="1" formFieldFilling="1" documentAssembly="1" contentCopy="1" accessibleContent="1" metadata="1" xmlns="http://ns.adobe.com/xtd/"/></xdp:xdp>

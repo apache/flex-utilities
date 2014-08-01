@@ -1,0 +1,39 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>
+The SQL assembler is a specialized Java assembler class that you use with the Java adapter to provide a bridge to a
+SQL database management system. Using the SQL assembler, you can build simple create, read, update, and delete
+(CRUD) applications based on the Data Management Service without writing server-side code. You can directly
+specify the SQL statements that you want to execute when the user creates, updates, or deletes items. You can also
+specify a number of SELECT statements to retrieve data in different ways.This assembler is useful when your
+database data model is not very complex and you want to expose it to MXML without writing Java code. You
+configure the connection to the database and write SQL code in a Data Management Service destination definition.
+You are only required to include SQL code for operations that call in a Flex application. The SQL assembler does not
+support hierarchical (nested) destinations. 
+<p>
+This example uses the simple sql-contact destination with one 'all' fill method. For a more detailed example however,
+the destination defined with destination 'sql-product' was left in the data-management-config.xml snippet info provided.
+</p>
+</body>
+</html>

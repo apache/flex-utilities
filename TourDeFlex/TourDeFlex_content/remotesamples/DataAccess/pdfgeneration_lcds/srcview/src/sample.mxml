@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" backgroundGradientColors="[0x000000,0x323232]" viewSourceURL="srcview/index.html">
+
+    <mx:Script>
+    	<![CDATA[
+    		
+        import flash.net.navigateToURL;
+        import mx.controls.Alert;
+        import mx.rpc.events.FaultEvent;
+        import mx.rpc.events.ResultEvent;
+        import mx.graphics.ImageSnapshot;
+
+        [Bindable]
+        public var balanceSheetImage:String;
+
+        [Bindable]
+        public var earningsImage:String;
+
+        private function generatePDF(fromXDP:Boolean):void
+        {
+            var snapshot:ImageSnapshot = ImageSnapshot.captureImage(balanceSheet);
+            balanceSheetImage = ImageSnapshot.encodeImageAsBase64(snapshot);
+
+            snapshot = ImageSnapshot.captureImage(earnings);
+            earningsImage = ImageSnapshot.encodeImageAsBase64(snapshot);
+
+            if (fromXDP)
+            {
+                serviceXDP.generatePDF(xmlModel);
+            }
+            else
+            {
+                service.generatePDF(xmlModel);
+            }
+        }
+
+        private function resultHandler(event:ResultEvent):void 
+        {
+            var url:String = event.result as String;
+            // The server-side component returns the location where we can load the generated PDF, we just
+            // have to pre-pend the web server info of where to invoke the servlet... See readme for details. 
+            navigateToURL(new URLRequest("http://tourdeflex.adobe.com:8080"+url), "_blank");
+       }
+
+        private function faultHandler(event:FaultEvent):void 
+        {
+            Alert.show(event.fault.toString(), "Error");
+        }
+    		
+    	]]>
+    </mx:Script>
+    
+    <mx:XML id="xmlModel">
+        <CompanyReport>
+            <TitleText>{panel.title}</TitleText>
+            <OverviewText>{overviewText.text}</OverviewText>
+            <BalanceSheetImage>{balanceSheetImage}</BalanceSheetImage>
+            <EarningsImage>{earningsImage}</EarningsImage>
+        </CompanyReport>
+    </mx:XML>
+
+     
+    <mx:ChannelSet id="channelSet">
+        <mx:AMFChannel id="amfChannel" url="http://tourdeflex.adobe.com:8080/lcds-samples/messagebroker/amf" />
+    </mx:ChannelSet>
+    
+    <mx:RemoteObject id="service" destination="PDFService" 
+        fault="faultHandler(event)"
+        result="resultHandler(event)" channelSet="{channelSet}"/>
+        
+    <mx:RemoteObject id="serviceXDP" destination="XDPXFAService" 
+        fault="faultHandler(event)"
+        result="resultHandler(event)" channelSet="{channelSet}"/>        
+
+    <mx:Panel id="panel" title="Company Inc." width="95%" height="100%"
+        paddingTop="10" paddingLeft="10" paddingRight="10">
+
+        <mx:Image id="image"/>
+
+        <mx:VBox styleName="plain" height="100%" width="100%">
+           
+            <!-- Balance Sheet Summary -->
+            <BalanceSheet id="balanceSheet" xmlns="*" height="200" width="100%" />
+
+            <mx:VBox>
+                <mx:Button label="Create PDF" click="generatePDF(false)" />
+                <mx:Spacer/>
+                <mx:Button label="Create PDF from XDP" click="generatePDF(true)" />
+                <mx:Text text="Note: a valid LCDS license is required for generating a PDF from XDP"/>
+            </mx:VBox>
+        </mx:VBox>
+
+    </mx:Panel>
+
+</mx:Application>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<players>
+	<player firstName="David" lastName="Wadhwani" nickname="Jefe" ranking="23rd" />
+	<player firstName="Matt" lastName="Chotin" nickname="Answerator" ranking="151st" />
+	<player firstName="Alex" lastName="Harui"  nickname="Messinator" ranking="2nd" />
+	<player firstName="Gordon" lastName="Smith"  nickname="enforcer" ranking="17th" />
+	<player firstName="Glenn" lastName="Ruehle"  nickname="Skininator" ranking="4th" />
+	<player firstName="Ely" lastName="Greenfield"  nickname="Naginator" ranking="12th" />
+	<player firstName="Deepa" lastName="Subrama..."  nickname="Terminator" ranking="15th" />
+	<player firstName="Dave" lastName="George"  nickname="simplinator" ranking="18th" />
+	<player firstName="Susan" lastName="Lally" nickname="Cat Herder" ranking="1st" />
+	<player firstName="Basil" lastName="Hosmer"  nickname="languigator" ranking="3rd" />
+	<player firstName="Roger" lastName="Gonzalez"  nickname="shiny-nator" ranking="15th" />
+	<player firstName="Dan" lastName="Smith"  nickname="Scotchinator" ranking="11th" />
+	<player firstName="Paul" lastName="Reilly" nickname="Boof-inator" ranking="18th" />
+	<player firstName="Clement" lastName="Wong" nickname="Compilinator" ranking="13th" />
+	<player firstName="Brian" lastName="Deitte" nickname="MIA" ranking="23rd" />
+	<player firstName="Michael" lastName="Montagna" nickname="Treeinator" ranking="4th" />
+	<player firstName="Todd" lastName="Rein"  nickname="Rover" ranking="10th" />
+	<player firstName="Sasha" lastName="Magee" nickname="Automator" rakning="15th" />
+</players>	

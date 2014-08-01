@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<service id="data-service" class="flex.data.DataService">
+
+    <adapters>
+        <adapter-definition id="actionscript" class="flex.data.adapters.ASObjectAdapter" default="true"/>
+        <adapter-definition id="java-dao" class="flex.data.adapters.JavaAdapter"/>
+    </adapters>
+
+    <default-channels>
+       <channel ref="my-rtmp"/>
+       </default-channels>    
+    
+     <!-- The sample uses this destination -->
+    <destination id="sql-contact">
+    	<adapter ref="java-dao"/>
+        <properties>
+            <use-transactions>true</use-transactions>
+            <source>flex.data.assemblers.SQLAssembler</source>
+            <scope>application</scope>
+            <metadata>
+                <identity property="CONTACT_ID"/>
+            </metadata>
+            <network>
+                <paging enabled="false" pageSize="10" />
+            </network>
+            <server>
+            	<database>
+				    <driver-class>org.hsqldb.jdbcDriver</driver-class>
+				    <url>jdbc:hsqldb:hsql://localhost:9002/flexdemodb</url>
+				    <username>sa</username>
+				    <password></password>
+			    	<login-timeout>15</login-timeout>
+				</database>
+				<actionscript-class>Contact</actionscript-class>
+     			<fill>
+       				<name>all</name>
+       				<sql>SELECT * FROM CONTACT ORDER BY FIRST_NAME</sql>
+     			</fill>
+			</server>
+		</properties>
+	</destination>  
+
+	<!-- This destination left in for reference purposes only! -->
+    <destination id="sql-product">
+    	<adapter ref="java-dao"/>
+	    <properties>
+	        <use-transactions>true</use-transactions>
+	        <source>flex.data.assemblers.SQLAssembler</source>
+	        <scope>application</scope>
+	        <metadata>
+	            <identity property="PRODUCT_ID"/>
+	        </metadata>
+	        <network>
+	            <paging enabled="false" pageSize="10" />
+	        </network>
+	        <server>
+	        	<database>
+				    <driver-class>org.hsqldb.jdbcDriver</driver-class>
+				    <url>jdbc:hsqldb:hsql://localhost:9002/flexdemodb</url>
+				    <username>sa</username>
+				    <password></password>
+			    	<login-timeout>15</login-timeout>
+				</database>
+				
+				<actionscript-class>Product</actionscript-class>
+	 			<fill>
+	   				<name>all</name>
+	   				<sql>SELECT * FROM PRODUCT ORDER BY NAME</sql>
+	 			</fill>
+	
+	 			<fill>
+	   				<name>by-name</name>
+	   				<sql>SELECT * FROM PRODUCT WHERE NAME LIKE CONCAT('%', CONCAT(#searchStr#,'%'))</sql>
+	 			</fill>
+	
+	 			<fill>
+	   				<name>by-category</name>
+	   				<sql>SELECT * FROM PRODUCT WHERE CATEGORY LIKE CONCAT('%', CONCAT(#searchStr#,'%'))</sql>
+	 			</fill>
+	
+				<get-item>
+					<sql>SELECT * FROM PRODUCT WHERE PRODUCT_ID = #PRODUCT_ID#</sql>
+				</get-item>
+	
+	 			<create-item>
+				  <sql>INSERT INTO PRODUCT 
+				  		(NAME, CATEGORY, IMAGE, PRICE, DESCRIPTION, QTY_IN_STOCK) 
+				  		VALUES (#NAME#, #CATEGORY#, #IMAGE#, #PRICE#, #DESCRIPTION#, #QTY_IN_STOCK#)</sql>
+				  <id-query>CALL IDENTITY()</id-query> <!-- HSQLDB syntax to retrieve value of autoincremented column -->
+				</create-item>
+	
+	 			<update-item>
+				  <sql>UPDATE PRODUCT SET NAME=#NAME#, CATEGORY=#CATEGORY#, IMAGE=#IMAGE#, PRICE=#PRICE#, DESCRIPTION=#DESCRIPTION#, QTY_IN_STOCK=#QTY_IN_STOCK# 
+				  		WHERE PRODUCT_ID=#_PREV.PRODUCT_ID#</sql>
+				</update-item>
+	 			<delete-item>	
+				  <sql>DELETE FROM PRODUCT WHERE PRODUCT_ID=#PRODUCT_ID#</sql>
+				</delete-item>
+				<count>
+					<name>all</name>
+					<sql>SELECT count(*) FROM PRODUCT</sql>
+				</count>
+			</server>
+		</properties>
+	</destination>    
+</service>

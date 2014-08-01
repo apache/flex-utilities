@@ -1,0 +1,198 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>AdvancedTextPropertyEditor.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inspectors</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptOperator">*</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FormatValue</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextLayoutFormat</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">tlf_internal</span>;
+    <span class="ActionScriptReserved">use</span> <span class="ActionScriptReserved">namespace</span> <span class="ActionScriptDefault_Text">tlf_internal</span>;
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">AdvancedTextPropertyEditor</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">DynamicTextPropertyEditor</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">AdvancedTextPropertyEditor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">recipe</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptOperator">=</span> 
+                <span class="ActionScriptReserved">&lt;recipe&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/DigitCase=Digit Case:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DIGIT_CASE_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Default" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DigitCase</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DEFAULT</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Lining" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DigitCase</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LINING</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Old Style" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DigitCase</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">OLD_STYLE</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/DigitWidth=Digit Width:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DIGIT_WIDTH_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Default" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DigitWidth</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DEFAULT</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Proportional" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DigitWidth</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PROPORTIONAL</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Tabular" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DigitWidth</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TABULAR</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/DominantBaseline=Dominant Baseline:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DOMINANT_BASELINE_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Auto" value=</span>{<span class="ActionScriptDefault_Text">FormatValue</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Roman" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ROMAN</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ascent" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ASCENT</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Descent" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DESCENT</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Top" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_TOP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Center" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_CENTER</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Bottom" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_BOTTOM</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/AlignmentBaseline=Alignment Baseline:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ALIGNMENT_BASELINE_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Roman" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ROMAN</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ascent" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ASCENT</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Descent" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DESCENT</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Top" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_TOP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Center" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_CENTER</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Bottom" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_BOTTOM</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Use Dominant" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextBaseline</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">USE_DOMINANT_BASELINE</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumberunit" label="$$$/stage/TextEditing/Label/BaselineShift=Baseline Shift:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BASELINE_SHIFT_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;defaultunit&gt;pix&lt;/defaultunit&gt;
+                            &lt;numericunit displayname="%" 
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">baselineShiftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minPercentValue</span>}
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">baselineShiftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxPercentValue</span>} 
+                                <span class="ActionScriptReserved">default="0" 
+                                decimals="1"/&gt;
+                            &lt;numericunit displayname="pix" 
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">baselineShiftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minNumberValue</span>}
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">baselineShiftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxNumberValue</span>} 
+                                <span class="ActionScriptReserved">default="0" 
+                                decimals="1"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/Ligatures=Ligatures:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LIGATURE_LEVEL_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Minimum" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LigatureLevel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MINIMUM</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Common" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LigatureLevel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">COMMON</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Uncommon" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LigatureLevel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UNCOMMON</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Exotic" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LigatureLevel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">EXOTIC</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/Rotation=Rotation:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TEXT_ROTATION_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="0 degrees" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextRotation</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ROTATE_0</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="90 degrees" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextRotation</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ROTATE_90</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="180 degrees" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextRotation</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ROTATE_180</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="270 degrees" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextRotation</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ROTATE_270</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="auto" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextRotation</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/Alpha=Alpha:" suffix="%"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TEXT_ALPHA_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue="0" 
+                                maxValue="100"
+                                convertToPercent="yes"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/BackgroundAlpha=Background alpha:" suffix="%"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BACKGROUND_ALPHA_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue="0" 
+                                maxValue="100"
+                                convertToPercent="yes"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/Break=Break:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BREAK_OPPORTUNITY_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="All" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BreakOpportunity</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ALL</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Any" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BreakOpportunity</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ANY</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Auto" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BreakOpportunity</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="No Break" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BreakOpportunity</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">NONE</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/Lacale=Locale:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LOCALE_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Arabic" value="ar"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Bengali" value="bn"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Bulgarian" value="bg"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Catalan" value="ca"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Chinese, Simplified (China)" value="zh-CN"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Chinese, Traditional (Taiwan)" value="zh-TW"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Croatian" value="hr"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Czech" value="cs"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Danish" value="da"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Dutch" value="nl"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="English" value="en"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Estonian" value="et"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Finnish" value="fi"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="French" value="fr"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="German" value="de"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Greek" value="el"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Gujarati" value="gu"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Hindi" value="hi"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Hebrew" value="he"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Hungarian" value="hu"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Italian" value="it"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Japanese" value="ja"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Korean" value="ko"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Latvian" value="lv"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Lithuanian" value="lt"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Marathi" value="mr"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Norwegian" value="no"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Persian" value="fa"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Polish" value="pl"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Portuguese" value="pt"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Punjabi" value="pa"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Romanian" value="ro"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Russian" value="ru"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Slovak" value="sk"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Slovenian" value="sl"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Spanish" value="es"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Swedish" value="sv"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Tamil" value="ta"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Telugu" value="te"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Thai" value="th"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Turkish" value="tr"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Ukrainian" value="uk"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Urdu" value="ur"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Vietnamese" value="vi"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                &lt;/recipe&gt;</span>;
+
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">recipe</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

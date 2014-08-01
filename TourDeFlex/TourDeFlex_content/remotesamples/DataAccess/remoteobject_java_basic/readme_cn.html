@@ -1,0 +1,35 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>使用 RemoteObject，可以直接调用部署在应用程序服务器中的 Java 对象的方法，并使用返回值。返回值可以是基本数据类型的值、对象、对象集合、对象图形等等。</p>
+<p>RemoteObject 的 destination 属性的值是在 remoting-config.xml 中通过 source 标签映射到完全限定 java 类的逻辑名称。</p>
+<p>通过服务器端方法返回的 Java 对象会反序列化为动态或类型 ActionScript 对象。在此特定示例中，没有提供用于映射结果的 Java 类的显示 ActionScript 版本，因此响应会动态反序列为字符串。</p>
+<p>有关更多信息，请参阅指向此示例中使用的服务器端文件的链接列表，如下所示。 </p>
+<table>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/user/UserService.java.txt">UserService.java</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/user/User.java.txt">User.java</a></td></tr>
+</table>
+
+<p>注意：与 HTTPService 和 WebService 类似，RemoteObject 调用也是异步调用。可以使用 RemoteObject 的 <strong>result</strong> 和 <strong>fault</strong> 事件处理结果和错误。</p>
+</body>
+</html>

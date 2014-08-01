@@ -1,0 +1,106 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ParagraphPropertyMarker.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rulers</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextLayoutFormat</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">tlf_internal</span>;
+    <span class="ActionScriptReserved">use</span> <span class="ActionScriptReserved">namespace</span> <span class="ActionScriptDefault_Text">tlf_internal</span>;
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">ParagraphPropertyMarker</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">RulerMarker</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">ParagraphPropertyMarker</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">inRuler</span>:<span class="ActionScriptDefault_Text">RulerBar</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">inProperty</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">inRuler</span><span class="ActionScriptOperator">,</span> 6<span class="ActionScriptOperator">,</span> 13<span class="ActionScriptOperator">,</span> 0<span class="ActionScriptOperator">,</span> 0<span class="ActionScriptOperator">,</span> 0<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">setStyle</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"propkind"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">inProperty</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">setStyle</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"rightToLeftPar"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">mProperty</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">inProperty</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">property</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">mProperty</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">alignToRight</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Boolean</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">switch</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">mProperty</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">case</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>:
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">mRightToLeftPar</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptReserved">true</span> : <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptReserved">case</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphStartIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>:
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">mRightToLeftPar</span>;
+            <span class="ActionScriptReserved">case</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphEndIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>:
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">mRightToLeftPar</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">false</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">originPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">mRelativeToPosition</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">relativeToPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">inRelPos</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">mRelativeToPosition</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">inRelPos</span>;
+            <span class="ActionScriptDefault_Text">positionMarker</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">hOffset</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">Number</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">switch</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">mProperty</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">case</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>:
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">mRightToLeftPar</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptOperator">-</span>6 : 0;
+            <span class="ActionScriptReserved">case</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphStartIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>:
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">mRightToLeftPar</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptOperator">-</span>6 : 0;
+            <span class="ActionScriptReserved">case</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphEndIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>:
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">mRightToLeftPar</span> <span class="ActionScriptOperator">?</span> 0 : <span class="ActionScriptOperator">-</span>6;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">return</span> 0;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">rightToLeftPar</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">inRightToLeft</span>:<span class="ActionScriptDefault_Text">Boolean</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">inRightToLeft</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptDefault_Text">mRightToLeftPar</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">mRightToLeftPar</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">inRightToLeft</span>;
+                <span class="ActionScriptDefault_Text">setStyle</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"rightToLeftPar"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">mRightToLeftPar</span><span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">mProperty</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphStartIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span><span class="ActionScriptBracket/Brace">)</span>
+                    <span class="ActionScriptDefault_Text">mProperty</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphEndIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>;
+                <span class="ActionScriptReserved">else</span> <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">mProperty</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphEndIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span><span class="ActionScriptBracket/Brace">)</span>
+                    <span class="ActionScriptDefault_Text">mProperty</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphStartIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">mProperty</span>:<span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">mRelativeToPosition</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">mRightToLeftPar</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

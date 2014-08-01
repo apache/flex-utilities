@@ -1,0 +1,64 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>
+Using the PDF generation feature in LiveCycle Data Services ES, you can build Flex applications that generate PDFs. A typical workflow is as follows:
+<ul>
+   <li> In the the Flex application you use a RemoteObject to invoke a method on a server component. You pass a data model as an argument. The data model represents the data that you want to merge into the PDF. It can include pure data as well as image snapshots of Flex components such as charting components and datatagrids. 
+   In this example the server-side component is flex.samples.pdfgen_contact.PDFService.java.</li>
+   <li>The server-side component uses the Flex-Acrobat API to merge the data model into a PDF template.</li>
+   <li>The server-side component saves the generated PDF. For example you could save it on the server's file system, as a byte array 
+   in the users's session, etc. In this example, we save the PDF as a byte array identified by a unique identifier in the 
+   user's session.</li>
+   <li>The server-side component returns a location where the client application can load the generated PDF from. In this 
+   example, we return the unique indentifier representing the byte array in the user session. The Flex client then invokes 
+   a servlet (flex.samples.pdfgen.PDFResourceServlet) to retrieve the PDF from the session object.</li>
+</ul>
+</p>
+<p>
+Note: you need to have a valid PDF or XDP document with an XFA template in order to use this feature. If you do not have one,
+the following steps can be taken to create one and export the data model to be used in the xml model in the client:
+<ul>
+<li>Create a new form using LiveCycle Designer, or use an existing PDF that has valid XDP document with an XFA template.</li>
+<li>Export the form data model from your PDF using Acrobat Professional. 
+	<ol>
+	<li>Open the XDP document you want to use in Acrobat Professional.</li>
+	<li>On the menu bar, select Forms > Manage Form Data > Export Data.</li>
+	<li>Save the data as XML to create an XML file that has data model structure of the XDP document</li>
+	</ol>
+<li>Set up your data model as an XML model in your MXML and map to your client fields. (see sample)</li>
+</p>
+<p>
+To run this sample, enter your form data and click "Create PDF" to generate a PDF by applying the data model sent from the Flex client to a PDF template. Click "Create PDF from XDP" to generate a PDF by applying the data model sent from the Flex client to an XDP based XFA template. Note that a valid LCDS license is required for generating a PDF from XDP.
+</p>
+
+<p>A list of links to the server side files used in this sample are listed below for further reference. </p>
+<table>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/pdfgen_contact/XDPXFAService.java.txt">XDPXFAService.java</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/pdfgen_contact/PDFService.java.txt">PDFService.java</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/pdfgen_contact/PDFResourceServlet.java.txt">PDFResourceServlet.java</a></td></tr>
+
+</table>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" backgroundGradientColors="[0x000000,0x323232]" xmlns:local="*" viewSourceURL="srcview/index.html">
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.controls.Alert;
+			
+			[Bindable]
+			private var user:User = new User();
+			
+			public function handleResult(event:ResultEvent):void
+			{
+				if (event.result is User) 
+					user = event.result as User;
+				user.birthStone = user.birthStone;
+				
+			}
+			public function handleFault(event:FaultEvent):void
+			{
+				Alert.show(event.fault.faultDetail, "Error");
+			}
+		]]>
+	</mx:Script>
+ 	<!-- By default, the configuration of the channels and their endpoints to communicate with the server
+         is read from services-config.xml and baked into the SWF *at compile time*. The problem is that
+         the endpoints the application uses during development are typically different from the endpoints 
+         the application uses in production. The ChannelSet API allows you to dynamically define your endpoints
+         *at runtime*. In the example below, we hardcode the endpoint URLs in the AMFChannel definition. In real
+         life, the client application would typically load these parameters dynamically. For example, the 
+         client application could read these parameters from an XML file loaded using the HTTPService at startup. -->         
+    <mx:ChannelSet id="channelSet">
+        <mx:AMFChannel id="amfChannel" url="http://tourdeflex.adobe.com:8080/lcds-samples/messagebroker/amf" />
+    </mx:ChannelSet>
+    
+    <!-- Using RemoteObject, you can directly invoke methods of Java objects deployed in your application server.
+         See the definition of the "userService" destination in remoting-config.xml -->
+    <mx:RemoteObject id="myService" destination="userService" channelSet="{channelSet}" source="flex.samples.user.User"
+    	result="handleResult(event)" fault="handleFault(event)"/> 
+    
+	
+	<mx:Array id="months">
+		<mx:String>January</mx:String>
+		<mx:String>February</mx:String>
+		<mx:String>March</mx:String>
+		<mx:String>April</mx:String>
+		<mx:String>May</mx:String>
+		<mx:String>June</mx:String>
+		<mx:String>July</mx:String>
+		<mx:String>August</mx:String>
+		<mx:String>September</mx:String>
+		<mx:String>October</mx:String>
+		<mx:String>November</mx:String>
+		<mx:String>December</mx:String>
+	</mx:Array>
+	
+	<mx:Panel width="95%" height="100%" title="Gem Finder" color="#000000">
+		<mx:Form id="myForm" width="100%" height="100%">
+			<mx:FormItem label="What is your name?">
+				<mx:TextInput id="userName" width="100" text="{user.name}" valueCommit="{user.name=userName.text}"/>
+			</mx:FormItem>
+			<mx:FormItem label="What month were you born?">
+				<mx:ComboBox id="birthMonth" dataProvider="{months}" valueCommit="{user.birthMonth=String(birthMonth.selectedItem)}"/>
+				<mx:Button label="Go!" click="{myService.getBirthStone(user)}"/>	
+			</mx:FormItem>
+			<mx:FormItem label="{user.name!=null?'Hi '+ user.name+' your':'Your'} birthstone is:" >
+				<mx:TextInput width="100" text="{user.birthStone}"/>
+			</mx:FormItem>
+		</mx:Form>
+	</mx:Panel>
+</mx:Application>

@@ -1,0 +1,37 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>除 RPC 服务之外，LiveCycle Data Services ES 数据管理服务功能还提供了一种创新且高效的方法，可以跨层以及在客户端之间同步数据。数据管理服务功能包含客户端 API 和服务器端服务。 </p>
+<p>在客户端，受管理对象会记录对数据所做的更改，并将这些更改通知后端。您可以：</p>
+
+<ul>
+<li>定义一个指向 data-management-config.xml 中定义的&ldquo;inventory&rdquo;目标的 DataService。</li>
+<li> 调用 DataService 的 <code>fill()</code> 方法，以填充产品数组。</li>
+<li> 将 DataGrid 绑定到产品数组。</li>
+</ul>
+
+<p>您无需记录对数据所做的更改，也不必调用远程服务将在客户端所做的更改（创建、更新或删除）通知后端。 </p>
+<p>在服务器端，数据管理服务会收到更改列表，并将其传递给服务器端的永久组件。此外，数据管理服务也会将更改推送至其它客户端。在此示例中，在 data-management-config.xml 文件中配置的产品目标使用 java-dao 适配器，表示由自定义 Java 类处理永久代码（另一个选择是使用 Hibernate 适配器）。对于提供永久实现的 Java 类，没有强制使用的特定约定。可以将方法（例如 fill 和 sync）映射到 assembler 类（在本例中为 ProductAssembler）中的实际方法。在 assembler 类中，通常会将实际的永久实现委托给现有的永久类（在本例中为 ProductService）。</p>
+
+</body>
+</html>

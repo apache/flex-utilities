@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- LiveCycle Data Services is required to use the approach described in this sample -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*" layout="horizontal"
+	backgroundGradientColors="[0x000000,0x323232]"
+	applicationComplete="ds.fill(products)" viewSourceURL="srcview/index.html">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable] private var product:Product;
+
+			private function save():void
+			{
+				product.name = productName.text;
+				product.category = category.text;
+				product.price = Number(price.text);
+				product.description = description.text;
+				//ds.commit(); Commented out in this hosted version
+			}
+			
+		]]>
+	</mx:Script>
+
+	<mx:ArrayCollection id="products"/> 
+
+	<!-- See the definition of the "inventory" destination in data-management-config.xml -->
+	<mx:DataService id="ds" destination="inventory" autoCommit="false"/>
+	
+	<mx:DataGrid id="dg" dataProvider="{products}" width="30%" height="100%"
+		change="product=dg.selectedItem as Product">
+		<mx:columns>
+			<mx:DataGridColumn dataField="productId" headerText="Product Id"/>
+			<mx:DataGridColumn dataField="name" headerText="Name"/>
+			<mx:DataGridColumn dataField="price" headerText="Price" textAlign="right"/>
+			<mx:DataGridColumn dataField="qtyInStock" headerText="Qty" textAlign="right"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:Form width="70%">
+		<mx:FormItem label="Name">
+			<mx:TextInput id="productName" text="{product.name}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Category">
+			<mx:TextInput id="category" text="{product.category}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Price">
+			<mx:TextInput id="price" text="{product.price}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Description" width="100%">
+			<mx:TextArea id="description" text="{product.description}" width="100%" height="80"/>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button label="Save" click="save()"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+	<mx:Style>
+		FormItem {
+			labelStyleName: formItemLabel;
+		}
+		.formItemLabel {
+			color: #FFFFFF;
+		}
+	</mx:Style>
+	
+</mx:Application>

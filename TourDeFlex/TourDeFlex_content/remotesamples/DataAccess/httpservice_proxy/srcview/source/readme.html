@@ -1,0 +1,35 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>A LiveCycle Data Services ES or a BlazeDS server is not required to use the HTTPService: By default, the application tries to connect  directly to the domain specified in the HTTPService url attribute. This  will work if one of the two conditions below is satisfied:</p>
+<ol>
+  <li>The domain specified in the HTTPService url attribute is the domain from where your application was downloaded. </li>
+  <li>A crossdomain.xml file granting access to your application's originating domain is available on the domain specified in the HTTPService url attribute.</li>
+
+  </ol>
+<p>If you want your application to access services available on another domain without deploying a crossdomain.xml file on that  domain (for example,  because you may not own the target domain), you can set the <strong>useProxy</strong> attribute of the HTTPService to &quot;<strong>true</strong>&quot; like in this example. In this case, the request is sent to the LiveCycle Data Services ES proxy  which  makes the request to the target domain on the client application's behalf. This configuration also provides more control over the access to the service. For example, you may configure the proxy to require authentication before accessing a  service, log access to the service, etc. </p>
+<p>When using the proxy, you can specify a logical name in the HTTPService <strong>destination</strong> attribute instead of specifying a hardcoded value in the url attribute. You   then map this  logical name to an actual URL in WEB-INF/flex/proxy-config.xml. Open WEB-INF/flex/proxy-config.xml to see how the catalog destination is configured.</p>
+
+
+</body>
+</html>

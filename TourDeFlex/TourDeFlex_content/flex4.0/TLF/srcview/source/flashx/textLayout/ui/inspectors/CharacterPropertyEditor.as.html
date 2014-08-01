@@ -1,0 +1,187 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>CharacterPropertyEditor.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inspectors</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptOperator">*</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextLayoutFormat</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">tlf_internal</span>;
+    <span class="ActionScriptReserved">use</span> <span class="ActionScriptReserved">namespace</span> <span class="ActionScriptDefault_Text">tlf_internal</span>;    
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">CharacterPropertyEditor</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">DynamicTextPropertyEditor</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/bold_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">boldIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/italic_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">italicIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/underline_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">underlineIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/strikethrough_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">strikethroughIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/superscript_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">superscriptIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/subscript_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">subscriptIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/tcy_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tcyIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">CharacterPropertyEditor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">recipe</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptOperator">=</span> 
+                <span class="ActionScriptReserved">&lt;recipe&gt;
+                    &lt;row&gt;
+                        &lt;editor type="fontPicker" label="$$$/stage/TextEditing/Label/Font=Font:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FONT_FAMILY_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/FontLookup=Lookup:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FONT_LOOKUP_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Device" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FontLookup</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DEVICE</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Embedded CFF" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FontLookup</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">EMBEDDED_CFF</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/Size=Size:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FONT_SIZE_UIPROP</span>}
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">fontSizeProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>}
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">fontSizeProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="hotnumberunit" label="$$$/stage/TextEditing/Label/Leading=Leading:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LINE_HEIGHT_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;defaultunit&gt;pix&lt;/defaultunit&gt;
+                            &lt;numericunit displayname="%"
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineHeightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minPercentValue</span>}
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineHeightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxPercentValue</span>}
+                                <span class="ActionScriptReserved">default="120"/&gt;
+                            &lt;numericunit displayname="pix"
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineHeightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minNumberValue</span>}
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineHeightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxNumberValue</span>}
+                                <span class="ActionScriptReserved">default="14"
+                                decimals="1"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row style="toggleButtonRow"&gt;
+                        &lt;editor type="toggleButton" style="toggleIconButton" iconClass="boldIcon" width="17" commit="yes"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FONT_WEIGHT_UIPROP</span>} <span class="ActionScriptReserved">falseValue="normal" trueValue="bold"/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="toggleButton" style="toggleIconButton" iconClass="italicIcon" width="17" commit="yes"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FONT_STYLE_UIPROP</span>} <span class="ActionScriptReserved">falseValue="normal" trueValue="italic"/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="toggleButton" style="toggleIconButton" iconClass="underlineIcon" width="17" commit="yes"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TEXT_DECORATION_UIPROP</span>} <span class="ActionScriptReserved">falseValue="none" trueValue="underline"/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="toggleButton" style="toggleIconButton" iconClass="strikethroughIcon" width="17" commit="yes"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LINE_THROUGH_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="toggleButton" style="toggleIconButton" iconClass="superscriptIcon" width="17" commit="yes"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BASELINE_SHIFT_SUPER_UIPROP</span>}  <span class="ActionScriptReserved">falseValue="0" trueValue=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BaselineShift</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SUPERSCRIPT</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="toggleButton" style="toggleIconButton" iconClass="subscriptIcon" width="17" commit="yes"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BASELINE_SHIFT_SUB_UIPROP</span>}  <span class="ActionScriptReserved">falseValue="0" trueValue=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BaselineShift</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SUBSCRIPT</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="toggleButton" style="toggleIconButton" iconClass="tcyIcon" width="17" commit="yes"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TCY_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/Kerning=Kerning:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">KERNING_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="On" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Kerning</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ON</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Off" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Kerning</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">OFF</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Auto" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Kerning</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumberunit" label="$$$/stage/TextEditing/Label/Tracking=Track R:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TRACKING_RIGHT_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;defaultunit&gt;pix&lt;/defaultunit&gt;
+                            &lt;numericunit displayname="%" 
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trackingRightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minPercentValue</span>} 
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trackingRightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxPercentValue</span>} 
+                                <span class="ActionScriptReserved">default="0"/&gt;
+                            &lt;numericunit displayname="pix" 
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trackingRightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minNumberValue</span>}
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trackingRightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxNumberValue</span>}
+                                <span class="ActionScriptReserved">default="0" 
+                                decimals="1"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumberunit" label="$$$/stage/TextEditing/Label/Tracking=Track L:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TRACKING_LEFT_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;defaultunit&gt;pix&lt;/defaultunit&gt;
+                            &lt;numericunit displayname="%" 
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trackingLeftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minPercentValue</span>} 
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trackingLeftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxPercentValue</span>} 
+                                <span class="ActionScriptReserved">default="0"/&gt;
+                            &lt;numericunit displayname="pix" 
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trackingLeftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minNumberValue</span>}
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trackingLeftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxNumberValue</span>}
+                                <span class="ActionScriptReserved">default="0" 
+                                decimals="1"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/Case=Case:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TYPOGRAPHIC_CASE_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Default" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TLFTypographicCase</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DEFAULT</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Caps to Small Caps" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TLFTypographicCase</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CAPS_TO_SMALL_CAPS</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Upper" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TLFTypographicCase</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UPPERCASE</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Lower" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TLFTypographicCase</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LOWERCASE</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Lowercase to Small Caps" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TLFTypographicCase</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LOWERCASE_TO_SMALL_CAPS</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="color" label="$$$/stage/TextEditing/Label/Color=Color:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">COLOR_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="color" label="$$$/stage/TextEditing/Label/BackgroundColor=Background color:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BGCOLOR_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                &lt;/recipe&gt;</span>;
+            
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">recipe</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"boldIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">boldIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"italicIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">italicIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"underlineIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">underlineIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"strikethroughIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">strikethroughIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"superscriptIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">superscriptIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"subscriptIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">subscriptIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"tcyIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">tcyIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal" verticalAlign="top"
+	horizontalAlign="center" backgroundGradientColors="[0x000000,0x323232]" paddingTop="0" viewSourceURL="srcview/index.html">
+	
+	<mx:Script >
+		<![CDATA[
+			private var imageWidth:Number = 0;
+			private var imageHeight:Number = 0;
+			private function changeSize():void
+			{
+				boxImage.width = (imageWidth*hSlider.value)/100;
+				boxImage.height = (imageHeight*hSlider.value)/100;
+			}
+			private function smoothImage(ev:Event):void{
+            	//set image smoothing so image looks better when transformed.
+				var bmp:Bitmap = ev.target.content as Bitmap;
+				bmp.smoothing = true;
+				
+				imageWidth=boxImage.width;
+				imageHeight=boxImage.height;
+			}
+		]]>
+	</mx:Script>
+	<mx:Style>
+		HSlider{
+			color:#323232;
+		}
+	</mx:Style>
+	
+	<mx:Panel title="HSlider Control" layout="vertical" height="240" color="0xffffff" borderAlpha="0.15" horizontalScrollPolicy="off"
+		 verticalScrollPolicy="off" paddingTop="2" paddingRight="10" paddingBottom="10" paddingLeft="10" horizontalAlign="center" verticalAlign="bottom">
+		
+		 <mx:Image id="boxImage" source="@Embed('images/backpack.jpg')" creationComplete="smoothImage(event);" />
+		 
+		 <mx:Label width="100%" color="0x323232"
+           text="Drag the slider to resize the image."/>
+           
+		<mx:HSlider id="hSlider" minimum="10" maximum="100" value="100" dataTipPlacement="top" tickColor="0x323232"
+			snapInterval="1" tickInterval="10" labels="['10%','100%']" allowTrackClick="true" 
+			liveDragging="true" change="changeSize()" />
+			
+	</mx:Panel>
+</mx:Application>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<index>
+	<title>Source of TDF_Animate_Properties</title>
+	<nodes>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="libs">
+		</node>
+		<node label="src">
+			<node label="assets">
+				<node label="images">
+					<node icon="imageIcon" label="1.jpg" url="source/assets/images/1.jpg.html"/>
+					<node icon="imageIcon" label="2.jpg" url="source/assets/images/2.jpg.html"/>
+					<node icon="imageIcon" label="3.jpg" url="source/assets/images/3.jpg.html"/>
+					<node icon="imageIcon" label="4.jpg" url="source/assets/images/4.jpg.html"/>
+					<node icon="imageIcon" label="5.jpg" url="source/assets/images/5.jpg.html"/>
+					<node icon="imageIcon" label="6.jpg" url="source/assets/images/6.jpg.html"/>
+					<node icon="imageIcon" label="7.jpg" url="source/assets/images/7.jpg.html"/>
+					<node icon="imageIcon" label="8.jpg" url="source/assets/images/8.jpg.html"/>
+					<node icon="imageIcon" label="9.jpg" url="source/assets/images/9.jpg.html"/>
+				</node>
+			</node>
+			<node icon="mxmlAppIcon" selected="true" label="Sample.mxml" url="source/Sample.mxml.html"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 31K)" url="TDF_Animate_Properties.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>

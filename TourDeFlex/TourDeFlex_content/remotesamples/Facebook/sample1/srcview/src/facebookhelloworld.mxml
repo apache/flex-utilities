@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" applicationComplete="handle_applicationComplete(event)"
+	backgroundGradientColors="[0x000000,0x323232]" color="0xFFFFFF" viewSourceURL="srcview/index.html">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import com.facebook.data.users.FacebookUser;
+			import com.facebook.data.users.GetInfoData;
+			import com.facebook.commands.users.GetInfo;
+			import com.facebook.net.FacebookCall;
+			import mx.controls.Alert;
+			import com.facebook.events.FacebookEvent;
+			import com.facebook.utils.FacebookSessionUtil;
+			
+			public var facebookSession:FacebookSessionUtil;
+			
+			private function handle_applicationComplete(event:FlexEvent):void
+			{
+				facebookSession = new FacebookSessionUtil("a56499d1559fb888b64d25ede5ad7691",
+														  "0341328fdfd9188b5241085d43aeb213",
+														  stage.loaderInfo);
+				facebookSession.addEventListener( FacebookEvent.WAITING_FOR_LOGIN, handle_waitingForLogin );
+				facebookSession.addEventListener( FacebookEvent.CONNECT, handle_connect );
+				facebookSession.verifySession();				
+			}
+			
+			public function login():void
+			{
+				facebookSession.login();
+			}
+			
+			private function handle_waitingForLogin( event:FacebookEvent ):void
+			{
+				var alert:Alert = Alert.show("Click OK after you logged in","Logging In" );
+				alert.addEventListener( Event.CLOSE, handle_close );
+			}
+			
+			private function handle_close( event:Event ):void
+			{
+				facebookSession.validateLogin();
+			}
+			
+			private function handle_connect( event:FacebookEvent ):void
+			{
+				if( event.success )
+				{
+					var call:FacebookCall = facebookSession.facebook.post( new GetInfo([facebookSession.facebook.uid],['name','pic_square','current_location','status']) );
+					call.addEventListener( FacebookEvent.COMPLETE, handle_getInfoComplete );
+					dataView.selectedChild = userView;
+				}
+			}
+			
+			private function handle_getInfoComplete( event:FacebookEvent ):void
+			{
+				var getInfoData:GetInfoData = GetInfoData( event.data );
+				var user:FacebookUser = FacebookUser( getInfoData.userCollection.getItemAt(0) );
+				userAvatar.source = user.pic_square;
+				userName.text = user.name;
+				userLocation.text = user.current_location.city + ", " + user.current_location.state;
+				userStatus.text = user.status.message;
+			}
+
+		]]>
+	</mx:Script> 	
+	<mx:ViewStack id="dataView" width="100%" height="100%" creationPolicy="all">
+		<mx:Canvas id="loginView">
+			<mx:Button horizontalCenter="0" verticalCenter="0" label="Login to Facebook" click="login()"/>
+		</mx:Canvas>
+		<mx:Canvas id="userView">
+			<mx:Image id="userAvatar" x="10" y="10" width="50" height="50"/>
+			<mx:Label id="userName" x="68" y="10" text="Name" width="199"/>
+			<mx:Label id="userLocation" x="68" y="26" text="Location" width="199"/>
+			<mx:Text id="userStatus" x="10" y="68" text="Status" width="257" height="150"/>
+		</mx:Canvas>
+	</mx:ViewStack>
+</mx:Application>

@@ -1,0 +1,203 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>FlowLayout1.as</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span>
+<span class="ActionScriptBracket/Brace">{</span>
+<span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ILayoutElement</span>;
+
+<span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">spark</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">supportClasses</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GroupBase</span>;
+<span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">spark</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">layouts</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">supportClasses</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LayoutBase</span>;
+
+<span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">FlowLayout1</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">LayoutBase</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    
+    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>    <span class="ActionScriptComment">//
+</span>    <span class="ActionScriptComment">//  Class properties
+</span>    <span class="ActionScriptComment">//
+</span>    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>    
+    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>    <span class="ActionScriptComment">//  horizontalGap
+</span>    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>
+    <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_horizontalGap</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 10;
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">horizontalGap</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptDefault_Text">_horizontalGap</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        
+        <span class="ActionScriptComment">// We must invalidate the layout
+</span>        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">layoutTarget</span>:<span class="ActionScriptDefault_Text">GroupBase</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">target</span>;
+        <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">invalidateDisplayList</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+    
+    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>    <span class="ActionScriptComment">//  verticalAlign
+</span>    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>
+    <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_verticalAlign</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"bottom"</span>;
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">verticalAlign</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptDefault_Text">_verticalAlign</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        
+        <span class="ActionScriptComment">// We must invalidate the layout
+</span>        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">layoutTarget</span>:<span class="ActionScriptDefault_Text">GroupBase</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">target</span>;
+        <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">invalidateDisplayList</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+    
+    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>    <span class="ActionScriptComment">//  horizontalAlign
+</span>    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>    
+    <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_horizontalAlign</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"left"</span>; <span class="ActionScriptComment">// center, right
+</span>    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">horizontalAlign</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptDefault_Text">_horizontalAlign</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        
+        <span class="ActionScriptComment">// We must invalidate the layout
+</span>        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">layoutTarget</span>:<span class="ActionScriptDefault_Text">GroupBase</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">target</span>;
+        <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">invalidateDisplayList</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+    
+    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>    <span class="ActionScriptComment">//
+</span>    <span class="ActionScriptComment">//  Class methods
+</span>    <span class="ActionScriptComment">//
+</span>    <span class="ActionScriptComment">//---------------------------------------------------------------
+</span>    
+    <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">updateDisplayList</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">containerWidth</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptOperator">,</span>
+                                               <span class="ActionScriptDefault_Text">containerHeight</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">element</span>:<span class="ActionScriptDefault_Text">ILayoutElement</span>;
+        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">layoutTarget</span>:<span class="ActionScriptDefault_Text">GroupBase</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">target</span>;
+        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">count</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">numElements</span>;
+        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">hGap</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_horizontalGap</span>;
+
+        <span class="ActionScriptComment">// The position for the current element
+</span>        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">x</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;
+        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">y</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;
+        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">elementWidth</span>:<span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">elementHeight</span>:<span class="ActionScriptDefault_Text">Number</span>;
+
+        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">vAlign</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;
+        <span class="ActionScriptReserved">switch</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_verticalAlign</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">case</span> <span class="ActionScriptString">"middle"</span> : <span class="ActionScriptDefault_Text">vAlign</span> <span class="ActionScriptOperator">=</span> 0.5; <span class="ActionScriptReserved">break</span>;
+            <span class="ActionScriptReserved">case</span> <span class="ActionScriptString">"bottom"</span> : <span class="ActionScriptDefault_Text">vAlign</span> <span class="ActionScriptOperator">=</span> 1; <span class="ActionScriptReserved">break</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptComment">// Keep track of per-row height, maximum row width
+</span>        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">maxRowWidth</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;
+
+        <span class="ActionScriptComment">// loop through the elements
+</span>        <span class="ActionScriptComment">// while we can start a new row
+</span>        <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">rowStart</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> 0;
+        <span class="ActionScriptReserved">while</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowStart</span> <span class="ActionScriptOperator">&lt;</span> <span class="ActionScriptDefault_Text">count</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// The row always contains the start element
+</span>            <span class="ActionScriptDefault_Text">element</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">useVirtualLayout</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getVirtualElementAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowStart</span><span class="ActionScriptBracket/Brace">)</span> :
+                                         <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getElementAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowStart</span><span class="ActionScriptBracket/Brace">)</span>;
+                                         
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">rowWidth</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">element</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getPreferredBoundsWidth</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">rowHeight</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span>  <span class="ActionScriptDefault_Text">element</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getPreferredBoundsHeight</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Find the end of the current row
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">rowEnd</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">rowStart</span>;
+            <span class="ActionScriptReserved">while</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowEnd</span> <span class="ActionScriptOperator">+</span> 1 <span class="ActionScriptOperator">&lt;</span> <span class="ActionScriptDefault_Text">count</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">element</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">useVirtualLayout</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getVirtualElementAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowEnd</span> <span class="ActionScriptOperator">+</span> 1<span class="ActionScriptBracket/Brace">)</span> :
+                                             <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getElementAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowEnd</span> <span class="ActionScriptOperator">+</span> 1<span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptComment">// Since we haven't resized the element just yet, get its preferred size
+</span>                <span class="ActionScriptDefault_Text">elementWidth</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">element</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getPreferredBoundsWidth</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">elementHeight</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">element</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getPreferredBoundsHeight</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+
+                <span class="ActionScriptComment">// Can we add one more element to this row?
+</span>                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowWidth</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">hGap</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">elementWidth</span> <span class="ActionScriptOperator">&gt;</span> <span class="ActionScriptDefault_Text">containerWidth</span><span class="ActionScriptBracket/Brace">)</span>
+                    <span class="ActionScriptReserved">break</span>;
+
+                <span class="ActionScriptDefault_Text">rowWidth</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">hGap</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">elementWidth</span>;
+                <span class="ActionScriptDefault_Text">rowHeight</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">max</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowHeight</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">elementHeight</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">rowEnd</span><span class="ActionScriptOperator">++</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> 0;
+            <span class="ActionScriptReserved">switch</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_horizontalAlign</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">case</span> <span class="ActionScriptString">"center"</span> : <span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">round</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">containerWidth</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">rowWidth</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">/</span> 2; <span class="ActionScriptReserved">break</span>;
+                <span class="ActionScriptReserved">case</span> <span class="ActionScriptString">"right"</span> : <span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">containerWidth</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">rowWidth</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptComment">// Keep track of the maximum row width so that we can
+</span>            <span class="ActionScriptComment">// set the correct contentSize
+</span>            <span class="ActionScriptDefault_Text">maxRowWidth</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">max</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">maxRowWidth</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">rowWidth</span><span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptComment">// Layout all the elements within the row
+</span>            <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">rowStart</span>; <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">&lt;=</span> <span class="ActionScriptDefault_Text">rowEnd</span>; <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">++</span><span class="ActionScriptBracket/Brace">)</span> 
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">element</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">useVirtualLayout</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getVirtualElementAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">)</span> : 
+                                             <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getElementAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">)</span>;
+
+                <span class="ActionScriptComment">// Resize the element to its preferred size by passing
+</span>                <span class="ActionScriptComment">// NaN for the width and height constraints
+</span>                <span class="ActionScriptDefault_Text">element</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">setLayoutBoundsSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">NaN</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">NaN</span><span class="ActionScriptBracket/Brace">)</span>;
+
+                <span class="ActionScriptComment">// Find out the element's dimensions sizes.
+</span>                <span class="ActionScriptComment">// We do this after the element has been already resized
+</span>                <span class="ActionScriptComment">// to its preferred size.
+</span>                <span class="ActionScriptDefault_Text">elementWidth</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">element</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getLayoutBoundsWidth</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">elementHeight</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">element</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getLayoutBoundsHeight</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+
+                <span class="ActionScriptComment">// Calculate the position within the row
+</span>                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">elementY</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">round</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">rowHeight</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">elementHeight</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">*</span> <span class="ActionScriptDefault_Text">vAlign</span><span class="ActionScriptBracket/Brace">)</span>;
+
+                <span class="ActionScriptComment">// Position the element
+</span>                <span class="ActionScriptDefault_Text">element</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">setLayoutBoundsPosition</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">elementY</span><span class="ActionScriptBracket/Brace">)</span>;
+
+                <span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">hGap</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">elementWidth</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptComment">// Next row will start with the first element after the current row's end
+</span>            <span class="ActionScriptDefault_Text">rowStart</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">rowEnd</span> <span class="ActionScriptOperator">+</span> 1;
+
+            <span class="ActionScriptComment">// Update the position to the beginning of the row
+</span>            <span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> 0;
+            <span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">+=</span> <span class="ActionScriptDefault_Text">rowHeight</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptComment">// Set the content size which determines the scrolling limits
+</span>        <span class="ActionScriptComment">// and is used by the Scroller to calculate whether to show up
+</span>        <span class="ActionScriptComment">// the scrollbars when the the scroll policy is set to "auto"
+</span>        <span class="ActionScriptDefault_Text">layoutTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">setContentSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">maxRowWidth</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">y</span><span class="ActionScriptBracket/Brace">)</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

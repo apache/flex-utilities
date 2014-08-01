@@ -1,0 +1,36 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<p>This example demonstrates how to use the message service to push data from the server to the client. At the server side, 
+a Java component publishes simulated market data to an LiveCycle Data Services ES messaging destination (called
+from startfeed.jsp and stopfeed.jsp). The destination used for this sample is shown in the messaging-config.xml tab, destination
+name 'market-data-feed'. The Trader Desktop application subscribes to real time updates for the stocks specified in a 
+configurable watch list. This application lets you 
+experiment with the different types of channels (streaming, polling, long polling) supported by LiveCycle Data Services ES. 
+LiveCycle Data Services ES also supports adaptive polling. Using the adaptive polling (using a per client outbound message 
+queue processor), you have full control over how messages are handled by queue processors and delivered to individual clients. For example you can specify per-client delays for message delivery, and provide custom logic defining how messages are merged between deliveries.
+</p>
+<p>To start the sample, first start the data feed via the 'Start/Stop Data Feed' tab. When you are done trying out the different channels,
+stop the data feed via the same tab.</p>
+
+<p>A list of links to the server side files used in this sample are listed below for further information. </p>
+<table>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/messaging_trader/srcview/source/startfeed.txt">startfeed.jsp</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/messaging_trader/srcview/source/stopfeed.txt">stopfeed.jsp</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/messaging_trader/srcview/source/Feed.java.txt">Feed.java</a></td></tr>
+</table>
+
+

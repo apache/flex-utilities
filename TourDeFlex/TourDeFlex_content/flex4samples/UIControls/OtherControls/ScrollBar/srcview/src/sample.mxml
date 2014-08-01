@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<s:Application 
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:s="library://ns.adobe.com/flex/spark"  viewSourceURL="srcview/index.html">
+	
+	<s:Panel width="100%" height="100%"
+			 skinClass="skins.TDFPanelSkin"
+			 title="ScrollBar Sample">
+		
+		<s:layout>
+				<s:HorizontalLayout paddingLeft="80" paddingTop="15"/>
+		</s:layout>
+		<mx:Box borderStyle="solid">
+			<s:HGroup>
+				<s:DataGroup id="vertView" left="10" top="20"
+							 clipAndEnableScrolling="true"
+							 itemRenderer="spark.skins.spark.DefaultItemRenderer">
+					<s:layout> 
+						<s:VerticalLayout requestedRowCount="4"/> 
+					</s:layout> 
+					<s:dataProvider> 
+						<s:ArrayCollection> 
+							<fx:String>Photoshop</fx:String>                
+							<fx:String>Illustrator</fx:String>                
+							<fx:String>LiveCycle ES</fx:String>                
+							<fx:String>Flash</fx:String>                
+							<fx:String>Acrobat</fx:String>                
+							<fx:String>Elements</fx:String>                
+							<fx:String>Creative Suite</fx:String>     
+							<fx:String>Premiere Pro</fx:String>     
+						</s:ArrayCollection>
+					</s:dataProvider> 
+				</s:DataGroup> 
+				<s:VScrollBar viewport="{vertView}" 
+							  top="10" 
+							  left="{vertView.x + vertView.width + 10}" 
+							  height="{vertView.height}"/>
+			</s:HGroup>
+		</mx:Box> 
+		<mx:Box borderStyle="solid">
+			<s:HGroup>
+				<s:DataGroup id="horizView" right="200" top="10"
+							 clipAndEnableScrolling="true"
+							 itemRenderer="spark.skins.spark.DefaultItemRenderer">
+					<s:layout> 
+						<s:HorizontalLayout requestedColumnCount="3"/> 
+					</s:layout> 
+					<s:dataProvider> 
+						<s:ArrayCollection> 
+							<fx:String>Photoshop</fx:String>                
+							<fx:String>Illustrator</fx:String>                
+							<fx:String>LiveCycle ES</fx:String>                
+							<fx:String>Flash</fx:String>                
+							<fx:String>Acrobat</fx:String>     
+						</s:ArrayCollection>
+					</s:dataProvider> 
+				</s:DataGroup> 
+				
+			</s:HGroup>
+			<s:HScrollBar viewport="{horizView}" 
+						  left="{horizView.left}" 
+						  bottom="{horizView.bottom}" 
+						  width ="{horizView.width}"/>
+		</mx:Box>
+		
+		<s:Label paddingLeft="15" width="199" verticalAlign="justify" color="0x323232"
+				 text="You can add scrollbars to any component to give scrolling capability. This sample shows
+how you can use both a vertical and horizontal ScrollBar. Also see the Scroller sample for more information."/>	
+	</s:Panel>
+</s:Application>

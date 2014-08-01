@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ab:AlphabetBase xmlns="http://www.adobe.com/2006/mxml" horizontalGap="0" xmlns:qs="qs.controls.*" 
+	horizontalAlign="left" paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="0" layout="horizontal" 
+	backgroundColor="#343434"  xmlns:ab="AlphabetClasses.*"
+	viewSourceURL="/source/DragTile.zip" 
+	>	
+	
+	<Style source="AlphabetClasses/Alphabet.css" />
+
+	<VBox height="100%" backgroundColor="#565656" width="400"  horizontalAlign="right" styleName="insetBox">
+
+		<Text condenseWhite="true" width="100%">
+			<htmlText><![CDATA[
+			This component uses the LayoutAnimator to 
+			allow you to interactively drag and drop wodden letter tiles to 
+			reorder them.  Try clicking a tile and dragging it around
+			the screen.<br/><br/>
+			See how quickly you reorder the tiles in alphabetical order.
+			Click the Start button below to time yourself.
+			]]></htmlText>
+		</Text>
+		
+		<Button label="start" click="initTrial();" />
+		
+		<Form id="runningUI" visible="false" fontSize="24" >
+			<FormItem label="time:">
+				<Label text="{runningTime}" />					
+			</FormItem>
+			<FormItem label="correct:">
+				<Label text="{itemsCorrect}" />												
+			</FormItem>					
+			<FormItem label="remaining:">
+				<Label text="{itemsRemaining}" />												
+			</FormItem>					
+		</Form>
+		
+		<Label text="Finished!!" id="completeUI" visible="false" fontSize="24" />
+	</VBox>
+	
+	<VRule height="100%" />
+	
+	<HBox width="100%" horizontalGap="0" height="100%" styleName="insetBox" clipContent="true" >						
+		<qs:DragTile id="dragTile" dataProvider="{items}" width="100%" height="100%"
+			dragEnter="event.target.allowDrag(event);"  
+			dragOver='event.target.showDragFeedback(event,event.shiftKey? "copy":"move")'
+			change="checkComplete();" itemRenderer="AlphabetTile" />
+	</HBox>
+	
+</ab:AlphabetBase>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal" viewSourceURL="srcview/index.html"
+	 verticalAlign="middle" horizontalAlign="center" backgroundGradientColors="[0x000000,0x323232]">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+		]]>
+	</mx:Script>
+	<mx:Panel title="Button Control Example" layout="vertical" height="100" color="0xffffff" borderAlpha="0.15"
+		 paddingTop="10" paddingRight="10" paddingBottom="10" paddingLeft="10" horizontalAlign="center">
+		
+		<mx:HBox horizontalGap="10" verticalAlign="middle">
+		<!-- normal button -->
+			<mx:Button id="defaultButton" color="0x323232" label="Default Button" click="{Alert.show('Default Button Pressed');}"  />
+			
+			<mx:Button id="iconButton" label="Button With Icon" labelPlacement="right" paddingLeft="2"
+				icon="@Embed('assets/flex_icon.png')" downIcon="@Embed('assets/flex_icon_dwn.png')"
+				color="0x323232" click="{Alert.show('Button With Icon Pressed');}" />
+				
+			<mx:Button id="skinnedButton" label="Skinned Button" width="150" upSkin="@Embed('assets/btn_up.png')"
+				overSkin="@Embed('assets/btn_over.png')" downSkin="@Embed('assets/btn_down.png')"
+				focusSkin="@Embed('assets/btn_focus.png')" disabledSkin="@Embed('assets/btn_disabled.png')"
+				color="0x323232" textRollOverColor="0xffffff" textSelectedColor="0xffffff" paddingLeft="20"
+				click="{Alert.show('Skinned Button Pressed');}"  />
+				
+			<mx:Button id="customButton" label="CUSTOM BUTTON" fontFamily="Arial" fontStyle="italic" fontWeight="normal" cornerRadius="12"
+				color="0xffffff" fillColors="[0x55C0FF,0x0050AA]" fillAlphas="[1.0,1.0]" highlightAlphas="[1.0,0.2]" focusAlpha="0.2"
+				textRollOverColor="0xffffff" textSelectedColor="0x55C0FF" click="{Alert.show('CUSTOM BUTTON Pressed');}"/>
+		</mx:HBox>
+	</mx:Panel>
+</mx:Application>

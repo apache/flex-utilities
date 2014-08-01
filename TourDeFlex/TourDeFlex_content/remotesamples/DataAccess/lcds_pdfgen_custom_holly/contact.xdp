@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<?xfa generator="AdobeLiveCycleDesignerES_V8.2.1.3158.1.475346" APIVersion="2.8.8118.0"?>
+<xdp:xdp xmlns:xdp="http://ns.adobe.com/xdp/" timeStamp="2009-06-17T14:29:22Z" uuid="44c36f89-39eb-4915-a554-155211525ad7">
+<template xmlns="http://www.xfa.org/schema/xfa-template/2.8/">
+   <?formServer defaultPDFRenderFormat acrobat9.0dynamic?>
+   <?formServer allowRenderCaching 0?>
+   <?formServer formModel both?>
+   <subform name="ContactForm" layout="tb" locale="en_US" restoreState="auto">
+      <pageSet>
+         <pageArea name="Page1" id="Page1">
+            <contentArea x="0.25in" y="0.25in" w="8in" h="10.5in"/>
+            <medium stock="letter" short="8.5in" long="11in"/>
+            <?templateDesigner expand 0?></pageArea>
+         <?templateDesigner expand 1?></pageSet>
+      <subform w="8in" h="10.5in">
+         <area x="6.28mm" y="9.667mm" name="Header">
+            <draw name="StaticBallot" y="0mm" w="98.462mm" h="14.466mm" x="0mm">
+               <ui>
+                  <textEdit/>
+               </ui>
+               <value>
+                  <text>Contact Information Form</text>
+               </value>
+               <font size="22pt" typeface="Myriad Pro" weight="bold"/>
+               <traversal>
+                  <traverse ref="StaticFax[0]"/>
+               </traversal>
+               <?renderCache.bounds 279105 41006 0 0 0 0 0 0?>
+               <?renderCache.textRun 24 Contact Information Form 0 0 16500 0 0 0 "Myriad Pro" 1 0 22000 ISO-8859-1?></draw>
+            <draw name="StaticCompanyName" x="130.118mm" y="0.141mm" h="5.918mm" w="57.132mm">
+               <ui>
+                  <textEdit>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <value>
+                  <text>My Company, Inc</text>
+               </value>
+               <font size="9pt" typeface="Myriad Pro"/>
+               <para vAlign="middle" hAlign="right"/>
+               <traversal>
+                  <traverse ref="StaticAddress[0]"/>
+               </traversal>
+               <?renderCache.bounds 161949 16775 0 0 0 0 0 0?>
+               <?renderCache.textRun 15 My Company, Inc 0 97258 10637 0 0 0 "Myriad Pro" 0 0 9000 ISO-8859-1?></draw>
+            <draw name="StaticAddress" x="130.118mm" y="6.058mm" w="57.132mm" h="5.918mm">
+               <ui>
+                  <textEdit>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <value>
+                  <text>123 Main St</text>
+               </value>
+               <font size="9pt" typeface="Myriad Pro" baselineShift="0pt"/>
+               <para vAlign="middle" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" marginLeft="0pt" marginRight="0pt" hAlign="right"/>
+               <traversal>
+                  <traverse ref="StaticCityState[0]"/>
+               </traversal>
+               <?renderCache.bounds 161949 16775 0 0 0 0 0 0?>
+               <?renderCache.textRun 11 123 Main St 0 118192 10637 0 0 0 "Myriad Pro" 0 0 9000 ISO-8859-1?></draw>
+            <draw name="StaticCityState" x="130.118mm" y="11.976mm" w="57.132mm" h="5.918mm">
+               <ui>
+                  <textEdit>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <value>
+                  <text>Boise, Idaho</text>
+               </value>
+               <font size="9pt" typeface="Myriad Pro" baselineShift="0pt"/>
+               <para vAlign="middle" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" marginLeft="0pt" marginRight="0pt" hAlign="right"/>
+               <traversal>
+                  <traverse ref="StaticCountry[0]"/>
+               </traversal>
+               <?renderCache.bounds 161949 16775 0 0 0 0 0 0?>
+               <?renderCache.textRun 12 Boise, Idaho 0 116680 10637 0 0 0 "Myriad Pro" 0 0 9000 ISO-8859-1?></draw>
+            <draw name="StaticCountry" x="130.118mm" y="17.894mm" w="57.132mm" h="5.918mm">
+               <ui>
+                  <textEdit>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <value>
+                  <text>USA</text>
+               </value>
+               <font size="9pt" typeface="Myriad Pro" baselineShift="0pt"/>
+               <para vAlign="middle" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" marginLeft="0pt" marginRight="0pt" hAlign="right"/>
+               <traversal>
+                  <traverse ref="StaticZIPPostalCode[0]"/>
+               </traversal>
+               <?renderCache.bounds 161949 16775 0 0 0 0 0 0?>
+               <?renderCache.textRun 3 USA 0 146181 10637 0 0 0 "Myriad Pro" 0 0 9000 ISO-8859-1?></draw>
+            <draw name="StaticZIPPostalCode" x="130.118mm" y="23.812mm" w="57.132mm" h="5.918mm">
+               <ui>
+                  <textEdit>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <value>
+                  <text>83701</text>
+               </value>
+               <font size="9pt" typeface="Myriad Pro" baselineShift="0pt"/>
+               <para vAlign="middle" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" marginLeft="0pt" marginRight="0pt" hAlign="right"/>
+               <traversal>
+                  <traverse ref="StaticPhone[0]"/>
+               </traversal>
+               <?renderCache.bounds 161949 16775 0 0 0 0 0 0?>
+               <?renderCache.textRun 5 83701 0 138865 10637 0 0 0 "Myriad Pro" 0 0 9000 ISO-8859-1?></draw>
+            <draw name="StaticPhone" x="130.118mm" y="29.73mm" h="5.918mm" w="57.132mm">
+               <ui>
+                  <textEdit>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <value>
+                  <text>Phone: 1-800-555-1232</text>
+               </value>
+               <font size="9pt" typeface="Myriad Pro" baselineShift="0pt"/>
+               <para vAlign="middle" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" marginLeft="0pt" marginRight="0pt" hAlign="right"/>
+               <traversal>
+                  <traverse ref="StaticBallot[0]"/>
+               </traversal>
+               <?renderCache.bounds 161949 16775 0 0 0 0 0 0?>
+               <?renderCache.textRun 21 Phone: 1-800-555-1232 0 74876 10637 0 0 0 "Myriad Pro" 0 0 9000 ISO-8859-1?></draw>
+            <draw name="StaticFax" x="130.118mm" y="35.648mm" w="57.132mm" h="5.918mm">
+               <ui>
+                  <textEdit>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <value>
+                  <text>Fax: 1-800-555-1231</text>
+               </value>
+               <font size="9pt" typeface="Myriad Pro" baselineShift="0pt"/>
+               <para vAlign="middle" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" marginLeft="0pt" marginRight="0pt" hAlign="right"/>
+               <traversal>
+                  <traverse ref="StaticWebSite[0]"/>
+               </traversal>
+               <?renderCache.bounds 161949 16775 0 0 0 0 0 0?>
+               <?renderCache.textRun 19 Fax: 1-800-555-1231 0 86216 10637 0 0 0 "Myriad Pro" 0 0 9000 ISO-8859-1?></draw>
+            <draw name="StaticWebSite" x="130.118mm" y="41.565mm" w="57.132mm" h="5.918mm">
+               <ui>
+                  <textEdit>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <value>
+                  <text>www.mycompany.com</text>
+               </value>
+               <font size="9pt" typeface="Myriad Pro" baselineShift="0pt"/>
+               <para vAlign="middle" spaceAbove="0pt" spaceBelow="0pt" textIndent="0pt" marginLeft="0pt" marginRight="0pt" hAlign="right"/>
+               <traversal>
+                  <traverse ref="Body[0].EmployeeName[0]"/>
+               </traversal>
+               <?renderCache.bounds 161949 16775 0 0 0 0 0 0?>
+               <?renderCache.textRun 17 www.mycompany.com 0 74956 10637 0 0 0 "Myriad Pro" 0 0 9000 ISO-8859-1?></draw>
+            <?templateDesigner expand 0?></area>
+         <area x="6.35mm" y="66.675mm" name="Body">
+            <field name="EmployeeName" w="101.6mm" h="6.35mm">
+               <ui>
+                  <textEdit>
+                     <border>
+                        <?templateDesigner StyleID aped2?>
+                     </border>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="9pt" typeface="Myriad Pro"/>
+               <margin topInset="0mm" bottomInset="0mm" leftInset="0mm" rightInset="0mm"/>
+               <para vAlign="middle" marginLeft="0pt"/>
+               <caption reserve="25.4mm">
+                  <font size="9pt" typeface="Myriad Pro" weight="bold"/>
+                  <para vAlign="middle"/>
+                  <value>
+                     <text>Name:</text>
+                  </value>
+               </caption>
+               <traversal>
+                  <traverse ref="Street[0]"/>
+               </traversal>
+            </field>
+            <field name="Street" y="12.7mm" w="101.6mm" h="6.35mm">
+               <ui>
+                  <textEdit>
+                     <border>
+                        <?templateDesigner StyleID aped2?>
+                     </border>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="9pt" typeface="Myriad Pro"/>
+               <margin topInset="0mm" bottomInset="0mm" leftInset="0mm" rightInset="0mm"/>
+               <para marginLeft="0pt" vAlign="middle"/>
+               <caption reserve="25.4mm">
+                  <font size="9pt" typeface="Myriad Pro" weight="bold"/>
+                  <value>
+                     <text>Street:</text>
+                  </value>
+                  <para vAlign="middle"/>
+               </caption>
+               <traversal>
+                  <traverse ref="State[0]"/>
+               </traversal>
+            </field>
+            <field name="State" y="25.4mm" w="101.6mm" h="6.35mm">
+               <ui>
+                  <textEdit>
+                     <border>
+                        <?templateDesigner StyleID aped2?>
+                     </border>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="9pt" typeface="Myriad Pro"/>
+               <margin topInset="0mm" bottomInset="0mm" leftInset="0mm" rightInset="0mm"/>
+               <para marginLeft="0pt" vAlign="middle"/>
+               <caption reserve="25.4mm">
+                  <font size="9pt" typeface="Myriad Pro" weight="bold"/>
+                  <value>
+                     <text>State/Province:</text>
+                  </value>
+                  <para vAlign="middle"/>
+               </caption>
+               <traversal>
+                  <traverse ref="ZipCode[0]"/>
+               </traversal>
+            </field>
+            <field name="ZipCode" y="31.75mm" w="101.6mm" h="6.35mm">
+               <ui>
+                  <textEdit>
+                     <border>
+                        <?templateDesigner StyleID aped2?>
+                     </border>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="9pt" typeface="Myriad Pro"/>
+               <margin topInset="0mm" bottomInset="0mm" leftInset="0mm" rightInset="0mm"/>
+               <para marginLeft="0pt" vAlign="middle"/>
+               <caption reserve="25.4mm">
+                  <font size="9pt" typeface="Myriad Pro" weight="bold"/>
+                  <value>
+                     <text>Zip/Postal Code:</text>
+                  </value>
+                  <para vAlign="middle"/>
+               </caption>
+               <traversal>
+                  <traverse ref="HomePhone[0]"/>
+               </traversal>
+            </field>
+            <field name="HomePhone" y="44.45mm" w="101.6mm" h="6.35mm">
+               <ui>
+                  <textEdit>
+                     <border>
+                        <?templateDesigner StyleID aped2?>
+                     </border>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="9pt" typeface="Myriad Pro"/>
+               <margin topInset="0mm" bottomInset="0mm" leftInset="0mm" rightInset="0mm"/>
+               <para vAlign="middle" marginLeft="0pt"/>
+               <caption reserve="25.4mm">
+                  <font size="9pt" typeface="Myriad Pro" weight="bold"/>
+                  <para vAlign="middle"/>
+                  <value>
+                     <text>Home Phone:</text>
+                  </value>
+               </caption>
+               <traversal>
+                  <traverse ref="CellPhone[0]"/>
+               </traversal>
+            </field>
+            <field name="CellPhone" y="50.8mm" w="101.6mm" h="6.35mm">
+               <ui>
+                  <textEdit>
+                     <border>
+                        <?templateDesigner StyleID aped2?>
+                     </border>
+                     <margin/>
+                  </textEdit>
+               </ui>
+               <font size="9pt" typeface="Myriad Pro"/>
+               <margin topInset="0mm" bottomInset="0mm" leftInset="0mm" rightInset="0mm"/>
+               <para vAlign="middle" marginLeft="0pt"/>
+               <caption reserve="25.4mm">
+                  <font size="9pt" typeface="Myriad Pro" weight="bold"/>
+                  <para vAlign="middle"/>
+                  <value>
+                     <text>Cell phone:</text>
+                  </value>
+               </caption>
+               <traversal>
+                  <traverse ref="City[0]"/>
+               </traversal>
+            </field>
+            <?templateDesigner expand 0?></area>
+         <traversal>
+            <traverse operation="first" ref="PrintButton1[0]"/>
+         </traversal>
+         <field name="PrintButton1" x="174.625mm" w="28.575mm" h="6mm">
+            <?templateDesigner isPrintObject true?>
+            <ui>
+               <button/>
+            </ui>
+            <font typeface="Myriad Pro"/>
+            <caption>
+               <value>
+                  <text>Print Form</text>
+               </value>
+               <para hAlign="center" vAlign="middle"/>
+               <font typeface="Myriad Pro"/>
+            </caption>
+            <border hand="right">
+               <?templateDesigner StyleID apbx2?>
+               <edge stroke="raised"/>
+               <fill>
+                  <color value="212,208,200"/>
+               </fill>
+            </border>
+            <bind match="none"/>
+            <event name="event__click" activity="click">
+               <script contentType="application/x-javascript">xfa.host.print(1, "0", (xfa.host.numPages -1).toString(), 0, 0, 0, 0, 0);</script>
+            </event>
+            <traversal>
+               <traverse ref="Header[0].StaticCompanyName[0]"/>
+            </traversal>
+         </field>
+         <?templateDesigner expand 1?>
+         <field name="City" y="85.725mm" w="101.6mm" h="6.35mm" x="6.35mm">
+            <ui>
+               <textEdit>
+                  <border>
+                     <?templateDesigner StyleID aped2?>
+                  </border>
+                  <margin/>
+               </textEdit>
+            </ui>
+            <font size="9pt" typeface="Myriad Pro"/>
+            <margin topInset="0mm" bottomInset="0mm" leftInset="0mm" rightInset="0mm"/>
+            <para marginLeft="0pt" vAlign="middle"/>
+            <caption reserve="25.4mm">
+               <font size="9pt" typeface="Myriad Pro" weight="bold"/>
+               <value>
+                  <text>City:</text>
+               </value>
+               <para vAlign="middle"/>
+            </caption>
+         </field>
+      </subform>
+      <desc>
+         <text name="title">Contact Information</text>
+         <text name="description">Adobe LiveCycle Designer Template</text>
+         <text name="version">8.2.1.3158.1.475346.466429</text>
+      </desc>
+      <?templateDesigner expand 1?>
+      <?renderCache.subset "Myriad Pro" 0 0 ISO-8859-1 4 152 38 0001000D000E000F0011001200130014001600180019001B0022002300240027002A002E003100340035003600420044004500460049004A004E004F0050005100530054005500580059005A ,-.0123578:ABCFIMPSTUacdehimnoprstwxy?>
+      <?renderCache.subset "Myriad Pro" 1 0 ISO-8859-1 4 116 29 00010010001B0022002400270029002A002F00310034003B004200440045004600470049004A004D004E004F005000510053005400550057005A /:ACFHINPSZacdefhilmnoprstvy?></subform>
+   <?templateDesigner DefaultIncludeXSLT 0?>
+   <?templateDesigner Grid show:0, snap:1, units:0, color:ff8080, origin:(0,0), interval:(125000,125000)?>
+   <?originalXFAVersion http://www.xfa.org/schema/xfa-template/2.8/?>
+   <?templateDesigner DefaultLanguage FormCalc?>
+   <?templateDesigner DefaultRunAt client?>
+   <?acrobat JavaScript strictScoping?>
+   <?PDFPrintOptions embedViewerPrefs 0?>
+   <?PDFPrintOptions embedPrintOnFormOpen 0?>
+   <?PDFPrintOptions duplexMode 0?>
+   <?templateDesigner DefaultPreviewType interactive?>
+   <?templateDesigner DefaultPreviewPagination simplex?>
+   <?templateDesigner XDPPreviewFormat 19?>
+   <?templateDesigner FormTargetVersion 28?>
+   <?templateDesigner SaveTaggedPDF 0?>
+   <?templateDesigner SavePDFWithEmbeddedFonts 0?>
+   <?templateDesigner SavePDFWithLog 0?>
+   <?templateDesigner Zoom 85?>
+   <?templateDesigner Rulers horizontal:1, vertical:1, guidelines:1, crosshairs:0?></template>
+<config xmlns="http://www.xfa.org/schema/xci/2.8/">
+   <agent name="designer">
+      <destination>pdf</destination>
+      <pdf>
+         <!--  [0..n]  -->
+         <fontInfo/>
+      </pdf>
+   </agent>
+   <present>
+      <!--  [0..n]  -->
+      <pdf>
+         <!--  [0..n]  -->
+         <tagged>0</tagged>
+         <fontInfo>
+            <embed>0</embed>
+         </fontInfo>
+         <version>1.7</version>
+         <adobeExtensionLevel>3</adobeExtensionLevel>
+      </pdf>
+      <common/>
+      <cache>
+         <macroCache/>
+      </cache>
+      <xdp>
+         <packets>*</packets>
+      </xdp>
+   </present>
+</config>
+<xfa:datasets xmlns:xfa="http://www.xfa.org/schema/xfa-data/1.0/">
+   <xfa:data xfa:dataNode="dataGroup"/>
+</xfa:datasets>
+<localeSet xmlns="http://www.xfa.org/schema/xfa-locale-set/2.7/">
+   <locale name="en_CA" desc="English (Canada)">
+      <calendarSymbols name="gregorian">
+         <monthNames>
+            <month>January</month>
+            <month>February</month>
+            <month>March</month>
+            <month>April</month>
+            <month>May</month>
+            <month>June</month>
+            <month>July</month>
+            <month>August</month>
+            <month>September</month>
+            <month>October</month>
+            <month>November</month>
+            <month>December</month>
+         </monthNames>
+         <monthNames abbr="1">
+            <month>Jan</month>
+            <month>Feb</month>
+            <month>Mar</month>
+            <month>Apr</month>
+            <month>May</month>
+            <month>Jun</month>
+            <month>Jul</month>
+            <month>Aug</month>
+            <month>Sep</month>
+            <month>Oct</month>
+            <month>Nov</month>
+            <month>Dec</month>
+         </monthNames>
+         <dayNames>
+            <day>Sunday</day>
+            <day>Monday</day>
+            <day>Tuesday</day>
+            <day>Wednesday</day>
+            <day>Thursday</day>
+            <day>Friday</day>
+            <day>Saturday</day>
+         </dayNames>
+         <dayNames abbr="1">
+            <day>Sun</day>
+            <day>Mon</day>
+            <day>Tue</day>
+            <day>Wed</day>
+            <day>Thu</day>
+            <day>Fri</day>
+            <day>Sat</day>
+         </dayNames>
+         <meridiemNames>
+            <meridiem>AM</meridiem>
+            <meridiem>PM</meridiem>
+         </meridiemNames>
+         <eraNames>
+            <era>BC</era>
+            <era>AD</era>
+         </eraNames>
+      </calendarSymbols>
+      <datePatterns>
+         <datePattern name="full">EEEE, MMMM D, YYYY</datePattern>
+         <datePattern name="long">MMMM D, YYYY</datePattern>
+         <datePattern name="med">D-MMM-YYYY</datePattern>
+         <datePattern name="short">DD/MM/YY</datePattern>
+      </datePatterns>
+      <timePatterns>
+         <timePattern name="full">h:MM:SS A Z</timePattern>
+         <timePattern name="long">h:MM:SS A Z</timePattern>
+         <timePattern name="med">h:MM:SS A</timePattern>
+         <timePattern name="short">h:MM A</timePattern>
+      </timePatterns>
+      <dateTimeSymbols>GyMdkHmsSEDFwWahKzZ</dateTimeSymbols>
+      <numberPatterns>
+         <numberPattern name="numeric">z,zz9.zzz</numberPattern>
+         <numberPattern name="currency">$z,zz9.99</numberPattern>
+         <numberPattern name="percent">z,zz9%</numberPattern>
+      </numberPatterns>
+      <numberSymbols>
+         <numberSymbol name="decimal">.</numberSymbol>
+         <numberSymbol name="grouping">,</numberSymbol>
+         <numberSymbol name="percent">%</numberSymbol>
+         <numberSymbol name="minus">-</numberSymbol>
+         <numberSymbol name="zero">0</numberSymbol>
+      </numberSymbols>
+      <currencySymbols>
+         <currencySymbol name="symbol">$</currencySymbol>
+         <currencySymbol name="isoname">CAD</currencySymbol>
+         <currencySymbol name="decimal">.</currencySymbol>
+      </currencySymbols>
+   </locale>
+   <locale name="en_US" desc="English (United States)">
+      <calendarSymbols name="gregorian">
+         <monthNames>
+            <month>January</month>
+            <month>February</month>
+            <month>March</month>
+            <month>April</month>
+            <month>May</month>
+            <month>June</month>
+            <month>July</month>
+            <month>August</month>
+            <month>September</month>
+            <month>October</month>
+            <month>November</month>
+            <month>December</month>
+         </monthNames>
+         <monthNames abbr="1">
+            <month>Jan</month>
+            <month>Feb</month>
+            <month>Mar</month>
+            <month>Apr</month>
+            <month>May</month>
+            <month>Jun</month>
+            <month>Jul</month>
+            <month>Aug</month>
+            <month>Sep</month>
+            <month>Oct</month>
+            <month>Nov</month>
+            <month>Dec</month>
+         </monthNames>
+         <dayNames>
+            <day>Sunday</day>
+            <day>Monday</day>
+            <day>Tuesday</day>
+            <day>Wednesday</day>
+            <day>Thursday</day>
+            <day>Friday</day>
+            <day>Saturday</day>
+         </dayNames>
+         <dayNames abbr="1">
+            <day>Sun</day>
+            <day>Mon</day>
+            <day>Tue</day>
+            <day>Wed</day>
+            <day>Thu</day>
+            <day>Fri</day>
+            <day>Sat</day>
+         </dayNames>
+         <meridiemNames>
+            <meridiem>AM</meridiem>
+            <meridiem>PM</meridiem>
+         </meridiemNames>
+         <eraNames>
+            <era>BC</era>
+            <era>AD</era>
+         </eraNames>
+      </calendarSymbols>
+      <datePatterns>
+         <datePattern name="full">EEEE, MMMM D, YYYY</datePattern>
+         <datePattern name="long">MMMM D, YYYY</datePattern>
+         <datePattern name="med">MMM D, YYYY</datePattern>
+         <datePattern name="short">M/D/YY</datePattern>
+      </datePatterns>
+      <timePatterns>
+         <timePattern name="full">h:MM:SS A Z</timePattern>
+         <timePattern name="long">h:MM:SS A Z</timePattern>
+         <timePattern name="med">h:MM:SS A</timePattern>
+         <timePattern name="short">h:MM A</timePattern>
+      </timePatterns>
+      <dateTimeSymbols>GyMdkHmsSEDFwWahKzZ</dateTimeSymbols>
+      <numberPatterns>
+         <numberPattern name="numeric">z,zz9.zzz</numberPattern>
+         <numberPattern name="currency">$z,zz9.99|($z,zz9.99)</numberPattern>
+         <numberPattern name="percent">z,zz9%</numberPattern>
+      </numberPatterns>
+      <numberSymbols>
+         <numberSymbol name="decimal">.</numberSymbol>
+         <numberSymbol name="grouping">,</numberSymbol>
+         <numberSymbol name="percent">%</numberSymbol>
+         <numberSymbol name="minus">-</numberSymbol>
+         <numberSymbol name="zero">0</numberSymbol>
+      </numberSymbols>
+      <currencySymbols>
+         <currencySymbol name="symbol">$</currencySymbol>
+         <currencySymbol name="isoname">USD</currencySymbol>
+         <currencySymbol name="decimal">.</currencySymbol>
+      </currencySymbols>
+   </locale>
+</localeSet>
+<form xmlns="http://www.xfa.org/schema/xfa-form/2.8/"/>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 4.2.1-c041 52.337767, 2008/04/13-15:41:00        ">
+   <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description xmlns:xmp="http://ns.adobe.com/xap/1.0/" rdf:about="">
+         <xmp:MetadataDate>2009-06-17T14:29:22Z</xmp:MetadataDate>
+         <xmp:CreatorTool>Adobe LiveCycle Designer ES 8.2</xmp:CreatorTool>
+         <xmp:ModifyDate>2009-06-16T10:54:16-07:00</xmp:ModifyDate>
+         <xmp:CreateDate>2009-06-16T10:54:16-07:00</xmp:CreateDate>
+      </rdf:Description>
+      <rdf:Description xmlns:pdf="http://ns.adobe.com/pdf/1.3/" rdf:about="">
+         <pdf:Producer>Adobe LiveCycle Designer ES 8.2</pdf:Producer>
+      </rdf:Description>
+      <rdf:Description xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/" rdf:about="">
+         <xmpMM:DocumentID>uuid:44c36f89-39eb-4915-a554-155211525ad7</xmpMM:DocumentID>
+         <xmpMM:InstanceID>uuid:86259d00-f8f1-4263-b118-05f714f3817b</xmpMM:InstanceID>
+      </rdf:Description>
+      <rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:about="">
+         <dc:format>application/pdf</dc:format>
+         <dc:description>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Adobe LiveCycle Designer Template</rdf:li>
+            </rdf:Alt>
+         </dc:description>
+         <dc:title>
+            <rdf:Alt>
+               <rdf:li xml:lang="x-default">Contact Information</rdf:li>
+            </rdf:Alt>
+         </dc:title>
+      </rdf:Description>
+      <rdf:Description xmlns:desc="http://ns.adobe.com/xfa/promoted-desc/" rdf:about="">
+         <desc:version rdf:parseType="Resource">
+            <rdf:value>8.2.1.3158.1.475346.466429</rdf:value>
+            <desc:ref>/template/subform[1]</desc:ref>
+         </desc:version>
+      </rdf:Description>
+   </rdf:RDF>
+</x:xmpmeta>
+<xfdf xmlns="http://ns.adobe.com/xfdf/" xml:space="preserve">
+   <annots/>
+</xfdf></xdp:xdp>

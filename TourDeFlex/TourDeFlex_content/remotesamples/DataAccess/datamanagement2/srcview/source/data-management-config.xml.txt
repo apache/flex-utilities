@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<service id="data-service"
+    class="flex.data.DataService">
+
+    <adapters>
+        <adapter-definition id="actionscript" class="flex.data.adapters.ASObjectAdapter" default="true"/>
+        <adapter-definition id="java-dao" class="flex.data.adapters.JavaAdapter"/>
+    </adapters>
+
+    <default-channels>
+        <channel ref="my-rtmp"/>
+    </default-channels>
+
+    <destination id="inventory">
+
+        <adapter ref="java-dao" />
+
+        <properties>
+            <source>flex.samples.product.ProductAssembler</source>
+            <scope>application</scope>
+
+            <metadata>
+                <identity property="productId"/>
+            </metadata>
+
+            <network>
+                <session-timeout>20</session-timeout>
+                <paging enabled="false" pageSize="10" />
+                <throttle-inbound policy="ERROR" max-frequency="500"/>
+                <throttle-outbound policy="REPLACE" max-frequency="500"/>
+            </network>
+        </properties>
+
+    </destination>
+	
+    <destination id="account">
+        <adapter ref="java-dao" />
+        <properties>
+            <source>com.salesbuilder.assembler.AccountAssembler</source>
+            <scope>application</scope>
+            <metadata>
+                <identity property="accountId" undefined-value="0"/>
+                <many-to-one property="salesRep" destination="sales-rep" lazy="true"/>
+                <many-to-one property="industry" destination="industry" lazy="true"/>
+                <many-to-one property="category" destination="account-category" lazy="true"/>
+                <many-to-one property="state" destination="state" lazy="true"/>
+            </metadata>
+            <network>
+                <session-timeout>20</session-timeout>
+                <paging enabled="false" pageSize="10" />
+                <throttle-inbound policy="ERROR" max-frequency="500"/>
+                <throttle-outbound policy="REPLACE" max-frequency="500"/>
+            </network>
+        </properties>
+    </destination>
+
+    <destination id="contact">
+        <adapter ref="java-dao" />
+        <properties>
+            <source>com.salesbuilder.assembler.ContactAssembler</source>
+            <scope>application</scope>
+            <metadata>
+                <identity property="contactId" undefined-value="0"/>
+                <many-to-one property="account" destination="account" lazy="true"/>
+                <many-to-one property="manager" destination="contact" lazy="true"/>
+                <many-to-one property="salesRep" destination="sales-rep" lazy="true"/>
+            </metadata>
+            <network>
+                <session-timeout>20</session-timeout>
+                <paging enabled="false" pageSize="10" />
+                <throttle-inbound policy="ERROR" max-frequency="500"/>
+                <throttle-outbound policy="REPLACE" max-frequency="500"/>
+            </network>
+        </properties>
+    </destination>
+
+    <destination id="opportunity">
+        <adapter ref="java-dao" />
+        <properties>
+            <source>com.salesbuilder.assembler.OpportunityAssembler</source>
+            <scope>application</scope>
+            <metadata>
+                <identity property="opportunityId" undefined-value="0"/>
+                <many-to-one property="account" destination="account" lazy="true"/>
+                <many-to-one property="salesRep" destination="sales-rep" lazy="true"/>
+            </metadata>
+            <network>
+                <session-timeout>20</session-timeout>
+                <paging enabled="false" pageSize="10" />
+                <throttle-inbound policy="ERROR" max-frequency="500"/>
+                <throttle-outbound policy="REPLACE" max-frequency="500"/>
+            </network>
+        </properties>
+    </destination>
+
+    <destination id="industry">
+        <adapter ref="java-dao" />
+        <properties>
+            <source>com.salesbuilder.assembler.IndustryAssembler</source>
+            <scope>application</scope>
+            <metadata>
+                <identity property="industryId" undefined-value="0"/>
+            </metadata>
+            <network>
+                <session-timeout>20</session-timeout>
+                <paging enabled="false" pageSize="10" />
+                <throttle-inbound policy="ERROR" max-frequency="500"/>
+                <throttle-outbound policy="REPLACE" max-frequency="500"/>
+            </network>
+        </properties>
+    </destination>
+
+    <destination id="sales-rep">
+        <adapter ref="java-dao" />
+        <properties>
+            <source>com.salesbuilder.assembler.SalesRepAssembler</source>
+            <scope>application</scope>
+            <metadata>
+                <identity property="salesRepId" undefined-value="0"/>
+            </metadata>
+            <network>
+                <session-timeout>20</session-timeout>
+                <paging enabled="false" pageSize="10" />
+                <throttle-inbound policy="ERROR" max-frequency="500"/>
+                <throttle-outbound policy="REPLACE" max-frequency="500"/>
+            </network>
+        </properties>
+    </destination>
+
+    <destination id="account-category">
+        <adapter ref="java-dao" />
+        <properties>
+            <source>com.salesbuilder.assembler.AccountCategoryAssembler</source>
+            <scope>application</scope>
+            <metadata>
+                <identity property="categoryId" undefined-value="0"/>
+            </metadata>
+            <network>
+                <session-timeout>20</session-timeout>
+                <paging enabled="false" pageSize="10" />
+                <throttle-inbound policy="ERROR" max-frequency="500"/>
+                <throttle-outbound policy="REPLACE" max-frequency="500"/>
+            </network>
+        </properties>
+    </destination>
+
+    <destination id="state">
+        <adapter ref="java-dao" />
+        <properties>
+            <source>com.salesbuilder.assembler.StateAssembler</source>
+            <scope>application</scope>
+            <metadata>
+                <identity property="stateId"/>
+            </metadata>
+            <network>
+                <session-timeout>20</session-timeout>
+                <paging enabled="false" pageSize="10" />
+                <throttle-inbound policy="ERROR" max-frequency="500"/>
+                <throttle-outbound policy="REPLACE" max-frequency="500"/>
+            </network>
+        </properties>
+    </destination>
+	
+</service>

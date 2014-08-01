@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   applicationComplete="srv.send()" xmlns:local="*" xmlns:layouts="layouts.*"
+			   viewSourceURL="srcview/index.html" backgroundColor="0x323232" color="0xFFFFFF">
+	
+	<fx:Style>
+
+		@namespace s "library://ns.adobe.com/flex/spark";
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		
+		
+		s|Application {
+			font-family: main;
+			font-size: 14;
+		}
+		
+	</fx:Style>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var items:ArrayCollection;
+			
+			[Bindable]
+			private var filteredItems:ArrayCollection;
+			
+			[Bindable]
+			private var _maxPrice:Number = 1000;
+			
+			[Bindable]
+			private var _camera:Boolean = false;
+			
+			[Bindable]
+			private var _video:Boolean = false;
+			
+			[Bindable]
+			private var _triband:Boolean = false;
+			
+			
+			private function resultHandler(event:ResultEvent):void
+			{
+				items = event.result.catalog.product as ArrayCollection;
+				filteredItems = new ArrayCollection(items.source);
+				filteredItems.filterFunction = filter;
+			}
+			
+			private function selectionChange():void
+			{
+				filteredItems.refresh();
+				filterLayout.filter();
+			}
+			
+			private function filter(item:Object):Boolean
+			{
+				return	(item.price <= _maxPrice) &&
+					(!_camera || item.camera) &&
+					(!_video || item.video) &&
+					(!_triband || item.triband);
+			}			
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:HTTPService id="srv" url="data/catalog.xml" result="resultHandler(event)"/>
+	</fx:Declarations>
+	
+	<s:HGroup verticalAlign="middle" paddingLeft="8" left="50" top="5">
+		<s:Label text="Max Price:"/>
+		<s:HSlider id="priceSlider" minimum="0" maximum="1000" snapInterval="100" value="@{_maxPrice}" change="selectionChange()"/>
+		<mx:Spacer width="20"/>
+		<s:CheckBox label="Camera" selected="@{_camera}" change="selectionChange()"/>
+		<s:CheckBox label="Video" selected="@{_video}" change="selectionChange()"/>
+		<s:CheckBox label="Triband" selected="@{_triband}" change="selectionChange()"/>
+	</s:HGroup>
+	
+	<s:DataGroup dataProvider="{items}" itemRenderer="renderers.PhoneRenderer" top="50" left="0" right="0" horizontalCenter="0">
+		<s:layout>
+			<layouts:FilteredTileLayout id="filterLayout" filteredItems="{filteredItems}" />
+		</s:layout>
+	</s:DataGroup>
+	
+</s:Application>

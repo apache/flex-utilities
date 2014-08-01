@@ -1,0 +1,72 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>TabPropertyEditor.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inspectors</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">bxf</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inspectors</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DynamicPropertyEditorBase</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptOperator">*</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TabStopFormat</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">tlf_internal</span>;
+    <span class="ActionScriptReserved">use</span> <span class="ActionScriptReserved">namespace</span> <span class="ActionScriptDefault_Text">tlf_internal</span>;
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">TabPropertyEditor</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">DynamicPropertyEditorBase</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">TabPropertyEditor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">recipe</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptOperator">=</span> 
+                <span class="ActionScriptReserved">&lt;recipe&gt;
+                    &lt;row&gt;
+                        &lt;editor type="checkbox" label="$$$/stage/TextEditing/Label/showRuler=Show Ruler" labelSide="right"&gt;
+                            &lt;property name="rulervisible"/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/tabPosition=Position:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TabStopFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">positionProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>}
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TabStopFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">positionProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>}
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TabStopFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">positionProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/tabType=Tab Type:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TabStopFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">alignmentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Start" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TabAlignment</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">START</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Center" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TabAlignment</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CENTER</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="End" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TabAlignment</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">END</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Align" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TabAlignment</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DECIMAL</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="string" label="$$$/stage/TextEditing/Label/tabAlign=Align to:" width="50"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TabStopFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">decimalAlignmentTokenProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">name</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                &lt;/recipe&gt;</span>;
+
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">recipe</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>
