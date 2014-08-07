@@ -209,7 +209,11 @@ code for the these subcomponents is subject to the terms and
 conditions of the following licenses. 
 
 The Open-Sans font is available under Apache License 2.0. For details
-see TourDeFlex3/src/assets.
+see TourDeFlex3/src/effects/assets.
+
+The ping sound effect (ping.mp3) in TourDeFlex3/src/effects/assets is licensed
+under Creative Commons 3.0. The orignal file can be found here:
+http://www.freesound.org/people/cameronmusic/sounds/138420/
 
 
 
