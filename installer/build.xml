@@ -25,6 +25,39 @@
 
     <!--location of property file -->
     <property file="${basedir}/local.properties" />
+	<condition property="CERT_PASSWORD_FILE" value="${CERT_PASSWORD_FILE_WIN}" >
+		<and>
+			<not>
+				<available file="${CERT_PASSWORD_FILE}" />
+			</not>
+			<available file="${CERT_PASSWORD_FILE_WIN}" />
+		</and>
+	</condition>
+	<condition property="CERT_PASSWORD_FILE" value="${CERT_PASSWORD_FILE_MAC}" >
+		<and>
+			<not>
+				<available file="${CERT_PASSWORD_FILE}" />
+			</not>
+			<available file="${CERT_PASSWORD_FILE_MAC}" />
+		</and>
+	</condition>
+	<condition property="RELEASE_KEYSTORE_FILE" value="${RELEASE_KEYSTORE_FILE_WIN}" >
+		<and>
+			<not>
+				<available file="${RELEASE_KEYSTORE_FILE}" />
+			</not>
+			<available file="${RELEASE_KEYSTORE_FILE_WIN}" />
+		</and>
+	</condition>
+	<condition property="RELEASE_KEYSTORE_FILE" value="${RELEASE_KEYSTORE_FILE_MAC}" >
+		<and>
+			<not>
+				<available file="${RELEASE_KEYSTORE_FILE}" />
+			</not>
+			<available file="${RELEASE_KEYSTORE_FILE_MAC}" />
+		</and>
+	</condition>
+
     <property file="${basedir}/build.properties" description="Properties for Apache Flex SDK Installer project" />
     <property file="${basedir}/build.number"/>
 	<property file="${CERT_PASSWORD_FILE}"/>
@@ -93,7 +126,7 @@
     <condition property="AIR_HOME" value="${AIR_HOME_LINUX}">
         <os family="unix"/>
     </condition>
-
+	
     <condition property="cert_pwd_not_found" >
 		<not>
        		<available file="${CERT_PASSWORD_FILE}"/>
@@ -566,6 +599,18 @@
 		</exec>
 	</target>
 
+	<target name="sign_dmg" description="sign dmg when on win" >
+		<checksum file="${RELEASE_DIR}/${binary.kit}.dmg" algorithm="md5" forceOverwrite="yes" />
+
+		<exec executable="gpg">
+			<arg value="--armor" />
+			<arg value="--output" />
+			<arg value="${RELEASE_DIR}/${binary.kit}.dmg.asc" />
+			<arg value="--detach-sig" />
+			<arg value="${RELEASE_DIR}/${binary.kit}.dmg" />
+		</exec>
+	</target>
+	
     <target name="debug" >
         <copy file="${SOURCE_DIR}/${APP_NAME}-app.xml" todir="${BUILD_DIR}" />
         <mkdir dir="${BUILD_DIR}/installer" />
