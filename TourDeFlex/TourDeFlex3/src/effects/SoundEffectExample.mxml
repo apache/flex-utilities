@@ -19,7 +19,7 @@
 <!-- Simple example to demonstrate the SoundEffect effect. -->
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
 
-    <mx:SoundEffect id="mySounds" source="@Embed(source='assets/jazz.mp3')"/>
+    <mx:SoundEffect id="mySounds" source="@Embed(source='./assets/ping.mp3')"/>
 
     <mx:Panel title="Sound Effect Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
