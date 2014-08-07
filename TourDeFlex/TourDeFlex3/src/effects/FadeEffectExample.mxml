@@ -21,7 +21,7 @@
 	
 	<mx:Style>
 	     @font-face {
-	        src:url("../assets/OpenSans-Regular.ttf");
+	        src:url("./assets/OpenSans-Regular.ttf");
 	        fontFamily: OpenSans;
 			embedAsCFF: false;
 	     }    
