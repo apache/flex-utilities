@@ -1,0 +1,217 @@
+<?xml version="1.0" ?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<project name="TourDeFlex" default="compile" basedir=".">
+
+    <property file="${basedir}/env.properties"/>
+    <property environment="env"/>
+    <property file="${basedir}/local.properties"/>
+    <property file="${basedir}/build.properties"/>
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+    <property name="version" value="1.0" />
+	
+    <!-- additional tasks - mxmlc tag -->
+    <path id="flexTasks.path">
+        <fileset dir="${FLEX_HOME}">
+            <include name="lib/flexTasks.jar" />
+            <include name="ant/lib/flexTasks.jar" />
+        </fileset>
+    </path>
+    <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
+   
+    <macrodef name="compile-mxml">
+        <attribute name="example"/>
+        
+        <sequential>
+   			<mxmlc file="${basedir}/src/@{example}.mxml"
+            	output="${basedir}/src/@{example}.swf" fork="true" failonerror="true">
+				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			</mxmlc>
+		</sequential>
+	</macrodef>	
+		
+	<target name="compile" depends="clean">
+		<compile-mxml example="/charts/BubbleChartExample"/>
+		<compile-mxml example="/charts/CandlestickChartExample"/>
+		<compile-mxml example="/charts/Column_BarChartExample"/>
+		<compile-mxml example="/charts/DateTimeAxisExample"/>
+		<compile-mxml example="/charts/GridLinesExample"/>
+		<compile-mxml example="/charts/HLOCChartExample"/>
+		<compile-mxml example="/charts/Line_AreaChartExample"/>
+		<compile-mxml example="/charts/LogAxisExample"/>
+		<compile-mxml example="/charts/PieChartExample"/>
+		<compile-mxml example="/charts/PlotChartExample"/>
+		<compile-mxml example="/charts/SeriesInterpolateExample"/>
+		<compile-mxml example="/charts/SeriesSlideExample"/>
+		<compile-mxml example="/charts/SeriesZoomExample"/>
+		<compile-mxml example="/containers/AccordionExample"/>
+		<compile-mxml example="/containers/DividedBoxExample"/>
+		<compile-mxml example="/containers/FormExample"/>
+		<compile-mxml example="/containers/GridLayoutExample"/>
+		<compile-mxml example="/containers/HBoxExample"/>
+		<compile-mxml example="/containers/HDividedBoxExample"/>
+		<compile-mxml example="/containers/SimpleApplicationControlBarExample"/>
+		<compile-mxml example="/containers/SimpleBoxExample"/>
+		<compile-mxml example="/containers/SimpleCanvasExample"/>
+		<compile-mxml example="/containers/SimpleControlBarExample"/>
+		<compile-mxml example="/containers/SimplePanelExample"/>
+		<compile-mxml example="/containers/SimpleTitleWindowExample"/>
+		<compile-mxml example="/containers/TabNavigatorExample"/>
+		<compile-mxml example="/containers/TileLayoutExample"/>
+		<compile-mxml example="/containers/TitleWindowApp"/>
+		<compile-mxml example="/containers/VBoxExample"/>
+		<compile-mxml example="/containers/VDividedBoxExample"/>
+		<compile-mxml example="/containers/ViewStackExample"/>
+		<compile-mxml example="/controls/AdvancedDataGridExample"/>
+		<compile-mxml example="/controls/ButtonBarExample"/>
+		<compile-mxml example="/controls/ButtonExample"/>
+		<compile-mxml example="/controls/CheckBoxExample"/>
+		<compile-mxml example="/controls/ColorPickerExample"/>
+		<compile-mxml example="/controls/DateChooserExample"/>
+		<compile-mxml example="/controls/DateFieldExample"/>
+		<compile-mxml example="/controls/HorizontalListExample"/>
+		<compile-mxml example="/controls/HScrollBarExample"/>
+		<compile-mxml example="/controls/LabelExample"/>
+		<compile-mxml example="/controls/LinkBarExample"/>
+		<compile-mxml example="/controls/LinkButtonExample"/>
+		<compile-mxml example="/controls/Local"/>
+		<compile-mxml example="/controls/MenuBarExample"/>
+		<compile-mxml example="/controls/NumericStepperExample"/>
+		<compile-mxml example="/controls/OLAPDataGridExample"/>
+		<compile-mxml example="/controls/PopUpButtonExample"/>
+		<compile-mxml example="/controls/PopUpButtonMenuExample"/>
+		<compile-mxml example="/controls/RadioButtonExample"/>
+		<compile-mxml example="/controls/RadioButtonGroupExample"/>
+		<compile-mxml example="/controls/RichTextEditorExample"/>
+		<compile-mxml example="/controls/SimpleAlert"/>
+		<compile-mxml example="/controls/SimpleComboBox"/>
+		<compile-mxml example="/controls/SimpleDataGrid"/>
+		<compile-mxml example="/controls/SimpleHRule"/>
+		<compile-mxml example="/controls/SimpleImage"/>
+		<compile-mxml example="/controls/SimpleImageHSlider"/>
+		<compile-mxml example="/controls/SimpleImageVSlider"/>
+		<compile-mxml example="/controls/SimpleList"/>
+		<compile-mxml example="/controls/SimpleLoader"/>
+		<compile-mxml example="/controls/SimpleMenuExample"/>
+		<compile-mxml example="/controls/SimpleProgressBar"/>
+		<compile-mxml example="/controls/SimpleVRule"/>
+		<compile-mxml example="/controls/SpacerExample"/>
+		<compile-mxml example="/controls/TabBarExample"/>
+		<compile-mxml example="/controls/TextAreaExample"/>
+		<compile-mxml example="/controls/TextExample"/>
+		<compile-mxml example="/controls/TextInputExample"/>
+		<compile-mxml example="/controls/TileListExample"/>
+		<compile-mxml example="/controls/ToggleButtonBarExample"/>
+		<compile-mxml example="/controls/TreeExample"/>
+		<compile-mxml example="/controls/VideoDisplayExample"/>
+		<compile-mxml example="/controls/VScrollBarExample"/>
+		<compile-mxml example="/core/RepeaterExample"/>
+		<compile-mxml example="/core/SimpleApplicationExample"/>
+		<compile-mxml example="/effects/AddItemActionEffectExample"/>
+		<compile-mxml example="/effects/AnimatePropertyEffectExample"/>
+		<compile-mxml example="/effects/BlurEffectExample"/>
+		<compile-mxml example="/effects/CompositeEffectExample"/>
+		<compile-mxml example="/effects/DefaultListEffectExample"/>
+		<compile-mxml example="/effects/DefaultTileListEffectExample"/>
+		<compile-mxml example="/effects/DissolveEffectExample"/>
+		<compile-mxml example="/effects/FadeEffectExample"/>
+		<compile-mxml example="/effects/GlowEffectExample"/>
+		<compile-mxml example="/effects/IrisEffectExample"/>
+		<compile-mxml example="/effects/MoveEffectExample"/>
+		<compile-mxml example="/effects/ParallelEffectExample"/>
+		<compile-mxml example="/effects/PauseEffectExample"/>
+		<compile-mxml example="/effects/ResizeEffectExample"/>
+		<compile-mxml example="/effects/RotateEffectExample"/>
+		<compile-mxml example="/effects/SequenceEffectExample"/>
+		<compile-mxml example="/effects/SimpleEffectExample"/>
+		<compile-mxml example="/effects/SimpleTweenEffectExample"/>
+		<compile-mxml example="/effects/SoundEffectExample"/>
+		<compile-mxml example="/effects/WipeDownExample"/>
+		<compile-mxml example="/effects/WipeLeftExample"/>
+		<compile-mxml example="/effects/WipeRightExample"/>
+		<compile-mxml example="/effects/WipeUpExample"/>
+		<compile-mxml example="/effects/ZoomEffectExample"/>
+		<compile-mxml example="/explorer"/>
+		<compile-mxml example="/formatters/CurrencyFormatterExample"/>
+		<compile-mxml example="/formatters/DateFormatterExample"/>
+		<compile-mxml example="/formatters/NumberFormatterExample"/>
+		<compile-mxml example="/formatters/PhoneFormatterExample"/>
+		<compile-mxml example="/formatters/SimpleFormatterExample"/>
+		<compile-mxml example="/formatters/SwitchSymbolFormatterExample"/>
+		<compile-mxml example="/formatters/ZipCodeFormatterExample"/>
+		<compile-mxml example="/loaderPanel"/>
+		<compile-mxml example="/printing/AdvancedPrintDataGridExample"/>
+		<compile-mxml example="/printing/FormPrintFooter"/>
+		<compile-mxml example="/printing/FormPrintHeader"/>
+		<compile-mxml example="/printing/FormPrintView"/>
+		<compile-mxml example="/printing/PrintDataGridExample"/>
+		<compile-mxml example="/SourceTab"/>
+		<compile-mxml example="/states/StatesExample"/>
+		<compile-mxml example="/states/TransitionExample"/>
+		<compile-mxml example="/validators/CreditCardValidatorExample"/>
+		<compile-mxml example="/validators/CurrencyValidatorExample"/>
+		<compile-mxml example="/validators/DateValidatorExample"/>
+		<compile-mxml example="/validators/EmailValidatorExample"/>
+		<compile-mxml example="/validators/NumberValidatorExample"/>
+		<compile-mxml example="/validators/PhoneNumberValidatorExample"/>
+		<compile-mxml example="/validators/RegExValidatorExample"/>
+		<compile-mxml example="/validators/SimpleValidatorExample"/>
+		<compile-mxml example="/validators/SocialSecurityValidatorExample"/>
+		<compile-mxml example="/validators/StringValidatorExample"/>
+		<compile-mxml example="/validators/ZipCodeValidatorExample"/>
+	</target>
+	
+	<target name="package" description="package up all source files">
+		<delete dir="${basedir}/out"/>  
+		<mkdir dir="${basedir}/out"/>       
+        <tar destfile="${basedir}/out/ApacheFlex-TourDeFlex-ComponentExplorer-${version}.tar.gz" 
+         	compression="gzip"
+            longfile="gnu">
+            <tarfileset dir="${basedir}/..">
+                <include name="LICENSE" />
+                <include name="NOTICE" />
+            </tarfileset>
+            <tarfileset dir="${basedir}">
+                <include name="README" />
+                <include name="RELEASE_NOTES" />
+                <include name="build.xml" />
+                <include name="src/explorer.html" />
+                <include name="src/explorer.xml" />
+                <include name="src/AC_OETags.js" />
+                <include name="**/*.mxml" />
+                <include name="**/*.as" />
+                <include name="**/*.jpg" />
+                <include name="**/*.png" />
+                <include name="**/*.gif" />
+                <include name="**/*.ttf" />
+                <include name="**/*.mp4" />
+                <include name="**/*.mp3" />
+                <exclude name="**/*.swf" />
+             </tarfileset>
+         </tar>
+	</target>
+   
+    <target name="clean" description="clean up">
+    	<delete>
+    		<fileset dir="${basedir}" includes="**/*.swf" />
+    	</delete>
+    </target>
+</project>
