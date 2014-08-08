@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate ZipCodeFormatter. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
             import mx.events.ValidationResultEvent;			
@@ -39,12 +39,14 @@
                 }
             }
         ]]>      
-    </mx:Script>
+    </fx:Script>
 
-    <mx:ZipCodeFormatter id="zipFormatter" formatString="#####-####"/>
+	<fx:Declarations>
+    	<mx:ZipCodeFormatter id="zipFormatter" formatString="#####-####"/>
 
-    <mx:ZipCodeValidator id="zcVal" source="{zip}" property="text" allowedFormatChars=""/>
-
+    	<mx:ZipCodeValidator id="zcVal" source="{zip}" property="text" allowedFormatChars=""/>
+	<fx:Declarations>
+	
     <mx:Panel title="ZipCodeFormatter Example" width="75%" height="75%" 
             paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
 

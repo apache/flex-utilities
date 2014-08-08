@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the ComboBox control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             import mx.collections.ArrayCollection;
 
@@ -34,7 +34,7 @@
                 myData.text = "Data: " +  ComboBox(event.target).selectedItem.data;
             }     
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="ComboBox Control Example" 
         height="75%" width="75%" layout="horizontal"

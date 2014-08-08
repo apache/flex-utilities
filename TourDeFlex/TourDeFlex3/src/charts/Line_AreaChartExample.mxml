@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the LineChart and AreaChart controls. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
         import mx.collections.ArrayCollection;
@@ -32,17 +32,19 @@
             { Month: "Apr", Profit: 1800, Expenses: 1200, Amount: 900 },
             { Month: "May", Profit: 2400, Expenses: 575, Amount: 500 } ]);
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <!-- Define custom colors for use as fills in the AreaChart control. -->
-    <mx:SolidColor id="sc1" color="blue" alpha=".3"/>
-    <mx:SolidColor id="sc2" color="red" alpha=".3"/>
-    <mx:SolidColor id="sc3" color="green" alpha=".3"/>
-
-    <!-- Define custom Strokes. -->
-    <mx:SolidColorStroke id = "s1" color="blue" weight="2"/>
-    <mx:SolidColorStroke id = "s2" color="red" weight="2"/>
-    <mx:SolidColorStroke id = "s3" color="green" weight="2"/>
+	<fx:Declarations>
+	    <!-- Define custom colors for use as fills in the AreaChart control. -->
+	    <mx:SolidColor id="sc1" color="blue" alpha=".3"/>
+	    <mx:SolidColor id="sc2" color="red" alpha=".3"/>
+	    <mx:SolidColor id="sc3" color="green" alpha=".3"/>
+	
+	    <!-- Define custom Strokes. -->
+	    <mx:SolidColorStroke id = "s1" color="blue" weight="2"/>
+	    <mx:SolidColorStroke id = "s2" color="red" weight="2"/>
+	    <mx:SolidColorStroke id = "s3" color="green" weight="2"/>
+	</fx:Declarations>
 
     <mx:Panel title="LineChart and AreaChart Controls Example" 
         height="100%" width="100%" layout="horizontal">

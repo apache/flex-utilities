@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate PhoneFormatter. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
                 
             import mx.events.ValidationResultEvent;			
@@ -38,13 +38,15 @@
                 }
             }
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <mx:PhoneFormatter id="phoneFormatter" 
-        formatString="(###) ###-####" validPatternChars="#-() "/>
-
-    <mx:PhoneNumberValidator id="pnVal" source="{phone}" property="text" 
-            allowedFormatChars=""/>
+	<fx:Declarations>
+	    <mx:PhoneFormatter id="phoneFormatter" 
+	        formatString="(###) ###-####" validPatternChars="#-() "/>
+	
+	    <mx:PhoneNumberValidator id="pnVal" source="{phone}" property="text" 
+	            allowedFormatChars=""/>
+	<fx:Declarations>
 
     <mx:Panel title="PhoneFormatter Example" width="75%" height="75%" 
             paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

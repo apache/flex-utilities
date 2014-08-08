@@ -18,15 +18,15 @@
 
 <!-- Custom control for the footer area of the printed page. -->
 
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="60%"
-    horizontalAlign="right" >
+<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+	width="60%" horizontalAlign="right" >
     <!-- Declare and initialize the product total variable. -->
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             [Bindable]
             public var pTotal:Number = 0;
         ]]>
-    </mx:Script>
+    </fx:Script>
     <mx:Label text="Product Total: {pTotal}"/>
 </mx:VBox>

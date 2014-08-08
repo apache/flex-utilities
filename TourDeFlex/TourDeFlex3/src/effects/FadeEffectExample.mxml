@@ -17,18 +17,20 @@
   -->
 
 <!-- Simple example to demonstrate the Fade effect. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 	
-	<mx:Style>
+	<fx:Style>
 	     @font-face {
 	        src:url("./assets/OpenSans-Regular.ttf");
 	        fontFamily: OpenSans;
 			embedAsCFF: false;
 	     }    
-	</mx:Style>
+	</fx:Style>
     
-    <mx:Fade id="fadeOut" duration="1000" alphaFrom="1.0" alphaTo="0.0"/>
-    <mx:Fade id="fadeIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
+	<fx:Declarations>
+    	<mx:Fade id="fadeOut" duration="1000" alphaFrom="1.0" alphaTo="0.0"/>
+    	<mx:Fade id="fadeIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
+	</fx:Declarations>
 
     <mx:Panel title="Fade Effect Example" width="95%" height="95%" 
         paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">

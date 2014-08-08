@@ -17,8 +17,8 @@
   -->
 
 <!-- Simple example to demonstrate the HLOCChart control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
-    <mx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+    <fx:Script>
         <![CDATA[          
         import mx.collections.ArrayCollection;
 
@@ -35,10 +35,12 @@
             { Date: "4-Aug", Open: 37.98,  High: 37.98, Low: 36.56, Close:36.69},                       
             { Date: "5-Aug", Open: 36.61,  High: 37, Low: 36.48, Close:36.86} ]); 
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <!-- Define custom Stroke for the wick and ticks. -->
-    <mx:SolidColorStroke id="s1" color="0x000000" weight="5" joints="bevel" caps="square"/>
+	<fx:Declarations>
+    	<!-- Define custom Stroke for the wick and ticks. -->
+   		<mx:SolidColorStroke id="s1" color="0x000000" weight="5" joints="bevel" caps="square"/>
+	</fx:Declarations>
 
     <mx:Panel title="HLOCChart Control Example" height="100%" width="100%">
         <mx:HLOCChart id="hlocchart" height="100%" width="100%"

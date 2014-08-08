@@ -18,10 +18,10 @@
 
 <!-- Custom control to print the DataGrid control on multiple pages. -->
 
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*" backgroundColor="#FFFFFF"
-    paddingTop="50" paddingBottom="50" paddingLeft="50">
+<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns="*" backgroundColor="#FFFFFF" paddingTop="50" paddingBottom="50" paddingLeft="50">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             import mx.core.*
             // Declare and initialize the variables used in the component.
@@ -53,7 +53,7 @@
                 validateNow();
             }        
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <!-- The template for the printed page, with the contents for all pages. -->
     <mx:VBox width="80%" horizontalAlign="left">

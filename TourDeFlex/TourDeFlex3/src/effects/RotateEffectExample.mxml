@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the Rotate effect. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             [Bindable]
             public var angle:int=0;
@@ -30,17 +30,19 @@
                 rotate.play();
             }
       ]]>
-    </mx:Script>
+    </fx:Script>
 
-	<mx:Style>
+	<fx:Style>
 	     @font-face {
 	        src:url("./assets/OpenSans-Regular.ttf");
 	        fontFamily: OpenSans;
 			embedAsCFF: false;
 	     }    
-	</mx:Style>
+	</fx:Style>
 
-    <mx:Rotate id="rotate" angleFrom="{angle-45}" angleTo="{angle}" target="{myVB}"/>
+	<fx:Declarations>
+    	<mx:Rotate id="rotate" angleFrom="{angle-45}" angleTo="{angle}" target="{myVB}"/>
+	</fx:Declarations>
 
     <mx:Panel title="Rotate Effect Example" horizontalAlign="center" 
         width="75%" height="75%" layout="horizontal"

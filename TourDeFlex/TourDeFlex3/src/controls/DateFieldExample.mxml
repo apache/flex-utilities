@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the DateField control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
       <![CDATA[
 
          // Event handler for the DateField change event.
@@ -31,9 +31,11 @@
                     '/' + (date.getMonth()+1).toString() + '/' + date.getDate();
          }
       ]]>
-    </mx:Script>
+    </fx:Script>
  
- <mx:DateFormatter id="df"/>
+	<fx:Declarations>
+ 		<mx:DateFormatter id="df"/>
+	</fx:Declarations>
 
     <mx:Panel title="DateField Control Example" height="75%" width="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10">

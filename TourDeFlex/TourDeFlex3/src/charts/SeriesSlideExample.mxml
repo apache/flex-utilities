@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the CandlestickChart control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
           
         import mx.collections.ArrayCollection;
@@ -50,10 +50,12 @@
             { Date: "4-Aug", Open: 21.67,  High: 22.82, Low: 21.67, Close:22.34},
             { Date: "5-Aug", Open: 22.44,  High: 22.85, Low: 22.12, Close:22.31} ]);
         ]]>
-    </mx:Script>
+    </fx:Script>
     
-    <mx:SeriesSlide id="slideIn" duration="1000" direction="up"/>
-    <mx:SeriesSlide id="slideOut" duration="1000" direction="down"/>
+	<fx:Declarations>
+    	<mx:SeriesSlide id="slideIn" duration="1000" direction="up"/>
+    	<mx:SeriesSlide id="slideOut" duration="1000" direction="down"/>
+	</fx:Declarations>
 
     <mx:Panel title="CandlestickChart Control Example" height="100%" width="100%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

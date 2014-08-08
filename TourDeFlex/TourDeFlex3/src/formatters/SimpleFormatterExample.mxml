@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the Formatter class. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
             // Event handler to format the input.            
@@ -40,9 +40,11 @@
                 }
             }
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <mx:NumberFormatter id="numberFormatter"/>
+	<fx:Declarations>
+    	<mx:NumberFormatter id="numberFormatter"/>
+	</fx:Declarations>
 
     <mx:Panel title="NumberFormatter Example" width="75%" height="75%" 
             paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

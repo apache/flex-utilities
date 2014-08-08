@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the LogAxis class. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
         import mx.collections.ArrayCollection;
@@ -32,7 +32,7 @@
             { Month: "Apr", Profit: 1800, Expenses: 1200, Amount: 900 },
             { Month: "May", Profit: 2400, Expenses: 575, Amount: 500 } ]);
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="LogAxis Example" height="100%" width="100%">
 

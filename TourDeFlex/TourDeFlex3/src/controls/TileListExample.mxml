@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the TileList Control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
              
              [Bindable]
@@ -42,7 +42,7 @@
 	         [Embed(source="assets/ApacheFlexLogo.png")]
              public var logo5:Class;
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="TileList Control Example" height="100%" width="100%" 
         paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
@@ -53,13 +53,13 @@
         <mx:TileList id="CameraSelection" height="250" width="300" 
             maxColumns="2" rowHeight="225" columnWidth="125">
             <mx:dataProvider>
-                <mx:Array>
-                    <mx:Object label="Logo 1" icon="{logo1}"/>
-                    <mx:Object label="Logo 2" icon="{logo2}"/>
-                    <mx:Object label="Logo 3" icon="{logo3}"/>
-                    <mx:Object label="Logo 4" icon="{logo4}"/>
-                    <mx:Object label="Logo 5" icon="{logo5}"/>
-                </mx:Array>
+                <fx:Array>
+                    <fx:Object label="Logo 1" icon="{logo1}"/>
+                    <fx:Object label="Logo 2" icon="{logo2}"/>
+                    <fx:Object label="Logo 3" icon="{logo3}"/>
+                    <fx:Object label="Logo 4" icon="{logo4}"/>
+                    <fx:Object label="Logo 5" icon="{logo5}"/>
+                </fx:Array>
             </mx:dataProvider>
         </mx:TileList>
 

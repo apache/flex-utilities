@@ -16,10 +16,10 @@
       limitations under the License.
   -->
 
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
         creationComplete="creationCompleteHandler();">
 
-    <mx:Script>
+    <fx:Script>
       <![CDATA[
         import mx.rpc.AsyncResponder;
         import mx.rpc.AsyncToken;
@@ -161,39 +161,41 @@
             myOLAPDG.dataProvider= result as OLAPResult;            
         }        
       ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <mx:OLAPCube name="FlatSchemaCube" 
-        dataProvider="{flatData}" 
-        id="myMXMLCube"
-        complete="runQuery(event);">
-         
-        <mx:OLAPDimension name="CustomerDim">
-            <mx:OLAPAttribute name="Customer" dataField="customer"/>
-            <mx:OLAPHierarchy name="CustomerHier" hasAll="true">
-                <mx:OLAPLevel attributeName="Customer"/>
-            </mx:OLAPHierarchy>
-        </mx:OLAPDimension>
-        
-        <mx:OLAPDimension name="ProductDim">
-            <mx:OLAPAttribute name="Product" dataField="product"/>
-            <mx:OLAPHierarchy name="ProductHier" hasAll="true">
-                <mx:OLAPLevel attributeName="Product"/>
-            </mx:OLAPHierarchy>
-        </mx:OLAPDimension>
-    
-        <mx:OLAPDimension name="QuarterDim">
-            <mx:OLAPAttribute name="Quarter" dataField="quarter"/>
-            <mx:OLAPHierarchy name="QuarterHier" hasAll="true">
-                <mx:OLAPLevel attributeName="Quarter"/>
-            </mx:OLAPHierarchy> 
-        </mx:OLAPDimension>
-        
-        <mx:OLAPMeasure name="Revenue" 
-            dataField="revenue" 
-            aggregator="SUM"/>
-    </mx:OLAPCube>
-    
+	<fx:Declarations>
+	    <mx:OLAPCube name="FlatSchemaCube" 
+	        dataProvider="{flatData}" 
+	        id="myMXMLCube"
+	        complete="runQuery(event);">
+	         
+	        <mx:OLAPDimension name="CustomerDim">
+	            <mx:OLAPAttribute name="Customer" dataField="customer"/>
+	            <mx:OLAPHierarchy name="CustomerHier" hasAll="true">
+	                <mx:OLAPLevel attributeName="Customer"/>
+	            </mx:OLAPHierarchy>
+	        </mx:OLAPDimension>
+	        
+	        <mx:OLAPDimension name="ProductDim">
+	            <mx:OLAPAttribute name="Product" dataField="product"/>
+	            <mx:OLAPHierarchy name="ProductHier" hasAll="true">
+	                <mx:OLAPLevel attributeName="Product"/>
+	            </mx:OLAPHierarchy>
+	        </mx:OLAPDimension>
+	    
+	        <mx:OLAPDimension name="QuarterDim">
+	            <mx:OLAPAttribute name="Quarter" dataField="quarter"/>
+	            <mx:OLAPHierarchy name="QuarterHier" hasAll="true">
+	                <mx:OLAPLevel attributeName="Quarter"/>
+	            </mx:OLAPHierarchy> 
+	        </mx:OLAPDimension>
+	        
+	        <mx:OLAPMeasure name="Revenue" 
+	            dataField="revenue" 
+	            aggregator="SUM"/>
+	    </mx:OLAPCube>
+    </fx:Declarations>
+		
     <mx:Panel title="OLAPCube Control Example"
         height="75%" width="75%" layout="horizontal"
         paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">

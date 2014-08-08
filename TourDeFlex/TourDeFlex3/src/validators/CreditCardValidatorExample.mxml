@@ -17,11 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the CreditCardValidator. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         import mx.controls.Alert;
-    </mx:Script>
+    </fx:Script>
 
 	<!-- Define model for the credit card data. -->
     <mx:Model id="creditcard">
@@ -31,13 +31,15 @@
         </card>
     </mx:Model>
 
-    <mx:CreditCardValidator id="ccV" 
-        cardTypeSource="{creditcard}" cardTypeProperty="cardType"
-        cardNumberSource="{creditcard}" cardNumberProperty="cardNumber"
-        trigger="{myButton}" triggerEvent="click"
-        cardTypeListener="{cardTypeCombo}"
-        cardNumberListener="{cardNumberInput}"
-        valid="Alert.show('Validation Succeeded!');"/>
+	<fx:Declarations>
+	    <mx:CreditCardValidator id="ccV" 
+	        cardTypeSource="{creditcard}" cardTypeProperty="cardType"
+	        cardNumberSource="{creditcard}" cardNumberProperty="cardNumber"
+	        trigger="{myButton}" triggerEvent="click"
+	        cardTypeListener="{cardTypeCombo}"
+	        cardNumberListener="{cardNumberInput}"
+	        valid="Alert.show('Validation Succeeded!');"/>
+	<fx:Declarations>
   
     <mx:Panel title="CreditCardValidator Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

@@ -16,9 +16,9 @@
       limitations under the License.
   -->
 
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             import mx.collections.ArrayCollection;
                   
@@ -42,7 +42,7 @@
                   Territory_Rep:"Jane Grove", Actual:44913, Estimate:45000}
             ]);
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="AdvancedDataGrid Control Example"
         height="75%" width="75%" layout="horizontal"
@@ -52,14 +52,14 @@
             width="100%" height="100%" 
             initialize="gc.refresh();">        
             <mx:dataProvider>
-                <mx:GroupingCollection id="gc" source="{dpFlat}">
+                <mx:GroupingCollection2 id="gc" source="{dpFlat}">
                     <mx:grouping>
                         <mx:Grouping>
                             <mx:GroupingField name="Region"/>
                             <mx:GroupingField name="Territory"/>
                         </mx:Grouping>
                     </mx:grouping>
-                </mx:GroupingCollection>
+                </mx:GroupingCollection2>
             </mx:dataProvider>        
             
             <mx:columns>

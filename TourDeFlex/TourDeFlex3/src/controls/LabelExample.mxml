@@ -16,10 +16,10 @@
       limitations under the License.
   -->
 
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
 <!-- Simple example to demonstrate the Label control -->
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
       
             private var htmlData:String="<br>This label displays <b>bold</b> and <i>italic</i> HTML-formatted text.";
@@ -34,7 +34,7 @@
                 simpleLabel.text="This Label displays plain text.";
             }         
         ]]>
-    </mx:Script>
+    </fx:Script>
 
   <mx:Panel title="Label Control Example" height="75%" width="75%" 
       paddingTop="10" paddingLeft="10">

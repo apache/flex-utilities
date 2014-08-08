@@ -17,8 +17,8 @@
   -->
 
 <!-- Simple example to demonstrate the ColumnChart and BarChart controls. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
-    <mx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+    <fx:Script>
         <![CDATA[          
         import mx.collections.ArrayCollection;
 
@@ -28,17 +28,19 @@
             { Country: "China", Gold: 32, Silver:17, Bronze: 14 },
             { Country: "Russia", Gold: 27, Silver:27, Bronze: 38 } ]);
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <!-- Define custom colors for use as fills. -->
-    <mx:SolidColor id="sc1" color="yellow" alpha=".8"/>
-    <mx:SolidColor id="sc2" color="0xCCCCCC" alpha=".6"/>
-    <mx:SolidColor id="sc3" color="0xFFCC66" alpha=".6"/>
-
-    <!-- Define custom Strokes for the columns. -->
-    <mx:SolidColorStroke id="s1" color="yellow" weight="2"/>
-    <mx:SolidColorStroke id="s2" color="0xCCCCCC" weight="2"/>
-    <mx:SolidColorStroke id="s3" color="0xFFCC66" weight="2"/>
+	<fx:Declarations>
+	    <!-- Define custom colors for use as fills. -->
+	    <mx:SolidColor id="sc1" color="yellow" alpha=".8"/>
+	    <mx:SolidColor id="sc2" color="0xCCCCCC" alpha=".6"/>
+	    <mx:SolidColor id="sc3" color="0xFFCC66" alpha=".6"/>
+	
+	    <!-- Define custom Strokes for the columns. -->
+	    <mx:SolidColorStroke id="s1" color="yellow" weight="2"/>
+	    <mx:SolidColorStroke id="s2" color="0xCCCCCC" weight="2"/>
+	    <mx:SolidColorStroke id="s3" color="0xFFCC66" weight="2"/>
+	</fx:Declarations>
 
     <mx:Panel title="ColumnChart and BarChart Controls Example" 
         height="100%" width="100%" layout="horizontal">

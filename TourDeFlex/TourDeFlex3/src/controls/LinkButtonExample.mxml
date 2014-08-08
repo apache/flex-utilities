@@ -17,11 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the LinkButton control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         import mx.controls.Alert;
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="LinkButton Control Example" 
         height="75%" width="75%" horizontalAlign="center"

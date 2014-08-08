@@ -17,8 +17,8 @@
   -->
 
 <!-- Simple example to demonstrate the CandlestickChart control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
-    <mx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+    <fx:Script>
         <![CDATA[          
         import mx.collections.ArrayCollection;
 
@@ -35,17 +35,19 @@
             { Date: "4-Aug", Open: 37.98,  High: 37.98, Low: 36.56, Close:36.69},                       
             { Date: "5-Aug", Open: 36.61,  High: 37, Low: 36.48, Close:36.86} ]);
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <!-- Define custom colors for the candles. -->
-    <mx:SolidColor id="up" color="green" alpha=".8"/>
-    <mx:SolidColor id="down" color="red" alpha=".8"/>
-
-    <!-- Define custom Stroke for the candle wick. -->
-    <mx:SolidColorStroke id="wick" color="black" weight="2"/>
-
-    <!-- Define custom Stroke for the candle box. -->
-    <mx:SolidColorStroke id="box" color="black" weight="1"/>
+	<fx:Declarations>
+	    <!-- Define custom colors for the candles. -->
+	    <mx:SolidColor id="up" color="green" alpha=".8"/>
+	    <mx:SolidColor id="down" color="red" alpha=".8"/>
+	
+	    <!-- Define custom Stroke for the candle wick. -->
+	    <mx:SolidColorStroke id="wick" color="black" weight="2"/>
+	
+	    <!-- Define custom Stroke for the candle box. -->
+	    <mx:SolidColorStroke id="box" color="black" weight="1"/>
+	</fx:Declarations>
 
     <mx:Panel title="CandlestickChart Control Example" height="100%" width="100%">
         <mx:CandlestickChart id="candlestickchart" 

@@ -17,14 +17,16 @@
   -->
 
 <!-- Simple example to demonstrate the Blur effect. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Blur id="blurImage" duration="1000" 
-        blurXFrom="0.0" blurXTo="10.0" 
-        blurYFrom="0.0" blurYTo="10.0"/>
-    <mx:Blur id="unblurImage" duration="1000" 
-        blurXFrom="10.0" blurXTo="0.0" 
-        blurYFrom="10.0" blurYTo="0.0"/>
+	<fx:Declarations>
+	    <mx:Blur id="blurImage" duration="1000" 
+	        blurXFrom="0.0" blurXTo="10.0" 
+	        blurYFrom="0.0" blurYTo="10.0"/>
+	    <mx:Blur id="unblurImage" duration="1000" 
+	        blurXFrom="10.0" blurXTo="0.0" 
+	        blurYFrom="10.0" blurYTo="0.0"/>
+	</fx:Declarations>
 
     <mx:Panel title="Blur Effect Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

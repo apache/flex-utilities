@@ -17,15 +17,17 @@
   -->
 
 <!-- Simple example to demonstrate the ZipCodeValidator. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         import mx.controls.Alert;
-    </mx:Script>
+    </fx:Script>
 
-    <mx:ZipCodeValidator source="{zip}" property="text" 
-        trigger="{myButton}" triggerEvent="click"  
-        valid="Alert.show('Validation Succeeded!');"/>
+	<fx:Declarations>
+	    <mx:ZipCodeValidator source="{zip}" property="text" 
+	        trigger="{myButton}" triggerEvent="click"  
+	        valid="Alert.show('Validation Succeeded!');"/>
+	</fx:Declarations>
 
     <mx:Panel title="ZipcodeValidator Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

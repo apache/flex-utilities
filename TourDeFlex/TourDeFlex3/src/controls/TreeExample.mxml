@@ -17,9 +17,9 @@
   -->
 
 <!-- Tree control example. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
             [Bindable]
@@ -30,23 +30,25 @@
                 selectedNode=Tree(event.target).selectedItem as XML;
             }
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <mx:XMLList id="treeData">
-	    <node label="Mail Box">
-	        <node label="Inbox">
-	            <node label="Marketing"/>
-	            <node label="Product Management"/>
-	            <node label="Personal"/>
-	        </node>
-	        <node label="Outbox">
-	            <node label="Professional"/>
-	            <node label="Personal"/>
-	        </node>
-	        <node label="Spam"/>
-	        <node label="Sent"/>
-		</node>	
-    </mx:XMLList>
+	<fx:Declarations>
+	    <fx:XMLList id="treeData">
+		    <node label="Mail Box">
+		        <node label="Inbox">
+		            <node label="Marketing"/>
+		            <node label="Product Management"/>
+		            <node label="Personal"/>
+		        </node>
+		        <node label="Outbox">
+		            <node label="Professional"/>
+		            <node label="Personal"/>
+		        </node>
+		        <node label="Spam"/>
+		        <node label="Sent"/>
+			</node>	
+	    </fx:XMLList>
+	</fx:Declarations>
 
     <mx:Panel title="Tree Control Example" height="75%" width="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

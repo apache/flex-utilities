@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the ToggleButtonBar control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
             import mx.events.ItemClickEvent;
@@ -31,7 +31,7 @@
     		        "\n" + "Selected button label: " + event.label;
             }
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="ToggleButtonBar Control Example" height="75%" width="75%"
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
@@ -43,12 +43,12 @@
 
         <mx:ToggleButtonBar itemClick="clickHandler(event);">
             <mx:dataProvider>
-                <mx:Array>
-                    <mx:String>Flex SDK</mx:String>
-                    <mx:String>Flex JS</mx:String>
-                    <mx:String>Falcon</mx:String>
-                    <mx:String>Falcon JX</mx:String>
-                </mx:Array>
+                <fx:Array>
+                    <fx:String>Flex SDK</fx:String>
+                    <fx:String>Flex JS</fx:String>
+                    <fx:String>Falcon</fx:String>
+                    <fx:String>Falcon JX</fx:String>
+                </fx:Array>
             </mx:dataProvider>
         </mx:ToggleButtonBar>
     </mx:Panel>

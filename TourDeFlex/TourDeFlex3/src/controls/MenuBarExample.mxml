@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the MenuBar control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="initCollections();" >
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="initCollections();" >
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
             import mx.events.MenuEvent;
@@ -62,7 +62,7 @@
                 }        
             }
          ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="MenuBar Control Example" height="75%" width="75%" 
         paddingTop="10" paddingLeft="10">

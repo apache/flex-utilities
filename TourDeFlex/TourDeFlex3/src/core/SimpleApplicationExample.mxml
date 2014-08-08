@@ -18,12 +18,12 @@
 
 <!-- Simple example to demonstrate the Application container. -->
 
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
     backgroundColor="0xCCCCCC"
     horizontalAlign="center" verticalAlign="middle"
     applicationComplete="appComplete();">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             
             // Event handlers for the components.
@@ -39,7 +39,7 @@
                 myTA.text+="\n" + "TextArea creation complete" + "\n";
             }
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:ApplicationControlBar dock="true">
         <mx:Button label="Set Grey Solid Fill" 

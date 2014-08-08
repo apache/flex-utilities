@@ -16,9 +16,9 @@
       limitations under the License.
   -->
 
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             import mx.effects.easing.Elastic;
             import mx.collections.ArrayCollection;
@@ -45,33 +45,35 @@
                 myDP.addItemAt("Z"+zcount++,Math.min(3,myDP.length));
             }                        
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <!-- Define a custom data effect as a Sequence effect. -->
-    <mx:Sequence id="itemsChangeEffect1">
-        <mx:Blur 
-            blurYTo="12" blurXTo="12" 
-            duration="300" 
-            perElementOffset="150"
-            filter="removeItem"/>
-        <mx:Parallel>
-            <mx:Move 
-                duration="750" 
-                easingFunction="{Elastic.easeOut}" 
-                perElementOffset="20"/>
-            <mx:RemoveItemAction 
-                startDelay="400" 
-                filter="removeItem"/>
-            <mx:AddItemAction  
-                startDelay="400" 
-                filter="addItem"/>
-            <mx:Blur 
-                startDelay="410" 
-                blurXFrom="18" blurYFrom="18" blurXTo="0" blurYTo="0" 
-                duration="300" 
-                filter="addItem"/>
-        </mx:Parallel>
-    </mx:Sequence>        
+	<fx:Declarations>
+	    <!-- Define a custom data effect as a Sequence effect. -->
+	    <mx:Sequence id="itemsChangeEffect1">
+	        <mx:Blur 
+	            blurYTo="12" blurXTo="12" 
+	            duration="300" 
+	            perElementOffset="150"
+	            filter="removeItem"/>
+	        <mx:Parallel>
+	            <mx:Move 
+	                duration="750" 
+	                easingFunction="{Elastic.easeOut}" 
+	                perElementOffset="20"/>
+	            <mx:RemoveItemAction 
+	                startDelay="400" 
+	                filter="removeItem"/>
+	            <mx:AddItemAction  
+	                startDelay="400" 
+	                filter="addItem"/>
+	            <mx:Blur 
+	                startDelay="410" 
+	                blurXFrom="18" blurYFrom="18" blurXTo="0" blurYTo="0" 
+	                duration="300" 
+	                filter="addItem"/>
+	        </mx:Parallel>
+	    </mx:Sequence>   
+	</fx:Declarations>
 
     <mx:Panel title="AddItemEffect/RemoveItemEffect Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

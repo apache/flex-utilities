@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the Alert control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             import mx.controls.Alert;
             import mx.events.CloseEvent;
@@ -54,7 +54,7 @@
                 Alert.noLabel = "No";                
             }
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="Alert Control Example" width="75%" horizontalAlign="center" paddingTop="10">
       <mx:Text width="100%" color="blue" textAlign="center"

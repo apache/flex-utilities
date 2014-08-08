@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate NumberFormatter. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
           import mx.events.ValidationResultEvent;			
@@ -39,13 +39,15 @@
              }
           }
       ]]>      
-    </mx:Script>
+    </fx:Script>
 
-    <mx:NumberFormatter id="numberFormatter" precision="4" 
-        useThousandsSeparator="true" useNegativeSign="true"/>
-
-    <mx:NumberValidator id="numVal" source="{inputVal}" property="text" 
-        allowNegative="true" domain="real"/>
+	<fx:Declarations>
+	    <mx:NumberFormatter id="numberFormatter" precision="4" 
+	        useThousandsSeparator="true" useNegativeSign="true"/>
+	
+	    <mx:NumberValidator id="numVal" source="{inputVal}" property="text" 
+	        allowNegative="true" domain="real"/>
+	</fx:Declarations>
 
     <mx:Panel title="NumberFormatter Example" width="75%" height="75%" 
             paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

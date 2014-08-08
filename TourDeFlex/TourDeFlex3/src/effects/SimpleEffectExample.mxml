@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the Effect class. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
             import mx.controls.Alert;
@@ -37,11 +37,13 @@
                 button1.enabled=true;
             }
         ]]>
-    </mx:Script>
+    </fx:Script>
 
 
-    <mx:Resize id="expand" target="{img}" widthTo="100" heightTo="200" 
-        duration="10000" effectEnd="endEffectHandler();"/>
+	<fx:Declarations>
+	    <mx:Resize id="expand" target="{img}" widthTo="100" heightTo="200" 
+	        duration="10000" effectEnd="endEffectHandler();"/>
+	</fx:Declarations>
 
     <mx:Panel title="Resize Effect Example" width="100%" height="100%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

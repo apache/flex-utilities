@@ -17,12 +17,14 @@
   -->
 
 <!-- Simple example to demonstrate the AnimateProperty effect. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Sequence id="animateScaleXUpDown" >
-        <mx:AnimateProperty property="scaleX" fromValue="1" toValue="1.5" duration="1000" />
-        <mx:AnimateProperty property="scaleX" fromValue="1.5" toValue="1" duration="1000" />	
-    </mx:Sequence>
+	<fx:Declarations>
+	    <mx:Sequence id="animateScaleXUpDown" >
+	        <mx:AnimateProperty property="scaleX" fromValue="1" toValue="1.5" duration="1000" />
+	        <mx:AnimateProperty property="scaleX" fromValue="1.5" toValue="1" duration="1000" />	
+	    </mx:Sequence>
+	</fx:Declarations>
 
     <mx:Panel title="AnimateProperty Effect Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

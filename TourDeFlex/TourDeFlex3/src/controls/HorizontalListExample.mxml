@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the HorizontalList Control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
              
              [Bindable]
@@ -42,7 +42,7 @@
 	         [Embed(source="assets/ApacheFlexLogo.png")]
              public var logo5:Class;
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="HorizontalList Control Example" height="75%" width="75%" 
         paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
@@ -52,13 +52,13 @@
 
         <mx:HorizontalList id="CameraSelection" height="250" columnCount="3" columnWidth="125">
             <mx:dataProvider>
-                <mx:Array>
-                    <mx:Object label="Logo 1" icon="{logo1}"/>
-                    <mx:Object label="Logo 2" icon="{logo2}"/>
-                    <mx:Object label="Logo 3" icon="{logo3}"/>
-                    <mx:Object label="Logo 4" icon="{logo4}"/>
-                    <mx:Object label="Logo 5" icon="{logo5}"/>
-                </mx:Array>
+                <fx:Array>
+                    <fx:Object label="Logo 1" icon="{logo1}"/>
+                    <fx:Object label="Logo 2" icon="{logo2}"/>
+                    <fx:Object label="Logo 3" icon="{logo3}"/>
+                    <fx:Object label="Logo 4" icon="{logo4}"/>
+                    <fx:Object label="Logo 5" icon="{logo5}"/>
+                </fx:Array>
             </mx:dataProvider>
         </mx:HorizontalList>
         

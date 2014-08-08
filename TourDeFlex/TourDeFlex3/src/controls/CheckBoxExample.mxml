@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the CheckBox control -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
            import mx.controls.Alert;         
@@ -53,7 +53,7 @@
 		        }
 	       }    
         ]]>
-    </mx:Script>
+    </fx:Script>
 
     <mx:Panel title="CheckBox Control Example" 
         height="75%" width="75%" layout="horizontal"

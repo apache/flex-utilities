@@ -17,11 +17,13 @@
   -->
 
 <!-- Simple example to demonstrate the Dissolve effect. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Dissolve id="dissolveOut" duration="1000" alphaFrom="1.0" alphaTo="0.0"/>
-    <mx:Dissolve id="dissolveIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
-
+	<fx:Declarations>
+	    <mx:Dissolve id="dissolveOut" duration="1000" alphaFrom="1.0" alphaTo="0.0"/>
+	    <mx:Dissolve id="dissolveIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
+	</fx:Declarations>
+	
     <mx:Panel title="Dissolve Effect Example" 
         width="95%" height="95%" layout="horizontal" 
         paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">

@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the Move effect. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
             private function moveImage():void {
@@ -28,9 +28,11 @@
                 myMove.play();
             }
       ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <mx:Move id="myMove" target="{img}"/>
+	<fx:Declarations>
+    	<mx:Move id="myMove" target="{img}"/>
+	</fx:Declarations>
 
     <mx:Panel title="Move Effect Example" width="95%" height="95%" 
         paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">

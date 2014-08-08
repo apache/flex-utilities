@@ -17,19 +17,21 @@
   -->
 
 <!-- Simple example to demonstrate the Pause effect. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             import mx.effects.easing.*;                   
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <mx:Sequence id="movePauseMove">
-        <mx:Move xBy="150" duration="2000" easingFunction="Bounce.easeOut"/>
-        <mx:Pause duration="2000"/>
-        <mx:Move xBy="-150" duration="2000" easingFunction="Bounce.easeIn"/>
-    </mx:Sequence>
+	<fx:Declarations>
+	    <mx:Sequence id="movePauseMove">
+	        <mx:Move xBy="150" duration="2000" easingFunction="Bounce.easeOut"/>
+	        <mx:Pause duration="2000"/>
+	        <mx:Move xBy="-150" duration="2000" easingFunction="Bounce.easeIn"/>
+	    </mx:Sequence>
+	</fx:Declarations>
 
     <mx:Panel title="Pause Effect Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

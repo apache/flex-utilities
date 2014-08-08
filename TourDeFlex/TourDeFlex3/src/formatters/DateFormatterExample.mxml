@@ -17,9 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the DateFormatter. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
 
             import mx.events.ValidationResultEvent;			
@@ -38,12 +38,14 @@
                 }
             }
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <mx:DateFormatter id="dateFormatter" formatString="month: MM, day: DD, year: YYYY"/>
-
-    <mx:DateValidator id="dateVal" source="{dob}" property="text" inputFormat="mm/dd/yyyy"/>
-
+	<fx:Declarations>
+	    <mx:DateFormatter id="dateFormatter" formatString="month: MM, day: DD, year: YYYY"/>
+	
+	    <mx:DateValidator id="dateVal" source="{dob}" property="text" inputFormat="mm/dd/yyyy"/>
+	</fx:Declarations>
+	
     <mx:Panel title="DateFormatter Example" width="95%" height="95%" 
             paddingTop="10" paddingLeft="5" paddingRight="5" paddingBottom="10">
 

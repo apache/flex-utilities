@@ -17,7 +17,7 @@
   -->
 
 <!-- Simple example to demonstrate the ApplicationControlBar container. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
     paddingLeft="10" paddingRight="10" paddingBottom="10" 
     backgroundColor="0xCCCCCC">
 
@@ -25,7 +25,7 @@
         <mx:Label text="Docked" color="blue"/>
 
         <mx:MenuBar id="myMenuBar" labelField="@label">
-            <mx:XMLList>
+            <fx:XMLList>
                 <menuitem label="MenuItem A" >
                     <menuitem label="SubMenuItem A-1" type="check"/>
                     <menuitem label="SubMenuItem A-2" type="check"/>
@@ -37,7 +37,7 @@
                     <menuitem label="SubMenuItem D-2" type="radio" groupName="one"/>
                     <menuitem label="SubMenuItem D-3" type="radio" groupName="one"/>
                 </menuitem>
-            </mx:XMLList>
+            </fx:XMLList>
         </mx:MenuBar>
     </mx:ApplicationControlBar>
 	

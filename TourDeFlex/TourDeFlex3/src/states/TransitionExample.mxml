@@ -17,7 +17,7 @@
   -->
 
 <!-- Simple example to demonstrate the Transition class. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
     <!-- Define one view state, in addition to the base state.-->
     <mx:states>

@@ -17,7 +17,7 @@
   -->
 
 <!-- Simple example to demonstrate the LinkBar control. -->
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
  
     <mx:Panel title="LinkBar Control Example" 
         height="75%" width="75%" horizontalAlign="center"

@@ -16,9 +16,9 @@
       limitations under the License.
   -->
 
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
 
-    <mx:Script>
+    <fx:Script>
         <![CDATA[
             import mx.effects.DefaultListEffect;
             import mx.collections.ArrayCollection;
@@ -45,13 +45,15 @@
                 myDP.addItemAt("Z"+zcount++,Math.min(3,myDP.length));
             }            
         ]]>
-    </mx:Script>
+    </fx:Script>
 
-    <!-- Define an instance of the DefaultListEffect effect, 
-         and set its fadeOutDuration and color properties. -->
-    <mx:DefaultListEffect id="myDLE" 
-        fadeOutDuration="1000" 
-        color="0x0000ff"/>
+	<fx:Declarations>
+	    <!-- Define an instance of the DefaultListEffect effect, 
+	         and set its fadeOutDuration and color properties. -->
+	    <mx:DefaultListEffect id="myDLE" 
+	        fadeOutDuration="1000" 
+	        color="0x0000ff"/>
+	</fx:Declarations>
 
     <mx:Panel title="DefaultListEffect Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
