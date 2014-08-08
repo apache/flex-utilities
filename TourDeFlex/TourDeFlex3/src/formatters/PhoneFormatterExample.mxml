@@ -46,7 +46,7 @@
 	
 	    <mx:PhoneNumberValidator id="pnVal" source="{phone}" property="text" 
 	            allowedFormatChars=""/>
-	<fx:Declarations>
+	</fx:Declarations>
 
     <mx:Panel title="PhoneFormatter Example" width="75%" height="75%" 
             paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

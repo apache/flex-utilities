@@ -23,15 +23,15 @@
         import mx.controls.Alert;
     </fx:Script>
 
-	<!-- Define model for the credit card data. -->
-    <mx:Model id="creditcard">
-        <card>	
-            <cardType>{cardTypeCombo.selectedItem.data}</cardType>
-            <cardNumber>{cardNumberInput.text}</cardNumber>
-        </card>
-    </mx:Model>
-
-	<fx:Declarations>
+	<fx:Declarations>	
+		<!-- Define model for the credit card data. -->
+	    <fx:Model id="creditcard">
+	        <card>	
+	            <cardType>{cardTypeCombo.selectedItem.data}</cardType>
+	            <cardNumber>{cardNumberInput.text}</cardNumber>
+	        </card>
+	    </fx:Model>
+		
 	    <mx:CreditCardValidator id="ccV" 
 	        cardTypeSource="{creditcard}" cardTypeProperty="cardType"
 	        cardNumberSource="{creditcard}" cardNumberProperty="cardNumber"
@@ -39,7 +39,7 @@
 	        cardTypeListener="{cardTypeCombo}"
 	        cardNumberListener="{cardNumberInput}"
 	        valid="Alert.show('Validation Succeeded!');"/>
-	<fx:Declarations>
+	</fx:Declarations>
   
     <mx:Panel title="CreditCardValidator Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
@@ -48,11 +48,11 @@
             <mx:FormItem label="Card Type">    
                 <mx:ComboBox id="cardTypeCombo">
                     <mx:dataProvider>
-                        <mx:Object label="American Express" data="American Express"/>
-                        <mx:Object label="Diners Club" data="Diners Club"/>
-                        <mx:Object label="Discover" data="Discover"/>
-                        <mx:Object label="MasterCard" data="MasterCard"/>
-                        <mx:Object label="Visa" data="Visa"/>
+                        <fx:Object label="American Express" data="American Express"/>
+                        <fx:Object label="Diners Club" data="Diners Club"/>
+                        <fx:Object label="Discover" data="Discover"/>
+                        <fx:Object label="MasterCard" data="MasterCard"/>
+                        <fx:Object label="Visa" data="Visa"/>
                     </mx:dataProvider>
                 </mx:ComboBox>
             </mx:FormItem>

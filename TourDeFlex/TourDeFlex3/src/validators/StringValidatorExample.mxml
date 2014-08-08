@@ -30,7 +30,7 @@
 	    	minLength="4" maxLength="20"  
 	    	trigger="{myButton}" triggerEvent="click" 
 	    	valid="Alert.show('Validation Succeeded!');"/>
-	<fx:Declarations>
+	</fx:Declarations>
 
     <mx:Panel title="StringValidator Example" width="75%" height="75%" 
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

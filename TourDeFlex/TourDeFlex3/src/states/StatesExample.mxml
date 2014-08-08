@@ -21,48 +21,36 @@
 
     <!-- Define one view state, in addition to the base state.-->
     <mx:states>
-        <mx:State name="Register">
-            <mx:AddChild relativeTo="{loginForm}" position="lastChild">
-                <mx:target>
-                    <mx:FormItem id="confirm" label="Confirm:">
-                        <mx:TextInput/>
-                    </mx:FormItem>
-                </mx:target>
-            </mx:AddChild>
-            <mx:SetProperty target="{loginPanel}" name="title" value="Register"/>
-            <mx:SetProperty target="{loginButton}" name="label" value="Register"/>
-            <mx:SetStyle target="{loginButton}" 
-                name="color" value="blue"/>
-            <mx:RemoveChild target="{registerLink}"/>
-            <mx:AddChild relativeTo="{spacer1}" position="before">
-                <mx:target>
-                    <mx:LinkButton id="loginLink" label="Return to Login" click="currentState=''"/>
-                </mx:target>
-            </mx:AddChild>
-        </mx:State>
+		<mx:State name="default" />
+        <mx:State name="register" />
     </mx:states>
 
     <!-- Define a Panel container that defines the login form.-->
-    <mx:Panel title="Login" id="loginPanel" 
+    <mx:Panel title="Login" title.register="Register" id="loginPanel" 
         horizontalScrollPolicy="off" verticalScrollPolicy="off"
         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
 
         <mx:Text width="100%" color="blue"
             text="Click the 'Need to Register?' link to change state. Click the 'Return to Login' link to return to the base state."/>
 
-        <mx:Form id="loginForm" >
+        <mx:Form id="loginForm">
             <mx:FormItem label="Username:">
                 <mx:TextInput/>
             </mx:FormItem>
             <mx:FormItem label="Password:">
                 <mx:TextInput/>
             </mx:FormItem>
+			<mx:FormItem id="confirm" label="Confirm:" includeIn="register">
+            	<mx:TextInput/>
+             </mx:FormItem>
         </mx:Form>
         <mx:ControlBar>
             <mx:LinkButton id="registerLink"  label="Need to Register?"
-                click="currentState='Register'"/>
+                click="currentState='register'" excludeFrom="register"/>
+			<mx:LinkButton id="loginLink" label="Return to Login" click="currentState='default'"
+				includeIn="register" />
             <mx:Spacer width="100%" id="spacer1"/>
-            <mx:Button label="Login" id="loginButton"/>
+            <mx:Button label="Login" label.register="register" color.register="blue" id="loginButton" />
         </mx:ControlBar>
     </mx:Panel>
 </mx:Application>

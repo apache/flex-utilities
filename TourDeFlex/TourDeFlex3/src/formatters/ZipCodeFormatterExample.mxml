@@ -45,7 +45,7 @@
     	<mx:ZipCodeFormatter id="zipFormatter" formatString="#####-####"/>
 
     	<mx:ZipCodeValidator id="zcVal" source="{zip}" property="text" allowedFormatChars=""/>
-	<fx:Declarations>
+	</fx:Declarations>
 	
     <mx:Panel title="ZipCodeFormatter Example" width="75%" height="75%" 
             paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">

@@ -23,6 +23,7 @@
     <fx:Script>
         <![CDATA[
 
+		import mx.core.FlexGlobals;
         import mx.printing.*;
         import mx.collections.ArrayCollection;
         import FormPrintView;
@@ -62,7 +63,7 @@
             if (printJob.start()) {
                 // Create a FormPrintView control as a child of the current view.
                 var thePrintView:FormPrintView = new FormPrintView();
-               Application.application.addChild(thePrintView);
+               FlexGlobals.topLevelApplication.addChild(thePrintView);
 
                 //Set the print view properties.
                 thePrintView.width=printJob.pageWidth;
@@ -111,7 +112,7 @@
                     }
                 }
                 // All pages are queued; remove the FormPrintView control to free memory.
-                Application.application.removeChild(thePrintView);
+                FlexGlobals.topLevelApplication.removeChild(thePrintView);
             }
             // Send the job to the printer.
             printJob.send();
