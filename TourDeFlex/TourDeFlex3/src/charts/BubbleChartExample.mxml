@@ -34,7 +34,7 @@
 
     <!-- Define custom color and line style for the bubbles. -->
     <mx:SolidColor id="sc1" color="blue" alpha=".3"/>
-    <mx:Stroke id="stroke1" color="blue" weight="1"/>
+    <mx:SolidColorStroke id="stroke1" color="blue" weight="1"/>
 
     <mx:Panel title="BubbleChart Control Example" height="100%" width="100%">
         <mx:BubbleChart id="bubblechart" 

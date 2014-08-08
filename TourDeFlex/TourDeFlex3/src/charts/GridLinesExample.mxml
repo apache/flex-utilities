@@ -47,7 +47,7 @@
             <mx:backgroundElements>
                <mx:GridLines gridDirection="horizontal">
                     <mx:horizontalStroke>
-                        <mx:Stroke weight="1"/>
+                        <mx:SolidColorStroke weight="1"/>
                     </mx:horizontalStroke>
                     <mx:horizontalFill>
                         <mx:SolidColor color="0xCCCCCC" alpha=".66"/>

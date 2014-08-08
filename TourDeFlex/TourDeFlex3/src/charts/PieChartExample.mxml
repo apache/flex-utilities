@@ -41,13 +41,13 @@
     <mx:SolidColor id="sc3" color="0x663300" alpha=".6"/>
 
     <!-- This Stroke is used for the callout lines. -->
-    <mx:Stroke id="callouts" weight="2" color="0x999999" alpha=".8" caps="square"/>
+    <mx:SolidColorStroke id="callouts" weight="2" color="0x999999" alpha=".8" caps="square"/>
     
     <!-- This Stroke is used to separate the wedges in the pie. -->
-    <mx:Stroke id="radial" weight="1" color="0xFFFFCC" alpha=".3"/>
+    <mx:SolidColorStroke id="radial" weight="1" color="0xFFFFCC" alpha=".3"/>
 
     <!-- This Stroke is used for the outer border of the pie. -->
-    <mx:Stroke id="pieborder" color="0x000000" weight="2" alpha=".5"/>
+    <mx:SolidColorStroke id="pieborder" color="0x000000" weight="2" alpha=".5"/>
 
 
     <mx:Panel title="Olympics 2004 Medals Tally Panel" height="100%" width="100%">

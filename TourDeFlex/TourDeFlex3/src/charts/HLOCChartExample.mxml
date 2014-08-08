@@ -38,7 +38,7 @@
     </mx:Script>
 
     <!-- Define custom Stroke for the wick and ticks. -->
-    <mx:Stroke id="s1" color="0x000000" weight="5" joints="bevel" caps="square"/>
+    <mx:SolidColorStroke id="s1" color="0x000000" weight="5" joints="bevel" caps="square"/>
 
     <mx:Panel title="HLOCChart Control Example" height="100%" width="100%">
         <mx:HLOCChart id="hlocchart" height="100%" width="100%"

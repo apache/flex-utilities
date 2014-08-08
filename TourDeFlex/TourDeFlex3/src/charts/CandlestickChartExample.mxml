@@ -42,10 +42,10 @@
     <mx:SolidColor id="down" color="red" alpha=".8"/>
 
     <!-- Define custom Stroke for the candle wick. -->
-    <mx:Stroke id="wick" color="black" weight="2"/>
+    <mx:SolidColorStroke id="wick" color="black" weight="2"/>
 
     <!-- Define custom Stroke for the candle box. -->
-    <mx:Stroke id="box" color="black" weight="1"/>
+    <mx:SolidColorStroke id="box" color="black" weight="1"/>
 
     <mx:Panel title="CandlestickChart Control Example" height="100%" width="100%">
         <mx:CandlestickChart id="candlestickchart" 

@@ -40,9 +40,9 @@
     <mx:SolidColor id="sc3" color="green" alpha=".3"/>
 
     <!-- Define custom Strokes. -->
-    <mx:Stroke id = "s1" color="blue" weight="2"/>
-    <mx:Stroke id = "s2" color="red" weight="2"/>
-    <mx:Stroke id = "s3" color="green" weight="2"/>
+    <mx:SolidColorStroke id = "s1" color="blue" weight="2"/>
+    <mx:SolidColorStroke id = "s2" color="red" weight="2"/>
+    <mx:SolidColorStroke id = "s3" color="green" weight="2"/>
 
     <mx:Panel title="LineChart and AreaChart Controls Example" 
         height="100%" width="100%" layout="horizontal">
