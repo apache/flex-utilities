@@ -188,7 +188,7 @@
 	</target>
 		
 	<target name="package-tar" description="tar up all source files">     
-        <tar destfile="${basedir}/out/ApacheFlex-TourDeFlex-ComponentExplorer-${version}.tar.gz" 
+        <tar destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}.tar.gz" 
          	compression="gzip"
             longfile="gnu">
             <tarfileset dir="${basedir}/..">
@@ -216,7 +216,7 @@
 	</target>
 	
 	<target name="package-zip" description="zip up all source files">    
-        <zip destfile="${basedir}/out/ApacheFlex-TourDeFlex-ComponentExplorer-${version}.zip">
+        <zip destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}.zip">
             <fileset dir="${basedir}/..">
                 <include name="LICENSE" />
                 <include name="NOTICE" />
