@@ -179,9 +179,15 @@
 		<compile-mxml example="/validators/ZipCodeValidatorExample"/>
 	</target>
 	
-	<target name="package" description="package up all source files">
+	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
+	</target>
+	
+	<target name="package-dir">
 		<delete dir="${basedir}/out"/>  
-		<mkdir dir="${basedir}/out"/>       
+		<mkdir dir="${basedir}/out"/> 
+	</target>
+		
+	<target name="package-tar" description="tar up all source files">     
         <tar destfile="${basedir}/out/ApacheFlex-TourDeFlex-ComponentExplorer-${version}.tar.gz" 
          	compression="gzip"
             longfile="gnu">
@@ -207,6 +213,32 @@
                 <exclude name="**/*.swf" />
              </tarfileset>
          </tar>
+	</target>
+	
+	<target name="package-zip" description="zip up all source files">    
+        <zip destfile="${basedir}/out/ApacheFlex-TourDeFlex-ComponentExplorer-${version}.zip">
+            <fileset dir="${basedir}/..">
+                <include name="LICENSE" />
+                <include name="NOTICE" />
+            </fileset>
+            <fileset dir="${basedir}">
+                <include name="README" />
+                <include name="RELEASE_NOTES" />
+                <include name="build.xml" />
+                <include name="src/explorer.html" />
+                <include name="src/explorer.xml" />
+                <include name="src/AC_OETags.js" />
+                <include name="**/*.mxml" />
+                <include name="**/*.as" />
+                <include name="**/*.jpg" />
+                <include name="**/*.png" />
+                <include name="**/*.gif" />
+                <include name="**/*.ttf" />
+                <include name="**/*.mp4" />
+                <include name="**/*.mp3" />
+                <exclude name="**/*.swf" />
+             </fileset>
+         </zip>
 	</target>
    
     <target name="clean" description="clean up">
