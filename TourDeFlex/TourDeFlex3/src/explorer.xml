@@ -317,11 +317,11 @@
 				<node label="BubbleChart" app="spark/charts/BubbleChartExample" />
 				<node label="CandleStickChart" app="spark/charts/CandleStickChartExample" />
 				<node label="ColumnChart" app="spark/charts/ColumnChartExample" />
-				<node label="HLOCChart" app="spark/charts/HLOCExample" />
-				<node label="LineChart" app="spark/charts/LineExample" />
+				<node label="HLOCChart" app="spark/charts/HLOCChartExample" />
+				<node label="LineChart" app="spark/charts/LineChartExample" />
 				<node label="PieChart" app="spark/charts/PieChartExample" />
 				<node label="PlotChart" app="spark/charts/PlotChartExample" />
-				<node label="SeriesInterplate" app="spark/charts/SeriesInterplateExample" />
+				<node label="SeriesInterpolate" app="spark/charts/SeriesInterpolateExample" />
 				<node label="SeriesSlide" app="spark/charts/SeriesSlideExample" />
 				<node label="SeriesZoom" app="spark/charts/SeriesZoomExample" />
 			</node>
