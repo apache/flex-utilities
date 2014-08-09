@@ -205,27 +205,48 @@
 			</node>
 		</node>
 		<node label="Spark Framework Components">
-			<node label="Advanced CSS">
-				<node label="Descendant Selector" app="spark/css/CSSDescendantSelectorExample" />
-				<node label="Type + Class Selector" app="spark/css/CSSTypeClassSelectorExample" />
+			<node label="Techniques">
+				<node label="Advanced CSS">
+					<node label="Descendant Selector" app="spark/css/CSSDescendantSelectorExample" />
+					<node label="Type + Class Selector" app="spark/css/CSSTypeClassSelectorExample" />
+				</node>
+				<node label="Cursors">
+					<node label="Busy Cursor" app="spark/other/Cursor1Example" />
+					<node label="Custom Cursor" app="spark/other/Cursor2Example" />
+				</node>
+				<node label="Drag and Drop">
+					<node label="List to List" app="spark/other/DragAndDrop1Example" />
+					<node label="List to Panel" app="spark/other/DragAndDrop2Example" />
+				</node>
+				<node label="Custom Components">
+					<node label="Search" app="spark/components/SearchExample" />
+					<node label="Video Player" app="spark/components/VideoPlayerExample" />
+				</node>
+				<node label="Item Renderers">
+					<node label="Scale Image" app="spark/itemRenderers/ItemRenderer1Example" />
+					<node label="3D Rotate" app="spark/itemRenderers/ItemRenderer2Example" />
+				</node>
+				<node label="Events">
+					<node label="Inline property" app="spark/events/EventExample1" />
+					<node label="Inline block" app="spark/events/EventExample2" />
+					<node label="Function" app="spark/events/EventExample3" />
+					<node label="addEventListener" app="spark/events/EventExample4" />
+					<node label="Dispatch" app="spark/events/EventExample5" />
+					<node label="Custom" app="spark/events/EventExample6" />
+				</node>
+				<node label="Modules">
+					<node label="Load" app="spark/modules/ModuleExample" />
+				</node>
 			</node>
-			<node label="Cursor">
-				<node label="Busy Cursor" app="spark/other/Cursor1Example" />
-				<node label="Custom Cursor" app="spark/other/Cursor2Example" />
-			</node>
-			<node label="Custom Components">
-				<node label="Search" app="spark/components/SearchExample" />
-				<node label="Video Player" app="spark/components/VideoPlayerExample" />
-			</node>
-			<node label="Item Renderers">
-				<node label="Scale Image" app="spark/itemRenderers/ItemRenderer1Example" />
-				<node label="3D Rotate" app="spark/itemRenderers/ItemRenderer2Example" />
-			</node>
-			<node label="Effects">
+			<node label="Effects and Filters">
 				<node label="Move 3D" app="spark/effects/Move3DExample" />
+				<node label="Filter" app="spark/other/FilterExample" />
 			</node>
 			<node label="Visual Components">
 				<node label="Containers">
+					<node label="Accordion" app="spark/controls/AccordionExample" />
+					<node label="DataGroup" app="spark/controls/DataGroupExample" />
+					<node label="Form" app="spark/controls/FormExample" />
 					<node label="HGroup" app="spark/containers/SampleHGroup" />
 					<node label="VGroup" app="spark/containers/SampleVGroup" />
 					<node label="Vertical Horizontal Align" app="spark/containers/SampleVerticalHorizontalAlign" />
@@ -238,13 +259,25 @@
 					<node label="RichText" app="spark/fxg/RichTextExample" />
 				</node>
 				<node label="General Controls">
-					<node label="Accordion" app="spark/controls/AccordionExample" />
 					<node label="AdvancedDataGrid" app="spark/controls/AdvancedDatagridExample" />
 					<node label="ColorPicker" app="spark/controls/ColorPickerExample" />
 					<node label="ComboBox" app="spark/controls/ComboBoxExample" />
-					<node label="DataGroup" app="spark/controls/DataGroupExample" />
 					<node label="DataGrid" app="spark/controls/DataGridExample" />
 					<node label="Menu" app="spark/controls/MenuExample" />
+					<node label="Image" app="spark/controls/ImageExample" />
+					<node label="OLAPDataGrid" app="spark/controls/OLAPDataGridExample" />
+					<node label="ProgressBar" app="spark/controls/ProgressBarExample" />
+				</node>
+				<node label="Button Controls">
+					<node label="LinkBar" app="spark/controls/LinkBarExample" />
+					<node label="LinkButton" app="spark/controls/LinkButtonExample" />
+					<node label="PopUpButton" app="spark/controls/PopupButtonExample" />
+				</node>
+				<node label="Date Controls">
+					<node label="DateChooser" app="spark/controls/DateChooserExample" />
+					<node label="DateField" app="spark/controls/DateFieldExample" />
+				</node>
+				<node label="Text Controls">
 					<node label="RichEditableText" app="spark/controls/RichEditableTextExample" />
 				</node>
 				<node label="Layouts">
@@ -260,14 +293,25 @@
 				<node label="BubbleChart" app="spark/charts/BubbleChartExample" />
 				<node label="CandleStickChart" app="spark/charts/CandleStickChartExample" />
 				<node label="ColumnChart" app="spark/charts/ColumnChartExample" />
+				<node label="HLOCChart" app="spark/charts/HLOCExample" />
+				<node label="LineChart" app="spark/charts/LineExample" />
+				<node label="PieChart" app="spark/charts/PieChartExample" />
+				<node label="PlotChart" app="spark/charts/PlotChartExample" />
 			</node>
 			<node label="Validators and Formatters">
 				<node label="Validators">
 					<node label="CreditCardValidator" app="spark/validators/CreditCardValidatorExample" />
 					<node label="CurrencyValidator" app="spark/validators/CurrencyValidatorExample" />
+					<node label="DateValidator" app="spark/validators/DateValidatorExample" />
+					<node label="EmailValidator" app="spark/validators/EmailValidatorExample" />
+					<node label="NumberValidator" app="spark/validators/NumberValidatorExample" />
+					<node label="RegExpValidator" app="spark/validators/RegExpValidatorExample" />
 				</node>
 				<node label="Formatters">
 					<node label="CurrencyFormatter" app="spark/formatters/CurrencyFormatterExample" />
+					<node label="DateFormatter" app="spark/formatters/DateFormatterExample" />
+					<node label="NumberFormatter" app="spark/formatters/NumberFormatterExample" />
+					<node label="PhoneFormatter" app="spark/formatters/PhoneFormatterExample" />
 				</node>
 			</node>
 		</node>

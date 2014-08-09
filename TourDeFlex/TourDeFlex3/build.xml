@@ -185,6 +185,15 @@
 		<compile-mxml example="/spark/controls/DataGroupExample"/>
 		<compile-mxml example="/spark/controls/MenuExample"/>
 		<compile-mxml example="/spark/controls/RichEditableTextExample"/>
+		<compile-mxml example="/spark/controls/DateChooserExample"/>
+		<compile-mxml example="/spark/controls/DateFieldExample"/>
+		<compile-mxml example="/spark/controls/FormExample"/>
+		<compile-mxml example="/spark/controls/ImageExample"/>
+		<compile-mxml example="/spark/controls/LinkBarExample"/>
+		<compile-mxml example="/spark/controls/LinkButtonExample"/>
+		<compile-mxml example="/spark/controls/OLAPDataGridExample"/>
+		<compile-mxml example="/spark/controls/PopupButtonExample"/>
+		<compile-mxml example="/spark/controls/ProgressBarExample"/>
 		
 		<compile-mxml example="/spark/css/CSSDescendantSelectorExample"/>
 		<compile-mxml example="/spark/css/CSSTypeClassSelectorExample"/>
@@ -214,17 +223,42 @@
 		<compile-mxml example="/spark/charts/BubbleChartExample"/>
 		<compile-mxml example="/spark/charts/CandleStickChartExample"/>
 		<compile-mxml example="/spark/charts/ColumnChartExample"/>
+		<compile-mxml example="/spark/charts/HLOCChartExample"/>
+		<compile-mxml example="/spark/charts/LineChartExample"/>
+		<compile-mxml example="/spark/charts/PieChartExample"/>
+		<compile-mxml example="/spark/charts/PlotChartExample"/>
 			
 		<compile-mxml example="/spark/components/SearchExample"/>
 		<compile-mxml example="/spark/components/VideoPlayerExample"/>
 		
 		<compile-mxml example="/spark/validators/CreditCardValidatorExample"/>
-		<compile-mxml example="/spark/validators/CurrancyFormatterExample"/>
+		<compile-mxml example="/spark/validators/CurrancyValidatorExample"/>
+		<compile-mxml example="/spark/validators/DateValidatorExample"/>
+		<compile-mxml example="/spark/validators/EmailValidatorExample"/>
+		<compile-mxml example="/spark/validators/NumberValidatorExample"/>
+		<compile-mxml example="/spark/validators/RegExpValidatorExample"/>
 		
 		<compile-mxml example="/spark/formatters/CurrancyFormatterExample"/>
+		<compile-mxml example="/spark/formatters/DateFormatterExample"/>
+		<compile-mxml example="/spark/formatters/NumberFormatterExample"/>
+		<compile-mxml example="/spark/formatters/PhoneFormatterExample"/>
 		
 		<compile-mxml example="/spark/other/Cursor1Example"/>
 		<compile-mxml example="/spark/other/Cursor2Example"/>
+		<compile-mxml example="/spark/other/DragAndDrop1Example"/>
+		<compile-mxml example="/spark/other/DragAndDrop2Example"/>
+		<compile-mxml example="/spark/other/FilterExample"/>
+		
+		<compile-mxml example="/spark/events/EventExample1"/>
+		<compile-mxml example="/spark/events/EventExample2"/>
+		<compile-mxml example="/spark/events/EventExample3"/>
+		<compile-mxml example="/spark/events/EventExample4"/>
+		<compile-mxml example="/spark/events/EventExample5"/>
+		<compile-mxml example="/spark/events/EventExample6"/>
+		
+		<compile-mxml example="/spark/modules/ModuleExample"/>
+		<compile-mxml example="/spark/modules/Module1"/>
+		<compile-mxml example="/spark/modules/Module2"/>
 
 		<!-- Explorer shell -->
 		<compile-mxml example="/explorer"/>
