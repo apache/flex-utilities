@@ -41,21 +41,9 @@
             }
         }
 
-        private function sdkLoaded():void
+        private function xmlLoaded():void
         {
             explorerTree = XML(sdk.lastResult.node);
-            charts.send();
-        }
-
-        private function chartsLoaded():void
-        {
-            explorerTree.appendChild(charts.lastResult.node);
-            populateTree()
-        }
-
-        //we don't use data binding because the timing of the charts loading can be off
-        private function populateTree():void
-        {
             compLibTree.dataProvider = explorerTree;
         }
         ]]>
@@ -64,9 +52,7 @@
 	<fx:Declarations>
     	<fx:XML id="explorerTree"/>
 
-   		<mx:HTTPService id="sdk" url="explorer.xml" resultFormat="e4x" result="sdkLoaded()" />
-
-    	<mx:HTTPService id="charts" url="charts_explorer.xml" resultFormat="e4x" result="chartsLoaded()" fault="populateTree()" />
+   		<mx:HTTPService id="sdk" url="explorer.xml" resultFormat="e4x" result="xmlLoaded()" />
 	</fx:Declarations>
 	
 	<mx:HBox width="100%">
