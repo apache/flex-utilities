@@ -187,7 +187,7 @@
 						<node label="PieSeries" app="mx/charts/PieChartExample" />
 						<node label="PlotSeries" app="mx/charts/PlotChartExample" />
 					</node>
-=					<node label="Chart Effects">
+					<node label="Chart Effects">
 						<node label="SeriesInterpolate" app="mx/charts/SeriesInterpolateExample" />
 						<node label="SeriesSlide" app="mx/charts/SeriesSlideExample" />
 						<node label="SeriesZoom" app="mx/charts/SeriesZoomExample" />
@@ -208,6 +208,14 @@
 			<node label="Advanced CSS">
 				<node label="Descendant Selector" app="spark/css/CSSDescendantSelectorExample" />
 				<node label="Type + Class Selector" app="spark/css/CSSTypeClassSelectorExample" />
+			</node>
+			<node label="Cursor">
+				<node label="Busy Cursor" app="spark/other/Cursor1Example" />
+				<node label="Custom Cursor" app="spark/other/Cursor2Example" />
+			</node>
+			<node label="Custom Components">
+				<node label="Search" app="spark/components/SearchExample" />
+				<node label="Video Player" app="spark/components/VideoPlayerExample" />
 			</node>
 			<node label="Item Renderers">
 				<node label="Scale Image" app="spark/itemRenderers/ItemRenderer1Example" />
@@ -230,16 +238,36 @@
 					<node label="RichText" app="spark/fxg/RichTextExample" />
 				</node>
 				<node label="General Controls">
+					<node label="Accordion" app="spark/controls/AccordionExample" />
+					<node label="AdvancedDataGrid" app="spark/controls/AdvancedDatagridExample" />
+					<node label="ColorPicker" app="spark/controls/ColorPickerExample" />
 					<node label="ComboBox" app="spark/controls/ComboBoxExample" />
 					<node label="DataGroup" app="spark/controls/DataGroupExample" />
+					<node label="DataGrid" app="spark/controls/DataGridExample" />
 					<node label="Menu" app="spark/controls/MenuExample" />
-					<node label="Rich Editable Text" app="spark/controls/RichEditableTextExample" />
+					<node label="RichEditableText" app="spark/controls/RichEditableTextExample" />
 				</node>
 				<node label="Layouts">
 					<node label="Animated" app="spark/layouts/CustomLayoutAnimatedExample" />
 					<node label="Baseline" app="spark/layouts/CustomLayoutHBaselineExample" />
 					<node label="Image Wheel" app="spark/layouts/CustomLayoutFlickrWheelExample" />
 					<node label="Text Flow" app="spark/layouts/CustomLayoutFlowExample" />
+				</node>
+			</node>
+			<node label="Charts">
+				<node label="AreaChart" app="spark/charts/AreaChartExample" />
+				<node label="BarChart" app="spark/charts/BarChartExample" />
+				<node label="BubbleChart" app="spark/charts/BubbleChartExample" />
+				<node label="CandleStickChart" app="spark/charts/CandleStickChartExample" />
+				<node label="ColumnChart" app="spark/charts/ColumnChartExample" />
+			</node>
+			<node label="Validators and Formatters">
+				<node label="Validators">
+					<node label="CreditCardValidator" app="spark/validators/CreditCardValidatorExample" />
+					<node label="CurrencyValidator" app="spark/validators/CurrencyValidatorExample" />
+				</node>
+				<node label="Formatters">
+					<node label="CurrencyFormatter" app="spark/formatters/CurrencyFormatterExample" />
 				</node>
 			</node>
 		</node>

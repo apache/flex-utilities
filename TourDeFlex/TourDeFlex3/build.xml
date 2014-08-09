@@ -177,7 +177,11 @@
 		<compile-mxml example="/mx/validators/ZipCodeValidatorExample"/>
 		
 		<!-- Spark examples -->
+		<compile-mxml example="/spark/controls/AccordionExample"/>
+		<compile-mxml example="/spark/controls/AdvancedDatagridExample"/>
+		<compile-mxml example="/spark/controls/ColorPickerExample"/>
 		<compile-mxml example="/spark/controls/ComboBoxExample"/>
+		<compile-mxml example="/spark/controls/DataGridExample"/>
 		<compile-mxml example="/spark/controls/DataGroupExample"/>
 		<compile-mxml example="/spark/controls/MenuExample"/>
 		<compile-mxml example="/spark/controls/RichEditableTextExample"/>
@@ -205,6 +209,23 @@
 		
 		<compile-mxml example="/spark/effects/Move3DExample"/>
 		
+		<compile-mxml example="/spark/charts/AreaChartExample"/>
+		<compile-mxml example="/spark/charts/BarChartExample"/>
+		<compile-mxml example="/spark/charts/BubbleChartExample"/>
+		<compile-mxml example="/spark/charts/CandleStickChartExample"/>
+		<compile-mxml example="/spark/charts/ColumnChartExample"/>
+			
+		<compile-mxml example="/spark/components/SearchExample"/>
+		<compile-mxml example="/spark/components/VideoPlayerExample"/>
+		
+		<compile-mxml example="/spark/validators/CreditCardValidatorExample"/>
+		<compile-mxml example="/spark/validators/CurrancyFormatterExample"/>
+		
+		<compile-mxml example="/spark/formatters/CurrancyFormatterExample"/>
+		
+		<compile-mxml example="/spark/other/Cursor1Example"/>
+		<compile-mxml example="/spark/other/Cursor2Example"/>
+
 		<!-- Explorer shell -->
 		<compile-mxml example="/explorer"/>
 		<compile-mxml example="/loaderPanel"/>
