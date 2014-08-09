@@ -237,6 +237,9 @@
 				<node label="Modules">
 					<node label="Load" app="spark/modules/ModuleExample" />
 				</node>
+				<node label="Repeater">
+					<node label="Repeater" app="spark/other/RepeaterExample" />
+				</node>
 			</node>
 			<node label="Effects and Filters">
 				<node label="Move 3D" app="spark/effects/Move3DExample" />
@@ -248,6 +251,9 @@
 					<node label="DataGroup" app="spark/controls/DataGroupExample" />
 					<node label="Form" app="spark/controls/FormExample" />
 					<node label="HGroup" app="spark/containers/SampleHGroup" />
+					<node label="TabNavigator" app="spark/controls/TabNavigatorExample" />
+					<node label="TitleWindow" app="spark/controls/TitleWindowExample" />
+					<node label="ViewStack" app="spark/controls/ViewStackExample" />
 					<node label="VGroup" app="spark/containers/SampleVGroup" />
 					<node label="Vertical Horizontal Align" app="spark/containers/SampleVerticalHorizontalAlign" />
 				</node>
@@ -267,11 +273,16 @@
 					<node label="Image" app="spark/controls/ImageExample" />
 					<node label="OLAPDataGrid" app="spark/controls/OLAPDataGridExample" />
 					<node label="ProgressBar" app="spark/controls/ProgressBarExample" />
+					<node label="SWFloader" app="spark/controls/SWFLoaderExample" />
+					<node label="ToolTip" app="spark/controls/ToolTipExample" />
+					<node label="Tree" app="spark/controls/TreeExample" />
+					<node label="VideoDisplay" app="spark/controls/VideoDisplayExample" />
 				</node>
 				<node label="Button Controls">
 					<node label="LinkBar" app="spark/controls/LinkBarExample" />
 					<node label="LinkButton" app="spark/controls/LinkButtonExample" />
 					<node label="PopUpButton" app="spark/controls/PopupButtonExample" />
+					<node label="ToggleButtonBar" app="spark/controls/ToggleButtonBarExample" />
 				</node>
 				<node label="Date Controls">
 					<node label="DateChooser" app="spark/controls/DateChooserExample" />
@@ -297,6 +308,9 @@
 				<node label="LineChart" app="spark/charts/LineExample" />
 				<node label="PieChart" app="spark/charts/PieChartExample" />
 				<node label="PlotChart" app="spark/charts/PlotChartExample" />
+				<node label="SeriesInterplate" app="spark/charts/SeriesInterplateExample" />
+				<node label="SeriesSlide" app="spark/charts/SeriesSlideExample" />
+				<node label="SeriesZoom" app="spark/charts/SeriesZoomExample" />
 			</node>
 			<node label="Validators and Formatters">
 				<node label="Validators">
@@ -306,12 +320,18 @@
 					<node label="EmailValidator" app="spark/validators/EmailValidatorExample" />
 					<node label="NumberValidator" app="spark/validators/NumberValidatorExample" />
 					<node label="RegExpValidator" app="spark/validators/RegExpValidatorExample" />
+					<node label="SocialSecurityValidator" app="spark/validators/SocialSecurityValidatorExample" />
+					<node label="StringValidator" app="spark/validators/StringValidatorExample" />
+					<node label="Validator" app="spark/validators/FormValidatorExample" />
+					<node label="ZipCodeValidator" app="spark/validators/ZipCodeValidatorExample" />
 				</node>
 				<node label="Formatters">
 					<node label="CurrencyFormatter" app="spark/formatters/CurrencyFormatterExample" />
 					<node label="DateFormatter" app="spark/formatters/DateFormatterExample" />
 					<node label="NumberFormatter" app="spark/formatters/NumberFormatterExample" />
 					<node label="PhoneFormatter" app="spark/formatters/PhoneFormatterExample" />
+					<node label="SwitchFormatter" app="spark/formatters/SwitchFormatterExample" />
+					<node label="ZipCodeFormatter" app="spark/formatters/ZipCodeFormatterExample" />
 				</node>
 			</node>
 		</node>
