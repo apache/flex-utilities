@@ -48,8 +48,16 @@
 		</sequential>
 	</macrodef>	
 		
-	<target name="compile" depends="clean">
-		<!-- MX component examples -->
+	<target name="compile" depends="compile-shell,compile-mx,compile-spark">
+	</target>
+	
+	<target name="compile-shell">
+		<compile-mxml example="/explorer"/>
+		<compile-mxml example="/loaderPanel"/>
+		<compile-mxml example="/SourceTab"/>
+	</target>
+	
+	<target name="compile-mx">
 		<compile-mxml example="/mx/charts/BubbleChartExample"/>
 		<compile-mxml example="/mx/charts/CandlestickChartExample"/>
 		<compile-mxml example="/mx/charts/Column_BarChartExample"/>
@@ -175,8 +183,9 @@
 		<compile-mxml example="/mx/validators/SocialSecurityValidatorExample"/>
 		<compile-mxml example="/mx/validators/StringValidatorExample"/>
 		<compile-mxml example="/mx/validators/ZipCodeValidatorExample"/>
+	</target>
 		
-		<!-- Spark examples -->
+	<target name="compile-spark">
 		<compile-mxml example="/spark/controls/AccordionExample"/>
 		<compile-mxml example="/spark/controls/AdvancedDatagridExample"/>
 		<compile-mxml example="/spark/controls/ColorPickerExample"/>
@@ -194,7 +203,7 @@
 		<compile-mxml example="/spark/controls/OLAPDataGridExample"/>
 		<compile-mxml example="/spark/controls/PopupButtonExample"/>
 		<compile-mxml example="/spark/controls/ProgressBarExample"/>
-		<compile-mxml example="/spark/controls/SWFLoaderExample"/>
+		<!-- Currently broken <compile-mxml example="/spark/controls/SWFLoaderExample"/> -->
 		<compile-mxml example="/spark/controls/TitleWindowExample"/>
 		<compile-mxml example="/spark/controls/ToggleButtonBarExample"/>
 		<compile-mxml example="/spark/controls/ToolTipExample"/>
@@ -219,7 +228,7 @@
 		<compile-mxml example="/spark/itemRenderers/ItemRenderer2Example"/>
 		
 		<compile-mxml example="/spark/fxg/BitmapImageExample"/>
-		<compile-mxml example="/spark/fxg/ElipseExample"/>
+		<compile-mxml example="/spark/fxg/EclipseExample"/>
 		<compile-mxml example="/spark/fxg/LineExample"/>
 		<compile-mxml example="/spark/fxg/RectExample"/>
 		<compile-mxml example="/spark/fxg/RichTextExample"/>
@@ -242,7 +251,7 @@
 		<compile-mxml example="/spark/charts/LineChartExample"/>
 		<compile-mxml example="/spark/charts/PieChartExample"/>
 		<compile-mxml example="/spark/charts/PlotChartExample"/>
-		<compile-mxml example="/spark/charts/SeriesIterplatetExample"/>
+		<compile-mxml example="/spark/charts/SeriesInterpolateExample"/>
 		<compile-mxml example="/spark/charts/SeriesSlideExample"/>
 		<compile-mxml example="/spark/charts/SeriesZoomExample"/>
 			
@@ -250,7 +259,7 @@
 		<compile-mxml example="/spark/components/VideoPlayerExample"/>
 		
 		<compile-mxml example="/spark/validators/CreditCardValidatorExample"/>
-		<compile-mxml example="/spark/validators/CurrancyValidatorExample"/>
+		<compile-mxml example="/spark/validators/CurrencyValidatorExample"/>
 		<compile-mxml example="/spark/validators/DateValidatorExample"/>
 		<compile-mxml example="/spark/validators/EmailValidatorExample"/>
 		<compile-mxml example="/spark/validators/NumberValidatorExample"/>
@@ -260,7 +269,7 @@
 		<compile-mxml example="/spark/validators/FormValidatorExample"/>
 		<compile-mxml example="/spark/validators/ZipCodeValidatorExample"/>
 		
-		<compile-mxml example="/spark/formatters/CurrancyFormatterExample"/>
+		<compile-mxml example="/spark/formatters/CurrencyFormatterExample"/>
 		<compile-mxml example="/spark/formatters/DateFormatterExample"/>
 		<compile-mxml example="/spark/formatters/NumberFormatterExample"/>
 		<compile-mxml example="/spark/formatters/PhoneFormatterExample"/>
@@ -287,13 +296,8 @@
 		<compile-mxml example="/spark/modules/Module2"/>
 		
 		<compile-mxml example="/spark/tlf/TextLayoutEditorSample"/>
-
-		<!-- Explorer shell -->
-		<compile-mxml example="/explorer"/>
-		<compile-mxml example="/loaderPanel"/>
-		<compile-mxml example="/SourceTab"/>
 	</target>
-	
+		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
 	</target>
 	
