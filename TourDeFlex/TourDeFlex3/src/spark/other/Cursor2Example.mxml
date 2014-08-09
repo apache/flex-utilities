@@ -31,7 +31,7 @@
 			
 			private var cursorID:Number = 0;
 			// Embed the cursor symbol.
-			[Embed(source="aircursor.png")]
+			[Embed(source="assets/ApacheFlexIcon.png")]
 			private var waitCursorSymbol:Class;           
 			
 			private function setCursor(cursorType:String):void 
