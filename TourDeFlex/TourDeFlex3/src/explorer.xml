@@ -17,8 +17,8 @@
   -->
 
 <compTree>
-	<node label="FrameWork Components">
-		<node label="MX FrameWork Components">
+	<node>
+		<node label="MX Framework Components">
 			<node label="Visual Components">
 				<node label="General Controls">
 					<node label="Alert" app="controls/SimpleAlert" />
@@ -203,6 +203,8 @@
 					<node label="ADG Printing" app="printing/AdvancedPrintDataGridExample" />
 				</node>
 			</node>
+		</node>
+		<node label="Spark Framework Components">
 		</node>
 	</node>
 </compTree>
