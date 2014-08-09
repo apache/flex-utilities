@@ -21,190 +21,227 @@
 		<node label="MX Framework Components">
 			<node label="Visual Components">
 				<node label="General Controls">
-					<node label="Alert" app="controls/SimpleAlert" />
-					<node label="ColorPicker" app="controls/ColorPickerExample" />
-					<node label="ComboBox" app="controls/SimpleComboBox" />
-					<node label="DataGrid" app="controls/SimpleDataGrid" />
-					<node label="HorizontalList" app="controls/HorizontalListExample" />
-					<node label="HRule" app="controls/SimpleHRule" />
-					<node label="HScrollBar" app="controls/HScrollBarExample" />
-					<node label="HSlider" app="controls/SimpleImageHSlider" />
-					<node label="List" app="controls/SimpleList" />
-					<node label="NumericStepper" app="controls/NumericStepperExample" />
-					<node label="ProgressBar" app="controls/SimpleProgressBar" />
-					<node label="Spacer" app="controls/SpacerExample" />
-					<node label="TabBar" app="controls/TabBarExample" />
-					<node label="TileList" app="controls/TileListExample" />
-					<node label="Tree" app="controls/TreeExample" />
-					<node label="VRule" app="controls/SimpleVRule" />
-					<node label="VScrollBar" app="controls/VScrollBarExample" />
-					<node label="VSlider" app="controls/SimpleImageVSlider" />
+					<node label="Alert" app="mx/controls/SimpleAlert" />
+					<node label="ColorPicker" app="mx/controls/ColorPickerExample" />
+					<node label="ComboBox" app="mx/controls/SimpleComboBox" />
+					<node label="DataGrid" app="mx/controls/SimpleDataGrid" />
+					<node label="HorizontalList" app="mx/controls/HorizontalListExample" />
+					<node label="HRule" app="mx/controls/SimpleHRule" />
+					<node label="HScrollBar" app="mx/controls/HScrollBarExample" />
+					<node label="HSlider" app="mx/controls/SimpleImageHSlider" />
+					<node label="List" app="mx/controls/SimpleList" />
+					<node label="NumericStepper" app="mx/controls/NumericStepperExample" />
+					<node label="ProgressBar" app="mx/controls/SimpleProgressBar" />
+					<node label="Spacer" app="mx/controls/SpacerExample" />
+					<node label="TabBar" app="mx/controls/TabBarExample" />
+					<node label="TileList" app="mx/controls/TileListExample" />
+					<node label="Tree" app="mx/controls/TreeExample" />
+					<node label="VRule" app="mx/controls/SimpleVRule" />
+					<node label="VScrollBar" app="mx/controls/VScrollBarExample" />
+					<node label="VSlider" app="mx/controls/SimpleImageVSlider" />
 				</node>
 				<node label="Button Controls">
-					<node label="Button" app="controls/ButtonExample" />
-					<node label="ButtonBar" app="controls/ButtonBarExample" />
-					<node label="CheckBox" app="controls/CheckBoxExample" />
-					<node label="LinkBar" app="controls/LinkBarExample" />
-					<node label="LinkButton" app="controls/LinkButtonExample" />
-					<node label="PopUpButton" app="controls/PopUpButtonExample" />
-					<node label="RadioButton" app="controls/RadioButtonExample" />
-					<node label="RadioButtonGroup" app="controls/RadioButtonGroupExample" />
-					<node label="ToggleButtonBar" app="controls/ToggleButtonBarExample" />
+					<node label="Button" app="mx/controls/ButtonExample" />
+					<node label="ButtonBar" app="mx/controls/ButtonBarExample" />
+					<node label="CheckBox" app="mx/controls/CheckBoxExample" />
+					<node label="LinkBar" app="mx/controls/LinkBarExample" />
+					<node label="LinkButton" app="mx/controls/LinkButtonExample" />
+					<node label="PopUpButton" app="mx/controls/PopUpButtonExample" />
+					<node label="RadioButton" app="mx/controls/RadioButtonExample" />
+					<node label="RadioButtonGroup" app="mx/controls/RadioButtonGroupExample" />
+					<node label="ToggleButtonBar" app="mx/controls/ToggleButtonBarExample" />
 				</node>
 				<node label="Date Controls">
-					<node label="DateChooser" app="controls/DateChooserExample" />
-					<node label="DateField" app="controls/DateFieldExample" />
+					<node label="DateChooser" app="mx/controls/DateChooserExample" />
+					<node label="DateField" app="mx/controls/DateFieldExample" />
 				</node>
 				<node label="Loader Controls">
-					<node label="Image" app="controls/SimpleImage" />
-					<node label="SWFLoader" app="controls/SimpleLoader" src="controls/Local.mxml" />
-					<node label="VideoDisplay" app="controls/VideoDisplayExample" />
+					<node label="Image" app="mx/controls/SimpleImage" />
+					<node label="SWFLoader" app="mx/controls/SimpleLoader" src="controls/Local.mxml" />
+					<node label="VideoDisplay" app="mx/controls/VideoDisplayExample" />
 				</node>
 				<node label="Menu Controls">
-					<node label="Menu" app="controls/SimpleMenuExample" />
-					<node label="MenuBar" app="controls/MenuBarExample" />
-					<node label="PopUpMenuButton" app="controls/PopUpButtonMenuExample" />
+					<node label="Menu" app="mx/controls/SimpleMenuExample" />
+					<node label="MenuBar" app="mx/controls/MenuBarExample" />
+					<node label="PopUpMenuButton" app="mx/controls/PopUpButtonMenuExample" />
 				</node>
 				<node label="Text Controls">
-					<node label="Label" app="controls/LabelExample" />
-					<node label="RichTextEditor" app="controls/RichTextEditorExample" />
-					<node label="Text" app="controls/TextExample" />
-					<node label="TextArea" app="controls/TextAreaExample" />
-					<node label="TextInput" app="controls/TextInputExample" />
+					<node label="Label" app="mx/controls/LabelExample" />
+					<node label="RichTextEditor" app="mx/controls/RichTextEditorExample" />
+					<node label="Text" app="mx/controls/TextExample" />
+					<node label="TextArea" app="mx/controls/TextAreaExample" />
+					<node label="TextInput" app="mx/controls/TextInputExample" />
 				</node>
 				<node label="Containers">
-					<node label="Application" app="core/SimpleApplicationExample" />
-					<node label="Accordion" app="containers/AccordionExample" />
-					<node label="ApplicationControlBar" app="containers/SimpleApplicationControlBarExample" />
-					<node label="Box" app="containers/SimpleBoxExample" />
-					<node label="Canvas" app="containers/SimpleCanvasExample" />
-					<node label="ControlBar" app="containers/SimpleControlBarExample" />
-					<node label="DividedBox" app="containers/DividedBoxExample" />
-					<node label="Form, FormHeading, FormItem" app="containers/FormExample" />
-					<node label="Grid, GridItem, GridRow" app="containers/GridLayoutExample" />
-					<node label="HBox" app="containers/HBoxExample" />
-					<node label="HDividedBox" app="containers/HDividedBoxExample" />
-					<node label="Panel" app="containers/SimplePanelExample" />
-					<node label="TabNavigator" app="containers/TabNavigatorExample" />
-					<node label="Tile" app="containers/TileLayoutExample" />
-					<node label="TitleWindow" app="containers/TitleWindowApp"
+					<node label="Application" app="mx/core/SimpleApplicationExample" />
+					<node label="Accordion" app="mx/containers/AccordionExample" />
+					<node label="ApplicationControlBar" app="mx/containers/SimpleApplicationControlBarExample" />
+					<node label="Box" app="mx/containers/SimpleBoxExample" />
+					<node label="Canvas" app="mx/containers/SimpleCanvasExample" />
+					<node label="ControlBar" app="mx/containers/SimpleControlBarExample" />
+					<node label="DividedBox" app="mx/containers/DividedBoxExample" />
+					<node label="Form, FormHeading, FormItem" app="mx/containers/FormExample" />
+					<node label="Grid, GridItem, GridRow" app="mx/containers/GridLayoutExample" />
+					<node label="HBox" app="mx/containers/HBoxExample" />
+					<node label="HDividedBox" app="mx/containers/HDividedBoxExample" />
+					<node label="Panel" app="mx/containers/SimplePanelExample" />
+					<node label="TabNavigator" app="mx/containers/TabNavigatorExample" />
+					<node label="Tile" app="mx/containers/TileLayoutExample" />
+					<node label="TitleWindow" app="mx/containers/TitleWindowApp"
 						src="containers/SimpleTitleWindowExample.mxml" />
-					<node label="VBox" app="containers/VBoxExample" />
-					<node label="VDividedBox" app="containers/VDividedBoxExample" />
-					<node label="ViewStack" app="containers/ViewStackExample" />
+					<node label="VBox" app="mx/containers/VBoxExample" />
+					<node label="VDividedBox" app="mx/containers/VDividedBoxExample" />
+					<node label="ViewStack" app="mx/containers/ViewStackExample" />
 				</node>
 				<node label="Repeater Control">
-					<node label="Repeater" app="core/RepeaterExample" />
+					<node label="Repeater" app="mx/core/RepeaterExample" />
 				</node>
 			</node>
 			<node label="Print Controls">
-				<node label="FlexPrintJob, PrintDataGrid" app="printing/PrintDataGridExample"
+				<node label="FlexPrintJob, PrintDataGrid" app="mx/printing/PrintDataGridExample"
 					src="printing/FormPrintView.mxml&amp;printing/FormPrintHeader.mxml&amp;printing/FormPrintFooter.mxml" />
 			</node>
 			<node label="Validators and Formatters">
 				<node label="Validators">
-					<node label="CreditCardValidator" app="validators/CreditCardValidatorExample" />
-					<node label="CurrencyValidator" app="validators/CurrencyValidatorExample" />
-					<node label="DateValidator" app="validators/DateValidatorExample" />
-					<node label="EmailValidator" app="validators/EmailValidatorExample" />
-					<node label="NumberValidator" app="validators/NumberValidatorExample" />
-					<node label="PhoneNumberValidator" app="validators/PhoneNumberValidatorExample" />
-					<node label="RegExpValidator" app="validators/RegExValidatorExample" />
-					<node label="SocialSecurityValidator" app="validators/SocialSecurityValidatorExample" />
-					<node label="StringValidator" app="validators/StringValidatorExample" />
-					<node label="Validator" app="validators/SimpleValidatorExample" />
-					<node label="ZipCodeValidator" app="validators/ZipCodeValidatorExample" />
+					<node label="CreditCardValidator" app="mx/validators/CreditCardValidatorExample" />
+					<node label="CurrencyValidator" app="mx/validators/CurrencyValidatorExample" />
+					<node label="DateValidator" app="mx/validators/DateValidatorExample" />
+					<node label="EmailValidator" app="mx/validators/EmailValidatorExample" />
+					<node label="NumberValidator" app="mx/validators/NumberValidatorExample" />
+					<node label="PhoneNumberValidator" app="mx/validators/PhoneNumberValidatorExample" />
+					<node label="RegExpValidator" app="mx/validators/RegExValidatorExample" />
+					<node label="SocialSecurityValidator" app="mx/validators/SocialSecurityValidatorExample" />
+					<node label="StringValidator" app="mx/validators/StringValidatorExample" />
+					<node label="Validator" app="mx/validators/SimpleValidatorExample" />
+					<node label="ZipCodeValidator" app="mx/validators/ZipCodeValidatorExample" />
 				</node>
 				<node label="Formatters">
-					<node label="CurrencyFormatter" app="formatters/CurrencyFormatterExample" />
-					<node label="DateFormatter" app="formatters/DateFormatterExample" />
-					<node label="Formatter" app="formatters/SimpleFormatterExample" />
-					<node label="NumberFormatter" app="formatters/NumberFormatterExample" />
-					<node label="PhoneFormatter" app="formatters/PhoneFormatterExample" />
-					<node label="SwitchSymbolFormatter" app="formatters/SwitchSymbolFormatterExample" />
-					<node label="ZipCodeFormatter" app="formatters/ZipCodeFormatterExample" />
+					<node label="CurrencyFormatter" app="mx/formatters/CurrencyFormatterExample" />
+					<node label="DateFormatter" app="mx/formatters/DateFormatterExample" />
+					<node label="Formatter" app="mx/formatters/SimpleFormatterExample" />
+					<node label="NumberFormatter" app="mx/formatters/NumberFormatterExample" />
+					<node label="PhoneFormatter" app="mx/formatters/PhoneFormatterExample" />
+					<node label="SwitchSymbolFormatter" app="mx/formatters/SwitchSymbolFormatterExample" />
+					<node label="ZipCodeFormatter" app="mx/formatters/ZipCodeFormatterExample" />
 				</node>
 			</node>
 			<node label="Effects, View States, and Transitions">
 				<node label="Effects">
-					<node label="AddItemActionEffect" app="effects/AddItemActionEffectExample" />
-					<node label="AnimateProperty" app="effects/AnimatePropertyEffectExample" />
-					<node label="Blur" app="effects/BlurEffectExample" />
-					<node label="Dissolve" app="effects/DissolveEffectExample" />
-					<node label="Effect" app="effects/SimpleEffectExample" />
-					<node label="Fade" app="effects/FadeEffectExample" />
-					<node label="Glow" app="effects/GlowEffectExample" />
-					<node label="Iris" app="effects/IrisEffectExample" />
-					<node label="Move" app="effects/MoveEffectExample" />
-					<node label="Parallel" app="effects/ParallelEffectExample" />
-					<node label="Pause" app="effects/PauseEffectExample" />
-					<node label="RemoveItemActionEffect" app="effects/AddItemActionEffectExample" />
-					<node label="Resize" app="effects/ResizeEffectExample" />
-					<node label="Rotate" app="effects/RotateEffectExample" />
-					<node label="Sequence" app="effects/SequenceEffectExample" />
-					<node label="SoundEffect" app="effects/SoundEffectExample" />
-					<node label="WipeDown" app="effects/WipeDownExample" />
-					<node label="WipeLeft" app="effects/WipeLeftExample" />
-					<node label="WipeRight" app="effects/WipeRightExample" />
-					<node label="WipeUp" app="effects/WipeUpExample" />
-					<node label="Zoom" app="effects/ZoomEffectExample" />
+					<node label="AddItemActionEffect" app="mx/effects/AddItemActionEffectExample" />
+					<node label="AnimateProperty" app="mx/effects/AnimatePropertyEffectExample" />
+					<node label="Blur" app="mx/effects/BlurEffectExample" />
+					<node label="Dissolve" app="mx/effects/DissolveEffectExample" />
+					<node label="Effect" app="mx/effects/SimpleEffectExample" />
+					<node label="Fade" app="mx/effects/FadeEffectExample" />
+					<node label="Glow" app="mx/effects/GlowEffectExample" />
+					<node label="Iris" app="mx/effects/IrisEffectExample" />
+					<node label="Move" app="mx/effects/MoveEffectExample" />
+					<node label="Parallel" app="mx/effects/ParallelEffectExample" />
+					<node label="Pause" app="mx/effects/PauseEffectExample" />
+					<node label="RemoveItemActionEffect" app="mx/effects/AddItemActionEffectExample" />
+					<node label="Resize" app="mx/effects/ResizeEffectExample" />
+					<node label="Rotate" app="mx/effects/RotateEffectExample" />
+					<node label="Sequence" app="mx/effects/SequenceEffectExample" />
+					<node label="SoundEffect" app="mx/effects/SoundEffectExample" />
+					<node label="WipeDown" app="mx/effects/WipeDownExample" />
+					<node label="WipeLeft" app="mx/effects/WipeLeftExample" />
+					<node label="WipeRight" app="mx/effects/WipeRightExample" />
+					<node label="WipeUp" app="mx/effects/WipeUpExample" />
+					<node label="Zoom" app="mx/effects/ZoomEffectExample" />
 				</node>
 				<node label="View States">
-					<node label="State" app="states/StatesExample" />
+					<node label="State" app="mx/states/StatesExample" />
 				</node>
 				<node label="Transitions">
-					<node label="Transition" app="states/TransitionExample" />
+					<node label="Transition" app="mx/states/TransitionExample" />
 				</node>
 			</node>
 			<node label="Datavisualization Components">
 				<node label="Charts">
 					<node label="Chart Controls">
-						<node label="AreaChart" app="charts/Line_AreaChartExample" />
-						<node label="AxisRenderer" app="charts/HLOCChartExample" />
-						<node label="BarChart" app="charts/Column_BarChartExample" />
-						<node label="BubbleChart" app="charts/BubbleChartExample" />
-						<node label="CandlestickChart" app="charts/CandlestickChartExample" />
-						<node label="CategoryAxis" app="charts/HLOCChartExample" />
-						<node label="ColumnChart" app="charts/Column_BarChartExample" />
-						<node label="DateTimeAxis" app="charts/DateTimeAxisExample" />
-						<node label="GridLines" app="charts/GridLinesExample" />
-						<node label="HLOCChart" app="charts/HLOCChartExample" />
-						<node label="Legend" app="charts/PlotChartExample" />
-						<node label="LinearAxis" app="charts/HLOCChartExample" />
-						<node label="LineChart" app="charts/Line_AreaChartExample" />
-						<node label="LogAxis" app="charts/LogAxisExample" />
-						<node label="PieChart" app="charts/PieChartExample" />
-						<node label="PlotChart" app="charts/PlotChartExample" />
+						<node label="AreaChart" app="mx/charts/Line_AreaChartExample" />
+						<node label="AxisRenderer" app="mx/charts/HLOCChartExample" />
+						<node label="BarChart" app="mx/charts/Column_BarChartExample" />
+						<node label="BubbleChart" app="mx/charts/BubbleChartExample" />
+						<node label="CandlestickChart" app="mx/charts/CandlestickChartExample" />
+						<node label="CategoryAxis" app="mx/charts/HLOCChartExample" />
+						<node label="ColumnChart" app="mx/charts/Column_BarChartExample" />
+						<node label="DateTimeAxis" app="mx/charts/DateTimeAxisExample" />
+						<node label="GridLines" app="mx/charts/GridLinesExample" />
+						<node label="HLOCChart" app="mx/charts/HLOCChartExample" />
+						<node label="Legend" app="mx/charts/PlotChartExample" />
+						<node label="LinearAxis" app="mx/charts/HLOCChartExample" />
+						<node label="LineChart" app="mx/charts/Line_AreaChartExample" />
+						<node label="LogAxis" app="mx/charts/LogAxisExample" />
+						<node label="PieChart" app="mx/charts/PieChartExample" />
+						<node label="PlotChart" app="mx/charts/PlotChartExample" />
 					</node>
 					<node label="Chart Series">
-						<node label="AreaSeries" app="charts/Line_AreaChartExample" />
-						<node label="BarSeries" app="charts/Column_BarChartExample" />
-						<node label="BubbleSeries" app="charts/BubbleChartExample" />
-						<node label="CandlestickSeries" app="charts/CandlestickChartExample" />
-						<node label="ColumnSeries" app="charts/Column_BarChartExample" />
-						<node label="HLOCSeries" app="charts/HLOCChartExample" />
-						<node label="LineSeries" app="charts/Line_AreaChartExample" />
-						<node label="PieSeries" app="charts/PieChartExample" />
-						<node label="PlotSeries" app="charts/PlotChartExample" />
+						<node label="AreaSeries" app="mx/charts/Line_AreaChartExample" />
+						<node label="BarSeries" app="mx/charts/Column_BarChartExample" />
+						<node label="BubbleSeries" app="mx/charts/BubbleChartExample" />
+						<node label="CandlestickSeries" app="mx/charts/CandlestickChartExample" />
+						<node label="ColumnSeries" app="mx/charts/Column_BarChartExample" />
+						<node label="HLOCSeries" app="mx/charts/HLOCChartExample" />
+						<node label="LineSeries" app="mx/charts/Line_AreaChartExample" />
+						<node label="PieSeries" app="mx/charts/PieChartExample" />
+						<node label="PlotSeries" app="mx/charts/PlotChartExample" />
 					</node>
 =					<node label="Chart Effects">
-						<node label="SeriesInterpolate" app="charts/SeriesInterpolateExample" />
-						<node label="SeriesSlide" app="charts/SeriesSlideExample" />
-						<node label="SeriesZoom" app="charts/SeriesZoomExample" />
+						<node label="SeriesInterpolate" app="mx/charts/SeriesInterpolateExample" />
+						<node label="SeriesSlide" app="mx/charts/SeriesSlideExample" />
+						<node label="SeriesZoom" app="mx/charts/SeriesZoomExample" />
 					</node>
 				</node>
 				<node label="AdancedDataGrid">
-					<node label="AdvancedDataGrid" app="controls/AdvancedDataGridExample" />
+					<node label="AdvancedDataGrid" app="mx/controls/AdvancedDataGridExample" />
 				</node>
 				<node label="OLAPDataGrid">
-					<node label="OLAPDataGrid" app="controls/OLAPDataGridExample" />
+					<node label="OLAPDataGrid" app="mx/controls/OLAPDataGridExample" />
 				</node>
 				<node label="Printing">
-					<node label="ADG Printing" app="printing/AdvancedPrintDataGridExample" />
+					<node label="ADG Printing" app="mx/printing/AdvancedPrintDataGridExample" />
 				</node>
 			</node>
 		</node>
 		<node label="Spark Framework Components">
+			<node label="Advanced CSS">
+				<node label="Descendant Selector" app="spark/css/CSSDescendantSelectorExample" />
+				<node label="Type + Class Selector" app="spark/css/CSSTypeClassSelectorExample" />
+			</node>
+			<node label="Item Renderers">
+				<node label="Scale Image" app="spark/itemRenderers/ItemRenderer1Example" />
+				<node label="3D Rotate" app="spark/itemRenderers/ItemRenderer2Example" />
+			</node>
+			<node label="Effects">
+				<node label="Move 3D" app="spark/effects/Move3DExample" />
+			</node>
+			<node label="Visual Components">
+				<node label="Containers">
+					<node label="HGroup" app="spark/containers/SampleHGroup" />
+					<node label="VGroup" app="spark/containers/SampleVGroup" />
+					<node label="Vertical Horizontal Align" app="spark/containers/SampleVerticalHorizontalAlign" />
+				</node>
+				<node label="FXG">
+					<node label="Image" app="spark/fxg/BitmapImageExample" />
+					<node label="Elipse" app="spark/fxg/EclipseExample" />
+					<node label="Line" app="spark/fxg/LineExample" />
+					<node label="Rectangle" app="spark/fxg/RectExample" />
+					<node label="RichText" app="spark/fxg/RichTextExample" />
+				</node>
+				<node label="General Controls">
+					<node label="ComboBox" app="spark/controls/ComboBoxExample" />
+					<node label="DataGroup" app="spark/controls/DataGroupExample" />
+					<node label="Menu" app="spark/controls/MenuExample" />
+					<node label="Rich Editable Text" app="spark/controls/RichEditableTextExample" />
+				</node>
+				<node label="Layouts">
+					<node label="Animated" app="spark/layouts/CustomLayoutAnimatedExample" />
+					<node label="Baseline" app="spark/layouts/CustomLayoutHBaselineExample" />
+					<node label="Image Wheel" app="spark/layouts/CustomLayoutFlickrWheelExample" />
+					<node label="Text Flow" app="spark/layouts/CustomLayoutFlowExample" />
+				</node>
+			</node>
 		</node>
 	</node>
 </compTree>

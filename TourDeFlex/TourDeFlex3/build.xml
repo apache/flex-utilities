@@ -176,6 +176,35 @@
 		<compile-mxml example="/mx/validators/StringValidatorExample"/>
 		<compile-mxml example="/mx/validators/ZipCodeValidatorExample"/>
 		
+		<!-- Spark examples -->
+		<compile-mxml example="/spark/controls/ComboBoxExample"/>
+		<compile-mxml example="/spark/controls/DataGroupExample"/>
+		<compile-mxml example="/spark/controls/MenuExample"/>
+		<compile-mxml example="/spark/controls/RichEditableTextExample"/>
+		
+		<compile-mxml example="/spark/css/CSSDescendantSelectorExample"/>
+		<compile-mxml example="/spark/css/CSSTypeClassSelectorExample"/>
+		
+		<compile-mxml example="/spark/layouts/CustomLayoutAnimatedExample"/>
+		<compile-mxml example="/spark/layouts/CustomLayoutFlickrWheelExample"/>
+		<compile-mxml example="/spark/layouts/CustomLayoutFlowExample"/>
+		<compile-mxml example="/spark/layouts/CustomLayoutHBaselineExample"/>
+		
+		<compile-mxml example="/spark/itemRenderers/ItemRenderer1Example"/>
+		<compile-mxml example="/spark/itemRenderers/ItemRenderer2Example"/>
+		
+		<compile-mxml example="/spark/fxg/BitmapImageExample"/>
+		<compile-mxml example="/spark/fxg/ElipseExample"/>
+		<compile-mxml example="/spark/fxg/LineExample"/>
+		<compile-mxml example="/spark/fxg/RectExample"/>
+		<compile-mxml example="/spark/fxg/RichTextExample"/>
+		
+		<compile-mxml example="/spark/containers/SampleHGroup"/>
+		<compile-mxml example="/spark/containers/SampleVGroup"/>
+		<compile-mxml example="/spark/containers/SampleVerticalHorizontalAlign"/>
+		
+		<compile-mxml example="/spark/effects/Move3DExample"/>
+		
 		<!-- Explorer shell -->
 		<compile-mxml example="/explorer"/>
 		<compile-mxml example="/loaderPanel"/>
