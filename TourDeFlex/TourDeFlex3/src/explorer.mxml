@@ -56,7 +56,7 @@
 	</fx:Declarations>
 	
 	<mx:HBox width="100%">
-		<mx:Image source="./controls/assets/ApacheFlexIcon.png" />
+		<mx:Image source="./mx/controls/assets/ApacheFlexIcon.png" />
 		<mx:Label text="{FULL_TITLE}" fontSize="20" fontWeight="bold" />
 	</mx:HBox>
     <mx:HDividedBox width="100%" height="100%">
