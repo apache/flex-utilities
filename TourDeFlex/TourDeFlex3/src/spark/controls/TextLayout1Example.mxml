@@ -20,7 +20,7 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
-			   xmlns:local="*" creationComplete="init()" viewSourceURL="srcview/index.html">
+			   xmlns:local="*" creationComplete="init()">
 	
 	<!-- Based on original code from here and updated and enhanced for Flex 4:
 		http://www.adobe.com/devnet/flex/articles/text_layout_framework_04.html
@@ -53,6 +53,7 @@
 			import spark.components.Group;
 			import spark.core.SpriteVisualElement;
 			
+			[Bindable]
 			public var directions:ArrayCollection = new ArrayCollection(
 				[
 					{label:"Left-to-Right", data:Direction.LTR},
@@ -154,7 +155,7 @@
 				<s:NumericStepper id="cols"  minimum="1" maximum="20" snapInterval="1" change="changeNoColumns(event)" />
 				<s:Label text="Text Direction:"/>
 				<s:DropDownList id="direction" change="changeTextDirection(event)" dataProvider="{directions}" 
-								selectedItem="{directions[0]}"/>
+								selectedItem="{directions.getItemAt(0)}"/>
 				<s:Button label="Undo" click="undo_clickHandler(event)"/>
 				<s:Button label="Redo" click="redo_clickHandler(event)"/>
 			</s:HGroup>

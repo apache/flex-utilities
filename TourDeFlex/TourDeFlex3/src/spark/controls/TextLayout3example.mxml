@@ -40,9 +40,11 @@
 	<fx:Script><![CDATA[
 		import flashx.textLayout.conversion.TextConverter;
 		import flashx.textLayout.elements.TextFlow;
-		
+		import spark.components.RichEditableText;
 		import spark.utils.TextFlowUtil;
+		
 		XML.ignoreWhitespace = false; 
+		
 		private function init():void {
 			// Creates a TextFlow by importing a String containing the markup language used by the Text Layout Framework.
 			// If you specify it, don't forget the namespace -> xmlns="http://ns.adobe.com/textLayout/2008"
@@ -55,7 +57,7 @@
 			
 			// This line shows how you would import plain text with no paragraph spacing
 			var autoMarkup:String = "This is just a plain old string that has no markup within it."; 
-			rt3.textDisplay.textFlow = TextFlowUtil.importFromString(autoMarkup);
+			RichEditableText(rt3.textDisplay).textFlow = TextFlowUtil.importFromString(autoMarkup);
 			
 			// This example shows how you can use the TextConverter class from TLF to import HTML formatted text
 			// See the docs for the subset of HTML that is supported: 

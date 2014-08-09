@@ -20,7 +20,7 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin" viewSourceURL="srcview/index.html">
+			   skinClass="TDFGradientBackgroundSkin">
 	
 	<fx:Script>
 		<![CDATA[
@@ -54,7 +54,7 @@
 				<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
 			</s:layout>
 			<s:Label color="0x323232" text="Sample of image embeded at compile time." />
-			<mx:Image id="embededImage" source="@Embed('images/compass.jpg')" creationComplete="smoothImage(event);"/>
+			<mx:Image id="embededImage" source="@Embed('assets/ApacheFlexLogo.png')" creationComplete="smoothImage(event);"/>
 		</s:BorderContainer>
 		
 		<s:BorderContainer width="50%" borderColor="0xACACAC" height="100%" borderStyle="solid">

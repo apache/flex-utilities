@@ -61,7 +61,7 @@
 			
         <!-- Single image, scaled to fit specified dimensions. -->
         <s:Graphic x="150" y="0">
-            <s:BitmapImage id="bg2" source="@Embed('assets/AirIcon12x12.gif')" width="120" height="120" fillMode="{fillModes.selectedItem}"
+            <s:BitmapImage id="bg2" source="@Embed('assets/ApacheFlexLogo.png')" width="120" height="120" fillMode="{fillModes.selectedItem}"
 						   smooth="{cbSmooth.selected}" blendMode="{blends.selectedItem}"/>
         </s:Graphic>
 

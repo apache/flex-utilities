@@ -27,13 +27,7 @@
 		@namespace s "library://ns.adobe.com/flex/spark";
 		@namespace mx "library://ns.adobe.com/flex/halo";
 		
-		@font-face {
-			src: url("assets/MyriadPro-Semibold.otf");
-			fontFamily: "main";
-		}
-		
 		s|Application {
-			font-family: main;
 			font-size: 14;
 		}
 		
