@@ -200,6 +200,12 @@
 		<compile-mxml example="/spark/controls/ToolTipExample"/>
 		<compile-mxml example="/spark/controls/TreeExample"/>
 		<compile-mxml example="/spark/controls/ViewStackExample"/>
+		<compile-mxml example="/spark/controls/TextAreaExample"/>
+		<compile-mxml example="/spark/controls/TextInputExample"/>
+		<compile-mxml example="/spark/controls/TextLayout1Example"/>
+		<compile-mxml example="/spark/controls/TextLayout2Example"/>
+		<compile-mxml example="/spark/controls/TextLayout3Example"/>
+		<compile-mxml example="/spark/controls/TextLayout4Example"/>
 		
 		<compile-mxml example="/spark/css/CSSDescendantSelectorExample"/>
 		<compile-mxml example="/spark/css/CSSTypeClassSelectorExample"/>
@@ -221,8 +227,11 @@
 		<compile-mxml example="/spark/containers/SampleHGroup"/>
 		<compile-mxml example="/spark/containers/SampleVGroup"/>
 		<compile-mxml example="/spark/containers/SampleVerticalHorizontalAlign"/>
+		<compile-mxml example="/spark/containers/SkinableDataContainerExample"/>
+		<compile-mxml example="/spark/containers/TileGroupExample"/>
 		
 		<compile-mxml example="/spark/effects/Move3DExample"/>
+		<compile-mxml example="/spark/effects/WipeExample"/>
 		
 		<compile-mxml example="/spark/charts/AreaChartExample"/>
 		<compile-mxml example="/spark/charts/BarChartExample"/>
@@ -264,6 +273,7 @@
 		<compile-mxml example="/spark/other/DragAndDrop2Example"/>
 		<compile-mxml example="/spark/other/FilterExample"/>
 		<compile-mxml example="/spark/other/RepeaterExample"/>
+		<compile-mxml example="/spark/other/ScrollBarsExample"/>
 		
 		<compile-mxml example="/spark/events/EventExample1"/>
 		<compile-mxml example="/spark/events/EventExample2"/>
@@ -275,6 +285,8 @@
 		<compile-mxml example="/spark/modules/ModuleExample"/>
 		<compile-mxml example="/spark/modules/Module1"/>
 		<compile-mxml example="/spark/modules/Module2"/>
+		
+		<compile-mxml example="/spark/tlf/TextLayoutEditorSample"/>
 
 		<!-- Explorer shell -->
 		<compile-mxml example="/explorer"/>

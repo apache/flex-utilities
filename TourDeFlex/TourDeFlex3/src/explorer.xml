@@ -240,10 +240,14 @@
 				<node label="Repeater">
 					<node label="Repeater" app="spark/other/RepeaterExample" />
 				</node>
+				<node label="ScrollBars">
+					<node label="ScrollBars" app="spark/other/ScrollBarsExample" />
+				</node>
 			</node>
 			<node label="Effects and Filters">
 				<node label="Move 3D" app="spark/effects/Move3DExample" />
 				<node label="Filter" app="spark/other/FilterExample" />
+				<node label="Wipe" app="spark/effects/WipeExample" />
 			</node>
 			<node label="Visual Components">
 				<node label="Containers">
@@ -252,6 +256,8 @@
 					<node label="Form" app="spark/controls/FormExample" />
 					<node label="HGroup" app="spark/containers/SampleHGroup" />
 					<node label="TabNavigator" app="spark/controls/TabNavigatorExample" />
+					<node label="SkinableDataContainer" app="spark/containers/SkinableDataContainerExample" />
+					<node label="TitleGroup" app="spark/containers/TileGroupExample" />
 					<node label="TitleWindow" app="spark/controls/TitleWindowExample" />
 					<node label="ViewStack" app="spark/controls/ViewStackExample" />
 					<node label="VGroup" app="spark/containers/SampleVGroup" />
@@ -290,6 +296,13 @@
 				</node>
 				<node label="Text Controls">
 					<node label="RichEditableText" app="spark/controls/RichEditableTextExample" />
+					<node label="TextArea" app="spark/controls/TextAreaExample" />
+					<node label="TextInput" app="spark/controls/TextInputExample" />
+					<node label="Sample Layout" app="spark/controls/TextLayout1Example" />
+					<node label="News Layout" app="spark/controls/TextLayout2Example" />
+					<node label="Text Controls" app="spark/controls/TextLayout3Example" />
+					<node label="Import Format Types" app="spark/controls/TextLayout4Example" />
+					<node label="Text Layout Editor" app="spark/tlf/TextLayoutEditorSample" />
 				</node>
 				<node label="Layouts">
 					<node label="Animated" app="spark/layouts/CustomLayoutAnimatedExample" />
