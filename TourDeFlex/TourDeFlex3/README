@@ -36,16 +36,21 @@ Initial Setup Required
 How to build the installer using ANT (no IDE is required)
 ==========================================================================================
 
-1.  Un tar/gzip the source distribution:
-	    tar -zxvf ApacheFlex-TourDeFlex-ComponentExplorer-1.0.tar.gz
+1.  On Linux or Mac un tar/gzip the source distribution:
+	    tar -zxvf apache-flex-tour-de-flex-component-explorer-1.0.tar.gz
+	Or if on windows unzip 
+		apache-flex-tour-de-flex-component-explorer-1.0.zip
 
-2.  In the base, run:
+2.  In the base directory, run:
         ant compile
         
 3. To optionally create a release source package, run:
  		ant package
 
-4. Open explorer.html in your browser of choice.
+4. Open explorer.html in your browser of choice. 
+
+Note Some browsers (such as Chrome) may not be able to view local content without further
+configuration.
 
 5. To remove all of the compiled swfs:
  		ant clean
