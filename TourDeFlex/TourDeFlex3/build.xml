@@ -48,7 +48,7 @@
 		</sequential>
 	</macrodef>	
 		
-	<target name="compile" depends="compile-shell,compile-mx,compile-spark,compile-spark2">
+	<target name="compile" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3">
 	</target>
 	
 	<target name="compile-shell">
@@ -314,6 +314,69 @@
 		<compile-mxml example="/spark/i18n/SparkSortandSortFieldExample"/>
 		<compile-mxml example="/spark/i18n/SparkSortandSortField2Example"/>
 		<compile-mxml example="/spark/i18n/SparkStringToolsExample"/>
+		<compile-mxml example="/spark/i18n/SparkFormatterExample"/>
+		
+		<compile-mxml example="/spark/controls/DataGridCustomRendererExample"/>
+		<compile-mxml example="/spark/controls/DataGridCustomRendererPrepareExample"/>
+		<compile-mxml example="/spark/controls/DataGridCustomSkinExample"/>
+		<compile-mxml example="/spark/controls/DataGridExample2"/>
+		<compile-mxml example="/spark/controls/DataGridSimpleColumnsExample"/>
+		<compile-mxml example="/spark/controls/DataGridSimpleNoWrapExample"/>
+		<compile-mxml example="/spark/controls/DataGridSizingExample"/>
+		
+		<compile-mxml example="/spark/controls/ListDataPagingExample"/>
+				
+		<compile-mxml example="/spark/controls/SampleHelpFormExample"/>
+		<compile-mxml example="/spark/controls/SampleSequenceFormExample"/>
+		<compile-mxml example="/spark/controls/SampleSimpleFormExample"/>
+		<compile-mxml example="/spark/controls/SampleStackedFormExample"/>
+		
+		<compile-mxml example="/spark/controls/OSMFExample"/>
+	</target>
+	
+	<target name="compile-spark3">
+		<compile-mxml example="/spark/other/BidirectionalBinding1Example"/>
+		<compile-mxml example="/spark/other/BidirectionalBinding2Example"/>
+		<compile-mxml example="/spark/other/ControllingViewportExample"/>
+		<compile-mxml example="/spark/itemRenderers/ListItemRendererExample"/>
+		<compile-mxml example="/spark/effects/AnimatePropertiesExample"/>
+		<compile-mxml example="/spark/effects/AnimateTransformExample"/>
+		<compile-mxml example="/spark/effects/CrossFadeExample"/>
+		<compile-mxml example="/spark/effects/FadeExample"/>
+		<compile-mxml example="/spark/effects/Rotate3DExample"/>
+		<compile-mxml example="/spark/effects/Scale3DExample"/>
+		<compile-mxml example="/spark/fxg/EllipseTransformExample"/>
+		<compile-mxml example="/spark/fxg/DropShadowGraphicExample"/>
+		<compile-mxml example="/spark/fxg/LinearGradientsSpreadMethodExample"/>
+		<compile-mxml example="/spark/fxg/StaticFXGExample"/>
+		<compile-mxml example="/spark/containers/BorderExample"/>
+		<compile-mxml example="/spark/containers/GroupExample"/>
+		<compile-mxml example="/spark/containers/PanelExample"/>
+		<compile-mxml example="/spark/containers/TabNavigator1Example"/>
+		<compile-mxml example="/spark/containers/TabNavigator2Example"/>
+		<compile-mxml example="/spark/skinning/ButtonWithIconExample"/>
+		<compile-mxml example="/spark/skinning/SkinningApplication1Example"/>
+		<compile-mxml example="/spark/skinning/SkinningApplication2Example"/>
+		<compile-mxml example="/spark/skinning/SkinningApplication3Example"/>
+		<compile-mxml example="/spark/skinning/SkinningContainerExample"/>
+		<compile-mxml example="/spark/css/CSSIDSelectorExample"/>
+		<compile-mxml example="/spark/controls/ButtonExample"/>
+		<compile-mxml example="/spark/controls/ButtonBarExample"/>
+		<compile-mxml example="/spark/controls/PopUpAnchor1Example"/>
+		<compile-mxml example="/spark/controls/PopUpAnchor2Example"/>
+		<compile-mxml example="/spark/controls/ToggleButtonExample"/>
+		<compile-mxml example="/spark/controls/CheckboxExample"/>
+		<compile-mxml example="/spark/controls/DropdownExample"/>
+		<compile-mxml example="/spark/controls/NumericStepperExample"/>
+		<compile-mxml example="/spark/controls/RadioButtonExample"/>
+		<compile-mxml example="/spark/controls/ToggleButton2Example"/>
+		<compile-mxml example="/spark/controls/ScrollBarExample"/>
+		<!-- <compile-mxml example="/spark/controls/Scroller1Example"/> -->
+		<compile-mxml example="/spark/controls/Scroller2Example"/>
+		<compile-mxml example="/spark/controls/SliderExample"/>
+		<compile-mxml example="/spark/controls/SpinnerExample"/>
+		<compile-mxml example="/spark/controls/VideoPlayerExample"/>
+		<compile-mxml example="/spark/controls/ListExample"/>
 	</target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
