@@ -222,6 +222,23 @@
 					<node label="Search" app="spark/components/SearchExample" />
 					<node label="Video Player" app="spark/components/VideoPlayerExample" />
 				</node>
+				<node label="i18n">
+					<node label="Collator" app="spark/i18n/SparkCollatorExample"/>
+					<node label="Basic Collator" app="spark/i18n/SparkCollator2Example"/>
+					<node label="Currency Validator" app="spark/i18n/SparkCurrencyValidatorExample"/>
+					<node label="Basic Currency Validator" app="spark/i18n/SparkCurrencyValidator2Example"/>
+					<node label="Number Validator" app="spark/i18n/SparkNumberValidatorExample"/>
+					<node label="Basic Number Validator" app="spark/i18n/SparkNumberValidator2Example"/>
+					<node label="Date Time Formatter" app="spark/i18n/SparkDateTimeFormatterExample"/>
+					<node label="Basic Date Time Formatter" app="spark/i18n/SparkDateTimeFormatter2Example"/>
+					<node label="Currency Formatter" app="spark/i18n/SparkCurrencyFormatterExample"/>
+					<node label="Basic Currency Formatter" app="spark/i18n/SparkCurrencyFormatter2Example"/>
+					<node label="Number Formatter" app="spark/i18n/SparkNumberFormatterExample"/>
+					<node label="Basic Number Formatter" app="spark/i18n/SparkNumberFormatter2Example"/>
+					<node label="Sort" app="spark/i18n/SparkSortandSortFieldExample"/>
+					<node label="Basic Sort" app="spark/i18n/SparkSortandSortField2Example"/>
+					<node label="String Tools" app="spark/i18n/SparkStringToolsExample"/>
+				</node>	
 				<node label="Item Renderers">
 					<node label="Scale Image" app="spark/itemRenderers/ItemRenderer1Example" />
 					<node label="3D Rotate" app="spark/itemRenderers/ItemRenderer2Example" />
@@ -283,7 +300,7 @@
 					<node label="ToolTip" app="spark/controls/ToolTipExample" />
 					<node label="Tree" app="spark/controls/TreeExample" />
 					<node label="VideoDisplay" app="spark/controls/VideoDisplayExample" />
-				</node>
+				</node>	
 				<node label="Button Controls">
 					<node label="LinkBar" app="spark/controls/LinkBarExample" />
 					<node label="LinkButton" app="spark/controls/LinkButtonExample" />

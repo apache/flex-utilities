@@ -48,7 +48,7 @@
 		</sequential>
 	</macrodef>	
 		
-	<target name="compile" depends="compile-shell,compile-mx,compile-spark">
+	<target name="compile" depends="compile-shell,compile-mx,compile-spark,compile-spark2">
 	</target>
 	
 	<target name="compile-shell">
@@ -294,8 +294,26 @@
 		<compile-mxml example="/spark/modules/ModuleExample"/>
 		<compile-mxml example="/spark/modules/Module1"/>
 		<compile-mxml example="/spark/modules/Module2"/>
-		
+
 		<!-- currently broken <compile-mxml example="/spark/tlf/TextLayoutEditorSample"/> -->
+	</target>
+	
+	<target name="compile-spark2">
+		<compile-mxml example="/spark/i18n/SparkCollatorExample"/>
+		<compile-mxml example="/spark/i18n/SparkCollator2Example"/>
+		<compile-mxml example="/spark/i18n/SparkCurrencyValidatorExample"/>
+		<compile-mxml example="/spark/i18n/SparkCurrencyValidator2Example"/>
+		<compile-mxml example="/spark/i18n/SparkNumberValidatorExample"/>
+		<compile-mxml example="/spark/i18n/SparkNumberValidator2Example"/>
+		<compile-mxml example="/spark/i18n/SparkDateTimeFormatterExample"/>
+		<compile-mxml example="/spark/i18n/SparkDateTimeFormatter2Example"/>
+		<compile-mxml example="/spark/i18n/SparkCurrencyFormatterExample"/>
+		<compile-mxml example="/spark/i18n/SparkCurrencyFormatter2Example"/>
+		<compile-mxml example="/spark/i18n/SparkNumberFormatterExample"/>
+		<compile-mxml example="/spark/i18n/SparkNumberFormatter2Example"/>
+		<compile-mxml example="/spark/i18n/SparkSortandSortFieldExample"/>
+		<compile-mxml example="/spark/i18n/SparkSortandSortField2Example"/>
+		<compile-mxml example="/spark/i18n/SparkStringToolsExample"/>
 	</target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
