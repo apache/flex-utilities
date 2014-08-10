@@ -20,8 +20,7 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin" 
-			   viewSourceURL="srcview/index.html"
+			   skinClass="TDFGradientBackgroundSkin"
 			   creationComplete="init()">
 	
 	<fx:Script>

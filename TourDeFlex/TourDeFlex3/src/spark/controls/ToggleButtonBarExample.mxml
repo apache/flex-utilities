@@ -40,11 +40,10 @@
 	<fx:Declarations>
 		
 		<fx:Array id="dp">
-			<fx:String>Flash</fx:String>
 			<fx:String>Flex</fx:String>
-			<fx:String>AIR</fx:String>
-			<fx:String>ColdFusion</fx:String>
-			<fx:String>LiveCycle</fx:String>
+			<fx:String>Flex JS</fx:String>
+			<fx:String>Falcon</fx:String>
+			<fx:String>Falcon JX</fx:String>
 		</fx:Array>
 		
 	</fx:Declarations>

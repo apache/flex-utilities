@@ -19,7 +19,7 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" viewSourceURL="srcview/index.html">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<s:Panel width="100%" height="100%" title="SkinnableDataContainer" skinClass="skins.TDFPanelSkin">
 		<s:layout><s:HorizontalLayout paddingLeft="8" paddingTop="8" paddingRight="12"/></s:layout>

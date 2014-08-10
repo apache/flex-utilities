@@ -20,8 +20,7 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
-			   width="100%" height="100%" creationComplete="matchRB_clickHandler()"
-			   viewSourceURL="srcview/index.html">
+			   width="100%" height="100%" creationComplete="matchRB_clickHandler()">
 	<fx:Style>
 		@namespace s "library://ns.adobe.com/flex/spark";
 		@namespace mx "library://ns.adobe.com/flex/mx";

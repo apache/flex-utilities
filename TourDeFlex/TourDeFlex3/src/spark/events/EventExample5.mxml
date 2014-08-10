@@ -21,8 +21,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:local="*"
-			   skinClass="TDFGradientBackgroundSkin" 
-			   viewSourceURL="srcview/index.html">
+			   skinClass="TDFGradientBackgroundSkin">
 	
 	<fx:Script>
 		<![CDATA[

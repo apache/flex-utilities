@@ -20,7 +20,7 @@
 <!-- http://evtimmy.com/2010/01/verticalalign-for-vgroup-and-horizontalalign-for-hgroup/ -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" backgroundColor="0x323232" color="0xFFFFFF" viewSourceURL="srcview/index.html">
+			   xmlns:mx="library://ns.adobe.com/flex/mx" backgroundColor="0x323232" color="0xFFFFFF">
 	
 	<s:VGroup verticalAlign="middle" width="526" height="230" top="57" left="10">
 		<s:HGroup verticalAlign="middle" height="100%"  color="0x000000">
