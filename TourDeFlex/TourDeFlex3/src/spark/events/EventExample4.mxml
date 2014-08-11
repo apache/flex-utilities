@@ -29,7 +29,7 @@
 			private function handleClick(event:MouseEvent):void
 			{
 				b.enabled = false;
-				mx.controls.Alert.show('clicked!');
+				Alert.show('clicked!');
 			}
 		]]>
 	</fx:Script>
