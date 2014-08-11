@@ -219,10 +219,6 @@
 					<node label="Busy Cursor" app="spark/other/Cursor1Example" />
 					<node label="Custom Cursor" app="spark/other/Cursor2Example" />
 				</node>
-				<node label="Drag and Drop">
-					<node label="List to List" app="spark/other/DragAndDrop1Example" />
-					<node label="List to Panel" app="spark/other/DragAndDrop2Example" />
-				</node>
 				<node label="DataGrid">
 					<node label="DataGrid" app="spark/controls/DataGridExample2"/>
 					<node label="Custom Renderer" app="spark/controls/DataGridCustomRendererExample"/>
@@ -357,7 +353,7 @@
 					<node label="RadioButton" app="spark/controls/RadioButtonExample"/>
 					<node label="ScrollBar" app="spark/controls/ScrollBarExample" />
 					<node label="Scroller" app="spark/controls/Scroller1Example"/>
-					<node label="Scroller" app="spark/controls/Scroller2Example"/>
+					<node label="Scroller and Tabbing" app="spark/controls/Scroller2Example"/>
 					<node label="Slider" app="spark/controls/SliderExample"/>
 					<node label="Spinner" app="spark/controls/SpinnerExample"/>
 					<node label="SWFloader" app="spark/controls/SWFLoaderExample" />
@@ -376,7 +372,6 @@
 					<node label="PopUpAnchor" app="spark/controls/PopUpAnchor1Example"/>
 					<node label="PopUpAnchor" app="spark/controls/PopUpAnchor2Example"/>
 					<node label="ToggleButton" app="spark/controls/ToggleButtonExample"/>
-					<node label="ToggleButton" app="spark/controls/ToggleButton2Example"/>
 					<node label="ToggleButtonBar" app="spark/controls/ToggleButtonBarExample" />
 				</node>
 				<node label="Date Controls">
