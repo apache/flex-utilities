@@ -21,76 +21,76 @@
     <employee employeeId="1">
     	<firstName>Michael</firstName>
     	<lastName>Scott</lastName>
-    	<image>assets/scott.jpg</image>
+    	<image>assets/2.jpg</image>
     </employee>
     <employee employeeId="2">
     	<firstName>Pam</firstName>
     	<lastName>Beesly</lastName>
-    	<image>assets/beesly.jpg</image>
+    	<image>assets/3.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Andy</firstName>
     	<lastName>Bernard</lastName>
-    	<image>assets/bernard.jpg</image>
+    	<image>assets/4.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Creed</firstName>
     	<lastName>Bratton</lastName>
-    	<image>assets/bratton.jpg</image>
+    	<image>assets/5.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Toby</firstName>
     	<lastName>Flenderson</lastName>
-    	<image>assets/flenderson.jpg</image>
+    	<image>assets/6.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Jim</firstName>
     	<lastName>Halpert</lastName>
-    	<image>assets/halpert.jpg</image>
+    	<image>assets/7.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Ryan</firstName>
     	<lastName>Howard</lastName>
-    	<image>assets/howard.jpg</image>
+    	<image>assets/8.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Stanley</firstName>
     	<lastName>Hudson</lastName>
-    	<image>assets/hudson.jpg</image>
+    	<image>assets/9.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Kelly</firstName>
     	<lastName>Kapoor</lastName>
-    	<image>assets/kapoor.jpg</image>
+    	<image>assets/1.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Phyllis</firstName>
     	<lastName>Lapin</lastName>
-    	<image>assets/lapin.jpg</image>
+    	<image>assets/2.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Kevin</firstName>
     	<lastName>Malone</lastName>
-    	<image>assets/malone.jpg</image>
+    	<image>assets/3.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Angela</firstName>
     	<lastName>Martin</lastName>
-    	<image>assets/martin.jpg</image>
+    	<image>assets/4.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Oscar</firstName>
     	<lastName>Martinez</lastName>
-    	<image>assets/martinez.jpg</image>
+    	<image>assets/5.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Meredith</firstName>
     	<lastName>Palmer</lastName>
-    	<image>assets/palmer.jpg</image>
+    	<image>assets/6.jpg</image>
     </employee>
     <employee employeeId="3">
     	<firstName>Dwight</firstName>
     	<lastName>Schrute</lastName>
-    	<image>assets/schrute.jpg</image>
+    	<image>assets/7.jpg</image>
     </employee>
 </list>
