@@ -71,11 +71,11 @@
 						change="itemIndexChangeHandler(event)">
 					<s:dataProvider>
 						<s:ArrayCollection>
-							<local:Item name="Backpack" photo="assets/backpack.jpg" price="29.99"/>
-							<local:Item name="Boots" photo="assets/boots.jpg" price="69.99"/>
-							<local:Item name="Compass" photo="assets/compass.jpg" price="12.99"/>
-							<local:Item name="Goggles" photo="assets/goggles.jpg" price="14.99"/>
-							<local:Item name="Helmet" photo="assets/helmet.jpg" price="47.99"/>
+							<local:Item name="Backpack" photo="assets/ApacheFlexIcon.png" price="29.99"/>
+							<local:Item name="Boots" photo="assets/ApacheFlexIcon.png" price="69.99"/>
+							<local:Item name="Compass" photo="assets/ApacheFlexIcon.png" price="12.99"/>
+							<local:Item name="Goggles" photo="assets/ApacheFlexIcon.png" price="14.99"/>
+							<local:Item name="Helmet" photo="assets/ApacheFlexIcon.png" price="47.99"/>
 						</s:ArrayCollection>
 					</s:dataProvider>
 				</s:List>
