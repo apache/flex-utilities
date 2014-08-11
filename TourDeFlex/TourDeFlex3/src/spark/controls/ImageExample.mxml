@@ -63,7 +63,7 @@
 				<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
 			</s:layout>
 			<s:Label color="0x323232" text="Sample of image loaded at run-time." />
-			<mx:Image id="loadedImage" source="images/backpack.jpg" creationComplete="smoothImage(event);"/>
+			<mx:Image id="loadedImage" source="assets/ApacheFlexLogo.png" creationComplete="smoothImage(event);"/>
 		</s:BorderContainer>
 	</s:Panel>
 	
