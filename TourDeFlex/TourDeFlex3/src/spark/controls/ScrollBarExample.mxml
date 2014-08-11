@@ -40,14 +40,10 @@
 					</s:layout> 
 					<s:dataProvider> 
 						<s:ArrayCollection> 
-							<fx:String>Photoshop</fx:String>                
-							<fx:String>Illustrator</fx:String>                
-							<fx:String>LiveCycle ES</fx:String>                
-							<fx:String>Flash</fx:String>                
-							<fx:String>Acrobat</fx:String>                
-							<fx:String>Elements</fx:String>                
-							<fx:String>Creative Suite</fx:String>     
-							<fx:String>Premiere Pro</fx:String>     
+							<fx:String>Flex</fx:String>                
+							<fx:String>Flex JS</fx:String>   
+							<fx:String>Falcon</fx:String>
+							<fx:String>Falcon FX</fx:String>
 						</s:ArrayCollection>
 					</s:dataProvider> 
 				</s:DataGroup> 
@@ -67,11 +63,10 @@
 					</s:layout> 
 					<s:dataProvider> 
 						<s:ArrayCollection> 
-							<fx:String>Photoshop</fx:String>                
-							<fx:String>Illustrator</fx:String>                
-							<fx:String>LiveCycle ES</fx:String>                
-							<fx:String>Flash</fx:String>                
-							<fx:String>Acrobat</fx:String>     
+							<fx:String>Flex</fx:String>                
+							<fx:String>Flex JS</fx:String>   
+							<fx:String>Falcon</fx:String>
+							<fx:String>Falcon FX</fx:String>   
 						</s:ArrayCollection>
 					</s:dataProvider> 
 				</s:DataGroup> 
