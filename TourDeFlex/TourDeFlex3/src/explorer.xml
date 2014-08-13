@@ -219,6 +219,7 @@
 					<node label="Busy Cursor" app="spark/other/Cursor1Example" />
 					<node label="Custom Cursor" app="spark/other/Cursor2Example" />
 				</node>
+				<!-- Require remote service to work
 				<node label="DataGrid">
 					<node label="DataGrid" app="spark/controls/DataGridExample2"/>
 					<node label="Custom Renderer" app="spark/controls/DataGridCustomRendererExample"/>
@@ -231,6 +232,7 @@
 				<node label="Data Paging">
 					<node label="Data Paging" app="spark/controls/ListDataPagingExample" />
 				</node>
+				-->
 				<node label="Drag and Drop">
 					<node label="List to List" app="spark/other/DragAndDrop1Example" />
 					<node label="List to Panel" app="spark/other/DragAndDrop2Example" />
