@@ -20,7 +20,8 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin">
+			   skinClass="TDFGradientBackgroundSkin"
+			   initialize="init(event)">
 	
 	<s:layout>
 		<s:HorizontalLayout horizontalAlign="center" />
@@ -29,11 +30,19 @@
 	<fx:Script>
 		<![CDATA[
 			import flashx.textLayout.conversion.TextConverter;
+			
+			import mx.events.FlexEvent;
+			
+			import org.osmf.utils.OSMFSettings;
+			
+			protected function init(event:FlexEvent):void {
+				OSMFSettings.enableStageVideo = false;
+			}	
 		]]>
 	</fx:Script>
 	
 	<fx:Declarations>
-		<fx:String id="TitleText"><![CDATA["<b>VideoDisplay Control:</b><br />Use the buttons to control the video."]]></fx:String>
+		<fx:String id="TitleText"><![CDATA[<b>VideoDisplay Control:</b><br />Use the buttons to control the video.]]></fx:String>
 	</fx:Declarations>
 	
 	<s:VGroup width="600" horizontalAlign="center" paddingTop="10">
@@ -42,7 +51,7 @@
 					textFlow="{TextConverter.importToFlow(TitleText, TextConverter.TEXT_FIELD_HTML_FORMAT)}"
 					horizontalCenter="0" verticalCenter="0" />
 		
-		<s:VideoDisplay id="myVid" height="146" width="220" source="assets/sample_vid.flv" autoPlay="false"/>
+		<s:VideoDisplay id="myVid" height="146" width="220" source="assets/FlexInstaller.mp4" autoPlay="false"/>
 		
 		<s:HGroup>
 			<s:Button label="Play" color="0x00000" click="myVid.play();"/>

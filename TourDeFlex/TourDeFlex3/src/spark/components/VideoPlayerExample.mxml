@@ -19,7 +19,7 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:local="*"
 			   skinClass="TDFGradientBackgroundSkin">
 	
@@ -38,7 +38,7 @@
 							  paddingTop="10" paddingBottom="10"/>
 		</s:layout>
 		
-		<local:VideoPlayer source="video1.flv"
+		<local:VideoPlayer source="assets/FlexInstaller.mp4"
 						   complete="log.text += 'complete\n'"
 						   mediaPlayerStateChange="log.text += event.state.toString() + '\n'"/>
 		

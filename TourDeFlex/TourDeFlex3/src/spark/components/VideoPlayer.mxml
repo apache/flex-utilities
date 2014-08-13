@@ -21,7 +21,8 @@
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
 				   xmlns:mx="library://ns.adobe.com/flex/mx" 
 				   borderStyle="solid" 
-				   backgroundColor="#333333">
+				   backgroundColor="#333333"
+				   initialize="init(event)">
 	
 	<fx:Metadata>
 		[Event(name="complete", type="mx.events.VideoEvent")]
@@ -31,14 +32,20 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.events.ItemClickEvent;
+			import mx.events.FlexEvent;
 			import mx.events.VideoEvent;
 			
 			import org.osmf.events.MediaPlayerStateChangeEvent;
 			import org.osmf.events.TimeEvent;
+			import org.osmf.utils.OSMFSettings;
 			
 			[Bindable] public var videoWidth:int = 240;
 			[Bindable] public var videoHeight:int = 180;
 			[Bindable] public var source:String; 
+			
+			protected function init(event:FlexEvent):void {
+				OSMFSettings.enableStageVideo = false;
+			}	
 			
 			private function buttonBarClick(event:ItemClickEvent):void
 			{
@@ -75,7 +82,7 @@
 					mediaPlayerStateChange="dispatchEvent(event)"/>
 	
 	<mx:ProgressBar id="progressBar" mode="manual" minimum="0" maximum="{videoDisplay.duration}" 
-					label="" top="{videoHeight + 8 }" left="4" right="4"/>
+					label="" top="{videoHeight + 8}" left="4" right="4"/>
 	
 	<mx:ButtonBar id="bb" itemClick="buttonBarClick(event)" top="{videoHeight + 20}" bottom="4" 
 				  horizontalCenter="0" toolTipField="toolTip">

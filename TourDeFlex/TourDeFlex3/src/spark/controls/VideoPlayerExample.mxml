@@ -20,12 +20,21 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
-			   viewSourceURL="srcview/index.html">
+			   initialize="init(event)">
 	
 	<fx:Script>
 		<![CDATA[
+			import flashx.textLayout.conversion.TextConverter;
+			
 			import mx.events.ItemClickEvent;
+			import mx.events.FlexEvent;
 			import mx.collections.ArrayCollection;
+			
+			import org.osmf.utils.OSMFSettings;
+			
+			protected function init(event:FlexEvent):void {
+				OSMFSettings.enableStageVideo = false;
+			}	
 			
 			private function playPauseChange(event:Event):void 
 			{
@@ -59,7 +68,7 @@ users seek through video; a volume bar; a timer; and a button to toggle in and o
 			</s:HGroup>
 			<s:VideoPlayer id="videoPlayer" 
 						   horizontalCenter="-2" y="50"
-						   source="assets/sample_vid.flv"
+						   source="assets/FlexInstaller.mp4"
 						   autoPlay="false"
 						   autoRewind="{checkRewind.selected}"/>	
 			</s:VGroup>

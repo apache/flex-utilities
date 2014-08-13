@@ -22,9 +22,22 @@
 		   xmlns:mx="library://ns.adobe.com/flex/mx"  
 		   xmlns="*"
 		   layout="horizontal" 
-		   paddingTop="8">
+		   paddingTop="8"
+		   initialize="init(event)">
 	
-	<VideoPlayer source="objects/HOWTO/Components/video1.flv"
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import org.osmf.utils.OSMFSettings;
+			
+			protected function init(event:FlexEvent):void {
+				OSMFSettings.enableStageVideo = false;
+			}	
+		]]>
+	</fx:Script>	
+	
+	<VideoPlayer source="assets/FlexInstaller.mp4"
 				 complete="log.text += 'complete\n'"
 				 mediaPlayerStateChange="log.text += event.state + '\n'"/>
 	
