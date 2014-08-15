@@ -186,6 +186,12 @@ public class AetherDeployer {
             final File artifactFiles[] = artifactDirectory.listFiles(new ArtifactFilter());
             for (final File artifactFile : artifactFiles) {
                 final String fileName = artifactFile.getName();
+
+                // Handle the case that some file might not start with the base-name.
+                if(!fileName.startsWith(artifactBaseName)) {
+                    continue;
+                }
+
                 final String classifier;
                 // This file has a classifier.
                 if (fileName.charAt(artifactBaseName.length()) == '-') {
