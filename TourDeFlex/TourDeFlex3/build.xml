@@ -410,6 +410,7 @@
                 <include name="**/*.ttf" />
                 <include name="**/*.mp4" />
                 <include name="**/*.mp3" />
+                <include name="**/*.fxg" />
                 <include name="**/*.xml" />
                 <exclude name="**/*.swf" />
              </tarfileset>
@@ -437,6 +438,7 @@
                 <include name="**/*.ttf" />
                 <include name="**/*.mp4" />
                 <include name="**/*.mp3" />
+                <include name="**/*.fxg" />
                 <include name="**/*.xml" />
                 <exclude name="**/*.swf" />
              </fileset>
