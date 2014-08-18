@@ -88,7 +88,7 @@
 					<node label="TabNavigator" app="mx/containers/TabNavigatorExample" />
 					<node label="Tile" app="mx/containers/TileLayoutExample" />
 					<node label="TitleWindow" app="mx/containers/TitleWindowApp"
-						src="containers/SimpleTitleWindowExample.mxml" />
+						src="mx/containers/SimpleTitleWindowExample.mxml" />
 					<node label="VBox" app="mx/containers/VBoxExample" />
 					<node label="VDividedBox" app="mx/containers/VDividedBoxExample" />
 					<node label="ViewStack" app="mx/containers/ViewStackExample" />
@@ -99,7 +99,7 @@
 			</node>
 			<node label="Print Controls">
 				<node label="FlexPrintJob, PrintDataGrid" app="mx/printing/PrintDataGridExample"
-					src="printing/FormPrintView.mxml&amp;printing/FormPrintHeader.mxml&amp;printing/FormPrintFooter.mxml" />
+					src="mx/printing/FormPrintView.mxml&amp;printing/FormPrintHeader.mxml&amp;mx/printing/FormPrintFooter.mxml" />
 			</node>
 			<node label="Validators and Formatters">
 				<node label="Validators">
