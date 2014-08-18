@@ -41,8 +41,7 @@
 		</s:Transition>
 	</s:transitions>
 	
-	<mx:Image id="image" source="{data.image}" horizontalCenter="0"
-			  width="50" height="94"/>
+	<mx:Image id="image" source="@Embed('../assets/ApacheFlexIcon.png')" horizontalCenter="0" />
 
 	<s:Group id="group" top="0" bottom="0" left="0" right="0" visible.normal="false">
 
