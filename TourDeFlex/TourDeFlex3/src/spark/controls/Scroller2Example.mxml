@@ -48,7 +48,7 @@
 		<!-- The fields are tab-able within the VGroup container -->
 		<s:HGroup horizontalCenter="0" top="10">
 			<s:VGroup left="0" horizontalAlign="center" width="20%">
-				<s:BitmapImage id="img" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
+				<s:BitmapImage id="img" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
 				<s:Label text="Item For Sale"/>
 			</s:VGroup>
 			<s:Scroller tabEnabled="true" hasFocusableChildren="true">

@@ -85,7 +85,7 @@
 						  label="Move Image" click="moveEffect.play();"/>
 			</s:VGroup>
 			<s:HGroup horizontalCenter="0" height="30%" verticalAlign="middle" width="40%">
-				<s:BitmapImage id="targetImg" source="@Embed(source='assets/ApacheFlexLogo.png')"/>				
+				<s:BitmapImage id="targetImg" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>				
 			</s:HGroup>
 			<s:VGroup top="0" right="5" horizontalAlign="right" width="30%">
 				<s:Label text="Move3D Effect Sample" fontSize="18" color="#B7B6B6"/>

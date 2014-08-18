@@ -100,7 +100,7 @@
 						  label="Rotate Image" click="rotateEffect.play();"/>
 			</s:VGroup>
 			<s:HGroup horizontalCenter="0" height="60%" verticalAlign="middle" width="10%">
-				<s:BitmapImage id="targetImg" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
+				<s:BitmapImage id="targetImg" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
 			</s:HGroup>
 			<s:VGroup top="0" right="5" horizontalAlign="right">
 				<s:Label text="Rotate3D Effect Sample" fontSize="18" color="#B7B6B6"/>

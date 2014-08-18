@@ -45,7 +45,7 @@
 					<s:BitmapImage
 						source="@Embed('assets/back.png')"
 						visible="true" visible.flipped="false"/>
-					<s:BitmapImage
+					<s:BitmapImage width="200" height="200" 
 						source="@Embed('assets/ApacheFlexLogo.png')"
 						visible="false" visible.flipped="true"/>
 					

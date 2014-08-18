@@ -54,7 +54,7 @@
 				<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
 			</s:layout>
 			<s:Label color="0x323232" text="Sample of image embeded at compile time." />
-			<mx:Image id="embededImage" source="@Embed('assets/ApacheFlexLogo.png')" creationComplete="smoothImage(event);"/>
+			<mx:Image id="embededImage" width="50%" height="50%" source="@Embed('assets/ApacheFlexLogo.png')" creationComplete="smoothImage(event);"/>
 		</s:BorderContainer>
 		
 		<s:BorderContainer width="50%" borderColor="0xACACAC" height="100%" borderStyle="solid">
@@ -63,7 +63,7 @@
 				<s:VerticalLayout paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"/>
 			</s:layout>
 			<s:Label color="0x323232" text="Sample of image loaded at run-time." />
-			<mx:Image id="loadedImage" source="assets/ApacheFlexLogo.png" creationComplete="smoothImage(event);"/>
+			<mx:Image id="loadedImage" width="50%" height="50%" source="assets/ApacheFlexLogo.png" creationComplete="smoothImage(event);"/>
 		</s:BorderContainer>
 	</s:Panel>
 	

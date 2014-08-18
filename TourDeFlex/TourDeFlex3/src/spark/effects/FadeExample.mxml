@@ -47,7 +47,7 @@
 						  label="Fade" click="fadeEffect.play();"/>
 			</s:VGroup>
 			
-			<s:BitmapImage id="targetImg" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
+			<s:BitmapImage id="targetImg" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
 			
 			<s:VGroup width="100%" >
 				<s:Label text="Fade Sample" fontSize="18" color="#B7B6B6"/>
