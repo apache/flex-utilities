@@ -371,7 +371,7 @@
 		<compile-mxml example="/spark/controls/RadioButtonExample"/>
 		<compile-mxml example="/spark/controls/ToggleButton2Example"/>
 		<compile-mxml example="/spark/controls/ScrollBarExample"/>
-		<!-- <compile-mxml example="/spark/controls/Scroller1Example"/> -->
+		<compile-mxml example="/spark/controls/Scroller1Example"/>
 		<compile-mxml example="/spark/controls/Scroller2Example"/>
 		<compile-mxml example="/spark/controls/SliderExample"/>
 		<compile-mxml example="/spark/controls/SpinnerExample"/>
