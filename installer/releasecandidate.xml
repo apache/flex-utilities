@@ -197,11 +197,7 @@
         unless="browser"/>
     <fail message="The release candidate number is not set.  Specify -Drc=&lt;rc number (e.g. 1, 2, 3, etc)&gt;"
     unless="rc"/>
-        
-	<property name="package.url.path" value="https://dist.apache.org/repos/dist/dev/flex/sdk/${release.version}/rc${rc}" />
-	<property name="package.url.name" value="apache-flex-sdk-${release.version}-src" />
-	
-	
+        	
 	<target name="install-rat" depends="install-rat.jar,install-rat.tasks.jar" />
 	<target name="install-rat.jar" unless="apache.rat.found">
 		<get src="${apache.rat.url}/${apache.rat.jar}" dest="${env.ANT_HOME}/lib/${apache.rat.jar}" />
@@ -398,5 +394,56 @@ ${my.name}
 		<delete file="${basedir}/votethread.html" />
 		<delete file="${basedir}/discussthread.properties" />
     </target>
+
+	<target name="release" >
+		<available file="${svn.dist.release}"
+			type="dir" 
+			property="dist.release" value="${svn.dist.release}" />
+    
+		<fail message="The svn.dist.release property is not set to the working copy for https://dist.apache.org/repos/dist/release."
+			unless="dist.release"/>
+				
+		<exec executable="${svn}" dir="${dist.release}/flex" failonerror="true" >
+			<arg value="update" />
+		</exec>
+		<mkdir dir="${dist.release}/flex/installer/${release.version}" />
+		<mkdir dir="${dist.release}/flex/installer/${release.version}/binaries" />
+		<copy todir="${dist.release}/flex/installer/${release.version}/binaries" >
+			<fileset dir="${dist.dev}/flex/installer/rc${rc}/binaries" >
+				<include name="apache-flex-sdk-installer-${release.version}.${build.number}-bin*" />
+			</fileset>
+		</copy>
+		<copy todir="${dist.release}/flex/installer/${release.version}" >
+			<fileset dir="${dist.dev}/flex/installer/rc${rc}" >
+				<include name="READme" />
+				<include name="apache-flex-sdk-installer-${release.version}.${build.number}-src*" />
+			</fileset>
+		</copy>
+		<exec executable="${svn}" dir="${dist.release}/flex/installer" failonerror="true" >
+			<arg value="add" />
+			<arg value="${release.version}" />
+		</exec>
+		<exec executable="${svn}" dir="${dist.release}/flex/installer" failonerror="true" >
+			<arg value="commit" />
+			<arg value="--username" />
+			<arg value="${apache.username}" />
+			<arg value="--password" />
+			<arg value="${apache.password}" />
+			<arg value="-m" />
+			<arg value="Apache Flex SDK Installer ${release.version}" />
+		</exec>
+		<exec executable="${git}" dir="${basedir}" failonerror="true" >
+			<arg value="tag" />
+			<arg value="-a" />
+			<arg value="apache-flex-sdk-installer-${release.version}.${build.number}" />
+			<arg value="-m" />
+			<arg value="&quot;Official release of apache-flex-sdk-installer-${release.version}.${build.number}&quot;" />
+		</exec>
+		<exec executable="${git}" dir="${basedir}" failonerror="true" >
+			<arg value="push" />
+			<arg value="--tags" />
+		</exec>
+		<echo>Wait at least 24 hours before updating sdk-installer-config-4.0.xml and installer page on website</echo>
+	</target>
 	
 </project>
