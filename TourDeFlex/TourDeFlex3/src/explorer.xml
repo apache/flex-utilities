@@ -57,7 +57,7 @@
 				</node>
 				<node label="Loader Controls">
 					<node label="Image" app="mx/controls/SimpleImage" />
-					<node label="SWFLoader" app="mx/controls/SimpleLoader" src="controls/Local.mxml" />
+					<node label="SWFLoader" app="mx/controls/SimpleLoader" src="mx/controls/Local.mxml" />
 					<node label="VideoDisplay" app="mx/controls/VideoDisplayExample" />
 				</node>
 				<node label="Menu Controls">
