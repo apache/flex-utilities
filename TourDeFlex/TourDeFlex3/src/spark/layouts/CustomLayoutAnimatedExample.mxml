@@ -20,8 +20,9 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   applicationComplete="srv.send()" xmlns:local="*" xmlns:layouts="layouts.*"
-			   backgroundColor="0x323232" color="0xFFFFFF">
+			   xmlns:local="*" xmlns:layouts="layouts.*"
+			   backgroundColor="0x323232" color="0xFFFFFF"
+			   initialize="init()">
 	
 	<fx:Style>
 
@@ -39,7 +40,9 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
-			import mx.rpc.events.ResultEvent;
+			import mx.rpc.xml.SimpleXMLDecoder;
+			import mx.rpc.xml.SimpleXMLEncoder;
+			import mx.utils.ArrayUtil;
 			
 			[Bindable]
 			private var items:ArrayCollection;
@@ -59,10 +62,17 @@
 			[Bindable]
 			private var _triband:Boolean = false;
 			
+			[Embed(source="data/catalog.xml", mimeType="application/octet-stream")]
+			private var XMLData:Class;
 			
-			private function resultHandler(event:ResultEvent):void
+			private function init():void
 			{
-				items = event.result.catalog.product as ArrayCollection;
+				var data:XML = XML(new XMLData());
+				var xmlDoc:XMLDocument = new XMLDocument(data);
+                var decoder:SimpleXMLDecoder = new SimpleXMLDecoder(true);
+                var object:Object = decoder.decodeXML(xmlDoc);
+				
+				items = object.catalog.product;
 				filteredItems = new ArrayCollection(items.source);
 				filteredItems.filterFunction = filter;
 			}
@@ -83,11 +93,7 @@
 			
 		]]>
 	</fx:Script>
-	
-	<fx:Declarations>
-		<s:HTTPService id="srv" url="data/catalog.xml" result="resultHandler(event)"/>
-	</fx:Declarations>
-	
+
 	<s:HGroup verticalAlign="middle" paddingLeft="8" left="50" top="5">
 		<s:Label text="Max Price:"/>
 		<s:HSlider id="priceSlider" minimum="0" maximum="1000" snapInterval="100" value="@{_maxPrice}" change="selectionChange()"/>
