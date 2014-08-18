@@ -60,7 +60,7 @@
 		<mx:Label text="{FULL_TITLE}" fontSize="20" fontWeight="bold" />
 	</mx:HBox>
     <mx:HDividedBox width="100%" height="100%">
-        <mx:Panel width="30%" height="100%" title="{TITLE}">
+        <mx:Panel width="30%" height="100%" title="{TITLE}" dropShadowVisible="false">
             <mx:Tree id="compLibTree" width="100%" height="100%" showRoot="false" labelField="@label" borderStyle="none"
                      change="treeChanged(event)"/>
         </mx:Panel>
