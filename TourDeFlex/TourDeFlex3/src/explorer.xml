@@ -304,7 +304,9 @@
 				<node label="Wipe" app="spark/effects/WipeExample" />
 				<node label="Animate Property" app="spark/effects/AnimatePropertiesExample" />
 				<node label="Animate Transform" app="spark/effects/AnimateTransformExample" />
+				<!-- not working
 				<node label="Cross Fade" app="spark/effects/CrossFadeExample" />
+				 -->
 				<node label="Fade" app="spark/effects/FadeExample" />
 				<node label="Rotate 3D" app="spark/effects/Rotate3DExample" />
 				<node label="Scale 3D" app="spark/effects/Scale3DExample" />
@@ -319,7 +321,6 @@
 					<node label="Group" app="spark/containers/GroupExample"/>
 					<node label="Panel" app="spark/containers/PanelExample"/>
 					<node label="SkinableDataContainer" app="spark/containers/SkinableDataContainerExample" />
-					<node label="TabNavigator" app="spark/controls/TabNavigatorExample" />
 					<node label="TabNavigator" app="spark/containers/TabNavigator1Example" />
 					<node label="TabNavigator" app="spark/containers/TabNavigator2Example" />
 					<node label="TitleGroup" app="spark/containers/TileGroupExample" />
@@ -346,10 +347,10 @@
 					<node label="ComboBox" app="spark/controls/ComboBoxExample" />
 					<node label="DropDown" app="spark/controls/DropdownExample"/>
 					<node label="DataGrid" app="spark/controls/DataGridExample" />
+					<node label="Image" app="spark/controls/ImageExample" />
 					<node label="List" app="spark/controls/ListExample" />
 					<node label="Menu" app="spark/controls/MenuExample" />
 					<node label="NumericStepper" app="spark/controls/NumericStepperExample"/>
-					<node label="Image" app="spark/controls/ImageExample" />
 					<node label="OLAPDataGrid" app="spark/controls/OLAPDataGridExample" />
 					<node label="ProgressBar" app="spark/controls/ProgressBarExample" />
 					<node label="RadioButton" app="spark/controls/RadioButtonExample"/>
@@ -358,7 +359,9 @@
 					<node label="Scroller and Tabbing" app="spark/controls/Scroller2Example"/>
 					<node label="Slider" app="spark/controls/SliderExample"/>
 					<node label="Spinner" app="spark/controls/SpinnerExample"/>
+					<!--  Removed to avoid putting swf in repo
 					<node label="SWFloader" app="spark/controls/SWFLoaderExample" />
+					-->
 					<node label="ToolTip" app="spark/controls/ToolTipExample" />
 					<node label="Tree" app="spark/controls/TreeExample" />
 					<node label="VideoDisplay" app="spark/controls/VideoDisplayExample" />
@@ -388,7 +391,9 @@
 					<node label="News Layout" app="spark/controls/TextLayout2Example" />
 					<node label="Text Controls" app="spark/controls/TextLayout3Example" />
 					<node label="Import Format Types" app="spark/controls/TextLayout4Example" />
+					<!--  Doesn't comile with current version of TLF
 					<node label="Text Layout Editor" app="spark/tlf/TextLayoutEditorSample" />
+					-->
 				</node>
 				<node label="Layouts">
 					<node label="Animated" app="spark/layouts/CustomLayoutAnimatedExample" />
