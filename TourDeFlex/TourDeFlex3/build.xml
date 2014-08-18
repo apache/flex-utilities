@@ -410,8 +410,8 @@
                 <include name="**/*.ttf" />
                 <include name="**/*.mp4" />
                 <include name="**/*.mp3" />
+                <include name="**/*.xml" />
                 <exclude name="**/*.swf" />
-                <exclude name="**/*.xml" />
              </tarfileset>
          </tar>
 	</target>
@@ -437,8 +437,8 @@
                 <include name="**/*.ttf" />
                 <include name="**/*.mp4" />
                 <include name="**/*.mp3" />
+                <include name="**/*.xml" />
                 <exclude name="**/*.swf" />
-                <exclude name="**/*.xml" />
              </fileset>
          </zip>
 	</target>
