@@ -59,6 +59,8 @@
 	<s:states>
 		<s:State name="normal" />
 		<s:State name="disabled" />
+		<s:State name="normalWithControlBar" stateGroups="withControls" />
+        <s:State name="disabledWithControlBar" stateGroups="withControls" />
 	</s:states>
 	
 	<!-- background fill -->
