@@ -21,38 +21,7 @@
 	xmlns:fx="http://ns.adobe.com/mxml/2009"
 	xmlns:mx="library://ns.adobe.com/flex/mx"
 	xmlns:s="library://ns.adobe.com/flex/spark">
-	
-	<fx:Style>
-		@namespace "library://ns.adobe.com/flex/spark";
-		Label { 
-			baseColor: #000000; 
-			fontFamily: "Arial";
-			fontWeight: "bold";
-			fontSize: "11";
-			advancedAntiAliasing: true;
-		}
-		Button:up{ 
-			baseColor: #000000; 
-			color: #FFFFFF; 
-			fontWeight: "bold";
-		}
-		Button:over{ 
-			baseColor: #878787; 
-			color: #FFFFFF; 
-			fontWeight: "bold";
-		}
-		Button:down{ 
-			baseColor: #878787; 
-			color: #000000; 
-			fontWeight: "bold";
-		}
-		Button:disabled { 
-			baseColor: #FFFFFF; 
-			color: #878787; 
-			fontWeight: "bold";
-		}
-	</fx:Style>
-	
+
 	<fx:Declarations>
 		<s:Scale3D id="scaleEffect" target="{targetImg}" 
 				   scaleXFrom="1.0" scaleXTo="{Number(xVal.text)}" 
@@ -74,11 +43,11 @@
 			<s:VGroup width="40%">
 				<s:HGroup verticalAlign="middle">
 					<s:Label text="Scale X To" verticalAlign="bottom"/>
-					<s:TextInput id="xVal" text="1.0" widthInChars="3"/>
+					<s:TextInput id="xVal" text="0.5" widthInChars="3"/>
 				</s:HGroup>
 				<s:HGroup verticalAlign="middle">
 					<s:Label text="Scale Y To" verticalAlign="bottom"/>
-					<s:TextInput id="yVal" text="1.0" widthInChars="3"/>
+					<s:TextInput id="yVal" text="0.5" widthInChars="3"/>
 				</s:HGroup>
 				<s:HGroup verticalAlign="middle">
 					<s:Label text="Scale Z To" verticalAlign="bottom"/>
