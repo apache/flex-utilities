@@ -215,6 +215,7 @@
 		<compile-mxml example="/spark/controls/TextLayout2Example"/>
 		<compile-mxml example="/spark/controls/TextLayout3Example"/>
 		<compile-mxml example="/spark/controls/TextLayout4Example"/>
+		<compile-mxml example="/spark/controls/VideoDisplayExample"/>
 		
 		<compile-mxml example="/spark/css/CSSDescendantSelectorExample"/>
 		<compile-mxml example="/spark/css/CSSTypeClassSelectorExample"/>
