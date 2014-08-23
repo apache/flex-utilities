@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="ant_on_air" basedir="." default="main">
+
+    <!--load environment variables prefixed with env -->
+    <property environment="env"/>
+
+    <!--location of property file -->
+    <property file="${basedir}/build.properties" description="Properties for Ant On AIR project" />
+
+    <!--
+        Properties are immutable so value frozen first time property is set.
+        If FLEX_HOME is not set with -DFLEX_HOME=/path/to/flex/sdk on the ant command line
+        use the environment variable, if it exists. Else if windows, use FLEX_HOME_WIN
+        else use FLEX_HOME_MAC, which are both defined in build.properties.
+    -->
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+
+    <!--
+        Properties are immutable so value frozen first time property is set.
+        If AIR_HOME is not set on the command line with -DAIR_HOME=/path/to/air/sdk on the
+        ant command line use the environment variable, if it exists. Else if windows, use
+        AIR_HOME_WIN else use AIR_HOME_MAC, which are both defined in build.properties.
+    -->
+    <condition property="AIR_HOME" value="${env.AIR_HOME}">
+        <isset property="env.AIR_HOME" />
+    </condition>
+
+    <condition property="adl" value="adl.exe">
+        <os family="windows"/>
+    </condition>
+    
+    <condition property="adl" value="adl">
+        <os family="mac"/>
+    </condition>
+
+    <condition property="runtime" value="win">
+        <os family="windows"/>
+    </condition>
+    
+    <condition property="runtime" value="mac">
+        <os family="mac"/>
+    </condition>
+    
+    <!-- additional tasks - mxmlc tag -->
+    <path id="flexTasks.path">
+        <fileset dir="${FLEX_HOME}">
+            <include name="lib/flexTasks.jar" />
+            <include name="ant/lib/flexTasks.jar" />
+        </fileset>
+    </path>
+    <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
+    
+    <target name="main" depends="init,third-party,compile,test" />
+    
+    <target name="build" depends="init,compile"
+        description="Compiles SWC"/>
+
+    <target name="init" depends="clean"
+        description="Creates the deploy folders and sets app extension">
+    </target>
+
+    <target name="third-party" depends="get-as3commons.swc" description="downloads 3rd-party files">
+        <mkdir dir="${basedir}/external/de/ketzler/utils" />
+        <get src="http://as3-simple-untar.googlecode.com/svn/trunk/src/de/ketzler/utils/SimpleUntar.as" dest="${basedir}/external/de/ketzler/utils/SimpleUntar.as" skipexisting="true" />
+        <mkdir dir="${basedir}/external/de/ketzler/utils/untar" />
+        <get src="http://as3-simple-untar.googlecode.com/svn/trunk/src/de/ketzler/utils/untar/UntarFileInfo.as" dest="${basedir}/external/de/ketzler/utils/untar/UntarFileInfo.as" skipexisting="true" />
+        <get src="http://as3-simple-untar.googlecode.com/svn/trunk/src/de/ketzler/utils/untar/UntarHeaderBlock.as" dest="${basedir}/external/de/ketzler/utils/untar/UntarHeaderBlock.as" skipexisting="true" />
+        <mkdir dir="${basedir}/external/com/probertson/utils" />
+        <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/CRC32Generator.as" dest="${basedir}/external/com/probertson/utils/CRC32Generator.as" skipexisting="true" />
+        <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/GZIPBytesEncoder.as" dest="${basedir}/external/com/probertson/utils/GZIPBytesEncoder.as" skipexisting="true" />
+        <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/GZIPEncoder.as" dest="${basedir}/external/com/probertson/utils/GZIPEncoder.as" skipexisting="true" />
+        <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/GZIPFile.as" dest="${basedir}/external/com/probertson/utils/GZIPFile.as" skipexisting="true" />
+    </target>
+    
+    <target name="check-as3commons.swc">
+        <available file="${basedir}/external/libs/as3commons-zip-1.0.0-alpha.1.swc" property="as3commons.swc.present"/>
+    </target>
+    
+    <!-- This has a BSD license which is a reciprocal license with the Apache v2 license.  -->
+    <target name="get-as3commons.swc" depends="check-as3commons.swc" unless="as3commons.swc.present"
+        description="Download as3commons.swc and fail if checksum mismatch.">
+        <mkdir dir="${basedir}/external/libs"/>
+        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc"
+        dest="${basedir}/external/libs/as3commons-zip-1.0.0-alpha.1.swc"
+        verbose="true"/>
+        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc.md5"
+        dest="${basedir}/external/libs/as3commons-zip-1.0.0-alpha.1.swc.md5"
+        verbose="true"/>
+        <checksum file="${basedir}/external/libs/as3commons-zip-1.0.0-alpha.1.swc" algorithm="md5" verifyProperty="isMD5ok"/>
+        <delete file="${basedir}/external/libs/as3commons-zip-1.0.0-alpha.1.swc.md5" failOnError="false"/>
+        <fail message="Checksum failure for ${basedir}/external/libs/as3commons-zip-1.0.0-alpha.1.swc">
+            <condition>
+                <isfalse value="${isMD5ok}"/>
+            </condition>
+        </fail>
+    </target>
+    
+    <target name="third-party-clean" description="Cleans up 3rd-party files.">
+        <delete dir="${basedir}/external" failOnError="false" includeEmptyDirs="true" />
+    </target>
+    
+    <target name="clean" description="Cleans up old files.">
+        <delete dir="${LIBRARY_DIR}" failOnError="false" includeEmptyDirs="true" />
+    </target>
+
+    <target name="compile" 
+        description="Compiles the SWC.">
+        <compc 
+            output="${LIBRARY_DIR}/${LIBRARY_NAME}.swc"
+            debug="${DEBUG_FLAG}"
+            failonerror="true"
+            fork="true"
+            maxmemory="512m">
+            <source-path path-element="${SOURCE_DIR}"/>
+            <source-path path-element="${basedir}/locale/{locale}"/>
+            <source-path path-element="${basedir}/external"/>
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
+            <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
+            <external-library-path file="${basedir}/external/libs" append="true"/>
+			<include-classes>AntClasses</include-classes>
+
+        </compc>
+    </target>
+    
+    <target name="test" >
+        <!-- TestTarget is probably obsolete
+		<mxmlc file="${basedir}/tests/TestTarget.as"
+			output="${basedir}/tests/TestTarget.swf"
+			debug="${DEBUG_FLAG}"
+			failonerror="true"
+            fork="true"
+            maxmemory="512m">
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
+            <source-path path-element="${SOURCE_DIR}"/>
+		</mxmlc>
+        -->
+		<mxmlc file="${basedir}/tests/AntOnAir.mxml"
+			output="${basedir}/tests/AntOnAir.swf"
+			debug="${DEBUG_FLAG}"
+			failonerror="true"
+            fork="true"
+            maxmemory="512m">
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
+            <source-path path-element="${basedir}/locale/{locale}"/>
+            <library-path file="${LIBRARY_DIR}/${LIBRARY_NAME}.swc" append="true"/>
+            <library-path file="${basedir}/external/libs" append="true"/>
+		</mxmlc>
+        <delete dir="${basedir}/tests/temp" failonerror="false" />
+        <exec executable="${AIR_HOME}/bin/${adl}" dir="${basedir}/tests" failonerror="true">
+            <arg value="-runtime" />
+            <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
+            <arg value="${basedir}/tests/AntOnAir-app.xml" />
+            <arg value="--" />
+            <arg value="-f ${basedir}/tests/test.xml" />
+            <arg value="-Dexitwhendone" />
+            <arg value="test" />
+        </exec>
+    </target>
+
+    <target name="debug-test" >
+        <delete dir="${basedir}/tests/temp" failonerror="false" />
+        <exec executable="${AIR_HOME}/bin/${adl}" dir="${basedir}/tests" failonerror="true">
+            <arg value="-runtime" />
+            <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
+            <arg value="${basedir}/tests/AntOnAir-app.xml" />
+            <arg value="--" />
+            <arg value="-f ${basedir}/tests/test.xml" />
+            <arg value="test" />
+        </exec>
+    </target>
+</project>

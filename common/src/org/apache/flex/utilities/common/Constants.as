@@ -36,16 +36,23 @@ public class Constants
 	
 	public static const APPLICATION_EXTENSION_MAC:String = ".dmg";
 	public static const APPLICATION_EXTENSION_WIN:String = ".exe";
+	public static const APPLICATION_EXTENSION_LINUX:String = ".deb";
 	
-	public static const CONFIG_XML_NAME:String = "installer/sdk-installer-config-3.0.xml";
+	public static const CONFIG_XML_NAME:String = "installer/sdk-installer-config-4.0.xml";
 	public static const DISCLAIMER_PATH:String = "about-binaries.html";
 	public static const INSTALLER_TRACK_SUCCESS:String = "track-installer.html";
+	public static const INSTALLER_TRACK_FAILURE:String = "track-installer.html?failure=true";
 	
 	
 	public static const SDK_BINARY_FILE_NAME_PREFIX:String = "apache-flex-sdk-";
 	
 	public static const URL_PREFIX:String = "http://";
 	public static const FILE_PREFIX:String = "file://";
+    public static const HTTPS_PREFIX:String = "https://";
+	
+	public static const SOURCEFORGE_DL_URL:String = ".dl.sourceforge.net/project/";
+	public static const SOURCEFORGE_DOWNLOAD_URL:String = "http://downloads.sourceforge.net/project/" +
+		"";
 	
 	//--------------------------------------------------------------------------
 	//

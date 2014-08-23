@@ -21,7 +21,7 @@ limitations under the License.
 Overview:
 =========
 
-- The Apache Flex SDK Installer AIR application provides an easy, installation of the 
+- The Apache Flex SDK Installer AIR application provides an easy installation of the 
   Apache Flex SDK and all its dependencies.  This will make it suitable for working with 
   IDEs such as Adobe Flash Builder, FDT, IntelliJ IDEA, FlashDevelop, etc.  
   The application downloads the following dependencies:
@@ -33,29 +33,48 @@ Overview:
   Optionally, the application will download these files if the user explicitly agrees to 
   the licensing terms:
     - Adobe BlazeDS
-     - Adobe embedded font support
+    - Adobe embedded font support
  
-    All the file names and urls of the downloaded files are available in 
-    installer/src/installer/sdk-installer-config-3.0.xml. 
-    When the dependencies file names or urls change in future, update the 
-    sdk-installer-config-3.0.xml to ensure that the application works correctly.
+- The Apache Flex SDK Installer 3.0 and later supports the ability to install 
+  virtually anything that can be installed via an Apache Ant script.  The list 
+  of choices to install are described in 
+  installer/src/installer/sdk-installer-config-4.0.xml and posted to
+  http://flex.apache.org/installer/sdk-installer-config-4.0.xml.  By default, the
+  installer looks there to determine the list of choices.  Once a selection is made,
+  the installer then looks in the folder of the install package for a -config.xml file
+  and if found, uses that to determine the set of licensing options that need to be
+  accepted before installing.  The installer then uncompresses the install package and
+  looks for installer.xml and runs that script via an approximation of Apache Ant that
+  has been written in ActionScript.  If the -config.xml file is not found, the Installer
+  assumes it is installing an older version of the Apache Flex SDK.
+
+- When installing an older version of the Apache Flex SDK, the installer
+  determines the file names and urls of the downloaded files from 
+  installer/src/installer/sdk-installer-config-4.0.xml. When the dependencies file 
+  names or urls change in future, update the sdk-installer-config-4.0.xml to ensure 
+  that the application works correctly.  For newer installs driven by Apache Ant
+  scripts, the file names and urls are determined by the script itself.
     
 - The application uses http://flex.apache.org/single-mirror-url.cgi to determine
-  the preferred mirror url to download the Apache Flex SDK binary from.
+  the preferred mirror url to use to download the binary package.  Newer installs
+  that use Apache Ant scripts use their own logic to select dependencies from mirrors.
   
-- Once the Apache Flex SDK binary file is downloaded, a MD5 hash is generated for it.  
+- Once the binary package is downloaded, a MD5 hash is generated for it.  
   This hash is compared with the hash from the Apache Flex SDK release site.  
-  If they match, we verify that the downloaded binary file is a valid Apache release and 
+  If they match, we verify that the downloaded binary package is a valid Apache release and 
   proceed to unzip the file.  
 	
-- The Adobe AIR SDK will be downloaded and the relevant files are copied to the required 
-  locations.
+- If required, the Adobe AIR SDK will be downloaded and the relevant files are copied 
+  to the required locations.
   
-- The Adobe Flash Player playerglobal.swc file and the config files are placed in the 
-  required locations.
+- If required, the Adobe Flash Player playerglobal.swc file and the config files 
+  are placed in the required locations.
   
 - Then the rest of the external dependencies and the optional files (if selected by user) 
   are downloaded and copied into the appropriate locations.  
+
+- If you experience problems with the install, please try again, but right-click
+  and select "Verbose Logging" to add more information to the log. 
 
 - From the 2.6 version, you can select the version of Adobe Flash Player and Adobe AIR SDK
   the installer downloads.
@@ -68,7 +87,7 @@ Overview:
   command line mode with the optional command line parameter: -config=<path to config file>
 
 - If building the app for Linux, open InstallApacheFlex-app.xml and change the Adobe AIR 
-  namespace from http://ns.adobe.com/air/application/3.4 to 
+  namespace from http://ns.adobe.com/air/application/4.0 to 
   http://ns.adobe.com/air/application/2.6  This is because AIR 2.6 is the latest available 
   version on Linux.  
 	
@@ -76,12 +95,18 @@ Overview:
 How to build the installer using ANT (no Flash Builder or any other IDE required):
 ==========================================================================================
 
+0.  Make sure you have the right version of the Adobe AIR SDK.  Apache Flex Installer
+    3.1 uses Adobe AIR SDK 4.0.  If you want to use an older version of the AIR SDK,
+    you will have to change the namespace in the following files:
+	installer/src/InstallApacheFlex-app.xml
+	ant_on_air/tests/AntOnAIR-app.xml.
+
 1.  Unzip the source distribution.  You should see the 'installer' directory and the 
-    'common' directory in the root.
+    'common' and 'ant_on_air' directories in the root.
+
+2.  In the ant_on_air directory, run:
+        ant [-DFLEX_HOME=/path/to/apache/flex/sdk] [-DAIR_HOME=/path/to/air/sdk]
             
-2.  In the installer directory, run:
-        ant build [-DFLEX_HOME=/path/to/apache/flex/sdk] [-DAIR_HOME=/path/to/air/sdk]
-        
     FLEX_HOME is the absolute path to the Apache Flex SDK
         If you omit this argument, and the system environment variable, FLEX_HOME exists,
         it is used.  Otherwise, the FLEX_HOME_MAC or FLEX_HOME_WIN property in 
@@ -92,7 +117,10 @@ How to build the installer using ANT (no Flash Builder or any other IDE required
         it is used.  Otherwise, the AIR_HOME_MAC or AIR_HOME_WIN property in 
         installer/build.properties is used.
           	
-2.  The installer executable file created in the installer/release directory.  If you are 
+3.  In the installer directory, run:
+        ant build [-DFLEX_HOME=/path/to/apache/flex/sdk] [-DAIR_HOME=/path/to/air/sdk]
+        
+4.  The installer executable file created in the installer/release directory.  If you are 
     on Windows, you will see an .exe file; if you are on Mac OS, you will see a .dmg file.  
 	A temporary digital signing certificate - temp.p12 will be created in the installer 
 	directory as well.  The password for this file is available in the build.properties 
@@ -103,7 +131,7 @@ How to set up the project for working with Adobe Flash Builder (or any other IDE
 ==========================================================================================
 
 1.  Unzip the source distribution.  You should see the 'installer' directory and the 
-    'common' directory in the root.
+    'common' and 'ant_on_air' directories in the root.
 
 2.  In the installer directory run: 
         ant get-as3commons.swc
@@ -115,4 +143,11 @@ How to set up the project for working with Adobe Flash Builder (or any other IDE
     and point it to the directory path where the 'installer' and 'common' directories are 
     located.
 
-4.  In the installer project, add ${APACHE_FLEX_UTILITIES_ROOT}/common/src as a source path.  
+4.  In the installer project, add ${APACHE_FLEX_UTILITIES_ROOT}/common/src as a source path.
+
+5.  In the installer project, add ${APACHE_FLEX_UTILITIES_ROOT}/ant_on_air/src as a source path.
+
+6.  In the installer project, add ${APACHE_FLEX_UTILITIES_ROOT}/ant_on_air/external as a source path.
+
+7.  In the installer project, add ${APACHE_FLEX_UTILITIES_ROOT}/ant_on_air/locale/{locale} as a source path.
+

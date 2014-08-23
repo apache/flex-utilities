@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="ant_on_air_test_subant" basedir="." default="subant">
+
+    <!--load environment variables prefixed with env -->
+    <property environment="env"/>
+
+    <!--location of property file -->
+    <property file="${basedir}/../build.properties" description="Properties for Ant On AIR project" />
+
+    <!--
+        Properties are immutable so value frozen first time property is set.
+        If FLEX_HOME is not set with -DFLEX_HOME=/path/to/flex/sdk on the ant command line
+        use the environment variable, if it exists. Else if windows, use FLEX_HOME_WIN
+        else use FLEX_HOME_MAC, which are both defined in build.properties.
+    -->
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+
+    <condition property="theOS" value="Windows">
+		<os family="windows"/>
+    </condition>
+    <condition property="theOS" value="Mac">
+		<os family="mac"/>
+    </condition>
+    <condition property="isMac" value="Mac">
+		<os family="mac"/>
+    </condition>
+
+    <condition property="and_success" value="success" >
+        <and>
+            <matches string="foobar" pattern=".*bar" />
+            <isset property="env.FLEX_HOME" />
+        </and>
+    </condition>
+	
+    <condition property="and_failure" value="success" >
+        <and>
+            <matches string="foobar" pattern=".*bar" />
+            <isset property="env.NONEXISTANT" />
+        </and>
+    </condition>
+	
+    <condition property="or_success" value="success" >
+        <or>
+            <matches string="foobar" pattern=".*bar" />
+            <isset property="env.NONEXISTANT" />
+        </or>
+    </condition>
+	
+    <condition property="or_failure" value="success" >
+        <or>
+            <matches string="foobar" pattern=".*fred" />
+            <isset property="env.NONEXISTANT" />
+        </or>
+    </condition>
+
+    <condition property="should_fail" value="success" >
+        <and>
+            <matches string="foobar" pattern=".*bar" />
+            <not>
+                <isset property="env.FLEX_HOME" />
+            </not>
+        </and>
+    </condition>
+
+	<target name="subant">
+        <antcall target="paramtest">
+            <param name="foo" value="bar" />
+        </antcall>
+        <echo>subant reported 'and' test 1: ${and_success} should be 'success'</echo>
+        <fail message="and test 1 failed" >
+            <condition>
+                <not>
+                    <equals arg1="success" arg2="${and_success}" />
+                </not>
+            </condition>
+        </fail>
+		<echo>subant reported 'or' test 2: ${or_success} should be 'success'</echo>
+        <fail message="and test 2 failed" >
+            <condition>
+                <not>
+                    <equals arg1="success" arg2="${or_success}" />
+                </not>
+            </condition>
+        </fail>
+		<echo>subant reported 'and' test 3: ${and_failure} should not be 'success'</echo>
+        <fail message="and test 3 failed" >
+            <condition>
+            	<equals arg1="success" arg2="${and_failure}" />
+            </condition>
+        </fail>
+		<echo>subant reported 'or' test 4: ${or_failure} should not be 'success'</echo>
+        <fail message="and test 4 failed" >
+            <condition>
+                <equals arg1="success" arg2="${or_failure}" />
+            </condition>
+        </fail>
+        <echo>subant reported 'isset' test 5: ${should_fail} should not be defined</echo>
+        <fail message="and test 5 failed" >
+            <condition>
+                <equals arg1="success" arg2="${should_fail}" />
+            </condition>
+        </fail>
+    </target>
+    
+    <target name="paramtest">
+        <echo>paramtest said ${foo} should say bar</echo>
+    </target>
+    
+</project>

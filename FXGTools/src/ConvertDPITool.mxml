@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	<!--
+	This app reads all .fxg files from a given directory
+	Applies a given scalefactor to each first level child node in the fxg file
+	i.e. if the scalefactor is 2, it will add the attributes scaleX="2" scaleY="2" to each first level child node 
+	Also applies scale factor to the Graphic object's viewWidth, viewHeight, scaleGridLeft, scaleGridRight, scaleGridBottom and scaleGridTop properties
+	-->
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			protected var _workingDir:File = new File();
+			protected var _files:Array = [];
+			protected var _currentIndex:int = -1;
+			protected var _fileStream:FileStream;
+			protected var _scaleValue:Number;
+			
+			protected const APACHE_HEADER:String = '<?xml version="1.0" encoding="UTF-8"?>' + "\n" + // 
+				"<!--" + "\n" + // 
+				"" + "\n" + //
+				"  Licensed to the Apache Software Foundation (ASF) under one or more" + "\n" + //
+				"  contributor license agreements.  See the NOTICE file distributed with" + "\n" + //
+				"  this work for additional information regarding copyright ownership." + "\n" + //
+				"  The ASF licenses this file to You under the Apache License, Version 2.0" + "\n" + //
+				'  (the "License"); you may not use this file except in compliance with' + "\n" + //
+				"  the License.  You may obtain a copy of the License at" + "\n" + //
+				"" + "\n" + //
+				"      http://www.apache.org/licenses/LICENSE-2.0" + "\n" + //
+				"" + "\n" + //
+				"  Unless required by applicable law or agreed to in writing, software" + "\n" + //
+				'  distributed under the License is distributed on an "AS IS" BASIS,' + "\n" + //
+				"  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." + "\n" + //
+				"  See the License for the specific language governing permissions and" + "\n" + //
+				"  limitations under the License." + "\n" + //
+				"" + "\n" + //
+				"-->" + "\n" + //
+				"" + "\n";
+			
+			protected function selectDirBtn_clickHandler(event:MouseEvent):void
+			{
+				_workingDir.addEventListener(Event.SELECT, handleDirectorySelect);
+				_workingDir.browseForDirectory("Select FXG assets directory");
+			}
+			
+			protected function handleDirectorySelect(event:Event):void
+			{
+				directoryPathTextInput.text = _workingDir.nativePath;
+			}
+			
+			protected function convertDPIBtn_clickHandler(event:MouseEvent):void
+			{
+				if(directoryPathTextInput.text != "")
+				{
+					_workingDir = _workingDir.resolvePath(directoryPathTextInput.text);
+					_files = _workingDir.getDirectoryListing();
+					processNextFXGFile();
+				}
+			}
+			
+			protected function processNextFXGFile():void
+			{
+				_currentIndex++;
+				if(_currentIndex <= _files.length-1)
+				{
+					readXML(_files[_currentIndex]);
+				}
+				else
+				{
+					Alert.show("Processing complete.");
+				}
+			}
+			
+			protected function readXML(fxgFile:File):void
+			{
+				_fileStream = new FileStream();
+				if(fxgFile.exists)
+				{
+					_fileStream.open(fxgFile,FileMode.READ);
+					processFXG();
+				}
+			}
+			
+			protected function processFXG():void
+			{
+				XML.ignoreComments = false;
+				_scaleValue = parseFloat(scale.text);
+				if(isNaN(_scaleValue))
+				{
+					_scaleValue = 1;	
+				}
+				var graphic:XML = XML(_fileStream.readUTFBytes(_fileStream.bytesAvailable));
+				_fileStream.close();
+				if(graphic.hasOwnProperty("@viewHeight"))
+				{
+					graphic.@viewHeight = graphic.@viewHeight * _scaleValue;
+				}
+				if(graphic.hasOwnProperty("@viewWidth"))
+				{
+					graphic.@viewWidth = graphic.@viewWidth * _scaleValue;
+				}
+				if(graphic.hasOwnProperty("@scaleGridLeft"))
+				{
+					graphic.@scaleGridLeft = graphic.@scaleGridLeft * _scaleValue;
+				}
+				if(graphic.hasOwnProperty("@scaleGridRight"))
+				{
+					graphic.@scaleGridRight = graphic.@scaleGridRight * _scaleValue;
+				}
+				if(graphic.hasOwnProperty("@scaleGridTop"))
+				{
+					graphic.@scaleGridTop = graphic.@scaleGridTop * _scaleValue;
+				}
+				if(graphic.hasOwnProperty("@scaleGridBottom"))
+				{
+					graphic.@scaleGridBottom = graphic.@scaleGridBottom * _scaleValue;
+				}
+				var firstChildNodes:XMLList = graphic.children();
+				for each(var node:XML in firstChildNodes)
+				{
+					if(node.name() != null)
+					{
+						if(node.name().localName == "TextGraphic" || node.name().localName == "RichText")
+						{
+							trace("Text element found.  Look out for font related artifacts that could be created as a result of scaling");
+						}
+					}
+					
+					
+					if(node.hasOwnProperty("@scaleX"))
+					{
+						node.@scaleX = node.@scaleX*_scaleValue;
+					}
+					else
+					{
+						node.@scaleX = _scaleValue;
+					}
+					
+					if(node.hasOwnProperty("@scaleY"))
+					{
+						node.@scaleY = node.@scaleY*_scaleValue;
+					}
+					else
+					{
+						node.@scaleY = _scaleValue;
+					}
+				}
+				writeModifiedFXG(graphic);
+			}
+			
+			protected function writeModifiedFXG(graphicXML:XML):void
+			{
+				var outputFile:File = _files[_currentIndex];
+				_fileStream.open(outputFile,FileMode.WRITE);
+				_fileStream.writeUTFBytes(APACHE_HEADER + graphicXML.toXMLString());
+				_fileStream.close();
+				processNextFXGFile();
+			}
+			
+		]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout />
+	</s:layout>
+	<s:HGroup width="100%">
+		<s:Button label="Browse..." click="selectDirBtn_clickHandler(event)" />
+		<s:TextInput id="directoryPathTextInput" prompt="FXG Assets Directory" width="200"/>
+	</s:HGroup>
+	<s:HGroup width="100%">
+		<s:Label text="Scale:" />
+		<s:TextInput id="scale" prompt="Enter a number" restrict="0-9,."  />
+	</s:HGroup>
+	<s:Button id="convertDPIBtn" label="Convert DPI" click="convertDPIBtn_clickHandler(event)"/>
+</s:WindowedApplication>

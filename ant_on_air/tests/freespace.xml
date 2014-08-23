@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="freespace" basedir="." default="test">
+
+	<condition property="partition" value="c:">
+        <os family="windows"/>
+    </condition>
+	<property name="partition" value="/" />
+	
+    <target name="test">
+		<!-- likely to be true -->
+	    <condition property="just_right" value="success">
+	    	<and>
+	    		<hasfreespace partition="${partition}" needed="1K" />
+	    		<hasfreespace partition="${partition}" needed="10K" />
+	    		<hasfreespace partition="${partition}" needed="100K" />
+	    		<hasfreespace partition="${partition}" needed="1M" />
+	    		<hasfreespace partition="${partition}" needed="10M" />
+	    		<hasfreespace partition="${partition}" needed="100M" />
+	    		<hasfreespace partition="${partition}" needed="1G" />
+	    	</and>
+	    </condition>
+	    		
+	    <echo>Has free space: ${just_right} should be 'success'</echo>
+	    <fail message="and test 1 failed" >
+	        <condition>
+	            <not>
+	                <equals arg1="success" arg2="${just_right}" />
+	            </not>
+	        </condition>
+	    </fail>
+	    		
+		<!-- likely to be true -->
+	    <condition property="too_big" value="success">
+	    	<and>
+	    		<hasfreespace partition="${partition}" needed="1G" />
+	    		<hasfreespace partition="${partition}" needed="10G" />
+	    		<hasfreespace partition="${partition}" needed="100G" />
+	    		<hasfreespace partition="${partition}" needed="1T" />
+	    		<hasfreespace partition="${partition}" needed="10T" />
+	    		<hasfreespace partition="${partition}" needed="100T" />
+	    		<hasfreespace partition="${partition}" needed="1P" />
+	    	</and>
+	    </condition>
+	    	
+	    <echo>Far too big: ${too_big} should be not be 'success'</echo>
+	    <fail message="and test 2 failed" >
+	        <condition>
+	            <equals arg1="success" arg2="${too_big}" />
+	        </condition>
+	    </fail>
+	</target>
+</project>
+    	    		

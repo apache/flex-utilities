@@ -20,8 +20,6 @@
 package org.apache.flex.packageflexsdk.util
 {
 
-import com.adobe.crypto.MD5Stream;
-
 import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.IOErrorEvent;
@@ -35,6 +33,7 @@ import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
 import flash.utils.ByteArray;
 
+import org.apache.flex.crypto.MD5Stream;
 import org.apache.flex.utilities.common.Constants;
 
 [Event(name="progress", type="flash.events.ProgressEvent")]
@@ -52,6 +51,8 @@ public class MD5CompareUtil extends EventDispatcher
 	
 	public static const MD5_POSTFIX:String = ".md5";
 	
+    public static const CHUNK_SIZE:int = 2 * 1024 * 1024;
+    
 	//--------------------------------------------------------------------------
 	//
 	//    Class properties
@@ -152,7 +153,7 @@ public class MD5CompareUtil extends EventDispatcher
 		_md5Stream = new MD5Stream();
 		
 		_fileStream = new FileStream();
-		_fileStream.readAhead = 16384;
+		_fileStream.readAhead = CHUNK_SIZE;
 		_fileStream.addEventListener(Event.COMPLETE, fileStreamOpenHandler);
 		_fileStream.addEventListener(ProgressEvent.PROGRESS, fileStreamOpenHandler);
 		_fileStream.addEventListener(OutputProgressEvent.OUTPUT_PROGRESS, fileStreamOpenHandler);
@@ -165,12 +166,9 @@ public class MD5CompareUtil extends EventDispatcher
 	
 	private function fileStreamOpenHandler(event:Event):void
 	{
-		var data:ByteArray = new ByteArray();
-		_fileStream.readBytes(data, 0, _fileStream.bytesAvailable);
-		
 		if (event is ProgressEvent)
 		{
-			_md5Stream.update(data);
+			_md5Stream.update(_fileStream, Math.floor(_fileStream.bytesAvailable / 64) * 64);
 			
 			dispatchEvent(event.clone());
 		}
@@ -178,7 +176,8 @@ public class MD5CompareUtil extends EventDispatcher
 		{
 			if (event.type == Event.COMPLETE)
 			{
-				_fileIsVerified = (_md5Stream.complete(data) == _remoteMD5Value);
+				_fileIsVerified = (_md5Stream.complete(_fileStream, _file.size) == _remoteMD5Value);
+                _fileStream.close();
 				
 				removeEventListeners();
 				_callback();

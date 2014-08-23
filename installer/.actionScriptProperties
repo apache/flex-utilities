@@ -18,7 +18,7 @@
 
 -->
 <actionScriptProperties analytics="false" mainApplicationPath="InstallApacheFlex.mxml" projectUUID="151f0ac8-8811-45cd-b935-d7c2b0949fa3" version="11">
-  <compiler additionalCompilerArguments="" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Apache Flex 4.9.0 FP11.1 en_US" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="false" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Apache Flex 4.10.0 FP 11.8 AIR 3.8 en_US" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="false" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="${APACHE_FLEX_UTILITIES_ROOT}/common/src"/>
     </compilerSourcePath>
@@ -31,6 +31,7 @@
       </libraryPathEntry>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
       <libraryPathEntry kind="3" linkType="1" path="/common/bin/common.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/ant_on_air/bin/ant_on_air.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

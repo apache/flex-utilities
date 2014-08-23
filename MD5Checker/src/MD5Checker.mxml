@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+                       xmlns:s="library://ns.adobe.com/flex/spark" 
+                       xmlns:mx="library://ns.adobe.com/flex/mx"
+                       preinitialize="getInvoke()"
+                       applicationComplete="setup()">
+    <fx:Declarations>
+        <!-- Place non-visual elements (e.g., services, value objects) here -->
+    </fx:Declarations>
+    <fx:Script>
+        <![CDATA[
+            import org.apache.flex.crypto.MD5Stream;
+            
+            private static var DEFAULT_READBUFFER_SIZE:int = 2 * 1024 * 1024;
+            private static var GCL:String = "Google Closure Library";
+            
+            private var data:Array = [];
+            
+            private function getInvoke():void {
+                var nativeApplication:NativeApplication = NativeApplication.nativeApplication;
+                nativeApplication.addEventListener(InvokeEvent.INVOKE, parseArgs);
+            }
+            private var logFileName:String = "MD5CheckerLog.txt";
+            
+            private function parseArgs(event:InvokeEvent):void {
+                for each (var s:String in event.arguments) {
+                    if (s.indexOf("-log=") == 0) {
+                        logFileName = s.substring(5);
+                    }
+                }
+            }
+            
+            // last modified dates and checksum map by url;
+            private var configURL:String = "http://flex.apache.org/installer/sdk-installer-config-4.0.xml";
+            private var fs:FileStream = new FileStream();
+            private var f:File;
+
+            private function setup():void
+            {
+                f = File.documentsDirectory.resolvePath(logFileName);
+                fs.open(f, FileMode.WRITE);
+
+                var urlRequest:URLRequest = new URLRequest(configURL);
+                urlRequest.followRedirects = true;
+                urlRequest.cacheResponse = false;
+                urlRequest.method = URLRequestMethod.GET;
+                xmlLoader.dataFormat = URLLoaderDataFormat.TEXT;
+                xmlLoader.addEventListener(Event.COMPLETE, xmlcompleteHandler);
+                xmlLoader.addEventListener(IOErrorEvent.IO_ERROR, xmlerrorHandler);
+                xmlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, xmlerrorHandler);
+                xmlLoader.load(urlRequest);
+                progressLabel.text = "Fetching sdk-installer-config-4.0.xml";   
+            }
+            
+            private var xml:XML;
+            
+            private function xmlcompleteHandler(event:Event):void
+            {
+                xml = new XML(xmlLoader.data as String);
+                var xmlList:XMLList;
+                
+                var item:Object;
+                
+                xmlList = xml["google-closure-library"];
+                for each (var node:XML in xmlList)
+                {
+                    item = {};
+                    item.label = GCL;
+                    item.url = node.@server.toString() + "/" + node.@folder.toString() + "/" + node.@file.toString();
+                    item.md5 = node.@md5.toString();
+                    if (!item.md5)
+                        continue;
+                    item.cacheID = node.@cacheID.toString();
+                    item.node = node;
+                    data.push(item);
+                }
+
+                xmlList = xml.flashsdk.versions.children();
+                for each (node in xmlList)
+                {
+                    item = {};
+                    item.label = "Flash PlayerGlobal " + node.@displayVersion.toString();
+                    item.url = node.path.toString() + node.file.toString();
+                    item.md5 = node.md5.toString();
+                    if (!item.md5)
+                        continue;
+                    item.cacheID = node.@cacheID.toString();
+                    item.node = node;
+                    data.push(item);
+                }
+                
+                xmlList = xml.airsdk.windows.versions.children();
+                for each (node in xmlList)
+                {
+                    item = {};
+                    item.label = "AIR Windows " + node.@displayVersion.toString();
+                    item.url = node.path.toString() + node.file.toString();
+                    item.md5 = node.md5.toString();
+                    if (!item.md5)
+                        continue;
+                    item.cacheID = node.@cacheID.toString();
+                    item.node = node;
+                    data.push(item);
+                }
+                
+                xmlList = xml.airsdk.mac.versions.children();
+                for each (node in xmlList)
+                {
+                    item = {};
+                    item.label = "AIR Mac " + node.@displayVersion.toString();
+                    item.url = node.path.toString() + node.file.toString();
+                    item.md5 = node.md5.toString();
+                    if (!item.md5)
+                        continue;
+                    item.cacheID = node.@cacheID.toString();
+                    item.node = node;
+                    data.push(item);
+                }
+                dg.dataProvider = new ArrayList(data);
+                checkSums();
+            }
+            
+            private function xmlerrorHandler(event:Event):void
+            {
+                event.preventDefault();
+                fs.writeUTFBytes("Unable to fetch " + configURL);
+                fs.close();
+                this.nativeApplication.exit(-1);
+            }
+            
+
+            private var xmlLoader:URLLoader = new URLLoader();
+            
+            private var current:int;
+            private var lastModified:String;
+            
+            private function checkSums():void
+            {
+                current = 0;
+                checkCurrent();
+            }
+            
+            private var urlHeadLoader:URLLoader = new URLLoader();
+            private var urlLoader:URLLoader = new URLLoader();
+            private var urlLoader2:URLLoader = new URLLoader();
+            
+            private var nodeChanged:Boolean;
+            
+            private function checkCurrent():void
+            {
+                if (current >= data.length)
+                {
+                    fs.close();
+                    this.nativeApplication.exit(nodeChanged ? -1 : 0);
+                    return;
+                }
+                
+                lastModified = null;
+                
+                var urlRequest:URLRequest = new URLRequest(data[current].url);
+                urlRequest.followRedirects = true;
+                urlRequest.cacheResponse = false;
+                urlRequest.method = URLRequestMethod.HEAD;
+                urlRequest.userAgent = "Java";
+                urlHeadLoader.dataFormat = URLLoaderDataFormat.BINARY;
+                urlHeadLoader.addEventListener(Event.COMPLETE, headcompleteHandler);
+                urlHeadLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,headstatusHandler);
+                urlHeadLoader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+                urlHeadLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
+                urlHeadLoader.load(urlRequest);
+                progressLabel.text = "Checking " + data[current].url;
+            }
+            
+            private var lastStatus:int;
+            
+            private function headstatusHandler(event:HTTPStatusEvent):void
+            {
+                lastStatus = event.status;
+                if (event.status >= 400) 
+                {
+                    // some problem.  skip, go to next one
+                    current++;
+                    checkCurrent();
+                }
+                else
+                {
+                    var foundLastModified:Boolean = false;
+                    var headers:Array = event.responseHeaders;
+                    for each (var header:URLRequestHeader in headers)
+                    {
+                        if (header.name == "Last-Modified")
+                        {
+                            lastModified = header.value;
+                            foundLastModified = true;
+                        }
+                        else if ((header.name == "Etag" || header.name == "ETag") && lastModified == null)
+                        {
+                            lastModified = header.value;
+                            foundLastModified = true;
+                        }
+                    }
+                    if (!foundLastModified)
+                    {
+                        trace("no last modified or etag header");
+                    }
+                }
+            }
+
+            private function headcompleteHandler(event:Event):void
+            {
+                if (data[current].cacheID != lastModified)
+                {
+                    download();
+                }
+                else
+                {
+                    current++;
+                    checkCurrent();
+                }
+            }
+            
+            private function download():void
+            {
+                var urlRequest:URLRequest = new URLRequest(data[current].url);
+                urlRequest.followRedirects = true;
+                urlRequest.cacheResponse = false;
+                urlRequest.method = URLRequestMethod.GET;
+                urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
+                urlLoader.addEventListener(Event.COMPLETE, completeHandler);
+                urlHeadLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, statusHandler);
+                urlLoader.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+                urlLoader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+                urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
+                urlLoader.load(urlRequest);
+                progressLabel.text = "Downloading " + data[current].url;
+            }
+            
+            private function progressHandler(event:ProgressEvent):void
+            {
+                pb.setProgress(event.bytesLoaded, event.bytesTotal);
+                pbCurrent.text = event.bytesLoaded.toString();
+                pbTotal.text = event.bytesTotal.toString();
+            }
+            
+            private function statusHandler(event:HTTPStatusEvent):void
+            {
+                lastStatus = event.status;
+            }
+            
+            private function errorHandler(event:Event):void
+            {
+                event.preventDefault();
+                current++;
+                checkCurrent();
+            }
+            
+            
+            private var md5:MD5Stream;
+            private var ba:ByteArray;
+            
+            private function completeHandler(event:Event):void
+            {
+                if (lastStatus < 300)
+                {
+                    md5 = new MD5Stream();
+                    md5.resetFields();
+                    ba = urlLoader.data as ByteArray;
+                    progressLabel.text = "Computing checksum for " + data[current].url;
+                    getSum();
+                }
+                else
+                {
+                    current++;
+                    checkCurrent();                    
+                }
+            }
+            
+            private function getSum():void
+            {
+                if (ba.bytesAvailable < DEFAULT_READBUFFER_SIZE)
+                {
+                    sumComplete();
+                    return;
+                }
+                md5.update(ba, DEFAULT_READBUFFER_SIZE);
+                pb.setProgress(ba.position, ba.length);
+                pbCurrent.text = ba.position.toString();
+                pbTotal.text = ba.length.toString();
+                callLater(getSum);
+            }
+            
+            private var sum:String;
+            
+            private function sumComplete():void
+            {
+                sum = md5.complete(ba, ba.length);
+                retries = 1;
+                redownload();
+            }
+            
+            private function redownload():void
+            {
+                var urlRequest:URLRequest = new URLRequest(data[current].url);
+                urlRequest.followRedirects = true;
+                urlRequest.cacheResponse = false;
+                urlRequest.method = URLRequestMethod.GET;
+                urlLoader2.dataFormat = URLLoaderDataFormat.BINARY;
+                urlLoader2.addEventListener(Event.COMPLETE, recompleteHandler);
+                urlLoader2.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+                urlLoader2.addEventListener(IOErrorEvent.IO_ERROR, reerrorHandler);
+                urlLoader2.addEventListener(SecurityErrorEvent.SECURITY_ERROR, reerrorHandler);
+                urlLoader2.load(urlRequest);
+                progressLabel.text = "Verifying CheckSum (" + retries.toString() + ")";
+            }
+            
+            private var retries:int;
+            
+            private function reerrorHandler(event:Event):void
+            {
+                if (retries < 4)
+                    redownload();
+            }
+            
+            private function recompleteHandler(event:Event):void
+            {
+                md5 = new MD5Stream();
+                md5.resetFields();
+                ba = urlLoader2.data as ByteArray;
+                getSum2();
+            }
+            
+            private function getSum2():void
+            {
+                if (ba.bytesAvailable < DEFAULT_READBUFFER_SIZE)
+                {
+                    sumComplete2();
+                    return;
+                }
+                md5.update(ba, DEFAULT_READBUFFER_SIZE);
+                pb.setProgress(ba.position, ba.length);
+                pbCurrent.text = ba.position.toString();
+                pbTotal.text = ba.length.toString();
+                callLater(getSum2);
+            }
+                        
+            private function sumComplete2():void
+            {
+                var sum2:String = md5.complete(ba, ba.length);
+                if (sum == sum2)
+                {
+                    data[current].cacheID = lastModified;
+                    data[current].md5 = sum;
+                    fs.writeUTFBytes("Old Node:\n");
+                    fs.writeUTFBytes(data[current].node.toXMLString() + "\n");
+                    fs.writeUTFBytes("New Node:\n");
+                    data[current].node.@cacheID = lastModified;
+                    if (data[current].label == GCL)
+                        data[current].node.@md5 = sum;
+                    else
+                        data[current].node.md5 = sum;
+                    nodeChanged = true;
+                    fs.writeUTFBytes(data[current].node.toXMLString() + "\n");                        
+                    dg.dataProvider.itemUpdated(data[current]);
+                    current++;
+                    checkCurrent();
+                }
+                else
+                {
+                    sum = sum2;
+                    redownload();
+                }
+            }
+
+        ]]>
+    </fx:Script>
+    <s:VGroup width="100%">
+        <s:DataGrid id="dg" width="100%" height="300">
+            <s:columns>
+                <s:ArrayList>
+                    <s:GridColumn dataField="label" />
+                    <s:GridColumn dataField="url" />
+                    <s:GridColumn dataField="md5" />
+                    <s:GridColumn dataField="cacheID" />
+                </s:ArrayList>
+            </s:columns>
+        </s:DataGrid>
+        <s:Label id="progressLabel" width="100%" />
+        <mx:ProgressBar id="pb" width="100%" mode="manual" />
+        <s:HGroup>
+            <s:Label id="pbCurrent" />
+            <s:Label text="out of" />
+            <s:Label id="pbTotal" />
+        </s:HGroup>
+    </s:VGroup>
+</s:WindowedApplication>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+                   xmlns:local="*"
+                   xmlns:mx="library://ns.adobe.com/flex/mx"
+                   xmlns:s="library://ns.adobe.com/flex/spark" 
+                   invoke="checkargs(event)"
+                   >
+    <fx:Script>
+        <![CDATA[
+            // in theory, all new tags are added to AntClasses.as
+            // and therefore force-linking this should initialize
+            // all tag handlers
+            import AntClasses; AntClasses;
+            import org.apache.flex.ant.Ant;
+            import org.apache.flex.ant.tags.Copy;
+            import org.apache.flex.ant.tags.Get;
+            import org.apache.flex.ant.tags.Checksum;
+            
+            private function checkargs(event:InvokeEvent):void
+            {
+				var targets:Array = [];
+
+				var nextIsAntFile:Boolean;
+				
+                for each (var s:String in event.arguments)
+				{
+					if (s == "-f")
+					{
+						nextIsAntFile = true;
+					}
+					else if (nextIsAntFile)
+					{
+						nextIsAntFile = false;
+						antfilename = s;
+					}
+					else if (s.indexOf("-f ") != -1)
+					{
+						antfilename = s.substr(3);
+					}
+					else if (s.indexOf("-D") != -1)
+					{
+						s = s.substr(2);
+						var c:int = s.indexOf("=");
+						if (c != -1)
+						{
+							var parts:Array = s.split("=");
+							context[parts[0]] = parts[1];
+						}
+						else
+							context[s] = true;
+					}
+					else
+						targets.push(s);
+				}
+				context.targets = targets.join(",");
+                test();
+            }
+            
+			private var context:Object = {};
+			
+			private var antfilename:String = "build.xml";
+			
+            public function test():void
+            {
+                ant = new Ant();
+                ant.output = output;
+                var file:File = File.applicationDirectory;
+                file = file.resolvePath(antfilename);
+                addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+                if (!ant.processXMLFile(file, context, true))
+                {
+                    ant.addEventListener(Event.COMPLETE, completeHandler);
+                    ant.addEventListener(ProgressEvent.PROGRESS, progressEventHandler);
+                    // redispatch keyboard events off of ant so input task can see them
+                    systemManager.stage.addEventListener(KeyboardEvent.KEY_DOWN, ant_keyDownHandler);
+                    pb.source = ant;
+                }
+                else
+                    completeHandler(null);
+            }
+            
+            private function progressEventHandler(event:ProgressEvent):void
+            {
+                if (ant.progressClass is Copy)
+                {
+                    pb.label = "Copying %1 of %2";
+                }
+                else if (ant.progressClass is Get)
+                {
+                    pb.label = "Downloading bytes %1 of %2";                    
+                }
+                else if (ant.progressClass is Checksum)
+                {
+                    pb.label = "Computing checksum: bytes %1 of %2";                    
+                }
+            }
+            
+            private function completeHandler(event:Event):void
+            {
+                if (Ant.currentAnt.project.status)
+                    output("SUCCESS!");
+                else
+                    output("FAILURE!");
+                
+                if (context.exitwhendone)
+                    NativeApplication.nativeApplication.exit(Ant.currentAnt.project.status ? 0 : 255);
+            }
+            
+            private var ant:Ant;
+            
+            private function output(s:String):void
+            {
+                console.text += s + "\n";
+                callLater(scrollConsoleToBottom);
+            }
+            
+            private function scrollConsoleToBottom():void
+            {
+                console.verticalScrollPosition = console.maxVerticalScrollPosition;
+            }
+            
+            private function enterFrameHandler(event:Event):void
+            {
+                ant.doCallback();
+            }
+            
+            private function ant_keyDownHandler(event:KeyboardEvent):void
+            {
+                ant.dispatchEvent(event);
+            }
+        ]]>
+    </fx:Script>
+    <s:layout>
+        <s:VerticalLayout />
+    </s:layout>
+    <mx:TextArea id="console" width="100%" height="100%" fontFamily="Courier New" />
+    <mx:ProgressBar id="pb" width="100%" mode="event" label="" />
+</s:WindowedApplication>

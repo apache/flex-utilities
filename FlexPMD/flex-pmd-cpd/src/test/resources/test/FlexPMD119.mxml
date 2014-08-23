@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Canvas> 
+	
+	<mx:Script>
+		<![CDATA[
+		
+		// Handle the mouseDown event generated 
+		// by clicking in the application.
+		private function handleMouseDown(event:MouseEvent):void {
+		
+		// Convert the mouse position to global coordinates.
+		// The localX and localY properties of the mouse event contain
+		// the coordinates at which the event occurred relative to the
+		// event target, typically one of the 
+		// colored internal Canvas controls.
+		// A production version of this example could use the stageX 
+		// and stageY properties, which use the global coordinates, 
+		// and avoid this step.
+		// This example uses the localX and localY properties only to
+		// illustrate conversion between different frames of reference.
+		var pt:Point = new Point(event.localX, event.localY);
+		pt = event.target.localToGlobal(pt);
+		
+		// Convert the global coordinates to the content coordinates 
+		// inside the outer c1 Canvas control.
+		pt = c1.globalToContent(pt);
+		
+		// Figure out which quadrant was clicked.
+		var whichColor:String = "border area";
+		
+		if (pt.x < 150) {
+		if (pt.y < 150)
+		whichColor = "red";
+		else
+		whichColor = "blue";
+		}
+		else {
+		if (pt.y < 150)
+		whichColor = "green";
+		else
+		whichColor = "magenta";
+		}
+		
+		Alert.show("You clicked on the " + whichColor);
+		}
+		
+		// Handle the mouseDown event generated 
+		// by clicking in the application.
+		private function handleMouseDown(event:MouseEvent):void {
+		
+		// Convert the mouse position to global coordinates.
+		// The localX and localY properties of the mouse event contain
+		// the coordinates at which the event occurred relative to the
+		// event target, typically one of the 
+		// colored internal Canvas controls.
+		// A production version of this example could use the stageX 
+		// and stageY properties, which use the global coordinates, 
+		// and avoid this step.
+		// This example uses the localX and localY properties only to
+		// illustrate conversion between different frames of reference.
+		var pt:Point = new Point(event.localX, event.localY);
+		pt = event.target.localToGlobal(pt);
+		
+		// Convert the global coordinates to the content coordinates 
+		// inside the outer c1 Canvas control.
+		pt = c1.globalToContent(pt);
+		
+		// Figure out which quadrant was clicked.
+		var whichColor:String = "border area";
+		
+		if (pt.x < 150) {
+		if (pt.y < 150)
+		whichColor = "red";
+		else
+		whichColor = "blue";
+		}
+		else {
+		if (pt.y < 150)
+		whichColor = "green";
+		else
+		whichColor = "magenta";
+		}
+		
+		Alert.show("You clicked on the " + whichColor);
+		}
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

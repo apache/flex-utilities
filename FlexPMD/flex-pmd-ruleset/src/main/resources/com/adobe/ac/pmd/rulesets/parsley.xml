@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ruleset 
+	name="Parsley Rules" 
+	xmlns="http://pmd.sf.net/ruleset/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
+	>
+
+	<description>
+      The Parsley Ruleset contains a collection of good practices related to Parsley.
+    </description>
+    
+	<rule 
+		class="com.adobe.ac.pmd.rules.parsley.InaccessibleMetaDataRule"
+		message="Parsley metadata should not be placed on inaccessible members.">
+		<description>Parsley can only process metadata that is placed onto public members.</description>
+		<priority>1</priority>
+		<example>
+[MessageHandler]
+private function doSomething() : void // VIOLATION 
+{      
+}      
+      </example>
+	</rule>
+
+	<rule 
+		class="com.adobe.ac.pmd.rules.parsley.MismatchedManagedEventRule"
+		message="Managed events should have matching [Event] metadata">
+		<description>Each managed event should have matching [Event] metadata.</description>
+		<priority>1</priority>
+		<example>
+[Event(name="message", type="my.package.MyEvemt")]
+[ManagedEvents(names="messag")] // VIOLATION
+public class MyClass  
+{      
+}      
+      </example>
+	</rule>
+
+	<rule 
+		class="com.adobe.ac.pmd.rules.parsley.MessageInterceptorSignatureRule"
+		message="The signature of the message interceptor {0} is not correct. {1}.">
+		<description></description>
+		<priority>1</priority>
+		<example>
+		<![CDATA[
+[MessageInterceptor(type="a.b.MyMessage")]
+public function messageInterceptor( processor : MessageProcessor ) : void
+{
+   processor.proceed();
+}
+
+[MessageInterceptor(type="a.b.MyMessage")]
+public function messageInterceptor() : void // VIOLATION
+{
+}
+
+[MessageInterceptor(type="a.b.MyMessage")]
+public function messageInterceptor( type : MyMessage ) : void // VIOLATION
+{
+   type.something();
+}
+
+[MessageInterceptor(type="a.b.MyMessage")]
+public function messageInterceptor( processor : MessageProcessor, type : MyMessage ) : void // VIOLATION
+{
+}]]>
+              </example>
+	</rule>
+
+	<rule 
+		class="com.adobe.ac.pmd.rules.parsley.MisplacedMetaDataRule"
+		message="This metadata {0} is misplaced">
+		<description></description>
+		<priority>1</priority>
+		<example>
+        </example>
+	</rule>
+
+	<rule 
+		class="com.adobe.ac.pmd.rules.parsley.RedundantMessageHandlerTypeAttributeRule"
+		message="This type metadata argument is redundant with the handler argument type">
+		<description></description>
+		<priority>3</priority>
+		<example>
+		<![CDATA[
+[MessageHandler(type="a.b.MyMessage")] // VIOLATION
+public function doSomething( message : MyMessage ) : void
+{
+   message.toString();
+}]]>
+        </example>
+	</rule>
+
+	<rule 
+		class="com.adobe.ac.pmd.rules.parsley.RedundantMethodAttributeRule"
+		message="This method metadata argument is redundant with the handler name">
+		<priority>3</priority>
+		<example> <![CDATA[
+[MessageHandler(method="doSomething")] // VIOLATION
+public function doSomething( message : MyMessage ) : void
+{
+   message.toString();
+}]]>
+        </example>
+	</rule>
+
+	<rule 
+		class="com.adobe.ac.pmd.rules.parsley.UnknownMetaDataAttributeRule"
+		message="This metadata attribute {0} is unknown">
+		<description></description>
+		<priority>1</priority>
+		<example>
+		<![CDATA[
+[AsyncInit(x="y")] // VIOLATION
+public class UnknownMetaDataAttribute
+{
+   [Inject(x="y")] // VIOLATION
+   public var inject;
+
+   [MessageHandler(x="y")] // VIOLATION
+   public function messageHandler() : void
+   {
+   }
+}]]>
+        </example>
+	</rule>
+
+</ruleset>

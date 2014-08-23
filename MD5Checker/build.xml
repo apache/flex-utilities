@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="MD5Checker" basedir="." default="main">
+
+    <!--load environment variables prefixed with env -->
+    <property environment="env"/>
+
+    <!--
+        Properties are immutable so value frozen first time property is set.
+        If FLEX_HOME is not set with -DFLEX_HOME=/path/to/flex/sdk on the ant command line
+        use the environment variable, if it exists. Else if windows, use FLEX_HOME_WIN
+        else use FLEX_HOME_MAC, which are both defined in build.properties.
+    -->
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+    <condition property="AIR_HOME" value="${env.AIR_HOME}">
+        <isset property="env.AIR_HOME" />
+    </condition>
+
+    <condition property="theOS" value="Windows">
+		<os family="windows"/>
+    </condition>
+    <condition property="theOS" value="Mac">
+		<os family="mac"/>
+    </condition>
+    <condition property="isMac" value="Mac">
+		<os family="mac"/>
+    </condition>
+
+    <condition property="and_success" value="success" >
+        <and>
+            <matches string="foobar" pattern=".*bar" />
+            <isset property="env.FLEX_HOME" />
+        </and>
+    </condition>
+	
+    <condition property="and_failure" value="success" >
+        <and>
+            <matches string="foobar" pattern=".*bar" />
+            <isset property="env.NONEXISTANT" />
+        </and>
+    </condition>
+	
+    <condition property="or_success" value="success" >
+        <or>
+            <matches string="foobar" pattern=".*bar" />
+            <isset property="env.NONEXISTANT" />
+        </or>
+    </condition>
+	
+    <condition property="or_failure" value="success" >
+        <or>
+            <matches string="foobar" pattern=".*fred" />
+            <isset property="env.NONEXISTANT" />
+        </or>
+    </condition>
+
+    <condition property="should_fail" value="success" >
+        <and>
+            <matches string="foobar" pattern=".*bar" />
+            <not>
+                <isset property="env.FLEX_HOME" />
+            </not>
+        </and>
+    </condition>
+
+	<target name="main" depends="build">
+        <exec executable="${AIR_HOME}/bin/adl.exe" dir="${basedir}/src" osfamily="windows" resultproperty="md5result" failonerror="false">
+            <arg value="-runtime"/>
+            <arg value="${AIR_HOME}/runtimes/air/win"/>
+			<arg value="${basedir}/src/MD5Checker-app.xml"/>
+			<arg value="--" />
+			<arg value="-log=${basedir}/MD5CheckerLog.txt"/>
+        </exec>
+        <exec executable="${AIR_HOME}/bin/adl" dir="${basedir}/src" osfamily="mac" resultproperty="md5result" failonerror="false">
+            <arg value="-runtime"/>
+            <arg value="${AIR_HOME}/runtimes/air/mac"/>
+			<arg value="${basedir}/src/MD5Checker-app.xml"/>
+			<arg value="--" />
+			<arg value="-log=${basedir}/MD5CheckerLog.txt"/>
+        </exec>
+		<loadfile property="md5log" srcfile="${basedir}/MD5CheckerLog.txt" />
+		<echo>${md5log}</echo>
+        <fail message="MD5's changed!" >
+            <condition>
+				<not>
+					<equals arg1="0" arg2="${md5result}" />
+				</not>
+            </condition>
+        </fail>
+    </target>
+    
+    <target name="load-task" >
+        <!-- load the <mxmlc> task; we can't do this at the <project> level -->
+        <!-- because targets that run before flexTasks.jar gets built would fail -->
+        <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/lib/flexTasks.jar"/>
+    </target>
+
+    <target name="build" depends="load-task" description="compile it">
+
+        <!-- compile the basic tests -->
+        <mxmlc fork="true" debug="true"
+               file="${basedir}/src/MD5Checker.mxml">
+            <jvmarg line="-Xms64m -Xmx384m -ea -Dapple.awt.UIElement=true"/>
+            <load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
+            <source-path path-element="${basedir}/../ant_on_air/src" />
+        </mxmlc>
+    </target>
+    
+</project>

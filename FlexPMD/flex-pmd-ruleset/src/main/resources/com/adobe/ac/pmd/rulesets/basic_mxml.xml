@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ruleset name="Basic MXML Rules" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+
+	<description>
+      The Basic MXML Ruleset contains a collection of good practices which everyone should follow.
+    </description>
+
+	<rule class="com.adobe.ac.pmd.rules.mxml.MoreThanOneEntryPointInMxmlRule"
+		message="There is more than 1 public variable in this MXML component">
+		<priority>5</priority>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.mxml.MoreThanTwoEntryPointsInMxmlRule"
+		message="There are more than 2 public variables in this MXML component">
+		<priority>3</priority>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.mxml.TooLongScriptBlockRule"
+		message="This script block is too long ({0} maximum, but {1} actually)">
+		<priority>3</priority>
+		<properties>
+			<property name="maximum">
+				<value>50</value>
+			</property>
+		</properties>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.mxml.CodeBehindInMxmlRule"
+		message="Avoid using code behind files">
+		<description>Code behind files are tightly coupled with the view, not unit-testable, not easy to navigate the code code base and not reusable. Try using presentation model pattern, or observer pattern</description>
+		<priority>5</priority>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.mxml.TooManyStatesInMxmlRule"
+	message="Having too many states does not help visibility. Try to refactor this view component.">
+		<priority>3</priority>
+		<properties>
+			<property name="maximum">
+				<value>5</value>
+			</property>
+		</properties>
+	</rule>
+
+</ruleset>

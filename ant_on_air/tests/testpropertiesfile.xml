@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="ant_on_air_test" basedir="." default="test">
+
+    <!--location of property file -->
+    <property file="${basedir}/test.properties" description="Properties for Ant On AIR project" />
+
+	<target name="test" >
+        <echo>${test1}</echo>
+        <fail message="test1 was not 'basedir'">
+            <condition>
+                <not>
+                    <equals arg1="basedir" arg2="${test1}" />
+                </not>
+            </condition>
+        </fail>
+        <echo>${test2}</echo>
+        <fail message="test2 was not expanded">
+            <condition>
+                <not>
+                    <equals arg1="${basedir}" arg2="${test2}" />
+                </not>
+            </condition>
+        </fail>
+        <echo>${test3}</echo>
+        <fail message="test3 was expanded">
+            <condition>
+                <equals arg1="${basedir}" arg2="${test3}" />
+            </condition>
+        </fail>
+        <echo>${test4}</echo>
+        <fail message="test4 was expanded">
+            <condition>
+                <not>
+                    <equals arg1="Foo is $${basedir}" arg2="${test4}" />
+                </not>
+            </condition>
+        </fail>
+    </target>
+</project>

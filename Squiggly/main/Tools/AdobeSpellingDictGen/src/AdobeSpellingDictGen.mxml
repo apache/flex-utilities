@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="800" height="600" fontSize="12">
+
+
+	<mx:Script>
+		<![CDATA[
+			
+			import com.adobe.linguistics.spelling.utils.WordList;
+			import com.adobe.linguistics.spelling.engine.dictionary.SuseDictionary;
+			import com.adobe.linguistics.spelling.codec.language.MetaPhone;
+			
+			// For debug only
+			private var tsStart:int
+			private var tsEnd:int;
+			
+			// An array with words only
+			private var basicWordList:Array;
+			
+			// A suse dictionary object (hash) as defined in suse engine
+			private var suse:SuseDictionary;
+			
+			// An array with index, word, metaphone
+			[Bindable]
+			private var advWordList:Array;
+			
+			private var src:File = File.applicationDirectory;
+			private var dest:File = File.applicationDirectory;
+			
+			
+			private function browseInFile():void
+			{
+				try {
+					src.browseForOpen("Select a TXT file");
+					src.addEventListener(Event.SELECT, inFileSelected);
+				} catch (error:Error)
+				{
+					trace("Failed:", error.message);
+				}
+			}
+			
+			private function inFileSelected(event:Event):void
+			{	
+				tsStart = getTimer();
+				var file:File = event.target as File;
+				var stream:FileStream = new FileStream();
+				stream.open(file, FileMode.READ);
+				var fileData:String = stream.readUTFBytes(stream.bytesAvailable);
+				
+				if (fileData.charAt(fileData.indexOf("\n")-2) == "\r")		//Strange, but happened when generating the text file from mac
+				{
+					basicWordList = fileData.split("\r\r\n");
+				}
+				else if (fileData.charAt(fileData.indexOf("\n")-1) == "\r")
+				{
+					basicWordList = fileData.split("\r\n");			//Windows
+				}
+				else 
+				{
+					basicWordList = fileData.split("\n");			//Mac and linux
+				}
+				
+				loadTxtInfo.text = file.nativePath + " (" + basicWordList.length.toString() + " words, " + file.size.toString() + " bytes)";
+				loadTxtInfo.setStyle("color", "green");
+				
+				// Debug log
+				tsEnd = getTimer();
+				debugInfo.text += "DebugInfo\n================\n" + "TxtLoaded: "+ file.nativePath + " " + (tsEnd - tsStart).toString() + "ms" + "\n";
+				prepareToShow();
+			}
+			
+			
+			private function browseOutFile():void
+			{
+				try {
+					dest.browseForSave("Output ZWL file");
+					dest.addEventListener(Event.SELECT, outFileSelected);
+				} catch (error:Error)
+				{
+					trace("Failed:", error.message);
+				}
+			}
+			
+			private function outFileSelected(event:Event):void
+			{				
+				tsStart = getTimer();
+				var bytes:ByteArray = new ByteArray();
+	    		bytes.writeObject(suse);
+	    		bytes.position = 0;
+	    		bytes.compress();
+	    		bytes.position = 0;
+	    		var outFile:File = new File((event.target as File).nativePath);
+	    		var outStream:FileStream = new FileStream();
+	    		outStream.open(outFile, FileMode.WRITE);
+	    		outStream.writeBytes(bytes, 0, bytes.length);
+	    		outStream.close();
+	    		
+	    		exportInfo.text = outFile.nativePath + " (" + outFile.size.toString() + " bytes)";
+				exportInfo.setStyle("color", "green");
+				
+				// Debug log
+	    		tsEnd = getTimer();
+	    		debugInfo.text += "\nZwlExported: " + outFile.nativePath + " " + (tsEnd - tsStart).toString() + "ms\n";
+				
+			}
+			
+	
+			
+			private function prepareToShow():void
+			{
+				
+				advWordList = new Array();
+				for (var i:uint=0; i<basicWordList.length; i++) {
+					// In case some empty string are there
+					if (basicWordList[i] != "")
+						advWordList.push(new UIWord(i, basicWordList[i]));
+				}
+			}
+			
+			private function genMeta():void
+			{
+
+				var _metaphone:MetaPhone= new MetaPhone();
+				tsStart = getTimer();
+				for (var i:uint=0; i<advWordList.length; i++) {
+					advWordList[i].meta = _metaphone.meta(advWordList[i].word, 4);
+				}
+				genMetaInfo.text = "Metaphone index generated";
+				genMetaInfo.setStyle("color", "green");
+				myDataGrid.dataProvider= advWordList;
+				// Debug log
+				tsEnd = getTimer();
+				debugInfo.text += "\nMetaGenerated: " + (tsEnd - tsStart).toString() + "ms\n";
+			}
+			
+			private function genSuseDict():void
+			{
+				suse = new SuseDictionary();
+				tsStart = getTimer();
+				for (var i:uint=0; i<advWordList.length; i++) {
+					if (suse.MetaPhoneHash[advWordList[i].meta]) {
+						suse.MetaPhoneHash[advWordList[i].meta].insert(advWordList[i].word);
+					}
+					else {
+						if ((advWordList[i].meta == "") || (advWordList[i].meta == "-nde")) continue;
+						suse.MetaPhoneHash[advWordList[i].meta] = new WordList();
+						suse.MetaPhoneHash[advWordList[i].meta].insert(advWordList[i].word);
+					}
+				}
+				genDictInfo.text = "SquigglyDict object generated";
+				genDictInfo.setStyle("color", "green");
+				
+				// Debug log
+				tsEnd = getTimer();
+				debugInfo.text += "\nSquigglyDictGenerated: " + (tsEnd - tsStart).toString() + "ms\n"; 	
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%">
+		<mx:Label text="Squiggly Dictionary Generator v0.1 (txt2zwl)" fontSize="25"/>		
+	</mx:HBox>
+	<mx:HBox width="100%">
+		<mx:Button label="1. Load TXT File" click="browseInFile()"/>
+		<mx:HRule visible="false" width="100%"/>
+		<mx:Label id="loadTxtInfo" text="Not loaded" color="red"/>
+	</mx:HBox>
+	<mx:HBox width="100%">
+		<mx:Button label="2. Calculate Metaphone" click="genMeta()"/>
+		<mx:HRule visible="false" width="100%"/>
+		<mx:Label id="genMetaInfo" text="Not calculated" color="red"/>
+	</mx:HBox>
+	<mx:HBox width="100%">
+		<mx:Button label="3. Generate SquigglyDict" click="genSuseDict()"/>		
+		<mx:HRule visible="false" width="100%"/>
+		<mx:Label id="genDictInfo" text="Not generated" color="red"/>
+	</mx:HBox>
+	<mx:HBox width="100%">
+		<mx:Button label="4. Export ZWL File" click = "browseOutFile()"/>
+		<mx:HRule visible="false" width="100%"/>
+		<mx:Label id="exportInfo" text="Not exported" color="red"/>
+	</mx:HBox>
+	<mx:HBox width="100%" height="100%">
+		<mx:DataGrid height="100%" id="myDataGrid" dataProvider = "{ advWordList }" width="70%">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Index" dataField="index"/>
+				<mx:DataGridColumn headerText="Word" dataField="word"/>
+				<mx:DataGridColumn headerText="Metaphone" dataField="meta"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:TextArea id="debugInfo" height="100%" width="30%" />
+	</mx:HBox>
+</mx:WindowedApplication>

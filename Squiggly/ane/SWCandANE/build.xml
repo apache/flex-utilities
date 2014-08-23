@@ -1,0 +1,210 @@
+<?xml version="1.0" ?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<project default="test" basedir=".">
+
+    <property file="${basedir}/env.properties"/>
+    <property environment="env"/>
+    <property file="${basedir}/local.properties"/>
+    <property file="${basedir}/build.properties"/>
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+    <condition property="AIR_HOME" value="${env.AIR_HOME}">
+        <isset property="env.AIR_HOME" />
+    </condition>
+
+    <!-- SDK properties -->
+    <property name="FLEX_HOME" value="C:/air3_beta2"/>
+    <property name="AIR_HOME" value="C:/air3_beta2"/>
+	<property name="MXMLC.JAR" value="${FLEX_HOME}/lib/mxmlc.jar"/>
+	<property name="COMPC.JAR" value="${FLEX_HOME}/lib/compc.jar"/>
+	<property name="ADL" value="${AIR_HOME}/bin/adl.exe"/>
+    <property name="ADT.JAR" value="${AIR_HOME}/lib/adt.jar"/>
+
+    <!-- Cert properties -->
+    <condition property="cert_pwd_not_found" >
+		<not>
+       		<available file="${CERT_PASSWORD_FILE}"/>
+		</not>
+    </condition>
+
+	<condition property="KEYSTORE" value="${RELEASE_KEYSTORE_FILE}" >
+		<available file="${CERT_PASSWORD_FILE}"/>
+	</condition>
+
+	<condition property="KEYSTORE" value="${basedir}/temp.p12" >
+		<not>
+			<available file="${CERT_PASSWORD_FILE}"/>
+		</not>
+	</condition>
+
+    <condition property="CERT_PASSWORD" value="${TEMP_PASS_CHANGE_THIS}" >
+		<not>
+       		<available file="${CERT_PASSWORD_FILE}"/>
+		</not>
+    </condition>
+
+    <!-- Project properties -->
+    <property name="STOREPASS" value="${CERT_PASSWORD}" />
+    <property name="APP_ROOT_DIR" value="."/>
+    <property name="APP_NAME" value="HunspellNativeExtensionWorkflow"/>
+    <property name="APP_ROOT_FILE" value="${APP_NAME}.swf"/>
+	<property name="APP_SOURCE_DIR" value="${APP_ROOT_DIR}/src"/>
+    <property name="MAIN_SOURCE" value="${APP_SOURCE_DIR}/${APP_NAME}.mxml"/>
+    <property name="APP_SOURCE_DESCRIPTOR" value="${APP_SOURCE_DIR}/${APP_NAME}-app.xml"/>
+	
+	<!-- Native Extensions -->
+	<property name="NATIVE_EXTENSION_NAME" value="HunspellNativeExtension"/>
+	<property name="NATIVE_EXTENSION_ACTIONSCRIPT_CLASSES" value="com.adobe.linguistics.extensions.HunspellNativeExtension" />
+	<property name="NATIVE_EXTENSION_TMP_DIR" value="${APP_ROOT_DIR}/extensions/tmp"/>
+	<property name="NATIVE_EXTENSION_BIN_DIR" value="${APP_ROOT_DIR}/extensions/bin"/>
+	<property name="NATIVE_EXTENSION_SRC_DIR" value="${APP_ROOT_DIR}/extensions/src"/>
+	<property name="NATIVE_EXTENSION_UNZIPPED_DIR" value="${APP_ROOT_DIR}/extensions/unzipped"/>
+	
+	<!-- Debug settings -->
+    <property name="debug"  location="${APP_ROOT_DIR}/debug"/>
+	<property name="APP_DEBUG_DESCRIPTOR" value="${debug}/${APP_NAME}-app.xml"/>
+    
+     <target name="init" depends="clean">
+     	<mkdir dir="${debug}"/>
+     	<mkdir dir="${NATIVE_EXTENSION_BIN_DIR}"/>
+     	<mkdir dir="${NATIVE_EXTENSION_UNZIPPED_DIR}"/>
+    </target>
+	
+	<target name="compilenativeextensions" depends="init">
+		<mkdir dir="${NATIVE_EXTENSION_TMP_DIR}"/>
+		<java jar="${COMPC.JAR}" fork="true" failonerror="true">
+			<arg value="-swf-version"/>
+			<arg value="13"/>
+			<arg value="+flexlib=${FLEX_HOME}/frameworks"/>
+			<arg value="+configname=air"/>
+			<arg value="-source-path"/>
+			<arg value="src"/>
+			<arg value="-include-classes"/>
+			<arg value="${NATIVE_EXTENSION_ACTIONSCRIPT_CLASSES}"/>
+			<arg value="-external-library-path"/>
+			<arg value="${AIR_HOME}/frameworks/libs/air/airglobal.swc"/>
+			<arg value="-output"/>
+			<arg value="${NATIVE_EXTENSION_TMP_DIR}/nativeextensions.swc"/>
+		</java>
+		<unzip src="${NATIVE_EXTENSION_TMP_DIR}/nativeextensions.swc" dest="${NATIVE_EXTENSION_TMP_DIR}" />
+	</target>
+	
+	<target name="packagenativeextensions" depends="compilenativeextensions">
+		<!-- dll files -->
+		<pathconvert property="nativeExtensionFiles" pathsep="' '" dirsep="/">
+			<path>
+				<fileset dir="${NATIVE_EXTENSION_SRC_DIR}" includes="**/*.dll"/>
+			</path>
+			<chainedmapper>
+				<flattenmapper/>
+			</chainedmapper>
+		</pathconvert>
+		<echo>native extension files: ${nativeExtensionFiles}</echo>
+		<!-- flatten directory -->
+		<copy todir="${NATIVE_EXTENSION_TMP_DIR}" flatten="true">
+			<fileset dir="${NATIVE_EXTENSION_SRC_DIR}" />
+		</copy>
+        <echo>${STOREPASS}</echo>
+        <echo>${KEYSTORE}</echo>
+		 <java jar="${ADT.JAR}" fork="true" dir="${NATIVE_EXTENSION_TMP_DIR}" failonerror="true">
+		 	<arg value="-package"/>
+		 	<arg value="-storetype"/>
+		 	<arg value="pkcs12"/>
+		 	<arg value="-storepass"/>
+		 	<arg value="${STOREPASS}"/>
+		 	<arg value="-keystore"/>
+		 	<arg value="${KEYSTORE}"/>
+		 	<arg value="-tsa"/>
+		 	<arg value="none"/>
+		 	<arg value="-target"/>
+		 	<arg value="ane"/>
+		 	<arg value="${NATIVE_EXTENSION_NAME}.ane"/>
+		 	<arg value="extension.xml"/>
+		 	<arg value="-swc"/>
+		 	<arg value="nativeextensions.swc"/>
+		 	<arg value="-platform"/>
+		 	<arg value="Windows-x86"/>
+		 	<arg value="library.swf"/>
+		 	<arg line="'${nativeExtensionFiles}'" />
+		 </java>
+		<copy file="${NATIVE_EXTENSION_TMP_DIR}/${NATIVE_EXTENSION_NAME}.ane" tofile="${NATIVE_EXTENSION_BIN_DIR}/${NATIVE_EXTENSION_NAME}.ane" />
+		<delete dir="${NATIVE_EXTENSION_TMP_DIR}"/>
+	</target>
+	
+	<target name="unpacknativeextensions" depends="packagenativeextensions">
+		<unzip src="${NATIVE_EXTENSION_BIN_DIR}/${NATIVE_EXTENSION_NAME}.ane" dest="${NATIVE_EXTENSION_UNZIPPED_DIR}/${NATIVE_EXTENSION_NAME}.ane" />
+	</target>
+
+    <target name="debugcompile" depends="unpacknativeextensions">
+        <java jar="${MXMLC.JAR}" fork="true" failonerror="true">
+            <arg value="-debug=true"/>
+            <arg value="+flexlib=${FLEX_HOME}/frameworks"/>
+            <arg value="+configname=air"/>
+            <arg value="-file-specs=${MAIN_SOURCE}"/>
+            <arg value="-output=${debug}/${APP_ROOT_FILE}"/>
+        </java>
+    	<copy filtering="true" file="${APP_SOURCE_DESCRIPTOR}" tofile="${APP_DEBUG_DESCRIPTOR}" />
+    	<replace file="${APP_DEBUG_DESCRIPTOR}">
+    		<replacefilter token="[This value will be overwritten by Flash Builder in the output app.xml]" value="${APP_ROOT_FILE}"/>
+    	</replace>
+    </target>
+
+    <target name="test" depends="certificate,debugcompile">
+        <exec executable="${ADL}">
+            <arg value="${APP_DEBUG_DESCRIPTOR}"/>
+			<arg value="-extdir"/>
+			<arg value="${NATIVE_EXTENSION_UNZIPPED_DIR}" />
+            <arg value="${debug}"/>
+          </exec> 
+    </target>
+
+    <!-- Make sure to use the same certificate each time so we can update the app. -->
+    <target name="certificate" if="cert_pwd_not_found">
+        <antcall target="generate-certificate"/>
+    </target>
+
+    <target name="generate-certificate">
+    	<echo message="Using cert ${KEYSTORE}" />
+        <java jar="${ADT.JAR}" fork="true"
+            failonerror="true">
+            <arg value="-certificate"/>
+            <arg value="-cn"/>
+            <arg value="${CERT_NAME}"/>
+            <arg value="-ou"/>
+            <arg value="${CERT_ORG_UNIT}"/>
+            <arg value="-o"/>
+            <arg value="${CERT_ORG_NAME}"/>
+            <arg value="-c"/>
+            <arg value="${CERT_COUNTRY}"/>
+            <arg value="${CERT_KEY_TYPE}"/>
+            <arg value="${KEYSTORE}"/>
+            <arg value="${CERT_PASSWORD}"/>
+        </java>
+    </target>
+    
+    <target name="clean" description="clean up">
+    	<delete dir="${debug}"/>
+    	<delete file="${basedir}/temp.p12"/>
+    	<delete dir="${NATIVE_EXTENSION_BIN_DIR}"/>
+    	<delete dir="${NATIVE_EXTENSION_TMP_DIR}"/>
+    	<delete dir="${NATIVE_EXTENSION_UNZIPPED_DIR}"/>
+    </target>
+</project>

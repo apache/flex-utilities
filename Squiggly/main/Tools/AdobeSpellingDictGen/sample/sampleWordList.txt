@@ -1,0 +1,13 @@
+adobe
+apple
+amazon
+microsoft
+intel
+ibm
+google
+yahoo
+ebay
+vmware
+sun
+orcale
+facebook

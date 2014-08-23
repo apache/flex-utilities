@@ -1,0 +1,428 @@
+// !$*UTF8*$!
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Licensed to the Apache Software Foundation (ASF) under one or more
+//  contributor license agreements.  See the NOTICE file distributed with
+//  this work for additional information regarding copyright ownership.
+//  The ASF licenses this file to You under the Apache License, Version 2.0
+//  (the "License"); you may not use this file except in compliance with
+//  the License.  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////////////
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1DBD233A1328578300B5B085 /* HunspellNativeExtension.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DBD23391328578300B5B085 /* HunspellNativeExtension.cpp */; };
+		1DE3D070144F354C0007B73C /* Adobe AIR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DE3D06F144F354C0007B73C /* Adobe AIR.framework */; };
+		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		F623A55B159CA5DE00A209C5 /* EncConv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F623A559159CA5DE00A209C5 /* EncConv.cpp */; };
+		F623A55C159CA5DE00A209C5 /* EncConv.h in Headers */ = {isa = PBXBuildFile; fileRef = F623A55A159CA5DE00A209C5 /* EncConv.h */; };
+		F6275F5715AF16260062D479 /* libsicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6275F5415AF16260062D479 /* libsicudata.a */; };
+		F6275F5815AF16260062D479 /* libsicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6275F5515AF16260062D479 /* libsicui18n.a */; };
+		F6275F5915AF16260062D479 /* libsicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6275F5615AF16260062D479 /* libsicuuc.a */; };
+		F6275F6715B40E5C0062D479 /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = F6275F6615B40E5C0062D479 /* Utilities.h */; };
+		F674FB6415996E9C00BAB506 /* HunspellNativeExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = F674FB6315996E9C00BAB506 /* HunspellNativeExtension.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1DBD23391328578300B5B085 /* HunspellNativeExtension.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HunspellNativeExtension.cpp; sourceTree = "<group>"; };
+		1DE3D06F144F354C0007B73C /* Adobe AIR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Adobe AIR.framework"; path = "/Applications/Adobe Flash Builder 4.5/sdks/4.5.1-air3.0/runtimes/air/mac/Adobe AIR.framework"; sourceTree = "<absolute>"; };
+		32DBCF5E0370ADEE00C91783 /* HunspellNativeExtension_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HunspellNativeExtension_Prefix.pch; sourceTree = "<group>"; };
+		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DC2EF5B0486A6940098B216 /* HunspellNativeExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HunspellNativeExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		F623A559159CA5DE00A209C5 /* EncConv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EncConv.cpp; sourceTree = "<group>"; };
+		F623A55A159CA5DE00A209C5 /* EncConv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncConv.h; sourceTree = "<group>"; };
+		F6275F5415AF16260062D479 /* libsicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsicudata.a; sourceTree = "<group>"; };
+		F6275F5515AF16260062D479 /* libsicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsicui18n.a; sourceTree = "<group>"; };
+		F6275F5615AF16260062D479 /* libsicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsicuuc.a; sourceTree = "<group>"; };
+		F6275F6615B40E5C0062D479 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		F674FB6315996E9C00BAB506 /* HunspellNativeExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HunspellNativeExtension.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */,
+				1DE3D070144F354C0007B73C /* Adobe AIR.framework in Frameworks */,
+				F6275F5715AF16260062D479 /* libsicudata.a in Frameworks */,
+				F6275F5815AF16260062D479 /* libsicui18n.a in Frameworks */,
+				F6275F5915AF16260062D479 /* libsicuuc.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5B0486A6940098B216 /* HunspellNativeExtension.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* TestNativeExtension */ = {
+			isa = PBXGroup;
+			children = (
+				F6275F6615B40E5C0062D479 /* Utilities.h */,
+				F623A559159CA5DE00A209C5 /* EncConv.cpp */,
+				F623A55A159CA5DE00A209C5 /* EncConv.h */,
+				F674FB6315996E9C00BAB506 /* HunspellNativeExtension.h */,
+				1DBD23391328578300B5B085 /* HunspellNativeExtension.cpp */,
+				08FB77AEFE84172EC02AAC07 /* Classes */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				034768DFFF38A50411DB9C8B /* Products */,
+			);
+			name = TestNativeExtension;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F6275F5415AF16260062D479 /* libsicudata.a */,
+				F6275F5515AF16260062D479 /* libsicui18n.a */,
+				F6275F5615AF16260062D479 /* libsicuuc.a */,
+				1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */,
+				1058C7B2FEA5585E11CA2CBB /* Other Frameworks */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C1665FE841158C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5A0486A6940098B216 /* Info.plist */,
+				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		08FB77AEFE84172EC02AAC07 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1DE3D06F144F354C0007B73C /* Adobe AIR.framework */,
+				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0867D6A5FE840307C02AAC07 /* AppKit.framework */,
+				D2F7E79907B2D74100F64583 /* CoreData.framework */,
+				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		32C88DFF0371C24200C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32DBCF5E0370ADEE00C91783 /* HunspellNativeExtension_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8DC2EF500486A6940098B216 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F674FB6415996E9C00BAB506 /* HunspellNativeExtension.h in Headers */,
+				F623A55C159CA5DE00A209C5 /* EncConv.h in Headers */,
+				F6275F6715B40E5C0062D479 /* Utilities.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8DC2EF4F0486A6940098B216 /* HunspellNativeExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "HunspellNativeExtension" */;
+			buildPhases = (
+				8DC2EF500486A6940098B216 /* Headers */,
+				8DC2EF520486A6940098B216 /* Resources */,
+				8DC2EF540486A6940098B216 /* Sources */,
+				8DC2EF560486A6940098B216 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HunspellNativeExtension;
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = TestNativeExtension;
+			productReference = 8DC2EF5B0486A6940098B216 /* HunspellNativeExtension.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "HunspellNativeExtension" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 0867D691FE84028FC02AAC07 /* TestNativeExtension */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DC2EF4F0486A6940098B216 /* HunspellNativeExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DC2EF540486A6940098B216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1DBD233A1328578300B5B085 /* HunspellNativeExtension.cpp in Sources */,
+				F623A55B159CA5DE00A209C5 /* EncConv.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C1667FE841158C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91AE08733DA50010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXPORTED_SYMBOLS_FILE = Exported_Sym_FIle;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Adobe Flash Builder 4.6/sdks/4.5.1-air3.0/runtimes/air/mac\"",
+					"\"$(SRCROOT)\"",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HunspellNativeExtension_Prefix.pch;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					../third_party/hunspell/src/hunspell,
+					../third_party/agl_tp/agl40/include,
+				);
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				LD_DYLIB_INSTALL_NAME = "";
+				LD_GENERATE_MAP_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../runtimes/air/mac @executable_path/../Frameworks /Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"/Library/Frameworks/Adobe\\ AIR.framework/Versions/1.0",
+					"\"$(SRCROOT)/../third_party/agl_tp/agl40/mac32-llvm30-debug/static/lib\"",
+					"\"$(SRCROOT)/../third_party/agl_tp/agl40/data/mac32-llvm30/lilohunspellplugin/static\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-fvisibility=hidden";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = (
+					"-flat_namespace",
+					"-weak_framework",
+					"\"Adobe AIR\"",
+				);
+				PRODUCT_NAME = HunspellNativeExtension;
+				SDKROOT = macosx10.6;
+				STRIP_STYLE = debugging;
+				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = i386;
+				VERSION_INFO_PREFIX = "_ContextFinalizer\n_ContextInitializer\n_ExtFinalizer\n_ExtInitializer";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		1DEB91AF08733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXPORTED_SYMBOLS_FILE = Exported_Sym_FIle;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Adobe Flash Builder 4.6/sdks/4.5.1-air3.0/runtimes/air/mac\"",
+					"\"$(SRCROOT)\"",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = HunspellNativeExtension_Prefix.pch;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					../third_party/hunspell/src/hunspell,
+					../third_party/agl_tp/agl40/include,
+				);
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				LD_DYLIB_INSTALL_NAME = "";
+				LD_GENERATE_MAP_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../runtimes/air/mac @executable_path/../Frameworks /Library/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"/Library/Frameworks/Adobe\\ AIR.framework/Versions/1.0",
+					"\"$(SRCROOT)/../third_party/agl_tp/agl40/mac32-llvm30-release/static/lib\"",
+					"\"$(SRCROOT)/../third_party/agl_tp/agl40/data/mac32-llvm30/lilohunspellplugin/static\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-flat_namespace",
+					"-weak_framework",
+					"\"Adobe AIR\"",
+				);
+				PRODUCT_NAME = HunspellNativeExtension;
+				SDKROOT = macosx10.6;
+				STRIP_STYLE = debugging;
+				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = i386;
+				VERSION_INFO_PREFIX = "_ContextFinalizer\n_ContextInitializer\n_ExtFinalizer\n_ExtInitializer";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		1DEB91B208733DA50010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../third_party/hunspell/src/hunspell,
+					../third_party/agl_tp/agl40/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"/Library/Frameworks/Adobe\\ AIR.framework/Versions/1.0",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB91B308733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../third_party/hunspell/src/hunspell,
+					../third_party/agl_tp/agl40/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"/Library/Frameworks/Adobe\\ AIR.framework/Versions/1.0",
+				);
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "HunspellNativeExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91AE08733DA50010E9CD /* Debug */,
+				1DEB91AF08733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "HunspellNativeExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91B208733DA50010E9CD /* Debug */,
+				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}

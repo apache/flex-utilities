@@ -1,0 +1,368 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="ant_on_air_test" basedir="." default="build">
+
+    <!--load environment variables prefixed with env -->
+    <property environment="env"/>
+
+    <!--location of property file -->
+    <property file="${basedir}/../build.properties" description="Properties for Ant On AIR project" />
+
+    <!--
+        Properties are immutable so value frozen first time property is set.
+        If FLEX_HOME is not set with -DFLEX_HOME=/path/to/flex/sdk on the ant command line
+        use the environment variable, if it exists. Else if windows, use FLEX_HOME_WIN
+        else use FLEX_HOME_MAC, which are both defined in build.properties.
+    -->
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+
+    <condition property="theOS" value="Windows">
+		<os family="windows"/>
+    </condition>
+    <condition property="theOS" value="Mac">
+		<os family="mac"/>
+    </condition>
+    <condition property="isMac" value="Mac">
+		<os family="mac"/>
+    </condition>
+    <condition property="isWindows" value="Windows">
+		<os family="windows"/>
+    </condition>
+
+	<target name="test" depends="copy-test,confirm-delete,delete-test,freespace-test,true-false-test">
+        <tstamp />
+        <echo>${DSTAMP}</echo>
+        <echo>${TSTAMP}</echo>
+        <echo>${TODAY}</echo>
+        <exec executable="where.exe" osfamily="windows" outputproperty="java.executable" failonerror="true">
+            <arg value="java"/>
+        </exec>
+        <exec executable="which" osfamily="mac" outputproperty="java.executable" failonerror="true">
+            <arg value="java"/>
+        </exec>
+        <echo>java is at ${java.executable}</echo>
+        <ant dir="${basedir}" antfile="subant.xml" />
+        <echo>Test is complete</echo>
+    </target>
+    
+    <target name="copy-test">
+		<echo>FLEX_HOME is ${FLEX_HOME}. DEBUG is ${DEBUG_FLAG}. The OS is ${theOS}</echo>
+        <mkdir dir="${basedir}/temp" />
+        <copy file="${basedir}/test.xml" tofile="${basedir}/temp/copied.xml" />
+        <available file="${basedir}/temp/copied.xml" property="copied.doesnt.exist" value="got copied" />
+        <fail message="test.xml was not copied to temp/copied.xml">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/copied.xml" />
+                </not>
+            </condition>
+        </fail>
+        <echo>copied ${copied.doesnt.exist}.  Should say: got copied</echo>
+        <move file="${basedir}/temp/copied.xml" toFile="${basedir}/temp/moved.xml" />
+        <available file="${basedir}/temp/moved.xml" property="moved.doesnt.exist" value="got moved" />
+        <fail message="copied.xml was not moved to temp/moved.xml">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/moved.xml" />
+                </not>
+            </condition>
+        </fail>
+        <echo>moved ${moved.doesnt.exist}.  Should say: got moved</echo>
+        <copy todir="${basedir}/temp">
+            <fileset dir="${basedir}/../src">
+                <include name="**/**" />
+                <exclude name="**/Ant.as" />
+            </fileset>
+            <globmapper from="*" to="Z*" />
+        </copy>
+        <available file="${basedir}/temp/Zorg/apache/flex/ant/Ant.as" property="ant.doesnt.exist" value="got copied" />
+        <fail message="Ant.as was copied to temp">
+            <condition>
+                <available file="${basedir}/temp/Zorg/apache/flex/ant/Ant.as" />
+            </condition>
+        </fail>
+        <echo>Ant.as ${ant.doesnt.exist}. Should NOT say: got copied</echo>
+        <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" property="project.doesnt.exist" value="got copied" />
+        <fail message="Project.as was not copied to temp">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" />
+                </not>
+            </condition>
+        </fail>
+        <echo>Project.as ${project.doesnt.exist}. Should say: got copied</echo>
+        <delete file="${basedir}/temp/moved.xml" />
+        <available file="${basedir}/temp/moved.xml" property="moved.doesnt.exist.after.delete" value="didn't get deleted" />
+        <fail message="temp/moved.xml was not deleted">
+            <condition>
+                <available file="${basedir}/temp/moved.xml" />
+            </condition>
+        </fail>
+        <echo>moved.xml ${moved.doesnt.exist.after.delete}. Should NOT say: didn't get deleted</echo>
+        <get src="http://archive.apache.org/dist/creadur/apache-rat-0.10/apache-rat-0.10-src.zip"
+            dest="${basedir}/temp" />
+        <fail message="apache-rat-0.10-src.zip was not copied to temp">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/apache-rat-0.10-src.zip" />
+                </not>
+            </condition>
+        </fail>
+        <get src="http://archive.apache.org/dist/creadur/apache-rat-0.10/apache-rat-0.10-src.zip.md5"
+            dest="${basedir}/temp" />
+        <fail message="apache-rat-0.10-src.zip.md5 was not copied to temp">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/apache-rat-0.10-src.zip.md5" />
+                </not>
+            </condition>
+        </fail>
+        <checksum file="${basedir}/temp/apache-rat-0.10-src.zip" todir="${basedir}/temp"
+            verifyproperty="rat.md5" />
+        <echo>rat checksum match = ${rat.md5}</echo>
+        <fail message="checksum did not match">
+            <condition>
+                <equals arg1="${rat.md5}" arg2="false" />
+            </condition>
+        </fail>
+        <mkdir dir="${basedir}/temp/unzip" />
+        <unzip src="${basedir}/temp/apache-rat-0.10-src.zip" dest="${basedir}/temp/unzip">
+            <patternset>
+                <include name="apache-rat-0.10/pom.xml" />
+                <include name="apache-rat-0.10/RE*.txt" />
+                <exclude name="apache-rat-0.10/RELEASE_NOTES.txt" />
+            </patternset>
+        </unzip>
+        <fail message="unzip did not exclude expected files">
+            <condition>
+                <available file="${basedir}/temp/unzip/apache-rat-0.10/RELEASE_NOTES.txt" />
+            </condition>
+        </fail>
+        <fail message="unzip did not include expected files">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/unzip/apache-rat-0.10/README.txt" />
+                </not>
+            </condition>
+        </fail>
+        <fail message="unzip did not result in expected files">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/unzip/apache-rat-0.10/pom.xml" />
+                </not>
+            </condition>
+        </fail>
+        <get src="http://archive.apache.org/dist/creadur/apache-rat-0.10/apache-rat-0.10-src.tar.gz"
+        dest="${basedir}/temp" />
+        <fail message="apache-rat-0.10-src.tar.gz was not copied to temp">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/apache-rat-0.10-src.tar.gz" />
+                </not>
+            </condition>
+        </fail>
+        <antcall target="macunzip" />
+        <propertyfile file="${basedir}/temp/custom.properties" >
+            <entry key="somekey" value="somevalue" />
+            <entry key="somekey1" value="somevalue1" />
+            <entry key="looptest" value="foo" />
+        </propertyfile>
+        <fail message="propertyfile did not result in expected file">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/custom.properties" />
+                </not>
+            </condition>
+        </fail>
+        <replace file="${basedir}/temp/custom.properties" token="somekey" value="replacedkey" />
+        <replace file="${basedir}/temp/custom.properties" token="foo" value="food" />
+        <replace file="${basedir}/temp/custom.properties">
+            <replacefilter token="key" value="ky" />
+        </replace>
+        <loadproperties srcFile="${basedir}/temp/custom.properties" />
+        <fail message="replace did not work: found somekey">
+            <condition>
+                <isset property="somekey" />
+            </condition>
+        </fail>
+        <fail message="replace did not work: did not find replacedkey">
+            <condition>
+                <not>
+                    <equals arg1="${replacedky}" arg2="somevalue" />
+                </not>
+            </condition>
+        </fail>
+        <fail message="replace did not work: did not find replacedkey1">
+            <condition>
+                <not>
+                    <equals arg1="${replacedky1}" arg2="somevalue1" />
+                </not>
+            </condition>
+        </fail>
+        <fail message="replace did not work: did not find food">
+            <condition>
+                <not>
+                    <equals arg1="${looptest}" arg2="food" />
+                </not>
+            </condition>
+        </fail>
+        <echo file="${basedir}/temp/echotest.properties">echotest=good
+        </echo>
+        <loadproperties srcFile="${basedir}/temp/echotest.properties" />
+        <fail message="echo to file did not work: missing property">
+            <condition>
+                <not>
+                    <isset property="echotest" />
+                </not>
+            </condition>
+        </fail>
+        <touch file="${basedir}/temp/touchtest.txt" />
+        <available file="${basedir}/temp/touchtest.txt" property="touch.test" value="passed" />
+        <fail message="touch test failed">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/touchtest.txt" />
+                </not>
+            </condition>
+        </fail>
+        <echo>Touch test ${touch.test}. Should say: passed</echo>     
+    </target>
+    
+    <target name="delete-test">
+        <fail message="you were supposed to hit 'y'" >
+            <condition>
+                <equals arg1="n" arg2="${oktodelete}" />
+            </condition>
+        </fail>
+        <delete dir="${basedir}/temp" />
+        <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" property="project.doesnt.exist.after.delete" value="didn't get deleted" />
+        <fail message="temp/Project.as was not deleted">
+            <condition>
+                <available file="${basedir}/temp/Zorg/apache/flex/ant/tags/Project.as" />
+            </condition>
+        </fail>
+        <echo>Project.as ${project.doesnt.exist.after.delete}. Should NOT say: didn't get deleted</echo>
+        <xmlproperty file="${basedir}/test_data.xml" collapseAttributes="true" />
+        <fail message="xmlproperty did not work set property">
+            <condition>
+                <not>
+                    <isset property="project.property.environment" />
+                </not>
+            </condition>
+        </fail>
+        <fail message="xmlproperty did not work set property value">
+            <condition>
+                <not>
+                    <equals arg1="${project.property.environment}" arg2="env" />
+                </not>
+            </condition>
+        </fail>
+        <fail message="xmlproperty did not work for text node">
+            <condition>
+                <not>
+                    <equals arg1="${project.target.echo}" arg2="FLEX_HOME" />
+                </not>
+            </condition>
+        </fail>
+	</target>
+	
+    <target name="true-false-test">
+        <fail message="istrue isn't true">
+            <condition>
+                <not>
+                    <and>
+                    	<istrue value="true" />
+                    	<istrue value="on" />
+                    	<istrue value="yes" />
+                    </and>
+                </not>
+            </condition>
+        </fail>
+        <fail message="istrue is false">
+            <condition>
+                <or>
+                	<istrue value="false" />
+                	<istrue value="off" />
+                	<istrue value="no" />
+                </or>
+            </condition>
+        </fail>
+        <fail message="isfalse isn't false">
+            <condition>
+            	<not>
+	            	<and>
+	                	<isfalse value="false" />
+	                	<isfalse value="off" />
+	                	<isfalse value="no" />
+	                </and>
+            	</not>
+            </condition>
+        </fail>
+        <fail message="isfalse is true">
+            <condition>
+            	<or>
+                   	<isfalse value="true" />
+                   	<isfalse value="on" />
+                   	<isfalse value="yes" />
+                </or>
+            </condition>
+        </fail>
+        <echo>All istrue / isfalse tests pass</echo>
+    </target>
+
+    <target name="macunzip" unless="isWindows">
+        <mkdir dir="${basedir}/temp/untar" />
+        <untar compression="gzip" src="${basedir}/temp/apache-rat-0.10-src.tar.gz" dest="${basedir}/temp/untar" />
+        <fail message="untar did not result in expected files">
+            <condition>
+                <not>
+                    <available file="${basedir}/temp/untar/apache-rat-0.10/pom.xml" />
+                </not>
+            </condition>
+        </fail>
+    </target>
+    
+    <target name="confirm-delete" unless="exitwhendone">
+        <input message="Ok to delete temp directory?"
+            validargs="y,n"
+            addproperty="oktodelete" />
+    </target>
+    
+    <target name="build" depends="init,compile"
+        description="Compiles SWC"/>
+
+    <target name="init" depends="clean"
+        description="Creates the deploy folders and sets app extension"/>
+
+    <target name="clean" description="Cleans up old files.">
+        <delete dir="${basedir}/temp" failOnError="false" includeEmptyDirs="true" />
+    </target>
+
+    <target name="compile" 
+        description="Compiles the SWC.">
+    </target>
+	
+    <target name="freespace-test" description="Runs the free sapce test">
+        <ant dir="${basedir}" antfile="freespace.xml" />
+    </target>
+</project>

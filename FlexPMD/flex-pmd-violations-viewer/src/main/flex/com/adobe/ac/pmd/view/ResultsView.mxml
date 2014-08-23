@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:VBox xmlns:model="com.adobe.ac.pmd.view.model.*"
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:view="com.adobe.ac.pmd.view.*"
+    width="100%"
+    height="100%"
+    horizontalAlign="center"
+    verticalAlign="middle"
+	verticalScrollPolicy="off"
+    >
+
+    <mx:Script>
+        <![CDATA[
+            import com.adobe.ac.pmd.model.Violation;
+            import mx.collections.ArrayCollection;
+
+            public function set results( value : ArrayCollection ) : void
+            {
+                model.violations = value;
+                gc.refresh();
+            }
+
+            private function currentVisibilityChange() : void
+            {
+                gc.refresh();
+            }
+
+            private function groupLabelFunction( item : Object, column : AdvancedDataGridColumn ) : String // NO PMD
+            {
+				var label : String;
+				
+                if ( item && item.children )
+                {
+					label = item[ gc.grouping.label ] + " (" + item.children.length + ")";
+                }
+                else
+                {
+					label = item[ column.dataField ];
+                }
+				return label;
+            }
+        ]]>
+    </mx:Script>
+
+	<mx:Resize
+		id="resize"
+		duration="200"
+		/>
+	
+    <model:ResultsModel id="model"
+        currentVisibilityChange="currentVisibilityChange()"
+        />
+
+    <mx:GroupingCollection id="gc"
+        source="{ model.violations }"
+        grouping="{ model.grouping }"
+        />
+	
+    <view:Summary model="{ model }"
+        />
+
+    <mx:HRule width="100%"
+        styleName="flexUnitHRule"
+        />
+
+    <view:FilterResults model="{ model }"
+        />
+
+    <mx:HRule width="100%"
+        styleName="flexUnitHRule"
+        />
+
+    <mx:HBox width="100%"
+        height="100%"
+        >
+
+        <mx:AdvancedDataGrid id="dg"
+            width="100%"
+            height="100%"
+            dataProvider="{ gc }"
+            change="model.selectedViolation = dg.selectedItem as Violation"
+            groupLabelFunction="groupLabelFunction"
+            >
+
+            <mx:columns>
+
+                <mx:AdvancedDataGridColumn dataField="shortPath"
+                    headerText=""
+                    sortable="false"
+                    />
+
+                <mx:AdvancedDataGridColumn width="100"
+                    labelFunction="ResultsFormatter.formatViolationsNumberOrBeginLine"
+                    dataField="beginLine"
+                    headerText="Line"
+                    sortable="false"
+                    />
+
+                <mx:AdvancedDataGridColumn dataField="message"
+                    dataTipField="message"
+                    headerText="Message"
+                    sortable="false"
+                    />
+
+                <mx:AdvancedDataGridColumn width="100"
+                    dataField="priority"
+                    headerText="Priority"
+                    sortable="false"
+                    />
+
+            </mx:columns>
+
+        </mx:AdvancedDataGrid>
+
+        <view:SelectedViolation includeInLayout="{ model.selectedViolation != null }"
+            close="model.selectedViolation = null"
+            violation="{ model.selectedViolation }"
+            visible="{ model.selectedViolation != null }"
+			resizeEffect="{ resize }"
+            />
+
+    </mx:HBox>
+
+</mx:VBox>

@@ -27,8 +27,8 @@ Steps to follow in preparation for a release of InstallApacheFlex
 
 2.b.  If it is a minor release, run: ant update-version
 
-3.  Open build.properties and update the following:
-	- Modify the KEYSTORE_DIR and CERT_PASSWORD_DIR variables with the correct directory paths
+3.  Create local.properties and add the following:
+	- Modify the RELEASE_KEYSTORE_FILE and CERT_PASSWORD_FILE variables with the correct file paths
 	(You need to obtain the installapacheflex_self.p12 file and its password from the previous
 	 release manager for InstallApacheFlex)
 	
@@ -41,7 +41,7 @@ Steps to follow in preparation for a release of InstallApacheFlex
 
 This step 
 	- downloads all the necessary files, 
-	- updates the version numbers in InstallApacheFlex-app.xml and sdk-installer-config-2.0.xml
+	- updates the version numbers in InstallApacheFlex-app.xml and sdk-installer-config-4.0.xml
 	- creates the .exe or .dmg file depending on the OS you are working on
 	- creates the source release files as a .zip file and a tar.gz file 
 	- signs the artifacts to create corresponding .asc and .md5 files (assumes that you have a pgp
@@ -50,4 +50,4 @@ This step
 5.  Upload all the files under the /release directory to the following directory before calling a VOTE.
 	https://dist.apache.org/repos/dist/dev/flex/installer/{version}/{RCversion}/
 
-6.  Check that your key is cntained in https://dist.apache.org/repos/dist/release/flex/KEYS if not add it.
+6.  Check that your key is contained in https://dist.apache.org/repos/dist/release/flex/KEYS if not add it.

@@ -160,16 +160,17 @@ limitations under the License.
 			if (!_internetUtil.errorOccurred)
 			{
 				var configXML:XML = XML(_internetUtil.result);
-				var files:XMLList = configXML.files.file;
+				var flexSDKNode:XMLList = configXML.products.ApacheFlexSDK;
+				var defaultFlexVersion:String = configXML.products.ApacheFlexSDK.@latestVersion.toString();
 				
-				_sdkBinaryFileName = files.(@name == "ApacheFlexSDK").@file.toString();
+				_sdkBinaryFileName = flexSDKNode.versions.children().(@id == defaultFlexVersion).@file.toString();
 				
-				_installerFileName = files.(@name == 'SDKInstallerApp').@file.toString();
-				_installerDownloadPath = files.(@name == 'SDKInstallerApp').@path.toString();
+				_installerFileName = configXML.installer.(@name == 'SDKInstallerApp').@file.toString();
+				_installerDownloadPath = configXML.installer.(@name == 'SDKInstallerApp').@path.toString();
 
 				if (_installerDownloadPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX)
 				{
-					var mirrorURLCGI:String = files.(@name == 'MirrorURLCGI').@file.toString();
+					var mirrorURLCGI:String = configXML.mirror.(@name == 'MirrorURLCGI').@file.toString();
 					
 					_mirrorURLUtil.getMirrorURL(_serviceURL + mirrorURLCGI, getMirrorURLResultHandler);
 				}

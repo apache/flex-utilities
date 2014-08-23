@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<ruleset name="Sizing Rules" xmlns="http://pmd.sf.net/ruleset/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+	
+	<description>
+      The Sizing As3 Ruleset contains a collection of good practices related to code sizing.
+    </description>
+    
+	<rule class="com.adobe.ac.pmd.rules.sizing.TooManyFunctionRule"
+		message="Too many methods detected ({0} maximum, but {1} actually)">
+		<description>A class with too many methods is probably a good suspect for refactoring, in order to reduce its complexity and find a way to have more fine grained objects.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="maximum">
+				<value>10</value>
+			</property>
+		</properties>
+		<example>
+   public class Foo 
+   {
+      public function doWork() : void {}
+      public function doMoreWork() : void {}
+      public function doWorkAgain() : void {}
+      // [... more more public methods ...]
+   }
+      </example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.sizing.TooLongFunctionRule"
+		message="This function is far too long ({0} maximum, but {1} actually)">
+		<description>Violations of this rule usually indicate that the method has too much responsibility. Try to reduce the method size by creating helper methods and removing any copy/pasted code.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="maximum">
+				<value>20</value>
+			</property>
+		</properties>
+		<example>
+   public class Foo 
+   {
+      public function doSomething() : void
+      {
+         System.out.println("Hello world!");
+         System.out.println("Hello world!");
+         // 98 copies omitted for brevity.
+      }
+   }
+      </example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.sizing.TooLongSwitchCaseRule"
+		message="Long switch case detected ({0} lines maximum, but {1} actually)">
+		<description>A switch case statement should be either empty, or contain a break, or call another method.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="maximum">
+				<value>3</value>
+			</property>
+		</properties>
+		<example>
+   public class Bar   
+   {
+      public function foo() : void
+      {
+          var i : int = 4;
+          
+          switch( i )
+          {
+             case 1:
+                handleFirstCase();
+                break;
+             case 2: // VIOLATION
+                googleResquest.url = "";
+                handleSecondCaseFirstPart();
+                handleSecondCaseSecondPart();
+                break;
+          }
+      }
+   }
+      </example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.sizing.TooManyParametersRule"
+		message="Long parameter list detected ({0} maximum, but {1} actually)">
+		<description>Long parameter lists can indicate that a new object should be created to wrap the numerous parameters.  Basically, try to group the parameters together.
+      </description>
+		<priority>3</priority>
+		<properties>
+			<property name="maximum">
+				<value>4</value>
+			</property>
+		</properties>
+		<example>
+   public class Foo 
+   {
+      public function addData( p0 : int, p1 : int, p2 : int, p3 : int, p4 : int, p5 : int,
+                                             p6 : int, p7 : int, p8 : int, p9 : int, p10 : int ) : void 
+      {
+      }
+   }
+      </example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.sizing.TooManyPublicRule"
+		message="Too many public fields or functions detected ({0} maximum, but {1} actually)">
+		<description>A large number of public methods and attributes declared in a class can indicate the class may need to be broken up as increased effort will be required to thoroughly test it.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="maximum">
+				<value>10</value>
+			</property>
+		</properties>
+		<example>
+   public class Foo 
+   {
+      public var value : String;
+      public var something : Bar;
+      public var variable : Variable;
+
+      // [... more more public attributes ...]
+
+      public function doWork() : void {}
+      public function doMoreWork() : void {}
+      public function doWorkAgain() : void {}
+
+      // [... more more public methods ...]
+   }
+      </example>
+	</rule>
+
+	<rule class="com.adobe.ac.pmd.rules.sizing.TooManyFieldsRule"
+		message="Too many field detected ({0} maximum, but {1} actually)">
+		<description>Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="maximum">
+				<value>5</value>
+			</property>
+		</properties>
+		<example>
+   public class Person 
+   {
+      private var one : String;
+      private var two : int;
+      private var three : int;
+
+      [... many more public fields ...]
+
+   }      
+      </example>
+	</rule>
+	
+	<rule class="com.adobe.ac.pmd.rules.sizing.TooManyFieldInVORule"
+		message="Too many field detected ({0} maximum, but {1} actually)">
+		<priority>3</priority>
+	</rule>
+	
+</ruleset>

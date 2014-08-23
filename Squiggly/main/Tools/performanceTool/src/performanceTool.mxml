@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" applicationComplete="init()" horizontalAlign="left">
+<mx:Script>
+	<![CDATA[
+		import com.adobe.linguistics.spelling.*;
+		import mx.controls.textClasses.TextRange;
+		
+		private var _newdict:SpellingDictionary = new SpellingDictionary();
+		private var sp:SpellChecker= new SpellChecker();
+		private function init():void {
+			_newdict.addEventListener(Event.COMPLETE, handleLoadComplete);
+			var myUrl:URLRequest = new URLRequest("usa.zwl");
+			_newdict.load(myUrl);
+		}
+		private function handleLoadComplete(evt:Event):void
+		{
+			sp.addDictionary(_newdict);
+		}
+
+		private function checkText():void {
+			var wordPattern:RegExp =/\b\w+\b/; // match next word...
+			var inputValue:String = inputText.text;
+			var rangeArray:Array = new Array();
+			var wordArray:Array = new Array();
+			var offset:int, curPos:int;
+			for ( ; ; ) {
+				var res:Array = inputValue.match( wordPattern); // lookup word by word....
+				if ( res == null ) break;
+				offset = inputText.text.length-inputValue.length;
+				curPos = inputValue.indexOf(res[0]);
+				var currentRange:TextRange = new TextRange(inputText, false, offset+ curPos, offset+ curPos+res[0].length); // mark mispelled word.
+				wordArray.push( res[0] );
+				rangeArray.push( currentRange );
+				inputValue = inputValue.substr(inputValue.indexOf(res[0])+ res[0].length);
+			}
+	        var nStart:Number;
+	        var nMillisElapsed:Number;
+	        var totalMispelled:int = 0;
+			nStart = new Date().time;
+			for ( var i:int=0; i< wordArray.length ; i++ ) {
+				if ( !sp.checkWord( wordArray[i] ) ) {
+					totalMispelled++;
+				}
+			}
+			nMillisElapsed  = new Date().time - nStart;
+			outputText.text = "Total "+ wordArray.length + " Words.\n" + 
+			"Total " + totalMispelled + " Mispelled Words.\n" +
+			"Mispell Rate:" + (totalMispelled/wordArray.length) + ".\n" +
+			"Total time(ms):" + nMillisElapsed + "ms.\n" +
+			"Performance Result:" + (wordArray.length/nMillisElapsed)*1000 + " words per second.\n";
+			for ( i=0; i< wordArray.length ; i++ ) {
+				if ( !sp.checkWord( wordArray[i] ) ) {
+					rangeArray[i].color = "red";
+				}
+			}
+			
+		}
+		
+	]]>
+</mx:Script>
+	<mx:HBox>
+		<mx:Button id="check" label="Check Text" click="checkText()"  />
+	</mx:HBox>
+	<mx:TextArea id="inputText" height="100%" width="100%"/>	
+	<mx:TextArea id="outputText" height="10%" width="50%" editable="false" backgroundColor="0xffcc00"/>	
+</mx:Application>

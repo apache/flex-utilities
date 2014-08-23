@@ -44,7 +44,7 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 	
 	public static const BUNDLE_NAME:String = "resourceStrings";
 	
-	public static const DEFAULT_LANGUAGE:String = RuntimeLocale.EN_US;
+	public static const DEFAULT_LANGUAGE:String = "en_US";
 	
 	//--------------------------------------------------------------------------
 	//
@@ -65,28 +65,7 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 		
 		return _instance;
 	}
-	
-	//----------------------------------
-	//    supportedLanguages
-	//----------------------------------
-	
-	public static function get supportedLanguages():ArrayCollection
-	{
-		var result:ArrayCollection = new ArrayCollection();
-
-		result.addItem({label: "Deutsch ", data: RuntimeLocale.DE_DE});
-		result.addItem({label: "English (US)", data: RuntimeLocale.EN_US});
-		result.addItem({label: "English (AU)", data: RuntimeLocale.EN_AU});
-		result.addItem({label: "English (GB)", data: RuntimeLocale.EN_GB});
-		result.addItem({label: "Español (ES)", data: RuntimeLocale.ES_ES});
-		result.addItem({label: "Français", data: RuntimeLocale.FR_FR});
-		result.addItem({label: "Greek", data: RuntimeLocale.EL_GR});
-		result.addItem({label: "Nederlands", data: RuntimeLocale.NL_NL});
-		result.addItem({label: "Português", data: RuntimeLocale.PT_BR});
 		
-		return result;
-	}
-	
 	//--------------------------------------------------------------------------
 	//
 	//    Constructor
@@ -97,7 +76,7 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 	{
 		_eventDispatcher = new EventDispatcher();
 		
-		RuntimeLocale.instance.installResources();
+		//RuntimeLocale.instance.installResources();
 	}
 		
 	//--------------------------------------------------------------------------
@@ -138,6 +117,15 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 		return _eventDispatcher.dispatchEvent(event);
 	}
 	
+    //----------------------------------
+    //    hasProperty
+    //----------------------------------
+    
+    override flash_proxy function hasProperty(name:*):Boolean
+    {
+        return _content[name] != null;
+    }
+    
 	//----------------------------------
 	//    getProperty
 	//----------------------------------
@@ -156,6 +144,15 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 		return _content[name];
 	}
 	
+    //----------------------------------
+    //    setProperty
+    //----------------------------------
+    
+    override flash_proxy function setProperty(name:*, value:*):void
+    {
+        _content[name] = value;    
+    }
+    
 	//----------------------------------
 	//    hasEventListener
 	//----------------------------------

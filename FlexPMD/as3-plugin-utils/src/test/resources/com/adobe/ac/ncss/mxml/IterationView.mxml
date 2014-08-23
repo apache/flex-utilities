@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Panel 
+   xmlns:mx="http://www.adobe.com/2006/mxml"
+   xmlns:ns1="com.adobe.ac.anthology.view.iteration.*"
+   xmlns:component="com.adobe.ac.anthology.utils.components.*"
+   title="MyIterations" 
+   horizontalAlign="left"
+   visible="{ model.selectedRelease != null }">
+
+    <mx:Script>
+    <![CDATA[
+       import com.adobe.ac.anthology.model.object.Iteration;
+       import com.adobe.ac.anthology.model.AnthologyModelLocator;
+       import com.adobe.ac.anthology.model.ProjectModel;
+      import com.adobe.cairngorm.business.ServiceLocator;
+      import com.adobe.ac.anthology.control.event.iteration.*;
+      import com.adobe.ac.anthology.utils.FormTools;
+      
+      [Bindable]
+      private var model : ProjectModel = AnthologyModelLocator.instance.projectModel;
+      
+      private function addIteration() : void
+ 	   {
+ 	      model.selectedRelease.addIteration( new Iteration() );
+ 	   }
+ 	   
+ 	   private function changeIteration() : void
+ 	   {
+ 	      model.selectedIteration = dg.selectedItem as Iteration;
+ 	   }
+
+    ]]>
+    </mx:Script>
+    <mx:HBox height="320"> 
+    
+    <ns1:DetailedIterationWithControl
+       id="detailedIterationForm"
+       iteration="{ model.selectedIteration }" />
+	     
+    <mx:VRule
+       height="100%"
+       strokeColor="#DDDDDD"/>   
+ 
+    <mx:VBox
+       paddingTop="15"
+       paddingLeft="15"
+       paddingRight="15"
+       paddingBottom="15">
+     
+      <mx:Text text="List of Iterations"/>
+      
+      <component:ScrawlGrid
+            id="dg"
+            dataProvider="{ model.selectedRelease.iterations }"
+            width="200" height="220"
+            change="changeIteration()">
+            
+         <component:columns>
+               
+            <mx:DataGridColumn
+               dataField="iterationNumber"
+               headerText="#"/>
+               
+            <mx:DataGridColumn
+               dataField="startDate"
+               headerText="Start Date"
+               editable="false"/>
+               
+            <mx:DataGridColumn 
+               dataField="endDate" 
+               headerText="End Date"/>
+               
+         </component:columns>
+         
+      </component:ScrawlGrid>
+      
+      <mx:HBox width="200">
+      
+         <mx:Button label="Add Iteration"
+            click="addIteration()"/>
+            
+      </mx:HBox>
+  
+    </mx:VBox>
+ 
+  </mx:HBox>   
+</mx:Panel>

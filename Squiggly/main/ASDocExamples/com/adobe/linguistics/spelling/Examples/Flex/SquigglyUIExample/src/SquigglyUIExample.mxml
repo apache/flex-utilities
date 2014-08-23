@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<!--- 
+* @exampleText The following SquigglyUIExample MXML demonstrates how to use Squiggly UI API to easily integrate Squiggly with your own UI component.
+* 
+* Note that the results from this example may differ based on dictionary file.
+* 
+* Only one line code is needed:
+* <ol>
+*  <li>
+*  Call Squiggly <code>SpellUI.enableSpelling</code> method to attach the <code>TextArea</code> component and the dictionary file.
+*  </li>
+* </ol>
+* 
+* Note: to make this example work properly, please make sure you have the proper dictionary files and AdobeSpellingConfig.xml file in the specified folder 
+* and put the Squiggly libraries (both AdobeSpellingEngine.swc and AdobeSpellingUI.swc) in your libs folder.
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical">		
+<mx:Script>
+	<![CDATA[
+			import com.adobe.linguistics.spelling.SpellUI;	
+			
+			private function enableFeature():void {
+				SpellUI.enableSpelling(textArea, "en_US");
+			}
+			private function disableFeature() :void {
+				SpellUI.disableSpelling(textArea);
+			
+			}
+	]]>
+</mx:Script>
+		
+	<mx:TextArea id="textArea" width="20%" height="20%" fontSize="30" text="Spell cheecking in TextArea "/>
+	<mx:Button id="tt1" label="disable Feature" click="disableFeature()" /> 
+	<mx:Button id="tt2" label="enable Feature" click="enableFeature()" /> 
+			
+</mx:Application>
+

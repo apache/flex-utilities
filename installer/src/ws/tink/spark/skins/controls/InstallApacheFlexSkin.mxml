@@ -84,7 +84,7 @@ limitations under the License.
     <!-- layer 1: background fill -->
 	<s:BitmapImage source="@Embed('/assets/icons/bg_logo.png')" top="0" left="0"  scaleMode="letterbox" />
 	<s:BitmapImage source="@Embed('/assets/icons/bg_logo.png')" top="25" left="0"  scaleMode="letterbox" />
-	<s:BitmapImage source="@Embed('/assets/icons/apache_flex_logo_text.png')" scaleX=".3" scaleY=".3" smooth="true" horizontalCenter="0" top="5" />
+	<s:BitmapImage id="textIcon" source="@Embed('/assets/icons/apache_flex_logo_text.png')" scaleX=".3" scaleY=".3" smooth="true" horizontalCenter="0" top="5" />
 
     <!-- layer 2: content + status bar -->
     <s:Group left="0" right="0" top="0" bottom="0" minHeight="24" minWidth="0" >

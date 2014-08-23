@@ -34,6 +34,7 @@ swfobject/
 ide/
 flex2/
 thirdparty/
+external/
 META-INF/
 3.0.33/
 
@@ -112,5 +113,7 @@ _ReSharper*/
 *.tar
 rc
 *.flexProperties
+*.flexLibProperties
 *.project
 *.actionScriptProperties
+bin-release
