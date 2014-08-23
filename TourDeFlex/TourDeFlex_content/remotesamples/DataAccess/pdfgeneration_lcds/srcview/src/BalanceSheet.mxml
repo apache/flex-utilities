@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" backgroundColor="0x00FFFFFF">
+
+	<mx:Script>
+		<![CDATA[
+			
+	    import mx.collections.ArrayCollection;
+	    import mx.core.IFlexDisplayObject;
+	
+	    [Bindable]
+	    public var balanceSheet:ArrayCollection = new ArrayCollection([
+	    {Field:"Current Assets",      2003:1.329, 2004:1.551, 2005:2.009, 2006:2.884},
+	    {Field:"Total Assets",        2003:1.555, 2004:1.959, 2005:2.441, 2006:5.955},
+	    {Field:"Current Liabilities", 2003:0.437, 2004:0.444, 2005:0.480, 2006:0.671},
+	    {Field:"Total Liabilities",   2003:0.454, 2004:0.535, 2005:0.576, 2006:0.804},     
+	    {Field:"Equity",              2003:1.555, 2004:1.959, 2005:2.441, 2006:5.955}]);
+	
+	    override public function finishPrint(state:Object, target:IFlexDisplayObject):void
+	    {
+	        if (state != null && state is Array)
+	        {
+	            balanceLabel.finishPrint(state[0], target);
+	            balanceSheetGrid.selectedItem = state[1].selectedItem;
+	        }
+	    }
+	
+	    override public function prepareToPrint(target:IFlexDisplayObject):Object
+	    {
+	        var state:Array = [];
+	        state[0] = balanceLabel.prepareToPrint(target);
+	        state[1] = {selectedItem:balanceSheetGrid.selectedItem};
+	        balanceSheetGrid.selectedItem = null;
+	        return state;
+	    }
+			
+		]]>
+	</mx:Script>
+
+    <mx:Label id="balanceLabel" text="Annual Balance Sheet" styleName="h2" />
+    <mx:DataGrid id="balanceSheetGrid" width="100%" height="100%" rowCount="5" dataProvider="{balanceSheet}">
+        <mx:columns>
+            <mx:DataGridColumn dataField="Field" headerText=""/>
+            <mx:DataGridColumn dataField="2003" headerText="2003"/>
+            <mx:DataGridColumn dataField="2004" headerText="2004"/>
+            <mx:DataGridColumn dataField="2005" headerText="2005"/>
+            <mx:DataGridColumn dataField="2006" headerText="2006"/>
+        </mx:columns>
+    </mx:DataGrid>
+
+</mx:VBox>

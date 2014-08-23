@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- LiveCycle Data Services is required to use the approach described in this sample -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*" layout="horizontal"
+	backgroundGradientColors="[0x000000,0x323232]"
+	applicationComplete="ds.fill(contacts)" viewSourceURL="srcview/index.html">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable] private var contact:Contact;
+
+		]]>
+	</mx:Script>
+
+	<mx:ArrayCollection id="contacts"/> 
+
+	<!-- See the definition of the "contact" destination in data-management-config.xml -->	
+	<mx:DataService id="ds" destination="contact"/>
+	
+	<mx:DataGrid id="dg" dataProvider="{contacts}" width="30%" height="100%"
+		change="contact = dg.selectedItem as Contact">
+		<mx:columns>
+			<mx:DataGridColumn dataField="contactId" headerText="Id"/>
+			<mx:DataGridColumn dataField="firstName" headerText="First Name"/>
+			<mx:DataGridColumn dataField="lastName" headerText="Last Name"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:Form width="70%">
+		<mx:FormItem label="First Name">
+			<mx:TextInput text="{contact.firstName}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Last Name">
+			<mx:TextInput text="{contact.lastName}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Account">
+		<!-- There is a many-to-one association between Contact and Account. That association is 
+			 materialized by a property of type Account in the Contact class (see Contact.as).
+			 The association is defined in data-management-config.xml. Notice that this association
+			 is defined with lazy="true". In other words, the Account data is loaded lazily (only 
+			 when requested by the application). In this case, when the list of contacts is initially
+			 retrieved and displayed in the datagrid, the contacts' account data is not loaded by the 
+			 client because the datagrid does not request (does not display) the account data.
+			 However, in the line below, the name of the account is displayed. When the system tries to 
+			 display this information, the dataservice automatically fetches the Account object 
+			 (for the selected contact only) by invoking the getItem method of the account service. -->
+			<mx:TextInput text="{contact.account.name}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Manager">
+		<!-- There is a many-to-one association between Contact and Contact (A manager is another contact
+			 in the company). That association is materialized by a manager property of type Contact in the
+			 Contact class (see Contact.as). Just like for the account information, the manager information 
+			 is loaded lazily. The line of code below is going to force the dataservice to automatically load the 
+			 manager information for the selected contact. Note that in this specific case, the manager information
+			 will already be available at the client-side because the application initially retrieved *all* 
+			 the contacts to display them in the datagrid. The dataservice will therefore not go back to 
+			 the server to get the manager information but use the object already in memory. -->
+			<mx:TextInput text="{contact.manager.fullName}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Sales Rep">
+		<!-- There is a many-to-one association between Contact and SalesRep. That association is 
+			 materialized by a property of type SalesRep in the Contact class (see Contact.as).
+			 Just like the account information, the salesrep information is lazy loaded. The line of code below 
+			 is going to force the dataservice to automatically load the SalesRep information for the selected contact.-->
+			<mx:TextInput text="{contact.salesRep.fullName}"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+	<mx:Style>
+		FormItem {
+			labelStyleName: formItemLabel;
+		}
+		.formItemLabel {
+			color: #FFFFFF;
+		}
+	</mx:Style>
+
+</mx:Application>

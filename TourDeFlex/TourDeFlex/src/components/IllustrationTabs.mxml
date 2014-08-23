@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<local:TDFTabNavigator xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:local="components.*" width="100%" height="100%"  
+	creationComplete="init()" styleName="illustrationTabs"  selectedTabTextStyleName="illustrationTabSelected">
+
+	<mx:Script>
+	<![CDATA[
+		import mx.controls.Image;
+		import mx.collections.ArrayCollection;
+		import mx.controls.HTML;
+		import mx.containers.VBox;
+		
+		public var associatedDocumentsCollection:ArrayCollection;
+		
+		private function init():void
+		{
+			var t:TDFTabNavigator = new TDFTabNavigator();
+			associatedDocumentsCollection = new ArrayCollection();
+		}
+		
+		public function addTab(name:String, path:String, localRootPath:String, isModule:String, downloadPath:String, autoExpand:String, openLinksExternal:String, scrollBars:String, associatedDocuments:Array):void
+		{
+			this.associatedDocumentsCollection.addItem(associatedDocuments);
+						
+			var tab:IllustrationTab = new IllustrationTab();
+			tab.downloadPath = downloadPath;	
+			tab.autoExpand = (autoExpand.toLowerCase() == "true")? true:false;
+			
+			if(name.length == 0)
+				tab.label = "Sample " + (this.getChildren().length + 1);
+			else
+				tab.label = name;
+				
+			this.addChild(tab);
+
+			if(scrollBars.toLowerCase() == "true") {
+				tab.html_illustration.verticalScrollPolicy = "auto";
+				tab.html_illustration.horizontalScrollPolicy = "auto";
+			}
+			
+			if(openLinksExternal.toLowerCase() == "true") 
+				tab.html_illustration.htmlLoader.navigateInSystemBrowser = true;
+
+			if(path.toLowerCase().indexOf("http") == 0)
+				tab.setLocation(path, isModule);
+			else
+				tab.setLocation(localRootPath + path, isModule);
+		}
+		
+		public function removeAllIllustrations():void
+		{
+			//reset selected tab due to tab selection issue - HS - took out, use TDFTabNavigator class now instead.
+			//this.selectedIndex = 0;
+			//this.validateNow();
+			
+			this.removeAllChildren();
+			this.associatedDocumentsCollection.removeAll();
+			
+		}
+		
+		public function hideSwf():void
+		{
+			this.selectedChild.visible = false;
+		}
+		
+	]]>
+	</mx:Script>
+
+</local:TDFTabNavigator>

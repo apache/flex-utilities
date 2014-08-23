@@ -1,0 +1,222 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<html lang="en">
+
+<!-- 
+Smart developers always View Source. 
+
+This application was built using Adobe Flex, an open source framework
+for building rich Internet applications that get delivered via the
+Flash Player or to desktops via Adobe AIR. 
+
+Learn more about Flex at http://flex.org 
+// -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<!--  BEGIN Browser History required section -->
+<link rel="stylesheet" type="text/css" href="history/history.css" />
+<!--  END Browser History required section -->
+
+<title></title>
+<script src="AC_OETags.js" language="javascript"></script>
+
+<!--  BEGIN Browser History required section -->
+<script src="history/history.js" language="javascript"></script>
+<!--  END Browser History required section -->
+
+<style>
+body { margin: 0px; overflow:hidden }
+</style>
+<script language="JavaScript" type="text/javascript">
+<!--
+// -----------------------------------------------------------------------------
+// Globals
+// Major version of Flash required
+var requiredMajorVersion = 9;
+// Minor version of Flash required
+var requiredMinorVersion = 0;
+// Minor version of Flash required
+var requiredRevision = 124;
+// -----------------------------------------------------------------------------
+// -->
+
+function removeIFrame(iFrameId) {
+	// Removes an IFrame from the document tree
+	var iFrameContainerId = "iFrameContainer";
+	var divFrameId = "c" + iFrameId;	
+	var frameContainerRef=document.getElementById(iFrameContainerId);
+	var divContainerRef=document.getElementById(divFrameId);
+	frameContainerRef.removeChild(divContainerRef);
+}
+
+function moveIFrame(iFrameId,x,y,w,h) {
+	var divFrameId = "c" + iFrameId;
+  var frameRef=document.getElementById(divFrameId);
+  frameRef.style.left=x;
+  frameRef.style.top=y;
+  var iFrameRef=document.getElementById(iFrameId);	
+	iFrameRef.width=w;
+	iFrameRef.height=h;
+}
+function resizeIFrame(iFrameId,x,y,w,h) {
+	var divFrameId = "c" + iFrameId;
+  	var frameRef=document.getElementById(divFrameId);
+  	frameRef.style.left=x;
+  	frameRef.style.top=y;
+  	var iFrameRef=document.getElementById(iFrameId);	
+	iFrameRef.width=w;
+	iFrameRef.height=h;
+}
+function debugIFrame(iFrameId) {
+	var divFrameId = "c" + iFrameId;
+  var frameRef=document.getElementById(divFrameId);
+  var iFrameRef=document.getElementById(iFrameId);	
+  alert(frameRef.style.left+" "+frameRef.style.top+" "+iFrameRef.width+" "+iFrameRef.height);
+}
+
+function hideIFrame(iFrameId){
+	var divFrameId = "c" + iFrameId;
+  document.getElementById(divFrameId).style.visibility="hidden";
+  document.getElementById(divFrameId).style.display="none";
+}
+	
+function showIFrame(iFrameId){
+	var divFrameId = "c" + iFrameId;
+    document.getElementById(divFrameId).style.visibility="visible";
+    //alert(debugIFrame());
+    document.getElementById(divFrameId).style.display="block";
+
+  
+}
+
+function loadIFrame(iFrameId,url){
+	if (document.getElementById(iFrameId)) {
+		//alert('IFrame ' + iFrameId + ' already exists.');
+		document.getElementById(iFrameId).src=url;
+		
+	} else {
+		var iFrameSrc = "<iframe id='" + iFrameId + "' src='" + url + "' frameborder='0'></iframe>"
+		var divFrameId = "c" + iFrameId;
+	
+		if (navigator.appName == 'Netscape') {
+			var divFrame = document.createElement('div');
+			divFrame.setAttribute('id',divFrameId);
+			divFrame.setAttribute('style','position:absolute;background-color:transparent;border:0px;visibility:visible;');
+		} else {
+			var divFrame = document.createElement("<div id='"+ divFrameId + "' style='position:absolute;background-color:transparent;border:0px;visibility:visible;'></div>");
+		}
+	
+		document.getElementById("iFrameContainer").appendChild(divFrame);
+		document.getElementById(divFrameId).innerHTML = iFrameSrc;
+		//alert("Got inner HTML " + document.getElementById(divFrameId).innerHTML);
+		//document.getElementById("iFrameContainer").innerHTML = "<iframe id='" + iFrameId + "' src='" + url + "'frameborder='0'></iframe>";
+	}
+}
+function showAbout(iFrameId){
+	var myRef = window.open('http://tourdeflex.adobe.com/about/about.html','About','left=380,top=150,width=437,height=400,status=0,location=0,resizable=0,toolbar=0');
+	//var myRef2 = window.open('http://tourdeflex.adobe.com/about/about.html','Tour de Flex - About','left=380,top=150,width=437,height=400');
+	
+	//alert("MY REF " + myRef);
+}
+
+</script>
+</head>
+
+<body scroll="no">
+<script language="JavaScript" type="text/javascript">
+<!--
+// Version check for the Flash Player that has the ability to start Player Product Install (6.0r65)
+var hasProductInstall = DetectFlashVer(6, 0, 65);
+
+// Version check based upon the values defined in globals
+var hasRequestedVersion = DetectFlashVer(requiredMajorVersion, requiredMinorVersion, requiredRevision);
+
+if ( hasProductInstall && !hasRequestedVersion ) {
+	// DO NOT MODIFY THE FOLLOWING FOUR LINES
+	// Location visited after installation is complete if installation is required
+	var MMPlayerType = (isIE == true) ? "ActiveX" : "PlugIn";
+	var MMredirectURL = window.location;
+    document.title = document.title.slice(0, 47) + " - Flash Player Installation";
+    var MMdoctitle = document.title;
+
+	AC_FL_RunContent(
+		"src", "playerProductInstall",
+		"FlashVars", "MMredirectURL="+MMredirectURL+'&MMplayerType='+MMPlayerType+'&MMdoctitle='+MMdoctitle+"",
+		"width", "100%",
+		"height", "100%",
+		"align", "middle",
+		"id", "TourDeFlex",
+		"quality", "high",
+		"bgcolor", "#323232",
+		"name", "TourDeFlex",
+		"allowScriptAccess","sameDomain",
+		"type", "application/x-shockwave-flash",
+		"pluginspage", "http://www.adobe.com/go/getflashplayer",
+		"wmode", "opaque"
+	);
+} else if (hasRequestedVersion) {
+	// if we've detected an acceptable version
+	// embed the Flash Content SWF when all tests are passed
+	AC_FL_RunContent(
+			"src", "TourDeFlex.swf?build=134",
+			"width", "100%",
+			"height", "100%",
+			"align", "middle",
+			"id", "TourDeFlex",
+			"quality", "high",
+			"bgcolor", "#323232",
+			"name", "TourDeFlex",
+			"allowScriptAccess","sameDomain",
+			"type", "application/x-shockwave-flash",
+			"pluginspage", "http://www.adobe.com/go/getflashplayer",
+			"wmode", "opaque"
+	);
+  } else {  // flash is too old or we can't detect the plugin
+    var alternateContent = 'Alternate HTML content should be placed here. '
+  	+ 'This content requires the Adobe Flash Player. '
+   	+ '<a href=http://www.adobe.com/go/getflash/>Get Flash</a>';
+    document.write(alternateContent);  // insert non-flash content
+  }
+// -->
+</script>
+<noscript>
+  	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+			id="TourDeFlex" width="100%" height="100%"
+			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+			<param name="movie" value="TourDeFlex.swf?build=134" />
+			<param name="quality" value="high" />
+			<param name="bgcolor" value="#323232" />
+			<param name="allowScriptAccess" value="sameDomain" />
+			<embed src="TourDeFlex.swf?build=134" quality="high" bgcolor="#323232"
+				width="100%" height="100%" name="main" align="middle"
+				play="true"
+				loop="false"
+				quality="high"
+				allowScriptAccess="sameDomain"
+				type="application/x-shockwave-flash"
+				pluginspage="http://www.adobe.com/go/getflashplayer"
+				wmode="opaque">
+			</embed>
+	</object>
+</noscript>
+<div id="iFrameContainer">
+</div>
+</body>
+</html>

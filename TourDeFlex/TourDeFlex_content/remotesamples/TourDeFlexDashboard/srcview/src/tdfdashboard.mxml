@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" backgroundGradientColors="[0x000000,0x323232]" layout="vertical"
+	creationComplete="consumer.subscribe()" viewSourceURL="srcview/index.html">
+
+	<!-- 
+		NEW IN THIS VERSION: 
+		- You need to add subtopic="flex" in the Consumer definition
+	-->
+
+	<mx:Script>
+		<![CDATA[
+
+			import mx.collections.ArrayCollection;
+			import mx.messaging.events.MessageEvent;
+			
+			[Bindable] private var items:ArrayCollection = new ArrayCollection();
+			
+			private function messageHandler(event:MessageEvent):void
+			{
+				items.addItem(event.message.body);
+			}
+			
+		]]>
+	</mx:Script>
+
+	<!-- The destination can be accessed using four different channels: RTMP, AMF Streaming, AMF Long Polling, AMF Polling.
+		You can choose which channel(s) to use to access the destination: just comment out the channels you don't want to use.
+		For example, if you don't want a dependency on fds.swc, uncomment the RTMP channel definition. The order of the channels 
+		defined in the ChannelSet tag is important: The system will try to connect using the first one. If that connection fails, 
+		it will fall back to the next one, etc. In real life, these URLs shouldn't be hardcoded in the application... One option 
+		is to use a configuration file as described here: 
+		http://coenraets.org/blog/2009/03/externalizing-service-configuration-using-blazeds-and-lcds/--> 
+	<mx:ChannelSet id="channelSet">
+		<!-- RTMP channel -->
+		<mx:RTMPChannel id="rtmp" url="rtmp://tourdeflex.adobe.com:2037"/>
+		<!-- Long Polling Channel -->
+		<mx:AMFChannel url="http://tourdeflex.adobe.com:8080/lcds-samples/messagebroker/amflongpolling"/>
+		<!-- Regular polling channel -->
+		<mx:AMFChannel url="http://tourdeflex.adobe.com:8080/lcds-samples/messagebroker/amfpolling"/>
+	</mx:ChannelSet>
+	
+	<mx:Consumer id="consumer" 
+		channelSet="{channelSet}" 
+		destination="tdf.sampleviewingfeed" 
+		subtopic="flex" 
+		message="messageHandler(event)"/>
+	
+	<mx:Label text="Samples viewed in Tour de Flex (LIVE):" color="white" />
+	<mx:DataGrid dataProvider="{items}" width="100%" height="100%"/>
+	
+</mx:Application>

@@ -1,0 +1,88 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+body{
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	background-image: url("images/bkg.jpg");
+	background-repeat: repeat-x;
+	background-color: #000000;
+	border: solid 1px #585858;
+
+	font-family: Verdana, Sans-Serif;
+	font-size: 10px;
+	color: #BDB6B1;
+}
+#hdr{
+	width: 428px;
+	height: 68px;
+	margin: 3px 3px 0px 3px;
+	border: solid 1px #585858;
+}
+#hdr img{
+	margin: 11px 0px 0px 16px;
+}
+#version{
+	width: 225px;
+	margin: 10px 0px 0px 0px;
+	float: right;
+}
+.team{
+	font-size: 10.5;
+}
+#main{
+	width: 428px;
+	height: 286px;
+	margin: 3px 3px 3px 3px;
+	border: solid 1px #585858;
+}
+#credits{
+	margin: 20px 0px 0px 35px;
+}
+#logo{
+	width: 398px;
+	margin: 20px 0px 0px 0px;
+	text-align: center;
+}
+#ftr{
+	margin: 30px 5px 0px 5px;
+	font-size: 9px;
+}
+.lt{
+	float: left;
+}
+.rt{
+	float: right;
+}
+#ftrLogo{
+	
+}
+#rights{
+	width: 388px;
+}
+a{
+	color: #BBBBff;
+	text-decoration: none;
+}
+a:hover{
+	color: #3380DD;
+}
+a:visited{
+	color: #9fB6D4;
+}
+a:active{
+	color: #9fB6D4;
+}

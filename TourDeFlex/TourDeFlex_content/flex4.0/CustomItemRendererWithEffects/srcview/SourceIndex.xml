@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<index>
+	<title>Source of Sample-Flex4-CustomItemRendererWithAnimation</title>
+	<nodes>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="libs">
+		</node>
+		<node label="src">
+			<node label="assets">
+				<node icon="imageIcon" label="beesly.jpg" url="source/assets/beesly.jpg.html"/>
+				<node icon="imageIcon" label="bernard.jpg" url="source/assets/bernard.jpg.html"/>
+				<node icon="imageIcon" label="bratton.jpg" url="source/assets/bratton.jpg.html"/>
+				<node icon="imageIcon" label="flenderson.jpg" url="source/assets/flenderson.jpg.html"/>
+				<node icon="imageIcon" label="halpert.jpg" url="source/assets/halpert.jpg.html"/>
+				<node icon="imageIcon" label="howard.jpg" url="source/assets/howard.jpg.html"/>
+				<node icon="imageIcon" label="hudson.jpg" url="source/assets/hudson.jpg.html"/>
+				<node icon="imageIcon" label="kapoor.jpg" url="source/assets/kapoor.jpg.html"/>
+				<node icon="imageIcon" label="lapin.jpg" url="source/assets/lapin.jpg.html"/>
+				<node icon="imageIcon" label="malone.jpg" url="source/assets/malone.jpg.html"/>
+				<node icon="imageIcon" label="martin.jpg" url="source/assets/martin.jpg.html"/>
+				<node icon="imageIcon" label="martinez.jpg" url="source/assets/martinez.jpg.html"/>
+				<node label="MyriadPro-Semibold.otf" url="source/assets/MyriadPro-Semibold.otf"/>
+				<node icon="imageIcon" label="palmer.jpg" url="source/assets/palmer.jpg.html"/>
+				<node icon="imageIcon" label="schrute.jpg" url="source/assets/schrute.jpg.html"/>
+				<node icon="imageIcon" label="scott.jpg" url="source/assets/scott.jpg.html"/>
+			</node>
+			<node label="data">
+				<node label="list.out.xml" url="source/data/list.out.xml.txt"/>
+				<node label="list.xml" url="source/data/list.xml.txt"/>
+			</node>
+			<node icon="packageIcon" label="renderers" expanded="true">
+				<node icon="mxmlIcon" label="ImageRenderer1.mxml" url="source/renderers/ImageRenderer1.mxml.html"/>
+				<node icon="mxmlIcon" label="ImageRenderer2.mxml" url="source/renderers/ImageRenderer2.mxml.html"/>
+			</node>
+			<node icon="packageIcon" label="skins" expanded="true">
+				<node icon="mxmlIcon" label="TDFPanelSkin.mxml" url="source/skins/TDFPanelSkin.mxml.html"/>
+			</node>
+			<node icon="mxmlAppIcon" selected="true" label="sample1.mxml" url="source/sample1.mxml.html"/>
+			<node icon="mxmlIcon" label="sample2.mxml" url="source/sample2.mxml.html"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 176K)" url="Sample-Flex4-CustomItemRendererWithAnimation.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>

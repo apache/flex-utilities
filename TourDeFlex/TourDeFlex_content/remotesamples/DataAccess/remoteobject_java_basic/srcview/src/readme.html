@@ -1,0 +1,41 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>Using RemoteObject, you can directly invoke methods of Java objects  deployed in your application server, 
+and consume the return value. The return value can be a value of a primitive data type, an object, a collection 
+of objects, an object graph, etc.</p>
+<p>The value of the destination property of RemoteObject is a logical name that is mapped to a fully qualified java class 
+in remoting-config.xml via the source tag.</p>
+<p>Java objects returned by server-side methods are deserialized into either dynamic or typed ActionScript objects. 
+In this particular example we don't have an explicit ActionScript version of a Java class to map a result to, therefore
+the response is deserialized into a String dynamically.</p>
+<p>A list of links to the server side files used in this sample are listed below for further reference. </p>
+<table>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/UserService.java.txt">UserService.java</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/User.java.txt">UserService.java</a></td></tr>
+</table>
+
+<p>Note: Like HTTPService and WebService, RemoteObject calls are asynchronous. You use the <strong>result</strong> and 
+<strong>fault</strong> events of the RemoteObject to handle results and errors.</p>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="98%" height="98%">
+	
+	<mx:Script>
+	<![CDATA[
+		import classes.ObjectListSortTypes;
+		import classes.ObjectTreeItemRenderer;
+		import classes.ObjectTreeDataDescriptor;
+		import mx.events.FlexEvent;
+		import mx.collections.XMLListCollection;
+		import mx.events.ListEvent;
+
+		[Bindable] public var treeDataProvider:Object;
+		[Bindable] public var listDataProvider:Object;
+		[Bindable] public var selectedId:int = -1;
+		[Bindable] public var selectedObject:XML;	
+		[Bindable] public var sortType:String = "";		
+		public static const SORT_CHANGE:String = "sortChange";
+
+		private function list_objects_change(event:ListEvent):void
+		{
+			dispatchEvent(event);
+		}
+
+		private function comboBox_sort_change(event:ListEvent):void
+		{
+			sortType = comboBox_sort.selectedLabel;
+			var sortEvent:ListEvent = new ListEvent(SORT_CHANGE, event.bubbles, event.cancelable, event.columnIndex, event.rowIndex, event.reason, event.itemRenderer);
+			dispatchEvent(sortEvent);
+		}
+				
+		private function tree_dataChange(event:FlexEvent):void
+		{
+			if(treeDataProvider && treeDataProvider[0].@autoExpand == true)
+				tree_objects.expandChildrenOf(treeDataProvider[0], true);
+		}
+		
+		public function showTreeView(show:Boolean):void
+		{
+			tree_objects.visible = show;
+			box_list_objects.visible = !show;
+		}
+		
+		public function setDescription(description:String, dateAdded:String, author:String):void
+		{
+			text_description.htmlText = description + "<br><b>Author:</b> " + author + "<br><b>Date Added:</b> " + dateAdded; 
+		}
+						
+	]]>
+	</mx:Script>
+	
+	<mx:Metadata>
+		[Event(name="change", type="mx.events.ListEvent")]
+		[Event(name="sortChange", type="mx.events.ListEvent")]		
+	</mx:Metadata>
+
+	<mx:Canvas width="100%" height="100%">
+		
+		<mx:VBox id="box_list_objects" width="100%" height="100%">			
+			<mx:ComboBox id="comboBox_sort" width="100%" change="comboBox_sort_change(event)" dataProvider="{ObjectListSortTypes.ObjectListSortTypeArray}" /> 
+			<mx:List id="list_objects" fontSize="11" fontAntiAliasType="advanced" labelField="@name" itemRenderer="components.ObjectListItemRenderer" change="list_objects_change(event)" dataProvider="{listDataProvider}" width="100%" height="100%" />
+		</mx:VBox>
+		
+		<mx:Tree id="tree_objects"  fontSize="11" fontAntiAliasType="advanced" labelField="@name" showRoot="true" defaultLeafIcon="{null}" valueCommit="tree_dataChange(event)" itemRenderer="classes.ObjectTreeItemRenderer" change="list_objects_change(event)" dataProvider="{treeDataProvider}" dataDescriptor="{new ObjectTreeDataDescriptor()}" height="100%" width="100%" openDuration="0" />
+	
+	</mx:Canvas>
+
+	<mx:Text id="text_description" width="100%" />
+	
+</mx:VBox>

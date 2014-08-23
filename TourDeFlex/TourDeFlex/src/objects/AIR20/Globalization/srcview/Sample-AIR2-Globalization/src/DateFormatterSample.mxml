@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" 
+					   styleName="plain" width="100%" height="100%">
+	
+	<fx:Declarations>
+		<s:RadioButtonGroup id="styleGrp"/>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import flash.globalization.DateTimeFormatter;
+			import flash.globalization.DateTimeStyle;
+			import flash.globalization.LocaleID;
+			
+			import mx.collections.ArrayCollection;
+			
+			protected var formatter:DateTimeFormatter;
+			
+			[Bindable]
+			protected var locales:ArrayCollection = new ArrayCollection([
+				{label:"Default Locale", data:LocaleID.DEFAULT},
+				{label:"Swedish", data:"sv_SE"}, 
+				{label:"Dutch", data:"nl_NL"},
+				{label:"French", data:"fr_FR"},
+				{label:"German", data:"de_DE"},
+				{label:"Japanese", data:"ja_JP"}, 
+				{label:"Korean", data:"ko_KR"}, 
+				{label:"US-English", data:"en_US"},
+			]);
+			
+			protected function formatDate():void
+			{
+				ta.text = "";
+				var date:Date = new Date();
+				var locale:String;
+				
+				if (ddl.selectedIndex == -1)
+					locale = LocaleID.DEFAULT;
+				else locale = ddl.selectedItem.data
+					
+				formatter = new DateTimeFormatter(locale);
+				
+				ta.text += "Locale selected: " + locale + " - Actual locale name: " + formatter.actualLocaleIDName;
+				ta.text += "\nFormatting date/time: " + date;
+				//trace("Date " +new Date());
+				if (styleGrp.selectedValue == "Long Style")
+				{
+					var longStyle:String = formatter.format(date);
+					var longStylePattern:String = formatter.getDateTimePattern();
+					ta.text += "\nLong Style Date pattern " + longStylePattern;
+					ta.text += "\nLong Style Date: " + longStyle;
+				}
+				else 
+				{
+					formatter.setDateTimeStyles(DateTimeStyle.NONE, DateTimeStyle.SHORT);
+					var shortStyle:String = formatter.format(date);
+					var shortStylePattern:String = formatter.getDateTimePattern();
+					ta.text += "\nShort Style date pattern " + shortStylePattern;
+					ta.text += "\nShort Style Date: " + shortStyle;
+				}
+				ta.text += "\n\n\nLast Operation Status: " + formatter.lastOperationStatus;
+				
+			}
+		]]>
+		
+	</fx:Script>
+	<s:Panel skinClass="skins.TDFPanelSkin" width="100%" height="100%" title="DateTime and Currency Formatting by Locale">
+		<s:VGroup top="10" left="12">
+			<s:Label text="Select style of date/time formatting:"/>
+			<s:HGroup>
+				<s:RadioButton id="shortDate" groupName="styleGrp" label="Short Style"/>
+				<s:RadioButton id="longDate" groupName="styleGrp" label="Long Style"/>
+			</s:HGroup>
+			<s:DropDownList id="ddl" dataProvider="{locales}" prompt="Select locale..." width="200"/>
+			<s:Button label="Format Today's Date" click="formatDate()"/>
+		</s:VGroup>
+		<s:VGroup top="10" right="20">
+			<s:Label text="Console:"/>
+			<s:TextArea id="ta" editable="false" width="400"/>
+		</s:VGroup>
+		<s:Label width="93%" verticalAlign="justify" color="#323232" bottom="25" horizontalCenter="0" 
+				 text="This sample will format today's date/time with the selected locale and date/time style (short versus long). The last operation status
+will indicate if an error occurred in formatting."/>
+	</s:Panel>
+	
+</mx:Module>

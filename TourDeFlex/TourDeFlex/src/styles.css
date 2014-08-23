@@ -1,0 +1,420 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+mx|Application
+{
+	theme-color:#E0E0E0;
+	modal-transparency:0.5;
+	modal-transparency-blur:0;
+}
+
+/* todo: use apache font
+@font-face {
+    src: url("assets/MyriadWebPro.ttf");
+    fontFamily: eFontFamily;
+}
+*/
+
+.mainWindow
+{
+	/* background-color:#262626; */
+}
+
+.mainBackground
+{
+	background-color:#262626;
+}
+
+.applicationHeader
+{
+	borderSkin: Embed(skinClass='TopPanelWLogo');
+}
+
+.applicationFooter
+{
+	borderSkin: Embed(skinClass='FootPanel');
+	color:#A4A4A4;
+}
+
+.applicationCloseButton
+{
+	/* icon: Embed(skinClass='CloseIcon');
+	skin: Embed(source="images/button_clear.png"); */
+	skin: Embed(skinClass='CloseButton');
+}
+
+.applicationMaximizeButton
+{
+	/* icon: Embed(skinClass='WindowIcon');
+	skin: Embed(source="images/button_clear.png"); */
+	skin: Embed(skinClass='WindowButton');
+}
+
+.applicationMinimizeButton
+{
+	/* icon: Embed(skinClass='MinimizeIcon');
+	skin: Embed(source="images/button_clear.png"); */
+	skin: Embed(skinClass='MinimizeButton');
+}
+
+.aboutButton
+{
+	skin: Embed(skinClass='AboutButton');
+}
+
+.aboutComboBox
+{
+	skin: Embed(skinClass='DropMenu');
+	color:#DDDDDD;
+	alternatingItemColors:#222222,#222222;
+}
+
+mx|Alert
+{
+	color:#323232;	
+	background-color:#E3E3E3;
+	border-color:#000000;
+	border-alpha: 0.7;
+	header-height:20;
+	theme-color: #848484;
+	title-style-name:alertTitle;
+} 
+
+.alertTitle
+{
+	color:#FFFFFF;
+	font-weight:bold;
+}
+
+.outerDividedBoxes
+{
+	/* background-color:#D4CDCA;
+	corner-radius:8;
+	border-style:solid;
+	padding-bottom:8;
+	padding-left:8;
+	padding-right:8;
+	padding-top:8; */
+	backgroundImage: Embed(skinClass='BoxSkin');
+	backgroundSize: "100%";
+	paddingTop: 7;
+	paddingLeft: 7;
+	paddingRight: 9;
+	paddingBottom: 16;
+}
+
+.illustrationsBox
+{	
+	background-color:#AFA7A1;
+	backgroundAlpha: 0.2;
+	corner-radius:5;	
+	border-style:solid;	
+	border-color:#C4C2C2;
+	border-alpha: 0.5;
+	padding-bottom:5;
+	padding-left:5;
+	padding-right:5;
+	padding-top:5;	
+}
+
+.illustrationTabs
+{
+	background-color:#AEAEAE;
+	border-color:#aea6a0;
+	background-alpha: 0.5;
+	padding-top:1;
+	horizontal-gap:2;
+	tab-height:20;
+}
+
+.illustrationFirstTab
+{
+	border-color:#555555;
+	backgroundColor:#888888;
+	font-weight:normal;
+}
+
+.illustrationLastTab
+{
+	border-color:#555555;	
+	backgroundColor:#888888;
+	font-weight:normal;
+}
+
+.illustrationTab
+{
+	border-color:#555555;
+	corner-radius:6;
+	backgroundColor:#888888;
+	font-weight:normal;
+}
+
+.illustrationTabSelected
+{
+	color: #ffffff;
+	font-weight:bold;
+}
+
+.documentTabs
+{
+	background-color:#AEAEAE;
+	border-color:#AFA7A1;
+	background-alpha: 0.7;
+	padding-top:1;
+	horizontal-gap:2;
+	tab-height:20;
+}
+
+.documentFirstTab
+{
+	border-color:#555555;
+	backgroundColor:#888888;
+	font-weight:normal;
+}
+
+.documentLastTab
+{
+	border-color:#555555;
+	backgroundColor:#888888;
+	font-weight:normal;
+}
+
+.documentTab
+{
+	border-color:#555555;
+	corner-radius:6;
+	backgroundColor:#888888;
+	font-weight:normal;
+}
+
+.documentTabSelected
+{
+	color: #ffffff;
+	font-weight:bold;
+}
+
+.wipeWindow
+{
+	background-alpha:1.0;
+	/* background-color:#D4CDCA; */
+	background-image: Embed(skinClass='BoxSkin');
+	background-size: "100%";
+	/* border-color:#D4CDCA; */
+	/* border-style:solid; */
+	corner-radius:8;
+	padding-bottom:12;
+	padding-left:8;
+	padding-right:24;
+	padding-top:8;
+}
+
+.searchWindowTagBox
+{
+	background-color:#AFA7A1;
+	background-alpha: 0.2;
+	corner-radius:5;	
+	border-style:solid;	
+	border-color:#C4C2C2;
+	padding-bottom:8;
+	padding-left:8;
+	padding-right:8;
+	padding-top:8;
+}
+
+.searchWindowTags
+{
+	background-color:#AEAEAE;
+	border-color:#AFA7A1;
+	background-alpha: 0.5;
+	corner-radius:5;	
+	border-style:solid;	
+	padding-bottom:8;
+	padding-left:8;
+	padding-right:8;
+	padding-top:8;
+}
+
+.tagGridFirstRowItem
+{
+	padding-left:8;
+	padding-top:8;
+}
+
+.tagGridFirstRow
+{
+	border-sides:left;
+	border-style:solid;
+	border-color:#ACACAC;
+	padding-left:8;
+	padding-top:8;
+}
+
+.tagGridFirstItem
+{
+	border-sides:top;
+	border-style:solid;
+	border-color:#ACACAC;
+	padding-left:8;
+	padding-top:8;
+}
+
+.tagGridItem
+{
+	border-sides:left,top;
+	border-style:solid;
+	border-color:#ACACAC;
+	padding-left:8;
+	padding-top:8;
+}
+
+.tagCheckBox
+{
+	font-size:12;
+}
+
+.headingLabel
+{
+	font-weight:bold;
+	font-size:12;
+}
+
+mx|Button
+{
+	skin: Embed(skinClass='ButtonSkin');
+}
+
+mx|ComboBox
+{
+	skin: Embed(skinClass='DropDownSkin');
+	fontWeight: "normal";
+}
+
+.buttonSkin
+{
+	skin: Embed(skinClass='ButtonSkin');
+}
+
+mx|ToggleButtonBar
+{
+	buttonStyleName: "toggleButtonBarButton";
+	firstButtonStyleName: "toggleButtonBarFirstButton";
+	lastButtonStyleName: "toggleButtonBarLastButton";
+}
+.toggleButtonBarButton
+{
+	skin: Embed(skinClass="ToggleButtonBar$button_skin");
+}
+.toggleButtonBarFirstButton
+{
+	skin: Embed(skinClass="ToggleButtonBar$firstButton_skin");
+}
+.toggleButtonBarLastButton
+{
+	skin: Embed(skinClass="ToggleButtonBar$lastButton_skin");
+}
+
+mx|TabNavigator
+{
+	tabStyleName: "tabBarTab";
+	firstTabStyleName: "tabBarTab";
+	lastTabStyleName: "tabBarTab";
+}
+
+mx|TabBar
+{
+	tabStyleName: "tabBarTab";
+	firstTabStyleName: "tabBarTab";
+	lastTabStyleName: "tabBarTab";
+}
+.tabBarTab
+{
+	skin: Embed(skinClass="TabBar$tab_skin");
+}
+
+.closeButton
+{	
+	/* overSkin: Embed("images/button_close_overSkin.png");
+	upSkin: Embed("images/button_close_upSkin.png");
+	downSkin: Embed("images/button_close_downSkin.png"); */
+	skin: Embed(skinClass='SearchCloseButton');
+}
+
+.commentButton
+{
+	icon: Embed("images/button_comment_icon.png");
+	disabled-icon: Embed("images/button_commentDisabled_icon.png");
+}
+
+.downloadButton
+{
+	icon: Embed("images/button_download_icon.png");
+	disabled-icon: Embed("images/button_downloadDisabled_icon.png");
+}
+
+.buttonBrowser
+{
+	icon: Embed("images/web.png");
+	disabled-icon: Embed("images/web_disabled.png");	
+}
+
+.maximizeButton
+{
+	icon: Embed("images/expand.png");
+	disabled-icon: Embed("images/expand_disabled.png");	
+}
+
+.searchButton
+{
+	/* icon: Embed("images/button_search_icon.png"); */
+	icon: Embed(skinClass='SearchIcon');
+	fontWeight: "normal";
+}
+
+.downloadWindow
+{
+	bar-color:#9D0B12;
+	background-color:#AFA7A1;
+	corner-radius:12;
+	border-style:solid;
+	rounded-bottom-corners:true;
+	padding-bottom:8;
+	padding-left:8;
+	padding-right:8;
+	padding-top:8;
+}
+
+.cornerResizer
+{
+	overSkin: Embed("images/corner_resizer.png");
+	upSkin: Embed("images/corner_resizer.png");
+	downSkin: Embed("images/corner_resizer.png");
+}
+
+mx|Tree
+{
+	rollOverColor: #EEEEEE;
+	selectionColor: #E0E0E0;
+	indentation: 21;
+}
+
+mx|List, mx|ComboBox
+{
+	rollOverColor: #EEEEEE;
+	selectionColor: #E0E0E0;
+}
+

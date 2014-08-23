@@ -1,0 +1,234 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ParagraphPropertyEditor.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inspectors</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptOperator">*</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Direction</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FormatValue</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextJustify</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextLayoutFormat</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">tlf_internal</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LeadingModel</span>;
+    <span class="ActionScriptReserved">use</span> <span class="ActionScriptReserved">namespace</span> <span class="ActionScriptDefault_Text">tlf_internal</span>;
+        
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">ParagraphPropertyEditor</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">DynamicTextPropertyEditor</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/align_start_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">alignStartIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/align_end_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">alignEndIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/align_left_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">alignLeftIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/align_center_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">alignCenterIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/align_right_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">alignRightIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/align_justify_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">alignJustifyIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/align_last_left_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">alignLastLeftIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/align_last_center_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">alignLastCenterIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/align_last_right_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">alignLastRightIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">ParagraphPropertyEditor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">recipe</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptOperator">=</span>
+                <span class="ActionScriptReserved">&lt;recipe&gt;
+                    &lt;row&gt;
+                        &lt;editor type="multiIconButton" style="iconButtonGroup" label="$$$/stage/TextEditing/Label/Alignment=Alignment:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TEXT_ALIGN_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;button icon="alignStartIcon" value="start"/&gt;
+                            &lt;button icon="alignEndIcon" value="end"/&gt;
+                            &lt;button icon="alignLeftIcon" value="left"/&gt;
+                            &lt;button icon="alignCenterIcon" value="center"/&gt;
+                            &lt;button icon="alignRightIcon" value="right"/&gt;
+                            &lt;button icon="alignJustifyIcon" value="justify"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="multiIconButton" style="iconButtonGroup" label="$$$/stage/TextEditing/Label/LastLine=Last Line:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TEXT_ALIGN_LAST_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;button icon="alignStartIcon" value="start"/&gt;
+                            &lt;button icon="alignEndIcon" value="end"/&gt;
+                            &lt;button icon="alignLastLeftIcon" value="left"/&gt;
+                            &lt;button icon="alignLastCenterIcon" value="center"/&gt;
+                            &lt;button icon="alignLastRightIcon" value="right"/&gt;
+                            &lt;button icon="alignJustifyIcon" value="justify"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/Indent=Text Indent:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TEXT_INDENT_UIPROP</span>}
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>}
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/Left=Start Indent:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">START_INDENT_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphStartIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>}
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphStartIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/Right=End:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">END_INDENT_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphEndIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>} 
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphEndIndentProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/Before=Space Before:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SPACE_BEFORE_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphSpaceBeforeProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>} 
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphSpaceBeforeProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/After=After:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SPACE_AFTER_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphSpaceAfterProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>} 
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paragraphSpaceAfterProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/justRule=Just. Rule:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">JUSTIFICATION_RULE_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Auto" value=</span>{<span class="ActionScriptDefault_Text">FormatValue</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Roman" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">JustificationRule</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SPACE</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="East Asian" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">JustificationRule</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">EAST_ASIAN</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/textJust=Text Justify:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TEXT_JUSTIFY_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Inter-word" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextJustify</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">INTER_WORD</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Distribute" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextJustify</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DISTRIBUTE</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/justStyle=Just. Style:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">JUSTIFICATION_STYLE_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Auto" value=</span>{<span class="ActionScriptDefault_Text">FormatValue</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Prioritize Least Adjustment" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">JustificationStyle</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PRIORITIZE_LEAST_ADJUSTMENT</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Push in Kinsoku" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">JustificationStyle</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PUSH_IN_KINSOKU</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Push out Only" value=</span>{<span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">JustificationStyle</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PUSH_OUT_ONLY</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/direction=Direction:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DIRECTION_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Left to Right" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Direction</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LTR</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Right to Left" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Direction</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">RTL</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/leadingModel=Leading Model:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LEADING_MODEL_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Roman; Up" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LeadingModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ROMAN_UP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Top; Up" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LeadingModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_TOP_UP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Center; Up" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LeadingModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_CENTER_UP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Top; Down" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LeadingModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_TOP_DOWN</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ideographic Center; Down" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LeadingModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IDEOGRAPHIC_CENTER_DOWN</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Ascent-Descent; Up" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LeadingModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ASCENT_DESCENT_UP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Approximate TextField" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LeadingModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">APPROXIMATE_TEXT_FIELD</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Auto" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LeadingModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/Lacale=Locale:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PARA_LOCALE_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="Arabic" value="ar"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Bengali" value="bn"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Bulgarian" value="bg"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Catalan" value="ca"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Chinese, Simplified (China)" value="zh-CN"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Chinese, Traditional (Taiwan)" value="zh-TW"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Croatian" value="hr"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Czech" value="cs"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Danish" value="da"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Dutch" value="nl"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="English" value="en"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Estonian" value="et"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Finnish" value="fi"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="French" value="fr"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="German" value="de"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Greek" value="el"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Gujarati" value="gu"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Hindi" value="hi"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Hebrew" value="he"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Hungarian" value="hu"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Italian" value="it"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Japanese" value="ja"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Korean" value="ko"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Latvian" value="lv"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Lithuanian" value="lt"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Marathi" value="mr"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Norwegian" value="no"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Persian" value="fa"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Polish" value="pl"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Portuguese" value="pt"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Punjabi" value="pa"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Romanian" value="ro"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Russian" value="ru"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Slovak" value="sk"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Slovenian" value="sl"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Spanish" value="es"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Swedish" value="sv"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Tamil" value="ta"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Telugu" value="te"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Thai" value="th"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Turkish" value="tr"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Ukrainian" value="uk"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Urdu" value="ur"/&gt;</span><span class="ActionScriptOperator">,</span>
+                            <span class="ActionScriptReserved">&lt;choice display="Vietnamese" value="vi"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                &lt;/recipe&gt;</span>;
+
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">recipe</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"alignStartIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">alignStartIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"alignEndIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">alignEndIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"alignLeftIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">alignLeftIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"alignCenterIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">alignCenterIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"alignRightIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">alignRightIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"alignJustifyIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">alignJustifyIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"alignLastLeftIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">alignLastLeftIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"alignLastCenterIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">alignLastCenterIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"alignLastRightIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">alignLastRightIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

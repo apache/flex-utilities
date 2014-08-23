@@ -1,0 +1,58 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>LinkPropertyEditor.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inspectors</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">LinkPropertyEditor</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">DynamicTextPropertyEditor</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">LinkPropertyEditor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">recipe</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptOperator">=</span>
+                <span class="ActionScriptReserved">&lt;recipe&gt;
+                    &lt;row&gt;
+                        &lt;editor type="string" label="$$$/stage/TextEditing/Label/linkURL=URL:" width="150"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LINK_URL_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/linkTarget=Target:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LINK_TARGET_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;choice display="_blank" value=</span>{<span class="ActionScriptString">"_blank"</span><span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptOperator">/</span><span class="ActionScriptOperator">&gt;</span>
+                            <span class="ActionScriptReserved">&lt;choice display="_self" value=</span>{<span class="ActionScriptString">"_self"</span><span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptOperator">/</span><span class="ActionScriptOperator">&gt;</span>
+                            <span class="ActionScriptReserved">&lt;choice display="_parent" value=</span>{<span class="ActionScriptString">"_parent"</span><span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptOperator">/</span><span class="ActionScriptOperator">&gt;</span>
+                            <span class="ActionScriptReserved">&lt;choice display="_top" value=</span>{<span class="ActionScriptString">"_top"</span><span class="ActionScriptBracket/Brace">}</span><span class="ActionScriptOperator">/</span><span class="ActionScriptOperator">&gt;</span>
+                        <span class="ActionScriptReserved">&lt;/editor&gt;
+                        &lt;editor type="checkbox" label="$$$/stage/TextEditing/Label/linkExtend=Extend:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LINK_EXTEND_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                &lt;/recipe&gt;</span>;
+            super(recipe);
+        }
+        
+    }
+}</pre></body>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<index>
+	<title>Source of Sample-Flex4-Skinning-ButtonWithIcon</title>
+	<nodes>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="libs">
+		</node>
+		<node label="src">
+			<node label="assets">
+				<node icon="imageIcon" label="arrow_icon_sm.png" url="source/assets/arrow_icon_sm.png.html"/>
+				<node icon="imageIcon" label="goggles.jpg" url="source/assets/goggles.jpg.html"/>
+				<node icon="imageIcon" label="icon_add.png" url="source/assets/icon_add.png.html"/>
+				<node icon="imageIcon" label="icon_check.png" url="source/assets/icon_check.png.html"/>
+				<node icon="imageIcon" label="icon_close16.png" url="source/assets/icon_close16.png.html"/>
+				<node icon="imageIcon" label="icon_plus.png" url="source/assets/icon_plus.png.html"/>
+				<node icon="imageIcon" label="icon_remove.png" url="source/assets/icon_remove.png.html"/>
+			</node>
+			<node icon="packageIcon" label="skins" expanded="true">
+				<node icon="mxmlIcon" label="AddButtonSkin.mxml" url="source/skins/AddButtonSkin.mxml.html"/>
+				<node icon="mxmlIcon" label="CloseButtonSkin.mxml" url="source/skins/CloseButtonSkin.mxml.html"/>
+				<node icon="mxmlIcon" label="FancyButtonSkin.mxml" url="source/skins/FancyButtonSkin.mxml.html"/>
+				<node icon="mxmlIcon" label="IconTextButtonSkin.mxml" url="source/skins/IconTextButtonSkin.mxml.html"/>
+				<node icon="mxmlIcon" label="MyPanelSkin.mxml" url="source/skins/MyPanelSkin.mxml.html"/>
+				<node icon="mxmlIcon" label="TDFPanelSkin.mxml" url="source/skins/TDFPanelSkin.mxml.html"/>
+			</node>
+			<node icon="mxmlAppIcon" selected="true" label="sample1.mxml" url="source/sample1.mxml.html"/>
+		</node>
+		<node label="Sample-Flex4-Skinning-ButtonWithIcon.iml" url="source/Sample-Flex4-Skinning-ButtonWithIcon.iml"/>
+	</nodes>
+	<zipfile label="Download source (ZIP, 128K)" url="Sample-Flex4-Skinning-ButtonWithIcon.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>

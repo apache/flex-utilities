@@ -1,0 +1,116 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package lcds.samples.contact;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+public class ContactDAO extends BaseDAO 
+{
+	public List findAll()
+	{
+		return getList("SELECT * FROM contact ORDER BY last_name, first_name");
+	}
+
+	public List findByName(String name)
+	{
+		return getList("SELECT * FROM contact WHERE UPPER(first_name) LIKE ? OR UPPER(last_name) LIKE ? ORDER BY last_name, first_name", new Object[] {"%"+name.toUpperCase()+"%", "%"+name.toUpperCase()+"%"});
+	}
+	
+	public Object getContact(int contactId)
+	{
+		return getItem("SELECT * FROM contact WHERE contact_id=?", contactId);
+	}
+	
+	public void create(Contact contact) throws DAOException
+	{
+		log("Creating contact: " + contact.getFirstName() + " " + contact.getLastName());
+		int contactId = createItem("INSERT INTO contact (first_name, last_name, phone, email, address, city, state, zip, country, notes) VALUES (?,?,?,?,?,?,?,?,?,?)",
+				new Object[] {	contact.getFirstName(), 
+								contact.getLastName(),
+								contact.getPhone(), 
+								contact.getEmail(),
+								contact.getAddress(),
+								contact.getCity(),
+								contact.getState(),
+								contact.getZip(),
+								contact.getCountry(),
+								contact.getNotes()
+				});
+		contact.setContactId(contactId);
+		log("Contact created successfully - contactId: " + contact.getContactId());
+	}
+
+	public void update(Contact contact) throws DAOException, ConcurrencyException
+	{
+		log("Updating contact: " + contact.getContactId() + " " + contact.getFirstName() + " " + contact.getLastName());
+		int rows = executeUpdate("UPDATE contact SET first_name=?, last_name=?, phone=?, email=?, address=?, city=?, state=?, zip=?, country=?, notes=? WHERE contact_id=?",
+				new Object[] {	contact.getFirstName(), 
+								contact.getLastName(), 
+								contact.getPhone(), 
+								contact.getEmail(), 
+								contact.getAddress(),
+								contact.getCity(),
+								contact.getState(),
+								contact.getZip(),
+								contact.getCountry(),
+								contact.getNotes(),
+								contact.getContactId()
+				});
+		if (rows == 0)
+		{
+			throw new ConcurrencyException("Item not found");
+		}
+		log("Contact updated successfully");
+	}
+	
+	public void delete(Contact contact) throws DAOException, ConcurrencyException
+	{
+		log("Deleting contact: " + contact.getContactId() + " " + contact.getFirstName() + " " + contact.getLastName());
+		int rows = executeUpdate("DELETE FROM contact WHERE contact_id = ?", new Object[] {new Integer(contact.getContactId())});
+		if (rows == 0)
+		{
+			throw new ConcurrencyException("Item not found");
+		}
+		log("Contact deleted successfully");
+	}
+
+	protected Object rowToObject(ResultSet rs) throws SQLException
+	{
+		Contact contact = new Contact();
+		contact.setContactId(rs.getInt("contact_id"));
+		contact.setFirstName(rs.getString("first_name"));
+		contact.setLastName(rs.getString("last_name"));
+		contact.setPhone(rs.getString("phone"));
+		contact.setEmail(rs.getString("email"));
+		contact.setAddress(rs.getString("address"));
+		contact.setCity(rs.getString("city"));
+		contact.setState(rs.getString("state"));
+		contact.setZip(rs.getString("zip"));
+		contact.setCountry(rs.getString("country"));
+		contact.setNotes(rs.getString("notes"));
+		
+		return contact;
+	}
+	
+	private void log(String message)
+	{
+		System.out.println("# " + message);
+	}
+	
+}

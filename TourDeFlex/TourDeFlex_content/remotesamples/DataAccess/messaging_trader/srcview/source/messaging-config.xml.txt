@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<service id="message-service"
+    class="flex.messaging.services.MessageService">
+
+    <adapters>
+        <adapter-definition id="actionscript" class="flex.messaging.services.messaging.adapters.ActionScriptAdapter" default="true" />
+        <adapter-definition id="jms" class="flex.messaging.services.messaging.adapters.JMSAdapter"/>
+    </adapters>
+    
+    <default-channels>
+        <channel ref="my-rtmp"/>
+        <channel ref="my-streaming-amf"/>
+    </default-channels>
+
+  <destination id="market-data-feed">
+      <properties>
+            <network>
+                <session-timeout>0</session-timeout>
+            </network>
+            <server>
+                <max-cache-size>1000</max-cache-size>
+                <message-time-to-live>0</message-time-to-live>
+                <durable>true</durable>
+                <allow-subtopics>true</allow-subtopics>
+                <subtopic-separator>.</subtopic-separator>
+            </server>
+        </properties>
+
+        <channels>
+            <channel ref="my-rtmp"/>
+            <channel ref="my-nio-amf-poll"/>
+            <channel ref="my-nio-amf-longpoll"/>
+            <channel ref="my-nio-amf-stream"/>
+            <channel ref="my-nio-http-poll"/>
+            <channel ref="my-nio-http-longpoll"/>
+            <channel ref="my-nio-http-stream"/>
+			<channel ref="my-polling-amf"/>
+			<channel ref="my-streaming-amf"/>
+            <channel ref="per-client-qos-rtmp"/>
+            <channel ref="per-client-qos-polling-amf"/>
+        </channels>
+    </destination>
+</service>

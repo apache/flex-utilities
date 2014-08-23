@@ -1,0 +1,48 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>When you use custom assemblers, you first must decide on the destinations required to support your application
+objects, and then you define an assembler class for each destination. Your assembler class only has to support the
+methods that correspond to the operations actually used by the clients. Most commonly, your assembler implements
+at least one fill method. Fill methods implement queries, each of which returns a Collection of objects to the client
+code. If your client must update objects, you must have a sync method or individual create, update, and delete
+methods.
+</p>
+
+<p>A list of links to the server side files used in this sample are listed below for further reference. </p>
+<table>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/contact-custom/ContactAssembler.java.txt">ContactAssembler.java</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/contact-custom/Contact.java.txt">Contact.java</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/constact-custom/ContactDAO.java.txt">ContactDAO.java</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/contact-custom/BaseDAO.java.txt">BaseDAO.java</a></td></tr>
+<tr><td><a href="http://tourdeflex.adobe.com/remotesamples/DataAccess/server-source-code/flex/samples/contact-custom/ConcurrencyException.java.txt">ConcurrencyException.java</a></td></tr>
+
+</table>
+
+<p>You don't have to keep track of changes made to the data, nor do you have to invoke remote services to notify the backend of the changes (create, update, delete) made on the client side. </p>
+<p>On the server side, the Data Management Service receives the list of changes and passes it to your server-side persistence components. The Data Management Service also pushes the changes to other clients. In this example, the product destination configured in the data-management-config.xml file uses the java-dao adapter, which indicates that  
+custom Java classes handle the persistence code (another option is to use the Hibernate adapter). There is no specific contract imposed on the Java class that provides the persistence implementation. You map methods such as fill and sync to actual methods in an assembler class (in this case, ProductAssembler). In the assembler class, 
+you typically delegate the actual persistence implementation to existing persistence classes (in this case, ProductService).</p>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   backgroundColor="0x000000" 
+			   viewSourceURL="srcview/index.html">
+	
+	<fx:Declarations>
+		<s:WebService id="srv" wsdl="http://arcweb.esri.com/services/v2/PlaceFinderSample.wsdl" useProxy="false" showBusyCursor="true">
+			<s:result>
+				dg.visible = true;
+				dg.dataProvider = event.result.candidates;
+			</s:result>
+		</s:WebService>
+	</fx:Declarations>
+	
+		<s:VGroup width="100%" height="100%" paddingLeft="15" paddingTop="15">
+			<s:HGroup gap="10">
+				<mx:FormItem label="Enter the name of a place:" color="#dddddd">
+					<s:TextInput id="t" color="#222222"/>
+				</mx:FormItem>
+				<s:Button label="Find it!" click="srv.findPlace(t.text, {dataSource: 'ESRI.Gazetteer.World', filterType: null, searchType: null, filterCountry: null, filterEnvelope: null, startIndex: 0, count: 10})"/>    
+			</s:HGroup>
+			<mx:DataGrid id="dg" visible="false" height="200">
+				<mx:columns>
+					<mx:DataGridColumn dataField="description1" headerText="Name" width="200"/>
+					<mx:DataGridColumn dataField="point.x" headerText="Lon" width="100"/>
+					<mx:DataGridColumn dataField="point.y" headerText="Lat" width="100"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</s:VGroup>
+	
+</s:Application>

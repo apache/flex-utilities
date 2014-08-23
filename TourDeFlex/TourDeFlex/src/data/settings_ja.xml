@@ -1,0 +1,50 @@
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<Settings title="Tour de Flex">
+	
+	<AboutMenu title="Flex リソース">
+		<Item label="About" data="data/about.html" />
+		<Item label="Tour de Flex Home Page" data="http://flex.org/tour" />
+
+		<Item label="Adobe Flash Platform Home Page" data="http://www.adobe.com/jp/flashplatform/" />
+
+		<Item label="Adobe Flex Home Page" data="http://www.adobe.com/jp/products/flex/" />
+			
+		<Item label="Adobe AIR Home Page" data="http://www.adobe.com/jp/products/air/" />
+				
+		<Item label="Adobe Flex Developer Center" data="http://www.adobe.com/jp/devnet/flex/" />
+				
+		<Item label="Adobe AIR Developer Center" data="http://www.adobe.com/jp/devnet/air/" />
+				
+		<Item label="Flex.org" data="http://flex.org" />
+		
+		<Item label="Flex Showcase" data="http://flex.org/showcase" />	
+		
+		<Item label="Flex 3 Resource" data="http://www.adobe.com/support/documentation/jp/flex/" />
+		
+		<Item label="Flex 3 Language Reference" data="http://livedocs.adobe.com/flex/3_jp/langref/index.html" />	
+		
+		<Item label="Flex Builder Trial Download" data="https://www.adobe.com/cfusion/tdrc/index.cfm?loc=ja&product=flex" />
+		
+		<Item label="Flex Builder free for Students and Educators" data="http://www.flexregistration.com" />	
+		<Item label="Education Vanguards" data="http://www.adobe.com/jp/education/hed/vanguards/license_free_faq.html" />	
+									
+	</AboutMenu>
+
+</Settings>

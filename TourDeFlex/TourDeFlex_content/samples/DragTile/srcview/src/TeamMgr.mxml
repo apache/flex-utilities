@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<Application xmlns="http://www.adobe.com/2006/mxml" verticalGap="0" xmlns:qs="qs.controls.*" horizontalAlign="left" paddingLeft="0" paddingTop="0" paddingBottom="0" paddingRight="0" layout="vertical" 
+	backgroundColor="#565656"  initialize="initApp()" 
+	viewSourceURL="/source/DragTile.zip" 
+xmlns:f="flash.filters.*" >	
+	
+	<Script>
+		<![CDATA[
+
+
+			private function initApp():void
+			{
+			}
+			
+			private function makeName(item:*):String
+			{
+				return item.@lastName + ", " + item.@firstName;
+			}
+			
+		]]>
+		
+	</Script>
+	<XML id="playerList" source="data/players.xml" />
+	
+	<Style>
+		
+		.insetBox {
+			paddingBottom: 30;
+			paddingLeft: 30;
+			paddingRight: 30;
+			paddingTop: 30;	
+		}
+		
+		Text {
+			color: #FFFFFF;
+		}
+		
+		VRule, HRule {
+			strokeWidth: 1;
+			strokeColor: #FFFFFF;	
+		}
+	</Style>
+
+
+		<Text width="100%" text="Screaming FireBalls Dodgeball Game Planner" fontSize="30" color="#FFFFAA" fontWeight="bold" />
+		<HRule width="100%" />
+		<HBox width="100%" height="100%" horizontalGap="0">
+			
+			<VBox height="100%" width="250"  horizontalAlign="right" styleName="insetBox">
+				<Text condenseWhite="true" width="100%">
+					<htmlText><![CDATA[
+					<P>This page demonstrates using The DragTile component and the DragManager to drag data items between a list
+					and a DragTile component. Drag player names from the list on the left into the rosters on the right.
+					Notice how different components can display the same data with different forms. You can also drag within a roster
+					to rearrange the order, and between rosters as well.</P><P/>
+					]]></htmlText>
+				</Text>
+				<Spacer height="30" />
+				<Label fontSize="24" text="Team Roster:" color="#FFFFAA" />
+				<List color="#000000" width="100%" height="100%" dataProvider="{playerList.player}" labelFunction="makeName" dragEnabled="true"/> 
+							
+			</VBox>
+			
+			<VRule height="100%" />
+			
+			<VBox backgroundColor="#343434" width="100%" horizontalGap="20" height="100%" styleName="insetBox" clipContent="true" >
+				
+				<VBox width="100%" horizontalGap="0" height="100%" borderColor="#FFFFFF" >
+				
+					<Label fontSize="24" color="#FFFFAA" fontWeight="bold" text="First String:" />
+					<qs:DragTile id="firstString" width="100%" height="100%" itemRenderer="Player" 
+						dragEnter="event.target.allowDrag(event);" 
+						dragOver='event.target.showDragFeedback(event,event.shiftKey? "copy":"move")'
+						/>
+					<Label fontSize="24" color="#FFFFAA" fontWeight="bold" text="Second String:" />
+					<qs:DragTile id="secondString" width="100%" height="100%" itemRenderer="Player" 
+						dragOver='event.target.showDragFeedback(event,event.shiftKey? "copy":"move")'
+						dragEnter="event.target.allowDrag(event);" 
+						/>
+				</VBox>
+			</VBox>
+		</HBox>
+										
+</Application>

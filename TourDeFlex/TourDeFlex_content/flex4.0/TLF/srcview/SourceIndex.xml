@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<index>
+	<title>Source of Sample-Adobe-TextLayoutFramework</title>
+	<nodes>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="libs">
+			<node label="textLayout.swc" url="source/libs/textLayout.swc"/>
+			<node label="textLayout_ui.swc" url="source/libs/textLayout_ui.swc"/>
+		</node>
+		<node label="src">
+			<node label="assets">
+				<node icon="imageIcon" label="%scroll_arrow_down_over.png" url="source/assets/%scroll_arrow_down_over.png.html"/>
+				<node icon="imageIcon" label="%scroll_arrow_up_over.png" url="source/assets/%scroll_arrow_up_over.png.html"/>
+				<node icon="imageIcon" label="combo_drop_down_arrow.png" url="source/assets/combo_drop_down_arrow.png.html"/>
+				<node icon="imageIcon" label="header_close_icon.png" url="source/assets/header_close_icon.png.html"/>
+				<node icon="imageIcon" label="header_open_icon.png" url="source/assets/header_open_icon.png.html"/>
+				<node icon="imageIcon" label="scroll_arrow_down.png" url="source/assets/scroll_arrow_down.png.html"/>
+				<node icon="imageIcon" label="scroll_arrow_down_over.png" url="source/assets/scroll_arrow_down_over.png.html"/>
+				<node icon="imageIcon" label="scroll_arrow_up.png" url="source/assets/scroll_arrow_up.png.html"/>
+				<node icon="imageIcon" label="scroll_arrow_up_over.png" url="source/assets/scroll_arrow_up_over.png.html"/>
+			</node>
+			<node icon="packageIcon" label="flashx.textLayout" expanded="true">
+				<node icon="actionScriptIcon" label="UiClasses.as" url="source/flashx/textLayout/UiClasses.as.html"/>
+			</node>
+			<node icon="packageIcon" label="flashx.textLayout.ui" expanded="true">
+				<node icon="actionScriptIcon" label="MultiPanel.as" url="source/flashx/textLayout/ui/MultiPanel.as.html"/>
+				<node icon="actionScriptIcon" label="MultiPanelHeaderSkin.as" url="source/flashx/textLayout/ui/MultiPanelHeaderSkin.as.html"/>
+				<node icon="actionScriptIcon" label="PanelWithEdgeBars.as" url="source/flashx/textLayout/ui/PanelWithEdgeBars.as.html"/>
+				<node icon="cssIcon" label="VellumGUIStyles.css" url="source/flashx/textLayout/ui/VellumGUIStyles.css.html"/>
+			</node>
+			<node label="flashx.textLayout.ui.assets">
+				<node icon="imageIcon" label="%scroll_arrow_down_over.png" url="source/flashx/textLayout/ui/assets/%scroll_arrow_down_over.png.html"/>
+				<node icon="imageIcon" label="%scroll_arrow_up_over.png" url="source/flashx/textLayout/ui/assets/%scroll_arrow_up_over.png.html"/>
+				<node icon="imageIcon" label="combo_drop_down_arrow.png" url="source/flashx/textLayout/ui/assets/combo_drop_down_arrow.png.html"/>
+				<node icon="swfIcon" label="Fonts.swf" url="source/flashx/textLayout/ui/assets/Fonts.swf"/>
+				<node icon="imageIcon" label="header_close_icon.png" url="source/flashx/textLayout/ui/assets/header_close_icon.png.html"/>
+				<node icon="imageIcon" label="header_open_icon.png" url="source/flashx/textLayout/ui/assets/header_open_icon.png.html"/>
+				<node icon="imageIcon" label="scroll_arrow_down.png" url="source/flashx/textLayout/ui/assets/scroll_arrow_down.png.html"/>
+				<node icon="imageIcon" label="scroll_arrow_down_over.png" url="source/flashx/textLayout/ui/assets/scroll_arrow_down_over.png.html"/>
+				<node icon="imageIcon" label="scroll_arrow_up.png" url="source/flashx/textLayout/ui/assets/scroll_arrow_up.png.html"/>
+				<node icon="imageIcon" label="scroll_arrow_up_over.png" url="source/flashx/textLayout/ui/assets/scroll_arrow_up_over.png.html"/>
+			</node>
+			<node icon="packageIcon" label="flashx.textLayout.ui.inspectors" expanded="true">
+				<node icon="actionScriptIcon" label="AdvancedTextPropertyEditor.as" url="source/flashx/textLayout/ui/inspectors/AdvancedTextPropertyEditor.as.html"/>
+				<node icon="actionScriptIcon" label="AntiAliasPropertyEditor.as" url="source/flashx/textLayout/ui/inspectors/AntiAliasPropertyEditor.as.html"/>
+				<node icon="actionScriptIcon" label="CharacterPropertyEditor.as" url="source/flashx/textLayout/ui/inspectors/CharacterPropertyEditor.as.html"/>
+				<node icon="actionScriptIcon" label="DynamicTextPropertyEditor.as" url="source/flashx/textLayout/ui/inspectors/DynamicTextPropertyEditor.as.html"/>
+				<node icon="actionScriptIcon" label="LinkPropertyEditor.as" url="source/flashx/textLayout/ui/inspectors/LinkPropertyEditor.as.html"/>
+				<node icon="actionScriptIcon" label="ParagraphPropertyEditor.as" url="source/flashx/textLayout/ui/inspectors/ParagraphPropertyEditor.as.html"/>
+				<node icon="actionScriptIcon" label="SelectionUpdateEvent.as" url="source/flashx/textLayout/ui/inspectors/SelectionUpdateEvent.as.html"/>
+				<node icon="actionScriptIcon" label="TabPropertyEditor.as" url="source/flashx/textLayout/ui/inspectors/TabPropertyEditor.as.html"/>
+				<node icon="actionScriptIcon" label="TextContainerPropertyEditor.as" url="source/flashx/textLayout/ui/inspectors/TextContainerPropertyEditor.as.html"/>
+				<node icon="actionScriptIcon" label="TextFlowPropertyEditor.as" url="source/flashx/textLayout/ui/inspectors/TextFlowPropertyEditor.as.html"/>
+				<node icon="actionScriptIcon" label="TextInspectorController.as" url="source/flashx/textLayout/ui/inspectors/TextInspectorController.as.html"/>
+			</node>
+			<node label="flashx.textLayout.ui.inspectors.assets">
+				<node icon="imageIcon" label="align_center_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/align_center_icon.png.html"/>
+				<node icon="imageIcon" label="align_end_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/align_end_icon.png.html"/>
+				<node icon="imageIcon" label="align_justify_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/align_justify_icon.png.html"/>
+				<node icon="imageIcon" label="align_last_center_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/align_last_center_icon.png.html"/>
+				<node icon="imageIcon" label="align_last_left_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/align_last_left_icon.png.html"/>
+				<node icon="imageIcon" label="align_last_right_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/align_last_right_icon.png.html"/>
+				<node icon="imageIcon" label="align_left_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/align_left_icon.png.html"/>
+				<node icon="imageIcon" label="align_right_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/align_right_icon.png.html"/>
+				<node icon="imageIcon" label="align_start_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/align_start_icon.png.html"/>
+				<node icon="imageIcon" label="bold_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/bold_icon.png.html"/>
+				<node icon="imageIcon" label="cont_align_bottom_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/cont_align_bottom_icon.png.html"/>
+				<node icon="imageIcon" label="cont_align_justify_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/cont_align_justify_icon.png.html"/>
+				<node icon="imageIcon" label="cont_align_middle_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/cont_align_middle_icon.png.html"/>
+				<node icon="imageIcon" label="cont_align_top_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/cont_align_top_icon.png.html"/>
+				<node icon="imageIcon" label="italic_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/italic_icon.png.html"/>
+				<node icon="imageIcon" label="strikethrough_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/strikethrough_icon.png.html"/>
+				<node icon="imageIcon" label="subscript_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/subscript_icon.png.html"/>
+				<node icon="imageIcon" label="superscript_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/superscript_icon.png.html"/>
+				<node icon="imageIcon" label="tcy_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/tcy_icon.png.html"/>
+				<node icon="imageIcon" label="underline_icon.png" url="source/flashx/textLayout/ui/inspectors/assets/underline_icon.png.html"/>
+			</node>
+			<node icon="packageIcon" label="flashx.textLayout.ui.rulers" expanded="true">
+				<node icon="actionScriptIcon" label="ParagraphPropertyMarker.as" url="source/flashx/textLayout/ui/rulers/ParagraphPropertyMarker.as.html"/>
+				<node icon="actionScriptIcon" label="ParagraphPropertyMarkerSkin.as" url="source/flashx/textLayout/ui/rulers/ParagraphPropertyMarkerSkin.as.html"/>
+				<node icon="actionScriptIcon" label="RulerBar.as" url="source/flashx/textLayout/ui/rulers/RulerBar.as.html"/>
+				<node icon="actionScriptIcon" label="RulerDragTracker.as" url="source/flashx/textLayout/ui/rulers/RulerDragTracker.as.html"/>
+				<node icon="actionScriptIcon" label="RulerMarker.as" url="source/flashx/textLayout/ui/rulers/RulerMarker.as.html"/>
+				<node icon="actionScriptIcon" label="TabMarker.as" url="source/flashx/textLayout/ui/rulers/TabMarker.as.html"/>
+				<node icon="actionScriptIcon" label="TabMarkerSkin.as" url="source/flashx/textLayout/ui/rulers/TabMarkerSkin.as.html"/>
+			</node>
+			<node icon="packageIcon" label="flashx.textLayout.ui.styles" expanded="true">
+				<node icon="actionScriptIcon" label="PopupMenuSkin.as" url="source/flashx/textLayout/ui/styles/PopupMenuSkin.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollbarDownArrowUpSkin.as" url="source/flashx/textLayout/ui/styles/ScrollbarDownArrowUpSkin.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollbarThumbOverSkin.as" url="source/flashx/textLayout/ui/styles/ScrollbarThumbOverSkin.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollbarThumbUpSkin.as" url="source/flashx/textLayout/ui/styles/ScrollbarThumbUpSkin.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollbarTrackSkin.as" url="source/flashx/textLayout/ui/styles/ScrollbarTrackSkin.as.html"/>
+				<node icon="actionScriptIcon" label="ScrollbarUpArrowUpSkin.as" url="source/flashx/textLayout/ui/styles/ScrollbarUpArrowUpSkin.as.html"/>
+			</node>
+			<node icon="packageIcon" label="textEditBar" expanded="true">
+				<node icon="actionScriptIcon" label="FeatureSetChangeEvent.as" url="source/textEditBar/FeatureSetChangeEvent.as.html"/>
+				<node icon="actionScriptIcon" label="FileEvent.as" url="source/textEditBar/FileEvent.as.html"/>
+				<node icon="actionScriptIcon" label="FileIOHelper.as" url="source/textEditBar/FileIOHelper.as.html"/>
+				<node icon="mxmlIcon" label="FileServices.mxml" url="source/textEditBar/FileServices.mxml.html"/>
+				<node icon="mxmlIcon" label="GraphicBar.mxml" url="source/textEditBar/GraphicBar.mxml.html"/>
+				<node icon="actionScriptIcon" label="GraphicChangeEvent.as" url="source/textEditBar/GraphicChangeEvent.as.html"/>
+				<node icon="mxmlIcon" label="LinkBar.mxml" url="source/textEditBar/LinkBar.mxml.html"/>
+				<node icon="actionScriptIcon" label="LinkChangeEvent.as" url="source/textEditBar/LinkChangeEvent.as.html"/>
+				<node icon="mxmlIcon" label="SingleContainerView.mxml" url="source/textEditBar/SingleContainerView.mxml.html"/>
+				<node icon="actionScriptIcon" label="SpriteWithIME.as" url="source/textEditBar/SpriteWithIME.as.html"/>
+				<node icon="mxmlIcon" label="StatusPopup.mxml" url="source/textEditBar/StatusPopup.mxml.html"/>
+				<node icon="actionScriptIcon" label="StyleChangeEvent.as" url="source/textEditBar/StyleChangeEvent.as.html"/>
+			</node>
+			<node label="textEditBar.assets">
+				<node icon="imageIcon" label="%icon_tcy.png" url="source/textEditBar/assets/%icon_tcy.png.html"/>
+				<node icon="imageIcon" label="BreakOpportunityType.png" url="source/textEditBar/assets/BreakOpportunityType.png.html"/>
+				<node icon="imageIcon" label="digitCase.png" url="source/textEditBar/assets/digitCase.png.html"/>
+				<node icon="imageIcon" label="digitWidth.png" url="source/textEditBar/assets/digitWidth.png.html"/>
+				<node icon="imageIcon" label="elementBaseline.png" url="source/textEditBar/assets/elementBaseline.png.html"/>
+				<node icon="imageIcon" label="EmbedDeleteIcon.png" url="source/textEditBar/assets/EmbedDeleteIcon.png.html"/>
+				<node icon="imageIcon" label="EmbedDeleteIconDisabled.png" url="source/textEditBar/assets/EmbedDeleteIconDisabled.png.html"/>
+				<node icon="imageIcon" label="icon_align_all_but_last.png" url="source/textEditBar/assets/icon_align_all_but_last.png.html"/>
+				<node icon="imageIcon" label="icon_align_center.png" url="source/textEditBar/assets/icon_align_center.png.html"/>
+				<node icon="imageIcon" label="icon_align_end.PNG" url="source/textEditBar/assets/icon_align_end.PNG.html"/>
+				<node icon="imageIcon" label="icon_align_justify.png" url="source/textEditBar/assets/icon_align_justify.png.html"/>
+				<node icon="imageIcon" label="icon_align_left.png" url="source/textEditBar/assets/icon_align_left.png.html"/>
+				<node icon="imageIcon" label="icon_align_right.png" url="source/textEditBar/assets/icon_align_right.png.html"/>
+				<node icon="imageIcon" label="icon_align_start.PNG" url="source/textEditBar/assets/icon_align_start.PNG.html"/>
+				<node icon="imageIcon" label="icon_bullet.png" url="source/textEditBar/assets/icon_bullet.png.html"/>
+				<node icon="imageIcon" label="icon_style_bold.png" url="source/textEditBar/assets/icon_style_bold.png.html"/>
+				<node icon="imageIcon" label="icon_style_italic.png" url="source/textEditBar/assets/icon_style_italic.png.html"/>
+				<node icon="imageIcon" label="icon_style_strikethrough.png" url="source/textEditBar/assets/icon_style_strikethrough.png.html"/>
+				<node icon="imageIcon" label="icon_style_underline.png" url="source/textEditBar/assets/icon_style_underline.png.html"/>
+				<node icon="imageIcon" label="icon_tcy.png" url="source/textEditBar/assets/icon_tcy.png.html"/>
+				<node icon="imageIcon" label="ligatures.png" url="source/textEditBar/assets/ligatures.png.html"/>
+				<node icon="imageIcon" label="lineBaseline.png" url="source/textEditBar/assets/lineBaseline.png.html"/>
+				<node icon="imageIcon" label="P_TextAlignBottom_Sm_N.png" url="source/textEditBar/assets/P_TextAlignBottom_Sm_N.png.html"/>
+				<node icon="imageIcon" label="P_TextAlignJustify_Sm_N.png" url="source/textEditBar/assets/P_TextAlignJustify_Sm_N.png.html"/>
+				<node icon="imageIcon" label="P_TextAlignMiddle_Sm_N.png" url="source/textEditBar/assets/P_TextAlignMiddle_Sm_N.png.html"/>
+				<node icon="imageIcon" label="P_TextAlignTop_Sm_N.png" url="source/textEditBar/assets/P_TextAlignTop_Sm_N.png.html"/>
+				<node icon="imageIcon" label="P_TextBaselineShift_Md_N.png" url="source/textEditBar/assets/P_TextBaselineShift_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextBottomOffset_Md_N.png" url="source/textEditBar/assets/P_TextBottomOffset_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextFirstLineIndent_Md_N.png" url="source/textEditBar/assets/P_TextFirstLineIndent_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextLeftIndent_Md_N.png" url="source/textEditBar/assets/P_TextLeftIndent_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextLeftOffset_Md_N.png" url="source/textEditBar/assets/P_TextLeftOffset_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextRightIndent_Md_N.png" url="source/textEditBar/assets/P_TextRightIndent_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextRightOffset_Md_N.png" url="source/textEditBar/assets/P_TextRightOffset_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextSmallCaps_Md_N.png" url="source/textEditBar/assets/P_TextSmallCaps_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextSpaceAfter_Md_N.png" url="source/textEditBar/assets/P_TextSpaceAfter_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextSpaceBefore_Md_N.png" url="source/textEditBar/assets/P_TextSpaceBefore_Md_N.png.html"/>
+				<node icon="imageIcon" label="P_TextTopOffset_Md_N.png" url="source/textEditBar/assets/P_TextTopOffset_Md_N.png.html"/>
+				<node icon="imageIcon" label="TextAutoLeadingPercent.png" url="source/textEditBar/assets/TextAutoLeadingPercent.png.html"/>
+			</node>
+			<node icon="mxmlIcon" label="TextLayoutEditorCanvas.mxml" url="source/TextLayoutEditorCanvas.mxml.html"/>
+			<node icon="mxmlAppIcon" selected="true" label="TextLayoutEditorSample.mxml" url="source/TextLayoutEditorSample.mxml.html"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 1378K)" url="Sample-Adobe-TextLayoutFramework.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>

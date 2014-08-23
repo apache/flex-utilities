@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" backgroundGradientColors="[0x000000,0x323232]" viewSourceURL="srcview/index.html">
+
+    <mx:Script>
+    	<![CDATA[
+    		
+        import flash.net.navigateToURL;
+        import mx.controls.Alert;
+        import mx.rpc.events.FaultEvent;
+        import mx.rpc.events.ResultEvent;
+        import mx.graphics.ImageSnapshot;
+       
+
+        private function generatePDF(fromXDP:Boolean):void
+        {
+            service.generatePDF(xmlModel);
+            //navigateToURL(new URLRequest("http://www.cnn.com"),"http://www.cnn./com");
+        }
+
+        private function resultHandler(event:ResultEvent):void 
+        {
+            var url:String = event.result as String;
+            // The server-side component returns the location where we can load the generated PDF, we just
+            // have to pre-pend the web server info of where to invoke the servlet... See readme for details. 
+            navigateToURL(new URLRequest("http://tourdeflex.adobe.com:8080"+url),"_blank");
+       }
+
+        private function faultHandler(event:FaultEvent):void 
+        {
+            Alert.show(event.fault.toString(), "Error");
+        }
+    		
+    	]]>
+    </mx:Script>
+    
+    <!-- This is the XML model that was exported from the PDF or XDP model (see readme for details) -->
+    <mx:XML id="xmlModel">
+        <ContactForm>
+        	<EmployeeName>{nameText.text}</EmployeeName>
+        	<City>{cityText.text}</City>
+        	<Street>{streetText.text}</Street>
+        	<State>{stateText.text}</State>
+        	<ZipCode>{zipText.text}</ZipCode>
+        	<HomePhone>{homePhoneText.text}</HomePhone>
+        	<CellPhone>{cellPhoneText.text}</CellPhone>
+        </ContactForm>
+    </mx:XML>
+     
+    <mx:ChannelSet id="channelSet">
+        <mx:AMFChannel id="amfChannel" url="http://tourdeflex.adobe.com:8080/lcds-samples/messagebroker/amf" />
+    </mx:ChannelSet>
+    
+    <mx:RemoteObject id="service" destination="PDFServiceContact" 
+        fault="faultHandler(event)"
+        result="resultHandler(event)" channelSet="{channelSet}"/>   
+
+    <mx:Panel id="panel" title="My Company, Inc." width="95%" height="100%"
+        paddingTop="10" paddingLeft="10" paddingRight="10" color="0xFFFFFF">
+        <mx:Form color="0x000000">
+        	<mx:FormItem label="Full Name:">
+        		<mx:TextInput id="nameText" width="200"/>
+        	</mx:FormItem>
+        	<mx:FormItem label="Street:">
+        		<mx:TextInput id="streetText" width="200"/>
+       		</mx:FormItem>
+       		<mx:FormItem label="City:">
+        		<mx:TextInput id="cityText" width="200"/>
+       		</mx:FormItem>
+       		<mx:FormItem label="State:">
+       			<mx:TextInput id="stateText" width="100%" height="100%"/>
+        	</mx:FormItem>
+       		<mx:FormItem label="Zip:">
+       			<mx:TextInput id="zipText" width="100%" height="100%"/>
+			</mx:FormItem>
+       		<mx:FormItem label="Phone:">
+       			<mx:TextInput id="homePhoneText" width="100%" height="100%"/>
+			</mx:FormItem>
+       		<mx:FormItem label="Cell:">
+       			<mx:TextInput id="cellPhoneText" width="100%" height="100%"/>
+       		</mx:FormItem>
+       		<mx:FormItem>
+       			<mx:Button label="Create PDF" click="generatePDF(false)" />
+       		</mx:FormItem>
+        </mx:Form>
+     </mx:Panel>
+
+</mx:Application>

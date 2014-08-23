@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" backgroundColor="0x000000" 
+			   width="100%" height="100%" frameRate="60" applicationComplete="appCompleteHandler(event)" viewSourceURL="srcview/index.html">
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.devgirl.runtracker.events.RunListResultEvent;
+			import com.devgirl.runtracker.service.DBService;
+			import com.devgirl.runtracker.vo.RunVO;
+			
+			import mx.charts.HitData;
+			import mx.charts.chartClasses.IAxis;
+			import mx.charts.chartClasses.Series;
+			import mx.controls.Alert;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.events.DataGridEvent;
+			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
+			
+			private var dbService:DBService;
+			private var userPace:String;
+			
+			private function btnCalc_clickHandler():void
+			{
+				if (numMiles.text == null || (hrsVal.value==0 && minsVal.value==0 && secsVal.value==0))
+				{
+					Alert.show("Please enter both miles and time for pace calculation.","Required Values Error");
+					return;
+				}
+				
+				var totalSeconds:Number = ((hrsVal.value*3600)+(minsVal.value*60)+secsVal.value)/parseFloat(numMiles.text);
+				userPace = this.convertTime(totalSeconds);
+				lblPace.text = userPace + " mins/mile";
+				grpPace.visible=true;
+			}
+			
+			private function convertTime(timeInSecs:int):String
+			{
+				var hours:int = timeInSecs / 3600;
+				var mins:int  = timeInSecs / 60 - (hours * 60);
+				var secs:int  = timeInSecs - (hours * 3600) - (mins * 60);
+				trace(hours + ":" + mins + ":" + secs);
+				var d:Date = new Date(null,null,null,hours,mins,secs,null);
+				timeFormatter.format(d);
+				return timeFormatter.format(d);
+			}
+			
+			private function appCompleteHandler(event:FlexEvent):void
+			{
+				dbService = new DBService();
+				dbService.addEventListener(RunListResultEvent.RUN_LIST_EVENT,handleRunList);
+			}
+			
+			private function handleRunList(event:RunListResultEvent):void
+			{
+				runsAC = event.runEntries;
+			}
+			
+			private function saveBtn_clickHandler(event:MouseEvent):void
+			{
+				var run:RunVO = new RunVO();
+				run.runDate = dateFormatter.format(this.date.text);
+				run.miles = parseFloat(numMiles.text);
+				run.pace = userPace;
+				run.notes = notes.text;
+				dbService.addRun(run);
+				lbl.text = "Run data saved successfully";
+				resetFields();
+			}
+			
+			private function resetFields():void
+			{
+				// clear fields for more input
+				this.date.text = '';
+				this.numMiles.text = '';
+				this.hrsVal.value = 0;
+				this.minsVal.value = 0;
+				this.secsVal.value = 0;
+				this.notes.text = '';	
+				this.lblPace.text = '';
+			}
+			
+			private function tabChangeHandler(event:IndexChangedEvent):void
+			{
+				dbService.getRuns();
+				if (event.newIndex==1)
+				{
+					dg.dispatchEvent(new DataGridEvent(DataGridEvent.HEADER_RELEASE,false,true,0,null,0,null,null,0));
+				}
+			}
+			
+			
+			private function dateFunction(s:String):Date 
+			{ 
+				var newDate:Date = DateField.stringToDate(s,"YYYY-MM-DD");
+				return newDate;
+			}
+			
+			private function paceFunction(s:String):Date 
+			{ 
+				if (s!=null)
+				{
+					var idx:int = s.indexOf(':');
+					// Create a new date object with just the time values parsed from the String
+					var newDate:Date = new Date(null,null,null,"00",s.substring(0,idx),s.substring(idx+1,s.length),null);
+					return newDate;	
+				}
+				else return null;
+			}
+			
+			private function dataTipFunction(hitData:HitData):String  
+			{  
+				var tip:String;  
+				var run:RunVO = hitData.item as RunVO;
+				tip = run.miles + " miles on " + run.runDate+"\n";
+				tip += " at " + run.pace;
+				return tip;  
+			}  
+			
+			private function paceLblFunc(labelValue:Date, previousValue:Object, axis:IAxis):String 
+			{
+				return timeFormatter.format(labelValue);
+			}
+			
+			private function dateLblFunc(labelValue:Date, previousValue:Object, axis:IAxis):String 
+			{
+				return dateFormatter.format(labelValue.toDateString());
+			}
+
+			private function date_changeHandler(event:CalendarLayoutChangeEvent):void
+			{
+				// A new date is being entered, clear saved label
+				lbl.text = '';
+			}
+
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:ArrayCollection id="runsAC"/>
+		<mx:DateFormatter id="timeFormatter" formatString="NN:SS" />
+		<mx:DateFormatter id="dateFormatter" formatString="YYYY-MM-DD"/>
+	</fx:Declarations>
+	
+	<s:layout>
+		<s:VerticalLayout gap="8" paddingLeft="50" paddingTop="10" paddingRight="20" paddingBottom="20" horizontalAlign="left" 
+						  verticalAlign="middle"/>
+	</s:layout>
+	
+	<mx:TabNavigator width="100%" height="100%" fontSize="26" backgroundColor="0x000000" color="0x323232" change="tabChangeHandler(event)">
+		<s:NavigatorContent label="Miles" width="100%" height="100%" backgroundColor="0x000000" color="0xFFFFFF">
+			<s:layout>
+				<s:VerticalLayout gap="8" paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8"/>
+			</s:layout>
+			
+			<s:HGroup horizontalAlign="center" verticalAlign="middle">
+				<s:Label text="Date:" fontSize="26"/>
+				<mx:DateField id="date" color="0x000000" showToday="true" selectedDate="{new Date()}" change="date_changeHandler(event)"/>
+			</s:HGroup>
+			
+			<s:HGroup horizontalAlign="center" verticalAlign="middle">
+				<s:Label text="Miles:" fontSize="26"/>
+				<s:TextInput id="numMiles" fontSize="26" color="0x000000" widthInChars="3" restrict="0-9." text="0"/>
+				<mx:Spacer width="25"/>
+				<mx:Image source="@Embed(source='assets/runner3.jpg')" width="100" height="100"/>
+			</s:HGroup>
+			
+			<s:VGroup horizontalAlign="center" verticalAlign="middle" gap="15">
+				<s:HGroup horizontalAlign="center" verticalAlign="middle" paddingTop="8">
+					<s:VGroup >
+						<s:Label text="Hours" fontSize="18"/>
+						<s:NumericStepper id="hrsVal" maximum="99" maxChars="2" fontSize="26" 
+										  skinClass="com.devgirl.runtracker.skins.MyNumericStepperSkin"/>
+					</s:VGroup>
+					<s:VGroup>
+						<s:Label text="Mins" fontSize="18"/>
+						<s:NumericStepper id="minsVal" maxChars="2" maximum="59" fontSize="26" 
+										  skinClass="com.devgirl.runtracker.skins.MyNumericStepperSkin"/>
+					</s:VGroup>
+					<s:VGroup>
+						<s:Label text="Secs" fontSize="18"/>
+						<s:NumericStepper id="secsVal" maxChars="2" maximum="59" fontSize="26" 
+										  skinClass="com.devgirl.runtracker.skins.MyNumericStepperSkin"/>					
+					</s:VGroup>	
+				</s:HGroup>
+				<s:Button id="btnCalc" label="Calculate Pace" fontSize="24" left="200" height="40" click="btnCalc_clickHandler()" 
+						   color="0x000000"/>
+			</s:VGroup>
+			
+			<s:HGroup horizontalAlign="center" verticalAlign="middle" visible="false" id="grpPace" >
+				<s:Label text="Pace:" fontSize="28"/>
+				<s:Label id="lblPace" color="0x336699" fontSize="26"/>		
+			</s:HGroup>
+			
+			<s:Label text="Notes:" fontSize="26" color="0xFFFFFF"/>
+			<s:TextArea id="notes" width="90%" height="100" fontSize="26" color="0x000000"/>
+			<s:Button id="saveBtn" label="Save Run" click="saveBtn_clickHandler(event)" color="0x000000"/>
+			<s:Label id="lbl"/>
+		</s:NavigatorContent>
+		
+		<s:NavigatorContent label="History" height="100%" width="100%" backgroundColor="0x000000">
+			<s:layout>
+				<s:VerticalLayout gap="8" paddingTop="8" paddingLeft="8" paddingRight="8" paddingBottom="8" horizontalAlign="center" 
+								  verticalAlign="middle"/>
+			</s:layout>
+			<mx:DataGrid id="dg" width="90%" height="90%" dataProvider="{runsAC}" color="0x000000" fontSize="18">
+				<mx:columns>
+					<mx:DataGridColumn dataField="runDate" headerText="Date" width="120"/>
+					<mx:DataGridColumn dataField="miles" headerText="Miles" width="50"/>
+					<mx:DataGridColumn dataField="pace" headerText="Pace" width="60"/>
+					<mx:DataGridColumn dataField="notes" headerText="Notes" width="140"/>
+				</mx:columns>
+			</mx:DataGrid>
+		</s:NavigatorContent> 
+		
+		<s:NavigatorContent label="Trends" color="0xFFFFFF" width="100%" height="100%">
+			<s:VGroup>
+				<mx:Legend dataProvider="{mychart}"/>
+				<mx:LineChart id="mychart" height="100%" width="100%"
+							  paddingRight="5" paddingLeft="5" 
+							  showDataTips="true" dataTipFunction="dataTipFunction" dataProvider="{runsAC}">
+					
+					<mx:horizontalAxis>
+						<mx:DateTimeAxis parseFunction="dateFunction" labelFunction="dateLblFunc" dataUnits="days"/>
+					</mx:horizontalAxis>
+					
+					<mx:verticalAxis>
+						<mx:DateTimeAxis baseAtZero="true" parseFunction="paceFunction" labelFunction="paceLblFunc" dataUnits="seconds" />
+					</mx:verticalAxis>
+					
+					<mx:series>
+						<mx:LineSeries xField="runDate" yField="pace" displayName="Pace Trend" sortOnXField="true"/>
+					</mx:series>
+				</mx:LineChart>
+			</s:VGroup>
+		</s:NavigatorContent>
+	</mx:TabNavigator>
+	
+</s:Application>

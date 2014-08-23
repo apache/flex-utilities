@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- BlazeDS or LiveCycle Data Services is required to use the approach described in this sample -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	backgroundGradientColors="[0x000000,0x323232]"
+	applicationComplete="init()" viewSourceURL="srcview/index.html">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.messaging.ChannelSet;
+			import mx.messaging.channels.AMFChannel;
+			
+			private function init():void
+			{
+				//  By default, the configuration of the channels and their endpoints to communicate with the server
+				//  is read from services-config.xml and baked into the SWF *at compile time*. The problem is that
+				//  the endpoints the application uses during development are typically different from the endpoints 
+				//  the application uses in production. The ChannelSet API allows you to dynamically define your endpoints
+				//  *at runtime*. In the example below, we hardcode the endpoint URLs in the client application. In real
+				//  life, the client application you would typically load these parameters dynamically. For example, the 
+				//  client application could read these parameters from an XML file loaded using the HTTPService at startup.      
+				var channelSet:ChannelSet = new ChannelSet();
+
+				var amfChannel:AMFChannel = new AMFChannel("my-amf", "http://pedemo.adobe.com:8080/lcds-samples/messagebroker/amf");
+				channelSet.addChannel(amfChannel);
+
+				//	Assign the newly defined channelSet to the RemoteObject.
+				srv.channelSet = channelSet;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<!-- See the definition of the "product" destination in remoting-config.xml -->
+	<mx:RemoteObject id="srv" destination="product"/>
+	
+	<mx:DataGrid dataProvider="{srv.getProducts.lastResult}" width="100%" height="100%">
+		<mx:columns>
+			<mx:DataGridColumn dataField="productId" headerText="Product Id"/>
+			<mx:DataGridColumn dataField="name" headerText="Name"/>
+			<mx:DataGridColumn dataField="price" headerText="Price" textAlign="right"/>
+			<mx:DataGridColumn dataField="qtyInStock" headerText="Qty" textAlign="right"/>
+		</mx:columns>
+	</mx:DataGrid>
+
+	<mx:Button label="Get Data" click="srv.getProducts()"/>	
+		
+</mx:Application>

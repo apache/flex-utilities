@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="42"
+	 verticalScrollPolicy="off" horizontalScrollPolicy="off" backgroundAlpha="0">
+	
+	<mx:Script>
+	<![CDATA[
+		import mx.controls.Alert;
+		import mx.managers.PopUpManager;
+		import mx.events.ListEvent;
+		
+		[Bindable]
+		private var resourceTitle:String = " ";
+		
+		/*
+		private function comboBox_about_change(event:ListEvent):void
+		{	
+			if(comboBox_about.selectedItem.@data.toString().toLowerCase().indexOf("http") == 0)
+			{
+				navigateToURL(new URLRequest(comboBox_about.selectedItem.@data));
+			}
+			else if(comboBox_about.selectedItem.@data == "SplashWindow")
+			{
+				var splashWindow:SplashWindow = new SplashWindow();
+				PopUpManager.addPopUp(splashWindow, DisplayObject(this.parentApplication), false);
+				PopUpManager.centerPopUp(splashWindow);
+			}
+			else
+			{
+				var popup:AboutWindow = new AboutWindow();
+				PopUpManager.addPopUp(popup, DisplayObject(this.parentApplication), false);
+				popup.url = comboBox_about.selectedItem.@data;
+				PopUpManager.centerPopUp(popup);
+				popup.move(popup.x + 70, popup.y + 50);	 // move it 50 pixels right - GAW						
+			}
+			comboBox_about.selectedIndex = -1; // Reset menu
+		}
+		*/
+		
+		private function button_quickStart_click(event:MouseEvent):void
+		{				
+			TourDeFlex(this.parentApplication).showQuickStart();
+		}
+		
+	]]>
+	</mx:Script>
+	
+	<mx:HBox styleName="applicationHeader" width="100%" height="100%"  mouseDown="stage.nativeWindow.startMove()" />
+	
+	<!--<mx:VBox right="37" y="2" height="100%" verticalAlign="middle" horizontalAlign="right">-->
+		<mx:HBox right="6" y="10" paddingTop="2" width="214" horizontalGap="2" horizontalScrollPolicy="off">
+			<mx:Button styleName="aboutComboBox" width="103" height="14" click="button_quickStart_click(event)" />
+			<!--<mx:ComboBox id="comboBox_about" prompt="{resourceTitle}" width="103" height="14" change="comboBox_about_change(event)" rowCount="20" styleName="aboutComboBox" dataProvider="{Config.ABOUT_MENU_LIST}" labelField="@label" />-->	
+			<!--prompt="{Config.ABOUT_MENU_TITLE}" -->
+			<mx:Spacer width="30" />
+			<mx:Button width="20" styleName="applicationMinimizeButton" click="parentApplication.minimize()" tabEnabled="false" toolTip="Minimize" buttonMode="true" mouseEnabled="true" useHandCursor="true" />
+			<mx:Button width="20" styleName="applicationMaximizeButton" click="if(stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE) stage.displayState = StageDisplayState.NORMAL; else stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE" tabEnabled="false" toolTip="Full Screen" buttonMode="true" mouseEnabled="true" useHandCursor="true" />
+			<mx:Button width="20" styleName="applicationCloseButton" 
+				click="NativeApplication.nativeApplication.dispatchEvent(new Event(Event.EXITING,true,true));" 
+				tabEnabled="false" toolTip="Close" buttonMode="true" mouseEnabled="true" useHandCursor="true" />
+				
+		</mx:HBox>
+	<!--</mx:VBox>-->	
+</mx:Canvas>

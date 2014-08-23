@@ -1,0 +1,199 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package lcds.samples.contact;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BaseDAO {
+
+	// Convenience method
+	protected List getList(String sql) throws DAOException
+	{
+		return getList(sql, new Object[] {});
+	}
+
+	// Convenience method
+	protected List getList(String sql, int startRow, int pageSize) throws DAOException
+	{
+		return getList(sql, new Object[] {}, startRow, pageSize);
+	}
+	
+	// Convenience method
+	protected List getList(String sql, Object param) throws DAOException
+	{
+		return getList(sql, new Object[] {param});
+	}
+	
+	protected List getList(String sql, Object[] params) throws DAOException
+	{
+		return getList(sql, params, 1, 0);
+	}
+
+	protected List getList(String sql, Object[] params, int startRow, int pageSize) throws DAOException
+	{
+		List list = new ArrayList();
+		Connection c = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try
+		{
+			c = ConnectionHelper.getConnection();
+			ps = c.prepareStatement(sql);
+			if (params != null)
+			{
+				for (int i=0; i<params.length; i++)
+				{
+					ps.setObject(i+1, params[i]);
+				}
+			}
+			rs = ps.executeQuery();
+			
+			for (int i=1; i<startRow; i++)
+			{
+				rs.next();
+			}
+			
+			int count = 0;
+			while (rs.next() && (pageSize==0 || count<pageSize))
+			{
+				Object obj = rowToObject(rs);
+				list.add(obj);
+				count++;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new DAOException(e);
+		}
+		finally
+		{
+			ConnectionHelper.close(c);
+		}
+		return list;
+	}
+
+	/*
+	protected Object getItem(String sql, int pk) throws DAOException
+	{
+		Integer[] params = {new Integer(pk)};
+		List list = getList(sql, params);
+		if (list != null && list.size()>0)
+		{
+			return list.get(0);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	*/
+
+	protected Object getItem(String sql, Object pk) throws DAOException
+	{
+		Object[] params = { pk };
+		List list = getList(sql, params);
+		if (list != null && list.size()>0)
+		{
+			return list.get(0);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	protected Object rowToObject(ResultSet rs) throws SQLException
+	{
+		throw new SQLException("Row processor not implemented");
+	}
+	
+	protected int createItem(String sql, Object[] params) throws DAOException
+	{
+		Connection c = null;
+		try
+		{
+			c = ConnectionHelper.getConnection();
+			executeUpdate(sql, params, c);
+			Statement s = c.createStatement();
+			//ResultSet rs = s.executeQuery("SELECT LAST_INSERT_ID()");
+			ResultSet rs = s.executeQuery("CALL IDENTITY()");
+			rs.next();
+			int pk = rs.getInt(1);
+			return pk;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new DAOException(e);
+		}
+		finally
+		{
+			ConnectionHelper.close(c);
+		}
+	}
+
+	public int executeUpdate(String sql, Object[] params) throws DAOException
+	{
+		Connection c = null;
+		try
+		{
+			c = ConnectionHelper.getConnection();
+			return executeUpdate(sql, params, c);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new DAOException(e);
+		}
+		finally
+		{
+			ConnectionHelper.close(c);
+		}
+	}
+	
+	public int executeUpdate(String sql, Object[] params, Connection connection) throws DAOException
+	{
+		int rows = -1;
+		PreparedStatement ps = null;
+		try
+		{
+            ps = connection.prepareStatement(sql);
+            if (params != null)
+            {
+				for (int i=0; i<params.length; i++)
+				{
+					ps.setObject(i+1, params[i]);
+				}
+            }
+			rows = ps.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new DAOException(e);
+		}
+		return rows;
+	}
+
+}

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<model xmlns="http://ns.adobe.com/Fiber/1.0">
+  <annotation name="ActionScriptGeneration">
+    <item name="FullyQualifyReferences">true</item>
+  </annotation>
+  <service name="GeoCoder">
+    <annotation name="ActionScriptGeneration">
+      <item name="WSDL-service">GeoCode_Service</item>
+      <item name="ServiceType">WebService</item>
+      <item name="WSDL">http://geocoder.us/dist/eg/clients/GeoCoder.wsdl</item>
+      <item name="Package">services.geocoder</item>
+      <item name="WSDL-port">GeoCode_Port</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">WebService</item>
+    </annotation>
+    <annotation name="WSDLCollectionElementTypes">
+      <item name="http://rpc.geocoder.us/Geo/Coder/US/,ArrayOfGeocoderResult">arrayType::http://schemas.xmlsoap.org/soap/encoding/,arrayType</item>
+      <item name="http://rpc.geocoder.us/Geo/Coder/US/,ArrayOfGeocoderAddressResult">arrayType::http://schemas.xmlsoap.org/soap/encoding/,arrayType</item>
+      <item name="http://rpc.geocoder.us/Geo/Coder/US/,ArrayOfGeocoderIntersectionResult">arrayType::http://schemas.xmlsoap.org/soap/encoding/,arrayType</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="WSDL-endpoint">http://rpc.geocoder.us/service/soap/</item>
+      <item name="LINKED_FILE"></item>
+    </annotation>
+    <function name="geocode_intersection" arguments="intersection:string" return-type="GeocoderIntersectionResult[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="WSDLName">
+        <item name="geocode_intersection">http://rpc.geocoder.us/Geo/Coder/US/,geocode_intersection</item>
+        <item name="SOAPAction">http://rpc.geocoder.us/Geo/Coder/US#geocode_intersection</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">GeocoderIntersectionResult</item>
+      </annotation>
+    </function>
+    <function name="geocode_address" arguments="address:string" return-type="GeocoderAddressResult[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="WSDLName">
+        <item name="SOAPAction">http://rpc.geocoder.us/Geo/Coder/US#geocode_address</item>
+        <item name="geocode_address">http://rpc.geocoder.us/Geo/Coder/US/,geocode_address</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">GeocoderAddressResult</item>
+      </annotation>
+    </function>
+    <function name="geocode" arguments="location:string" return-type="GeocoderResult[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="WSDLName">
+        <item name="geocode">http://rpc.geocoder.us/Geo/Coder/US/,geocode</item>
+        <item name="SOAPAction">http://rpc.geocoder.us/Geo/Coder/US#geocode</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">string</item>
+        <item name="returnType">GeocoderResult</item>
+      </annotation>
+    </function>
+  </service>
+  <entity name="GeocoderAddressResult">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">GeocoderAddressResult</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">GeoCoder</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="number" type="integer" required="true"/>
+    <property name="zip" type="integer" required="true"/>
+    <property name="suffix" type="string" required="true"/>
+    <property name="prefix" type="string" required="true"/>
+    <property name="type" type="string" required="true"/>
+    <property name="street" type="string" required="true"/>
+    <property name="state" type="string" required="true"/>
+    <property name="city" type="string" required="true"/>
+    <property name="lat" type="float" required="true"/>
+    <property name="long" type="float" required="true"/>
+  </entity>
+  <entity name="GeocoderResult">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">GeocoderResult</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">GeoCoder</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="zip" type="integer" required="true"/>
+    <property name="state" type="string" required="true"/>
+    <property name="city" type="string" required="true"/>
+    <property name="lat" type="float" required="true"/>
+    <property name="long" type="float" required="true"/>
+    <property name="number" type="integer" required="true"/>
+    <property name="suffix" type="string" required="true"/>
+    <property name="prefix" type="string" required="true"/>
+    <property name="type" type="string" required="true"/>
+    <property name="street" type="string" required="true"/>
+    <property name="suffix1" type="string" required="true"/>
+    <property name="prefix1" type="string" required="true"/>
+    <property name="type1" type="string" required="true"/>
+    <property name="street1" type="string" required="true"/>
+    <property name="suffix2" type="string" required="true"/>
+    <property name="prefix2" type="string" required="true"/>
+    <property name="type2" type="string" required="true"/>
+    <property name="street2" type="string" required="true"/>
+  </entity>
+  <entity name="GeocoderIntersectionResult">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">GeocoderIntersectionResult</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">GeoCoder</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <property name="zip" type="integer" required="true"/>
+    <property name="suffix1" type="string" required="true"/>
+    <property name="prefix1" type="string" required="true"/>
+    <property name="type1" type="string" required="true"/>
+    <property name="street1" type="string" required="true"/>
+    <property name="suffix2" type="string" required="true"/>
+    <property name="prefix2" type="string" required="true"/>
+    <property name="type2" type="string" required="true"/>
+    <property name="street2" type="string" required="true"/>
+    <property name="state" type="string" required="true"/>
+    <property name="city" type="string" required="true"/>
+    <property name="lat" type="float" required="true"/>
+    <property name="long" type="float" required="true"/>
+  </entity>
+</model>

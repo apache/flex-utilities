@@ -1,0 +1,129 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+//  Licensed to the Apache Software Foundation (ASF) under one or more
+//  contributor license agreements.  See the NOTICE file distributed with
+//  this work for additional information regarding copyright ownership.
+//  The ASF licenses this file to You under the Apache License, Version 2.0
+//  (the "License"); you may not use this file except in compliance with
+//  the License.  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+////////////////////////////////////////////////////////////////////////////////
+package flex.samples.product2;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import flex.samples.DAOException;
+
+/**
+ * ProductDAO.java
+ * 
+ * @author Holly Schinsky - Rich Desktop Solutions, Inc
+ * 
+ * This class encapsulates the access to the data source. In this particular sample,
+ * we are ensuring the uniqueness of the data accessed, created and deleted by filtering
+ * on the uniqueId passed in from the client.
+ * 
+ * Created: May 18, 2009
+ *
+ */
+public class ProductDAO extends BaseDAO 
+{
+	public List findAll()
+	{
+		List l = getList("SELECT * FROM Product2 ORDER BY name");
+		
+		return l;
+	}
+
+	public List findByUid(String uniqueid)
+	{
+		List l = getList("SELECT * FROM product2 WHERE uid LIKE ? ORDER BY UID", new Object[] {"%"+uniqueid+"%"});
+		return l;
+	}
+	
+	public Object getProduct(int productId)
+	{
+		return getItem("SELECT * FROM product2 WHERE product_id=?", Integer.valueOf(productId));
+	}
+	
+	public void create(Product product) throws DAOException
+	{
+		int productId = createItem("INSERT INTO product2 (name, category, image, price, description, qty_in_stock, uid) VALUES (?, ?, ?, ?, ?, ?, ?)",
+				new Object[] {	product.getName(), 
+								product.getCategory(),
+								product.getImage(),
+								product.getPrice(),
+								product.getDescription(), 
+								product.getQtyInStock(),
+								product.getUniqueid()
+								
+				});
+		product.setProductId(productId);
+		log("Product created successfully - ProductId: " + product.getProductId());
+	}
+
+	public void update(Product product) throws DAOException, ConcurrencyException
+	{
+		log("Updating Product: " + product.getProductId() + " " + product.getName() + " product uid " + product.getUniqueid());
+		int rows = executeUpdate("UPDATE product2 SET name=?, category=?, image=?, price=?,description=?, qty_in_stock=?, uid=? WHERE product_id=? AND uid=?",
+				new Object[] {	product.getName(), 
+								product.getCategory(),
+								product.getImage(),
+								product.getPrice(),
+								product.getDescription(), 
+								product.getQtyInStock(),
+								product.getUniqueid(),
+								product.getProductId(),
+								product.getUniqueid()
+				});
+		if (rows == 0)
+		{
+			throw new ConcurrencyException("Item not found");
+		}
+		log("Product updated successfully!");
+	}
+	
+	public void delete(Product product) throws DAOException, ConcurrencyException
+	{
+		log("Deleting Product: " + product.getProductId() + " " + product.getName());
+		int rows = executeUpdate("DELETE FROM product2 WHERE product_id = ? AND uid=?", new Object[] {new Integer(product.getProductId()),product.getUniqueid()});
+		if (rows == 0)
+		{
+			throw new ConcurrencyException("Item not found");
+		}
+		log("Product deleted successfully!");
+	}
+
+	protected Object rowToObject(ResultSet rs) throws SQLException
+	{
+		Product product = new Product();
+		
+		product.setName(rs.getString("name"));
+		product.setProductId(rs.getInt("product_id"));	
+		product.setDescription(rs.getString("description"));
+		product.setImage(rs.getString("image"));
+		product.setCategory(rs.getString("category"));
+		product.setPrice(rs.getDouble("price"));
+		product.setQtyInStock(rs.getInt("qty_in_stock"));
+		product.setUniqueid(rs.getString("uid"));
+		return product;
+	}
+	
+	private void log(String message)
+	{
+		System.out.println("DAO Message: " + message);
+	}
+	
+}
+
+

@@ -1,0 +1,159 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>TextContainerPropertyEditor.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre>
+<span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">inspectors</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">engine</span><span class="ActionScriptOperator">.</span><span class="ActionScriptOperator">*</span>;
+
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FormatValue</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TextLayoutFormat</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">tlf_internal</span>;
+    <span class="ActionScriptReserved">use</span> <span class="ActionScriptReserved">namespace</span> <span class="ActionScriptDefault_Text">tlf_internal</span>;
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">TextContainerPropertyEditor</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">DynamicTextPropertyEditor</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/cont_align_top_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contAlignTopIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/cont_align_middle_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contAlignMiddleIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/cont_align_bottom_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contAlignBottomIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"./assets/cont_align_justify_icon.png"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">contAlignJustifyIcon</span>:<span class="ActionScriptDefault_Text">Class</span>;
+
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">TextContainerPropertyEditor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">recipe</span>:<span class="ActionScriptDefault_Text">XML</span> <span class="ActionScriptOperator">=</span>
+                <span class="ActionScriptReserved">&lt;recipe&gt;
+                    &lt;row&gt;
+                        &lt;editor type="multiIconButton" style="iconButtonGroup" label="$$$/stage/TextEditing/Label/Container/Alignment=Alignment:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">VERTICAL_ALIGN_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;button icon="contAlignTopIcon" value="top"/&gt;
+                            &lt;button icon="contAlignMiddleIcon" value="middle"/&gt;
+                            &lt;button icon="contAlignBottomIcon" value="bottom"/&gt;
+                            &lt;button icon="contAlignJustifyIcon" value="justify"/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumberunit" label="$$$/stage/TextEditing/Label/NumColumns=Columns:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">COLUMN_COUNT_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;defaultunit&gt;count&lt;/defaultunit&gt;
+                            &lt;numericunit displayname="count"
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">columnCountProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>} 
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">columnCountProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>} 
+                                <span class="ActionScriptReserved">default="1"/&gt;
+                            &lt;enumval displayname="Auto" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FormatValue</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumberunit" label="$$$/stage/TextEditing/Label/ColumnWidth=Column Width:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">COLUMN_WIDTH_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;defaultunit&gt;pix&lt;/defaultunit&gt;
+                            &lt;numericunit displayname="pix" 
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">columnWidthProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>} 
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">columnWidthProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>} 
+                                <span class="ActionScriptReserved">default="200"/&gt;
+                            &lt;enumval displayname="Auto" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FormatValue</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/ColumnGap=Gap:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">COLUMN_GAP_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">columnGapProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>}
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">columnGapProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row label="$$$/stage/TextEditing/Label/ContainerGeometry=Geometry:"/&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/PaddingLeft=Left:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PADDING_LEFT_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paddingLeftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>} 
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paddingLeftProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/PaddingTop=Top:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PADDING_TOP_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paddingTopProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>} 
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paddingTopProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/PaddingRight=Right:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PADDING_RIGHT_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paddingRightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>} 
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paddingRightProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/PaddingBottom=Bottom:" decimals="1" enforcePrecision="no"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PADDING_BOTTOM_UIPROP</span>} 
+                                <span class="ActionScriptReserved">minValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paddingBottomProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>} 
+                                <span class="ActionScriptReserved">maxValue=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">paddingBottomProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumberunit" label="$$$/stage/TextEditing/Label/FirstBaseline=First Line Offset:"&gt;
+                            &lt;property name=</span>{<span class="ActionScriptDefault_Text">TextInspectorController</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FIRST_BASELINE_UIPROP</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;defaultunit&gt;pix&lt;/defaultunit&gt;
+                            &lt;numericunit displayname="pix" 
+                                min=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">firstBaselineOffsetProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">minValue</span>}
+                                <span class="ActionScriptReserved">max=</span>{<span class="ActionScriptDefault_Text">TextLayoutFormat</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">firstBaselineOffsetProperty</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">maxValue</span>} 
+                                <span class="ActionScriptReserved">default="1"/&gt;
+                            &lt;enumval displayname="Auto" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BaselineOffset</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AUTO</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;enumval displayname="Ascent" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BaselineOffset</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ASCENT</span>}<span class="ActionScriptReserved">/&gt;
+                            &lt;enumval displayname="Line Height" value=</span>{<span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BaselineOffset</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LINE_HEIGHT</span>}<span class="ActionScriptReserved">/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+            &lt;!--        &lt;row label="$$$/stage/TextEditing/Label/Border=Border:"&gt;
+                        &lt;editor type="combo" label="$$$/stage/TextEditing/Label/BorderStyle=Style:"&gt;
+                            &lt;property name={TextInspectorController.BORDER_STYLE_UIPROP}/&gt;
+                            &lt;choice display="None" value={text.BorderStyle.NONE}/&gt;
+                            &lt;choice display="Solid" value={text.BorderStyle.SOLID}/&gt;
+                            &lt;choice display="Innie" value={text.BorderStyle.INSET}/&gt;
+                            &lt;choice display="Outie" value={text.BorderStyle.OUTSET}/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt;
+                    &lt;row&gt;
+                        &lt;editor type="hotnumber" label="$$$/stage/TextEditing/Label/BorderThickness=Thickness:" decimals="0" enforcePrecision="yes"&gt;
+                            &lt;property name={TextInspectorController.BORDER_THICKNESS_UIPROP} 
+                                minValue={TextLayoutFormat.borderThicknessProperty.minValue}
+                                maxValue={TextLayoutFormat.borderThicknessProperty.maxValue}/&gt;
+                        &lt;/editor&gt;
+                        &lt;editor type="color" label="$$$/stage/TextEditing/Label/BorderColor=Color:"&gt;
+                            &lt;property name={TextInspectorController.BORDER_COLOR_UIPROP}/&gt;
+                        &lt;/editor&gt;
+                    &lt;/row&gt; --&gt;
+                &lt;/recipe&gt;</span>;
+
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">recipe</span><span class="ActionScriptBracket/Brace">)</span>;
+
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"contAlignTopIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">contAlignTopIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"contAlignMiddleIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">contAlignMiddleIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"contAlignBottomIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">contAlignBottomIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+             <span class="ActionScriptDefault_Text">SetIcon</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"contAlignJustifyIcon"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">contAlignJustifyIcon</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/halo" viewSourceURL="srcview/index.html">
+	
+	<s:layout>
+		<s:BasicLayout id="bl"/>
+	</s:layout>
+	
+	<!-- Note: Panel has a BasicLayout by default. The BasicLayout means that components will be
+	arranged according to their individual constraint settings, independent of each-other -->
+	<s:Panel id="mainPanel" width="100%" height="100%" top="0" left="5"
+			 title="Panel Sample" 
+			 skinClass="skins.TDFPanelSkin">
+		
+	<!-- Note: main panel is BasicLayout by default. So each inner panel will be layed out
+		      according to it's constraints specified individually.                        -->
+			<s:Panel title="Basic Layout Panel"  top="0" left="5">
+				<!-- Default layout is basic, therefore constraints are used for placement -->
+				<mx:Text text="Apples" top="0"/>
+				<mx:Text text="Oranges" top="13"/>
+				<mx:Text text="Bananas" top="26"/>		
+			</s:Panel>
+			
+			<s:Panel id="horizontalPanel" title="Horizontal Layout Panel" 
+					  top="0" left="250">
+				<s:layout>
+					<s:HorizontalLayout/>
+				</s:layout>
+				<!-- Note: constraints to top left on items here, but will not matter because we
+				     specified a HorizontalLayout -->
+				<mx:Text text="Apples" top="0"/>
+				<mx:Text text="Oranges" top="13"/>
+				<mx:Text text="Bananas" top="26"/>	
+			</s:Panel>
+			<s:Panel id="vericalPanel" title="Vertical Layout Panel" 
+					  top="0" right="5">
+				<s:layout>
+					<s:VerticalLayout/>
+				</s:layout>
+				<!-- Note: constraints to top left on items here, but will not matter because we
+				specified a VerticalLayout -->
+				<mx:Text text="Apples" top="0"/>
+				<mx:Text text="Oranges" top="13"/>
+				<mx:Text text="Bananas" top="26"/>	
+			</s:Panel>
+			<s:Label color="0x323232" verticalAlign="justify" 
+						  left="3" bottom="30" width="100%" 
+				text="The Panel class defines a container that includes a title bar, a caption, a border, and a content area for its children.
+The Panel has a basic layout by default, which means it lays out elements within the panel by 
+their individual constraints. You can specify a different layout to use within the panel such 
+as shown in the inner panels (basic, horizontal and vertical layout panels. In that case the 
+individual constraints on the Text items are ignored, as shown here."/>
+			
+	</s:Panel>
+	
+</s:Application>

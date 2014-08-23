@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" 
+					   styleName="plain" width="100%" height="100%">
+	
+	<fx:Declarations>
+		<s:RadioButtonGroup id="radioGrp"/>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.globalization.CurrencyFormatter;
+			import flash.globalization.DateTimeFormatter;
+			import flash.globalization.LocaleID;
+			
+			import mx.collections.ArrayCollection;
+			
+			protected var cf:CurrencyFormatter; 
+			protected var dtf:DateTimeFormatter;
+			protected var date:Date = new Date();
+			
+			[Bindable]
+			protected var locales:ArrayCollection = new ArrayCollection([
+				{label:"Default Locale", data:LocaleID.DEFAULT},
+				{label:"Swedish", data:"sv_SE"}, 
+				{label:"Dutch", data:"nl_NL"},
+				{label:"French", data:"fr_FR"},
+				{label:"German", data:"de_DE"},
+				{label:"Japanese", data:"ja_JP"}, 
+				{label:"Korean", data:"ko_KR"}, 
+				{label:"US-English", data:"en_US"},
+			]);
+			
+			protected function formatCurrency():void
+			{
+				ta.text = "";
+				var locale:String;
+				
+				if (ddl.selectedIndex == -1)
+					locale = LocaleID.DEFAULT;
+				else locale = ddl.selectedItem.data
+					
+				cf = new CurrencyFormatter(locale);
+				ta.text += "Locale selected: " + locale + " - Actual locale name: " + cf.actualLocaleIDName+"\n";
+				ta.text += "\nCurrency Symbol: " + cf.currencySymbol + " Currency ISO Code: " + cf.currencyISOCode ;
+				
+				var num:Number = 0;
+				num = Number(curr.text);
+				
+				if (radioGrp.selectedValue == "Format by Symbol")
+				{
+					if (cf.formattingWithCurrencySymbolIsSafe(cf.currencyISOCode))
+					{
+						ta.text += "\nFormat using Symbol: "+  cf.format(num, true);
+					}
+					else ta.text += "\nFormat using symbol is not safe. Format by ISO code instead";
+				}
+				else
+				{
+					trace("Num " + num);
+					ta.text += "\nFormat using ISO Code: " + cf.format(num);
+				}
+				ta.text += "\n\n\nLast Operation Status: " + cf.lastOperationStatus;
+			}
+		]]>
+	</fx:Script>
+	
+	<s:Panel skinClass="skins.TDFPanelSkin" width="100%" height="100%" title="Currency Formatting by Locale">
+		<s:VGroup left="12" top="10">
+			<s:Label text="Enter currency to format (for example: 1206.99):"/>
+			<s:TextInput id="curr"/>
+			<s:Label text="Select to format currency by symbol or ISO code:"/>
+			<s:HGroup>
+				<s:RadioButton id="bySymbol" groupName="radioGrp" label="Format by Symbol"/>
+				<s:RadioButton id="byISO" groupName="radioGrp" label="Format by ISO"/>
+			</s:HGroup>
+			<s:DropDownList id="ddl" dataProvider="{locales}" prompt="Select locale..." width="200"/>
+			<s:Button label="Format Currency" click="formatCurrency()"/>
+		</s:VGroup>
+		<s:VGroup top="10" right="20">
+			<s:Label text="Console:"/>
+			<s:TextArea id="ta" width="350" height="120" editable="false" />
+		</s:VGroup>		
+		<s:Label width="95%" verticalAlign="justify" color="#323232" bottom="25" horizontalCenter="0" 
+				 text="This sample will format a currency value with the selected locale and by symbol or ISO code depending on radio button selection. Before formatting by 
+symbol, you should check if the formatting by that symbol is safe, such as shown in this example. The last operation status
+will indicate if an error occurred in formatting. "/>
+	</s:Panel>
+	
+</mx:Module>

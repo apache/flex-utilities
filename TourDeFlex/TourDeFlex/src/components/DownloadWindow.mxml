@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" horizontalAlign="center" verticalAlign="middle" styleName="downloadWindow" width="300" height="150" creationComplete="init()">
+	<mx:Script>
+	<![CDATA[
+		import mx.controls.Alert;
+		import mx.managers.PopUpManager;
+		
+		private var fileReference:FileReference;
+		private var localFileToSave:File;
+		private var fileToSave:File;
+				
+		private function init():void
+		{
+			fileReference = new FileReference();
+		}
+		
+		public function download(path:String, localRootPath:String):void
+		{
+			if(path.toLowerCase().indexOf("http") == 0)
+				downloadHttp(path);
+			else
+				downloadLocal(localRootPath + path);			
+		}
+		
+		private function downloadLocal(path:String):void
+		{		
+			localFileToSave = File.applicationDirectory.resolvePath(path);
+			
+			fileToSave = new File(File.documentsDirectory.nativePath + File.separator + localFileToSave.name);
+			fileToSave.addEventListener(Event.SELECT, downloadLocal_directorySelect);
+			fileToSave.addEventListener(Event.CANCEL, downloadLocal_directorySelectCancel);
+			fileToSave.browseForSave("Save As");			
+		}
+		
+		private function downloadLocal_directorySelect(event:Event):void 
+		{			
+			localFileToSave.addEventListener(ProgressEvent.PROGRESS, download_progressHandler);
+			localFileToSave.addEventListener(Event.COMPLETE, download_completeHandler);
+			localFileToSave.copyToAsync(fileToSave, true);
+			progressBar_download.setProgress(100,100);
+		}	
+		
+		private function downloadLocal_directorySelectCancel(event:Event):void 
+		{
+			PopUpManager.removePopUp(this);
+		}		
+
+		private function downloadHttp(path:String):void
+		{
+			var request:URLRequest = new URLRequest(path);
+			fileReference = new FileReference();
+			fileReference.addEventListener(Event.OPEN, download_openHandler);
+			fileReference.addEventListener(ProgressEvent.PROGRESS, download_progressHandler);
+			fileReference.addEventListener(Event.COMPLETE, download_completeHandler);
+			
+			try
+			{
+				fileReference.download(request);
+			}
+			catch (error:Error)
+			{
+				Alert.show(error.message, "Download Error");
+			}
+		}
+		
+		private function download_openHandler(event:Event):void
+    {
+			progressBar_download.label = "DOWNLOADING %3%%";
+			button_cancel.visible = true;
+			button_close.visible = false;
+    }
+		
+ 		private function download_progressHandler(event:ProgressEvent):void
+		{
+			progressBar_download.setProgress(event.bytesLoaded, event.bytesTotal);
+		}	
+		
+ 		private function download_cancel(event:MouseEvent):void
+		{
+			fileReference.cancel();
+			progressBar_download.label = "CANCELLED";
+			button_close.visible = true;
+			button_cancel.visible = false;
+			
+			PopUpManager.removePopUp(this);
+		}			
+		
+		private function download_completeHandler(event:Event):void
+		{
+			progressBar_download.label = "DOWNLOAD COMPLETE";
+			button_close.visible = true;
+			button_cancel.visible = false;
+		}
+		
+	]]>
+	</mx:Script>	
+	
+	<mx:ProgressBar id="progressBar_download" width="90%" mode="manual" label="DOWNLOADING..." />	
+	
+	<mx:Canvas>
+		<mx:Button id="button_cancel" label="Cancel" visible="false" click="download_cancel(event)" horizontalCenter="0" />		
+		<mx:Button id="button_close" label="Close" click="{PopUpManager.removePopUp(this)}" horizontalCenter="0"/>
+	</mx:Canvas>
+	
+</mx:TitleWindow>

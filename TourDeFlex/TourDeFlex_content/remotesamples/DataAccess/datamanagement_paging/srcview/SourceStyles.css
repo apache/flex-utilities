@@ -1,0 +1,146 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+body {
+	font-family: Courier New, Courier, monospace;
+}
+
+.MXMLComment {
+	color: #800000;
+}
+
+.MXMLComponent_Tag {
+	color: #0000ff;
+}
+
+.MXMLDefault_Text {
+}
+
+.MXMLProcessing_Instruction {
+}
+
+.MXMLSpecial_Tag {
+	color: #006633;
+}
+
+.MXMLString {
+	color: #990000;
+}
+
+.CSS@font-face {
+	color: #990000;
+	font-weight: bold;
+}
+
+.CSS@import {
+	color: #006666;
+	font-weight: bold;
+}
+
+.CSS@media {
+	color: #663333;
+	font-weight: bold;
+}
+
+.CSSComment {
+	color: #999999;
+}
+
+.CSSDefault_Text {
+}
+
+.CSSDelimiters {
+}
+
+.CSSProperty_Name {
+	color: #330099;
+}
+
+.CSSProperty_Value {
+	color: #3333cc;
+}
+
+.CSSSelector {
+	color: #ff00ff;
+}
+
+.CSSString {
+	color: #990000;
+}
+
+.ActionScriptASDoc {
+	color: #3f5fbf;
+}
+
+.ActionScriptBracket/Brace {
+}
+
+.ActionScriptComment {
+	color: #009900;
+	font-style: italic;
+}
+
+.ActionScriptDefault_Text {
+}
+
+.ActionScriptMetadata {
+	color: #0033ff;
+	font-weight: bold;
+}
+
+.ActionScriptOperator {
+}
+
+.ActionScriptReserved {
+	color: #0033ff;
+	font-weight: bold;
+}
+
+.ActionScriptString {
+	color: #990000;
+	font-weight: bold;
+}
+
+.ActionScriptclass {
+	color: #9900cc;
+	font-weight: bold;
+}
+
+.ActionScriptfunction {
+	color: #339966;
+	font-weight: bold;
+}
+
+.ActionScriptinterface {
+	color: #9900cc;
+	font-weight: bold;
+}
+
+.ActionScriptpackage {
+	color: #9900cc;
+	font-weight: bold;
+}
+
+.ActionScripttrace {
+	color: #cc6666;
+	font-weight: bold;
+}
+
+.ActionScriptvar {
+	color: #6699cc;
+	font-weight: bold;
+}
+

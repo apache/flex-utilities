@@ -1,0 +1,113 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>SampleSlide.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body>
+<pre><span class="MXMLComponent_Tag">&lt;s:View</span><span class="MXMLDefault_Text"> xmlns:fx="</span><span class="MXMLString">http://ns.adobe.com/mxml/2009</span><span class="MXMLDefault_Text">"
+               xmlns:s="</span><span class="MXMLString">library://ns.adobe.com/flex/spark</span><span class="MXMLDefault_Text">"
+               title="</span><span class="MXMLString">Slide Transition</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">&gt;</span>
+    
+    <span class="MXMLSpecial_Tag">&lt;fx:Script&gt;</span>
+        &lt;![CDATA[
+            <span class="ActionScriptReserved">import</span> spark.transitions.SlideViewTransition;
+            <span class="ActionScriptReserved">import</span> spark.transitions.SlideViewTransitionMode;
+            <span class="ActionScriptReserved">import</span> spark.transitions.ViewTransitionDirection;
+            
+            <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> slideTrans:SlideViewTransition = <span class="ActionScriptReserved">new</span> SlideViewTransition();
+            
+            <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onSlide</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> 
+            <span class="ActionScriptBracket/Brace">{</span>
+                validateDirection();
+                <span class="ActionScriptReserved">if</span> (txtDuration.text!=<span class="ActionScriptReserved">null</span> &amp;&amp; txtDuration.text.length&gt;0)
+                    slideTrans.duration = parseFloat(txtDuration.text)*1000;
+                slideTrans.mode = rgMode.selectedValue <span class="ActionScriptReserved">as</span> String;
+                navigator.popToFirstView(slideTrans);
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">add_clickHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">n</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">parseInt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">txtDuration</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">txtDuration</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">n</span><span class="ActionScriptOperator">+</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">subtract_clickHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">n</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">parseInt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">txtDuration</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">txtDuration</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">text</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">n</span><span class="ActionScriptOperator">-</span>1<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">validateDirection</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">if</span> (txtDirection.text != ViewTransitionDirection.LEFT &amp;&amp; txtDirection.text != ViewTransitionDirection.RIGHT &amp;&amp; 
+                    txtDirection.text != ViewTransitionDirection.UP &amp;&amp; txtDirection.text != ViewTransitionDirection.DOWN)
+                    txtDirection.text = ViewTransitionDirection.RIGHT;
+                <span class="ActionScriptReserved">else</span> slideTrans.direction = txtDirection.text;
+            <span class="ActionScriptBracket/Brace">}</span> 
+        <span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptOperator">&gt;</span>
+    <span class="MXMLSpecial_Tag">&lt;/fx:Script&gt;</span>
+    
+    <span class="MXMLSpecial_Tag">&lt;fx:Declarations&gt;</span>
+        <span class="MXMLComponent_Tag">&lt;s:RadioButtonGroup</span><span class="MXMLDefault_Text"> id="</span><span class="MXMLString">rgMode</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">/&gt;</span>
+    <span class="MXMLSpecial_Tag">&lt;/fx:Declarations&gt;</span>
+    
+    <span class="MXMLComponent_Tag">&lt;s:navigationContent&gt;</span>
+        <span class="MXMLComponent_Tag">&lt;s:Button</span> label="<span class="MXMLString">Home</span>" height="<span class="MXMLString">100</span>" click="navigator.popToFirstView(slideTrans)"<span class="MXMLComponent_Tag">/&gt;</span>
+    <span class="MXMLComponent_Tag">&lt;/s:navigationContent&gt;</span>
+    <span class="MXMLComponent_Tag">&lt;s:actionContent&gt;</span>
+        <span class="MXMLComponent_Tag">&lt;s:Button</span> id="<span class="MXMLString">btn</span>" height="<span class="MXMLString">100</span>" label="<span class="MXMLString">Back</span>" click="navigator.popToFirstView(slideTrans)"<span class="MXMLComponent_Tag">/&gt;</span>
+    <span class="MXMLComponent_Tag">&lt;/s:actionContent&gt;</span>
+    
+    <span class="MXMLComponent_Tag">&lt;s:VGroup</span><span class="MXMLDefault_Text"> width="</span><span class="MXMLString">100%</span><span class="MXMLDefault_Text">" height="</span><span class="MXMLString">100%</span><span class="MXMLDefault_Text">" gap="</span><span class="MXMLString">65</span><span class="MXMLDefault_Text">" horizontalAlign="</span><span class="MXMLString">center</span><span class="MXMLDefault_Text">" verticalAlign="</span><span class="MXMLString">middle</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">&gt;</span>
+        <span class="MXMLComponent_Tag">&lt;s:HGroup</span><span class="MXMLDefault_Text"> verticalAlign="</span><span class="MXMLString">middle</span><span class="MXMLDefault_Text">" top="</span><span class="MXMLString">50</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">&gt;</span>
+            <span class="MXMLComponent_Tag">&lt;s:Label</span><span class="MXMLDefault_Text"> text="</span><span class="MXMLString">Duration (seconds)</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">/&gt;</span>
+            <span class="MXMLComponent_Tag">&lt;s:HGroup&gt;</span>
+                <span class="MXMLComponent_Tag">&lt;s:Button</span><span class="MXMLDefault_Text"> id="</span><span class="MXMLString">addBtn</span><span class="MXMLDefault_Text">" label="</span><span class="MXMLString">+</span><span class="MXMLDefault_Text">" click="</span><span class="ActionScriptDefault_Text">add_clickHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptBracket/Brace">)</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">/&gt;</span>
+                <span class="MXMLComponent_Tag">&lt;s:TextInput</span><span class="MXMLDefault_Text"> id="</span><span class="MXMLString">txtDuration</span><span class="MXMLDefault_Text">" width="</span><span class="MXMLString">50</span><span class="MXMLDefault_Text">" height="</span><span class="MXMLString">65</span><span class="MXMLDefault_Text">" restrict="</span><span class="MXMLString">.0-9</span><span class="MXMLDefault_Text">" text="</span><span class="MXMLString">1</span><span class="MXMLDefault_Text">"
+                             textAlign="</span><span class="MXMLString">center</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">/&gt;</span>
+                
+                <span class="MXMLComponent_Tag">&lt;s:Button</span><span class="MXMLDefault_Text"> id="</span><span class="MXMLString">subtractBtn</span><span class="MXMLDefault_Text">" label="</span><span class="MXMLString">-</span><span class="MXMLDefault_Text">" click="</span><span class="ActionScriptDefault_Text">subtract_clickHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span><span class="ActionScriptBracket/Brace">)</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">/&gt;</span>
+            <span class="MXMLComponent_Tag">&lt;/s:HGroup&gt;</span>  
+        <span class="MXMLComponent_Tag">&lt;/s:HGroup&gt;</span>
+        
+        <span class="MXMLComponent_Tag">&lt;s:HGroup</span><span class="MXMLDefault_Text"> verticalAlign="</span><span class="MXMLString">middle</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">&gt;</span>
+            <span class="MXMLComponent_Tag">&lt;s:Label</span><span class="MXMLDefault_Text"> text="</span><span class="MXMLString">Direction (right, left, up, down)</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">/&gt;</span>
+            <span class="MXMLComponent_Tag">&lt;s:TextInput</span><span class="MXMLDefault_Text"> id="</span><span class="MXMLString">txtDirection</span><span class="MXMLDefault_Text">" text="</span><span class="MXMLString">right</span><span class="MXMLDefault_Text">" width="</span><span class="MXMLString">100</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">/&gt;</span>
+        <span class="MXMLComponent_Tag">&lt;/s:HGroup&gt;</span>  
+        
+        <span class="MXMLComponent_Tag">&lt;s:VGroup&gt;</span>
+            <span class="MXMLComponent_Tag">&lt;s:Label</span><span class="MXMLDefault_Text"> text="</span><span class="MXMLString">Slide Mode</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">/&gt;</span>
+            <span class="MXMLComponent_Tag">&lt;s:HGroup&gt;</span>
+                <span class="MXMLComponent_Tag">&lt;s:RadioButton</span> id="<span class="MXMLString">coverMode</span>" label="<span class="MXMLString">{</span>SlideViewTransitionMode.COVER<span class="MXMLString">}</span>" groupName="<span class="MXMLString">rgMode</span>" selected="<span class="MXMLString">true</span>"<span class="MXMLComponent_Tag">/&gt;</span>
+                <span class="MXMLComponent_Tag">&lt;s:RadioButton</span> id="<span class="MXMLString">pushMode</span>" label="<span class="MXMLString">{</span>SlideViewTransitionMode.PUSH<span class="MXMLString">}</span>" groupName="<span class="MXMLString">rgMode</span>"<span class="MXMLComponent_Tag">/&gt;</span>
+                <span class="MXMLComponent_Tag">&lt;s:RadioButton</span> id="<span class="MXMLString">uncoverMode</span>" label="<span class="MXMLString">{</span>SlideViewTransitionMode.UNCOVER<span class="MXMLString">}</span>" groupName="<span class="MXMLString">rgMode</span>"<span class="MXMLComponent_Tag">/&gt;</span>
+            <span class="MXMLComponent_Tag">&lt;/s:HGroup&gt;</span>
+        <span class="MXMLComponent_Tag">&lt;/s:VGroup&gt;</span>
+        
+        <span class="MXMLComponent_Tag">&lt;s:HGroup&gt;</span>
+            <span class="MXMLComponent_Tag">&lt;s:Button</span><span class="MXMLDefault_Text"> label="</span><span class="MXMLString">Start</span><span class="MXMLDefault_Text">" click="</span><span class="ActionScriptDefault_Text">onSlide</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="MXMLDefault_Text">"</span><span class="MXMLComponent_Tag">/&gt;</span>
+        <span class="MXMLComponent_Tag">&lt;/s:HGroup&gt;</span>
+    <span class="MXMLComponent_Tag">&lt;/s:VGroup&gt;</span>  
+    
+<span class="MXMLComponent_Tag">&lt;/s:View&gt;</span></pre></body>
+</html>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<!-- BlazeDS or LiveCycle Data Services is required to use the approach described in this sample -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	backgroundGradientColors="[0x000000,0x323232]"	
+	applicationComplete="init()" viewSourceURL="srcview/index.html">
+	
+	<mx:Script>
+		<![CDATA[
+		
+			import mx.messaging.messages.AsyncMessage;
+			import mx.messaging.messages.IMessage;
+			
+			private function init():void
+			{
+				// Start listening for messages published in the "chat" destination
+				consumer.subscribe();
+			}
+			
+			private function send():void
+			{
+				var message:IMessage = new AsyncMessage();
+				message.body.chatMessage = msg.text;
+				producer.send(message);
+				msg.text = "";
+			}
+							
+			private function messageHandler(message:IMessage):void
+			{
+				log.text += message.body.chatMessage + "\n";	
+			}
+			
+		]]>
+	</mx:Script>
+
+	<!-- The producer is used to send messages -->
+	<!-- See the definition of the "chat" destination in messaging-config.xml -->
+	<mx:Producer id="producer" destination="chat"/>
+
+	<!-- The consumer is used to listen for messages. 
+		 When a message is published in the "chat" destination the message event handler 
+		 is automatically executed -->
+	<mx:Consumer id="consumer" destination="chat" message="messageHandler(event.message)"/>
+	
+	<mx:Panel title="Chat" width="100%" height="100%">
+		<mx:TextArea id="log" width="100%" height="100%"/>
+		<mx:ControlBar>
+			 <mx:TextInput id="msg" width="100%" enter="send()"/>
+			 <mx:Button label="Send" click="send()"/> 
+		</mx:ControlBar>
+	</mx:Panel>
+	
+</mx:Application>

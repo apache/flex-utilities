@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<index>
+	<title>Source of Sample-AC-DistortionEffects</title>
+	<nodes>
+		<node label="src" icon="classpathIcon" expanded="true">
+			<node label="com.adobe.ac.controls" icon="packageIcon" expanded="true">
+				<node label="ViewStack3D.as" icon="actionScriptIcon" url="source/com/adobe/ac/controls/ViewStack3D.as.html"/>
+			</node>
+			<node label="distortion" icon="packageIcon" expanded="true">
+				<node label="ButtonSkin3D.as" icon="actionScriptIcon" url="source/distortion/ButtonSkin3D.as.html"/>
+				<node label="DistortionLab.mxml" icon="mxmlIcon" url="source/distortion/DistortionLab.mxml.html"/>
+				<node label="SimpleFlip.mxml" icon="mxmlIcon" url="source/distortion/SimpleFlip.mxml.html"/>
+				<node label="SimpleFlipHideEffect.mxml" icon="mxmlIcon" url="source/distortion/SimpleFlipHideEffect.mxml.html"/>
+				<node label="SimpleFlipTransition.mxml" icon="mxmlIcon" url="source/distortion/SimpleFlipTransition.mxml.html"/>
+				<node label="SimpleManualFlip.mxml" icon="mxmlIcon" url="source/distortion/SimpleManualFlip.mxml.html"/>
+				<node label="Skins3D.mxml" icon="mxmlIcon" url="source/distortion/Skins3D.mxml.html"/>
+				<node label="ViewStack3D.mxml" icon="mxmlIcon" url="source/distortion/ViewStack3D.mxml.html"/>
+			</node>
+			<node label="view.distortion" icon="packageIcon" expanded="true">
+				<node label="ButtonSkin3D.as" icon="actionScriptIcon" url="source/view/distortion/ButtonSkin3D.as.html"/>
+				<node label="DistortionLab.mxml" icon="mxmlIcon" url="source/view/distortion/DistortionLab.mxml.html"/>
+				<node label="SimpleFlip.mxml" icon="mxmlIcon" url="source/view/distortion/SimpleFlip.mxml.html"/>
+				<node label="SimpleFlipHideEffect.mxml" icon="mxmlIcon" url="source/view/distortion/SimpleFlipHideEffect.mxml.html"/>
+				<node label="SimpleFlipTransition.mxml" icon="mxmlIcon" url="source/view/distortion/SimpleFlipTransition.mxml.html"/>
+				<node label="SimpleManualFlip.mxml" icon="mxmlIcon" url="source/view/distortion/SimpleManualFlip.mxml.html"/>
+				<node label="Skins3D.mxml" icon="mxmlIcon" url="source/view/distortion/Skins3D.mxml.html"/>
+				<node label="ViewStack3D.mxml" icon="mxmlIcon" url="source/view/distortion/ViewStack3D.mxml.html"/>
+			</node>
+			<node label="view.sides" icon="packageIcon" expanded="true">
+				<node label="Calendar.mxml" icon="mxmlIcon" url="source/view/sides/Calendar.mxml.html"/>
+				<node label="Login.mxml" icon="mxmlIcon" url="source/view/sides/Login.mxml.html"/>
+				<node label="ProductList.mxml" icon="mxmlIcon" url="source/view/sides/ProductList.mxml.html"/>
+				<node label="QuickSearch.mxml" icon="mxmlIcon" url="source/view/sides/QuickSearch.mxml.html"/>
+				<node label="Registration.mxml" icon="mxmlIcon" url="source/view/sides/Registration.mxml.html"/>
+				<node label="Search.mxml" icon="mxmlIcon" url="source/view/sides/Search.mxml.html"/>
+			</node>
+			<node selected="true" label="SimpleFlipTransition.mxml" icon="mxmlAppIcon" url="source/SimpleFlipTransition.mxml.html"/>
+			<node label="SimpleManualFlip.mxml" icon="mxmlIcon" url="source/SimpleManualFlip.mxml.html"/>
+			<node label="ViewStack3D.mxml" icon="mxmlIcon" url="source/ViewStack3D.mxml.html"/>
+		</node>
+	</nodes>
+</index>

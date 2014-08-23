@@ -1,0 +1,28 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Async-Message-Filtering</title>
+</head>
+
+<body>
+<p>You use custom message filter classes to pre-process incoming messages and post-process reply messages, and post-process pushed messages that have been flushed from per-client outbound message queues. You configure message filters in the services-config.xml file or for run-time configuration in a Java class. You can apply multiple message filters by chaining them together in your configuration.  </p>
+<p>Message filter classes must subclass either the flex.messaging.filters.BaseAsyncMessageFilter class or the flex.messaging.filters.BaseSyncMessageFilter. Subclass BaseSyncMessageFilter when using servlet-based endpoints and BaseAsyncMessageFilter when using NIO-based endpoints. To write a filter that works for either type of endpoint, create two separate classes ideally with common code factored out into a helper/utility class that both filter implementations use internally. </p>
+</body>
+</html>

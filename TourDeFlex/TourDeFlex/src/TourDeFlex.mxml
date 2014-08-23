@@ -1,0 +1,881 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" showFlexChrome="false" 
+	showStatusBar="false" applicationComplete="init()" title="Tour de Flex" styleName="mainWindow" 
+	width="1000" height="768" minWidth="1000" minHeight="700" xmlns:components="components.*" 
+	visible="true" resize="window_resize(event)" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+
+	<mx:Style source="styles.css" />
+	
+	<mx:Script>
+	<![CDATA[
+        import mx.events.AIREvent;	
+		import mx.rpc.events.FaultEvent;
+		import components.QuickStartWindow;
+		import mx.events.ResizeEvent;
+		import mx.validators.EmailValidator;
+//		import TopPanels4_fla.MainTimeline;
+		import components.SplashWindow;
+		import mx.rpc.events.ResultEvent;
+		import classes.ObjectData;
+		import classes.Document;		
+		import classes.ApplicationUpdaterManager;
+		import components.IllustrationTab;
+		import mx.events.CloseEvent;
+		import components.DownloadWindow;
+		import mx.controls.Alert;
+		import air.update.events.UpdateEvent;
+		import air.net.URLMonitor;
+		import mx.events.ItemClickEvent;
+		import components.WipeWindow;
+		import mx.events.FlexEvent;
+		import components.SearchWindow;
+		import mx.events.IndexChangedEvent;
+		import mx.managers.PopUpManager;
+		import components.CommentsWindow;
+		import mx.events.ListEvent;
+		
+		//---- ADDED HS ------//
+		import mx.messaging.messages.IMessage;
+		import mx.rpc.events.ResultEvent;
+//		import merapi.BridgeInstance;
+//		import merapi.Bridge;
+//		import merapi.messages.Message;
+//		import merapi.messages.MerapiObjectMessage;
+		import mx.collections.ArrayCollection;
+//		import plugin.TDFPluginTransferObject;
+		import flash.utils.*;
+		import components.PluginDownloadWindow;
+		
+		//--------------------------------------------------------------------------
+		//  Variables
+		//--------------------------------------------------------------------------
+		[Bindable]
+		public var objectData:ObjectData;
+				
+		private var applicationUpdaterManager:ApplicationUpdaterManager;	
+		private var urlMonitor:URLMonitor;					
+		private var hasSearchOpenedWhileCommenting:Boolean = false;
+		private var selectedDownloadPath:String = "";
+		private var selectedIllustrationURL:String = "";
+		private var previousTopLevelCategoriesText:String = ""; 
+		
+		//---- ADDED HS ------//
+		private var dockImage:BitmapData;
+//		private var bridge:Bridge;
+		private var featuredSent:Boolean = false; 
+		private var isPlugin:Boolean = false; 
+		private var isStandAlone:Boolean = false;
+		private var comps:ArrayCollection= new ArrayCollection();
+//		private var pluginTransferObject:TDFPluginTransferObject;
+		[Bindable]
+		private var splashWindow:QuickStartWindow = new QuickStartWindow();
+		private var splashPlayed:Boolean = false;
+		
+		private var expandMode:int = 0;		
+		
+		private var illustrationAutoExpanded:Boolean = false;
+
+		
+		//--------------------------------------------------------------------------
+		//  Loading/initializing for main application
+		//--------------------------------------------------------------------------
+		private function init():void
+		{
+			NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting); 
+			
+			//Config.loadSettings();
+			Config.setLocalization();
+			Preferences.load();			
+						
+			objectData = new ObjectData();
+			applicationUpdaterManager = new ApplicationUpdaterManager();
+						
+			urlMonitor = new URLMonitor(new URLRequest(Config.ONLINE_STATUS_URL));
+			urlMonitor.addEventListener(StatusEvent.STATUS, urlMonitor_status);
+			urlMonitor.pollInterval = 20000; // Every 20 seconds
+			urlMonitor.start();
+
+            // Request notification whenever the app is activated or deactivated
+            //this.addEventListener(AIREvent.APPLICATION_ACTIVATE, applicationActivate);
+            //this.addEventListener(AIREvent.APPLICATION_DEACTIVATE, applicationDeactivate);
+			
+			// Use the loader object to load an image, which will be used for the systray       
+			// After the image has been loaded into the object, we can prepare the application for docking to the system tray 
+			var iconLoad:Loader = new Loader();
+			var loader:Loader = new Loader();
+	       
+			iconLoad.load(new URLRequest("app:/images/icons/tdfx_128.png")); 
+			iconLoad.contentLoaderInfo.addEventListener(Event.COMPLETE,prepareForSystray); 
+	        
+			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke);	
+
+			// Center app when it starts - will add code later to remember where it was last -- GAW
+			var currentScreen:Screen = getCurrentScreen();
+			stage.nativeWindow.x = (currentScreen.bounds.right / 2) - (this.width / 2);
+			stage.nativeWindow.y = (currentScreen.bounds.height / 2) - (this.height / 2);
+			if (stage.nativeWindow.x < 0) stage.nativeWindow.x = 0;
+			if (stage.nativeWindow.y < 0) stage.nativeWindow.y = 0;
+			
+		}
+		
+		
+		private function getCurrentScreen():Screen{
+			var current:Screen;
+			var screens:Array = Screen.getScreensForRectangle(stage.nativeWindow.bounds);
+			(screens.length > 0) ? current = screens[0] : current = Screen.mainScreen;
+			return current;
+		}       
+
+		public function showQuickStart():void
+		{			
+			illustrationTabs.visible = false;
+			documentTabs.visible = false;			
+			quickStartWindow.visible = true;
+			if(Config.IS_ONLINE )
+			{
+				quickStartWindow.location = Config.QUICK_START_REMOTE_URL;				
+			}
+			else
+			{
+				quickStartWindow.location = Config.QUICK_START_LOCAL_URL;
+			}			
+		}
+		
+		private function closeQuickStart(event:CloseEvent = null):void
+		{
+			illustrationTabs.visible = true;
+			documentTabs.visible = true;			
+			quickStartWindow.visible = false;	
+			quickStartWindow.clearContents();	// to kill any running content	
+		}
+		
+		/**
+		 * Called when the invoke event is fired, such as when this app is called. ADDED HS
+		 */
+		private function onInvoke(invokeEvt:InvokeEvent):void 
+		{
+			// Here we need to figure out how the app was invoked, if from the Eclipse plug-in, then we should
+			// create the Merapi bridge. If not, then we should just set the app to visible since it starts off
+			// invisible so we can keep it in the system tray
+	        /*
+            if (invokeEvt.arguments[0] == "plugin" && isPlugin == false) {
+				isPlugin = true;
+				bridge = Bridge.instance;
+	  			bridge.addEventListener(ResultEvent.RESULT,handleResponse);
+	  		} else { */
+	  			isStandAlone = true;
+	  			this.undock(invokeEvt);
+	  		/*}*/
+	  		
+	  		// If started in stand alone mode and later invoked again as a plugin, send featured components - GAW
+	  		//if (isStandAlone && isPlugin) sendFeatured();
+	  		
+
+  			//if(!isPlugin && Config.USE_SPLASH && Preferences.preferencesXml.Splash.@skip != "true")
+			if(!isPlugin && Config.USE_SPLASH && !splashPlayed)
+			{
+				showQuickStart();
+				splashPlayed = true;
+			}		
+		}
+		
+        /*
+		private function sendFeatured():void {
+			// Never send featured components more than once
+			if (!featuredSent) {
+	  			var featuredComps:ArrayCollection = objectData.getFeaturedComponents();
+				var m : Message = new Message();
+	       		m.type = "FindFeaturedComponents";
+	           	m.data = featuredComps;
+	           	bridge.sendMessage(m);
+	           	featuredSent = true;
+	  		}
+		}
+		*/
+        
+		private function urlMonitor_status(event:StatusEvent):void
+		{
+			Config.IS_ONLINE = urlMonitor.available;
+			
+			if(Config.IS_ONLINE )
+			{
+				quickStartWindow.location = Config.QUICK_START_REMOTE_URL;				
+				if(objectList.selectedId > 0)
+					button_comments.enabled = true;
+			}
+			else
+			{
+				quickStartWindow.location = Config.QUICK_START_LOCAL_URL;
+				button_comments.enabled = false;
+			}
+				
+							
+		}
+			
+		private function confirmExit():void {
+			Alert.yesLabel = "Close";
+			Alert.noLabel = "Minimize";
+			Alert.show("Closing will cause the plug-in search capabilities to be rendered useless. Close or minimize?", "Close?", 3, this, confirmationClickHandler);
+			
+		}
+		
+		private function confirmationClickHandler(event:CloseEvent):void {
+			if (event.detail==Alert.YES) {
+	  			isPlugin = false;
+				NativeApplication.nativeApplication.dispatchEvent(new Event(Event.EXITING,true,true));
+			} else {
+				dock();
+			}
+		}
+
+		private function closeSplash():void {
+			PopUpManager.removePopUp(splashWindow);
+			//mx.core.Application.application.removeChild(movieBackground);
+		}
+		
+		private function onExiting(exitingEvent:Event):void {
+		    var winClosingEvent:Event;
+			
+			// Kill the movie and it's background if it exists
+			//if (this.contains(movieBackground)) closeSplash();
+
+			exitingEvent.preventDefault();
+			if (isPlugin) {
+				undock(exitingEvent);
+				confirmExit();
+				return;
+			}
+
+			NativeApplication.nativeApplication.removeEventListener(Event.EXITING, onExiting); 
+		    
+		    for each (var win:NativeWindow in NativeApplication.nativeApplication.openedWindows) {
+		        winClosingEvent = new Event(Event.CLOSING,false,true);
+		        win.dispatchEvent(winClosingEvent);
+		        if (!winClosingEvent.isDefaultPrevented()) {
+		            win.close();
+		        } else {
+		            exitingEvent.preventDefault();
+		        }
+		    }
+		    
+		    if (!exitingEvent.isDefaultPrevented()) {
+				Preferences.save();		
+		    }
+		}
+		
+		//--------------------------------------------------------------------------
+		//  Window events
+		//--------------------------------------------------------------------------			
+		private function window_resize(event:ResizeEvent):void
+		{
+			if (documentTabs != null) documentTabs.needHtmlHack = false;
+			
+			//if(splashWindow.video_intro)
+			//{
+				//splashWindow.width = this.width - splashWindow.x - 40;
+				//splashWindow.height = this.height - splashWindow.y - 65;
+				//splashWindow.video_intro.width = splashWindow.width;
+				//splashWindow.video_intro.height = splashWindow.height;
+			//}		
+		}	
+		
+		//--------------------------------------------------------------------------
+		//  Object list UI coordination/management
+		//--------------------------------------------------------------------------					
+		private function objectList_change(event:ListEvent):void
+		{
+			var objectXml:XML = null;
+			
+			documentTabs.needHtmlHack = true;
+			// Kill the movie and it's background if it exists
+			//if (this.contains(movieBackground)) closeSplash();
+			
+            /*
+			// Get the object xml differently depending on if it was clicked from AIR side or plugin ... HS
+			if (event==null && pluginTransferObject!=null) {
+				objectXml = objectData.getXMLForObjectId(pluginTransferObject.selectedComponentId);
+			}
+			else 
+			{ */
+				objectXml = XML(event.itemRenderer.data);
+			/*}*/
+			
+			objectList.selectedId = objectXml.@id;
+			objectList.selectedObject = objectXml;
+
+			button_download.enabled = false;
+			button_comments.enabled = false;
+			button_expand.enabled = false;
+			button_browser.enabled = false;
+
+			if(objectList.selectedId > 0)
+			{
+				closeQuickStart();
+
+				label_objectName.text = objectXml.@name;
+				if(Config.IS_ONLINE)
+				{
+					//HTTP_GetCommentsTotal.send();
+					HTTP_logView.send();
+					button_comments.enabled = true;
+				}
+				
+				searchWindow.visible = false;
+				commentsWindow.visible = false;
+				objectList.setDescription(objectXml.@description, objectXml.@dateAdded, objectXml.@author);
+				
+				documentTabs.needHtmlHack = true;
+				
+				//reset selected tab due to tab selection issue
+				documentTabs.selectedIndex = 0;
+				documentTabs.validateNow();	
+				
+				illustrationTabs.removeAll();
+				illustrationTabs.removeAllIllustrations();
+				
+				var illustrations:XMLList = XMLList(objectXml.Illustrations.Illustration);
+				for each(var illustration:XML in illustrations)
+				{
+					var associatedDocuments:Array = new Array();
+					documentTabs.removeAllChildren();
+					var documents:XMLList = XMLList(illustration.Documents.Document);
+					for each(var document:XML in documents)
+					{
+						var documentPath:String = document.@path;
+						if(document.@localPath.toString().length > 0)
+							documentPath = document.@localPath;
+							
+						associatedDocuments.push(new Document(document.@name, documentPath, document.@openLinksExternal));
+					}
+					
+					if(!Config.IS_ONLINE && illustration.@localPath.toString().length == 0 && illustration.@path.toLowerCase().indexOf("http") == 0)
+					{
+						illustrationTabs.addTab(illustration.@name, Config.OFFLINE_URL, "", "", "", "", "", "", null);
+					}
+					else
+					{
+						var illustrationPath:String = illustration.@path;
+						if(illustration.@localPath.toString().length > 0)
+							illustrationPath = illustration.@localPath;	
+							
+						var illustrationDownloadPath:String = illustration.@downloadPath;
+						if(illustration.@localDownloadPath.toString().length > 0)
+							illustrationDownloadPath = illustration.@localDownloadPath;								
+												
+						illustrationTabs.addTab(illustration.@name, illustrationPath, Config.LOCAL_OBJECTS_ROOT_PATH, illustration.@isModule, illustrationDownloadPath, illustration.@autoExpand, illustration.@openLinksExternal, illustration.@scrollBars, associatedDocuments);
+					}
+				}			
+
+				documentTabs.addTabs(illustrationTabs.associatedDocumentsCollection[0], Config.LOCAL_OBJECTS_ROOT_PATH);
+	
+				if(illustrationTabs.numChildren > 0)
+					autoExpandIllustrationTab(IllustrationTab(illustrationTabs.getChildAt(0)).autoExpand);				
+				
+				if(illustrationTabs.numChildren > 0 && IllustrationTab(illustrationTabs.getChildAt(0)).downloadPath.length > 0)
+				{
+					button_download.enabled = true;
+					selectedDownloadPath = IllustrationTab(illustrationTabs.getChildAt(0)).downloadPath;
+				}
+				selectedIllustrationURL = IllustrationTab(illustrationTabs.getChildAt(0)).illustrationURL;
+			}
+			else
+			{
+				button_comments.label = "Comments";	
+			}			
+		}
+		
+		private function illustrationTabs_change(event:IndexChangedEvent):void
+		{				
+			var documents:Array = IllustrationTabs(event.currentTarget).associatedDocumentsCollection[event.newIndex];
+			documentTabs.addTabs(documents, Config.LOCAL_OBJECTS_ROOT_PATH);
+			
+			var tab:IllustrationTab = IllustrationTab(IllustrationTabs(event.currentTarget).getChildAt(event.newIndex));
+			selectedDownloadPath = tab.downloadPath;		
+			if(selectedDownloadPath.length == 0)
+				button_download.enabled = false;
+			else
+				button_download.enabled = true;		
+				
+			selectedIllustrationURL = tab.illustrationURL;
+			if(selectedIllustrationURL.length == 0)
+				button_browser.enabled = false;
+			else
+				button_browser.enabled = true;	
+				
+			autoExpandIllustrationTab(tab.autoExpand);
+		}
+		
+		private function autoExpandIllustrationTab(autoExpand:Boolean):void
+		{
+			var documentsBox:DisplayObject = vdivider.getChildAt(1);
+			if(autoExpand)
+			{
+				//button_expand.enabled = false;
+				illustrationAutoExpanded = true;								
+				documentsBox.height = 0;				
+			}
+			else
+			{
+				button_expand.enabled = true;
+				illustrationAutoExpanded = false;								
+				
+				if(expandMode == 0) // showing split
+					documentsBox.height = vdivider.height/2;
+				else if(expandMode == 1) // showing illustrations
+					documentsBox.height = 0;
+				else if(expandMode == 2) // showing documents
+					documentsBox.height = vdivider.height;			
+			}		
+		}
+		
+		private function toggleButtonBar_treeList_itemClick(event:ItemClickEvent):void
+		{
+			if(event.index == 0)
+			{
+				objectList.showTreeView(true);
+				comboBox_topLevelCategories.visible = false;
+				comboBox_topLevelCategories.height = 0;				
+			}
+			else
+			{
+				objectData.sort(objectList.sortType);
+				objectList.showTreeView(false);
+				comboBox_topLevelCategories.visible = true;
+				comboBox_topLevelCategories.height = 22;
+			}
+		}
+		
+		private function comboBox_topLevelCategories_change(event:ListEvent):void
+		{
+			searchWindow.clear();
+			objectData.filterTopLevelCategory(comboBox_topLevelCategories.selectedLabel);
+			objectData.sort(objectList.sortType);
+		}
+		
+		private function objectList_sortChange(event:ListEvent):void
+		{
+			objectData.sort(objectList.sortType);		
+		}
+		
+		//--------------------------------------------------------------------------
+		//  Comments window
+		//--------------------------------------------------------------------------			
+		private function button_comments_click(event:MouseEvent):void
+		{	
+			if(objectList.selectedId > 0)
+			{	
+				var url:String = objectList.selectedObject.@commentsUrl;
+				if(url.length > 0)
+					navigateToURL(new URLRequest(url));	
+				else
+					Alert.show("Comments are currently unavailable for this item.", "Unavailable");
+			}		
+		}
+			
+		/*
+		private function button_comments_click(event:MouseEvent):void
+		{
+			if(objectList.selectedId > 0)
+			{
+				commentsWindow.loadComments(objectList.selectedId, Config.IS_ONLINE);
+				commentsWindow.visible = true;
+				illustrationTabs.visible = false
+				previousTopLevelCategoriesText = comboBox_topLevelCategories.text;
+			}
+		}
+		
+		private function processGetCommentsTotal(event:ResultEvent):void
+		{
+			var total:int = parseInt(event.result.toString());
+			button_comments.label = "Comments (" + total + ")";
+		}
+		
+		private function processGetCommentsTotal_fault():void
+		{	
+			//Alert.show('An Internet connection is required', 'Offline');
+		}	
+		*/
+		
+		private function HTTP_logView_fault(event:FaultEvent):void
+		{	
+			//Alert.show('An Internet connection is required' + event.message, 'Offline');
+		}	
+				
+		//--------------------------------------------------------------------------
+		//  Search window
+		//--------------------------------------------------------------------------	
+		private function button_search_click(event:MouseEvent):void
+		{	
+			// Kill the movie and it's background if it exists
+			//if (this.contains(movieBackground)) closeSplash();
+			
+			if(button_search.selected)
+			{
+				if(commentsWindow.visible)
+					hasSearchOpenedWhileCommenting = true;
+					
+				closeQuickStart();
+	
+				commentsWindow.visible = false;
+				searchWindow.visible = true;
+				illustrationTabs.visible = false;
+				comboBox_topLevelCategories.enabled = false;
+				previousTopLevelCategoriesText = comboBox_topLevelCategories.text;
+				comboBox_topLevelCategories.text = "All";
+			}
+			else
+			{
+				searchWindow.visible = false;
+				comboBox_topLevelCategories.enabled = true;
+				comboBox_topLevelCategories.text = previousTopLevelCategoriesText;
+			}
+		}
+
+		private function searchWindow_submit(event:Event):void
+		{
+			toggleButtonBar_treeList.selectedIndex = 1;
+			objectList.showTreeView(false);
+		}	
+			
+		//--------------------------------------------------------------------------
+		//  Shared wipe-window functionality and coordination
+		//--------------------------------------------------------------------------			
+		private function wipedWindow_hide(event:FlexEvent):void
+		{
+			if(!hasSearchOpenedWhileCommenting)
+			{
+				illustrationTabs.visible = true;			
+				button_search.selected = false;
+				comboBox_topLevelCategories.enabled = true;
+				comboBox_topLevelCategories.text = previousTopLevelCategoriesText;
+			}
+			
+			hasSearchOpenedWhileCommenting = false;
+		}
+
+		//--------------------------------------------------------------------------
+		//  Download window
+		//--------------------------------------------------------------------------	
+		private function button_download_click(event:MouseEvent):void
+		{
+			if(objectList.selectedId > 0)
+			{
+				illustrationTabs.visible = false;
+				
+				/*if (this.isPlugin && pluginTransferObject!=null) 
+				{
+					var pluginPopup:PluginDownloadWindow = new PluginDownloadWindow();
+					pluginPopup.addEventListener(FlexEvent.REMOVE, downloadWindow_close);
+					PopUpManager.addPopUp(pluginPopup, this, true);
+					PopUpManager.centerPopUp(pluginPopup);
+					pluginPopup.download(selectedDownloadPath, pluginTransferObject.pluginDownloadPath, Config.LOCAL_OBJECTS_ROOT_PATH);
+				}
+				else {*/
+					var popup:DownloadWindow = new DownloadWindow();
+					popup.addEventListener(FlexEvent.REMOVE, downloadWindow_close);
+					PopUpManager.addPopUp(popup, this, true);
+					PopUpManager.centerPopUp(popup);
+					popup.download(selectedDownloadPath, Config.LOCAL_OBJECTS_ROOT_PATH);
+				/*}*/
+			}
+		}
+		
+		private function button_browser_click(eveng:MouseEvent):void {
+			navigateToURL(new URLRequest(selectedIllustrationURL));			
+		}
+		
+		private function downloadWindow_close(event:FlexEvent):void
+		{
+			illustrationTabs.visible = true;
+		}	
+
+		//--------------------------------------------------------------------------
+		//  Plugin related
+		//--------------------------------------------------------------------------		
+		// ----- ADDED THE REST OF THE SCRIPT... HS
+		/**
+		 * Handle the Merapi communication from the plug-in
+		private function handleResponse(event:Event):void
+		{
+			var ev:ResultEvent = ResultEvent(event);
+			var msg:Message = Message(ev.result);
+			if (msg.type == "FindComponents") {
+				if (msg.data != null) {
+					var msgType:String = msg.type;
+					comps = objectData.getFilteredComponents(String(msg.data));
+						
+	    		}
+           		var m : Message = new Message();
+           		m.type = "FindComponents";
+               	m.data = comps;
+               	bridge.sendMessage(m);
+			}
+			else if (msg.type == "SendPluginTO") {
+				pluginTransferObject = TDFPluginTransferObject(msg.data);
+			}
+			else if (msg.type == "Minimize") {
+				this.minimize();
+			}
+			else if (msg.type == "Dock") {
+				this.dock();
+			}
+			else if (msg.type == "Undock") {
+				// We need to figure out what the download path is from the returned message and set it
+				if (msg.data != null) {
+					pluginTransferObject = TDFPluginTransferObject(msg.data);
+					this.objectList_change(null); // Fire the navigation to the component double-clicked from plugin
+				}
+				this.undock(event);
+			}
+			else if (msg.type == "Exit") {
+				isPlugin = false;
+				onExiting(event);
+			}
+		}
+				 **/
+
+
+		/**
+		 * Prepare for docking
+		 */ 
+		public function prepareForSystray(event:Event):void {
+			// Immediately send featured component list to plugin, if plugin invoked
+			//if (isPlugin) sendFeatured();
+	  		
+	    	if (event!=null)
+		      // Retrieve the image being used as the systray icon 
+		      dockImage = event.target.content.bitmapData;
+		     
+	    	// If this is Mac... 
+	      	if (NativeApplication.supportsDockIcon)
+			{
+				setDockProperties();
+				DockIcon(NativeApplication.nativeApplication.icon).menu = createSystrayRootMenu();
+			}
+			else 
+			{
+				setSystemTrayProperties();
+				SystemTrayIcon(NativeApplication.nativeApplication.icon).menu = createSystrayRootMenu();
+			}
+			// If we are using this independent of the plug-in, we want to undock it because it was opened in 
+			// docked mode and non-visible so that when the plug-in opens it, it does not flash onto the screen. 
+			if (!isPlugin){
+				this.undock(null);
+			}
+			else this.dock();
+	   }
+	
+	   /**
+	   	* Create a menu that can be accessed from the systray
+	   	*/
+		private function createSystrayRootMenu():NativeMenu{
+			var menu:NativeMenu = new NativeMenu();
+	      	var openNativeMenuItem:NativeMenuItem = new NativeMenuItem("Open");
+	      	var exitNativeMenuItem:NativeMenuItem = new NativeMenuItem("Exit");
+	
+			openNativeMenuItem.addEventListener(Event.SELECT, undock);
+	      	exitNativeMenuItem.addEventListener(Event.SELECT, onExiting);
+	
+	      	menu.addItem(openNativeMenuItem);
+	      	menu.addItem(exitNativeMenuItem);
+	       
+	      	return menu;
+	   }
+	
+	  /**
+	   * Add event listeners
+	   */
+	   private function setDockProperties():void { 
+	      	//Listen to the display state changing of the window, so that we can catch the minimize and dock      
+			stage.nativeWindow.addEventListener(NativeWindowDisplayStateEvent.DISPLAY_STATE_CHANGING, processMinimized); //Catch the minimize event 
+	   }
+	   /**
+	   * To be able to dock and undock we need to set some eventlisteners
+	   */
+	   private function setSystemTrayProperties():void {
+	      	SystemTrayIcon(NativeApplication.nativeApplication.icon).tooltip = "Tour de Flex";
+	       
+	      	SystemTrayIcon(NativeApplication.nativeApplication.icon).addEventListener(MouseEvent.CLICK, undock);
+	      	stage.nativeWindow.addEventListener(NativeWindowDisplayStateEvent.DISPLAY_STATE_CHANGING, processMinimized); //Catch the minimize event 
+	   }
+	
+	   /**
+	   * Do the appropriate actions after the windows display state has changed.
+	   * E.g. dock when the user clicks on minimize
+	   *
+	   */
+	   private function processMinimized(displayStateEvent:NativeWindowDisplayStateEvent):void {
+	      // prevent the minimize
+	      if(displayStateEvent.afterDisplayState == NativeWindowDisplayState.MINIMIZED) {
+	         displayStateEvent.preventDefault();
+	          
+	         //Dock instead
+	         dock();
+	      }
+	   }
+	
+	   /**
+	   	* Do our own 'minimize' by docking the application to the systray (showing the application icon in the systray)
+	   	*/
+	   public function dock():void {
+		  // Hide the applcation 
+	      stage.nativeWindow.visible = false;
+	       
+	      //Setting the bitmaps array will show the application icon in the systray 
+	      NativeApplication.nativeApplication.icon.bitmaps = [dockImage];
+	    
+	   }
+	
+	   /**
+	   * Show the application again and remove the application icon from the systray
+	   *
+	   */
+	   public function undock(evt:Event):void {
+	   	  // After setting the window to visible, make sure that the application is ordered to the front,       
+	   	  // else we'll still need to click on the application on the taskbar to make it visible 
+	      stage.nativeWindow.visible = true;
+	      stage.nativeWindow.restore();	      
+	      stage.nativeWindow.orderToFront(); 
+		  stage.nativeWindow.activate();
+	       
+	      // Clearing the bitmaps array also clears the applcation icon from the systray 
+	      NativeApplication.nativeApplication .icon.bitmaps = [];
+	      
+	      // Force the application to the front with focus, then allow user to switch to other apps
+	      if (isPlugin) {
+	      	this.alwaysInFront = true
+	   		this.activate();	
+   	      	this.alwaysInFront = false;
+	      }
+	   }
+	   
+		private function expandIllustration():void {
+			documentTabs.needHtmlHack = false;
+			
+			if (expandMode == 0) {
+				sideBar.setStyle("resizeEffect", expandEffect);
+				sideBar.width = 0;
+				if (illustrationAutoExpanded) 
+				{
+					expandMode = 3;
+				} else {
+					expandMode = 1;					
+				}
+			} else if (expandMode == 1) {
+				docBox.setStyle("resizeEffect",expandEffect);
+				illBox.setStyle("resizeEffect",null);
+				sideBar.setStyle("resizeEffect", expandEffect);
+				vdivider.moveDivider(0,vdivider.height);
+				sideBar.width = 0;
+				expandMode=2;
+			} else if (expandMode == 2) {
+				docBox.setStyle("resizeEffect",null);
+				illBox.setStyle("resizeEffect",expandEffect);
+				vdivider.moveDivider(0, - (vdivider.height));
+				expandMode=3;
+			} else if (expandMode == 3) {
+				docBox.setStyle("resizeEffect",expandEffect);
+				illBox.setStyle("resizeEffect",null);
+				sideBar.width=230;
+				vdivider.moveDivider(0, + (vdivider.height/2));
+				expandMode=0;
+			}			
+		}
+   
+		//--------------------------------------------------------------------------
+		//--------------------------------------------------------------------------
+			
+	]]>
+	</mx:Script>
+
+	<!--
+	<mx:HTTPService id="HTTP_GetCommentsTotal" showBusyCursor="false" result="processGetCommentsTotal(event)" resultFormat="e4x" fault="processGetCommentsTotal_fault()" url="{Config.DATA_EXCHANGE_URL}" useProxy="false" method="POST">
+		<mx:request xmlns="">
+			<Request>GetCommentsTotal</Request>
+			<ObjectId>{objectList.selectedId}</ObjectId>
+		</mx:request>
+	</mx:HTTPService>
+	-->
+	
+	<mx:HTTPService id="HTTP_logView" showBusyCursor="false" resultFormat="e4x" fault="HTTP_logView_fault(event)" url="{Config.DATA_EXCHANGE_URL}" useProxy="false" method="POST">
+		<mx:request xmlns="">
+			<Request>logView</Request>
+			<ObjectId>{objectList.selectedId}</ObjectId>
+			<ObjectName>{label_objectName.text}</ObjectName>
+		</mx:request>
+	</mx:HTTPService>	
+	
+	<mx:Resize id="expandEffect" duration="200" />	
+	<mx:VBox width="100%" height="100%" verticalGap="0" styleName="mainWindow">	
+	<components:ApplicationHeader id="applicationHeader" />
+		<mx:HDividedBox styleName="mainBackground" width="100%" height="100%" paddingBottom="0" paddingLeft="12" paddingRight="0" paddingTop="7">	
+			
+			<mx:VBox id="sideBar" styleName="outerDividedBoxes" width="245" minWidth="0" height="100%" horizontalScrollPolicy="off" >
+				<mx:HBox width="100%" paddingRight="6">
+					<mx:ToggleButtonBar width="60" id="toggleButtonBar_treeList" itemClick="toggleButtonBar_treeList_itemClick(event)" >
+						<mx:dataProvider>
+							<mx:Object id="toggle_tree" icon="@Embed('images/toggle_tree.png')" toolTip="View Tree" />
+            				<mx:Object id="toggle_list" icon="@Embed('images/toggle_list.png')" toolTip="View List" />							
+						</mx:dataProvider>
+					</mx:ToggleButtonBar>
+					<mx:HBox width="100%" horizontalAlign="right">
+						<mx:Button id="button_search" label="Search » Filter" toggle="true" click="button_search_click(event)" labelPlacement="left" styleName="searchButton"/>
+					</mx:HBox>					
+				</mx:HBox>
+				<mx:ComboBox id="comboBox_topLevelCategories" height="0" visible="false" rowCount="10" width="97%" dataProvider="{objectData.topLevelCategoriesXml}" change="comboBox_topLevelCategories_change(event)" />
+				<components:ObjectList id="objectList" treeDataProvider="{objectData.treeXml}" listDataProvider="{objectData.listXml}" change="objectList_change(event)"  sortChange="objectList_sortChange(event)"/>		
+			</mx:VBox>
+	
+			<mx:Canvas id="box_illustrationsAndDocumentsOuterContainer" width="100%" height="100%">			
+			<mx:VBox id="box_illustrationsAndDocuments" styleName="outerDividedBoxes" width="100%" height="100%" horizontalAlign="right" paddingRight="30" >
+				<mx:HBox id="box_illustrationControls" width="100%">
+					<mx:Label id="label_objectName" fontSize="10" fontWeight="bold" />
+					<mx:HBox width="100%" horizontalAlign="right" verticalAlign="middle">					
+						<mx:LinkButton id="button_comments" click="button_comments_click(event)" label="Comments" fontSize="9" enabled="false" styleName="commentButton" />
+						<mx:LinkButton id="button_download" click="button_download_click(event)" label="Download" fontSize="9" enabled="false" styleName="downloadButton" />
+						<mx:LinkButton id="button_browser" click="button_browser_click(event)" label="Open in Browser" fontSize="9" enabled="false" styleName="buttonBrowser" />
+						<mx:LinkButton id="button_expand" click="expandIllustration()" label="Toggle Layout" fontSize="9" enabled="false" styleName="maximizeButton" />
+					</mx:HBox>			
+				</mx:HBox>
+				<mx:VDividedBox id="vdivider" width="100%" height="100%">
+					<mx:VBox id="illBox" styleName="illustrationsBox" width="100%" height="100%" >					
+						<components:IllustrationTabs id="illustrationTabs" change="illustrationTabs_change(event)" />					
+					</mx:VBox>
+					<mx:VBox id="docBox" styleName="illustrationsBox" width="100%" height="100%">
+						<components:DocumentTabs id="documentTabs"/>
+					</mx:VBox>				
+				</mx:VDividedBox>					
+			</mx:VBox>
+			<mx:VBox width="100%" height="100%" paddingBottom="5" paddingRight="10">
+				<components:QuickStartWindow id="quickStartWindow" close="closeQuickStart(event)" width="100%" height="100%" />	
+			</mx:VBox>
+			</mx:Canvas>
+		</mx:HDividedBox>
+		
+		<components:ApplicationFooter />
+		
+	</mx:VBox>
+	
+	<!--<mx:Box id="movieBackground" backgroundColor="black" x="{splashWindow.x}" y="{splashWindow.y}" width="{splashWindow.width}" height="{splashWindow.height}"/>-->
+	
+	<components:CommentsWindow id="commentsWindow" visible="false" hideComplete="wipedWindow_hide(event)" x="{box_illustrationsAndDocuments.x}" y="{box_illustrationsAndDocuments.y + applicationHeader.height}" width="{box_illustrationsAndDocuments.width}" height="{box_illustrationsAndDocuments.height}"/>
+	<components:SearchWindow id="searchWindow" visible="false" searchSubmit="searchWindow_submit(event)" objectData="{objectData}" searchTagsData="{objectData.searchTags}" hideComplete="wipedWindow_hide(event)" x="{box_illustrationsAndDocumentsOuterContainer.x}" y="{box_illustrationsAndDocumentsOuterContainer.y + applicationHeader.height}" width="{box_illustrationsAndDocumentsOuterContainer.width}" height="{box_illustrationsAndDocumentsOuterContainer.height}"/>
+</mx:WindowedApplication>

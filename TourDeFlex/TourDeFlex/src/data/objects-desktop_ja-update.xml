@@ -1,0 +1,37 @@
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<update>
+<version>2009-06-16</version>
+<url>http://tourdeflex.adobe.com/download/objects-desktop_ja.xml</url>
+<description>
+06/16/2009: New - Added 5 new ESRI ArcGIS samples
+06/11/2009: New - Axiis Data Visualization Framework (Open Source) added
+06/09/2009: New - Flex Data Access / Data Management Samples added by Holly Schinsky
+06/01/2009: New - Flex 4 Preview samples added!
+06/01/2009: New - New ESRI ArcGIS Sample by Moxie Zhang, ESRI, Inc. - Mapping
+05/25/2009: New - New Collaboration Sample by Holly Schinsky - Data Access, Messaging
+05/20/2009: New - New Java Remoting Samples by Holly Schinsky - Data Access, RemoteObject
+05/19/2009: New - JSON and REST API Sample by Holly Schinsky - Data Access, Techniques
+05/10/2009: New - Added sample for reducing idle CPU usage in AIR apps
+05/01/2009: New - "AutoCompleteComboBox" by Jeffry Houser - Other Computers - Flextras
+04/30/2009: New - "IBM ILOG DASHBOARD" - Data Visualization
+04/12/2009: New - "Determine Client Capabilities" - Flex Core Components / Coding Techniques
+04/09/2009: New - "Working with Filters" - Flex Core Components / Coding Techniques
+</description>
+</update>

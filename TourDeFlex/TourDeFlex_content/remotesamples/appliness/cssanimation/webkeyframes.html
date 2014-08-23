@@ -1,0 +1,126 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Web animations</title>
+<style type="text/css">
+#box {
+	position: fixed;
+	width: 50px;
+	height: 50px;
+	background-color: #F00;
+	top: 100px;
+	-webkit-animation: my_animation 5s linear 1s;
+	-moz-animation: my_animation 5s linear 1s;
+	animation: my_animation 5s linear 1s;
+}
+#circle {
+	position: fixed;
+	border-radius: 25px;
+	width: 50px;
+	height: 50px;
+	background-color: #F00;
+	left: 100px;
+	top: 100px;
+	-webkit-animation: my_animation 5s linear 2s;
+	-moz-animation: my_animation 5s linear 2s;
+	animation: my_animation 5s linear 2s;
+}
+#letter {
+	position: fixed;
+	color: #F00;
+	left: 200px;
+	top: 100px;
+	font-size: 50px;
+	-webkit-animation: my_animation 5s linear 3s;
+	-moz-animation: my_animation 5s linear 3s;
+	animation: my_animation 5s linear 3s;
+}
+@keyframes my_animation {
+ from {
+ top: 100px;
+ animation-timing-function: ease-out;
+}
+ 25% {
+ top: 50px;
+ animation-timing-function: ease-in;
+}
+ 50% {
+ top: 100px;
+ animation-timing-function: ease-out;
+}
+ 75% {
+ top: 75px;
+ animation-timing-function: ease-in;
+}
+to {
+	top: 100px;
+}
+}
+@-webkit-keyframes my_animation {
+ from {
+ top: 100px;
+ -webkit-animation-timing-function: ease-out;
+}
+ 25% {
+ top: 50px;
+ -webkit-animation-timing-function: ease-in;
+}
+ 50% {
+ top: 100px;
+ -webkit-animation-timing-function: ease-out;
+}
+ 75% {
+ top: 75px;
+ -webkit-animation-timing-function: ease-in;
+}
+to {
+	top: 100px;
+}
+}
+@-moz-keyframes my_animation {
+ from {
+ top: 100px;
+ -moz-animation-timing-function: ease-out;
+}
+ 25% {
+ top: 50px;
+ -moz-animation-timing-function: ease-in;
+}
+ 50% {
+ top: 100px;
+ -moz-animation-timing-function: ease-out;
+}
+ 75% {
+ top: 75px;
+ -moz-animation-timing-function: ease-in;
+}
+to {
+	top: 100px;
+}
+}
+</style>
+</head>
+
+<body>
+<div id="box"></div>
+<div id="circle"></div>
+<div id="letter">A</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()" width="100%" height="30" styleName="applicationFooter">
+
+	<mx:Script >
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		
+		private var popup:AboutWindow;
+		
+		private function init():void
+		{
+			popup = new AboutWindow();
+		}
+		
+		private function showAbout():void
+		{
+			if(!popup.isOpen)
+			{				
+				PopUpManager.addPopUp(popup, DisplayObject(this.parentApplication), false);
+				popup.url = "data/about.html";
+				popup.isOpen = true;
+				PopUpManager.centerPopUp(popup);
+				popup.move(popup.x + 70, popup.y + 50);
+			}
+			else
+			{			
+				popup.isOpen = false;	
+				PopUpManager.removePopUp(popup);
+			}
+		}
+		
+	]]>
+	</mx:Script>
+	<mx:Button x="4" y="1" id="aboutBtn" styleName="aboutButton" click="showAbout();" />
+	<mx:HBox x="70" width="100%" height="100%" verticalAlign="middle">
+		<mx:Label text="©2010 Adobe Inc, All Rights Reserved" width="25%" textAlign="center" />
+		<mx:Label id="label_version" text="Version: {Config.APP_VERSION}" width="25%" textAlign="center" />
+		<mx:Label id="label_objectsDataVersion" text="List Version: {Config.OBJECTS_FILE_VERSION}" width="25%" textAlign="center" />
+		<mx:Label id="label_objectsTotal" text="Samples: {Config.OBJECTS_TOTAL}" width="25%" textAlign="center" />		
+	</mx:HBox>	
+	
+	<mx:Image bottom="5" right="4" source="@Embed('/images/button_clear.png')" mouseDown="stage.nativeWindow.startResize()" buttonMode="true" mouseEnabled="true" useHandCursor="true" />
+	
+</mx:Canvas>
