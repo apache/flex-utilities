@@ -48,7 +48,7 @@
 		</sequential>
 	</macrodef>	
 		
-	<target name="compile" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3">
+	<target name="compile" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3,compile-apache">
 	</target>
 	
 	<target name="compile-shell">
@@ -379,6 +379,15 @@
 		<compile-mxml example="/spark/controls/VideoPlayerExample"/>
 		<compile-mxml example="/spark/controls/ListExample"/>
 	</target>
+	
+	<target name="compile-apache" description="comile apache examples">
+		<compile-mxml example="/apache/ApacheFlex4_8_0"/>
+		<compile-mxml example="/apache/ApacheFlex4_9_0"/>
+		<compile-mxml example="/apache/ApacheFlex4_10_0"/>
+		<compile-mxml example="/apache/ApacheFlex4_11_0"/>
+		<compile-mxml example="/apache/ApacheFlex4_12_1"/>
+		<compile-mxml example="/apache/ApacheFlex4_13_0"/>
+	</target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
 	</target>
@@ -389,7 +398,7 @@
 	</target>
 		
 	<target name="package-tar" description="tar up all source files">     
-        <tar destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-src-${version}.tar.gz" 
+        <tar destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}-src.tar.gz" 
          	compression="gzip"
             longfile="gnu">
             <tarfileset dir="${basedir}/..">
@@ -419,7 +428,7 @@
 	</target>
 	
 	<target name="package-zip" description="zip up all source files">    
-        <zip destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-src-${version}.zip">
+        <zip destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}-src.zip">
             <fileset dir="${basedir}/..">
                 <include name="LICENSE" />
                 <include name="NOTICE" />
