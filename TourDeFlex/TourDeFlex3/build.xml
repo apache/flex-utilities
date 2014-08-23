@@ -387,6 +387,9 @@
 		<compile-mxml example="/apache/ApacheFlex4_11_0"/>
 		<compile-mxml example="/apache/ApacheFlex4_12_1"/>
 		<compile-mxml example="/apache/ApacheFlex4_13_0"/>
+		
+		<compile-mxml example="/apache/formatters/PostCodeFormatterExample"/>
+		<compile-mxml example="/apache/validators/PostCodeValidatorExample"/>
 	</target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">

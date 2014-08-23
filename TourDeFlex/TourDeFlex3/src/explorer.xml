@@ -441,10 +441,12 @@
 		</node>
 		<node label="Apache Flex Components and Features">
 			<node label="Apache Flex 4.8" app="apache/ApacheFlex4_8_0">
-				<!--  Add examples here -->
+				<!--  Add more examples here -->
 			</node>
 			<node label="Apache Flex 4.9" app="apache/ApacheFlex4_9_0">
 				<!--  Add examples here -->
+				<compile-mxml label="PostCodeFormatter" app="apache/formatters/PostCodeFormatterExample"/>
+				<compile-mxml label="PostCodeValidator" app="apache/validators/PostCodeValidatorExample"/>
 			</node>
 			<node label="Apache Flex 4.10" app="apache/ApacheFlex4_10_0">
 				<!--  Add examples here -->
