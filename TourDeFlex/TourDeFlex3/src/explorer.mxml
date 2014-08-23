@@ -18,7 +18,7 @@
 
 <mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:explorer="*"
     width="100%" height="100%" pageTitle="{TITLE}"
-    initialize="sdk.send()" layout="vertical">
+    initialize="init()" layout="vertical">
 
     <fx:Script>
         <![CDATA[
@@ -26,6 +26,17 @@
 		static protected const VERSION:String = "1.0";	
 		static protected const TITLE:String = "Tour De Flex Component Explorer";
 		static protected const FULL_TITLE:String = "Apache Flex™ Tour De Flex Component Explorer " + VERSION;
+
+		[Embed(source="explorer.xml", mimeType="application/octet-stream")]
+		private var XMLData:Class;
+			
+		private function init():void
+		{
+			var data:XML = XML(new XMLData());
+			
+            explorerTree = XML(data.node);
+            compLibTree.dataProvider = explorerTree;
+		}			
 
         private function treeChanged(event:Event):void
         {
@@ -40,19 +51,11 @@
                 compLibTree.expandItem(compLibTree.selectedItem, true, true);
             }
         }
-
-        private function xmlLoaded():void
-        {
-            explorerTree = XML(sdk.lastResult.node);
-            compLibTree.dataProvider = explorerTree;
-        }
         ]]>
     </fx:Script>
 
 	<fx:Declarations>
     	<fx:XML id="explorerTree"/>
-
-   		<mx:HTTPService id="sdk" url="explorer.xml" resultFormat="e4x" result="xmlLoaded()" />
 	</fx:Declarations>
 	
 	<mx:HBox width="100%">
