@@ -21,7 +21,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   skinClass="skins.GradientBackgroundAppSkin"
-			   backgroundColor="0x000000" viewSourceURL="srcview/index.html">
+			   backgroundColor="0x000000">
 	
 	<s:VGroup horizontalCenter="0" verticalCenter="0">
 		<s:Label text="Wood Sales Int'l" fontSize="42" />

@@ -21,7 +21,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   skinClass="skins.CustomControlBarAppSkin" 
-			   controlBarVisible="true" viewSourceURL="srcview/index.html">
+			   controlBarVisible="true">
 	<s:controlBarContent>
 		<s:TextInput id="textInput"/>
 		<s:Button id="searchBtn" label="Search"/>
