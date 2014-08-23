@@ -440,12 +440,24 @@
 			</node>
 		</node>
 		<node label="Apache Flex Components and Features">
-			<node label="Apache Flex 4.8" app="apache/ApacheFlex4_8_0" />
-			<node label="Apache Flex 4.9" app="apache/ApacheFlex4_9_0" />
-			<node label="Apache Flex 4.10" app="apache/ApacheFlex4_10_0" />
-			<node label="Apache Flex 4.11" app="apache/ApacheFlex4_11_0" />
-			<node label="Apache Flex 4.12" app="apache/ApacheFlex4_12_1" />
-			<node label="Apache Flex 4.13" app="apache/ApacheFlex4_13_0" />
+			<node label="Apache Flex 4.8" app="apache/ApacheFlex4_8_0">
+				<!--  Add examples here -->
+			</node>
+			<node label="Apache Flex 4.9" app="apache/ApacheFlex4_9_0">
+				<!--  Add examples here -->
+			</node>
+			<node label="Apache Flex 4.10" app="apache/ApacheFlex4_10_0">
+				<!--  Add examples here -->
+			</node>
+			<node label="Apache Flex 4.11" app="apache/ApacheFlex4_11_0">
+				<!--  Add examples here -->
+			</node>
+			<node label="Apache Flex 4.12" app="apache/ApacheFlex4_12_1">
+				<!--  Add examples here -->
+			</node>
+			<node label="Apache Flex 4.13" app="apache/ApacheFlex4_13_0">
+				<!--  Add examples here -->
+			</node>
 		</node>
 	</node>
 </compTree>
