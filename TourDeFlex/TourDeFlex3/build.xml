@@ -256,7 +256,7 @@
 		<compile-mxml example="/spark/containers/SampleHGroup"/>
 		<compile-mxml example="/spark/containers/SampleVGroup"/>
 		<compile-mxml example="/spark/containers/SampleVerticalHorizontalAlign"/>
-		<compile-mxml example="/spark/containers/SkinableDataContainerExample"/>
+		<compile-mxml example="/spark/containers/SkinnableDataContainerExample"/>
 		<compile-mxml example="/spark/containers/TileGroupExample"/>
 		
 		<compile-mxml example="/spark/effects/Move3DExample"/>

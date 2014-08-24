@@ -320,10 +320,10 @@
 					<node label="HGroup" app="spark/containers/SampleHGroup" />
 					<node label="Group" app="spark/containers/GroupExample"/>
 					<node label="Panel" app="spark/containers/PanelExample"/>
-					<node label="SkinableDataContainer" app="spark/containers/SkinableDataContainerExample" />
+					<node label="SkinnableDataContainer" app="spark/containers/SkinnableDataContainerExample" />
 					<node label="TabNavigator" app="spark/containers/TabNavigator1Example" />
 					<node label="TabNavigator" app="spark/containers/TabNavigator2Example" />
-					<node label="TitleGroup" app="spark/containers/TileGroupExample" />
+					<node label="TileGroup" app="spark/containers/TileGroupExample" />
 					<node label="TitleWindow" app="spark/controls/TitleWindowExample" />
 					<node label="ViewStack" app="spark/controls/ViewStackExample" />
 					<node label="VGroup" app="spark/containers/SampleVGroup" />
