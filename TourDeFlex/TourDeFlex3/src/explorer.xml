@@ -447,6 +447,7 @@
 				<!--  Add examples here -->
 				<compile-mxml label="PostCodeFormatter" app="apache/formatters/PostCodeFormatterExample"/>
 				<compile-mxml label="PostCodeValidator" app="apache/validators/PostCodeValidatorExample"/>
+				<compile-mxml label="New SDK locales" app="apache/i18n/LocaleExample"/>
 			</node>
 			<node label="Apache Flex 4.10" app="apache/ApacheFlex4_10_0">
 				<!--  Add examples here -->

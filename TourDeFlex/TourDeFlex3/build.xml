@@ -38,7 +38,7 @@
     <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
    
     <macrodef name="compile-mxml">
-        <attribute name="example"/>
+    	 <attribute name="example"/>
         
         <sequential>
    			<mxmlc file="${basedir}/src/@{example}.mxml"
@@ -47,6 +47,25 @@
 			</mxmlc>
 		</sequential>
 	</macrodef>	
+	
+    <macrodef name="compile-mxml-locales">
+    	 <attribute name="example"/>
+    	 <attribute name="locales" default="en_US"/>
+        
+        <sequential>
+   			<mxmlc file="${basedir}/src/@{example}.mxml"
+            	output="${basedir}/src/@{example}.swf" fork="true" failonerror="true">
+   				<locale>en_US</locale>
+   				<locale>en_AU</locale>
+   				<locale>en_GB</locale>
+   				<locale>en_CA</locale>
+   				<locale>el_GR</locale>
+   				<locale>de_CH</locale>
+   				<locale>pt_PT</locale>
+				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			</mxmlc>
+		</sequential>
+	</macrodef>
 		
 	<target name="compile" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3,compile-apache">
 	</target>
@@ -390,6 +409,7 @@
 		
 		<compile-mxml example="/apache/formatters/PostCodeFormatterExample"/>
 		<compile-mxml example="/apache/validators/PostCodeValidatorExample"/>
+		<compile-mxml-locales example="/apache/i18n/LocaleExample"/>
 	</target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
