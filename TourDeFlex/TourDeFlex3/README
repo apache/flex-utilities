@@ -53,6 +53,10 @@ changes to explorer.xml to take effect.
 	 package-tar     tar up all source files
 	 package-zip     zip up all source files
 
+==========================================================================================
+Compiling a single example
+==========================================================================================
+
 Most of the examples can be compiled by hand with mxmlc. For example:
 
 	mxmlc ./src/spark/controls/ListExample.mxml 
