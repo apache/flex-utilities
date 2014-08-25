@@ -67,16 +67,16 @@
 		</sequential>
 	</macrodef>
 		
-	<target name="compile" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3,compile-apache">
+	<target name="compile" description="compile all examples and the explorer shell" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3,compile-apache">
 	</target>
 	
-	<target name="compile-shell">
+	<target name="compile-shell" description="compile explorer shell">
 		<compile-mxml example="/explorer"/>
 		<compile-mxml example="/loaderPanel"/>
 		<compile-mxml example="/SourceTab"/>
 	</target>
 	
-	<target name="compile-mx">
+	<target name="compile-mx" description="compile mx examples">
 		<compile-mxml example="/mx/charts/BubbleChartExample"/>
 		<compile-mxml example="/mx/charts/CandlestickChartExample"/>
 		<compile-mxml example="/mx/charts/Column_BarChartExample"/>
@@ -204,7 +204,7 @@
 		<compile-mxml example="/mx/validators/ZipCodeValidatorExample"/>
 	</target>
 		
-	<target name="compile-spark">
+	<target name="compile-spark" description="compile first set of spark examples">
 		<compile-mxml example="/spark/controls/AccordionExample"/>
 		<compile-mxml example="/spark/controls/AdvancedDatagridExample"/>
 		<compile-mxml example="/spark/controls/ColorPickerExample"/>
@@ -318,7 +318,7 @@
 		<!-- currently broken <compile-mxml example="/spark/tlf/TextLayoutEditorSample"/> -->
 	</target>
 	
-	<target name="compile-spark2">
+	<target name="compile-spark2" description="compile second set of spark examples">
 		<compile-mxml example="/spark/i18n/SparkCollatorExample"/>
 		<compile-mxml example="/spark/i18n/SparkCollator2Example"/>
 		<compile-mxml example="/spark/i18n/SparkCurrencyValidatorExample"/>
@@ -354,7 +354,7 @@
 		<compile-mxml example="/spark/controls/OSMFExample"/>
 	</target>
 	
-	<target name="compile-spark3">
+	<target name="compile-spark3" description="compile third set of spark examples">
 		<compile-mxml example="/spark/other/BidirectionalBinding1Example"/>
 		<compile-mxml example="/spark/other/BidirectionalBinding2Example"/>
 		<compile-mxml example="/spark/other/ControllingViewportExample"/>
@@ -399,7 +399,7 @@
 		<compile-mxml example="/spark/controls/ListExample"/>
 	</target>
 	
-	<target name="compile-apache" description="comile apache examples">
+	<target name="compile-apache" description="compile apache examples">
 		<compile-mxml example="/apache/ApacheFlex4_8_0"/>
 		<compile-mxml example="/apache/ApacheFlex4_9_0"/>
 		<compile-mxml example="/apache/ApacheFlex4_10_0"/>
