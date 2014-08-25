@@ -1,4 +1,19 @@
 ------------------------------------------------
+Apache Flex Tour De Flex Component Explorer 1.1
+------------------------------------------------
+
+Changes since the version 1.0
+- Update READE and RELEASE_NOTES
+- Added some Apache Flex specific examples
+- Improved build file ant task descriptions
+- Removed broken view source URL
+- Fixed a few minor issues
+
+Bugs fixed:
+FLEX-34479 Change naming format of TourDeFlex
+FLEX-34480 If TourDeFlex is run from an untrusted location you get an error
+
+------------------------------------------------
 Apache Flex Tour De Flex Component Explorer 1.0
 ------------------------------------------------
 
