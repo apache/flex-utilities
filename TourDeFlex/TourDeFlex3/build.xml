@@ -415,6 +415,8 @@
 		<compile-mxml example="/apache/i18n/MillisecondExample"/>
 		<compile-mxml example="/apache/i18n/ScientificExample"/>
 		<compile-mxml example="/apache/i18n/NumericStepperExample"/>
+		<compile-mxml example="/apache/containers/CalloutExample"/>
+		<compile-mxml example="/apache/controls/MaskedTextInputExample"/>
 	</target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
