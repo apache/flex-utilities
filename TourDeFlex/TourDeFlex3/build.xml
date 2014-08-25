@@ -410,6 +410,11 @@
 		<compile-mxml example="/apache/formatters/PostCodeFormatterExample"/>
 		<compile-mxml example="/apache/validators/PostCodeValidatorExample"/>
 		<compile-mxml-locales example="/apache/i18n/LocaleExample"/>
+		<compile-mxml example="/apache/i18n/DateExample"/>
+		<compile-mxml example="/apache/i18n/TimeZoneExample"/>
+		<compile-mxml example="/apache/i18n/MillisecondExample"/>
+		<compile-mxml example="/apache/i18n/ScientificExample"/>
+		<compile-mxml example="/apache/i18n/NumericStepperExample"/>
 	</target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
