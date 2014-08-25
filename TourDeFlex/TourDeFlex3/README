@@ -15,7 +15,7 @@ Initial Setup Required
     it is used.
   
 ==========================================================================================
-How to build the installer using ANT (no IDE is required)
+How to build the installer using ant (no IDE is required)
 ==========================================================================================
 
 1.  On Linux or Mac un tar/gzip the source distribution:
