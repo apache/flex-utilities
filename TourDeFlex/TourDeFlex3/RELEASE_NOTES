@@ -10,8 +10,9 @@ Changes since the version 1.0
 - Fixed a few minor issues
 
 Bugs fixed:
-FLEX-34479 Change naming format of TourDeFlex
 FLEX-34480 If TourDeFlex is run from an untrusted location you get an error
+FLEX-34479 Change naming format of TourDeFlex
+FLEX-34474 TourDeFlex effects example bad styles and modifying default destination scaling
 
 ------------------------------------------------
 Apache Flex Tour De Flex Component Explorer 1.0
