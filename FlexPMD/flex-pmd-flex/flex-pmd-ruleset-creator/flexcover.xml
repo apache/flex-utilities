@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<project name="FlexPMD Flex Cover Report ANT build report utility" basedir="" default="report">
+
+	<!-- set up the build environment -->
+	<property file="build.properties" />
+	<property file="flexcover.properties" />
+	<property environment="env" />
+
+	<property name="flexpmd.version" value="1.0-RC1" />
+
+	<!-- get the hostname of the machine we're running on -->
+	<property name="env.HOSTNAME" value="${env.COMPUTERNAME}" />
+
+	<!-- include the flex target definitions -->
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_TASKS}" />
+
+	<!-- Define the FlexUnit task. -->
+	<taskdef resource="com/adobe/ac/ant/tasks/tasks.properties" classpath="${ant.lib}/FlexUnitAntTasks.jar" />
+
+	<!-- uncomment if you need to see what properties ant is picking up -->
+	<echoproperties/>
+
+	<!-- the main build target the build machine uses, build, test, report, nag -->
+	<target name="run.prepare" 
+		depends="clean,getInstrumentationMetadata,compileAndRunTests,cleanUp" 
+		description="cleans, compiles and tests the app, builds a non-release package." />
+
+	
+	<target name="report">
+		<antcall target="run.prepare">
+            <param name="testName" value="TestRunner" />
+        </antcall>
+	</target>
+	
+	<target name="run">
+		<antcall target="run.prepare">
+            <param name="testName" value="TestViewRunner" />
+        </antcall>
+	</target>
+
+	<!-- usethis target to test locally -->
+	<target name="compileAndRunTests" depends="clean,compileTest,runTest" 
+		description="compile and run the test suite and code coverage tool" />
+
+	<target name="getInstrumentationMetadata" 
+		description="compiles the app to get metadata about classes needed for code coverage" depends="clean">
+ 		<compile />
+	</target>
+
+	<target name="cleanUp" description="removes test harness and temp folder from build directory">
+		<delete file="${build}/${testAppXML}">
+		</delete>
+		<delete file="${build}/${testSWF}">
+		</delete>
+	</target>
+
+	<property name="coverageMetadata-path" location="${coverageMetadata}" />
+	<property name="coverageReport-path" location="${coverageReport}" />
+	<property name="coverageCVR-path" location="${coverageCVR}" />
+	<property name="coverageXML-path" location="${coverageXML}" />
+
+	<target name="launchCodeCoverageApp" description="launches to code coverage listener app">
+		<echo>'${coverageMetadata-path}' -output '${coverageCVR-path}' -emma-report '${coverageReport-path}'</echo>
+		<launchApp appXML="${coverageXML-path}" additionalArgs="${coverageMetadata-path} -output ${coverageCVR-path} -emma-report ${coverageReport-path}" />
+	</target>
+
+	<macrodef name="launchApp">
+		<attribute name="appXML" />
+		<attribute name="additionalArgs" />
+		<attribute name="spawn" default="true" />
+		<sequential>
+			<pathconvert property="xmlPath" dirsep="${dirSep}">
+				<path location="@{appXML}" />
+			</pathconvert>
+			<echo>launching adl with ${xmlPath}</echo>
+			<exec executable="${adl}" spawn="@{spawn}">
+				<arg line="'${xmlPath}'" />
+				<arg line="--" />
+				<arg line="@{additionalArgs}" />
+			</exec>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="compile">
+		<attribute name="srcFile" default="${src}/${mainAppMXML}" />
+		<attribute name="outputFile" default="${temp}/${mainSWF}" />
+		<sequential>
+			<mxmlc file="@{srcFile}" output="@{outputFile}" debug="${debugMode}" 
+				allow-source-path-overlap="true" show-actionscript-warnings="false" 
+				keep-generated-actionscript="false" maxmemory="1024m">
+
+				<define name="CONFIG::debugging" value="false" />
+
+				<load-config filename="${flexConfig}" />
+
+				<!-- path to our source -->
+				<source-path path-element="${src}" />
+				<source-path path-element="${src_test}" />
+				<source-path path-element="${src_locale}" />
+				<source-path path-element="${testClassPath}" />
+				<source-path path-element="${resourceBundles}" />
+				<source-path path-element="${flexUnitSrc}" />
+
+				<!-- core flex libraries -->
+				<compiler.library-path dir="${flexcover.sdk}/frameworks" append="true">
+					<include name="libs" />
+				</compiler.library-path>
+				<compiler.library-path dir="${flexcover.sdk}/frameworks/locale" append="true">
+					<include name="${LOCALE}" />
+				</compiler.library-path>
+
+				<!-- air libraries (why need to declare separate)? -->
+				<compiler.library-path dir="${flexcover.sdk}/frameworks" append="true">
+					<include name="libs/air" />
+				</compiler.library-path>
+
+				<!-- local libraries -->
+				<compiler.library-path dir="." append="true">
+					<include name="libs" />
+					<include name="${ant.lib}" />
+				</compiler.library-path>
+			</mxmlc>
+		</sequential>
+	</macrodef>
+
+
+	<!-- compile the unit tests -->
+	<target name="compileTest" description="compile the the test suite">
+		<compile srcFile="${src}/${testAppMXML}" outputFile="${build}/${testSWF}" />
+		<generateAppXML srcFile="${src}/${testAppXML}" destFile="${build}/${testAppXML}" initialContent="${testSWF}" />
+	</target>
+
+	<!-- create the application XML file -->
+	<macrodef name="generateAppXML">
+		<attribute name="srcFile" />
+		<attribute name="destFile" />
+		<attribute name="initialContent" />
+		<sequential>
+			<copy file="@{srcFile}" tofile="@{destFile}" />
+			<replace file="@{destFile}" token="${initialContentToken}" value="@{initialContent}" />
+			<echo>setting build number to: ${versionNumber}</echo>
+			<replace file="@{destFile}" token="%VERSION%" value="${versionNumber}" />
+		</sequential>
+	</macrodef>
+
+	<!-- Clears out the build directory -->
+	<target name="clean">
+		<echo message="Removing build directory contents" description="removes build related directory contents" />
+	</target>
+	
+	<target name="runTest" description="runs the test harness and coverage tool" depends="clean,compileTest">
+		<parallel timeout="120000">
+			<sequential>
+				<antcall target="launchCodeCoverageApp">
+				</antcall>
+				<sleep seconds="15" />
+				<launchApp appXML="${build}/${testAppXML}" additionalArgs="'${testOutputDir}'" spawn="no" />
+				<airflexunit reportDir="${testOutputDir}" haltonfailure="true" />
+				<echo>finished running tests </echo>
+				<waitfor>
+					<available file="${coverageCVR-path}" />
+				</waitfor>
+				<echo>found coverage CVR </echo>
+				<waitfor>
+					<available file="${coverageReport-path}" />
+				</waitfor>
+				<echo>found coverage report</echo>
+			</sequential>
+		</parallel>
+	</target>
+
+
+</project>
