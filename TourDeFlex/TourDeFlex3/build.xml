@@ -439,7 +439,8 @@
                 <include name="README" />
                 <include name="RELEASE_NOTES" />
                 <include name="build.xml" />
-                <include name="src/explorer.html" />
+            	<include name="src/favicon.ico" />
+                <include name="src/index.html" />
                 <include name="src/explorer.xml" />
                 <include name="src/AC_OETags.js" />
                 <include name="**/*.mxml" />
@@ -467,7 +468,8 @@
                 <include name="README" />
                 <include name="RELEASE_NOTES" />
                 <include name="build.xml" />
-                <include name="src/explorer.html" />
+            	<include name="src/favicon.ico" />
+                <include name="src/index.html" />
                 <include name="src/explorer.xml" />
                 <include name="src/AC_OETags.js" />
                 <include name="**/*.mxml" />
