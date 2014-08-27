@@ -12,6 +12,7 @@ Changes since the version 1.0
 Bugs fixed:
 FLEX-34500 Show total number of examples in Tour De Flex UI
 FLEX-34495 Error loading source file
+FLEX-34489 Some examples are missing all source files tab
 FLEX-34488 Add favicon to TourDeFlex
 FLEX-34483 Make logo links to Apache Flex web site
 FLEX-34480 If TourDeFlex is run from an untrusted location you get an error
