@@ -30,12 +30,17 @@
 		[Embed(source="explorer.xml", mimeType="application/octet-stream")]
 		private var XMLData:Class;
 			
+		[Bindable]
+		protected var noExamples:int = 0;
+			
 		private function init():void
 		{
 			var data:XML = XML(new XMLData());
 			
             explorerTree = XML(data.node);
             compLibTree.dataProvider = explorerTree;
+			
+			noExamples = (explorerTree..node.(hasOwnProperty("@app") && @app.length() > 0)).length();
 		}			
 
         private function treeChanged(event:Event):void
@@ -66,6 +71,8 @@
 	<mx:HBox width="100%">
 		<mx:Image source="./mx/controls/assets/ApacheFlexIcon.png" useHandCursor="true" buttonMode="true" click="gotoHome(event)" />
 		<mx:Label text="{FULL_TITLE}" fontSize="20" fontWeight="bold" />
+		<mx:Spacer width="100%" />
+		<mx:Label text="{noExamples} examples" />
 	</mx:HBox>
     <mx:HDividedBox width="100%" height="100%">
         <mx:Panel width="30%" height="100%" title="{TITLE}" dropShadowVisible="false">
