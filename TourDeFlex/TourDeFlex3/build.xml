@@ -406,6 +406,7 @@
 		<compile-mxml example="/apache/ApacheFlex4_11_0"/>
 		<compile-mxml example="/apache/ApacheFlex4_12_1"/>
 		<compile-mxml example="/apache/ApacheFlex4_13_0"/>
+		<!-- <compile-mxml example="/apache/ApacheFlex4_13_0"/> -->
 		
 		<compile-mxml example="/apache/formatters/PostCodeFormatterExample"/>
 		<compile-mxml example="/apache/validators/PostCodeValidatorExample"/>
@@ -417,6 +418,9 @@
 		<compile-mxml example="/apache/i18n/NumericStepperExample"/>
 		<compile-mxml example="/apache/containers/CalloutExample"/>
 		<compile-mxml example="/apache/controls/MaskedTextInputExample"/>
+		
+		<!-- Uncomment when Flex 4.14 is released -->
+		<!-- compile-mxml example="/apache/controls/SparkRichTextEditorExample"/-->
 	</target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">

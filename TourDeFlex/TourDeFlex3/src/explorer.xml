@@ -468,6 +468,11 @@
 			<node label="Apache Flex 4.13" app="apache/ApacheFlex4_13_0">
 				<!--  Add examples here -->
 			</node>
+			<!-- Add when Flex 4.14 is released
+			<node label="Apache Flex 4.14" app="apache/ApacheFlex4_14_0">
+				<compile-mxml label="MaskedTextInput" app="apache/controls/SparkRichTextEditorExample"/>
+			</node> 
+			 -->
 		</node>
 	</node>
 </compTree>
