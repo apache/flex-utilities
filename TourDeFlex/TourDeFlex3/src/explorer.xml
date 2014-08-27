@@ -445,32 +445,32 @@
 			</node>
 			<node label="Apache Flex 4.9" app="apache/ApacheFlex4_9_0">
 				<!--  Add more examples here -->
-				<compile-mxml label="PostCodeFormatter" app="apache/formatters/PostCodeFormatterExample"/>
-				<compile-mxml label="PostCodeValidator" app="apache/validators/PostCodeValidatorExample"/>
-				<compile-mxml label="New SDK locales" app="apache/i18n/LocaleExample"/>
+				<node label="PostCodeFormatter" app="apache/formatters/PostCodeFormatterExample"/>
+				<node label="PostCodeValidator" app="apache/validators/PostCodeValidatorExample"/>
+				<node label="New SDK locales" app="apache/i18n/LocaleExample"/>
 			</node>
 			<node label="Apache Flex 4.10" app="apache/ApacheFlex4_10_0">
 				<!--  Add more examples here -->
-				<compile-mxml label="International Dates" app="apache/i18n/DateExample"/>
-				<compile-mxml label="Millisecond Formatting" app="apache/i18n/MillisecondExample"/>
-				<compile-mxml label="NumberStepper" app="apache/i18n/NumericStepperExample"/>
-				<compile-mxml label="Scientific Notation Formatting" app="apache/i18n/ScientificExample"/>
-				<compile-mxml label="Timezone Formatting" app="apache/i18n/TimezoneExample"/>
+				<node label="International Dates" app="apache/i18n/DateExample"/>
+				<node label="Millisecond Formatting" app="apache/i18n/MillisecondExample"/>
+				<node label="NumberStepper" app="apache/i18n/NumericStepperExample"/>
+				<node label="Scientific Notation Formatting" app="apache/i18n/ScientificExample"/>
+				<node label="Timezone Formatting" app="apache/i18n/TimezoneExample"/>
 			</node>
 			<node label="Apache Flex 4.11" app="apache/ApacheFlex4_11_0">
 				<!--  Add more examples here -->
-				<compile-mxml label="Callout" app="apache/containers/CalloutExample"/>
+				<node label="Callout" app="apache/containers/CalloutExample"/>
 			</node>
 			<node label="Apache Flex 4.12" app="apache/ApacheFlex4_12_1">
 				<!--  Add more examples here -->
-				<compile-mxml label="MaskedTextInput" app="apache/controls/MaskedTextInputExample"/>
+				<node label="MaskedTextInput" app="apache/controls/MaskedTextInputExample"/>
 			</node>
 			<node label="Apache Flex 4.13" app="apache/ApacheFlex4_13_0">
 				<!--  Add examples here -->
 			</node>
 			<!-- Add when Flex 4.14 is released
 			<node label="Apache Flex 4.14" app="apache/ApacheFlex4_14_0">
-				<compile-mxml label="MaskedTextInput" app="apache/controls/SparkRichTextEditorExample"/>
+				<node label="MaskedTextInput" app="apache/controls/SparkRichTextEditorExample"/>
 			</node> 
 			 -->
 		</node>
