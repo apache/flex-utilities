@@ -238,8 +238,8 @@
 					<node label="List to Panel" app="spark/other/DragAndDrop2Example" />
 				</node>
 				<node label="Custom Components">
-					<node label="Search" app="spark/components/SearchExample" />
-					<node label="Video Player" app="spark/components/VideoPlayerExample" />
+					<node label="Search" app="spark/components/SearchExample" src="spark/components/SearchBox.as" />
+					<node label="Video Player" app="spark/components/VideoPlayerExample" src="spark/components/VideoPlayer.mxml" />
 				</node>
 				<node label="i18n">
 					<node label="Collator" app="spark/i18n/SparkCollatorExample"/>
@@ -260,9 +260,9 @@
 					<node label="Formatters" app="spark/i18n/SparkFormatterExample"/>
 				</node>	
 				<node label="Item Renderers">
-					<node label="List" app="spark/itemRenderers/ListItemRendererExample"/>
-					<node label="Scale Image" app="spark/itemRenderers/ItemRenderer1Example" />
-					<node label="3D Rotate" app="spark/itemRenderers/ItemRenderer2Example" />
+					<node label="List" app="spark/itemRenderers/ListItemRendererExample" src="spark/itemRenderers/MyListItemRenderer.mxml"/>
+					<node label="Scale Image" app="spark/itemRenderers/ItemRenderer1Example" src="spark/itemRenderers/renderers/ImageRenderer1.mxml" />
+					<node label="3D Rotate" app="spark/itemRenderers/ItemRenderer2Example" src="spark/itemRenderers/renderers/ImageRenderer2.mxml" />
 				</node>
 				<node label="Events">
 					<node label="Inline property" app="spark/events/EventExample1" />
@@ -288,11 +288,11 @@
 					<node label="ScrollBars" app="spark/other/ScrollBarsExample" />
 				</node>
 				<node label="Skinning">
-					<node label="Button With Icon" app="spark/skinning/ButtonWithIconExample"/>
-					<node label="Application" app="spark/skinning/SkinningApplication1Example"/>
-					<node label="Application" app="spark/skinning/SkinningApplication2Example"/>
-					<node label="Application" app="spark/skinning/SkinningApplication3Example"/>
-					<node label="Container" app="spark/skinning/SkinningContainerExample"/>
+					<node label="Button With Icon" app="spark/skinning/ButtonWithIconExample" src="spark/skinning/skins/CloseButtonSkin.mxml&amp;spark/skinning/skins/AddButtonSkin.mxml&amp;spark/skinning/skins/IconTextButtonSkin.mxml" />
+					<node label="Gradient Skin" app="spark/skinning/SkinningApplication1Example" src="spark/skinning/skins/GradientBackgroundAppSkin.mxml"/>
+					<node label="Background Image Skin" app="spark/skinning/SkinningApplication2Example" src="spark/skinning/skins/BackgroundImageAppSkin.mxml" />
+					<node label="Control Bar Skin" app="spark/skinning/SkinningApplication3Example" src="spark/skinning/skins/CustomControlBarAppSkin.mxml" />
+					<node label="Container Skin" app="spark/skinning/SkinningContainerExample" src="spark/skinning/skins/CustomSkinnableContainerSkin.mxml" />
 				</node>
 				<node label="Viewport">
 					<node label="Controlling Viewport" app="spark/other/ControllingViewportExample" />
