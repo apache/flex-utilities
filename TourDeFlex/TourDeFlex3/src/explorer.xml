@@ -99,7 +99,7 @@
 			</node>
 			<node label="Print Controls">
 				<node label="FlexPrintJob, PrintDataGrid" app="mx/printing/PrintDataGridExample"
-					src="mx/printing/FormPrintView.mxml&amp;printing/FormPrintHeader.mxml&amp;mx/printing/FormPrintFooter.mxml" />
+					src="mx/printing/FormPrintView.mxml&amp;mx/printing/FormPrintHeader.mxml&amp;mx/printing/FormPrintFooter.mxml" />
 			</node>
 			<node label="Validators and Formatters">
 				<node label="Validators">
