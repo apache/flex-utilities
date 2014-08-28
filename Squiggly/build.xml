@@ -1,0 +1,139 @@
+<?xml version="1.0" ?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<project name="Squiggly" default="compile" basedir=".">
+
+    <property file="${basedir}/env.properties"/>
+    <property environment="env"/>
+    <property file="${basedir}/local.properties"/>
+    <property file="${basedir}/build.properties"/>
+	
+    <property name="version" value="1.0" />
+	
+	<target name="compile" description="compile squiggly swcs and ane" depends="compile-swc,compile-ane">
+	</target>
+	
+	<target name="compile-swc" description="compile squiggly swcs">
+		<ant dir="main" />
+	</target>
+	
+	<target name="compile-ane" description="compile squiggly ane">
+		<!-- TODO may be added in a future release -->
+	</target>
+		
+	<target name="package" description="package up all source files" depends="package-dir,package-source-tar,package-source-zip,package-binary-tar,package-binary-zip">
+	</target>
+	
+	<target name="package-dir">
+		<delete dir="${basedir}/out"/>  
+		<mkdir dir="${basedir}/out"/> 
+	</target>
+		
+	<target name="package-source-tar" description="tar up all source files">     
+        <tar destfile="${basedir}/out/apache-flex-squiggly-${version}-src.tar.gz" 
+         	compression="gzip"
+            longfile="gnu">
+            <tarfileset dir="${basedir}">
+                <include name="LICENSE" />
+                <include name="NOTICE" />
+                <include name="README" />
+                <include name="RELEASE_NOTES" />
+                <include name="**/*.xml" />
+                <include name="**/*.mxml" />
+            	<include name="**/*.as" />
+            	<include name="**/*.txt" />
+            	<include name="**/*.bat" />
+            	<include name="**/*.py" />
+            	<include name="**/*.sh" />
+            	<include name="**/*.properties" />
+            	<exclude name="ane/**" />
+             </tarfileset>
+         </tar>
+	</target>
+	
+	<target name="package-source-zip" description="zip up all source files">    
+        <zip destfile="${basedir}/out/apache-flex-squiggly-${version}-src.zip">
+            <fileset dir="${basedir}">
+                <include name="LICENSE" />
+                <include name="NOTICE" />
+                <include name="README" />
+                <include name="RELEASE_NOTES" />
+                <include name="**/*.xml" />
+                <include name="**/*.mxml" />
+            	<include name="**/*.as" />
+            	<include name="**/*.txt" />
+            	<include name="**/*.bat" />
+            	<include name="**/*.py" />
+            	<include name="**/*.sh" />
+            	<include name="**/*.properties" />
+            	<exclude name="ane/**" />
+             </fileset>
+         </zip>
+	</target>
+	
+	<target name="package-binary-tar" description="tar up all source files and swcs">     
+	        <tar destfile="${basedir}/out/apache-flex-squiggly-${version}-bin.tar.gz" 
+	         	compression="gzip"
+	            longfile="gnu">
+	            <tarfileset dir="${basedir}">
+	                <include name="LICENSE" />
+	                <include name="NOTICE" />
+	                <include name="README" />
+	                <include name="RELEASE_NOTES" />
+	                <include name="**/*.xml" />
+	                <include name="**/*.mxml" />
+	            	<include name="**/*.as" />
+	            	<include name="**/*.txt" />
+	            	<include name="**/*.bat" />
+	            	<include name="**/*.py" />
+	            	<include name="**/*.sh" />
+	            	<include name="**/*.properties" />
+	                <include name="**/*.swc" />
+	            	<exclude name="ane/**" />
+	             </tarfileset>
+	         </tar>
+		</target>
+		
+		<target name="package-binary-zip" description="zip up all source files and swcs">    
+	        <zip destfile="${basedir}/out/apache-flex-squiggly-${version}-bin.zip">
+	            <fileset dir="${basedir}">
+	                <include name="LICENSE" />
+	                <include name="NOTICE" />
+	                <include name="README" />
+	                <include name="RELEASE_NOTES" />
+	                <include name="**/*.xml" />
+	                <include name="**/*.mxml" />
+	            	<include name="**/*.as" />
+	            	<include name="**/*.txt" />
+	            	<include name="**/*.bat" />
+	            	<include name="**/*.py" />
+	            	<include name="**/*.sh" />
+	            	<include name="**/*.properties" />
+	                <include name="**/*.swc" />
+	            	<exclude name="ane/**" />
+	             </fileset>
+	         </zip>
+		</target>
+   
+    <target name="clean" description="clean up">
+    	<delete>
+    		<fileset dir="${basedir}" includes="**/*.swf" />
+    	</delete>
+    </target>
+</project>
