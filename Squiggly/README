@@ -22,11 +22,11 @@ How to build the installer using ant (no IDE is required)
 
 2.  In the base directory, run:
         ant compile
-        
-3. To optionally create a release source package, run:
- 		ant package
 
-4. The compiled swcs can be found in the main/libs directory 
+3. The compiled swcs can be found in the main/libs directory 
+        
+4. To optionally create a release source package, run:
+ 		ant package
 
 5. To remove all of the compiled swcs:
  		ant clean
