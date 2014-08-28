@@ -40,7 +40,7 @@
 	<property name="COMPC.JAR" value="${FLEX_HOME}/lib/compc.jar"/>
 	<property name="ADL" value="${AIR_HOME}/bin/adl.exe"/>
     <property name="ADT.JAR" value="${AIR_HOME}/lib/adt.jar"/>
-    <property name="playerglobal.version" value="11.1" />
+    <property name="playerglobal.version" value="14.0" />
 	
     <property name="OUTPUT_DIR" value="libs"/>
     
@@ -51,40 +51,40 @@
 	<target name="compilelinguistics" depends="init">
 		<java jar="${COMPC.JAR}" fork="true" failonerror="true">
 			<arg value="-swf-version"/>
-			<arg value="13"/>
+			<arg value="25"/>
 			<arg value="+flexlib=${FLEX_HOME}/frameworks"/>
 			<arg value="-source-path"/>
-			<arg value="AdobeLinguisticUtils/src"/>
+			<arg value="LinguisticUtils/src"/>
 			<arg value="-include-sources"/>
-			<arg value="AdobeLinguisticUtils/src"/>
+			<arg value="LinguisticUtils/src"/>
 			<arg value="-output"/>
-			<arg value="${OUTPUT_DIR}/AdobeLinguisticUtils.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheFlexLinguisticUtils.swc"/>
 		</java>
 	</target>
 	
 	<target name="compileengine" depends="init">
 		<java jar="${COMPC.JAR}" fork="true" failonerror="true">
 			<arg value="-swf-version"/>
-			<arg value="13"/>
+			<arg value="25"/>
 			<arg value="+flexlib=${FLEX_HOME}/frameworks"/>
 			<arg value="-source-path"/>
-			<arg value="AdobeSpellingEngine/src"/>
+			<arg value="SpellingEngine/src"/>
 			<arg value="-include-sources"/>
-			<arg value="AdobeSpellingEngine/src"/>
+			<arg value="SpellingEngine/src"/>
 			<arg value="-output"/>
-			<arg value="${OUTPUT_DIR}/AdobeSpellingEngine.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheflexSpellingEngine.swc"/>
 		</java>
 	</target>
 
 	<target name="compileframework" depends="init">
 		<java jar="${COMPC.JAR}" fork="true" failonerror="true">
 			<arg value="-swf-version"/>
-			<arg value="13"/>
+			<arg value="25"/>
 			<arg value="+flexlib=${FLEX_HOME}/frameworks"/>
 			<arg value="-source-path"/>
-			<arg value="AdobeSpellingFramework/src"/>
+			<arg value="SpellingFramework/src"/>
 			<arg value="-include-sources"/>
-			<arg value="AdobeSpellingFramework/src"/>
+			<arg value="SpellingFramework/src"/>
 			<arg value="-external-library-path"/>
 			<arg value="${FLEX_HOME}/frameworks/libs/framework.swc"/>
 			<arg value="-external-library-path"/>
@@ -96,23 +96,23 @@
 			<arg value="-external-library-path"/>
 			<arg value="${PLAYERGLOBAL_HOME}/${playerglobal.version}/playerglobal.swc"/>
 			<arg value="-external-library-path"/>
-			<arg value="${OUTPUT_DIR}/AdobeLinguisticUtils.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheFlexLinguisticUtils.swc"/>
 			<arg value="-external-library-path"/>
-			<arg value="${OUTPUT_DIR}/AdobeSpellingEngine.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheflexSpellingEngine.swc"/>
 			<arg value="-output"/>
-			<arg value="${OUTPUT_DIR}/AdobeSpellingFramework.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheFlexSpellingFramework.swc"/>
 		</java>
 	</target>
 
 	<target name="compileui" depends="init">
 		<java jar="${COMPC.JAR}" fork="true" failonerror="true">
 			<arg value="-swf-version"/>
-			<arg value="13"/>
+			<arg value="25"/>
 			<arg value="+flexlib=${FLEX_HOME}/frameworks"/>
 			<arg value="-source-path"/>
-			<arg value="AdobeSpellingUI/src"/>
+			<arg value="SpellingUI/src"/>
 			<arg value="-include-sources"/>
-			<arg value="AdobeSpellingUI/src"/>
+			<arg value="SpellingUI/src"/>
 			<arg value="-external-library-path"/>
 			<arg value="${FLEX_HOME}/frameworks/libs/framework.swc"/>
 			<arg value="-external-library-path"/>
@@ -124,25 +124,25 @@
 			<arg value="-external-library-path"/>
 			<arg value="${PLAYERGLOBAL_HOME}/${playerglobal.version}/playerglobal.swc"/>
 			<arg value="-external-library-path"/>
-			<arg value="${OUTPUT_DIR}/AdobeLinguisticUtils.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheFlexLinguisticUtils.swc"/>
 			<arg value="-external-library-path"/>
-			<arg value="${OUTPUT_DIR}/AdobeSpellingEngine.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheFlexSpellingEngine.swc"/>
 			<arg value="-external-library-path"/>
-			<arg value="${OUTPUT_DIR}/AdobeSpellingFramework.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheFlexSpellingFramework.swc"/>
 			<arg value="-output"/>
-			<arg value="${OUTPUT_DIR}/AdobeSpellingUI.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheFlexSpellingUI.swc"/>
 		</java>
 	</target>
 
     <target name="compileuiapi" depends="init">
         <java jar="${COMPC.JAR}" fork="true" failonerror="true">
             <arg value="-swf-version"/>
-            <arg value="13"/>
+            <arg value="25"/>
             <arg value="+flexlib=${FLEX_HOME}/frameworks"/>
             <arg value="-source-path"/>
-            <arg value="AdobeSpellingUIAPI/src"/>
+            <arg value="SpellingUIAPI/src"/>
             <arg value="-include-sources"/>
-            <arg value="AdobeSpellingUIAPI/src"/>
+            <arg value="SpellingUIAPI/src"/>
 			<arg value="-external-library-path"/>
 			<arg value="${FLEX_HOME}/frameworks/libs/framework.swc"/>
 			<arg value="-external-library-path"/>
@@ -154,51 +154,51 @@
 			<arg value="-external-library-path"/>
 			<arg value="${PLAYERGLOBAL_HOME}/${playerglobal.version}/playerglobal.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeLinguisticUtils.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheflexLinguisticUtils.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingEngine.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingEngine.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingFramework.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingFramework.swc"/>
             <arg value="-output"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingUIAPI.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingUIAPI.swc"/>
         </java>
     </target>
 
     <target name="compileuitlf" depends="init">
         <java jar="${COMPC.JAR}" fork="true" failonerror="true">
             <arg value="-swf-version"/>
-            <arg value="13"/>
+            <arg value="25"/>
             <arg value="+flexlib=${FLEX_HOME}/frameworks"/>
             <arg value="-source-path"/>
-            <arg value="AdobeSpellingUITLF/src"/>
+            <arg value="SpellingUITLF/src"/>
             <arg value="-include-sources"/>
-            <arg value="AdobeSpellingUITLF/src"/>
+            <arg value="SpellingUITLF/src"/>
 			<arg value="-external-library-path"/>
 			<arg value="${FLEX_HOME}/frameworks/libs/textLayout.swc"/>
 			<arg value="-external-library-path"/>
 			<arg value="${PLAYERGLOBAL_HOME}/${playerglobal.version}/playerglobal.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeLinguisticUtils.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexLinguisticUtils.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingEngine.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingEngine.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingFramework.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingFramework.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingUI.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingUI.swc"/>
             <arg value="-output"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingUITLF.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexApacheFlexSpellingUITLF.swc"/>
         </java>
     </target>
 
     <target name="compileuiex" depends="init">
         <java jar="${COMPC.JAR}" fork="true" failonerror="true">
             <arg value="-swf-version"/>
-            <arg value="13"/>
+            <arg value="25"/>
             <arg value="+flexlib=${FLEX_HOME}/frameworks"/>
             <arg value="-source-path"/>
-            <arg value="AdobeSpellingUIEx/src"/>
+            <arg value="SpellingUIEx/src"/>
             <arg value="-include-sources"/>
-            <arg value="AdobeSpellingUIEx/src"/>
+            <arg value="SpellingUIEx/src"/>
 			<arg value="-external-library-path"/>
 			<arg value="${FLEX_HOME}/frameworks/libs/framework.swc"/>
 			<arg value="-external-library-path"/>
@@ -210,15 +210,15 @@
 			<arg value="-external-library-path"/>
 			<arg value="${PLAYERGLOBAL_HOME}/${playerglobal.version}/playerglobal.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeLinguisticUtils.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexLinguisticUtils.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingEngine.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingEngine.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingFramework.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingFramework.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingUI.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingUI.swc"/>
             <arg value="-output"/>
-            <arg value="${OUTPUT_DIR}/AdobeSpellingUIEx.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingUIEx.swc"/>
         </java>
     </target>
 
