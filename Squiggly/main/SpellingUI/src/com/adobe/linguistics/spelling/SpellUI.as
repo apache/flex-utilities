@@ -115,7 +115,7 @@ package com.adobe.linguistics.spelling
 		private var _spellingservice:SpellingService = null;
 		
 		private static var _contextMenuEntries:Object = {enable:"Enable Spelling", disable:"Disable Spelling", add:"Add to dictionary"};
-		private static var _spellingConfigUrl:String = "AdobeSpellingConfig.xml";
+		private static var _spellingConfigUrl:String = "SpellingConfig.xml";
 		
 		private static var _UITable:Dictionary= new Dictionary();
 		private static var _parentTable:Dictionary= new Dictionary();
