@@ -186,7 +186,7 @@
             <arg value="-external-library-path"/>
             <arg value="${OUTPUT_DIR}/ApacheFlexSpellingUI.swc"/>
             <arg value="-output"/>
-            <arg value="${OUTPUT_DIR}/ApacheFlexApacheFlexSpellingUITLF.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingUITLF.swc"/>
         </java>
     </target>
 
