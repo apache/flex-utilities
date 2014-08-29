@@ -24,7 +24,19 @@
     <property file="${basedir}/local.properties"/>
     <property file="${basedir}/build.properties"/>
 	
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+        	
     <property name="version" value="1.0" />
+	
+    <path id="flexTasks.path">
+        <fileset dir="${FLEX_HOME}">
+            <include name="lib/flexTasks.jar" />
+            <include name="ant/lib/flexTasks.jar" />
+        </fileset>
+    </path>
+    <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
 	
 	<target name="compile" description="compile squiggly swcs and ane" depends="compile-swc,compile-ane">
 	</target>
@@ -37,7 +49,43 @@
 		<!-- TODO may be added in a future release -->
 	</target>
 		
-	<target name="package" description="package up all source files" depends="package-dir,package-source-tar,package-source-zip,package-binary-tar,package-binary-zip">
+	<target name="package" description="package up all source files" depends="package-dir,generate-docs,package-source-tar,package-source-zip,package-binary-tar,package-binary-zip">
+	</target>
+	
+	<target name="generate-docs">
+		<!--
+		C:\flexsdk4.1\bin\asdoc" 
+		-package com.adobe.linguistics.spelling "This package providing spell checking functionality to your action script applications. This includes the core spell checking engine and the optional SpellUI class for easy integration with your existing Flex projects."
+		-package com.adobe.linguistics.spelling.ui "This package provides text highlighting related functionalities"
+		-package com.adobe.linguistics.spelling.framework "This package provides spelling service and spelling configuration related functionalities"
+		-package com.adobe.linguistics.utils "This package provides text parsing and tokenizing related classes"
+		-->
+		<asdoc output="out\docs" lenient="true" failonerror="true" warnings="false" strict="false" locale="en_US" fork="true"
+			exclude-dependencies="true"  
+			window-title="Squiggly API Documentation ${version}"
+            main-title="${version} API Reference">
+
+		    <doc-classes class="com.adobe.linguistics.spelling.SpellUI"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.SpellUIForTLF"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.HunspellDictionary"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.SpellChecker"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.UserDictionary"/>
+		    <doc-classes class="com.adobe.linguistics.utils.TextTokenizer"/>
+		    <doc-classes class="com.adobe.linguistics.utils.Token"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.framework.ResourceTable"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.framework.SpellingConfiguration"/>		    
+		    <doc-classes class="com.adobe.linguistics.spelling.framework.SpellingService"/>		    
+		    <doc-classes class="com.adobe.linguistics.spelling.ui.IHighlighter"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.ui.HaloHighlighter"/>
+			<doc-classes class="com.adobe.linguistics.spelling.ui.SparkHighlighter"/>
+			<doc-classes class="com.adobe.linguistics.spelling.ui.TLFHighlighter"/>
+	    		    
+			<compiler.source-path path-element="main/SpellingUI/src"/>
+			<compiler.source-path path-element="main/SpellingUITLF/src"/>
+			<compiler.source-path path-element="main/SpellingEngine/src"/>
+			<compiler.source-path path-element="main/LinguisticUtils/src"/>
+			<compiler.source-path path-element="main/SpellingFramework/src"/>
+		</asdoc>
 	</target>
 	
 	<target name="package-dir">
@@ -63,6 +111,11 @@
             	<include name="**/*.sh" />
             	<include name="**/*.properties" />
             	<exclude name="ane/**" />
+            	<exclude name="main/ASDocExamples/**" />
+            	<exclude name="main/Automation/**" />
+            	<exclude name="main/Data/**" />
+            	<exclude name="main/Demo/**" />
+            	<exclude name="main/Tools/**" />
              </tarfileset>
          </tar>
 	</target>
@@ -83,6 +136,11 @@
             	<include name="**/*.sh" />
             	<include name="**/*.properties" />
             	<exclude name="ane/**" />
+            	<exclude name="main/ASDocExamples/**" />
+            	<exclude name="main/Automation/**" />
+            	<exclude name="main/Data/**" />
+            	<exclude name="main/Demo/**" />
+            	<exclude name="main/Tools/**" />
              </fileset>
          </zip>
 	</target>
@@ -106,6 +164,11 @@
 	            	<include name="**/*.properties" />
 	                <include name="**/*.swc" />
 	            	<exclude name="ane/**" />
+	            	<exclude name="main/ASDocExamples/**" />
+	            	<exclude name="main/Automation/**" />
+	            	<exclude name="main/Data/**" />
+	            	<exclude name="main/Demo/**" />
+	            	<exclude name="main/Tools/**" />
 	             </tarfileset>
 	         </tar>
 		</target>
@@ -127,6 +190,11 @@
 	            	<include name="**/*.properties" />
 	                <include name="**/*.swc" />
 	            	<exclude name="ane/**" />
+	            	<exclude name="main/ASDocExamples/**" />
+	            	<exclude name="main/Automation/**" />
+	            	<exclude name="main/Data/**" />
+	            	<exclude name="main/Demo/**" />
+	            	<exclude name="main/Tools/**" />
 	             </fileset>
 	         </zip>
 		</target>
@@ -135,5 +203,6 @@
     	<delete>
     		<fileset dir="${basedir}" includes="**/*.swf" />
     	</delete>
+    	<delete dir="${basedir}/out"/> 
     </target>
 </project>
