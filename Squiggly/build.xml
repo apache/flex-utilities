@@ -53,17 +53,10 @@
 	</target>
 	
 	<target name="generate-docs" description="generate asdocs">
-		<!--
-		C:\flexsdk4.1\bin\asdoc" 
-		-package com.adobe.linguistics.spelling "This package providing spell checking functionality to your action script applications. This includes the core spell checking engine and the optional SpellUI class for easy integration with your existing Flex projects."
-		-package com.adobe.linguistics.spelling.ui "This package provides text highlighting related functionalities"
-		-package com.adobe.linguistics.spelling.framework "This package provides spelling service and spelling configuration related functionalities"
-		-package com.adobe.linguistics.utils "This package provides text parsing and tokenizing related classes"
-		-->
-		<asdoc output="out\docs" lenient="true" failonerror="true" warnings="false" strict="false" locale="en_US" fork="true"
+		<asdoc output="docs" lenient="true" failonerror="true" warnings="false" strict="false" locale="en_US" fork="true"
 			exclude-dependencies="true"  
-			window-title="Squiggly API Documentation ${version}"
-            main-title="${version} API Reference">
+			window-title="Apache Flex Squiggly API Documentation ${version}"
+            main-title="Apache Flex Squiggly API${version} API Reference">
 
 		    <doc-classes class="com.adobe.linguistics.spelling.SpellUI"/>
 		    <doc-classes class="com.adobe.linguistics.spelling.SpellUIForTLF"/>
@@ -85,6 +78,11 @@
 			<compiler.source-path path-element="main/SpellingEngine/src"/>
 			<compiler.source-path path-element="main/LinguisticUtils/src"/>
 			<compiler.source-path path-element="main/SpellingFramework/src"/>
+			
+			<package name="com.adobe.linguistics.spelling" description="This package providing spell checking functionality to your action script applications. This includes the core spell checking engine and the optional SpellUI class for easy integration with your existing Flex projects." />
+			<package name="com.adobe.linguistics.spelling.ui" description="This package provides text highlighting related functionalities." />
+			<package name="com.adobe.linguistics.spelling.framework" description="This package provides spelling service and spelling configuration related functionalities." />
+			<package name="com.adobe.linguistics.utils" description="This package provides text parsing and tokenizing related classes." />
 		</asdoc>
 	</target>
 	
@@ -110,6 +108,7 @@
             	<include name="**/*.py" />
             	<include name="**/*.sh" />
             	<include name="**/*.properties" />
+            	<include name="docs/**" />
             	<exclude name="ane/**" />
             	<exclude name="main/ASDocExamples/**" />
             	<exclude name="main/Automation/**" />
@@ -135,6 +134,7 @@
             	<include name="**/*.py" />
             	<include name="**/*.sh" />
             	<include name="**/*.properties" />
+            	<include name="docs/**" />
             	<exclude name="ane/**" />
             	<exclude name="main/ASDocExamples/**" />
             	<exclude name="main/Automation/**" />
@@ -162,6 +162,7 @@
 	            	<include name="**/*.py" />
 	            	<include name="**/*.sh" />
 	            	<include name="**/*.properties" />
+	            	<include name="docs/**" />
 	                <include name="**/*.swc" />
 	            	<exclude name="ane/**" />
 	            	<exclude name="main/ASDocExamples/**" />
@@ -188,6 +189,7 @@
 	            	<include name="**/*.py" />
 	            	<include name="**/*.sh" />
 	            	<include name="**/*.properties" />
+	            	<include name="docs/**" />
 	                <include name="**/*.swc" />
 	            	<exclude name="ane/**" />
 	            	<exclude name="main/ASDocExamples/**" />
