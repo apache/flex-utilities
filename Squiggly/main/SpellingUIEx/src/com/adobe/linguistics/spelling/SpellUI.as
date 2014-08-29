@@ -102,7 +102,7 @@ package com.adobe.linguistics.spelling
 		private var _spellingservice:SpellingService = null;
 
 		private static var _contextMenuEntries:Object = {enable:"Enable Spelling", disable:"Disable Spelling", add:"Add to dictionary"};		
-		private static var _spellingConfigUrl:String = "AdobeSpellingConfig.xml";
+		private static var _spellingConfigUrl:String = "SpellingConfig.xml";
 		private static var _UITable:Dictionary= new Dictionary();
 		private static var _parentTable:Dictionary= new Dictionary();
 		private static var _cacheDictTable:Dictionary= new Dictionary();
@@ -171,7 +171,7 @@ package com.adobe.linguistics.spelling
 		}
 		
 		/**
-		 * The URL for the spelling config xml file. If you haven't specify it, the default URL is [applicationDirectory]/AdobeSpellingConfig.xml. Note that we don't validate the URL, if the file doesn't exist, you will get an error when calling enableSpelling() function.
+		 * The URL for the spelling config xml file. If you haven't specify it, the default URL is [applicationDirectory]/SpellingConfig.xml. Note that we don't validate the URL, if the file doesn't exist, you will get an error when calling enableSpelling() function.
 		 *
 		 * @example The following code customize the spellingConfigUrl before enabling spell checking.
 		 * <listing version="3.0">
