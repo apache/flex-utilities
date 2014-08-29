@@ -52,7 +52,7 @@
 	<target name="package" description="package up all source files" depends="package-dir,generate-docs,package-source-tar,package-source-zip,package-binary-tar,package-binary-zip">
 	</target>
 	
-	<target name="generate-docs">
+	<target name="generate-docs" description="generate asdocs">
 		<!--
 		C:\flexsdk4.1\bin\asdoc" 
 		-package com.adobe.linguistics.spelling "This package providing spell checking functionality to your action script applications. This includes the core spell checking engine and the optional SpellUI class for easy integration with your existing Flex projects."
