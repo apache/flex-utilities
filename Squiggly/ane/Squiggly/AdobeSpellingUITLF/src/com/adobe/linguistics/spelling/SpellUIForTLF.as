@@ -79,12 +79,12 @@ package com.adobe.linguistics.spelling
 	 * </ul>
 	 * 
 	 * 
-	 * <p><code>SpellUIForTLF</code> uses the AdobeSpellingConfig.xml file to lookup corresponding resource files for a given locale.
-	 * The default location of AdobeSpellingConfig.xml is [yourapplicationDirectory]/AdobeSpellingConfig.xml. This could be customized using 
+	 * <p><code>SpellUIForTLF</code> uses the SpellingConfig.xml file to lookup corresponding resource files for a given locale.
+	 * The default location of SpellingConfig.xml is [yourapplicationDirectory]/SpellingConfig.xml. This could be customized using 
 	 * <code>spellingConfigUrl</code> property of <code>SpellUI</code>. You don't have to change the content of this file. However,
 	 * if you want to add a new language, to use an alternative dictionary or to customize the location for your dictionaries, you can modify it. 
 	 * There's an known issue with IIS web server when loading dictionary files with unknown extensions, in which case you can modify the XML to work around it.</p><p>
-	 * A sample AdobeSpellingConfig.xml will look as follows:
+	 * A sample SpellingConfig.xml will look as follows:
 	 * <listing version="3.0">
 	 * <pre class="preWrapper">
 	 * &lt;?xml version=&quot;1.0&quot; encoding='UTF-8'?&gt;
@@ -132,7 +132,7 @@ package com.adobe.linguistics.spelling
 		private var _spellingservice:SpellingService = null;
 
 		private static var _contextMenuEntries:Object = {enable:"Enable Spelling", disable:"Disable Spelling", add:"Add to dictionary"};		
-		private static var _spellingConfigUrl:String = "AdobeSpellingConfig.xml";
+		private static var _spellingConfigUrl:String = "SpellingConfig.xml";
 		private static var _UITable:Dictionary= new Dictionary();
 		private static var _parentTable:Dictionary= new Dictionary();
 		private static var _cacheDictTable:Dictionary= new Dictionary();
@@ -149,8 +149,8 @@ package com.adobe.linguistics.spelling
 		 * right click on a misspelled word to see the suggestions in the context menu.
 		 * 
 		 * @param comp	A TLF TextFlow object
-		 * @param lang	The language code used for spell checking, for example <code>en_US</code>. it will lookup the AdobeSpellingConfig.xml file to access corresponding resource files.
-		 * AdobeSpellingConfig.xml should located at the same folder as your main mxml source file. You don't have to change the content of this file. However,
+		 * @param lang	The language code used for spell checking, for example <code>en_US</code>. it will lookup the SpellingConfig.xml file to access corresponding resource files.
+		 * SpellingConfig.xml should located at the same folder as your main mxml source file. You don't have to change the content of this file. However,
 		 * if you want to add a new language, to use an alternative dictionary or to customize the location for your dictionaries, you can modify it. There's an known issue with
 		 * IIS web server when loading dictionary files with unknown extensions, in which case you can modify the XML to work around it.
 		 * 
@@ -215,7 +215,7 @@ package com.adobe.linguistics.spelling
 		}
 		
 		/**
-		 * The URL for the spelling config xml file. If you haven't specify it, the default URL is [applicationDirectory]/AdobeSpellingConfig.xml. Note that we don't validate the URL, if the file doesn't exist, you will get an error when calling enableSpelling() function.
+		 * The URL for the spelling config xml file. If you haven't specify it, the default URL is [applicationDirectory]/SpellingConfig.xml. Note that we don't validate the URL, if the file doesn't exist, you will get an error when calling enableSpelling() function.
 		 *
 		 * @example The following code customize the spellingConfigUrl before enabling spell checking.
 		 * <listing version="3.0">
