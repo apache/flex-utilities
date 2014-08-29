@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.apache</groupId>
+        <artifactId>apache</artifactId>
+        <version>14</version>
+    </parent>
+
+    <groupId>org.apache.flex</groupId>
+    <artifactId>squiggly</artifactId>
+    <version>@VERSION@</version>
+    <packaging>pom</packaging>
+
+    <name>Apache Flex Squiggly</name>
+    <description>The Apache Flex Squiggly is a ActionScript spell checking library.</description>
+
+    <mailingLists>
+        <mailingList>
+            <name>Apache Flex User List</name>
+            <subscribe>users-subscribe@flex.apache.org</subscribe>
+            <unsubscribe>users-unsubscribe@flex.apache.org</unsubscribe>
+            <post>users@flex.apache.org</post>
+            <archive>http://mail-archives.apache.org/mod_mbox/flex-users/</archive>
+        </mailingList>
+    </mailingLists>
+
+    <scm>
+        <connection>scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</connection>
+        <developerConnection>scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</developerConnection>
+        <url>https://git-wip-us.apache.org/repos/asf/flex-utilities.git</url>
+    </scm>
+
+</project>
