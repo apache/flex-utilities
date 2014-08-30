@@ -17,7 +17,7 @@
   limitations under the License.
 
 -->
-<project default="install">
+<project default="install" basedir=".">
 
     <property name="version" value="1.0"/>
 
@@ -42,9 +42,7 @@
         <equals arg1="${type}" arg2="RELEASE"/>
     </condition>
 
-    <import file="build.xml"/>
-
-    <target name="package" depends="test">
+    <target name="package">
         <echo message="Preparing Maven artifacts vor version ${maven.version} ..."/>
 
         <delete dir="generated/maven"/>
@@ -193,7 +191,7 @@
 
     <target name="-pack-maven-artifact">
         <echo message="Packing module ${moduleName} as Maven artifact ${artifactName}"/>
-        <copy file="main/maven/${artifactName}.pom" tofile="generated/maven/${artifactName}.pom">
+        <copy file="maven/${artifactName}.pom" tofile="generated/maven/${artifactName}.pom">
             <filterchain>
                 <tokenfilter>
                     <replacestring from="@VERSION@" to="${maven.version}"/>
