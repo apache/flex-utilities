@@ -27,10 +27,10 @@ public class EventMissingCloneFunctionRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.SearchBarEvent.as", new ViolationPosition[]
-       { new ViolationPosition( 35 ) } ),
+       { new ViolationPosition( 23 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.event.FirstCustomEvent.as",
                                          new ViolationPosition[]
-                                         { new ViolationPosition( 33 ) } ) };
+                                         { new ViolationPosition( 21 ) } ) };
    }
 
    @Override

@@ -27,10 +27,10 @@ public class UpdateChildrenNumberInUpdateDisplayListRuleTest extends AbstractAst
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "BadComponent.as", new ViolationPosition[]
-      { new ViolationPosition( 42 ),
-                  new ViolationPosition( 43 ),
-                  new ViolationPosition( 44 ),
-                  new ViolationPosition( 45 ) } ) };
+      { new ViolationPosition( 30 ),
+                  new ViolationPosition( 31 ),
+                  new ViolationPosition( 32 ),
+                  new ViolationPosition( 33 ) } ) };
    }
 
    @Override

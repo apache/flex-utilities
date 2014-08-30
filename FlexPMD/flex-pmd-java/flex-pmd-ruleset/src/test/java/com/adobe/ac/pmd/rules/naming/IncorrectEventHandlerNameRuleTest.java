@@ -27,16 +27,16 @@ public class IncorrectEventHandlerNameRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Duane.mxml", new ViolationPosition[]
-       { new ViolationPosition( 71 ) } ),
+       { new ViolationPosition( 57 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.MyCairngormCommand.as", new ViolationPosition[]
-                  { new ViolationPosition( 35 ) } ),
+                  { new ViolationPosition( 23 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.NestedSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 35 ) } ),
+                  { new ViolationPosition( 23 ) } ),
                   new ExpectedViolation( "parsley.InaccessibleMetaData.as", new ViolationPosition[]
-                  { new ViolationPosition( 54 ),
-                              new ViolationPosition( 60 ) } ),
+                  { new ViolationPosition( 42 ),
+                              new ViolationPosition( 48 ) } ),
                   new ExpectedViolation( "Sorted.as", new ViolationPosition[]
-                  { new ViolationPosition( 71 ) } ) };
+                  { new ViolationPosition( 59 ) } ) };
    }
 
    @Override

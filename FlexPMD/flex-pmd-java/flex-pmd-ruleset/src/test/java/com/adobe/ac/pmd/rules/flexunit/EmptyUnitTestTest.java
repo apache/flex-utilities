@@ -27,10 +27,10 @@ public class EmptyUnitTestTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "flexunit.RaoulTest.as", new ViolationPosition[]
-       { new ViolationPosition( 54 ),
-                   new ViolationPosition( 60 ) } ),
+       { new ViolationPosition( 42 ),
+                   new ViolationPosition( 48 ) } ),
                   new ExpectedViolation( "flexunit.RulesetTest.as", new ViolationPosition[]
-                  { new ViolationPosition( 48 ) } ) };
+                  { new ViolationPosition( 36 ) } ) };
    }
 
    @Override

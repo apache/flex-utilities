@@ -27,9 +27,9 @@ public class MessageInterceptorSignatureRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "parsley.MessageInterceptorSignature.as", new ViolationPosition[]
-      { new ViolationPosition( 42, 42 ),
-                  new ViolationPosition( 47, 47 ),
-                  new ViolationPosition( 53, 53 ) } ) };
+      { new ViolationPosition( 30, 30 ),
+                  new ViolationPosition( 35, 35 ),
+                  new ViolationPosition( 41, 41 ) } ) };
    }
 
    @Override

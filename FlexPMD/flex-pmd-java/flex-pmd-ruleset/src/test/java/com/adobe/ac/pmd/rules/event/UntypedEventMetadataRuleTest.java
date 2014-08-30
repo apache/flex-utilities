@@ -27,7 +27,7 @@ public class UntypedEventMetadataRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "UnboundMetadata.as", new ViolationPosition[]
-      { new ViolationPosition( 39 ) } ) };
+      { new ViolationPosition( 27 ) } ) };
    }
 
    @Override

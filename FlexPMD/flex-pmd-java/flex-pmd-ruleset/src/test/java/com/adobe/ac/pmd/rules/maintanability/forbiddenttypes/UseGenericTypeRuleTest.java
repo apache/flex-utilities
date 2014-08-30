@@ -30,11 +30,11 @@ public class UseGenericTypeRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "GenericType.as", new ViolationPosition[]
-      { new ViolationPosition( 39 ),
-                  new ViolationPosition( 46 ),
-                  new ViolationPosition( 35 ),
-                  new ViolationPosition( 36 ),
-                  new ViolationPosition( 37 ) } ) };
+      { new ViolationPosition( 27 ),
+                  new ViolationPosition( 34 ),
+                  new ViolationPosition( 23 ),
+                  new ViolationPosition( 24 ),
+                  new ViolationPosition( 25 ) } ) };
    }
 
    @Override

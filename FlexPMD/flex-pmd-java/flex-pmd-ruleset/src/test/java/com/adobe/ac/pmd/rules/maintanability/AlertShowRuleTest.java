@@ -25,13 +25,13 @@ public class AlertShowRuleTest extends AbstractAstFlexRuleTest
    public static final ExpectedViolation[] VIOLATING_FILES = new ExpectedViolation[]
                                                            { new ExpectedViolation( "flexpmd114.a.Test.as",
                                                                                     new ViolationPosition[]
-                                                                                    { new ViolationPosition( 43 ) } ),
+                                                                                    { new ViolationPosition( 31 ) } ),
                new ExpectedViolation( "flexpmd114.b.Test.as", new ViolationPosition[]
-               { new ViolationPosition( 43 ) } ),
+               { new ViolationPosition( 31 ) } ),
                new ExpectedViolation( "flexpmd114.c.Test.as", new ViolationPosition[]
-               { new ViolationPosition( 43 ) } ),
+               { new ViolationPosition( 31 ) } ),
                new ExpectedViolation( "com.adobe.ac.ncss.ConfigProxy.as", new ViolationPosition[]
-               { new ViolationPosition( 48 ) } )          };
+               { new ViolationPosition( 36 ) } )          };
 
    @Override
    protected ExpectedViolation[] getExpectedViolatingFiles()

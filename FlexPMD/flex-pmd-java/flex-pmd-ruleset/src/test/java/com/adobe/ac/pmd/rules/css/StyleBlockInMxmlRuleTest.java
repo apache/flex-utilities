@@ -27,7 +27,7 @@ public class StyleBlockInMxmlRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "Main.mxml", new ViolationPosition[]
-      { new ViolationPosition( 52 ) } ) };
+      { new ViolationPosition( 38 ) } ) };
    }
 
    @Override

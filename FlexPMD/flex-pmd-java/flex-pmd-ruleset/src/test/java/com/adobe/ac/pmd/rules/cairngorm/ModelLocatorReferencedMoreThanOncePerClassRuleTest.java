@@ -27,7 +27,7 @@ public class ModelLocatorReferencedMoreThanOncePerClassRuleTest extends
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "UnboundMetadata.as", new ViolationPosition[]
-      { new ViolationPosition( 50 ) } ) };
+      { new ViolationPosition( 38 ) } ) };
    }
 
    @Override

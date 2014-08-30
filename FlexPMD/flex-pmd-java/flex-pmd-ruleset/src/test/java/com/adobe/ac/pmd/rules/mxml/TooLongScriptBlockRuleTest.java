@@ -33,13 +33,13 @@ public class TooLongScriptBlockRuleTest extends AbstractFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Duane.mxml", new ViolationPosition[]
-       { new ViolationPosition( 42, 142 ) } ),
+       { new ViolationPosition( 28, 128 ) } ),
                   new ExpectedViolation( "bug.FlexPMD233b.mxml", new ViolationPosition[]
-                  { new ViolationPosition( 63, 143 ) } ),
+                  { new ViolationPosition( 49, 129 ) } ),
                   new ExpectedViolation( "DeleteButtonRenderer.mxml", new ViolationPosition[]
-                  { new ViolationPosition( 49, 103 ) } ),
+                  { new ViolationPosition( 35, 89 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.mxml.IterationsList.mxml",
                                          new ViolationPosition[]
-                                         { new ViolationPosition( 40, 94 ) } ) };
+                                         { new ViolationPosition( 26, 80 ) } ) };
    }
 }

@@ -27,7 +27,7 @@ public class InsecureExactSettingsRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Security.as", new ViolationPosition[]
-      { new ViolationPosition( 41 ) } ) };
+      { new ViolationPosition( 29 ) } ) };
    }
 
    @Override

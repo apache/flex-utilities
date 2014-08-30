@@ -27,7 +27,7 @@ public class DynamicClassRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.event.DynamicCustomEvent.as", new ViolationPosition[]
-      { new ViolationPosition( 33 ) } ) };
+      { new ViolationPosition( 21 ) } ) };
    }
 
    @Override

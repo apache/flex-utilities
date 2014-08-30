@@ -27,9 +27,9 @@ public class UselessOverridenFunctionRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "GoodComponent.as", new ViolationPosition[]
-       { new ViolationPosition( 38 ) } ),
+       { new ViolationPosition( 26 ) } ),
                   new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 138 ) } ) };
+                  { new ViolationPosition( 126 ) } ) };
    }
 
    @Override

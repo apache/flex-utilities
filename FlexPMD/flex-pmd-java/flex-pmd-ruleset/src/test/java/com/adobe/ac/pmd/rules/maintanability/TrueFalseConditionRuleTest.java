@@ -27,25 +27,25 @@ public class TrueFalseConditionRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-       { new ViolationPosition( 574 ),
-                   new ViolationPosition( 576 ),
-                   new ViolationPosition( 578 ),
-                   new ViolationPosition( 584 ) } ),
+       { new ViolationPosition( 557 ),
+                   new ViolationPosition( 559 ),
+                   new ViolationPosition( 561 ),
+                   new ViolationPosition( 567 ) } ),//3rdVialoation
                   new ExpectedViolation( "Looping.as", new ViolationPosition[]
-                  { new ViolationPosition( 44 ),
-                              new ViolationPosition( 57 ),
-                              new ViolationPosition( 66 ),
-                              new ViolationPosition( 69 ) } ),
+                  { new ViolationPosition( 32 ),
+                              new ViolationPosition( 45 ),
+                              new ViolationPosition( 54 ),
+                              new ViolationPosition( 57 ) } ),
                   new ExpectedViolation( "RadonDataGrid.as", new ViolationPosition[]
-                  { new ViolationPosition( 63 ),
-                              new ViolationPosition( 194 ) } ),
+                  { new ViolationPosition( 51 ),
+                              new ViolationPosition( 182 ) } ),
                   new ExpectedViolation( "bug.FlexPMD181.as", new ViolationPosition[]
-                  { new ViolationPosition( 2222 ) } ),
+                  { new ViolationPosition( 2210 ) } ),
                   new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 106 ),
-                              new ViolationPosition( 113 ) } ),
+                  { new ViolationPosition( 94 ),
+                              new ViolationPosition( 101 ) } ),
                   new ExpectedViolation( "com.adobe.ac.AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 59 ) } ) };
+                  { new ViolationPosition( 47 ) } ) };
    }
 
    @Override

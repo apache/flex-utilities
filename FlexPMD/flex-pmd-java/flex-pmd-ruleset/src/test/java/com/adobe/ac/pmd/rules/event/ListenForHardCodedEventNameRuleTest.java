@@ -27,7 +27,7 @@ public class ListenForHardCodedEventNameRuleTest extends AbstractRegExpBasedRule
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-      { new ViolationPosition( 109 ) } ) };
+      { new ViolationPosition( 97 ) } ) };
    }
 
    @Override

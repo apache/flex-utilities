@@ -27,9 +27,9 @@ public class UnboundTypeInMetadataRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Nico.as", new ViolationPosition[]
-       { new ViolationPosition( 36 ) } ),
+       { new ViolationPosition( 24 ) } ),
                   new ExpectedViolation( "UnboundMetadata.as", new ViolationPosition[]
-                  { new ViolationPosition( 38 ) } ) };
+                  { new ViolationPosition( 26 ) } ) };
    }
 
    @Override

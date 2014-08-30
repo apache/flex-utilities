@@ -22,6 +22,12 @@ limitations under the License.
 
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.apache</groupId>
+        <artifactId>apache</artifactId>
+        <version>14</version>
+    </parent>
+
     <groupId>org.apache.flex.pmd</groupId>
 	<artifactId>flex-pmd</artifactId>
     <version>1.3-SNAPSHOT</version>
@@ -35,47 +41,23 @@ limitations under the License.
 	low-level code audits, so that consultants can focus on higher level architectural issues. 
 	It ended up to be rather advanced anti-patterns detector.</description>
 
-	<!--distributionManagement>
-		<site>
-			<id>flexpmd_mvn_site</id>
-			<url>${source.local.path}/site/</url>
-		</site>
-		<repository>
-			<id>flexpmd_mvn_repository</id>
-			<name>Adobe OSS Repository</name>
-			<url>${source.local.path}/maven-repository/release</url>
-		</repository>
-		<snapshotRepository>
-			<id>flexpmd_mvn_repository_snapshot</id>
-			<name>Adobe OSS Snapshot Repository</name>
-			<url>${source.local.path}/maven-repository/snapshot</url>
-		</snapshotRepository>
-	</distributionManagement-->
+    <mailingLists>
+        <mailingList>
+            <name>Apache Flex User List</name>
+            <subscribe>users-subscribe@flex.apache.org</subscribe>
+            <unsubscribe>users-unsubscribe@flex.apache.org</unsubscribe>
+            <post>users@flex.apache.org</post>
+            <archive>http://mail-archives.apache.org/mod_mbox/flex-users/</archive>
+        </mailingList>
+    </mailingLists>
 
-	<!--issueManagement>
-		<system>JIRA</system>
-		<url>https://bugs.adobe.com/jira/browse/FLEXPMD</url>
-	</issueManagement-->
+    <scm>
+        <connection>scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</connection>
+        <developerConnection>scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</developerConnection>
+        <url>https://git-wip-us.apache.org/repos/asf/flex-utilities.git</url>
+    </scm>
 
-	<!--licenses>
-		<license>
-			<name>BSD</name>
-			<url>http://www.freebsd.org/copyright/license.html</url>
-		</license>
-	</licenses-->
-
-	<!--scm>
-		<connection>scm:svn:http://opensource.adobe.com/svn/opensource/flexpmd/trunk</connection>
-		<developerConnection>scm:svn:http://opensource.adobe.com/svn/opensource/flexpmd/trunk</developerConnection>
-		<url>scm:svn:http://opensource.adobe.com/svn/opensource/flexpmd/trunk</url>
-	</scm-->
-
-	<!--organization>
-		<name>Adobe Systems Incorporated</name>
-		<url>http://www.adobe.com</url>
-	</organization-->
-
-	<properties>
+    <properties>
 		<!-- Project properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<source.url>http://opensource.adobe.com/svn/opensource/flexpmd</source.url>
@@ -115,7 +97,6 @@ limitations under the License.
 		<flex-mojos-plugin.version>7.1.0-SNAPSHOT</flex-mojos-plugin.version>
 		<ant-run-plugin.version>1.2</ant-run-plugin.version>
 		<maven-dependency-plugin.version>2.0</maven-dependency-plugin.version>
-
 	</properties>
 
 	<developers>
@@ -230,7 +211,6 @@ limitations under the License.
 	</modules>
 
 	<build>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -247,7 +227,6 @@ limitations under the License.
 		</pluginManagement>
 
 		<plugins>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
@@ -346,98 +325,7 @@ limitations under the License.
 				</executions>
 			</plugin>
 		</plugins>
-
 	</build>
-
-	<!--repositories>
-		<repository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2/</url>
-		</repository>
-		<repository>
-			<id>central</id>
-			<name>maven-central</name>
-			<url>http://repo1.maven.org/maven2</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>dist.codehaus.org</id>
-			<layout>legacy</layout>
-			<url>http://dist.codehaus.org/</url>
-		</repository>
-		<repository>
-			<id>apache</id>
-			<name>Apache repository</name>
-			<layout>legacy</layout>
-			<url>http://cvs.apache.org/repository/</url>
-		</repository>
-		<repository>
-			<id>flex-mojos</id>
-			<url>http://repository.sonatype.org/content/groups/flexgroup</url>
-			<snapshots>
-				<enabled>false</enabled>
-				<checksumPolicy>ignore</checksumPolicy>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-				<checksumPolicy>ignore</checksumPolicy>
-			</releases>
-		</repository>
-		<repository>
-			<id>nexus.codehaus</id>
-			<name>Nexus Codehaus</name>
-			<url>https://nexus.codehaus.org/content/repositories/releases</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>dist.codehaus.org</id>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<name>XDoclet central repository on codehaus</name>
-			<url>http://dist.codehaus.org</url>
-			<layout>legacy</layout>
-		</pluginRepository>
-		<pluginRepository>
-			<id>repository.codehaus.org</id>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<name>Central repository on codehaus</name>
-			<url>http://repository.codehaus.org</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>mc-release</id>
-			<name>Local Maven repository of releases</name>
-			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories-->
 
 	<reporting>
 		<plugins>

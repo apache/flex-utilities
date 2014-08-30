@@ -27,18 +27,18 @@ public class EmptyIfStmtRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Duane.mxml", new ViolationPosition[]
-       { new ViolationPosition( 91 ),
-                   new ViolationPosition( 87 ),
-                   new ViolationPosition( 83 ) } ),
+       { new ViolationPosition( 77 ),
+                   new ViolationPosition( 73 ),
+                   new ViolationPosition( 69 ) } ),
                   new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-                  { new ViolationPosition( 578 ),
-                              new ViolationPosition( 584 ) } ),
+                  { new ViolationPosition( 561 ),
+                              new ViolationPosition( 567 ) } ),
                   new ExpectedViolation( "RadonDataGrid.as", new ViolationPosition[]
-                  { new ViolationPosition( 63 ),
-                              new ViolationPosition( 190 ) } ),
+                  { new ViolationPosition( 51 ),
+                              new ViolationPosition( 178 ) } ),
                   new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 106 ),
-                              new ViolationPosition( 113 ) } ) };
+                  { new ViolationPosition( 94 ),
+                              new ViolationPosition( 101 ) } ) };
    }
 
    @Override

@@ -27,10 +27,10 @@ public class DynamicFiltersUsedInPopupTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "filters.MyPopup.as", new ViolationPosition[]
-       { new ViolationPosition( 37 ) } ),
+       { new ViolationPosition( 25 ) } ),
                   new ExpectedViolation( "filters.MyPopup.mxml", new ViolationPosition[]
-                  { new ViolationPosition( 41 ),
-                              new ViolationPosition( 44 ) } ) };
+                  { new ViolationPosition( 27 ),
+                              new ViolationPosition( 30 ) } ) };
    }
 
    @Override

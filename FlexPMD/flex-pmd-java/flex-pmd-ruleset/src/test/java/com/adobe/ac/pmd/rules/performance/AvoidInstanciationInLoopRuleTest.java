@@ -27,19 +27,19 @@ public class AvoidInstanciationInLoopRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-       { new ViolationPosition( 255 ),
-                   new ViolationPosition( 282 ),
-                   new ViolationPosition( 289 ) } ),
+       { new ViolationPosition( 238 ),
+                   new ViolationPosition( 265 ),
+                   new ViolationPosition( 272 ) } ),
                   new ExpectedViolation( "Looping.as", new ViolationPosition[]
-                  { new ViolationPosition( 43 ),
-                              new ViolationPosition( 46 ),
-                              new ViolationPosition( 50 ),
+                  { new ViolationPosition( 31 ),
+                              new ViolationPosition( 34 ),
+                              new ViolationPosition( 38 ),
+                              new ViolationPosition( 44 ),
+                              new ViolationPosition( 47 ),
+                              new ViolationPosition( 51 ),
                               new ViolationPosition( 56 ),
                               new ViolationPosition( 59 ),
-                              new ViolationPosition( 63 ),
-                              new ViolationPosition( 68 ),
-                              new ViolationPosition( 71 ),
-                              new ViolationPosition( 75 ) } ) };
+                              new ViolationPosition( 63 ) } ) };
    }
 
    @Override

@@ -27,7 +27,7 @@ public class RedundantMethodAttributeRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "parsley.RedundantMethodAttribute.as", new ViolationPosition[]
-      { new ViolationPosition( 41, 41 ) } ) };
+      { new ViolationPosition( 29, 29 ) } ) };
    }
 
    @Override

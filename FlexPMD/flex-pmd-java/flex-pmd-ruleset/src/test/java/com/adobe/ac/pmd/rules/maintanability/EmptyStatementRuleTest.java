@@ -27,11 +27,11 @@ public class EmptyStatementRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-       { new ViolationPosition( 113 ) } ),
+       { new ViolationPosition( 101 ) } ),
                   new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-                  { new ViolationPosition( 569 ) } ),
+                  { new ViolationPosition( 552 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.LongSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 114 ) } ) };
+                  { new ViolationPosition( 102 ) } ) };
    }
 
    @Override

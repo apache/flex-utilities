@@ -27,8 +27,8 @@ public class AllowInsecureDomainRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Security.as", new ViolationPosition[]
-      { new ViolationPosition( 39 ),
-                  new ViolationPosition( 40 ) } ) };
+      { new ViolationPosition( 27 ),
+                  new ViolationPosition( 28 ) } ) };
    }
 
    @Override

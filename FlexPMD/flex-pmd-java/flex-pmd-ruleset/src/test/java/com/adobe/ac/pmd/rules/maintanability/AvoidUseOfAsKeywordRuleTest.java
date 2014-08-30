@@ -64,11 +64,11 @@ public class AvoidUseOfAsKeywordRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "LongSwitch.as", new ViolationPosition[]
-       { new ViolationPosition( 60 ),
-                   new ViolationPosition( 61 ) } ),
+       { new ViolationPosition( 48 ),
+                   new ViolationPosition( 49 ) } ),
                   new ExpectedViolation( "NestedSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 50 ),
-                              new ViolationPosition( 51 ) } ) };
+                  { new ViolationPosition( 38 ),
+                              new ViolationPosition( 39 ) } ) };
    }
 
    @Override

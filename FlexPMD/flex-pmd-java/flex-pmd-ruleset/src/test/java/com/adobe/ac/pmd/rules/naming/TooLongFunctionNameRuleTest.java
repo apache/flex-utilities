@@ -27,7 +27,7 @@ public class TooLongFunctionNameRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "flexunit.RulesetTest.as", new ViolationPosition[]
-      { new ViolationPosition( 53 ) } ) };
+      { new ViolationPosition( 41 ) } ) };
    }
 
    @Override

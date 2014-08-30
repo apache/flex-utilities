@@ -27,7 +27,7 @@ public class PropertyHiddenByLocalVariableRuleTest extends AbstractAstFlexRuleTe
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.VoidConstructor.as", new ViolationPosition[]
-      { new ViolationPosition( 40 ) } ) };
+      { new ViolationPosition( 28 ) } ) };
    }
 
    @Override

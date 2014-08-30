@@ -28,7 +28,7 @@ public class UseDictionaryTypeRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "Responder.as", new ViolationPosition[]
-      { new ViolationPosition( 36 ) } ) };
+      { new ViolationPosition( 24 ) } ) };
    }
 
    @Override

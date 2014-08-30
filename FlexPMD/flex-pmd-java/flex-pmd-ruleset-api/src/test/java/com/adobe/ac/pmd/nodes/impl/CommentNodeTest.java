@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import net.sourceforge.pmd.PMDException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.adobe.ac.pmd.FlexPmdTestBase;
@@ -27,6 +28,7 @@ import com.adobe.ac.pmd.files.FileSetUtils;
 import com.adobe.ac.pmd.nodes.IPackage;
 import com.adobe.ac.pmd.parser.IParserNode;
 
+@Ignore("This test requires test-data that was not donated to Apache")
 public class CommentNodeTest extends FlexPmdTestBase
 {
    private final IPackage flexPMD60Package;
@@ -43,7 +45,7 @@ public class CommentNodeTest extends FlexPmdTestBase
    {
       assertNotNull( flexPMD60Package.getClassNode().getAsDoc().getStringValue() );
 
-      assertEquals( "/**   * AsDoc class   */",
+      assertEquals( "/** * AsDoc class */",
                     flexPMD60Package.getClassNode()
                                     .getAsDoc()
                                     .getStringValue()
@@ -59,7 +61,7 @@ public class CommentNodeTest extends FlexPmdTestBase
 
       assertNotNull( flexPMD60Package.getClassNode().getMultiLinesComment().get( 0 ) );
 
-      assertEquals( "/*   * comment   */",
+      assertEquals( "/* * comment */",
                     flexPMD60Package.getClassNode()
                                     .getMultiLinesComment()
                                     .get( 0 )
@@ -77,7 +79,7 @@ public class CommentNodeTest extends FlexPmdTestBase
    {
       assertNotNull( flexPMD60Package.getClassNode().getAttributes().get( 0 ).getAsDoc() );
 
-      assertEquals( "/**    * AsDoc attribute    */",
+      assertEquals( "/**   * AsDoc attribute   */",
                     flexPMD60Package.getClassNode()
                                     .getAttributes()
                                     .get( 0 )
@@ -97,23 +99,20 @@ public class CommentNodeTest extends FlexPmdTestBase
    {
       assertNotNull( flexPMD60Package.getClassNode().getFunctions().get( 0 ).getAsDoc() );
 
-      assertEquals( "/**    * AsDoc method    */",
+      assertEquals( "/**   * AsDoc method   */",
                     flexPMD60Package.getClassNode()
                                     .getFunctions()
                                     .get( 0 )
                                     .getAsDoc()
                                     .getStringValue()
-                                    .replace( "\t",
-                                              "   " )
-                                    .replace( '\n',
-                                              ' ' )
-                                    .replaceAll( "  ",
-                                                 " " ) );
+                                    .replace( "\t","   " )
+                                    .replace( '\n', ' ' )
+                                    .replaceAll( "  ", " " ) );
 
       assertEquals( 2,
                     flexPMD60Package.getClassNode().getMultiLinesComment().size() );
 
-      assertEquals( "/*   * comment   */",
+      assertEquals( "/* * comment */",
                     flexPMD60Package.getClassNode()
                                     .getMultiLinesComment()
                                     .get( 0 )
@@ -148,7 +147,7 @@ public class CommentNodeTest extends FlexPmdTestBase
    {
       assertNotNull( flexPMD60Package.getClassNode().getAsDoc() );
 
-      assertEquals( "/**   * AsDoc class   */",
+      assertEquals( "/** * AsDoc class */",
                     flexPMD60Package.getClassNode()
                                     .getAsDoc()
                                     .getStringValue()

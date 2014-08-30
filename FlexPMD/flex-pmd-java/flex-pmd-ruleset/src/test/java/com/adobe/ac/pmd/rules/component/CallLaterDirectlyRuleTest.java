@@ -28,7 +28,7 @@ public class CallLaterDirectlyRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "GenericType.as", new ViolationPosition[]
-      { new ViolationPosition( 41 ) } ) };
+      { new ViolationPosition( 29 ) } ) };
    }
 
    @Override

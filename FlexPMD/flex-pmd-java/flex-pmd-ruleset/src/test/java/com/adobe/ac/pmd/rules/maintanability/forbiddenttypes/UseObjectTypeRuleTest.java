@@ -28,22 +28,22 @@ public class UseObjectTypeRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "pseudo.look.IEditLook.as", new ViolationPosition[]
-       { new ViolationPosition( 34 ),
-                   new ViolationPosition( 35 ) } ),
+       { new ViolationPosition( 22 ),
+                   new ViolationPosition( 23 ) } ),
                   new ExpectedViolation( "flexpmd114.a.Test.as", new ViolationPosition[]
-                  { new ViolationPosition( 42 ) } ),
+                  { new ViolationPosition( 30 ) } ),
                   new ExpectedViolation( "flexpmd114.b.Test.as", new ViolationPosition[]
-                  { new ViolationPosition( 42 ) } ),
+                  { new ViolationPosition( 30 ) } ),
                   new ExpectedViolation( "flexpmd114.c.Test.as", new ViolationPosition[]
-                  { new ViolationPosition( 42 ) } ),
+                  { new ViolationPosition( 30 ) } ),
                   new ExpectedViolation( "Looping.as", new ViolationPosition[]
-                  { new ViolationPosition( 63 ) } ),
+                  { new ViolationPosition( 51 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.ConfigProxy.as", new ViolationPosition[]
-                  { new ViolationPosition( 42 ) } ),
+                  { new ViolationPosition( 30 ) } ),
                   new ExpectedViolation( "Sorted.as", new ViolationPosition[]
-                  { new ViolationPosition( 67 ) } ),
+                  { new ViolationPosition( 55 ) } ),
                   new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 52 ) } ) };
+                  { new ViolationPosition( 40 ) } ) };
    }
 
    @Override

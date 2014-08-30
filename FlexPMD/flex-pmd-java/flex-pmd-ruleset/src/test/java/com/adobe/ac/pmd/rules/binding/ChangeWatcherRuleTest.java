@@ -27,7 +27,7 @@ public class ChangeWatcherRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-      { new ViolationPosition( 35 ) } ) };
+      { new ViolationPosition( 23 ) } ) };
    }
 
    @Override

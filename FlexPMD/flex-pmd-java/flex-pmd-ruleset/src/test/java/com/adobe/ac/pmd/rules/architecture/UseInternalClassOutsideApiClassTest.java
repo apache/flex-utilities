@@ -27,17 +27,17 @@ public class UseInternalClassOutsideApiClassTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "functional.func2.restricted.Func2RestrictedClass.as", new ViolationPosition[]
-       { new ViolationPosition( 34 ) } ),
+       { new ViolationPosition( 22 ) } ),
                   new ExpectedViolation( "functional.func1.restricted.Func1RestrictedClass.as",
                                          new ViolationPosition[]
-                                         { new ViolationPosition( 35 ) } ),
+                                         { new ViolationPosition( 23 ) } ),
                   new ExpectedViolation( "functional.func2.api.Func2ExposedClass.as", new ViolationPosition[]
-                  { new ViolationPosition( 34 ) } ),
+                  { new ViolationPosition( 22 ) } ),
                   new ExpectedViolation( "functional.func1.api.Func1ExposedClass.as", new ViolationPosition[]
-                  { new ViolationPosition( 36 ) } ),
+                  { new ViolationPosition( 24 ) } ),
                   new ExpectedViolation( "functional.FunctionalClient.as", new ViolationPosition[]
-                  { new ViolationPosition( 34 ),
-                              new ViolationPosition( 36 ) } ) };
+                  { new ViolationPosition( 22 ),
+                              new ViolationPosition( 24 ) } ) };
    }
 
    @Override

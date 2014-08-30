@@ -27,7 +27,7 @@ public class EmptyCatchStatementRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.ConfigProxy.as", new ViolationPosition[]
-      { new ViolationPosition( 57 ) } ) };
+      { new ViolationPosition( 45 ) } ) };
    }
 
    @Override

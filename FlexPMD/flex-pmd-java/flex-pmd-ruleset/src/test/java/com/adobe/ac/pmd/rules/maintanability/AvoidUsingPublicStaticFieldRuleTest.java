@@ -27,9 +27,9 @@ public class AvoidUsingPublicStaticFieldRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.FlexPMD115.as", new ViolationPosition[]
-       { new ViolationPosition( 36 ) } ),
+       { new ViolationPosition( 24 ) } ),
                   new ExpectedViolation( "Sorted.as", new ViolationPosition[]
-                  { new ViolationPosition( 47 ) } ) };
+                  { new ViolationPosition( 35 ) } ) };
    }
 
    @Override

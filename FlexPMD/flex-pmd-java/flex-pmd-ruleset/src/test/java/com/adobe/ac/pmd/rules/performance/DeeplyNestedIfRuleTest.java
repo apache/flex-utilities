@@ -27,15 +27,15 @@ public class DeeplyNestedIfRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Duane.mxml", new ViolationPosition[]
-       { new ViolationPosition( 87 ),
-                   new ViolationPosition( 91 ),
-                   new ViolationPosition( 96 ) } ),
+       { new ViolationPosition( 73 ),
+                   new ViolationPosition( 77 ),
+                   new ViolationPosition( 82 ) } ),
                   new ExpectedViolation( "com.adobe.ac.AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 59 ) } ),
+                  { new ViolationPosition( 47 ) } ),
                   new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-                  { new ViolationPosition( 578 ),
-                              new ViolationPosition( 576 ),
-                              new ViolationPosition( 584 ) } ) };
+                  { new ViolationPosition( 561 ),
+                              new ViolationPosition( 559 ),
+                              new ViolationPosition( 567 ) } ) };
    }
 
    @Override
