@@ -22,6 +22,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.apache</groupId>
+        <artifactId>apache</artifactId>
+        <version>14</version>
+    </parent>
+
     <groupId>org.apache.flex.utilities.converter</groupId>
     <artifactId>flex-sdk-converter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
@@ -33,16 +39,29 @@
         <wagonVersion>2.2</wagonVersion>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>apache.releases.https</id>
-            <url>https://repository.apache.org/service/local/staging/deploy/maven2</url>
-        </repository>
-        <snapshotRepository>
-            <id>apache.snapshots.https</id>
-            <url>https://repository.apache.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <mailingLists>
+        <mailingList>
+            <name>Apache Flex User List</name>
+            <subscribe>users-subscribe@flex.apache.org</subscribe>
+            <unsubscribe>users-unsubscribe@flex.apache.org</unsubscribe>
+            <post>users@flex.apache.org</post>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/flex-users/
+            </archive>
+        </mailingList>
+    </mailingLists>
+
+    <scm>
+        <connection>
+            scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git
+        </connection>
+        <developerConnection>
+            scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git
+        </developerConnection>
+        <url>
+            https://git-wip-us.apache.org/repos/asf/flex-utilities.git
+        </url>
+    </scm>
 
     <modules>
         <module>core</module>
@@ -53,49 +72,15 @@
 
     <build>
         <plugins>
-            <!--plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2.2</version>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                        <manifestEntries>
-                            <Implementation-Build>${project.version}</Implementation-Build>
-                        </manifestEntries>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <finalName>flex-sdk-converter-${project.version}</finalName>
-                    <appendAssemblyId>false</appendAssemblyId>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin-->
-            <!-- Commented out because the plugin doesn't seem to work. -->
-            <!--plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
-                <version>0.10</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin-->
+            </plugin>
         </plugins>
     </build>
 </project>
