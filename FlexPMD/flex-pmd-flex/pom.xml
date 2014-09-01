@@ -76,6 +76,9 @@ limitations under the License.
 						<goals>
 							<goal>check</goal>
 						</goals>
+                        <configuration>
+                            <minimumTokenCount>25</minimumTokenCount>
+                        </configuration>
 					</execution>
 				</executions>
 			</plugin>

@@ -16,9 +16,8 @@
 //  limitations under the License.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package flex - pmd - ruleset - creator.src.test.flex
+package
 {
-   import com.adobe.ac.pmd.model.RuleTest;
    import com.adobe.ac.pmd.model.RulesetTest;
    import com.adobe.ac.pmd.services.translators.RuleTranslatorTest;
    import com.adobe.ac.pmd.services.translators.RulesetTranslatorTest;
@@ -34,7 +33,6 @@ package flex - pmd - ruleset - creator.src.test.flex
 
          addTestSuite( RuleSetNavigatorPMTest );
          addTestSuite( RulesetTest );
-         addTestSuite( RuleTest );
          addTestSuite( RuleTranslatorTest );
          addTestSuite( RulesetTranslatorTest );
       }

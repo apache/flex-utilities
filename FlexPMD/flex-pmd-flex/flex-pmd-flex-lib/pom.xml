@@ -98,7 +98,7 @@ limitations under the License.
 
 	<build>
 		<sourceDirectory>src/main/flex</sourceDirectory>
-		<testSourceDirectory>src/test/flex</testSourceDirectory>
+		<!--testSourceDirectory>src/test/flex</testSourceDirectory-->
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -150,7 +150,7 @@ limitations under the License.
 				<version>${flex-mojos-plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<targetPlayer>${flash-player.version}.0.0</targetPlayer>
+					<targetPlayer>${flash-player.version}</targetPlayer>
 				</configuration>
                 <dependencies>
                     <!-- This handles a bug in maven which causes problems with flex resources -->

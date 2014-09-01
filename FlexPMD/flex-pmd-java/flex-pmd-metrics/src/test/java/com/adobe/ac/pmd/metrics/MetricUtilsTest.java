@@ -19,6 +19,7 @@ package com.adobe.ac.pmd.metrics;
 import static org.junit.Assert.assertEquals;
 import net.sourceforge.pmd.PMDException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.adobe.ac.pmd.FlexPmdTestBase;
@@ -31,6 +32,7 @@ import com.adobe.ac.pmd.parser.IParserNode;
 public class MetricUtilsTest extends FlexPmdTestBase
 {
    @Test
+   @Ignore("This test requires test-data that was not donated to Apache")
    public void testComputeMultiLineComments() throws PMDException
    {
       final IFlexFile file = getTestFiles().get( "bug.FlexPMD60.as" );
