@@ -70,8 +70,8 @@
 	</s:layout>
 	
 	<mx:ApplicationControlBar dock="true" fillColors="[0x000000,0x323232]" fillAlphas="[1,1]" horizontalAlign="center">
-		<s:Button label="Load Module 1" click="loadModule('module 1', 'Module1.swf')"/>
-		<s:Button label="Load Module 2" click="loadModule('module 2', 'Module2.swf')"/>
+		<s:Button label="Load Module 1" click="loadModule('module 1', './spark/modules/Module1.swf')"/>
+		<s:Button label="Load Module 2" click="loadModule('module 2', './spark/modules/Module2.swf')"/>
 	</mx:ApplicationControlBar>
 	
 	<mx:HBox id="hBox" />
