@@ -29,7 +29,7 @@ public class UseTraceFunctionRuleTest extends AbstractAstFlexRuleTest
       { new ExpectedViolation( "com.adobe.ac.ncss.LongSwitch.as", new ViolationPosition[]
        { new ViolationPosition( 113 ) } ),
                   new ExpectedViolation( "Simple.as", new ViolationPosition[]
-                  { new ViolationPosition( 19 ) } ),
+                  { new ViolationPosition( 1 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.BigImporterModel.as", new ViolationPosition[]
                   { new ViolationPosition( 62 ),
                               new ViolationPosition( 63 ) } ) };

@@ -27,24 +27,24 @@ public class OverLongLineRuleTest extends AbstractFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "RadonDataGrid.as", new ViolationPosition[]
-       { new ViolationPosition( 68 ),
-                   new ViolationPosition( 84 ),
-                   new ViolationPosition( 117 ) } ),
+       { new ViolationPosition( 56 ),
+                   new ViolationPosition( 72 ),
+                   new ViolationPosition( 105 ) } ),
                   new ExpectedViolation( "Simple.as", new ViolationPosition[]
                   { new ViolationPosition( 1 ) } ),
-                  new ExpectedViolation( "FileReferenceList.as", new ViolationPosition[]
+/*                  new ExpectedViolation( "FileReferenceList.as", new ViolationPosition[]
                   { new ViolationPosition( 47 ) } ),
-                  new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 46 ),
-                              new ViolationPosition( 47 ),
-                              new ViolationPosition( 49 ) } ),
+*/                  new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
+                  { new ViolationPosition( 34 ),
+                              new ViolationPosition( 35 ),
+                              new ViolationPosition( 37 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.BigImporterModel.as", new ViolationPosition[]
-                  { new ViolationPosition( 62 ) } ),
+                  { new ViolationPosition( 50 ) } ),
                   new ExpectedViolation( "SkinStyles.as", new ViolationPosition[]
-                  { new ViolationPosition( 82 ) } ),
+                  { new ViolationPosition( 60 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.mxml.IterationsList2.mxml",
                                          new ViolationPosition[]
-                                         { new ViolationPosition( 54 ) } ) };
+                                         { new ViolationPosition( 40 ) } ) };
    }
 
    @Override

@@ -31,19 +31,19 @@ public class TooLongFunctionRuleTest extends AbstractAstFlexRuleTest
 
       return new ExpectedViolation[]
       { new ExpectedViolation( "cairngorm.FatController.as", new ViolationPosition[]
-       { new ViolationPosition( 97 ) } ),
+       { new ViolationPosition( 85 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.NestedSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 35 ) } ),
+                  { new ViolationPosition( 23 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.LongSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 39 ) } ),
+                  { new ViolationPosition( 27 ) } ),
                   new ExpectedViolation( "ErrorToltipSkin.as", new ViolationPosition[]
-                  { new ViolationPosition( 156 ) } ),
+                  { new ViolationPosition( 144 ) } ),
                   new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-                  { new ViolationPosition( 150 ),
-                              new ViolationPosition( 335 ),
-                              new ViolationPosition( 548 ) } ),
+                  { new ViolationPosition( 133 ),
+                              new ViolationPosition( 318 ),
+                              new ViolationPosition( 531 ) } ),
                   new ExpectedViolation( "RadonDataGrid.as", new ViolationPosition[]
-                  { new ViolationPosition( 84 ) } ) };
+                  { new ViolationPosition( 72 ) } ) };
    }
 
    @Override

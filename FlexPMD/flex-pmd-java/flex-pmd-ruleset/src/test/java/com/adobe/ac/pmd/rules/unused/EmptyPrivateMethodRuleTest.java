@@ -27,18 +27,18 @@ public class EmptyPrivateMethodRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.FlexPMD97.as", new ViolationPosition[]
-       { new ViolationPosition( 39 ) } ),
+       { new ViolationPosition( 27 ) } ),
                   new ExpectedViolation( "Sorted.as", new ViolationPosition[]
-                  { new ViolationPosition( 62 ),
-                              new ViolationPosition( 71 ) } ),
+                  { new ViolationPosition( 50 ),
+                              new ViolationPosition( 59 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.BigModel.as", new ViolationPosition[]
-                  { new ViolationPosition( 82 ),
-                              new ViolationPosition( 86 ),
-                              new ViolationPosition( 90 ),
-                              new ViolationPosition( 94 ),
-                              new ViolationPosition( 98 ) } ),
+                  { new ViolationPosition( 70 ),
+                              new ViolationPosition( 74 ),
+                              new ViolationPosition( 78 ),
+                              new ViolationPosition( 82 ),
+                              new ViolationPosition( 86 ) } ),
                   new ExpectedViolation( "cairngorm.events.CorrectConstantEvent.as", new ViolationPosition[]
-                  { new ViolationPosition( 53 ) } ) };
+                  { new ViolationPosition( 41 ) } ) };
    }
 
    @Override

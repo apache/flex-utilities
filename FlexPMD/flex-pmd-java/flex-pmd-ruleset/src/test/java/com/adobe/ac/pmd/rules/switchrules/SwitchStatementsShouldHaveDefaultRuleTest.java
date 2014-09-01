@@ -27,11 +27,11 @@ public class SwitchStatementsShouldHaveDefaultRuleTest extends AbstractAstFlexRu
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.LongSwitch.as", new ViolationPosition[]
-       { new ViolationPosition( 53 ),
-                   new ViolationPosition( 41 ),
-                   new ViolationPosition( 92 ) } ),
+       { new ViolationPosition( 41 ),
+                   new ViolationPosition( 29 ),
+                   new ViolationPosition( 80 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.NestedSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 43 ) } ) };
+                  { new ViolationPosition( 31 ) } ) };
    }
 
    @Override

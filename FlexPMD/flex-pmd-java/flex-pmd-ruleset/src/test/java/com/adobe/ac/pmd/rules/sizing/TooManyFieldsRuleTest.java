@@ -27,13 +27,13 @@ public class TooManyFieldsRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.TestResult.as", new ViolationPosition[]
-       { new ViolationPosition( 46 ) } ),
+       { new ViolationPosition( 33 ) } ),
                   new ExpectedViolation( "Sorted.as", new ViolationPosition[]
-                  { new ViolationPosition( 37 ) } ),
+                  { new ViolationPosition( 25 ) } ),
                   new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-                  { new ViolationPosition( 42 ) } ),
+                  { new ViolationPosition( 25 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.BigModel.as", new ViolationPosition[]
-                  { new ViolationPosition( 35 ) } ) };
+                  { new ViolationPosition( 23 ) } ) };
    }
 
    @Override

@@ -27,18 +27,18 @@ public class UnusedPrivateMethodRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Duane.mxml", new ViolationPosition[]
-       { new ViolationPosition( 66 ) } ),
+       { new ViolationPosition( 52 ) } ),
                   new ExpectedViolation( "Sorted.as", new ViolationPosition[]
-                  { new ViolationPosition( 71 ) } ),
+                  { new ViolationPosition( 59 ) } ),
                   new ExpectedViolation( "cairngorm.LightController.as", new ViolationPosition[]
-                  { new ViolationPosition( 191 ) } ),
+                  { new ViolationPosition( 179 ) } ),
                   new ExpectedViolation( "RadonDataGrid.as", new ViolationPosition[]
-                  { new ViolationPosition( 207 ) } ),
+                  { new ViolationPosition( 195 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.BigModel.as", new ViolationPosition[]
-                  { new ViolationPosition( 86 ),
-                              new ViolationPosition( 90 ),
-                              new ViolationPosition( 94 ),
-                              new ViolationPosition( 98 ) } ) };
+                  { new ViolationPosition( 74 ),
+                              new ViolationPosition( 78 ),
+                              new ViolationPosition( 82 ),
+                              new ViolationPosition( 86 ) } ) };
    }
 
    @Override

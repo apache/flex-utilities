@@ -27,16 +27,16 @@ public class TooLongSwitchCaseRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "ErrorToltipSkin.as", new ViolationPosition[]
-       { new ViolationPosition( 189 ),
-                   new ViolationPosition( 214 ),
-                   new ViolationPosition( 252 ),
-                   new ViolationPosition( 290 ) } ),
+       { new ViolationPosition( 177 ),
+                   new ViolationPosition( 202 ),
+                   new ViolationPosition( 240 ),
+                   new ViolationPosition( 278 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.NestedSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 38 ),
-                              new ViolationPosition( 58 ) } ),
+                  { new ViolationPosition( 26 ),
+                              new ViolationPosition( 46 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.LongSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 47 ),
-                              new ViolationPosition( 52 ) } ) };
+                  { new ViolationPosition( 35 ),
+                              new ViolationPosition( 40 ) } ) };
    }
 
    @Override

@@ -27,7 +27,7 @@ public class NonBreakableSwitchCaseRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.LongSwitch.as", new ViolationPosition[]
-      { new ViolationPosition( 134 ) } ) };
+      { new ViolationPosition( 122 ) } ) };
    }
 
    @Override

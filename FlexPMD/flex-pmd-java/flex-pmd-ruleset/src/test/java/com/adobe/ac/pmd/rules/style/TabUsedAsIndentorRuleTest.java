@@ -64,7 +64,7 @@ public class TabUsedAsIndentorRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "SecondCustomEvent.as", new ViolationPosition[]
-      { new ViolationPosition( 37 ) } ) };
+      { new ViolationPosition( 25 ) } ) };
    }
 
    @Override
