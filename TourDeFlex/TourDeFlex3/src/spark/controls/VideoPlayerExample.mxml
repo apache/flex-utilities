@@ -66,9 +66,8 @@ users seek through video; a volume bar; a timer; and a button to toggle in and o
 							selected="true"
 							change="playPauseChange(event)" />	
 			</s:HGroup>
-			<s:VideoPlayer id="videoPlayer" 
-						   horizontalCenter="-2" y="50"
-						   source="assets/FlexInstaller.mp4"
+			<s:VideoPlayer id="videoPlayer" width="66%" height="66%" y="50"
+						   source="./spark/controls/assets/FlexInstaller.mp4"
 						   autoPlay="false"
 						   autoRewind="{checkRewind.selected}"/>	
 			</s:VGroup>

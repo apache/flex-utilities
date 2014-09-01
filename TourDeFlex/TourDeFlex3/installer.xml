@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="tour_de_flex_install" default="install" basedir=".">
+    
+    <!-- Required for OSX 10.6 / Snow Leopard Performance. -->
+    <!-- Java 7 on Mac requires OSX 10.7.3 or higher and is 64-bit only -->
+    <!-- local.d32 is set/used in build.properties so this needs to be done first. -->
+    <condition property="local.d32" value="-d32">
+        <and>
+            <os family="windows"/>
+            <equals arg1="${sun.arch.data.model}" arg2="64"/>
+            <equals arg1="${os.arch}" arg2="x86_64"/>
+            <equals arg1="${ant.java.version}" arg2="1.6"/>
+        </and>
+    </condition>
+
+	<property environment="env"/>
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+	<echo>${env.FLEX_HOME}</echo>
+    <property file="${FLEX_HOME}/local.properties"/>
+    <property file="${FLEX_HOME}/build.properties"/>
+	
+    <property file="${basedir}/${bundle}.properties"/>
+
+	<property name="download.dir" value="${FLEX_HOME}/in"/>
+	<property name="unpack.dir" value="${FLEX_HOME}/tourdeflex"/>
+
+	<property name="mirror.url" value="http://flex.apache.org/single-mirror-url.cgi" />
+	
+    <property name="tourdeflex.url.folder" value="flex/tourdeflex/1.0" />
+    <condition property="tourdeflex.url.file" value="apache-flex-tour-de-flex-component-explorer-1.0-src.zip">
+    	<os family="windows" />
+    </condition>
+    <condition property="tourdeflex.url.file" value="apache-flex-tour-de-flex-component-explorer-1.0-src.tar.gz">
+    	<or>
+    		<os family="mac" />
+    		<os family="unix" />
+    	</or>
+    </condition>
+    <condition property="tourdeflex.url.md5" value="2509291d41cc325ba21ed6b9cf4306f2">
+    	<os family="windows" />
+    </condition>
+    <condition property="tourdeflex.url.md5" value="2509291d41cc325ba21ed6b9cf4306f2">
+    	<or>
+    		<os family="mac" />
+    		<os family="unix" />
+    	</or>
+    </condition>
+
+    <target name="install" depends="tourdeflex-download-unpack" description="Adds TourDeFlex to SDK">
+        <delete dir="${download.dir}" />
+        <echo>${install.complete.echo}</echo>
+    </target>
+    
+    <target name="tourdeflex-download-unpack" description="Downloads Tour De Flex and copies into SDK">
+        <mkdir dir="${download.dir}"/>
+    	
+    	<get src="${mirror.url}" dest="${download.dir}/mirror.txt" />
+    	<replace file="${download.dir}/mirror.txt" token="&lt;p&gt;" />
+    	<replace file="${download.dir}/mirror.txt" token="&lt;/p&gt;" />
+    	<loadfile property="tourdeflex.url.server" srcFile="${download.dir}/mirror.txt" />
+    	
+    	<echo>Downloading ${tourdeflex.url.server}/${tourdeflex.url.folder}/${tourdeflex.url.file}</echo>
+        
+    	<antcall target="download_tourdeflex_with_md5">
+            <param name="srcDomain" value="${tourdeflex.url.server}" />
+            <param name="srcFolder" value="${tourdeflex.url.folder}" />
+            <param name="srcFile" value="${tourdeflex.url.file}" />
+            <param name="dest" value="${download.dir}/${tourdeflex.url.file}"/>
+			<param name="message" value="${INFO_INSTALLING_TOURDEFLEX} ${tourdeflex.url.server}/${tourdeflex.url.folder}/${tourdeflex.url.file}" />
+			<param name="failmessage" value="Tour De Flex download failed" />
+			<param name="md5" value="${tourdeflex.url.md5}" />
+        </antcall>
+    	
+    	<mkdir dir="${unpack.dir}"/>
+    	<condition property="platform" value="windows">
+	    	<unzip dest="${unpack.dir}">
+	    		<fileset file="${download.dir}/${tourdeflex.url.file" />
+	    	</unzip>
+    	</condition>
+    	<condition property="platform" value="mac">
+	    	<tar-ungzip dest="${unpack.dir}">
+	    		<fileset file="${download.dir}/${tourdeflex.url.file" />
+	    	</tar-ungzip>
+    	</condition>
+		<condition property="platform" value="linux">
+	    	<tar-ungzip dest="${unpack.dir}">
+	    		<fileset file="${download.dir}/${tourdeflex.url.file" />
+	    	</tar-ungzip>
+		</condition>
+    </target>
+	
+    <target name="download_tourdeflex_with_md5">
+        <antcall target="download_using_get" />
+    </target>
+
+    <target name="download_using_get"
+        description="Downloads file, and optionally verifies checksum.">
+        
+    	<tstamp />
+    	<property name="ts" value="${DSTAMP}${TSTAMP}" />
+    	
+        <antcall target="get">
+        </antcall>
+    </target>
+    
+    <target name="get">
+		<antcall target="get-with-params" />
+        <antcall target="check-sum" />
+    </target>
+    
+	<target name="check-params" >
+		<condition property="has-params">
+			<and>
+				<contains string="${srcDomain}/${srcFolder}/${srcFile}" substring="?" />
+				<not>
+					<contains string="${srcDomain}/${srcFolder}/${srcFile}" substring="file://" />
+				</not>
+			</and>
+		</condition>
+		<condition property="is-local">
+			<contains string="${srcDomain}/${srcFolder}/${srcFile}" substring="file://" />
+		</condition>
+		<condition property="not-local-no-params">
+			<and>
+				<not>
+					<contains string="${srcDomain}/${srcFolder}/${srcFile}" substring="file://" />
+				</not>
+				<not>
+					<contains string="${srcDomain}/${srcFolder}/${srcFile}" substring="?" />
+				</not>
+			</and>
+		</condition>
+	</target>
+
+	<target name="get-with-params" depends="check-params" if="has-params" >
+        <get src="${srcDomain}/${srcFolder}/${srcFile}&amp;ts=${ts}" dest="${dest}"/>
+	</target>
+    
+    <target name="check-sum" if="md5"
+        description="Verifies MD5 checksum, and fails if checksum doesn't match">
+        
+        <echo>Checking ${dest} matches ${md5}</echo>
+        <checksum file="${dest}" algorithm="MD5" verifyproperty="we.failed" property="${md5}" />
+        <fail message="${failmessage}">
+            <condition>
+                <equals arg1="${we.failed}" arg2="false" />
+            </condition>
+        </fail>
+    </target>
+</project>
