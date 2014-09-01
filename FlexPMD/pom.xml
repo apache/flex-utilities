@@ -85,6 +85,7 @@ limitations under the License.
 		<ant.version>1.7.0</ant.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<javadoc-plugin.version>2.7</javadoc-plugin.version>
+        <cairngorm.version>2.2.1</cairngorm.version>
 
 		<jsap.version>2.1</jsap.version>
 

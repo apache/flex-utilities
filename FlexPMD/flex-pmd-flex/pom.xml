@@ -35,9 +35,6 @@ limitations under the License.
 		<flash-player.version>11.1</flash-player.version>
 		<flexunit.version>4.2.0</flexunit.version>
 		<event-source.version>1.1</event-source.version>
-		<!--flexunit-optional.version>0.85</flexunit-optional.version-->
-		<event-source.version>1.1</event-source.version>
-		<cairngorm.version>2.2.1</cairngorm.version>
 		<flexunit-theme.version>1.0</flexunit-theme.version>
 	</properties>
 
@@ -53,7 +50,7 @@ limitations under the License.
 		<plugins>
 		
 			<plugin>
-				<groupId>${project.groupId}</groupId>
+                <groupId>org.apache.flex.pmd</groupId>
 				<artifactId>flex-pmd-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
@@ -67,7 +64,7 @@ limitations under the License.
 			</plugin>
 
 			<plugin>
-				<groupId>${project.groupId}</groupId>
+                <groupId>org.apache.flex.pmd</groupId>
 				<artifactId>flex-pmd-cpd-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
@@ -84,7 +81,7 @@ limitations under the License.
 			</plugin>
 
 			<plugin>
-				<groupId>${project.groupId}</groupId>
+                <groupId>org.apache.flex.pmd</groupId>
 				<artifactId>flex-pmd-metrics-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
@@ -111,14 +108,14 @@ limitations under the License.
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<groupId>${project.groupId}</groupId>
+			<!--plugin>
+                <groupId>org.apache.flex.pmd</groupId>
 				<artifactId>flex-pmd-maven-plugin</artifactId>
 				<version>${project.parent.version}</version>
 				<configuration>
 					<failOnError>true</failOnError>
 				</configuration>
-			</plugin>
+			</plugin-->
 
 		</plugins>
 	</reporting>
