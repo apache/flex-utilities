@@ -74,42 +74,37 @@
             <type>zip</type>
             <classifier>resources</classifier>
             <scope>provided</scope>
-            <optional>false</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>${maven-plugin-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
             <version>${maven-plugin-api.version}</version>
-            <type>jar</type>
-            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.reporting</groupId>
             <artifactId>maven-reporting-impl</artifactId>
             <version>${maven-reporting-impl.version}</version>
-            <type>jar</type>
-            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-pmd-plugin</artifactId>
             <version>${maven-pmd-plugin.version}</version>
             <type>maven-plugin</type>
-            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>flex-pmd-core</artifactId>
             <version>${project.parent.version}</version>
-            <type>jar</type>
-            <optional>false</optional>
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>flex-pmd-ruleset</artifactId>
             <version>${project.parent.version}</version>
-            <type>jar</type>
-            <optional>false</optional>
         </dependency>
     </dependencies>
 
