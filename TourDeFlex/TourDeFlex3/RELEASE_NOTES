@@ -17,6 +17,8 @@ Bugs fixed and improvements:
 FLEX-34502 Add link to github in TourDeFlex
 FLEX-34500 Show total number of examples in Tour De Flex UI
 FLEX-34495 Error loading source file
+FLEX-34491 The Spark Module Load example is non functional
+FLEX-34490 The Spark Video example produces a "Playback Error"
 FLEX-34492 Need ability to link to examples
 FLEX-34489 Some examples are missing all source files tab
 FLEX-34488 Add favicon to TourDeFlex
@@ -24,6 +26,7 @@ FLEX-34483 Make logo links to Apache Flex web site
 FLEX-34482 Add copy button to copy code examples to clipboard
 FLEX-34480 If TourDeFlex is run from an untrusted location you get an error
 FLEX-34479 Change naming format of TourDeFlex
+FLEX-34478 Wrong paths for video in TourDeFlex application
 FLEX-34474 TourDeFlex effects example bad styles and modifying default destination scaling
 
 
