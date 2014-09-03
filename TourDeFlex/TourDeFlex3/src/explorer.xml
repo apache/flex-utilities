@@ -99,7 +99,7 @@
 			</node>
 			<node label="Print Controls">
 				<node label="FlexPrintJob, PrintDataGrid" app="mx/printing/PrintDataGridExample"
-					src="mx/printing/FormPrintView.mxml&amp;printing/FormPrintHeader.mxml&amp;mx/printing/FormPrintFooter.mxml" />
+					src="mx/printing/FormPrintView.mxml&amp;mx/printing/FormPrintHeader.mxml&amp;mx/printing/FormPrintFooter.mxml" />
 			</node>
 			<node label="Validators and Formatters">
 				<node label="Validators">
@@ -238,8 +238,8 @@
 					<node label="List to Panel" app="spark/other/DragAndDrop2Example" />
 				</node>
 				<node label="Custom Components">
-					<node label="Search" app="spark/components/SearchExample" />
-					<node label="Video Player" app="spark/components/VideoPlayerExample" />
+					<node label="Search" app="spark/components/SearchExample" src="spark/components/SearchBox.as" />
+					<node label="Video Player" app="spark/components/VideoPlayerExample" src="spark/components/VideoPlayer.mxml" />
 				</node>
 				<node label="i18n">
 					<node label="Collator" app="spark/i18n/SparkCollatorExample"/>
@@ -260,9 +260,9 @@
 					<node label="Formatters" app="spark/i18n/SparkFormatterExample"/>
 				</node>	
 				<node label="Item Renderers">
-					<node label="List" app="spark/itemRenderers/ListItemRendererExample"/>
-					<node label="Scale Image" app="spark/itemRenderers/ItemRenderer1Example" />
-					<node label="3D Rotate" app="spark/itemRenderers/ItemRenderer2Example" />
+					<node label="List" app="spark/itemRenderers/ListItemRendererExample" src="spark/itemRenderers/MyListItemRenderer.mxml"/>
+					<node label="Scale Image" app="spark/itemRenderers/ItemRenderer1Example" src="spark/itemRenderers/renderers/ImageRenderer1.mxml" />
+					<node label="3D Rotate" app="spark/itemRenderers/ItemRenderer2Example" src="spark/itemRenderers/renderers/ImageRenderer2.mxml" />
 				</node>
 				<node label="Events">
 					<node label="Inline property" app="spark/events/EventExample1" />
@@ -288,11 +288,11 @@
 					<node label="ScrollBars" app="spark/other/ScrollBarsExample" />
 				</node>
 				<node label="Skinning">
-					<node label="Button With Icon" app="spark/skinning/ButtonWithIconExample"/>
-					<node label="Application" app="spark/skinning/SkinningApplication1Example"/>
-					<node label="Application" app="spark/skinning/SkinningApplication2Example"/>
-					<node label="Application" app="spark/skinning/SkinningApplication3Example"/>
-					<node label="Container" app="spark/skinning/SkinningContainerExample"/>
+					<node label="Button With Icon" app="spark/skinning/ButtonWithIconExample" src="spark/skinning/skins/CloseButtonSkin.mxml&amp;spark/skinning/skins/AddButtonSkin.mxml&amp;spark/skinning/skins/IconTextButtonSkin.mxml" />
+					<node label="Gradient Skin" app="spark/skinning/SkinningApplication1Example" src="spark/skinning/skins/GradientBackgroundAppSkin.mxml"/>
+					<node label="Background Image Skin" app="spark/skinning/SkinningApplication2Example" src="spark/skinning/skins/BackgroundImageAppSkin.mxml" />
+					<node label="Control Bar Skin" app="spark/skinning/SkinningApplication3Example" src="spark/skinning/skins/CustomControlBarAppSkin.mxml" />
+					<node label="Container Skin" app="spark/skinning/SkinningContainerExample" src="spark/skinning/skins/CustomSkinnableContainerSkin.mxml" />
 				</node>
 				<node label="Viewport">
 					<node label="Controlling Viewport" app="spark/other/ControllingViewportExample" />
@@ -320,10 +320,10 @@
 					<node label="HGroup" app="spark/containers/SampleHGroup" />
 					<node label="Group" app="spark/containers/GroupExample"/>
 					<node label="Panel" app="spark/containers/PanelExample"/>
-					<node label="SkinableDataContainer" app="spark/containers/SkinableDataContainerExample" />
+					<node label="SkinnableDataContainer" app="spark/containers/SkinnableDataContainerExample" />
 					<node label="TabNavigator" app="spark/containers/TabNavigator1Example" />
 					<node label="TabNavigator" app="spark/containers/TabNavigator2Example" />
-					<node label="TitleGroup" app="spark/containers/TileGroupExample" />
+					<node label="TileGroup" app="spark/containers/TileGroupExample" />
 					<node label="TitleWindow" app="spark/controls/TitleWindowExample" />
 					<node label="ViewStack" app="spark/controls/ViewStackExample" />
 					<node label="VGroup" app="spark/containers/SampleVGroup" />
@@ -438,6 +438,41 @@
 					<node label="ZipCodeFormatter" app="spark/formatters/ZipCodeFormatterExample" />
 				</node>
 			</node>
+		</node>
+		<node label="Apache Flex Components and Features">
+			<node label="Apache Flex 4.8" app="apache/ApacheFlex4_8_0">
+				<!--  Do we habe any examples here? -->
+			</node>
+			<node label="Apache Flex 4.9" app="apache/ApacheFlex4_9_0">
+				<!--  Add more examples here -->
+				<node label="PostCodeFormatter" app="apache/formatters/PostCodeFormatterExample"/>
+				<node label="PostCodeValidator" app="apache/validators/PostCodeValidatorExample"/>
+				<node label="New SDK locales" app="apache/i18n/LocaleExample"/>
+			</node>
+			<node label="Apache Flex 4.10" app="apache/ApacheFlex4_10_0">
+				<!--  Add more examples here -->
+				<node label="International Dates" app="apache/i18n/DateExample"/>
+				<node label="Millisecond Formatting" app="apache/i18n/MillisecondExample"/>
+				<node label="NumberStepper" app="apache/i18n/NumericStepperExample"/>
+				<node label="Scientific Notation Formatting" app="apache/i18n/ScientificExample"/>
+				<node label="Timezone Formatting" app="apache/i18n/TimezoneExample"/>
+			</node>
+			<node label="Apache Flex 4.11" app="apache/ApacheFlex4_11_0">
+				<!--  Add more examples here -->
+				<node label="Callout" app="apache/containers/CalloutExample"/>
+			</node>
+			<node label="Apache Flex 4.12" app="apache/ApacheFlex4_12_1">
+				<!--  Add more examples here -->
+				<node label="MaskedTextInput" app="apache/controls/MaskedTextInputExample"/>
+			</node>
+			<node label="Apache Flex 4.13" app="apache/ApacheFlex4_13_0">
+				<!--  Add examples here -->
+			</node>
+			<!-- Add when Flex 4.14 is released
+			<node label="Apache Flex 4.14" app="apache/ApacheFlex4_14_0">
+				<node label="MaskedTextInput" app="apache/controls/SparkRichTextEditorExample"/>
+			</node> 
+			 -->
 		</node>
 	</node>
 </compTree>

@@ -1,0 +1,285 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+Application {
+  backgroundColor: #3872b2;
+   backgroundGradientColors: #3872b2, #0c1a3d;
+   backgroundGradientAlphas: 1, 1;
+   themeColor: #0c1a3d;
+   color: #444444;
+   fontFamily: "Myriad Pro";
+   fontSize: 12;
+   verticalScrollBarStyleName: flexUnitScrollBar;
+   horizontalScrollBarStyleName: flexUnitScrollBar;
+   modal-transparency-blur: 0;
+   modal-transparency: 0;   
+}
+
+ToolTip
+{
+   fontFamily: "Myriad Pro";
+   leading: 5;
+   fontSize: 11;
+   backgroundColor: #DFEAF4;
+}
+
+ScrollBar
+{
+	downArrowDisabledSkin: Embed( source="skins/VScrollBar_downArrowDisabledSkin.png" );
+	downArrowDownSkin: Embed( source="skins/VScrollBar_downArrowDownSkin.png" );
+	downArrowOverSkin: Embed( source="skins/VScrollBar_downArrowOverSkin.png" );
+	downArrowUpSkin: Embed( source="skins/VScrollBar_downArrowUpSkin.png" );
+	thumbIcon: Embed( source="skins/VScrollBar_thumbIcon.png" );
+	trackSkin: Embed( source="skins/VScrollBar_trackSkin.png" );
+	upArrowDisabledSkin: Embed( source="skins/VScrollBar_upArrowDisabledSkin.png" );
+	upArrowDownSkin: Embed( source="skins/VScrollBar_upArrowDownSkin.png" );
+	upArrowOverSkin: Embed( source="skins/VScrollBar_upArrowOverSkin.png" );
+	upArrowUpSkin: Embed( source="skins/VScrollBar_upArrowUpSkin.png" );
+	thumbDownSkin: Embed( 
+	   source="skins/VScrollBar_thumbDownSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+	thumbOverSkin: Embed( 
+	   source="skins/VScrollBar_thumbOverSkin.png",
+   		scaleGridLeft="1", scaleGridTop="5", 
+   		scaleGridRight="8", scaleGridBottom="44" );
+	thumbUpSkin: Embed( 
+	   source="skins/VScrollBar_thumbUpSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+}
+
+/* Embedded Fonts */
+ /*@font-face {
+	font-family: "Myriad Pro SemiCond";
+	src: url( "fonts/fonts.swf" );
+}*/
+/* CSS file used for component-level compilation */
+
+/* Embedded Fonts */
+/* Font for titles */
+/*@font-face {
+	font-family: "Myriad Pro SemiCond";
+	src: url("fonts/fonts.swf");
+}*/
+
+/* Font for anything else */
+/*@font-face {
+	font-family: "Myriad Pro";
+	src: url("fonts/fonts.swf");
+}*/
+
+/*@font-face {
+	font-family: "Myriad Pro";
+	font-weight: bold;
+	src: url("fonts/fonts.swf");
+}*/
+
+ScrollBar
+{
+	downArrowDisabledSkin: Embed(source="skins/VScrollBar_downArrowDisabledSkin.png");
+	downArrowDownSkin: Embed(source="skins/VScrollBar_downArrowDownSkin.png");
+	downArrowOverSkin: Embed(source="skins/VScrollBar_downArrowOverSkin.png");
+	downArrowUpSkin: Embed(source="skins/VScrollBar_downArrowUpSkin.png");
+	thumbIcon: Embed(source="skins/VScrollBar_thumbIcon.png");
+	trackSkin: Embed(source="skins/VScrollBar_trackSkin.png");
+	upArrowDisabledSkin: Embed(source="skins/VScrollBar_upArrowDisabledSkin.png");
+	upArrowDownSkin: Embed(source="skins/VScrollBar_upArrowDownSkin.png");
+	upArrowOverSkin: Embed(source="skins/VScrollBar_upArrowOverSkin.png");
+	upArrowUpSkin: Embed(source="skins/VScrollBar_upArrowUpSkin.png");
+	thumbDownSkin: Embed(
+	   source="skins/VScrollBar_thumbDownSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+	thumbOverSkin: Embed(
+	   source="skins/VScrollBar_thumbOverSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+	thumbUpSkin: Embed(
+	   source="skins/VScrollBar_thumbUpSkin.png",
+		   scaleGridLeft="1", scaleGridTop="5", 
+		   scaleGridRight="8", scaleGridBottom="44" );
+}
+
+Button
+{
+	horizontalGap: -1;
+    firstButtonStyleName: "firstButtonBarButton";
+    lastButtonStyleName: "lastButtonBarButton";
+}
+
+.mainPanel {
+   header-height: 0;
+   vertical-gap: 2;
+	borderSkin: Embed( 
+	   source="skins/Panel_borderSkin.png", 
+   	   scaleGridLeft="12", scaleGridTop="31", 
+   	   scaleGridRight="265", scaleGridBottom="189" );	
+    padding-top: 20;
+	padding-left: 8;
+	padding-right: 8;
+}
+
+.onlineIcon {
+	background-color: #26DE26;
+	corner-radius: 7;
+	borderThickness: 0;
+	borderStyle: solid;
+}
+
+.offlineIcon {
+	background-color: #D32929;
+	corner-radius: 7;
+	borderStyle: solid;
+	borderThickness: 0;
+}
+
+HRule {
+	strokeColor: #b9b9b9;
+	strokeWidth: 2;
+	shadowColor: #FFFFFF; 
+}
+
+.FormItemLabel {
+	color: #777777;
+}
+
+.FormItemValue {
+	color: #444444;
+}
+
+.panelTitleStyle {
+   fontFamily: "Myriad Pro SemiCond";
+   fontSize: 24;
+   textIndent: 20;
+}
+
+.statusPanelTitleSubStyle {
+   fontFamily: "Myriad Pro SemiCond";
+   fontSize: 16;
+   horizontal-center: right;
+   paddingLeft: 15;
+}
+
+.acPanelTitleSubStyle {
+   fontFamily: "Myriad Pro SemiCond";
+   fontSize: 16;
+   horizontal-center: right;
+	color: #C20D2B;
+}
+
+.panelTitleSubStyle {
+   fontFamily: "Myriad Pro SemiCond";
+   fontSize: 16;
+   horizontal-center: right;
+}
+
+.lowerPanelTitleSubStyle{
+   fontFamily: "Myriad Pro SemiCond";
+   fontSize: 16;
+   textIndent: 20;
+}
+
+.panelTitleLogo {
+	background-image:Embed(source="assets/todoLogo_big.png");
+	backgroundAlpha: 1.0;
+	backgroundSize: auto;
+}
+
+.firstButtonBarButton
+{
+    disabledSkin: Embed(
+      source="skins/ButtonBarFirstButton_disabledSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    downSkin: Embed(
+      source="skins/ButtonBarFirstButton_downSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    overSkin: Embed(
+      source="skins/ButtonBarFirstButton_overSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedDisabledSkin: Embed(
+      source="skins/ButtonBarFirstButton_selectedDisabledSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedDownSkin: Embed(
+      source="skins/ButtonBarFirstButton_downSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedOverSkin: Embed(
+      source="skins/ButtonBarFirstButton_overSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedUpSkin: Embed(
+      source="skins/ButtonBarFirstButton_selectedUpSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    upSkin: Embed(
+      source="skins/ButtonBarFirstButton_upSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+}
+
+.lastButtonBarButton
+{
+    disabledSkin: Embed(
+      source="skins/ButtonBarLastButton_disabledSkin.png",
+   		scaleGridLeft="6", scaleGridTop="6", 
+   		scaleGridRight="40", scaleGridBottom="16" );
+    downSkin: Embed(
+      source="skins/ButtonBarLastButton_downSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    overSkin: Embed(
+      source="skins/ButtonBarLastButton_overSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedDisabledSkin: Embed(
+      source="skins/ButtonBarLastButton_disabledSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedDownSkin: Embed(
+      source="skins/ButtonBarLastButton_downSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedOverSkin: Embed(
+      source="skins/ButtonBarLastButton_overSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    selectedUpSkin: Embed(
+      source="skins/ButtonBarLastButton_selectedUpSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+    upSkin: Embed(
+      source="skins/ButtonBarLastButton_upSkin.png",
+		   scaleGridLeft="6", scaleGridTop="6", 
+		   scaleGridRight="40", scaleGridBottom="16" );
+}
+Panel
+{
+	borderThicknessLeft: 4;
+	borderThicknessRight: 4;
+	roundedBottomCorners: true;
+	borderAlpha: 0.7;
+	paddingTop: 20;
+	paddingBottom: 20;
+	paddingLeft: 20;
+	paddingRight: 20;
+}
+
+

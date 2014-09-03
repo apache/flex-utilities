@@ -1,0 +1,104 @@
+
+  The Apache Flex Squiggly is a ActionScript spell checking library.
+	 
+  This application is based on work donated by Adobe.
+  
+==========================================================================================
+Initial Setup Required
+==========================================================================================            
+  
+    FLEX_HOME is the absolute path to the Apache Flex SDK
+    If you omit this argument, and the system environment variable, FLEX_HOME exists,
+    it is used.
+  
+==========================================================================================
+How to build the installer using ant (no IDE is required)
+==========================================================================================
+
+1.  On Linux or Mac un tar/gzip the source distribution:
+	    tar -zxvf apache-flex-squiggly-1.0.tar.gz
+	Or if on windows unzip 
+		apache-flex-squiggly-1.0.zip
+
+2.  In the base directory, run:
+        ant compile
+
+3. The compiled swcs can be found in the main/libs directory 
+        
+4. To optionally create a release source package, run:
+ 		ant package
+
+5. To remove all of the compiled swcs:
+ 		ant clean
+ 		
+==========================================================================================
+Some other useful ant targets
+========================================================================================== 		
+	
+There are several other useful ant targets.
+
+	 compile-swc         compile squiggly swcs
+	 package             package up all source files
+	 generate-docs       generate asdocs
+	 package-binary-tar  tar up all source files and swcs
+	 package-binary-zip  zip up all source files and swcs
+	 package-source-tar  tar up all source files
+	 package-source-zip  zip up all source files
+ 		
+==========================================================================================
+How to check the code out of Git
+==========================================================================================
+
+1.  Check out the the code from the Apache Flex utilities project
+	 git clone https://git-wip-us.apache.org/repos/asf/flex-utilities.git flex-utilities
+	 cd flex-utilities
+	 git checkout develop 
+
+2.  Change directory to:
+	cd Squiggly
+	
+==========================================================================================
+How to use the Squiggly SDK
+==========================================================================================
+
+Please read the ASDoc first to understand the classes in Squiggly.
+
+If you are using the SpellChecker class directly, you need.
+- SpellingEngine.swc in [YourProject]/libs folder, you can find it from ./libs
+- Dictionary files in [YourProject]/src folder
+
+You can obtain dictionary files from:
+http://extensions.openoffice.org
+http://hunspell.sourceforge.net
+
+If you are using the simple UI integration feature (SpellUI class), in addition to what
+mentioned above, you also need:
+- SpellingConfig.xml in [YourProject]/src
+- SpellingUI.swc in [YourProject]/src
+- SpellingUIEx.swc if you need spark support in Flex 4) in [YourProject]/libs 
+
+You can download HunSpell dictionaries and use those by editing SpellingConfig.xml.
+
+The default name of the config file has changed from AdobeSpellingConfig.xml to
+SpellingConfig.xml.
+
+Here's the content of SpellingConfig.xml, each entry maps the languageCode with the
+relative path for resource files. 
+
+<SpellingConfig>
+  <LanguageResource language="English" languageCode="en_US"
+    ruleFile="dict/en_US/en_US.aff" dictionaryFile="dict/en_US/en_US.dic"/>
+</SpellingConfig>
+
+So if you are adding Spanish, you just need to get the hunspell dictionary
+ es_ES.aff/dic and add one line to your config file.
+  <LanguageResource language="Spanish" languageCode="es_ES"
+     ruleFile="dict/es_ES/es_ES.aff" dictionaryFile="dict/es_ES/es_ES.dic"/>
+
+Note that you can put the dictionaries in any location as long as you update
+the config file, but the config file itself MUST be in [YourProject]/src folder.
+
+
+
+
+	

@@ -46,6 +46,7 @@
 						tabs[i] = new SourceTab();
 						tn.addChild(tabs[i]);
 						tabs[i].source = files[i];
+						tabs[i].app = appUrl;
     	    		}
 				}
 			}

@@ -1,0 +1,210 @@
+<?xml version="1.0" ?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<project name="Squiggly" default="compile" basedir=".">
+
+    <property file="${basedir}/env.properties"/>
+    <property environment="env"/>
+    <property file="${basedir}/local.properties"/>
+    <property file="${basedir}/build.properties"/>
+	
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+        	
+    <property name="version" value="1.0" />
+	
+    <path id="flexTasks.path">
+        <fileset dir="${FLEX_HOME}">
+            <include name="lib/flexTasks.jar" />
+            <include name="ant/lib/flexTasks.jar" />
+        </fileset>
+    </path>
+    <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
+	
+	<target name="compile" description="compile squiggly swcs and ane" depends="compile-swc,compile-ane">
+	</target>
+	
+	<target name="compile-swc" description="compile squiggly swcs">
+		<ant dir="main" />
+	</target>
+	
+	<target name="compile-ane" description="compile squiggly ane">
+		<!-- TODO may be added in a future release -->
+	</target>
+		
+	<target name="package" description="package up all source files" depends="package-dir,generate-docs,package-source-tar,package-source-zip,package-binary-tar,package-binary-zip">
+	</target>
+	
+	<target name="generate-docs" description="generate asdocs">
+		<asdoc output="docs" lenient="true" failonerror="true" warnings="false" strict="false" locale="en_US" fork="true"
+			exclude-dependencies="true"  
+			window-title="Apache Flex Squiggly API Documentation ${version}"
+            main-title="Apache Flex Squiggly API${version} API Reference">
+
+		    <doc-classes class="com.adobe.linguistics.spelling.SpellUI"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.SpellUIForTLF"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.HunspellDictionary"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.SpellChecker"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.UserDictionary"/>
+		    <doc-classes class="com.adobe.linguistics.utils.TextTokenizer"/>
+		    <doc-classes class="com.adobe.linguistics.utils.Token"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.framework.ResourceTable"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.framework.SpellingConfiguration"/>		    
+		    <doc-classes class="com.adobe.linguistics.spelling.framework.SpellingService"/>		    
+		    <doc-classes class="com.adobe.linguistics.spelling.ui.IHighlighter"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.ui.HaloHighlighter"/>
+			<doc-classes class="com.adobe.linguistics.spelling.ui.SparkHighlighter"/>
+			<doc-classes class="com.adobe.linguistics.spelling.ui.TLFHighlighter"/>
+	    		    
+			<compiler.source-path path-element="main/SpellingUI/src"/>
+			<compiler.source-path path-element="main/SpellingUITLF/src"/>
+			<compiler.source-path path-element="main/SpellingEngine/src"/>
+			<compiler.source-path path-element="main/LinguisticUtils/src"/>
+			<compiler.source-path path-element="main/SpellingFramework/src"/>
+			
+			<package name="com.adobe.linguistics.spelling" description="This package providing spell checking functionality to your action script applications. This includes the core spell checking engine and the optional SpellUI class for easy integration with your existing Flex projects." />
+			<package name="com.adobe.linguistics.spelling.ui" description="This package provides text highlighting related functionalities." />
+			<package name="com.adobe.linguistics.spelling.framework" description="This package provides spelling service and spelling configuration related functionalities." />
+			<package name="com.adobe.linguistics.utils" description="This package provides text parsing and tokenizing related classes." />
+		</asdoc>
+	</target>
+	
+	<target name="package-dir">
+		<delete dir="${basedir}/out"/>  
+		<mkdir dir="${basedir}/out"/> 
+	</target>
+		
+	<target name="package-source-tar" description="tar up all source files">     
+        <tar destfile="${basedir}/out/apache-flex-squiggly-${version}-src.tar.gz" 
+         	compression="gzip"
+            longfile="gnu">
+            <tarfileset dir="${basedir}">
+                <include name="LICENSE" />
+                <include name="NOTICE" />
+                <include name="README" />
+                <include name="RELEASE_NOTES" />
+                <include name="**/*.xml" />
+                <include name="**/*.mxml" />
+            	<include name="**/*.as" />
+            	<include name="**/*.txt" />
+            	<include name="**/*.bat" />
+            	<include name="**/*.py" />
+            	<include name="**/*.sh" />
+            	<include name="**/*.properties" />
+            	<include name="docs/**" />
+            	<exclude name="ane/**" />
+            	<exclude name="main/ASDocExamples/**" />
+            	<exclude name="main/Automation/**" />
+            	<exclude name="main/Data/**" />
+            	<exclude name="main/Demo/**" />
+            	<exclude name="main/Tools/**" />
+             </tarfileset>
+         </tar>
+	</target>
+	
+	<target name="package-source-zip" description="zip up all source files">    
+        <zip destfile="${basedir}/out/apache-flex-squiggly-${version}-src.zip">
+            <fileset dir="${basedir}">
+                <include name="LICENSE" />
+                <include name="NOTICE" />
+                <include name="README" />
+                <include name="RELEASE_NOTES" />
+                <include name="**/*.xml" />
+                <include name="**/*.mxml" />
+            	<include name="**/*.as" />
+            	<include name="**/*.txt" />
+            	<include name="**/*.bat" />
+            	<include name="**/*.py" />
+            	<include name="**/*.sh" />
+            	<include name="**/*.properties" />
+            	<include name="docs/**" />
+            	<exclude name="ane/**" />
+            	<exclude name="main/ASDocExamples/**" />
+            	<exclude name="main/Automation/**" />
+            	<exclude name="main/Data/**" />
+            	<exclude name="main/Demo/**" />
+            	<exclude name="main/Tools/**" />
+             </fileset>
+         </zip>
+	</target>
+	
+	<target name="package-binary-tar" description="tar up all source files and swcs">     
+	        <tar destfile="${basedir}/out/apache-flex-squiggly-${version}-bin.tar.gz" 
+	         	compression="gzip"
+	            longfile="gnu">
+	            <tarfileset dir="${basedir}">
+	                <include name="LICENSE" />
+	                <include name="NOTICE" />
+	                <include name="README" />
+	                <include name="RELEASE_NOTES" />
+	                <include name="**/*.xml" />
+	                <include name="**/*.mxml" />
+	            	<include name="**/*.as" />
+	            	<include name="**/*.txt" />
+	            	<include name="**/*.bat" />
+	            	<include name="**/*.py" />
+	            	<include name="**/*.sh" />
+	            	<include name="**/*.properties" />
+	            	<include name="docs/**" />
+	                <include name="**/*.swc" />
+	            	<exclude name="ane/**" />
+	            	<exclude name="main/ASDocExamples/**" />
+	            	<exclude name="main/Automation/**" />
+	            	<exclude name="main/Data/**" />
+	            	<exclude name="main/Demo/**" />
+	            	<exclude name="main/Tools/**" />
+	             </tarfileset>
+	         </tar>
+		</target>
+		
+		<target name="package-binary-zip" description="zip up all source files and swcs">    
+	        <zip destfile="${basedir}/out/apache-flex-squiggly-${version}-bin.zip">
+	            <fileset dir="${basedir}">
+	                <include name="LICENSE" />
+	                <include name="NOTICE" />
+	                <include name="README" />
+	                <include name="RELEASE_NOTES" />
+	                <include name="**/*.xml" />
+	                <include name="**/*.mxml" />
+	            	<include name="**/*.as" />
+	            	<include name="**/*.txt" />
+	            	<include name="**/*.bat" />
+	            	<include name="**/*.py" />
+	            	<include name="**/*.sh" />
+	            	<include name="**/*.properties" />
+	            	<include name="docs/**" />
+	                <include name="**/*.swc" />
+	            	<exclude name="ane/**" />
+	            	<exclude name="main/ASDocExamples/**" />
+	            	<exclude name="main/Automation/**" />
+	            	<exclude name="main/Data/**" />
+	            	<exclude name="main/Demo/**" />
+	            	<exclude name="main/Tools/**" />
+	             </fileset>
+	         </zip>
+		</target>
+   
+    <target name="clean" description="clean up">
+    	<delete>
+    		<fileset dir="${basedir}" includes="**/*.swf" />
+    	</delete>
+    	<delete dir="${basedir}/out"/> 
+    </target>
+</project>

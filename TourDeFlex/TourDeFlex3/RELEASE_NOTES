@@ -1,21 +1,31 @@
-<!--
+------------------------------------------------
+Apache Flex Tour De Flex Component Explorer 1.1
+------------------------------------------------
 
-Licensed to the Apache Software Foundation (ASF) under one or more
-contributor license agreements.  See the NOTICE file distributed with
-this work for additional information regarding copyright ownership.
-The ASF licenses this file to You under the Apache License, Version 2.0
-(the "License"); you may not use this file except in compliance with
-the License.  You may obtain a copy of the License at
+Changes since the version 1.0
+- Update READE and RELEASE_NOTES
+- Added some Apache Flex specific examples
+- Added button to copy code in source tab
+- Added button to link to github example
+- Added button to copy link to example
+- Improved build file ant task descriptions
+- Removed broken view source URLs
+- Fixed a few other minor issues
+- Now contains over 300 examples!
 
-http://www.apache.org/licenses/LICENSE-2.0
+Bugs fixed and improvements:
+FLEX-34502 Add link to github in TourDeFlex
+FLEX-34500 Show total number of examples in Tour De Flex UI
+FLEX-34495 Error loading source file
+FLEX-34492 Need ability to link to examples
+FLEX-34489 Some examples are missing all source files tab
+FLEX-34488 Add favicon to TourDeFlex
+FLEX-34483 Make logo links to Apache Flex web site
+FLEX-34482 Add copy button to copy code examples to clipboard
+FLEX-34480 If TourDeFlex is run from an untrusted location you get an error
+FLEX-34479 Change naming format of TourDeFlex
+FLEX-34474 TourDeFlex effects example bad styles and modifying default destination scaling
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
--->
 
 ------------------------------------------------
 Apache Flex Tour De Flex Component Explorer 1.0

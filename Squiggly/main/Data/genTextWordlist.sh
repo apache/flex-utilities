@@ -15,15 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-
-
-
-# Author (U)  Zhigang Qi (zhigang.qi@gmail.com) XieFang (xfang@adobe.com)
-# Created  02/26/2010
-
-
-# Put your selected word lists in squigglyWordlist folder, then run this #
+echo "Put your selected word lists in squigglyWordlist folder"
 
 
 cat squigglyWordlist/* | sort > usatemp.txt

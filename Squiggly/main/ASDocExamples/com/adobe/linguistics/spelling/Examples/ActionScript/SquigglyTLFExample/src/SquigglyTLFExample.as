@@ -28,7 +28,7 @@
  *  </li>
  * </ol>
  * 
- * Note: to make this example work properly, please make sure you have the proper dictionary files and AdobeSpellingConfig.xml file in the specified folder 
+ * Note: to make this example work properly, please make sure you have the proper dictionary files and SpellingConfig.xml file in the specified folder 
  * and put the Squiggly AdobeSpellingUITLF.swc library in your libs folder.
  */
 package

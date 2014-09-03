@@ -38,7 +38,7 @@
     <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
    
     <macrodef name="compile-mxml">
-        <attribute name="example"/>
+    	 <attribute name="example"/>
         
         <sequential>
    			<mxmlc file="${basedir}/src/@{example}.mxml"
@@ -47,17 +47,36 @@
 			</mxmlc>
 		</sequential>
 	</macrodef>	
+	
+    <macrodef name="compile-mxml-locales">
+    	 <attribute name="example"/>
+    	 <attribute name="locales" default="en_US"/>
+        
+        <sequential>
+   			<mxmlc file="${basedir}/src/@{example}.mxml"
+            	output="${basedir}/src/@{example}.swf" fork="true" failonerror="true">
+   				<locale>en_US</locale>
+   				<locale>en_AU</locale>
+   				<locale>en_GB</locale>
+   				<locale>en_CA</locale>
+   				<locale>el_GR</locale>
+   				<locale>de_CH</locale>
+   				<locale>pt_PT</locale>
+				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			</mxmlc>
+		</sequential>
+	</macrodef>
 		
-	<target name="compile" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3">
+	<target name="compile" description="compile all examples and the explorer shell" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3,compile-apache">
 	</target>
 	
-	<target name="compile-shell">
+	<target name="compile-shell" description="compile explorer shell">
 		<compile-mxml example="/explorer"/>
 		<compile-mxml example="/loaderPanel"/>
 		<compile-mxml example="/SourceTab"/>
 	</target>
 	
-	<target name="compile-mx">
+	<target name="compile-mx" description="compile mx examples">
 		<compile-mxml example="/mx/charts/BubbleChartExample"/>
 		<compile-mxml example="/mx/charts/CandlestickChartExample"/>
 		<compile-mxml example="/mx/charts/Column_BarChartExample"/>
@@ -185,7 +204,7 @@
 		<compile-mxml example="/mx/validators/ZipCodeValidatorExample"/>
 	</target>
 		
-	<target name="compile-spark">
+	<target name="compile-spark" description="compile first set of spark examples">
 		<compile-mxml example="/spark/controls/AccordionExample"/>
 		<compile-mxml example="/spark/controls/AdvancedDatagridExample"/>
 		<compile-mxml example="/spark/controls/ColorPickerExample"/>
@@ -215,6 +234,7 @@
 		<compile-mxml example="/spark/controls/TextLayout2Example"/>
 		<compile-mxml example="/spark/controls/TextLayout3Example"/>
 		<compile-mxml example="/spark/controls/TextLayout4Example"/>
+		<compile-mxml example="/spark/controls/VideoDisplayExample"/>
 		
 		<compile-mxml example="/spark/css/CSSDescendantSelectorExample"/>
 		<compile-mxml example="/spark/css/CSSTypeClassSelectorExample"/>
@@ -236,7 +256,7 @@
 		<compile-mxml example="/spark/containers/SampleHGroup"/>
 		<compile-mxml example="/spark/containers/SampleVGroup"/>
 		<compile-mxml example="/spark/containers/SampleVerticalHorizontalAlign"/>
-		<compile-mxml example="/spark/containers/SkinableDataContainerExample"/>
+		<compile-mxml example="/spark/containers/SkinnableDataContainerExample"/>
 		<compile-mxml example="/spark/containers/TileGroupExample"/>
 		
 		<compile-mxml example="/spark/effects/Move3DExample"/>
@@ -298,7 +318,7 @@
 		<!-- currently broken <compile-mxml example="/spark/tlf/TextLayoutEditorSample"/> -->
 	</target>
 	
-	<target name="compile-spark2">
+	<target name="compile-spark2" description="compile second set of spark examples">
 		<compile-mxml example="/spark/i18n/SparkCollatorExample"/>
 		<compile-mxml example="/spark/i18n/SparkCollator2Example"/>
 		<compile-mxml example="/spark/i18n/SparkCurrencyValidatorExample"/>
@@ -334,7 +354,7 @@
 		<compile-mxml example="/spark/controls/OSMFExample"/>
 	</target>
 	
-	<target name="compile-spark3">
+	<target name="compile-spark3" description="compile third set of spark examples">
 		<compile-mxml example="/spark/other/BidirectionalBinding1Example"/>
 		<compile-mxml example="/spark/other/BidirectionalBinding2Example"/>
 		<compile-mxml example="/spark/other/ControllingViewportExample"/>
@@ -378,6 +398,30 @@
 		<compile-mxml example="/spark/controls/VideoPlayerExample"/>
 		<compile-mxml example="/spark/controls/ListExample"/>
 	</target>
+	
+	<target name="compile-apache" description="compile apache examples">
+		<compile-mxml example="/apache/ApacheFlex4_8_0"/>
+		<compile-mxml example="/apache/ApacheFlex4_9_0"/>
+		<compile-mxml example="/apache/ApacheFlex4_10_0"/>
+		<compile-mxml example="/apache/ApacheFlex4_11_0"/>
+		<compile-mxml example="/apache/ApacheFlex4_12_1"/>
+		<compile-mxml example="/apache/ApacheFlex4_13_0"/>
+		<!-- <compile-mxml example="/apache/ApacheFlex4_13_0"/> -->
+		
+		<compile-mxml example="/apache/formatters/PostCodeFormatterExample"/>
+		<compile-mxml example="/apache/validators/PostCodeValidatorExample"/>
+		<compile-mxml-locales example="/apache/i18n/LocaleExample"/>
+		<compile-mxml example="/apache/i18n/DateExample"/>
+		<compile-mxml example="/apache/i18n/TimeZoneExample"/>
+		<compile-mxml example="/apache/i18n/MillisecondExample"/>
+		<compile-mxml example="/apache/i18n/ScientificExample"/>
+		<compile-mxml example="/apache/i18n/NumericStepperExample"/>
+		<compile-mxml example="/apache/containers/CalloutExample"/>
+		<compile-mxml example="/apache/controls/MaskedTextInputExample"/>
+		
+		<!-- Uncomment when Flex 4.14 is released -->
+		<!-- compile-mxml example="/apache/controls/SparkRichTextEditorExample"/-->
+	</target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
 	</target>
@@ -388,7 +432,7 @@
 	</target>
 		
 	<target name="package-tar" description="tar up all source files">     
-        <tar destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-src-${version}.tar.gz" 
+        <tar destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}-src.tar.gz" 
          	compression="gzip"
             longfile="gnu">
             <tarfileset dir="${basedir}/..">
@@ -399,7 +443,8 @@
                 <include name="README" />
                 <include name="RELEASE_NOTES" />
                 <include name="build.xml" />
-                <include name="src/explorer.html" />
+            	<include name="src/favicon.ico" />
+                <include name="src/index.html" />
                 <include name="src/explorer.xml" />
                 <include name="src/AC_OETags.js" />
                 <include name="**/*.mxml" />
@@ -418,7 +463,7 @@
 	</target>
 	
 	<target name="package-zip" description="zip up all source files">    
-        <zip destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-src-${version}.zip">
+        <zip destfile="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}-src.zip">
             <fileset dir="${basedir}/..">
                 <include name="LICENSE" />
                 <include name="NOTICE" />
@@ -427,7 +472,8 @@
                 <include name="README" />
                 <include name="RELEASE_NOTES" />
                 <include name="build.xml" />
-                <include name="src/explorer.html" />
+            	<include name="src/favicon.ico" />
+                <include name="src/index.html" />
                 <include name="src/explorer.xml" />
                 <include name="src/AC_OETags.js" />
                 <include name="**/*.mxml" />

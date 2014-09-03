@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:Application xmlns:control="com.adobe.ac.pmd.control.*"
+   xmlns:local="*"
+   xmlns:mx="http://www.adobe.com/2006/mxml"
+   xmlns:services="com.adobe.ac.pmd.services.*"
+   xmlns:view="com.adobe.ac.pmd.view.*"
+   styleName="flexUnitApplication"
+   horizontalScrollPolicy="off"
+   layout="vertical"
+   minHeight="600"
+   minWidth="850"
+   height="100%"
+   horizontalAlign="center"
+   verticalAlign="top"
+   paddingBottom="10">
+
+   <control:Controller/>
+
+   <services:MyServiceLocator/>
+
+   <mx:Panel width="100%" 
+      styleName="mainPanel"
+       height="100%">
+
+      <mx:HBox width="100%"
+         horizontalGap="0"
+         paddingRight="10"
+         verticalAlign="bottom"
+         >
+
+         <view:Title styleName="panelTitleStyle"
+            text="FlexPMD Ruleset Creator"
+            />
+
+         <view:Title styleName="panelTitleSubStyle"
+            text="powered by Adobe Technical Services"
+            buttonMode="true"
+            click="navigateToURL( new URLRequest( 'http://www.adobe.com/consulting/' ) )"
+            mouseChildren="false"
+            useHandCursor="true"
+            />
+
+         <mx:Spacer width="100%"
+            />
+
+         <view:Title styleName="panelTitleSubStyle"
+            text="v{ Version.BUILD_NUMBER } built on { Version.BUILD_DATE } at { Version.BUILD_TIME}"
+            />
+
+      </mx:HBox>
+
+      <mx:HRule width="100%"
+         styleName="flexUnitHRule"
+         />
+
+      <mx:HBox width="100%"
+         paddingBottom="5"
+         paddingLeft="10"
+          height="100%">
+
+         <view:RuleSetNavigator id="navigator"
+            width="100%"
+            selectedRuleChange="editor.model.selectedRule = event.selectedRule"
+             height="100%"/>
+
+         <mx:VRule
+            styleName="flexUnitHRule"
+             height="100%"/>
+
+		 <mx:VBox
+			 height="100%">
+			 
+	         <view:RuleEditor id="editor"/>
+			 
+			 <mx:Label
+				 text="{ navigator.model.rootRuleset.rulesNb } rule(s) in your current ruleset"
+				 />
+
+		 </mx:VBox>
+
+      </mx:HBox>
+
+      <mx:HRule width="100%"
+         styleName="flexUnitHRule"
+         />
+
+      <mx:HBox width="100%"
+         horizontalAlign="center"
+		 verticalAlign="middle"
+         >
+
+		  <mx:Button label="Import"
+					 icon="@Embed(source='/assets/up.png')"
+					 click="navigator.model.getCustomRuleset()"
+					 height="100%"
+					 />
+		  
+		  <mx:Button label="Export"
+					 icon="@Embed(source='/assets/down.png')"
+					 click="navigator.model.exportRootRuleset()"
+					 height="100%"
+					 />
+
+		  <mx:Button label="Add a regexp based rule"
+					 icon="@Embed(source='/assets/add-48.png')"
+					 click="navigator.openRuleset( navigator.model.addNewRegExpBasedRule() )"
+					 height="100%"
+					  paddingLeft="10"/>
+		  
+      </mx:HBox>
+
+   </mx:Panel>
+
+</mx:Application>
