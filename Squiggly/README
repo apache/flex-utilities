@@ -61,15 +61,21 @@ How to check the code out of Git
 How to use the Squiggly SDK
 ==========================================================================================
 
-Please read the ASDoc first to understand the classes in Squiggly.
+Please read the ASDocs (found in docs) first to understand the classes in Squiggly.
 
 If you are using the SpellChecker class directly, you need.
 - SpellingEngine.swc in [YourProject]/libs folder, you can find it from ./libs
 - Dictionary files in [YourProject]/src folder
 
-You can obtain dictionary files from:
-http://extensions.openoffice.org
-http://hunspell.sourceforge.net
+You can obtain en_US, en_CA and en_GB dictionaries under a BSD/MIT-like license from:
+   http://wordlist.aspell.net/dicts/
+
+You can obtain other dictionary files from:
+    http://wordlist.aspell.net/other-dicts/
+    http://extensions.openoffice.org
+    http://hunspell.sourceforge.net
+
+But note that many of these dictionaries are under LPGL licenses.
 
 If you are using the simple UI integration feature (SpellUI class), in addition to what
 mentioned above, you also need:
@@ -77,7 +83,7 @@ mentioned above, you also need:
 - SpellingUI.swc in [YourProject]/src
 - SpellingUIEx.swc if you need spark support in Flex 4) in [YourProject]/libs 
 
-You can download HunSpell dictionaries and use those by editing SpellingConfig.xml.
+You can download dictionaries and use those by editing SpellingConfig.xml.
 
 The default name of the config file has changed from AdobeSpellingConfig.xml to
 SpellingConfig.xml.
@@ -90,14 +96,19 @@ relative path for resource files.
     ruleFile="dict/en_US/en_US.aff" dictionaryFile="dict/en_US/en_US.dic"/>
 </SpellingConfig>
 
-So if you are adding Spanish, you just need to get the hunspell dictionary
- es_ES.aff/dic and add one line to your config file.
+So if you are adding Spanish, you just need to get the dictionary files es_ES.aff
+and es_ES.dic and add one line to your config file.
   <LanguageResource language="Spanish" languageCode="es_ES"
      ruleFile="dict/es_ES/es_ES.aff" dictionaryFile="dict/es_ES/es_ES.dic"/>
 
 Note that you can put the dictionaries in any location as long as you update
 the config file, but the config file itself MUST be in [YourProject]/src folder.
 
+
+Thanks for using Apache Flex.  Enjoy!
+
+       The Apache Flex Project
+       <http://flex.apache.org>
 
 
 
