@@ -437,7 +437,9 @@
             longfile="gnu">
             <tarfileset dir="${basedir}/..">
                 <include name="LICENSE" />
-                <include name="NOTICE" />
+            	<include name="NOTICE" />
+            	<include name="CONTIBITORS" />
+                <include name="CONTRIBITING" />
             </tarfileset>
             <tarfileset dir="${basedir}">
                 <include name="README" />
@@ -467,6 +469,8 @@
             <fileset dir="${basedir}/..">
                 <include name="LICENSE" />
                 <include name="NOTICE" />
+            	<include name="CONTIBITORS" />
+                <include name="CONTRIBITING" />
             </fileset>
             <fileset dir="${basedir}">
                 <include name="README" />
