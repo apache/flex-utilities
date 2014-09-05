@@ -17,7 +17,6 @@
 package com.adobe.ac.pmd.engines;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +28,7 @@ import net.sourceforge.pmd.PMDException;
 import net.sourceforge.pmd.RuleSet;
 import net.sourceforge.pmd.RuleSetFactory;
 
+import net.sourceforge.pmd.RuleSetNotFoundException;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.util.IOUtil;
 
@@ -61,9 +61,9 @@ public abstract class AbstractFlexPmdEngine
       final File temporaryRuleset = File.createTempFile( "default_flex",
                                                          ".xml" );
       temporaryRuleset.deleteOnExit();
-      final FileOutputStream writter = new FileOutputStream( temporaryRuleset );
+      final FileOutputStream writer = new FileOutputStream( temporaryRuleset );
       IOUtil.copy( resourceAsStream,
-                   writter );
+                   writer );
 
       resourceAsStream.close();
       return temporaryRuleset;
@@ -86,6 +86,10 @@ public abstract class AbstractFlexPmdEngine
       try
       {
          ruleSet = loadRuleset( parameters.getRuleSet() );
+      }
+      catch ( final RuleSetNotFoundException e )
+      {
+         LOGGER.warning( StackTraceUtils.print( e ) );
       }
       catch ( final URISyntaxException e )
       {
@@ -168,18 +172,16 @@ public abstract class AbstractFlexPmdEngine
                                           "Engine" );
    }
 
-   private RuleSet loadRuleset( final File ruleSetFile ) throws URISyntaxException,
+   private RuleSet loadRuleset( final File ruleSetFile ) throws RuleSetNotFoundException, URISyntaxException,
                                                         IOException
    {
       final File realRuleSet = extractRuleset( ruleSetFile );
-      final FileInputStream inputStream = new FileInputStream( realRuleSet );
-      final RuleSet loadedRuleSet = new RuleSetFactory().createRuleSet( inputStream );
+      final RuleSet loadedRuleSet = new RuleSetFactory().createRuleSet( realRuleSet.getAbsolutePath() );
 
       LOGGER.info( "Ruleset: "
             + realRuleSet.getAbsolutePath() );
       LOGGER.info( "Rules number in the ruleSet: "
             + loadedRuleSet.getRules().size() );
-      inputStream.close();
 
       return loadedRuleSet;
    }
@@ -187,13 +189,13 @@ public abstract class AbstractFlexPmdEngine
    private void writeAnyReport( final FlexPmdViolations flexPmdViolations ) throws PMDException
    {
       long startTime;
-      long ellapsedTime;
+      long elapsedTime;
       startTime = System.currentTimeMillis();
       writeReport( flexPmdViolations );
-      ellapsedTime = System.currentTimeMillis()
+      elapsedTime = System.currentTimeMillis()
             - startTime;
 
       LOGGER.info( "It took "
-            + ellapsedTime + "ms to write the " + getReportType() + " report" );
+            + elapsedTime + "ms to write the " + getReportType() + " report" );
    }
 }

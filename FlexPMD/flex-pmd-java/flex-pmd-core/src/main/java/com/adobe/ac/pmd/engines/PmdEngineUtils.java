@@ -39,7 +39,7 @@ public final class PmdEngineUtils
       {
          for ( final IFlexViolation violation : violatedFile.getValue() )
          {
-            if ( violation.getRule().getPriority() == Integer.parseInt( ViolationPriority.HIGH.toString() ) )
+            if ( violation.getRule().getPriority().getPriority() == Integer.parseInt( ViolationPriority.HIGH.toString() ) )
             {
                final String[] formatArgument = computeArgumentFormat( violation );
                buffer.append( form.format( formatArgument ) );

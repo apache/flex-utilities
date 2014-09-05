@@ -24,11 +24,13 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import net.sourceforge.pmd.CommonAbstractRule;
 import net.sourceforge.pmd.PropertyDescriptor;
 import net.sourceforge.pmd.RuleContext;
-import net.sourceforge.pmd.properties.IntegerProperty;
-import net.sourceforge.pmd.rules.regex.RegexHelper;
+import net.sourceforge.pmd.RulePriority;
+import net.sourceforge.pmd.lang.ast.Node;
+import net.sourceforge.pmd.lang.java.rule.regex.RegexHelper;
+import net.sourceforge.pmd.lang.rule.AbstractRule;
+import net.sourceforge.pmd.lang.rule.properties.IntegerProperty;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -44,7 +46,7 @@ import com.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule;
  * 
  * @author xagnetti
  */
-public abstract class AbstractFlexRule extends CommonAbstractRule implements IFlexRule
+public abstract class AbstractFlexRule extends AbstractRule implements IFlexRule
 {
    protected static final String    MAXIMUM            = "maximum";
    protected static final String    MINIMUM            = "minimum";
@@ -69,7 +71,7 @@ public abstract class AbstractFlexRule extends CommonAbstractRule implements IFl
    /**
     * not used in FlexPMD
     */
-   public final void apply( final List< ? > astCompilationUnits,
+   public final void apply( final List< ? extends Node > astCompilationUnits,
                             final RuleContext ctx )
    {
    }
@@ -247,6 +249,8 @@ public abstract class AbstractFlexRule extends CommonAbstractRule implements IFl
       properties.put( rule.getThresholdName(),
                       new IntegerProperty( rule.getThresholdName(),
                                            "",
+                                           Integer.MIN_VALUE,
+                                           Integer.MAX_VALUE,
                                            rule.getDefaultThreshold(),
                                            properties.size() ) );
 
@@ -294,8 +298,8 @@ public abstract class AbstractFlexRule extends CommonAbstractRule implements IFl
          {
             final Pattern pattern = Pattern.compile( exclusion );
 
-            if ( RegexHelper.isMatch( pattern,
-                                      file.getFilePath() ) )
+            if ( RegexHelper.isMatch(pattern,
+                    file.getFilePath()) )
             {
                return true;
             }
@@ -337,8 +341,19 @@ public abstract class AbstractFlexRule extends CommonAbstractRule implements IFl
 
    private void setDefaultPriority()
    {
-      setPriority( Integer.valueOf( getDefaultPriority().toString() ) );
+       switch (getDefaultPriority()) {
+           case LOW:
+               setPriority(RulePriority.LOW);
+               break;
+           case NORMAL:
+               setPriority(RulePriority.MEDIUM);
+               break;
+           case HIGH:
+               setPriority(RulePriority.HIGH);
+               break;
+       }
    }
+
 
    private boolean strippedLineContainsNoPmdAndRuleName( final String comment_token,
                                                          final String ruleName,

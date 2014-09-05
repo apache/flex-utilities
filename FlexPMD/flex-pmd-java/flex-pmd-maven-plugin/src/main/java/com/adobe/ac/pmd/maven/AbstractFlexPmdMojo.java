@@ -39,10 +39,10 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
-import org.codehaus.doxia.site.renderer.SiteRenderer;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -111,11 +111,11 @@ abstract class AbstractFlexPmdMojo extends AbstractMavenReport
 
    /**
     * @parameter 
-    *            expression="${component.org.codehaus.doxia.site.renderer.SiteRenderer}"
+    *            expression="${component.org.apache.maven.doxia.siterenderer.Renderer}"
     * @required
     * @readonly
     */
-   private SiteRenderer siteRenderer;
+   private Renderer siteRenderer;
 
    /**
     * Specifies the location of the source files to be used.
@@ -244,7 +244,7 @@ abstract class AbstractFlexPmdMojo extends AbstractMavenReport
    }
 
    @Override
-   protected final SiteRenderer getSiteRenderer()
+   protected final Renderer getSiteRenderer()
    {
       return siteRenderer;
    }
@@ -273,7 +273,7 @@ abstract class AbstractFlexPmdMojo extends AbstractMavenReport
       }
    }
 
-   protected final void setSiteRenderer( final SiteRenderer siteRendererToBeSet ) // NO_UCD
+   protected final void setSiteRenderer( final Renderer siteRendererToBeSet ) // NO_UCD
    {
       this.siteRenderer = siteRendererToBeSet;
    }

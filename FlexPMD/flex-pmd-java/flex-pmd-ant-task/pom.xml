@@ -90,7 +90,7 @@
                                 <echo message="Copying Ant dependencies..."/>
                                 <copy file="${org.apache.flex.pmd:as3-plugin-utils:jar}"
                                       todir="${project.build.directory}/release" overwrite="true"/>
-                                <copy file="${pmd:pmd:jar}"
+                                <copy file="${net.sourceforge.pmd:pmd:jar}"
                                       todir="${project.build.directory}/release" overwrite="true"/>
                                 <copy file="${org.apache.ant:ant:jar}"
                                       todir="${project.build.directory}/release" overwrite="true"/>
@@ -171,7 +171,7 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>pmd</groupId>
+            <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd</artifactId>
             <version>${pmd.version}</version>
         </dependency>

@@ -17,10 +17,10 @@
   limitations under the License.
 
 -->
-<ruleset xmlns="http://pmd.sf.net/ruleset/1.0.0" name="pmd"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
-	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
+<ruleset name="pmd" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
+         xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
 	<description>PMD Plugin preferences rule set</description>
 	<rule ref="rulesets/logging-jakarta-commons.xml/UseCorrectExceptionLogging" />
 	<rule ref="rulesets/logging-jakarta-commons.xml/ProperLogger" />
@@ -78,8 +78,7 @@
 	<rule ref="rulesets/design.xml/UnsynchronizedStaticDateFormatter" />
 	<rule ref="rulesets/design.xml/PreserveStackTrace" />
 	<rule ref="rulesets/design.xml/UseCollectionIsEmpty" />
-	<rule
-		ref="rulesets/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal" />
+	<rule ref="rulesets/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal" />
 	<rule ref="rulesets/design.xml/SingularField" />
 	<rule ref="rulesets/design.xml/ReturnEmptyArrayRatherThanNull" />
 	<rule ref="rulesets/design.xml/AbstractClassWithoutAnyMethod" />

@@ -21,9 +21,9 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.util.Locale;
 
+import org.apache.maven.doxia.siterenderer.DefaultSiteRenderer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.codehaus.doxia.site.renderer.DefaultSiteRenderer;
 import org.junit.Test;
 
 import com.adobe.ac.pmd.FlexPmdTestBase;

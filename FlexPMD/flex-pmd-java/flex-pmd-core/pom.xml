@@ -33,12 +33,12 @@
     <name>Adobe Flex PMD Core</name>
 
     <properties>
-        <doxia-core.version>1.0-alpha-4</doxia-core.version>
+        <doxia-core.version>1.6</doxia-core.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>doxia</groupId>
+            <groupId>org.apache.maven.doxia</groupId>
             <artifactId>doxia-core</artifactId>
             <version>${doxia-core.version}</version>
         </dependency>

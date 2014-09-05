@@ -305,11 +305,11 @@ public final class Violation implements IFlexViolation
    {
       int res;
 
-      if ( rule.getPriority() > otherViolation.getRule().getPriority() )
+      if ( rule.getPriority().getPriority() > otherViolation.getRule().getPriority().getPriority() )
       {
          res = 1;
       }
-      else if ( rule.getPriority() < otherViolation.getRule().getPriority() )
+      else if ( rule.getPriority().getPriority() < otherViolation.getRule().getPriority().getPriority() )
       {
          res = -1;
       }

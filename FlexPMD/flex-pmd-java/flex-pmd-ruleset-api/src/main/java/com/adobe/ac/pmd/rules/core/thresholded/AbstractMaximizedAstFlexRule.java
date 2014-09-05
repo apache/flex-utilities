@@ -16,10 +16,6 @@
  */
 package com.adobe.ac.pmd.rules.core.thresholded;
 
-import java.util.Map;
-
-import net.sourceforge.pmd.PropertyDescriptor;
-
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 
 /**
@@ -34,7 +30,7 @@ public abstract class AbstractMaximizedAstFlexRule extends AbstractAstFlexRule i
     */
    public final int getThreshold()
    {
-      return getIntProperty( propertyDescriptorFor( getThresholdName() ) );
+      return 1;//getIntProperty( propertyDescriptorFor( getThresholdName() ) );
    }
 
    /*
@@ -46,15 +42,5 @@ public abstract class AbstractMaximizedAstFlexRule extends AbstractAstFlexRule i
    public final String getThresholdName()
    {
       return MAXIMUM;
-   }
-
-   /*
-    * (non-Javadoc)
-    * @see net.sourceforge.pmd.CommonAbstractRule#propertiesByName()
-    */
-   @Override
-   protected final Map< String, PropertyDescriptor > propertiesByName()
-   {
-      return getThresholdedRuleProperties( this );
    }
 }

@@ -44,7 +44,7 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>pmd</groupId>
+            <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd</artifactId>
             <version>${pmd.version}</version>
         </dependency>

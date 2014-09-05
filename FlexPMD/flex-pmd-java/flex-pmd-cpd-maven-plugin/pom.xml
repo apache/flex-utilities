@@ -35,7 +35,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>pmd</groupId>
+            <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd</artifactId>
             <version>${pmd.version}</version>
         </dependency>
@@ -79,6 +79,13 @@
             <classifier>resources</classifier>
             <type>zip</type>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugin-testing</groupId>
+            <artifactId>maven-plugin-testing-harness</artifactId>
+            <version>${maven-plugin-testing.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

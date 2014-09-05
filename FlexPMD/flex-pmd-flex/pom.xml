@@ -34,7 +34,6 @@ limitations under the License.
 		<flex.version>4.13.0.20140701</flex.version>
 		<flash-player.version>11.1</flash-player.version>
 		<flexunit.version>4.2.0</flexunit.version>
-		<event-source.version>1.1</event-source.version>
 		<flexunit-theme.version>1.0</flexunit-theme.version>
 	</properties>
 

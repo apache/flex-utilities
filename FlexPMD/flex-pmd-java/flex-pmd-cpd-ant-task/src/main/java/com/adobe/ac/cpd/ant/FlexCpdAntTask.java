@@ -21,11 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.pmd.cpd.CPD;
-import net.sourceforge.pmd.cpd.FileReporter;
-import net.sourceforge.pmd.cpd.Renderer;
-import net.sourceforge.pmd.cpd.ReportException;
-import net.sourceforge.pmd.cpd.XMLRenderer;
+import net.sourceforge.pmd.cpd.*;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
@@ -63,8 +59,12 @@ public class FlexCpdAntTask extends Task
 
          log( "Tokenizing files",
               Project.MSG_INFO );
-         final CPD cpd = new CPD( minimumTokenCount, new FlexLanguage() );
-         cpd.setEncoding( encoding );
+
+         CPDConfiguration cpdCfg = new CPDConfiguration();
+         cpdCfg.setMinimumTileSize(minimumTokenCount);
+         cpdCfg.setEncoding(encoding);
+         cpdCfg.setLanguage(new FlexLanguage());
+         final CPD cpd = new CPD( cpdCfg );
          tokenizeFiles( cpd );
 
          log( "Starting to analyze code",

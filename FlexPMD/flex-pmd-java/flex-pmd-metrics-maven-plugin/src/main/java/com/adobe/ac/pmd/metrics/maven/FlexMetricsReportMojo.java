@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
-import org.codehaus.doxia.site.renderer.SiteRenderer;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
@@ -92,11 +92,11 @@ public final class FlexMetricsReportMojo extends AbstractMavenReport
    private List< MavenProject > reactorProjects;
    /**
     * @parameter 
-    *            expression="${component.org.codehaus.doxia.site.renderer.SiteRenderer}"
+    *            expression="${component.org.apache.maven.doxia.siterenderer.Renderer}"
     * @required
     * @readonly
     */
-   private SiteRenderer         siteRenderer;
+   private Renderer siteRenderer;
 
    /**
     * Specifies the location of the source files to be used.
@@ -148,9 +148,6 @@ public final class FlexMetricsReportMojo extends AbstractMavenReport
       reactorProjects.add( project );
    }
 
-   /**
-    * @see org.apache.maven.reporting.MavenReport#execute(java.util.Locale)
-    */
    @Override
    public void executeReport( final Locale locale ) throws MavenReportException
    {
@@ -213,7 +210,7 @@ public final class FlexMetricsReportMojo extends AbstractMavenReport
       lineThreshold = lineThresholdToBeSet;
    }
 
-   public void setSiteRenderer( final SiteRenderer siteRendererToBeSet )
+   public void setSiteRenderer( final Renderer siteRendererToBeSet )
    {
       siteRenderer = siteRendererToBeSet;
    }
@@ -261,7 +258,7 @@ public final class FlexMetricsReportMojo extends AbstractMavenReport
     * @see org.apache.maven.reporting.AbstractMavenReport#getSiteRenderer()
     */
    @Override
-   protected SiteRenderer getSiteRenderer()
+   protected Renderer getSiteRenderer()
    {
       return siteRenderer;
    }

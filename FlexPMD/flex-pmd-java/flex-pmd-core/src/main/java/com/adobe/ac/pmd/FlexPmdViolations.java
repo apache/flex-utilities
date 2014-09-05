@@ -30,8 +30,8 @@ import java.util.logging.Logger;
 
 import net.sourceforge.pmd.PMDException;
 import net.sourceforge.pmd.Rule;
-import net.sourceforge.pmd.RuleReference;
 import net.sourceforge.pmd.RuleSet;
+import net.sourceforge.pmd.lang.rule.RuleReference;
 
 import com.adobe.ac.pmd.files.FileSetUtils;
 import com.adobe.ac.pmd.files.IFlexFile;

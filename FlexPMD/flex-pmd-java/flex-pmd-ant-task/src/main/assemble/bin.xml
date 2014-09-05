@@ -31,7 +31,7 @@ limitations under the License.
          <include>com.adobe.ac:as3-plugin-utils</include>
          <include>com.adobe.ac:flex-pmd-ruleset</include>
          <include>com.adobe.ac:flex-pmd-ruleset-api</include>
-         <include>pmd:pmd</include>
+         <include>net.sourceforge.pmd:pmd</include>
       </includes>
     </dependencySet>
   </dependencySets>    

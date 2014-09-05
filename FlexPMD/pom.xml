@@ -64,7 +64,7 @@ limitations under the License.
 		<source.local.path>file:///Users/xagnetti/Work/repositories/opensource.adobe/flexpmd</source.local.path>
 
 		<!-- Plugins/Dependencies version -->
-		<pmd.version>4.2.5</pmd.version>
+		<pmd.version>5.1.3</pmd.version>
 		<compileSource>1.5</compileSource>
 		<cobertura.version>2.2</cobertura.version>
 		<junit.version>4.7</junit.version>
@@ -79,18 +79,20 @@ limitations under the License.
 		<plexus-utils.version>1.0.2</plexus-utils.version>
 		<release-plugin.version>2.5</release-plugin.version>
 		<gpg-plugin.version>1.0-alpha-4</gpg-plugin.version>
-		<maven-reporting-impl.version>2.0-beta-3</maven-reporting-impl.version>
+		<maven-reporting-impl.version>2.0.5</maven-reporting-impl.version>
 		<maven-plugin-api.version>3.2.3</maven-plugin-api.version>
+        <maven-plugin-testing.version>3.2.0</maven-plugin-testing.version>
 		<maven-plugin-testing-harness.version>1.0-beta-1</maven-plugin-testing-harness.version>
 		<ant.version>1.7.0</ant.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<javadoc-plugin.version>2.7</javadoc-plugin.version>
         <cairngorm.version>2.2.1</cairngorm.version>
+        <event-source.version>1.1</event-source.version>
 
 		<jsap.version>2.1</jsap.version>
 
 		<!-- Reporting versions -->
-		<maven-pmd-plugin.version>2.4</maven-pmd-plugin.version>
+		<maven-pmd-plugin.version>3.2</maven-pmd-plugin.version>
 
 		<!-- Flex project versions -->
 		<!-- Plugin versions -->
@@ -162,7 +164,7 @@ limitations under the License.
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -172,7 +174,7 @@ limitations under the License.
                 <version>${maven-plugin-api.version}</version>
             </dependency>
             <dependency>
-                <groupId>pmd</groupId>
+                <groupId>net.sourceforge.pmd</groupId>
                 <artifactId>pmd</artifactId>
                 <version>${pmd.version}</version>
                 <exclusions>
@@ -354,6 +356,12 @@ limitations under the License.
 					</execution>
 				</executions>
 			</plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
+            </plugin>
 		</plugins>
 	</build>
 
@@ -362,7 +370,7 @@ limitations under the License.
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>2.0-beta-5</version>
+				<version>3.4</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -399,21 +407,5 @@ limitations under the License.
 			</plugin>
 		</plugins>
 	</reporting>
-
-	<profiles>
-		<profile>
-			<id>hudson</id>
-			<distributionManagement>
-				<repository>
-					<id>txi_releases</id>
-					<url>http://txici.can.adobe.com:9999/nexus/content/repositories/txi</url>
-				</repository>
-				<snapshotRepository>
-					<id>txi_snapshot</id>
-					<url>http://txici.can.adobe.com:9999/nexus/content/repositories/txi_snapshots/</url>
-				</snapshotRepository>
-			</distributionManagement>
-		</profile>
-	</profiles>
 
 </project>

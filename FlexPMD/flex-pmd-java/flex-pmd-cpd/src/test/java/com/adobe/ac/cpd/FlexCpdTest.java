@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import net.sourceforge.pmd.cpd.CPD;
+import net.sourceforge.pmd.cpd.CPDConfiguration;
 import net.sourceforge.pmd.cpd.Match;
 
 import org.junit.Ignore;
@@ -65,7 +66,10 @@ public class FlexCpdTest extends FlexPmdTestBase
    @Ignore
    public void test119() throws IOException
    {
-      final CPD cpd = new CPD( 25, new FlexLanguage() );
+      CPDConfiguration cpdCfg = new CPDConfiguration();
+      cpdCfg.setMinimumTileSize(25);
+      cpdCfg.setLanguage(new FlexLanguage());
+      final CPD cpd = new CPD( cpdCfg );
 
       cpd.add( new File( "src/test/resources/test/FlexPMD119.mxml" ) );
       cpd.go();
@@ -111,7 +115,10 @@ public class FlexCpdTest extends FlexPmdTestBase
 
    private Iterator< Match > getMatchIterator() throws IOException
    {
-      final CPD cpd = new CPD( 25, new FlexLanguage() );
+      CPDConfiguration cpdCfg = new CPDConfiguration();
+      cpdCfg.setMinimumTileSize(25);
+      cpdCfg.setLanguage(new FlexLanguage());
+      final CPD cpd = new CPD( cpdCfg );
 
       for ( final Entry< String, IFlexFile > includedFile : getTestFiles().entrySet() )
       {

@@ -26,11 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sourceforge.pmd.PMDException;
-import net.sourceforge.pmd.cpd.CPD;
-import net.sourceforge.pmd.cpd.FileReporter;
-import net.sourceforge.pmd.cpd.Renderer;
-import net.sourceforge.pmd.cpd.ReportException;
-import net.sourceforge.pmd.cpd.XMLRenderer;
+import net.sourceforge.pmd.cpd.*;
 
 import com.adobe.ac.cpd.FlexLanguage;
 import com.adobe.ac.cpd.FlexTokenizer;
@@ -108,9 +104,13 @@ public final class FlexCPD
                + parameters.getMinimumTokenCount() );
 
          LOGGER.info( "Tokenizing files" );
-         final CPD cpd = new CPD( parameters.getMinimumTokenCount(), new FlexLanguage() );
 
-         cpd.setEncoding( ENCODING );
+         CPDConfiguration cpdCfg = new CPDConfiguration();
+         cpdCfg.setMinimumTileSize( parameters.getMinimumTokenCount() );
+         cpdCfg.setEncoding( ENCODING );
+         cpdCfg.setLanguage(new FlexLanguage());
+         final CPD cpd = new CPD( cpdCfg );
+
          tokenizeFiles( cpd );
 
          LOGGER.info( "Starting to analyze code" );

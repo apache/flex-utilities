@@ -48,8 +48,8 @@ package com.adobe.ac.pmd.metrics.maven.generators;
 
 import java.util.ResourceBundle;
 
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.plugin.logging.Log;
-import org.codehaus.doxia.sink.Sink;
 
 /**
  * Base abstract class for NCSSReport classes.<br>
@@ -130,7 +130,7 @@ public class NcssReportGeneratorBase
     /**
      * sink helper to write a "code" itemList.
      *
-     * @param test the text to write within the code tags.
+     * @param text the text to write within the code tags.
      */
     protected void codeItemListHelper( final String text )
     {
@@ -164,7 +164,7 @@ public class NcssReportGeneratorBase
     /**
      * sink helper to write a paragrah
      *
-     * @param the text to write within the paragraph.
+     * @param text the text to write within the paragraph.
      */
     protected void paragraphHelper( final String text )
     {
@@ -176,8 +176,6 @@ public class NcssReportGeneratorBase
     /**
      * sink helper to start a section.
      *
-     * @param locale the locale to be used to display text within the section
-     *           start.
      * @param link the anchor link.
      * @param title the title of the anchor link.
      */

@@ -65,6 +65,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.maven.plugin-testing</groupId>
+            <artifactId>maven-plugin-testing-harness</artifactId>
+            <version>${maven-plugin-testing.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

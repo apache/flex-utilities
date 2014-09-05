@@ -50,7 +50,7 @@ limitations under the License.
         </dependency>
 
         <dependency>
-            <groupId>pmd</groupId>
+            <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd</artifactId>
             <version>${pmd.version}</version>
         </dependency>
@@ -191,7 +191,7 @@ limitations under the License.
                                 <copy file="${dom4j:dom4j:jar}"
                                       todir="${project.build.directory}/release" overwrite="true"/>
                                 <echo message="Copying Command line dependencies..."/>
-                                <copy file="${pmd:pmd:jar}"
+                                <copy file="${net.sourceforge.pmd:pmd:jar}"
                                       todir="${project.build.directory}/release" overwrite="true"/>
                                 <copy file="${commons-lang:commons-lang:jar}"
                                       todir="${project.build.directory}/release" overwrite="true"/>

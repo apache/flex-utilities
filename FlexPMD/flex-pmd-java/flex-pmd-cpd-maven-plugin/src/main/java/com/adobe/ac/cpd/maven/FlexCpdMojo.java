@@ -24,16 +24,12 @@ import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
 import net.sourceforge.pmd.PMDException;
-import net.sourceforge.pmd.cpd.CPD;
-import net.sourceforge.pmd.cpd.FileReporter;
-import net.sourceforge.pmd.cpd.Renderer;
-import net.sourceforge.pmd.cpd.ReportException;
-import net.sourceforge.pmd.cpd.XMLRenderer;
+import net.sourceforge.pmd.cpd.*;
 
+import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
-import org.codehaus.doxia.site.renderer.SiteRenderer;
 
 import com.adobe.ac.cpd.FlexLanguage;
 import com.adobe.ac.pmd.LoggerUtils;
@@ -83,11 +79,11 @@ public class FlexCpdMojo extends AbstractMavenReport
 
    /**
     * @parameter 
-    *            expression="${component.org.codehaus.doxia.site.renderer.SiteRenderer}"
+    *            expression="${component.org.apache.maven.doxia.siterenderer.Renderer}"
     * @required
     * @readonly
     */
-   private SiteRenderer siteRenderer;
+   private Renderer siteRenderer;
 
    /**
     * Specifies the location of the source files to be used.
@@ -129,7 +125,7 @@ public class FlexCpdMojo extends AbstractMavenReport
       return OUTPUT_NAME;
    }
 
-   void setSiteRenderer( final SiteRenderer site )
+   void setSiteRenderer( final Renderer site )
    {
       siteRenderer = site;
    }
@@ -139,7 +135,11 @@ public class FlexCpdMojo extends AbstractMavenReport
    {
       new LoggerUtils().loadConfiguration();
 
-      final CPD cpd = new CPD( minimumTokenCount, new FlexLanguage() );
+      CPDConfiguration cpdCfg = new CPDConfiguration();
+      cpdCfg.setMinimumTileSize(minimumTokenCount);
+      cpdCfg.setEncoding(encoding);
+      cpdCfg.setLanguage(new FlexLanguage());
+      final CPD cpd = new CPD( cpdCfg );
 
       try
       {
@@ -184,14 +184,14 @@ public class FlexCpdMojo extends AbstractMavenReport
    }
 
    @Override
-   protected SiteRenderer getSiteRenderer()
+   protected Renderer getSiteRenderer()
    {
       return siteRenderer;
    }
 
    private void report( final CPD cpd ) throws ReportException
    {
-      final Renderer renderer = new XMLRenderer( encoding );
+      final net.sourceforge.pmd.cpd.Renderer renderer = new XMLRenderer( encoding );
       final FileReporter reporter = new FileReporter( new File( outputDirectory.getAbsolutePath(),
                                                                 OUTPUT_NAME
                                                                       + ".xml" ), encoding );

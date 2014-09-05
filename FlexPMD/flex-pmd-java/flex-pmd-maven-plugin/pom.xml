@@ -106,6 +106,13 @@
             <artifactId>flex-pmd-ruleset</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugin-testing</groupId>
+            <artifactId>maven-plugin-testing-harness</artifactId>
+            <version>${maven-plugin-testing.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

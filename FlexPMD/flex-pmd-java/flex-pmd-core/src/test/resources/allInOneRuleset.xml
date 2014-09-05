@@ -17,19 +17,22 @@ limitations under the License.
 
 -->
 <ruleset name="All Flex Rules"
-	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
-	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
-	xmlns="http://pmd.sf.net/ruleset/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd"
+         xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
 	<description />
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.mxml.MoreThanTwoEntryPointsInMxmlRule"
-		message="There are more than 2 public variables in this MXML component">
+		message="There are more than 2 public variables in this MXML component"
+        language="flex">
 		<description />
 		<priority>3</priority>
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.binding.TooLongBindingExpressionRule"
-		message="This binding expression is too long">
+		message="This binding expression is too long"
+        language="flex">
 		<description>A Binding expression is executed as soon as one of the bindable attributes changed. If a binding expression contains too many expression, there could be some performance issue.</description>
 		<priority>3</priority>
 		<properties>
@@ -38,8 +41,10 @@ limitations under the License.
 			</property>
 		</properties>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.mxml.TooLongScriptBlockRule"
-		message="This script block is too long">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.mxml.TooLongScriptBlockRule"
+		message="This script block is too long"
+        language="flex">
 		<description />
 		<priority>3</priority>
 		<properties>
@@ -48,8 +53,10 @@ limitations under the License.
 			</property>
 		</properties>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.maintanability.DynamicClassRule"
-		message="A class must not be dynamic">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.maintanability.DynamicClassRule"
+		message="A class must not be dynamic"
+        language="flex">
 		<description>When using dynamic classes, you cannot control how the developer will use your classe. It makes refactoring really difficult.</description>
 		<priority>1</priority>
 		<example><![CDATA[
@@ -60,7 +67,8 @@ dynamic public class DynamicObject // VIOLATION
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.event.EventMissingCloneFunctionRule"
-		message="The clone event must be overiden in a custom event">
+		message="The clone event must be overiden in a custom event"
+        language="flex">
 		<description>Why do you need to override clone? Well, the clone method creates a copy of your event (or object - whatever object has the clone event; this isn't limited to Event objects). The default clone method inherited by the Event class or whatever class your custom class extends, will return an event object of the type of that class, not your custom event subclass. In the situations where a clone is needed, it is needed to be of the same type of your class, not the class it extends.</description>
 		<priority>1</priority>
 		<example><![CDATA[
@@ -76,7 +84,8 @@ public class FirstCustomEvent   // VIOLATION - clone method is missing
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.event.PublicVariableInCustomEventRule"
-		message="No public variables should be inside a custom event">
+		message="No public variables should be inside a custom event"
+        language="flex">
 		<description>In order to improve encapsulation in your custom event, it is better not to have public variable in your event. Prefer having read-only attributes, set by the event constructor.</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -92,7 +101,8 @@ public class FirstCustomEvent
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.style.ConstructorNonEmptyReturnTypeRule"
-		message="A constructor should not have a return type">
+		message="A constructor should not have a return type"
+        language="flex">
 		<description>Even if this is syntaxically correct, there should not be a return type for a constructor.</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -106,7 +116,8 @@ public class VoidConstructor
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.switchrules.SwitchStatementsShouldHaveDefaultRule"
-		message="A switch statement does not contain a default statement">
+		message="A switch statement does not contain a default statement"
+        language="flex">
 		<description>Switch statements should have a default label in order to detect corner cases.</description>
 		<priority>1</priority>
 		<example><![CDATA[
@@ -123,8 +134,10 @@ public class Foo
    }
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.maintanability.forbiddentypes.UseObjectTypeRule"
-		message="Do not use Object class.">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.maintanability.forbiddentypes.UseObjectTypeRule"
+		message="Do not use Object class."
+        language="flex">
 		<description>It is a bad practice to use the dynamic class Object. Prefer using strongly typed object, or marker interface in order to avoid silent compilation errors while refactoring</description>
 		<priority>1</priority>
 		<example><![CDATA[
@@ -136,7 +149,8 @@ public class Foo
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.switchrules.NestedSwitchRule"
-		message="Switch must not be nested.">
+		message="Switch must not be nested."
+        language="flex">
 		<description>As a general practice, switch statement should not be used. Prefer using inheritance. It is even harder to read when siwtch statements are nested.</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -161,7 +175,8 @@ public function foo( a : Number, b : Number ) : void
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementTypeRule"
-		message="ArrayElementType metadata is not specified for an array-type field">
+		message="ArrayElementType metadata is not specified for an array-type field"
+        language="flex">
 		<description />
 		<priority>3</priority>
 		<example><![CDATA[
@@ -174,7 +189,9 @@ public class ArrayVO {
            ]]></example>
 	</rule>
 	<rule since="0.1"
-		class="com.adobe.ac.pmd.rules.maintanability.NonStaticConstantFieldRule" message="A constant field should be static">
+		class="com.adobe.ac.pmd.rules.maintanability.NonStaticConstantFieldRule"
+        message="A constant field should be static"
+        language="flex">
 		<description />
 		<priority>1</priority>
 		<example><![CDATA[
@@ -185,7 +202,9 @@ public class MyObject {
            ]]></example>
 	</rule>
 	<rule since="0.1"
-		class="com.adobe.ac.pmd.rules.unused.UnusedParameterRule" message="You should use all the parameters of a function">
+		class="com.adobe.ac.pmd.rules.unused.UnusedParameterRule"
+        message="You should use all the parameters of a function"
+        language="flex">
 		<description />
 		<priority>1</priority>
 		<example><![CDATA[
@@ -197,7 +216,8 @@ public function foo( param1 : Number, param2 : Number, param3 : Number, param4 :
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.unused.UnusedLocalVariableRule"
-		message="You should delete an unused variable">
+		message="You should delete an unused variable"
+        language="flex">
 		<description />
 		<priority>3</priority>
 		<example><![CDATA[
@@ -209,41 +229,50 @@ public function foo() : void
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.unused.UnusedPrivateMethodRule"
-		message="This private method does not seem to be used">
+		message="This private method does not seem to be used"
+        language="flex">
 		<description />
 		<priority>3</priority>
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.switchrules.TooFewBrancheInSwitchStatementRule"
-		message="There are too few branches in this swicth statement">
+		message="There are too few branches in this swicth statement"
+        language="flex">
 		<description>Switch statements are designed for complex branches, and allow branches to share treatement. Using a switch for only 2 branches is ill advised, as switches are not as easy to understand as if. In this case, it's most likely is a good idea to use a if statement</description>
 		<priority>5</priority>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.style.BadFormatLoggerRule"
-		message="The loger is not correctly formatted">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.style.BadFormatLoggerRule"
+		message="The loger is not correctly formatted"
+        language="flex">
 		<description />
 		<priority>5</priority>
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.performance.AvoidInstanciationInLoopRule"
-		message="Instanciating a variable in a loop can be expensive">
+		message="Instanciating a variable in a loop can be expensive"
+        language="flex">
 		<description />
 		<priority>3</priority>
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.architecture.ViewComponentReferencedInModelRule"
-		message="A view component should not be referenced in a model class">
+		message="A view component should not be referenced in a model class"
+        language="flex">
 		<description />
 		<priority>3</priority>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.maintanability.forbiddentypes.UseGenericTypeRule"
-		message="Use strongly typed objects instead of *">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.maintanability.forbiddentypes.UseGenericTypeRule"
+		message="Use strongly typed objects instead of *"
+        language="flex">
 		<description />
 		<priority>1</priority>
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.event.DispatchHardCodedEventNameRule"
-		message="DispatchEvent function must dispatch constant strings">
+		message="DispatchEvent function must dispatch constant strings"
+        language="flex">
 		<description>You should not dispatch a plain string. If you rename this string, you need to replace the string listener as well. Use constants instead</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -258,7 +287,8 @@ public class Foo
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.event.ListenForHardCodedEventNameRule"
-		message="addEventListener must not contain hard coded strings.">
+		message="addEventListener must not contain hard coded strings."
+        language="flex">
 		<description>You should not listen for a plain string. If you rename this string, you need to replace the string listener as well. Use constants instead</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -271,13 +301,17 @@ public class Foo
    }
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.maintanability.AlertShowRule"
-		message="Do not call Alert.show directly.">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.maintanability.AlertShowRule"
+		message="Do not call Alert.show directly."
+        language="flex">
 		<description>You should not Alert.show() directly. If an error occured in the system, you should probably use an ErrorManager to have a consistent way to manage those errors.</description>
 		<priority>1</priority>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.empty.EmptyIfStmtRule"
-		message="No statements in this if statement">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.empty.EmptyIfStmtRule"
+		message="No statements in this if statement"
+        language="flex">
 		<description>Empty If Statement finds instances where a condition is checked but nothing is done about it.</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -293,8 +327,10 @@ public class Foo
    }
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.maintanability.ExcessiveImportRule"
-		message="A high number of imports can indicate a high degree of coupling within an object.">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.maintanability.ExcessiveImportRule"
+		message="A high number of imports can indicate a high degree of coupling within an object."
+        language="flex">
 		<description>A high number of imports can indicate a high degree of coupling within an object. Rule counts the number of unique imports and reports a violation if the count is above the user defined threshold.</description>
 		<priority>3</priority>
 		<properties>
@@ -314,13 +350,17 @@ import blah.blah.Baz;
    }
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.binding.BindingUtilsRule"
-		message="If you need to use BindingUtils, you should probably consider refactoring using events">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.binding.BindingUtilsRule"
+		message="If you need to use BindingUtils, you should probably consider refactoring using events"
+        language="flex">
 		<description />
 		<priority>3</priority>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.style.OverLongLineRule"
-		message="Too long line ({0} maximum)">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.style.OverLongLineRule"
+		message="Too long line ({0} maximum)"
+        language="flex">
 		<description />
 		<priority>5</priority>
 		<properties>
@@ -331,7 +371,8 @@ import blah.blah.Baz;
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.style.ImportFromSamePackageRule"
-		message="Imports from the same package are not necessary">
+		message="Imports from the same package are not necessary"
+        language="flex">
 		<description />
 		<priority>1</priority>
 		<example><![CDATA[
@@ -346,8 +387,10 @@ package com.adobe.ac
 }
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.naming.IncorrectClassCase"
-		message="A class name must start by a majuscule character">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.naming.IncorrectClassCase"
+		message="A class name must start by a majuscule character"
+        language="flex">
 		<description />
 		<priority>3</priority>
 		<example><![CDATA[
@@ -358,7 +401,8 @@ public class foo
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.cairngorm.BindableModelLocatorRule"
-		message="A modelLocator must not be Bindable at a class level">
+		message="A modelLocator must not be Bindable at a class level"
+        language="flex">
 		<description>A bindable ModelLocator could leads to performance issues due to bindings</description>
 		<priority>1</priority>
 		<example><![CDATA[
@@ -370,7 +414,8 @@ public class foo
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.cairngorm.ReferenceModelLocatorOutsideTheMainApplicationRule"
-		message="The ModelLocator should be only accessible from the main application file">
+		message="The ModelLocator should be only accessible from the main application file"
+        language="flex">
 		<description>The ModelLocator should be only accessible from the main application file. Then sub-models should be injected to the nested views.</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -383,8 +428,10 @@ package business
 }
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.cairngorm.FatControllerRule"
-		message="A FrontController must nor add all its commands within the Controller constructor.">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.cairngorm.FatControllerRule"
+		message="A FrontController must nor add all its commands within the Controller constructor."
+        language="flex">
 		<description>Try split them into methods where you add commands depending on their fonctional area.</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -416,12 +463,15 @@ package control
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.cairngorm.BadCairngormEventNameFormatRule"
-		message="A Cairngorm event name should contain the function area name before the actual event name">
+		message="A Cairngorm event name should contain the function area name before the actual event name"
+        language="flex">
 		<description>You would have something like 'productManagement.getProducts' as an event name.</description>
 		<priority>3</priority>
 	</rule>
 	<rule since="0.1"
-		class="com.adobe.ac.pmd.rules.sizing.TooManyFunctionRule" message="Too many methods detected">
+		class="com.adobe.ac.pmd.rules.sizing.TooManyFunctionRule"
+        message="Too many methods detected"
+        language="flex">
 		<description>A class with too many methods is probably a good suspect for refactoring, in order to reduce its complexity and find a way to have more fine grained objects.</description>
 		<priority>3</priority>
 		<properties>
@@ -440,7 +490,9 @@ public class Foo
            ]]></example>
 	</rule>
 	<rule since="0.1"
-		class="com.adobe.ac.pmd.rules.sizing.TooLongFunctionRule" message="This function is far long">
+		class="com.adobe.ac.pmd.rules.sizing.TooLongFunctionRule"
+        message="This function is far long"
+        language="flex">
 		<description>Violations of this rule usually indicate that the method is doing too much. Try to reduce the method size by creating helper methods and removing any copy/pasted code.</description>
 		<priority>3</priority>
 		<properties>
@@ -462,7 +514,8 @@ public class Foo
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.sizing.TooLongSwitchCaseRule"
-		message="Long switch case detected">
+		message="Long switch case detected"
+        language="flex">
 		<description>A switch case statement should be either empty, or contain a break, or call another method.</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -489,7 +542,8 @@ public class Bar
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.sizing.TooManyParametersRule"
-		message="Long parameter list detected">
+		message="Long parameter list detected"
+        language="flex">
 		<description>Long parameter lists can indicate that a new object should be created to wrap the numerous parameters.  Basically, try to group the parameters together.</description>
 		<priority>1</priority>
 		<properties>
@@ -507,8 +561,10 @@ public class Foo
    }
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.sizing.TooManyPublicRule"
-		message="Too much public fields or functions detected">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.sizing.TooManyPublicRule"
+		message="Too much public fields or functions detected"
+        language="flex">
 		<description>A large number of public methods and attributes declared in a class can indicate the class may need to be broken up as increased effort will be required to thoroughly test it.</description>
 		<priority>3</priority>
 		<properties>
@@ -533,8 +589,10 @@ public class Foo
    }
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.sizing.TooManyFieldsRule"
-		message="Too many field detected">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.sizing.TooManyFieldsRule"
+		message="Too many field detected"
+        language="flex">
 		<description>Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zip fields could instead have one Address field.</description>
 		<priority>3</priority>
 		<properties>
@@ -556,7 +614,8 @@ public class Person
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.naming.TooShortVariableRule"
-		message="This variable name is too short">
+		message="This variable name is too short"
+        language="flex">
 		<description>Detects when a field, local, or parameter has a very short name.</description>
 		<priority>5</priority>
 		<example><![CDATA[
@@ -571,8 +630,10 @@ public class Something
    }
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.naming.PackageCaseRule"
-		message="A package name should be lower case">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.naming.PackageCaseRule"
+		message="A package name should be lower case"
+        language="flex">
 		<description>Detects when a package definition contains upper case characters.</description>
 		<priority>3</priority>
 		<example><![CDATA[
@@ -586,14 +647,17 @@ public class Something
          
            ]]></example>
 	</rule>
-	<rule since="0.1" class="com.adobe.ac.pmd.rules.css.StyleBlockInMxmlRule"
-		message="The style block is embed in the MXML file">
+	<rule since="0.1"
+          class="com.adobe.ac.pmd.rules.css.StyleBlockInMxmlRule"
+		message="The style block is embed in the MXML file"
+        language="flex">
 		<description>It is not a good practice to embed style blocks inside the MXML component. Prefer using external css files.</description>
 		<priority>3</priority>
 	</rule>
 	<rule since="0.1"
 		class="com.adobe.ac.pmd.rules.performance.DynamicFiltersUsedInPopup"
-		message="A popup should use dynamic filters">
+		message="A popup should use dynamic filters"
+        language="flex">
 		<description>Prefer using embed filters in assets</description>
 		<priority>3</priority>
 	</rule>

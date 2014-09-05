@@ -27,10 +27,9 @@ import net.sourceforge.pmd.Report;
 import net.sourceforge.pmd.RuleContext;
 import net.sourceforge.pmd.renderers.HTMLRenderer;
 
-import org.apache.maven.plugin.pmd.PmdFileInfo;
 import org.apache.maven.plugin.pmd.PmdReportListener;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.Sink;
 
 import com.adobe.ac.pmd.FlexPmdParameters;
 import com.adobe.ac.pmd.FlexPmdViolations;
@@ -71,11 +70,11 @@ class FlexPmdHtmlEngine extends AbstractFlexPmdEngine
    {
       final Report report = new Report();
       final RuleContext ruleContext = new RuleContext();
-      final PmdReportListener reportSink = new PmdReportListener( sink, bundle, aggregate );
+      final PmdReportListener reportSink = new PmdReportListener();
 
       report.addListener( reportSink );
-      ruleContext.setReport( report );
-      reportSink.beginDocument();
+      ruleContext.setReport(report);
+//      reportSink.beginDocument();
       report.start();
 
       for ( final IFlexFile file : pmd.getViolations().keySet() )
@@ -83,9 +82,9 @@ class FlexPmdHtmlEngine extends AbstractFlexPmdEngine
          final File javaFile = new File( file.getFilePath() ); // NOPMD
          final List< IFlexViolation > violations = pmd.getViolations().get( file );
 
-         reportSink.beginFile( javaFile,
-                               new PmdFileInfo( project, javaFile.getParentFile(), "" ) ); // NOPMD
-         ruleContext.setSourceCodeFilename( file.getPackageName()
+/*         reportSink.beginFile(javaFile,
+                 new PmdFileInfo(project, javaFile.getParentFile(), "")); // NOPMD
+*/         ruleContext.setSourceCodeFilename( file.getPackageName()
                + "." + file.getClassName() );
 
          for ( final IFlexViolation violation : violations )
@@ -93,10 +92,10 @@ class FlexPmdHtmlEngine extends AbstractFlexPmdEngine
             report.addRuleViolation( violation );
             reportSink.ruleViolationAdded( violation );
          }
-         reportSink.endFile( javaFile );
+//         reportSink.endFile( javaFile );
       }
 
-      reportSink.endDocument();
+//      reportSink.endDocument();
       report.end();
 
       return report;
@@ -105,15 +104,14 @@ class FlexPmdHtmlEngine extends AbstractFlexPmdEngine
    private void writeReport( final File outputDirectory,
                              final Report report ) throws PMDException
    {
-      final HTMLRenderer renderer = new HTMLRenderer( "", "" );
+      final HTMLRenderer renderer = new HTMLRenderer();
 
       try
       {
          final FileWriter fileWriter = new FileWriter( new File( outputDirectory.getAbsolutePath()
                + "/" + FlexPMDFormat.HTML.toString() ) );
 
-         renderer.render( fileWriter,
-                          report );
+         renderer.renderBody( fileWriter, report );
          renderer.getWriter().flush();
          fileWriter.close();
       }

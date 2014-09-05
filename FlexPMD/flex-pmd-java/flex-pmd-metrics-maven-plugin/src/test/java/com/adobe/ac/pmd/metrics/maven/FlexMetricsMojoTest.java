@@ -18,10 +18,10 @@ package com.adobe.ac.pmd.metrics.maven;
 
 import java.io.File;
 
+import org.apache.maven.doxia.siterenderer.DefaultSiteRenderer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.codehaus.doxia.site.renderer.DefaultSiteRenderer;
 import org.junit.Test;
 
 import com.adobe.ac.pmd.FlexPmdTestBase;

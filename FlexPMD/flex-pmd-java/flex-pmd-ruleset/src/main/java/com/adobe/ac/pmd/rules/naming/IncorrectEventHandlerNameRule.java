@@ -16,31 +16,37 @@
  */
 package com.adobe.ac.pmd.rules.naming;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import net.sourceforge.pmd.PropertyDescriptor;
-import net.sourceforge.pmd.properties.StringProperty;
-
 import com.adobe.ac.pmd.nodes.IFunction;
 import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
+import net.sourceforge.pmd.lang.rule.properties.StringProperty;
+
 public class IncorrectEventHandlerNameRule extends AbstractAstFlexRule
 {
-   private static final String DEFAULT_PREFIX = "on";
-   private static final String DEFAULT_SUFFIX = "";
-   private static final String PREFIX_NAME    = "prefix";
-   private static final String SUFFIX_NAME    = "suffix";
-   private final String        prefix;
-   private final String        suffix;
+
+    private static final StringProperty PREFIX_DESCRIPTOR = new StringProperty(
+            "prefix",
+            "",
+            "on",
+            1.0f
+    );
+    private static final StringProperty SUFFIX_DESCRIPTOR = new StringProperty(
+            "suffix",
+            "",
+            "",
+            1.0f
+    );
+
+   private final String prefix;
+   private final String suffix;
 
    public IncorrectEventHandlerNameRule()
    {
       super();
-      prefix = getStringProperty( propertyDescriptorFor( PREFIX_NAME ) );
-      suffix = getStringProperty( propertyDescriptorFor( SUFFIX_NAME ) );
+      prefix = getProperty( PREFIX_DESCRIPTOR );
+      suffix = getProperty( SUFFIX_DESCRIPTOR );
    }
 
    @Override
@@ -64,16 +70,4 @@ public class IncorrectEventHandlerNameRule extends AbstractAstFlexRule
       return ViolationPriority.LOW;
    }
 
-   @Override
-   protected final Map< String, PropertyDescriptor > propertiesByName()
-   {
-      final Map< String, PropertyDescriptor > properties = new LinkedHashMap< String, PropertyDescriptor >();
-
-      properties.put( PREFIX_NAME,
-                      new StringProperty( PREFIX_NAME, "", DEFAULT_PREFIX, properties.size() ) );
-      properties.put( SUFFIX_NAME,
-                      new StringProperty( SUFFIX_NAME, "", DEFAULT_SUFFIX, properties.size() ) );
-
-      return properties;
-   }
 }

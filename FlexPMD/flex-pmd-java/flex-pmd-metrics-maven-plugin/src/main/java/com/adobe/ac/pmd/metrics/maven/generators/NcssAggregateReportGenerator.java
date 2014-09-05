@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.plugin.logging.Log;
-import org.codehaus.doxia.sink.Sink;
 import org.dom4j.Document;
 import org.dom4j.Node;
 
@@ -38,7 +38,7 @@ public class NcssAggregateReportGenerator extends NcssReportGeneratorBase
 {
 
     /**
-     * @param getSink() the getSink() which will be used for reporting.
+     * @param sink the sink which will be used for reporting.
      * @param bundle the correct RessourceBundle to be used for reporting.
      * @param log
      */

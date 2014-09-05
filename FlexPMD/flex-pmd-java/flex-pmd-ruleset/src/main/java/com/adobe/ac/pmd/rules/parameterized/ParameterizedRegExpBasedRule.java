@@ -16,21 +16,21 @@
  */
 package com.adobe.ac.pmd.rules.parameterized;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import net.sourceforge.pmd.PropertyDescriptor;
-import net.sourceforge.pmd.properties.StringProperty;
-
 import com.adobe.ac.pmd.rules.core.AbstractRegexpBasedRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
+import net.sourceforge.pmd.lang.rule.properties.StringProperty;
 
 /**
  * @author xagnetti
  */
 public class ParameterizedRegExpBasedRule extends AbstractRegexpBasedRule
 {
-   public static final String PROPERTY_NAME = "expression";
+    private static final StringProperty EXPRESSION_DESCRIPTOR = new StringProperty(
+            "expression",
+            "",
+            "",
+            1.0f
+    );
 
    /*
     * (non-Javadoc)
@@ -49,7 +49,7 @@ public class ParameterizedRegExpBasedRule extends AbstractRegexpBasedRule
    @Override
    protected String getRegexp()
    {
-      return getStringProperty( propertyDescriptorFor( PROPERTY_NAME ) );
+      return getProperty( EXPRESSION_DESCRIPTOR );
    }
 
    /*
@@ -74,18 +74,4 @@ public class ParameterizedRegExpBasedRule extends AbstractRegexpBasedRule
       return true;
    }
 
-   /*
-    * (non-Javadoc)
-    * @see net.sourceforge.pmd.CommonAbstractRule#propertiesByName()
-    */
-   @Override
-   protected final Map< String, PropertyDescriptor > propertiesByName()
-   {
-      final Map< String, PropertyDescriptor > properties = new LinkedHashMap< String, PropertyDescriptor >();
-
-      properties.put( PROPERTY_NAME,
-                      new StringProperty( PROPERTY_NAME, "", "", properties.size() ) );
-
-      return properties;
-   }
 }

@@ -16,11 +16,11 @@
  */
 package com.adobe.ac.pmd;
 
-import net.sourceforge.pmd.IRuleViolation;
+import net.sourceforge.pmd.RuleViolation;
 
 import com.adobe.ac.pmd.files.IFlexFile;
 
-public interface IFlexViolation extends Comparable< IFlexViolation >, IRuleViolation
+public interface IFlexViolation extends Comparable< IFlexViolation >, RuleViolation
 {
    /**
     * @param messageToAppend

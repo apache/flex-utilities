@@ -16,10 +16,6 @@
  */
 package com.adobe.ac.pmd.rules.core.thresholded;
 
-import java.util.Map;
-
-import net.sourceforge.pmd.PropertyDescriptor;
-
 import com.adobe.ac.pmd.rules.core.AbstractRegexpBasedRule;
 
 /**
@@ -35,7 +31,7 @@ public abstract class AbstractMaximizedRegexpBasedRule extends AbstractRegexpBas
     */
    public final int getThreshold()
    {
-      return getIntProperty( propertyDescriptorFor( getThresholdName() ) );
+      return 1;//getIntProperty( propertyDescriptorFor( getThresholdName() ) );
    }
 
    /*
@@ -47,15 +43,5 @@ public abstract class AbstractMaximizedRegexpBasedRule extends AbstractRegexpBas
    public final String getThresholdName()
    {
       return MAXIMUM;
-   }
-
-   /*
-    * (non-Javadoc)
-    * @see net.sourceforge.pmd.CommonAbstractRule#propertiesByName()
-    */
-   @Override
-   protected final Map< String, PropertyDescriptor > propertiesByName()
-   {
-      return getThresholdedRuleProperties( this );
    }
 }
