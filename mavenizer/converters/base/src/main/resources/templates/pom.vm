@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>${artifact.groupId}</groupId>
+    <artifactId>${artifact.artifactId}</artifactId>
+    <version>${artifact.version}</version>
+    <packaging>${artifact.packaging}</packaging>
+
+#if ( $artifact.hasDependencies() )
+    <dependencies>
+#foreach( $dependency in $artifact.dependencies )
+        <dependency>
+            <groupId>${dependency.groupId}</groupId>
+            <artifactId>${dependency.artifactId}</artifactId>
+            <version>${dependency.version}</version>
+#if ($dependency.packaging != "jar")
+            <type>${dependency.packaging}</type>
+#end
+        </dependency>
+#end
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+#foreach( $dependency in $artifact.dependencies )
+            <dependency>
+                <groupId>${dependency.groupId}</groupId>
+                <artifactId>${dependency.artifactId}</artifactId>
+                <version>${dependency.version}</version>
+            </dependency>
+#end
+        </dependencies>
+    </dependencyManagement>
+#end
+
+</project>

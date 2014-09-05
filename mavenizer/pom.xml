@@ -22,9 +22,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.apache</groupId>
+        <artifactId>apache</artifactId>
+        <version>14</version>
+    </parent>
+
     <groupId>org.apache.flex.utilities.converter</groupId>
     <artifactId>flex-sdk-converter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <properties>
         <mavenVersion>3.1.0</mavenVersion>
@@ -32,126 +39,47 @@
         <wagonVersion>2.2</wagonVersion>
     </properties>
 
-    <developers>
-        <developer>
-            <id>cdutz</id>
-            <name>Christofer Dutz</name>
-        </developer>
-        <developer>
-            <id>fthomas</id>
-            <name>Frederic Thomas</name>
-        </developer>
-        <developer>
-            <id>josebarragan</id>
-            <name>Jose Barragan</name>
-        </developer>
-    </developers>
+    <mailingLists>
+        <mailingList>
+            <name>Apache Flex User List</name>
+            <subscribe>users-subscribe@flex.apache.org</subscribe>
+            <unsubscribe>users-unsubscribe@flex.apache.org</unsubscribe>
+            <post>users@flex.apache.org</post>
+            <archive>
+                http://mail-archives.apache.org/mod_mbox/flex-users/
+            </archive>
+        </mailingList>
+    </mailingLists>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>1.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jettison</groupId>
-            <artifactId>jettison</artifactId>
-            <version>1.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-compress</artifactId>
-            <version>1.4</version>
-        </dependency>
+    <scm>
+        <connection>
+            scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git
+        </connection>
+        <developerConnection>
+            scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git
+        </developerConnection>
+        <url>
+            https://git-wip-us.apache.org/repos/asf/flex-utilities.git
+        </url>
+    </scm>
 
-        <!-- Needed for Aether Repository Client -->
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-api</artifactId>
-            <version>${aetherVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-util</artifactId>
-            <version>${aetherVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-impl</artifactId>
-            <version>${aetherVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-spi</artifactId>
-            <version>${aetherVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-connector-basic</artifactId>
-            <version>${aetherVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-transport-file</artifactId>
-            <version>${aetherVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-transport-http</artifactId>
-            <version>${aetherVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-transport-wagon</artifactId>
-            <version>${aetherVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-transport-classpath</artifactId>
-            <version>${aetherVersion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-aether-provider</artifactId>
-            <version>${mavenVersion}</version>
-        </dependency>
-        <!-- Add support for scp and sftp protocols in the SDKInVMDeployer -->
-        <dependency>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-ssh</artifactId>
-            <version>${wagonVersion}</version>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>core</module>
+        <module>retrievers</module>
+        <module>converters</module>
+        <module>deployers</module>
+    </modules>
 
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2.2</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                        <manifestEntries>
-                            <Implementation-Build>${project.version}</Implementation-Build>
-                        </manifestEntries>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <finalName>flex-sdk-converter-${project.version}</finalName>
-                    <appendAssemblyId>false</appendAssemblyId>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
