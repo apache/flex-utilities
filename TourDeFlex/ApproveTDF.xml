@@ -101,7 +101,7 @@
     unless="rc"/>
         
 	<property name="package.url.path" value="https://dist.apache.org/repos/dist/dev/flex/TourDeFlex/${release.version}/rc${rc}" />
-	<property name="package.url.name" value="apache-flex-tour-de-flex-component-explorer-src-${release.version}" />
+	<property name="package.url.name" value="apache-flex-tour-de-flex-component-explorer-${release.version}-src" />
 	
     <condition property="zip.compressed">
         <equals arg1="zip" arg2="${package.suffix}" />
