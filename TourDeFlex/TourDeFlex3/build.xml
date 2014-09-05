@@ -26,7 +26,7 @@
     <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
         <isset property="env.FLEX_HOME" />
     </condition>
-    <property name="version" value="1.0" />
+    <property name="version" value="1.1" />
 	
     <!-- additional tasks - mxmlc tag -->
     <path id="flexTasks.path">
@@ -438,8 +438,7 @@
             <tarfileset dir="${basedir}/..">
                 <include name="LICENSE" />
             	<include name="NOTICE" />
-            	<include name="CONTIBITORS" />
-                <include name="CONTRIBITING" />
+            	<include name="CONTRIB*" />
             </tarfileset>
             <tarfileset dir="${basedir}">
                 <include name="README" />
@@ -459,7 +458,8 @@
                 <include name="**/*.mp3" />
                 <include name="**/*.fxg" />
                 <include name="**/*.xml" />
-                <exclude name="**/*.swf" />
+            	<exclude name="**/*.swf" />
+            	<exclude name="installer.xml" />
              </tarfileset>
          </tar>
 	</target>
@@ -469,8 +469,7 @@
             <fileset dir="${basedir}/..">
                 <include name="LICENSE" />
                 <include name="NOTICE" />
-            	<include name="CONTIBITORS" />
-                <include name="CONTRIBITING" />
+            	<include name="CONTRIB*" />
             </fileset>
             <fileset dir="${basedir}">
                 <include name="README" />
@@ -491,6 +490,7 @@
                 <include name="**/*.fxg" />
                 <include name="**/*.xml" />
                 <exclude name="**/*.swf" />
+            	<exclude name="installer.xml" />
              </fileset>
          </zip>
 	</target>
