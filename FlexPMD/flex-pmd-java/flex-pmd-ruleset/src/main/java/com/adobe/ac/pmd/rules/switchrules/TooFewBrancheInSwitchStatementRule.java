@@ -61,7 +61,7 @@ public class TooFewBrancheInSwitchStatementRule extends AbstractAstFlexRule impl
     */
    public final int getThreshold()
    {
-      return getIntProperty( propertyDescriptorFor( getThresholdName() ) );
+       return getProperty( (PropertyDescriptor<Integer>) getPropertyDescriptor( getThresholdName() ) );
    }
 
    /*
@@ -83,16 +83,6 @@ public class TooFewBrancheInSwitchStatementRule extends AbstractAstFlexRule impl
    protected final ViolationPriority getDefaultPriority()
    {
       return ViolationPriority.LOW;
-   }
-
-   /*
-    * (non-Javadoc)
-    * @see net.sourceforge.pmd.CommonAbstractRule#propertiesByName()
-    */
-   @Override
-   protected final Map< String, PropertyDescriptor > propertiesByName()
-   {
-      return getThresholdedRuleProperties( this );
    }
 
    /*

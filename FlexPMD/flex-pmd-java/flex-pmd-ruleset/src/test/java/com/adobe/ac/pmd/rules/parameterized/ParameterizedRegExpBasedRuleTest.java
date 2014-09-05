@@ -33,7 +33,8 @@ public class ParameterizedRegExpBasedRuleTest extends AbstractFlexRuleTest
    {
       final ParameterizedRegExpBasedRule rule = new ParameterizedRegExpBasedRule();
 
-      rule.setProperty( rule.propertyDescriptorFor( ParameterizedRegExpBasedRule.PROPERTY_NAME ),
+
+      rule.setProperty( ParameterizedRegExpBasedRule.VIOLATION_SUPPRESS_REGEX_DESCRIPTOR,
                         ".*\\s+Alert.show\\(.*" );
       rule.compilePattern();
       return rule;

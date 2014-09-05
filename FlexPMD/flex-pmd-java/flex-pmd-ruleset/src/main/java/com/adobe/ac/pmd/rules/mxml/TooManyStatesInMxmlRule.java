@@ -17,14 +17,12 @@
 package com.adobe.ac.pmd.rules.mxml;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import net.sourceforge.pmd.PropertyDescriptor;
-
 import org.w3c.dom.Document;
 
 import com.adobe.ac.pmd.IFlexViolation;
@@ -68,7 +66,7 @@ public class TooManyStatesInMxmlRule extends AbstractXpathRelatedRule implements
     */
    public int getThreshold()
    {
-      return getIntProperty( propertyDescriptorFor( getThresholdName() ) );
+       return getProperty( (PropertyDescriptor<Integer>) getPropertyDescriptor( getThresholdName() ) );
    }
 
    /*
@@ -145,15 +143,5 @@ public class TooManyStatesInMxmlRule extends AbstractXpathRelatedRule implements
                                                  0 ),
                        String.valueOf( getActualValueForTheCurrentViolation() ) );
       }
-   }
-
-   /*
-    * (non-Javadoc)
-    * @see net.sourceforge.pmd.CommonAbstractRule#propertiesByName()
-    */
-   @Override
-   protected final Map< String, PropertyDescriptor > propertiesByName()
-   {
-      return getThresholdedRuleProperties( this );
    }
 }

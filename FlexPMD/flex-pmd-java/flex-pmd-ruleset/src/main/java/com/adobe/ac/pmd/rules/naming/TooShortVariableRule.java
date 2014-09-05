@@ -16,14 +16,12 @@
  */
 package com.adobe.ac.pmd.rules.naming;
 
-import java.util.Map;
 import java.util.regex.Matcher;
-
-import net.sourceforge.pmd.PropertyDescriptor;
 
 import com.adobe.ac.pmd.rules.core.AbstractRegexpBasedRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 import com.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule;
+import net.sourceforge.pmd.PropertyDescriptor;
 
 /**
  * @author xagnetti
@@ -61,7 +59,7 @@ public class TooShortVariableRule extends AbstractRegexpBasedRule implements ITh
     */
    public final int getThreshold()
    {
-      return getIntProperty( propertyDescriptorFor( getThresholdName() ) );
+       return getProperty( (PropertyDescriptor<Integer>) getPropertyDescriptor( getThresholdName() ) );
    }
 
    /*
@@ -137,15 +135,5 @@ public class TooShortVariableRule extends AbstractRegexpBasedRule implements ITh
          result = length < getThreshold();
       }
       return result;
-   }
-
-   /*
-    * (non-Javadoc)
-    * @see net.sourceforge.pmd.CommonAbstractRule#propertiesByName()
-    */
-   @Override
-   protected final Map< String, PropertyDescriptor > propertiesByName()
-   {
-      return getThresholdedRuleProperties( this );
    }
 }
