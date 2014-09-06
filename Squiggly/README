@@ -7,12 +7,11 @@
 Initial Setup Required
 ==========================================================================================            
   
-    FLEX_HOME is the absolute path to the Apache Flex SDK
-    If you omit this argument, and the system environment variable, FLEX_HOME exists,
-    it is used.
+    The environment variable FLEX_HOME needs to be set to the absolute path of the Apache
+    Flex SDK. If you prefer you can set this in env.properties.
   
 ==========================================================================================
-How to build the installer using ant (no IDE is required)
+How to build Squiggly using ant (no IDE is required)
 ==========================================================================================
 
 1.  On Linux or Mac un tar/gzip the source distribution:
