@@ -10,7 +10,7 @@
 Initial Setup Required
 ==========================================================================================            
   
-    The environment variable FLEX_HOME need to be set to the absolute path of the Apache
+    The environment variable FLEX_HOME needs to be set to the absolute path of the Apache
     Flex SDK. If you prefer you can set this in env.properties.
   
 ==========================================================================================
@@ -71,3 +71,9 @@ How to check the code out of Git
 
 2.  Change directory to:
 	cd TourDeFlex/TourDeFlex3
+
+
+Thanks for using Apache Flex.  Enjoy!
+
+       The Apache Flex Project
+       <http://flex.apache.org>	
