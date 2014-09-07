@@ -36,7 +36,7 @@
 							 clipAndEnableScrolling="true"
 							 itemRenderer="spark.skins.spark.DefaultItemRenderer">
 					<s:layout> 
-						<s:VerticalLayout requestedRowCount="4"/> 
+						<s:VerticalLayout requestedRowCount="3"/> 
 					</s:layout> 
 					<s:dataProvider> 
 						<s:ArrayCollection> 
@@ -72,10 +72,7 @@
 				</s:DataGroup> 
 				
 			</s:HGroup>
-			<s:HScrollBar viewport="{horizView}" 
-						  left="{horizView.left}" 
-						  bottom="{horizView.bottom}" 
-						  width ="{horizView.width}"/>
+			<s:HScrollBar viewport="{horizView}" width ="{horizView.width}"/>
 		</mx:Box>
 		
 		<s:Label paddingLeft="15" width="199" verticalAlign="justify" color="0x323232"
