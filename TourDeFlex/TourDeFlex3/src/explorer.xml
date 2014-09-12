@@ -212,8 +212,8 @@
 					<node label="Type + Class Selector" app="spark/css/CSSTypeClassSelectorExample" />
 				</node>
 				<node label="Binding">
-					<node label="Bidirectional Binding" app="spark/other/BidirectionalBinding1Example" />
-					<node label="Bidirectional Binding" app="spark/other/BidirectionalBinding2Example" />
+					<node label="Bidirectional Binding 1" app="spark/other/BidirectionalBinding1Example" />
+					<node label="Bidirectional Binding 2" app="spark/other/BidirectionalBinding2Example" />
 				</node>
 				<node label="Cursors">
 					<node label="Busy Cursor" app="spark/other/Cursor1Example" />
