@@ -16,7 +16,13 @@ Changes since the version 1.0
 - Fixed a few other minor issues
 - Now contains over 300 examples!
 
+Known issues:
+- Callout example in the Apache Flex 4.9 examples fails to show the callout.
+  The sample code will work externally. See FLEX-34539 for details.
+
 Bugs fixed and improvements:
+FLEX-34530 TDF ScrollBarExample not setting up default vertical scroll and 2 warnings
+FLEX-34529 TDF Bidirectional binding example label/warning
 FLEX-34502 Add link to github in TourDeFlex
 FLEX-34500 Show total number of examples in Tour De Flex UI
 FLEX-34495 Error loading source file
