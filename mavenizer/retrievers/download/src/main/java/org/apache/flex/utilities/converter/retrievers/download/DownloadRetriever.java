@@ -54,7 +54,6 @@ public class DownloadRetriever extends BaseRetriever {
         return retrieve(type, version, null);
     }
 
-    @Override
     public File retrieve(SdkType type, String version, PlatformType platformType) throws RetrieverException {
         try {
             if (type.equals(SdkType.FLASH) || type.equals(SdkType.AIR)) {
