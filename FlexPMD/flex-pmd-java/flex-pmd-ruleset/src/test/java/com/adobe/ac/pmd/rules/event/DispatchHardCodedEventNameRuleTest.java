@@ -27,10 +27,10 @@ public class DispatchHardCodedEventNameRuleTest extends AbstractRegExpBasedRuleT
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.BigImporterModel.as", new ViolationPosition[]
-       { new ViolationPosition( 58 ) } ),
+       { new ViolationPosition( 46 ) } ),
                   new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 110 ),
-                              new ViolationPosition( 111 ) } ) };
+                  { new ViolationPosition( 98 ),
+                              new ViolationPosition( 99 ) } ) };
    }
 
    @Override

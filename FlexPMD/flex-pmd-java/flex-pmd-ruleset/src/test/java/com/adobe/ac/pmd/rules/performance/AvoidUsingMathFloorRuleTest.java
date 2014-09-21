@@ -27,8 +27,8 @@ public class AvoidUsingMathFloorRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-      { new ViolationPosition( 205 ),
-                  new ViolationPosition( 224 ) } ) };
+      { new ViolationPosition( 188 ),
+                  new ViolationPosition( 207 ) } ) };
    }
 
    @Override

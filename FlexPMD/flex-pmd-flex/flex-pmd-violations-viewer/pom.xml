@@ -99,7 +99,8 @@ limitations under the License.
 				<version>${flex-mojos-plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<targetPlayer>${flash-player.version}.0.0</targetPlayer>
+                    <!-- It seems the wrapper needs 3 segments of a version number -->
+					<targetPlayer>${flash-player.version}.0</targetPlayer>
 					<defaultSizeWidth>1000</defaultSizeWidth>
 					<defaultSizeHeight>700</defaultSizeHeight>
 					<useNetwork>false</useNetwork>
@@ -154,33 +155,7 @@ limitations under the License.
                     </dependency>
                 </dependencies>
 			</plugin>
-			
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>flexmojos-repository</id>
-			<url>http://repository.sonatype.org/content/groups/flexgroup/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>flexmojos-repository</id>
-			<url>http://repository.sonatype.org/content/groups/flexgroup/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
 
 </project>

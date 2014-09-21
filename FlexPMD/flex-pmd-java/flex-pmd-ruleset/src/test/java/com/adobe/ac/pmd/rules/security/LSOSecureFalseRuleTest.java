@@ -27,7 +27,7 @@ public class LSOSecureFalseRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Security.as", new ViolationPosition[]
-      { new ViolationPosition( 45 ) } ) };
+      { new ViolationPosition( 33 ) } ) };
    }
 
    @Override

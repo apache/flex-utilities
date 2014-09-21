@@ -23,7 +23,7 @@
 	xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<s:Panel width="100%" height="100%"
-			 title="Bidirectional Binding"
+			 title="Bidirectional Binding 1"
 			 horizontalCenter="0"
 			 skinClass="skins.TDFPanelSkin">
 		<s:Label top="10" left="15" verticalAlign="justify" color="#323232" width="200"
@@ -34,10 +34,7 @@ so any change to the text2 value will also update the text1 value. "/>
 			<s:VGroup horizontalCenter="15" top="40">
 				<s:Label text="Enter Text:"/>
 				<s:TextInput id="text1" widthInChars="20" />
-				<s:TextInput id="text2" color="0xFF3366" widthInChars="20" 
-							 text="@{text1.text}"/>
-				<s:Label id="text3" color="0x009966"  
-							  text="@{text2.text}" />				
+				<s:TextInput id="text2" color="0xFF3366" widthInChars="20" text="@{text1.text}"/>
 			</s:VGroup>	
 		
 	</s:Panel>

@@ -212,8 +212,8 @@
 					<node label="Type + Class Selector" app="spark/css/CSSTypeClassSelectorExample" />
 				</node>
 				<node label="Binding">
-					<node label="Bidirectional Binding" app="spark/other/BidirectionalBinding1Example" />
-					<node label="Bidirectional Binding" app="spark/other/BidirectionalBinding2Example" />
+					<node label="Bidirectional Binding 1" app="spark/other/BidirectionalBinding1Example" />
+					<node label="Bidirectional Binding 2" app="spark/other/BidirectionalBinding2Example" />
 				</node>
 				<node label="Cursors">
 					<node label="Busy Cursor" app="spark/other/Cursor1Example" />
@@ -365,7 +365,9 @@
 					<node label="ToolTip" app="spark/controls/ToolTipExample" />
 					<node label="Tree" app="spark/controls/TreeExample" />
 					<node label="VideoDisplay" app="spark/controls/VideoDisplayExample" />
+					<!-- Removed  as it's using an external asset they may not work any more
 					<node label="VideoDisplay" app="spark/controls/OSMFExample" />
+					 -->
 					<node label="VideoPlayer" app="spark/controls/VideoPlayerExample" />
 				</node>	
 				<node label="Button Controls">

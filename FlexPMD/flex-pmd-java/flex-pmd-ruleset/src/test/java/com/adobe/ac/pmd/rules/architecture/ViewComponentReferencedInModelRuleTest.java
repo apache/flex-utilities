@@ -27,7 +27,7 @@ public class ViewComponentReferencedInModelRuleTest extends AbstractRegExpBasedR
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.BigImporterModel.as", new ViolationPosition[]
-      { new ViolationPosition( 35 ) } ) };
+      { new ViolationPosition( 23 ) } ) };
    }
 
    @Override

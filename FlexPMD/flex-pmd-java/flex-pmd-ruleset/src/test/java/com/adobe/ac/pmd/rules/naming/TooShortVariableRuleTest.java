@@ -27,19 +27,19 @@ public class TooShortVariableRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Duane.mxml", new ViolationPosition[]
-       { new ViolationPosition( 68 ) } ),
+       { new ViolationPosition( 54 ) } ),
                   new ExpectedViolation( "bug.FlexPMD233b.mxml", new ViolationPosition[]
-                  { new ViolationPosition( 102 ) } ),
+                  { new ViolationPosition( 88 ) } ),
                   new ExpectedViolation( "flexpmd114.a.Test.as", new ViolationPosition[]
-                  { new ViolationPosition( 42 ) } ),
+                  { new ViolationPosition( 30 ) } ),
                   new ExpectedViolation( "flexpmd114.b.Test.as", new ViolationPosition[]
-                  { new ViolationPosition( 42 ) } ),
+                  { new ViolationPosition( 30 ) } ),
                   new ExpectedViolation( "flexpmd114.c.Test.as", new ViolationPosition[]
-                  { new ViolationPosition( 42 ) } ),
+                  { new ViolationPosition( 30 ) } ),
                   new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-                  { new ViolationPosition( 47 ) } ),
+                  { new ViolationPosition( 30 ) } ),
                   new ExpectedViolation( "Looping.as", new ViolationPosition[]
-                  { new ViolationPosition( 63 ) } ) };
+                  { new ViolationPosition( 51 ) } ) };
    }
 
    @Override

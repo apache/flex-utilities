@@ -10,12 +10,11 @@
 Initial Setup Required
 ==========================================================================================            
   
-    FLEX_HOME is the absolute path to the Apache Flex SDK
-    If you omit this argument, and the system environment variable, FLEX_HOME exists,
-    it is used.
+    The environment variable FLEX_HOME needs to be set to the absolute path of the Apache
+    Flex SDK. If you prefer you can set this in env.properties.
   
 ==========================================================================================
-How to build the installer using ant (no IDE is required)
+How to build Tour De Flex using ant (no IDE is required)
 ==========================================================================================
 
 1.  On Linux or Mac un tar/gzip the source distribution:
@@ -72,3 +71,9 @@ How to check the code out of Git
 
 2.  Change directory to:
 	cd TourDeFlex/TourDeFlex3
+
+
+Thanks for using Apache Flex.  Enjoy!
+
+       The Apache Flex Project
+       <http://flex.apache.org>	

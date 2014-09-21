@@ -27,8 +27,8 @@ public class CairngormEventDispatcherCallExplicitlyRuleTest extends AbstractAstF
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-      { new ViolationPosition( 110 ),
-                  new ViolationPosition( 114 ) } ) };
+      { new ViolationPosition( 98 ),
+                  new ViolationPosition( 102 ) } ) };
    }
 
    @Override

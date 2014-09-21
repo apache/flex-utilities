@@ -27,13 +27,13 @@ public class ReferenceModelLocatorOutsideTheMainApplicationRuleTest extends Abst
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "UnboundMetadata.as", new ViolationPosition[]
-       { new ViolationPosition( 43 ),
-                   new ViolationPosition( 45 ),
-                   new ViolationPosition( 50 ) } ),
+       { new ViolationPosition( 31 ),
+                   new ViolationPosition( 33 ),
+                   new ViolationPosition( 38 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.mxml.IterationsList.mxml",
                                          new ViolationPosition[]
-                                         { new ViolationPosition( 91 ),
-                                                     new ViolationPosition( 93 ) } ) };
+                                         { new ViolationPosition( 77 ),
+                                                     new ViolationPosition( 79 ) } ) };
    }
 
    @Override

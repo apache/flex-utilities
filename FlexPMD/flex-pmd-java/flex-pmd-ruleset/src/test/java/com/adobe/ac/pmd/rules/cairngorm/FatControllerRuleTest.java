@@ -27,7 +27,7 @@ public class FatControllerRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "cairngorm.FatController.as", new ViolationPosition[]
-      { new ViolationPosition( 95 ) } ) };
+      { new ViolationPosition( 83 ) } ) };
    }
 
    @Override

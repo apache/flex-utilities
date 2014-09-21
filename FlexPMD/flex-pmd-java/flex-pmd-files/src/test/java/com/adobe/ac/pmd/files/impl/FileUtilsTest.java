@@ -40,7 +40,7 @@ public class FileUtilsTest extends FlexPmdTestBase
                                           "",
                                           null );
 
-      Assert.assertEquals( 98,
+      Assert.assertEquals( 99,
                            files.size() );
 
       final List< String > excludePatterns = new ArrayList< String >();
@@ -50,7 +50,7 @@ public class FileUtilsTest extends FlexPmdTestBase
                                           "",
                                           excludePatterns );
 
-      Assert.assertEquals( 82,
+      Assert.assertEquals( 83,
                            files.size() );
    }
 
@@ -109,7 +109,7 @@ public class FileUtilsTest extends FlexPmdTestBase
                                                                          "",
                                                                          null );
 
-      Assert.assertEquals( 98,
+      Assert.assertEquals( 99,
                            files.size() );
    }
 }

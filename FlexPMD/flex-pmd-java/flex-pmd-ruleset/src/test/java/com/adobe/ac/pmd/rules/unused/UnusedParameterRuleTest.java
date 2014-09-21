@@ -21,7 +21,9 @@ import java.util.LinkedHashMap;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRuleTest;
 import com.adobe.ac.pmd.rules.core.AbstractFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPosition;
+import org.junit.Ignore;
 
+@Ignore("This test requires test-data that was not donated to Apache")
 public class UnusedParameterRuleTest extends AbstractAstFlexRuleTest
 {
    @Override

@@ -27,12 +27,12 @@ public class InaccessibleMetaDataRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "parsley.InaccessibleMetaData.as", new ViolationPosition[]
-       { new ViolationPosition( 38, 38 ),
-                   new ViolationPosition( 47, 47 ),
-                   new ViolationPosition( 59, 59 ) } ),
+       { new ViolationPosition( 26, 26 ),
+                   new ViolationPosition( 35, 35 ),
+                   new ViolationPosition( 47, 47 ) } ),
                   new ExpectedViolation( "parsley.InaccessibleMetaDataInternalClass.as",
                                          new ViolationPosition[]
-                                         { new ViolationPosition( 33, 33 ) } ) };
+                                         { new ViolationPosition( 21, 21 ) } ) };
    }
 
    @Override

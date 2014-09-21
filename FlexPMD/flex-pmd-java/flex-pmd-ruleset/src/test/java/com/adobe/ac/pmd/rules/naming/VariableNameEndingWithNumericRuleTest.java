@@ -21,7 +21,9 @@ import java.util.List;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRuleTest;
 import com.adobe.ac.pmd.rules.core.AbstractFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPosition;
+import org.junit.Ignore;
 
+@Ignore("This test requires test-data that was not donated to Apache")
 public class VariableNameEndingWithNumericRuleTest extends AbstractAstFlexRuleTest
 {
    @Override
@@ -29,9 +31,9 @@ public class VariableNameEndingWithNumericRuleTest extends AbstractAstFlexRuleTe
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-       { new ViolationPosition( 405 ),
-                   new ViolationPosition( 441 ),
-                   new ViolationPosition( 459 ) } ),
+       { new ViolationPosition( 388 ),
+                   new ViolationPosition( 424 ),
+                   new ViolationPosition( 442 ) } ),
                   new ExpectedViolation( "src.epg.StateExit_AS2.as", new ViolationPosition[]
                   { new ViolationPosition( 62 ),
                               new ViolationPosition( 63 ),

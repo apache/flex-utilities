@@ -114,15 +114,16 @@ Flex SDKs (From Adobe):
 http://sourceforge.net/adobe/flexsdk/wiki/downloads/
 
 /////////////////////////////////////////////////////////////////////////////////////////
-Some information (HOWTO) to go with the SDKDeployer  
+Some information (HOWTO) to go with the MavenDeployer
 /////////////////////////////////////////////////////////////////////////////////////////
 
-The SDKDeployer allows you to deploy any maven structured directory to a remote maven 
+The MavenDeployer allows you to deploy any maven structured directory to a remote maven
 repository as soon as you've got the remote rights.
 
-Usage: java -cp flex-sdk-converter-1.0.jar SDKDeployer "directory" "repositoryId" "url" "mvn"
+Usage:
+java -cp flex-sdk-converter-1.0.jar org.apache.flex.utilities.converter.deployer.maven.MavenDeployer "directory" "repositoryId" "url" "mvn"
 
-The SDKDeployer needs 4 ordered parameters separated by spaces:
+The MavenDeployer needs 4 ordered parameters separated by spaces:
     1- directory: The path to the directory to deploy.
     2- repositoryId: Server Id to map on the <id> under <server> section of settings.xml.
     3- url: URL where the artifacts will be deployed.

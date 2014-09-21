@@ -27,7 +27,7 @@ public class AvoidTooltipRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "DeleteButtonRenderer.mxml", new ViolationPosition[]
-      { new ViolationPosition( 36 ) } ) };
+      { new ViolationPosition( 22 ) } ) };
    }
 
    @Override

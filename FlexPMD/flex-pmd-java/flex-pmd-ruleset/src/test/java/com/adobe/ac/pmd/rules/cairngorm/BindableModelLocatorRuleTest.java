@@ -27,7 +27,7 @@ public class BindableModelLocatorRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "cairngorm.BindableModelLocator.as", new ViolationPosition[]
-      { new ViolationPosition( 33 ) } ) };
+      { new ViolationPosition( 21 ) } ) };
    }
 
    @Override

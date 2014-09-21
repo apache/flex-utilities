@@ -27,10 +27,10 @@ public class ReferenceToVariableBindingFromItsInitializerRuleTest extends Abstra
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.FlexPMD115.as", new ViolationPosition[]
-      { new ViolationPosition( 36 ),
-                  new ViolationPosition( 39 ),
-                  new ViolationPosition( 35 ),
-                  new ViolationPosition( 38 ) } ) };
+      { new ViolationPosition( 24 ),
+                  new ViolationPosition( 27 ),
+                  new ViolationPosition( 23 ),
+                  new ViolationPosition( 26 ) } ) };
    }
 
    @Override

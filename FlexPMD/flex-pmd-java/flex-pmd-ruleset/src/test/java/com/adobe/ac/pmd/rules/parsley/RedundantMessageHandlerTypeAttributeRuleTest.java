@@ -27,7 +27,7 @@ public class RedundantMessageHandlerTypeAttributeRuleTest extends AbstractAstFle
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "parsley.RedundantMessageHandlerTypeAttribute.as", new ViolationPosition[]
-      { new ViolationPosition( 41, 41 ) } ) };
+      { new ViolationPosition( 29, 29 ) } ) };
    }
 
    @Override

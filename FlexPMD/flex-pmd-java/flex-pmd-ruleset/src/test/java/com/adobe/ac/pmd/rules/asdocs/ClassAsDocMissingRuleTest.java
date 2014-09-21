@@ -26,7 +26,7 @@ public class ClassAsDocMissingRuleTest extends AbstractAsDocRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "EmptyClass.as", new ViolationPosition[]
-      { new ViolationPosition( 33 ) } ) };
+      { new ViolationPosition( 21 ) } ) };
    }
 
    @Override

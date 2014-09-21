@@ -27,7 +27,7 @@ public class CreationPolicySetToAllRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "Main.mxml", new ViolationPosition[]
-      { new ViolationPosition( 36 ) } ) };
+      { new ViolationPosition( 22 ) } ) };
    }
 
    @Override

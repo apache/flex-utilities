@@ -27,7 +27,7 @@ public class ClassAndExtensionAreIdenticalRuleTest extends AbstractAstFlexRuleTe
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "GenericType.as", new ViolationPosition[]
-      { new ViolationPosition( 33 ) } ) };
+      { new ViolationPosition( 21 ) } ) };
    }
 
    @Override

@@ -1,5 +1,16 @@
 ------------------------------------------------
-Squiggly 1.0
+Apche Flex Squiggly 1.1
+------------------------------------------------
+
+Squiggly 1.1 has the following changes from Squiggly 1.0:
+- Mavenized version of Squiggly
+- Added en_US and en_GB dictionaries
+
+The following bugs have been fixed:
+
+
+------------------------------------------------
+Apche Flex Squiggly 1.0
 ------------------------------------------------
 
 Initial parity release for Adobe's Squiggly library.

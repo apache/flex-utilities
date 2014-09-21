@@ -27,7 +27,7 @@ public class StaticMethodInMxmlRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.mxml.IterationsList2.mxml", new ViolationPosition[]
-      { new ViolationPosition( 48 ) } ) };
+      { new ViolationPosition( 34 ) } ) };
    }
 
    @Override

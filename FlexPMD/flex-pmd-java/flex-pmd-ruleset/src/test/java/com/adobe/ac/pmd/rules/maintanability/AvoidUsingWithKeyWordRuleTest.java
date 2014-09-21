@@ -27,7 +27,7 @@ public class AvoidUsingWithKeyWordRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "GoodComponent.as", new ViolationPosition[]
-      { new ViolationPosition( 54 ) } ) };
+      { new ViolationPosition( 42 ) } ) };
    }
 
    @Override

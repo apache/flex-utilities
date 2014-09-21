@@ -27,13 +27,13 @@ public class TooManyParametersRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "RadonDataGrid.as", new ViolationPosition[]
-       { new ViolationPosition( 68 ),
-                   new ViolationPosition( 84 ),
-                   new ViolationPosition( 117 ) } ),
+       { new ViolationPosition( 56 ),
+                   new ViolationPosition( 72 ),
+                   new ViolationPosition( 105 ) } ),
                   new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-                  { new ViolationPosition( 548 ) } ),
+                  { new ViolationPosition( 531 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.BigImporterModel.as", new ViolationPosition[]
-                  { new ViolationPosition( 62 ) } ) };
+                  { new ViolationPosition( 50 ) } ) };
    }
 
    @Override

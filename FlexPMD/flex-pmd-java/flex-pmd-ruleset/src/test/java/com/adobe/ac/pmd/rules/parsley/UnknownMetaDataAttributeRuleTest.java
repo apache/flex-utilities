@@ -27,9 +27,9 @@ public class UnknownMetaDataAttributeRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "parsley.UnknownMetaDataAttribute.as", new ViolationPosition[]
-      { new ViolationPosition( 36, 36 ),
-                  new ViolationPosition( 39, 39 ),
-                  new ViolationPosition( 33, 33 ) } ) };
+      { new ViolationPosition( 24, 24 ),
+                  new ViolationPosition( 27, 27 ),
+                  new ViolationPosition( 21, 21 ) } ) };
    }
 
    @Override

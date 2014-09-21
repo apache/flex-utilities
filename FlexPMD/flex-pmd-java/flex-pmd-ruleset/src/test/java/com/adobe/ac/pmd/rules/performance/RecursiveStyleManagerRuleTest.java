@@ -27,8 +27,8 @@ public class RecursiveStyleManagerRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "GoodComponent.as", new ViolationPosition[]
-      { new ViolationPosition( 59 ),
-                  new ViolationPosition( 60 ) } ) };
+      { new ViolationPosition( 47 ),
+                  new ViolationPosition( 48 ) } ) };
    }
 
    @Override

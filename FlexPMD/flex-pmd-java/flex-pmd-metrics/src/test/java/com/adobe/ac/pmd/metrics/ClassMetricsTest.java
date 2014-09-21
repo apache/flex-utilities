@@ -22,6 +22,7 @@ import java.io.File;
 
 import net.sourceforge.pmd.PMDException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.adobe.ac.pmd.FlexPmdTestBase;
@@ -112,7 +113,7 @@ public class ClassMetricsTest extends FlexPmdTestBase
                                                              file,
                                                              1 );
 
-      assertEquals( "<object><name>bug.Duane</name><ccn>1</ccn><ncss>217</ncss><javadocs>0</javadocs>"
+      assertEquals( "<object><name>bug.Duane</name><ccn>1</ccn><ncss>203</ncss><javadocs>0</javadocs>"
                           + "<javadoc_lines>0</javadoc_lines><multi_comment_lines>0</multi_comment_lines>"
                           + "<single_comment_lines>0</single_comment_lines><functions>8</functions></object>",
                     classMetrics.toXmlString() );
@@ -140,6 +141,7 @@ public class ClassMetricsTest extends FlexPmdTestBase
    }
 
    @Test
+   @Ignore("This test requires test-data that was not donated to Apache")
    public void testToXmlStringWithMultiLineComments() throws PMDException
    {
       final IFlexFile file = getTestFiles().get( "bug.FlexPMD60.as" );

@@ -27,10 +27,10 @@ public class BadFormatLoggerRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-      { new ViolationPosition( 44 ),
-                  new ViolationPosition( 45 ),
-                  new ViolationPosition( 46 ),
-                  new ViolationPosition( 47 ) } ) };
+      { new ViolationPosition( 32 ),
+                  new ViolationPosition( 33 ),
+                  new ViolationPosition( 34 ),
+                  new ViolationPosition( 35 ) } ) };
    }
 
    @Override

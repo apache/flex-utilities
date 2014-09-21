@@ -27,7 +27,7 @@ public class CodeBehindInMxmlRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "Main.mxml", new ViolationPosition[]
-      { new ViolationPosition( 58 ) } ) };
+      { new ViolationPosition( 44 ) } ) };
    }
 
    @Override

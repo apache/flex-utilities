@@ -20,27 +20,24 @@ import com.adobe.ac.pmd.rules.core.AbstractAstFlexRuleTest;
 import com.adobe.ac.pmd.rules.core.AbstractFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPosition;
 
-public class CapitalizeConstantsRuleTest extends AbstractAstFlexRuleTest
-{
-   @Override
-   protected ExpectedViolation[] getExpectedViolatingFiles()
-   {
-      return new ExpectedViolation[]
-      { new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-       { new ViolationPosition( 45 ),
-                   new ViolationPosition( 46 ) } ),
-                  new ExpectedViolation( "bug.FlexPMD233b.mxml", new ViolationPosition[]
-                  { new ViolationPosition( 66 ) } ),
-                  new ExpectedViolation( "com.adobe.ac.ncss.ArrayVO.as", new ViolationPosition[]
-                  { new ViolationPosition( 39 ),
-                              new ViolationPosition( 40 ) } ),
-                  new ExpectedViolation( "GenericType.as", new ViolationPosition[]
-                  { new ViolationPosition( 36 ) } ) };
-   }
+public class CapitalizeConstantsRuleTest extends AbstractAstFlexRuleTest {
+    @Override
+    protected ExpectedViolation[] getExpectedViolatingFiles() {
+        return new ExpectedViolation[]
+                {new ExpectedViolation("AbstractRowData.as", new ViolationPosition[]
+                        {new ViolationPosition(33),
+                                new ViolationPosition(34)}),
+                        new ExpectedViolation("bug.FlexPMD233b.mxml", new ViolationPosition[]
+                                {new ViolationPosition(52)}),
+                        new ExpectedViolation("com.adobe.ac.ncss.ArrayVO.as", new ViolationPosition[]
+                                {new ViolationPosition(27),
+                                        new ViolationPosition(28)}),
+                        new ExpectedViolation("GenericType.as", new ViolationPosition[]
+                                {new ViolationPosition(24)})};
+    }
 
-   @Override
-   protected AbstractFlexRule getRule()
-   {
-      return new CapitalizeConstantsRule();
-   }
+    @Override
+    protected AbstractFlexRule getRule() {
+        return new CapitalizeConstantsRule();
+    }
 }

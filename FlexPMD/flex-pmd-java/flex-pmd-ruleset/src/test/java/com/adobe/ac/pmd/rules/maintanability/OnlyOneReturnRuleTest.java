@@ -29,10 +29,10 @@ public class OnlyOneReturnRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-       { new ViolationPosition( 189 ),
-                   new ViolationPosition( 609 ) } ),
+       { new ViolationPosition( 172 ),
+                   new ViolationPosition( 592 ) } ),
                   new ExpectedViolation( "com.adobe.ac.AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 66 ) } ) };
+                  { new ViolationPosition( 54 ) } ) };
 
    }
 

@@ -51,7 +51,7 @@
 					textFlow="{TextConverter.importToFlow(TitleText, TextConverter.TEXT_FIELD_HTML_FORMAT)}"
 					horizontalCenter="0" verticalCenter="0" />
 		
-		<s:VideoDisplay id="myVid" height="146" width="220" source="assets/FlexInstaller.mp4" autoPlay="false"/>
+		<s:VideoDisplay id="myVid" width="66%" height="66%" source="./spark/controls/assets/FlexInstaller.mp4" autoPlay="false"/>
 		
 		<s:HGroup>
 			<s:Button label="Play" color="0x00000" click="myVid.play();"/>

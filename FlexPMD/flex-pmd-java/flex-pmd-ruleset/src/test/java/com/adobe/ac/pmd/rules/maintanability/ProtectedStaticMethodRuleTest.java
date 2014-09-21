@@ -27,7 +27,7 @@ public class ProtectedStaticMethodRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "Sorted.as", new ViolationPosition[]
-      { new ViolationPosition( 60 ) } ) };
+      { new ViolationPosition( 48 ) } ) };
    }
 
    @Override

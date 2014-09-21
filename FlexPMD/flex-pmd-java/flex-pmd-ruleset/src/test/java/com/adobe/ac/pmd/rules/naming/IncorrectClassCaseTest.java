@@ -27,7 +27,7 @@ public class IncorrectClassCaseTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.foo.as", new ViolationPosition[]
-      { new ViolationPosition( 1, 34 ) } ) };
+      { new ViolationPosition( 1, 22 ) } ) };
    }
 
    @Override

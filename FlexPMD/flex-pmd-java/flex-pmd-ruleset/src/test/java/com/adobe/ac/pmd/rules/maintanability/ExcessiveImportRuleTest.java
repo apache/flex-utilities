@@ -27,11 +27,11 @@ public class ExcessiveImportRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "cairngorm.LightController.as", new ViolationPosition[]
-       { new ViolationPosition( 94 ) } ),
+       { new ViolationPosition( 82 ) } ),
                   new ExpectedViolation( "cairngorm.FatController.as", new ViolationPosition[]
-                  { new ViolationPosition( 95 ) } ),
+                  { new ViolationPosition( 83 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.BigImporterModel.as", new ViolationPosition[]
-                  { new ViolationPosition( 54 ) } ) };
+                  { new ViolationPosition( 42 ) } ) };
    }
 
    @Override

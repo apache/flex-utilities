@@ -27,7 +27,7 @@ public class TooLongBindingExpressionRuleTest extends AbstractRegExpBasedRuleTes
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.mxml.IterationsList2.mxml", new ViolationPosition[]
-      { new ViolationPosition( 54 ) } ) };
+      { new ViolationPosition( 40 ) } ) };
    }
 
    @Override

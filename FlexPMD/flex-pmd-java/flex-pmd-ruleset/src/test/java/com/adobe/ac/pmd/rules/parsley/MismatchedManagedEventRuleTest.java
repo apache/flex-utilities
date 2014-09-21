@@ -27,7 +27,7 @@ public class MismatchedManagedEventRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "parsley.MismatchedManagedEvent.as", new ViolationPosition[]
-      { new ViolationPosition( 36, 36 ) } ) };
+      { new ViolationPosition( 24, 24 ) } ) };
    }
 
    @Override

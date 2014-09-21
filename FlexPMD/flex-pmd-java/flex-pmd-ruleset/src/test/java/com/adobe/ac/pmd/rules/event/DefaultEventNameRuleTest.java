@@ -27,7 +27,7 @@ public class DefaultEventNameRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "DefaultNameEvent.as", new ViolationPosition[]
-      { new ViolationPosition( 38 ) } ) };
+      { new ViolationPosition( 26 ) } ) };
    }
 
    @Override

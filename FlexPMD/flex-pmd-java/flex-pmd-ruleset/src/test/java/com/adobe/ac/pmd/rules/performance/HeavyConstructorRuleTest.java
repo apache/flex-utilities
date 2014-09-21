@@ -27,15 +27,15 @@ public class HeavyConstructorRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.FlexPMD88.as", new ViolationPosition[]
-       { new ViolationPosition( 38 ) } ),
+       { new ViolationPosition( 26 ) } ),
                   new ExpectedViolation( "flexunit.RaoulTest.as", new ViolationPosition[]
-                  { new ViolationPosition( 71 ) } ),
+                  { new ViolationPosition( 59 ) } ),
                   new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-                  { new ViolationPosition( 130 ) } ),
+                  { new ViolationPosition( 113 ) } ),
                   new ExpectedViolation( "Looping.as", new ViolationPosition[]
-                  { new ViolationPosition( 39 ) } ),
+                  { new ViolationPosition( 27 ) } ),
                   new ExpectedViolation( "RadonDataGrid.as", new ViolationPosition[]
-                  { new ViolationPosition( 53 ) } ) };
+                  { new ViolationPosition( 41 ) } ) };
    }
 
    @Override

@@ -27,9 +27,9 @@ public class NestedSwitchRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.LongSwitch.as", new ViolationPosition[]
-       { new ViolationPosition( 53 ) } ),
+       { new ViolationPosition( 41 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.NestedSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 43 ) } ) };
+                  { new ViolationPosition( 31 ) } ) };
    }
 
    @Override

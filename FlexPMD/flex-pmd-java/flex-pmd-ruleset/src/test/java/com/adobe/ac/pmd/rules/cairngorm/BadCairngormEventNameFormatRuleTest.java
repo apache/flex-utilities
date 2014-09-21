@@ -26,7 +26,7 @@ public class BadCairngormEventNameFormatRuleTest extends AbstractAstFlexRuleTest
    protected ExpectedViolation[] getExpectedViolatingFiles()
    {
       final ViolationPosition[] positions =
-      { new ViolationPosition( 38 ) };
+      { new ViolationPosition( 26 ) };
 
       return new ExpectedViolation[]
       { new ExpectedViolation( "cairngorm.events.UncorrectConstructorEvent.as", positions ),

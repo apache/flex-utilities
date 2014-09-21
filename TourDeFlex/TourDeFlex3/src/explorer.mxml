@@ -26,7 +26,7 @@
 
 		static protected const VERSION:String = "1.1";	
 		static protected const TITLE:String = "Tour De Flex Component Explorer";
-		static protected const FULL_TITLE:String = "Apache Flex™ Tour De Flex Component Explorer " + VERSION;
+		static protected const FULL_TITLE:String = "Apache Flex® Tour De Flex Component Explorer " + VERSION;
 
 		[Embed(source="explorer.xml", mimeType="application/octet-stream")]
 		private var XMLData:Class;

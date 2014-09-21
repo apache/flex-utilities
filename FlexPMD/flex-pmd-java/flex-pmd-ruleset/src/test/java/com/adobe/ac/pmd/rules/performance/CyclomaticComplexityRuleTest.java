@@ -27,14 +27,14 @@ public class CyclomaticComplexityRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.FlexPMD181.as", new ViolationPosition[]
-       { new ViolationPosition( 2194 ),
-                   new ViolationPosition( 2292 ) } ),
+       { new ViolationPosition( 2182 ),
+                   new ViolationPosition( 2280 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.LongSwitch.as", new ViolationPosition[]
-                  { new ViolationPosition( 39 ) } ),
+                  { new ViolationPosition( 27 ) } ),
                   new ExpectedViolation( "PngEncoder.as", new ViolationPosition[]
-                  { new ViolationPosition( 548 ) } ),
+                  { new ViolationPosition( 531 ) } ),
                   new ExpectedViolation( "RadonDataGrid.as", new ViolationPosition[]
-                  { new ViolationPosition( 160 ) } ) };
+                  { new ViolationPosition( 148 ) } ) };
    }
 
    @Override

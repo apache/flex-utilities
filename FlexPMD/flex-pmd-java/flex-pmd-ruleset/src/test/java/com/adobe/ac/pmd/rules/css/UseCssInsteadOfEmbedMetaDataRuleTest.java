@@ -27,7 +27,7 @@ public class UseCssInsteadOfEmbedMetaDataRuleTest extends AbstractAstFlexRuleTes
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "Title.as", new ViolationPosition[]
-      { new ViolationPosition( 38 ) } ) };
+      { new ViolationPosition( 26 ) } ) };
    }
 
    @Override

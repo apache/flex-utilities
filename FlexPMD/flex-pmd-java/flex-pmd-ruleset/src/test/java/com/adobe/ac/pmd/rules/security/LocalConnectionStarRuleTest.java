@@ -27,7 +27,7 @@ public class LocalConnectionStarRuleTest extends AbstractRegExpBasedRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.Security.as", new ViolationPosition[]
-      { new ViolationPosition( 42 ) } ) };
+      { new ViolationPosition( 30 ) } ) };
    }
 
    @Override

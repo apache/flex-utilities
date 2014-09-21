@@ -29,7 +29,7 @@
 		<![CDATA[	
 			import org.apache.flex.validators.PostCodeValidator;
 			
-			import spark.components.Alert;
+			import mx.controls.Alert;
 			
 			protected function validatePostCode(event:MouseEvent):void
 			{

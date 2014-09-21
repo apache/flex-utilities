@@ -27,13 +27,13 @@ public class UnusedFieldRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "Responder.as", new ViolationPosition[]
-       { new ViolationPosition( 37 ) } ),
+       { new ViolationPosition( 25 ) } ),
                   new ExpectedViolation( "Sorted.as", new ViolationPosition[]
-                  { new ViolationPosition( 54 ) } ),
-                  new ExpectedViolation( "com.adobe.ac.ncss.BigModel.as", new ViolationPosition[]
                   { new ViolationPosition( 42 ) } ),
+                  new ExpectedViolation( "com.adobe.ac.ncss.BigModel.as", new ViolationPosition[]
+                  { new ViolationPosition( 30 ) } ),
                   new ExpectedViolation( "Title.as", new ViolationPosition[]
-                  { new ViolationPosition( 41 ) } ) };
+                  { new ViolationPosition( 29 ) } ) };
    }
 
    @Override

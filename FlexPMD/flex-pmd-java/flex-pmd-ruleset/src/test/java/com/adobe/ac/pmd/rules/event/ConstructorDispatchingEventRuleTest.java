@@ -27,7 +27,7 @@ public class ConstructorDispatchingEventRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "com.adobe.ac.ncss.BigImporterModel.as", new ViolationPosition[]
-      { new ViolationPosition( 58 ) } ) };
+      { new ViolationPosition( 46 ) } ) };
    }
 
    @Override

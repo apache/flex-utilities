@@ -16,7 +16,7 @@
 //  limitations under the License.
 //
 ////////////////////////////////////////////////////////////////////////////////
-package flex - pmd - flex - lib.src.test.flex
+package
 {
    import com.adobe.ac.pmd.model.RuleTest;
    import com.adobe.ac.pmd.model.RulesetTest;

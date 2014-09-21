@@ -38,6 +38,6 @@ public class MoreThanOneEntryPointInMxmlRuleTest extends AbstractMoreThanEntryPo
    protected ViolationPosition[] iterationsListViolations()
    {
       return new ViolationPosition[]
-      { new ViolationPosition( 74 ) };
+      { new ViolationPosition( 60 ) };
    }
 }

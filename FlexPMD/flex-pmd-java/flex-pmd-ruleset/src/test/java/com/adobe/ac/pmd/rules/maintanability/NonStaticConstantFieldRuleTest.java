@@ -27,20 +27,20 @@ public class NonStaticConstantFieldRuleTest extends AbstractAstFlexRuleTest
    {
       return new ExpectedViolation[]
       { new ExpectedViolation( "bug.FlexPMD115.as", new ViolationPosition[]
-       { new ViolationPosition( 38 ),
-                   new ViolationPosition( 40 ) } ),
+       { new ViolationPosition( 26 ),
+                   new ViolationPosition( 28 ) } ),
                   new ExpectedViolation( "AbstractRowData.as", new ViolationPosition[]
-                  { new ViolationPosition( 45 ),
-                              new ViolationPosition( 46 ),
-                              new ViolationPosition( 47 ),
-                              new ViolationPosition( 48 ),
-                              new ViolationPosition( 50 ) } ),
+                  { new ViolationPosition( 33 ),
+                              new ViolationPosition( 34 ),
+                              new ViolationPosition( 35 ),
+                              new ViolationPosition( 36 ),
+                              new ViolationPosition( 38 ) } ),
                   new ExpectedViolation( "Sorted.as", new ViolationPosition[]
-                  { new ViolationPosition( 43 ) } ),
+                  { new ViolationPosition( 31 ) } ),
                   new ExpectedViolation( "GenericType.as", new ViolationPosition[]
-                  { new ViolationPosition( 36 ) } ),
+                  { new ViolationPosition( 24 ) } ),
                   new ExpectedViolation( "com.adobe.ac.ncss.ArrayVO.as", new ViolationPosition[]
-                  { new ViolationPosition( 39 ) } ) };
+                  { new ViolationPosition( 27 ) } ) };
    }
 
    @Override
