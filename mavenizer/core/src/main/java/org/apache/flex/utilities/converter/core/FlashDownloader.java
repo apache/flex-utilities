@@ -27,15 +27,7 @@ import java.io.File;
  */
 public class FlashDownloader {
 
-    public static void main(String[] args) throws Exception {
-        if(args.length != 2) {
-            System.out.println("Usage: FlashDownloader {player-version} {target-directory}");
-            return;
-        }
-
-        final String version = args[0];
-        final File targetDirectory = new File(args[1]);
-
+    public void downloadAndConvert(File targetDirectory, String version) throws Exception {
         final DownloadRetriever downloadRetriever = new DownloadRetriever();
         final File playerglobalSourceFile = downloadRetriever.retrieve(SdkType.FLASH, version);
 
@@ -56,6 +48,18 @@ public class FlashDownloader {
 
         final FlashConverter flashConverter = new FlashConverter(tempSdkRoot, targetDirectory);
         flashConverter.convert();
+    }
+
+    public static void main(String[] args) throws Exception {
+        if(args.length != 2) {
+            System.out.println("Usage: FlashDownloader {player-version} {target-directory}");
+            return;
+        }
+
+        final String version = args[0];
+        final File targetDirectory = new File(args[1]);
+
+        new FlashDownloader().downloadAndConvert(targetDirectory, version);
     }
 
 }

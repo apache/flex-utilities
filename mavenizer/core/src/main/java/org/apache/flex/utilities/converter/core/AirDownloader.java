@@ -28,6 +28,14 @@ import java.io.File;
  */
 public class AirDownloader {
 
+    public void downloadAndConvert(File targetDirectory, String version, PlatformType platformType) throws Exception {
+        final DownloadRetriever downloadRetriever = new DownloadRetriever();
+        final File airSDKSourceDirectory = downloadRetriever.retrieve(SdkType.AIR, version, platformType);
+
+        final AirConverter airConverter = new AirConverter(airSDKSourceDirectory, targetDirectory);
+        airConverter.convert();
+    }
+
     public static void main(String[] args) throws Exception {
         if(args.length != 3) {
             System.out.println("Usage: AirDownloader {air-version} {target-directory} {platform-type}");
@@ -41,11 +49,7 @@ public class AirDownloader {
             throw new Exception("Unknown platform type: " + args[2]);
         }
 
-        final DownloadRetriever downloadRetriever = new DownloadRetriever();
-        final File airSDKSourceDirectory = downloadRetriever.retrieve(SdkType.AIR, version, platformType);
-
-        final AirConverter airConverter = new AirConverter(airSDKSourceDirectory, targetDirectory);
-        airConverter.convert();
+        new AirDownloader().downloadAndConvert(targetDirectory, version, platformType);
     }
 
 }
