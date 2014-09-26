@@ -457,7 +457,7 @@
 				<node label="Millisecond Formatting" app="apache/i18n/MillisecondExample"/>
 				<node label="NumberStepper" app="apache/i18n/NumericStepperExample"/>
 				<node label="Scientific Notation Formatting" app="apache/i18n/ScientificExample"/>
-				<node label="Timezone Formatting" app="apache/i18n/TimezoneExample"/>
+				<node label="Timezone Formatting" app="apache/i18n/TimeZoneExample"/>
 			</node>
 			<node label="Apache Flex 4.11" app="apache/ApacheFlex4_11_0">
 				<!--  Add more examples here -->
