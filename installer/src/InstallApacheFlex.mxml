@@ -285,6 +285,7 @@ variables are not required because the locations of these pieces are known.
 		
 		private var languageOverride:String;
 		private var configOverride:String = "";
+		private var installOverride:String = "";
         
         private var overlaying:Boolean;
         private var usingXML:Object;
@@ -370,6 +371,9 @@ variables are not required because the locations of these pieces are known.
 				}
 				if (s.indexOf("-config=") == 0) {
 					configOverride = s.substring(8);
+				}
+				if (s.indexOf("-install=") == 0) {
+					installOverride = s.substring(9);
 				}
                 if (s.indexOf("-debug") == 0) {
                     debugMode = true;
@@ -958,10 +962,18 @@ variables are not required because the locations of these pieces are known.
                 || APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) == Constants.FILE_PREFIX
                 || APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.HTTPS_PREFIX.length) == Constants.HTTPS_PREFIX) {
                 APACHE_FLEX_BIN_DISTRO_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
-                APACHE_FLEX_BIN_INSTALLER_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
+				if (installOverride != "") {
+					APACHE_FLEX_BIN_INSTALLER_URL = installOverride;
+				} else {
+                	APACHE_FLEX_BIN_INSTALLER_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
+				}
             } else {
                 APACHE_FLEX_BIN_DISTRO_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
-                APACHE_FLEX_BIN_INSTALLER_URL = MD5CompareUtil.MD5_DOMAIN + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
+               	if (installOverride != "") {
+					APACHE_FLEX_BIN_INSTALLER_URL = installOverride;
+				} else {
+					APACHE_FLEX_BIN_INSTALLER_URL = MD5CompareUtil.MD5_DOMAIN + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
+				}
             }
             
             if (installerAppPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX) {
@@ -1054,15 +1066,19 @@ variables are not required because the locations of these pieces are known.
 			
 			setXMLVariables(); // as AIR and Flash version may of changed
 			
-			if (airVersionID)
-				log("AIR version " + airVersionID);
-			else
-				log("AIR version " + AIR_VERSION);
+			if (flexVersion.selectedItem.needsAIR) {
+				if (airVersionID)
+					log("AIR version " + airVersionID);
+				else
+					log("AIR version " + AIR_VERSION);
+			}
 			
-			if (flashVersionID)
-				log("Flash Player version " + flashVersionID);
-			else
-				log("Flash Player version " + FLASH_PLAYER_VERSION);
+			if (flexVersion.selectedItem.needsFlash) {
+				if (flashVersionID)
+					log("Flash Player version " + flashVersionID);
+				else
+					log("Flash Player version " + FLASH_PLAYER_VERSION);
+			}
 			
             if (!legacy)
             {
@@ -1451,7 +1467,7 @@ variables are not required because the locations of these pieces are known.
                 if (!overlaying)
                 {
     				/* Copy all files from the unarchived directory to the root */
-    				var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
+    				var directory:File = _flexTempDir.resolvePath(".");
     				var files:Array = directory.getDirectoryListing();
     				for each(var file:File in files) {
     					file.copyTo(_flexHomeDir.resolvePath(file.name));
@@ -1495,6 +1511,7 @@ variables are not required because the locations of these pieces are known.
             }
             else
                 file = _flexHomeDir.resolvePath("installer.xml");
+			
             addEventListener(Event.ENTER_FRAME, enterFrameHandler);
             var context:Object = { installer: true };
 			if (usingDownloadCache)
@@ -1533,7 +1550,7 @@ variables are not required because the locations of these pieces are known.
                 context["flash.sdk.url.file"] = flashPlayerVersion.selectedItem.file;
             }
 			
-            if (!ant.processXMLFile(file, context, true))
+            if (file.exists && !ant.processXMLFile(file, context, true))
             {
                 ant.addEventListener(Event.COMPLETE, completeHandler);
                 ant.addEventListener(ProgressEvent.PROGRESS, progressEventHandler);
@@ -1566,7 +1583,7 @@ variables are not required because the locations of these pieces are known.
         
         private function completeHandler(event:Event):void
         {
-            if (!Ant.currentAnt.project.status)
+            if (Ant.currentAnt && !Ant.currentAnt.project.status)
 			{
                 var msg:String = Ant.currentAnt.project.failureMessage;
 				log(msg ? msg : "no failure message provided");
@@ -1575,13 +1592,19 @@ variables are not required because the locations of these pieces are known.
 			}
             else if (currentStep == stepLabels.length && currentStep > 0)
                 updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
-            if (Ant.currentAnt.project.status)
-                tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
-			if (Ant.currentAnt.project.failureMessage)
- 	            cleanup(!Ant.currentAnt.project.status, "&info=" + escape(Ant.currentAnt.project.failureMessage));
-			else
-			    cleanup(!Ant.currentAnt.project.status);
-        }
+			
+			if (Ant.currentAnt) {
+	            if (Ant.currentAnt.project.status)
+	                tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
+				if (Ant.currentAnt.project.failureMessage)
+	 	            cleanup(!Ant.currentAnt.project.status, "&info=" + escape(Ant.currentAnt.project.failureMessage));
+				else
+				    cleanup(!Ant.currentAnt.project.status);
+			}
+			else {
+				cleanup();
+			}
+	    }
         
         private var ant:Ant;
         
