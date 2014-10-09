@@ -66,8 +66,22 @@
 			</mxmlc>
 		</sequential>
 	</macrodef>
+	
+    <macrodef name="compile-mxml-libs">
+    	 <attribute name="example"/>
+        
+        <sequential>
+   			<mxmlc file="${basedir}/src/@{example}.mxml"
+            	output="${basedir}/src/@{example}.swf" fork="true" failonerror="true">
+				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+   	            <compiler.library-path dir="${basedir}/libs" append="true">
+   	                <include name="*.swc" />
+   	            </compiler.library-path>
+			</mxmlc>
+		</sequential>
+	</macrodef>	
 		
-	<target name="compile" description="compile all examples and the explorer shell" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3,compile-apache">
+	<target name="compile" description="compile all examples and the explorer shell" depends="compile-shell,compile-mx,compile-spark,compile-spark2,compile-spark3,compile-apache,compile-squiggly">
 	</target>
 	
 	<target name="compile-shell" description="compile explorer shell">
@@ -422,6 +436,64 @@
 		<!-- Uncomment when Flex 4.14 is released -->
 		<!-- compile-mxml example="/apache/controls/SparkRichTextEditorExample"/-->
 	</target>
+	
+	<property name="download.dir" value="temp"/>
+	<property name="unpack.dir" value="squiggly"/>
+	<property name="mirror.url" value="http://flex.apache.org/single-mirror-url.cgi" />
+    <property name="squiggly.folder" value="flex/squiggly/1.0" />
+ 
+	<condition property="squiggly.file" value="apache-flex-squiggly-1.0-bin.zip">
+    	<os family="windows" />
+    </condition>
+	
+    <condition property="squiggly.file" value="apache-flex-squiggly-1.0-bin.tar.gz">
+    	<or>
+    		<os family="mac" />
+    		<os family="unix" />
+    	</or>
+    </condition>
+	
+	<target name="compile-squiggly" description="compile apache squiggly examples" depends="squiggly-download">
+		<compile-mxml-libs example="/apache/squiggly/SpellingExample"/>
+		<compile-mxml-libs example="/apache/squiggly/SpellingExExample"/>
+	</target>
+	
+    <target name="squiggly-check" description="Checks if Squiggly has been downloaded.">
+        <available file="${basedir}/libs/ApacheflexSpellingEngine.swc" property="sqigggly.present"/>
+    </target>
+        	
+    <target name="squiggly-download" depends="squiggly-check" unless="sqigggly.present" description="Downloads squiggly SDK">
+    	
+    	<mkdir dir="${download.dir}"/>
+     	
+     	<get src="${mirror.url}" dest="${download.dir}/mirror.txt" />
+     	<replace file="${download.dir}/mirror.txt" token="&lt;p&gt;" />
+     	<replace file="${download.dir}/mirror.txt" token="&lt;/p&gt;" />
+     	<loadfile property="squiggly.url" srcFile="${download.dir}/mirror.txt" />
+     	
+     	<echo>Downloading ${squiggly.url}/${squiggly.folder}/${squiggly.file}</echo>
+        <get src="${squiggly.url}/${squiggly.folder}/${squiggly.file}" 
+            dest="${download.dir}/${squiggly.file}" 
+            verbose="true"/>
+    	
+    	<!-- TOSO upzip on windows -->
+    	<mkdir dir="${unpack.dir}"/>
+    	<untar dest="${unpack.dir}" src="${download.dir}/${squiggly.file}" compression="gzip" />
+    	
+    	<mkdir dir="libs"/>
+    	<copy todir="libs">
+    		<fileset dir="${unpack.dir}/main/libs">
+    			<include name="*.swc" />
+    		</fileset>
+    	</copy>
+    	
+    	<mkdir dir="dictionaries"/>
+    	<copy todir="dictionaries">
+    		<fileset dir="${unpack.dir}/dictionaries">
+    			<include name="*.*" />
+    		</fileset>
+    	</copy>
+    </target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
 	</target>
