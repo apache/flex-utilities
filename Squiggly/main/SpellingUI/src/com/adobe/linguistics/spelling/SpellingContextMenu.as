@@ -35,8 +35,8 @@ package com.adobe.linguistics.spelling
 	
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import com.adobe.linguistics.spelling.ui.IHighlighter;
-	import com.adobe.linguistics.spelling.ui.IWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
 	
 	public class SpellingContextMenu
 	{
