@@ -22,10 +22,10 @@ package com.adobe.linguistics.spelling
 	import com.adobe.linguistics.spelling.SpellUIForTLF;
 	import com.adobe.linguistics.spelling.SquigglyCustomContainerController;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
-	import com.adobe.linguistics.spelling.ui.IHighlighter;
-	import com.adobe.linguistics.spelling.ui.IWordProcessor;
-	import com.adobe.linguistics.spelling.ui.TLFHighlighter;
-	import com.adobe.linguistics.spelling.ui.TLFWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.TLFHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.TLFWordProcessor;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
 	
