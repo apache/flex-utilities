@@ -215,8 +215,6 @@
             <arg value="${OUTPUT_DIR}/ApacheFlexSpellingEngine.swc"/>
             <arg value="-external-library-path"/>
             <arg value="${OUTPUT_DIR}/ApacheFlexSpellingFramework.swc"/>
-            <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/ApacheFlexSpellingUI.swc"/>
             <arg value="-output"/>
             <arg value="${OUTPUT_DIR}/ApacheFlexSpellingUIEx.swc"/>
         </java>
