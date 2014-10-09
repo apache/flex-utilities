@@ -1,4 +1,19 @@
 ------------------------------------------------
+Apache Flex Tour De Flex Component Explorer 1.2
+------------------------------------------------
+
+Apache Flex Tour De Flex 1.2 is an update to 1.1 adding a few minor improvements.
+
+Changes since the version 1.1
+- Added Squiggly spelling engine examples
+
+Known issues:
+- Callout example in the Apache Flex 4.9 examples fails to show the callout.
+  The sample code will work externally. See FLEX-34539 for details.
+  
+Bugs fixed and improvements:
+
+------------------------------------------------
 Apache Flex Tour De Flex Component Explorer 1.1
 ------------------------------------------------
 
