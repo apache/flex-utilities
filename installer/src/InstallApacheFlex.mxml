@@ -395,7 +395,8 @@ variables are not required because the locations of these pieces are known.
 		protected function handleApplicationComplete(event:FlexEvent):void {
             CursorManager.setBusyCursor();
 			loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, uncaughtErrorHandler);
-            updateWindow();
+            addEventListener(Event.CLOSING, closeApplication);
+			updateWindow();
 			var hasInternet:Boolean = false;
 			var networkAdapters:Vector.<NetworkInterface> = NetworkInfo.networkInfo.findInterfaces();
 			for each (var networkAdapter:NetworkInterface in networkAdapters)
