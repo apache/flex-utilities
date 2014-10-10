@@ -1066,6 +1066,8 @@ variables are not required because the locations of these pieces are known.
 			
 			setXMLVariables(); // as AIR and Flash version may of changed
 			
+			log("SDK version " + APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY);
+			
 			if (flexVersion.selectedItem.needsAIR) {
 				if (airVersionID)
 					log("AIR version " + airVersionID);
@@ -2304,6 +2306,7 @@ variables are not required because the locations of these pieces are known.
 			}
 			
 			if (isAbort) {
+				log(abortInfo);
 				tracker.trackInstallerFailure(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, 
 					_os.os + "&info=" + abortInfo);
 			}
@@ -2814,6 +2817,17 @@ variables are not required because the locations of these pieces are known.
 		}
 		
 		private function closeApplication(event:Event):void {
+			removeEventListener(Event.CLOSING, closeApplication);
+            
+            if (currentState == "installState")
+            {
+                if (currentStep < stepLabels.length)
+                {
+                    // User aborted the installation by closing the installer
+                    var activeStep:StepItem = getActiveStepItem();
+                    abortInstallation(_viewResourceConstants.INFO_USER_ABORT_INSTALLATION + activeStep.label);
+                }
+            }
 			// TODO only enable close button when finished or when an error occurs
 			// TODO anything we need to clean up?
 			if (console && !console.closed)
@@ -2821,6 +2835,15 @@ variables are not required because the locations of these pieces are known.
 			cleanup();
 			close();
 		}
+		
+        protected function getActiveStepItem():StepItem {
+            for each (var s:StepItem in _installationSteps) {
+                if (s.status == StepItem.ACTIVE) {
+                    return s;
+                }
+            }            
+            return null;
+        }
 		
 		protected function clickLogo(event:MouseEvent):void {
 			navigateToURL(new URLRequest(Constants.APACHE_FLEX_URL));
