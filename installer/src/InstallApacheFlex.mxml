@@ -1096,14 +1096,27 @@ variables are not required because the locations of these pieces are known.
                 loader.addEventListener(ErrorEvent.ERROR, handleInstallerXMLError);
                 loader.addEventListener(IOErrorEvent.IO_ERROR, handleInstallerXMLError);
                 
-                loader.load(req);          
+                loader.load(req);
             }
             else {
                 showDirectoryState();
-			}
-		}
-		
-		protected function handleFirstStepNextBtnClick(event:MouseEvent):void {
+            }
+        }
+        
+        protected function handleFirstStepNextBtnClick(event:MouseEvent):void
+        {
+            // Quick check to see if the selected directory is writable
+            try {
+                var f:File = new File(_flexHome + File.separator + "flex.txt");
+                checkDirWritable(f);
+            } catch (e:Error) {
+                log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY);
+                flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_DIR_REQUIRE_ADMIN_RIGHTS;
+                flexSDKTxtInput.prompt = _viewResourceConstants.ERROR_DIR_REQUIRE_ADMIN_RIGHTS;
+                updateActivityStep(_viewResourceConstants.STEP_CREATE_DIRECTORIES, StepItem.ERROR);
+                return;
+            }
+            
             showOptionsState();
         }
         
@@ -1313,10 +1326,34 @@ variables are not required because the locations of these pieces are known.
 			file.addEventListener(Event.SELECT, flexSDKDirSelected, false, 0, true);
 			file.browseForDirectory(_viewResourceConstants.INFO_SELECT_DIRECTORY);
 		}
-		
-		protected function flexSDKDirSelected(event:Event):void {
-			var selectedDir:File = File(event.target);
+        
+        protected function checkDirWritable(file:File):void
+        {
+            var ba:ByteArray = new ByteArray();
+            ba.writeUTFBytes("1");
+            writeFileToDirectory(file, ba);
+            file.deleteFile();
+        }
+        
+        protected function flexSDKDirSelected(event:Event):void
+        {
+        	var selectedDir:File = File(event.target);
 			var overlay:Boolean = flexVersion.selectedItem.overlay;
+            
+			// Quick check to see if the selected directory is writable
+            try {
+                var f:File = new File(selectedDir.nativePath + File.separator + "flex.txt");
+                checkDirWritable(f);
+            } catch (e:Error) {
+                log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY);
+                log(_viewResourceConstants.ERROR_DIR_REQUIRE_ADMIN_RIGHTS);
+                flexSDKTxtInput.text = selectedDir.nativePath;
+                flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_DIR_REQUIRE_ADMIN_RIGHTS + " : " + selectedDir.nativePath; // tooltip
+                flexSDKTxtInput.prompt = _viewResourceConstants.ERROR_DIR_REQUIRE_ADMIN_RIGHTS; // field
+                updateActivityStep(_viewResourceConstants.STEP_CREATE_DIRECTORIES, StepItem.ERROR);
+                return;
+            }
+           
             overlaying = overlay;
 			if (!overlay)
             {
@@ -1329,7 +1366,8 @@ variables are not required because the locations of these pieces are known.
     				flexSDKTxtInput.prompt = _viewResourceConstants.SELECT_PATH_PROMPT;
     			} else {
     				nextBtn.enabled = false;
-    				flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_DIR_NOT_EMPTY;
+                    flexSDKTxtInput.text = selectedDir.nativePath;
+                    flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_DIR_NOT_EMPTY + " : " + selectedDir.nativePath;
     				flexSDKTxtInput.prompt = _viewResourceConstants.ERROR_DIR_NOT_EMPTY;
     			}
             }
