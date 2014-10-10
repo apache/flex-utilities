@@ -285,6 +285,7 @@ variables are not required because the locations of these pieces are known.
 		
 		private var languageOverride:String;
 		private var configOverride:String = "";
+		private var stepsOverride:String = "";
 		private var installOverride:String = "";
         
         private var overlaying:Boolean;
@@ -374,6 +375,9 @@ variables are not required because the locations of these pieces are known.
 				}
 				if (s.indexOf("-install=") == 0) {
 					installOverride = s.substring(9);
+				}
+				if (s.indexOf("-steps=") == 0) {
+					stepsOverride = s.substring(7);
 				}
                 if (s.indexOf("-debug") == 0) {
                     debugMode = true;
@@ -962,15 +966,15 @@ variables are not required because the locations of these pieces are known.
                 || APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) == Constants.FILE_PREFIX
                 || APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.HTTPS_PREFIX.length) == Constants.HTTPS_PREFIX) {
                 APACHE_FLEX_BIN_DISTRO_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
-				if (installOverride != "") {
-					APACHE_FLEX_BIN_INSTALLER_URL = installOverride;
+				if (stepsOverride != "") {
+					APACHE_FLEX_BIN_INSTALLER_URL = stepsOverride;
 				} else {
                 	APACHE_FLEX_BIN_INSTALLER_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
 				}
             } else {
                 APACHE_FLEX_BIN_DISTRO_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
-               	if (installOverride != "") {
-					APACHE_FLEX_BIN_INSTALLER_URL = installOverride;
+               	if (stepsOverride != "") {
+					APACHE_FLEX_BIN_INSTALLER_URL = stepsOverride;
 				} else {
 					APACHE_FLEX_BIN_INSTALLER_URL = MD5CompareUtil.MD5_DOMAIN + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
 				}
@@ -1469,7 +1473,7 @@ variables are not required because the locations of these pieces are known.
                 if (!overlaying)
                 {
     				/* Copy all files from the unarchived directory to the root */
-    				var directory:File = _flexTempDir.resolvePath(".");
+    				var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
     				var files:Array = directory.getDirectoryListing();
     				for each(var file:File in files) {
     					file.copyTo(_flexHomeDir.resolvePath(file.name));
@@ -1502,18 +1506,22 @@ variables are not required because the locations of these pieces are known.
             ant.output = output;
 			
             var file:File;
-            if (overlaying)
+			if (installOverride != "") {
+				file = new File(installOverride);
+			}
+			else if (overlaying)
             {
-                if (_os.isWindows())
-                    file = _flexTempDir.resolvePath("installer.xml");
+				var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
+                if (_os.isWindows()) {					
+					file = _flexTempDir.resolvePath("installer.xml");
+				}
                 else {
-                    var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
-                    file = directory.resolvePath("installer.xml");
+                   file = directory.resolvePath("installer.xml");
                 }
             }
-            else
-                file = _flexHomeDir.resolvePath("installer.xml");
-			
+            else {
+            	file = _flexHomeDir.resolvePath("installer.xml");
+			}
             addEventListener(Event.ENTER_FRAME, enterFrameHandler);
             var context:Object = { installer: true };
 			if (usingDownloadCache)
@@ -3162,6 +3170,7 @@ variables are not required because the locations of these pieces are known.
 			<s:List id="installComponentsList"
 					width="50%"
 					height="100%"
+					horizontalScrollPolicy="off"
 					itemRenderer="org.apache.flex.packageflexsdk.view.itemrenderers.OptionalInstallItemRenderer"
 					dataProvider="{_installerComponentsDataProvider}"
 					change="handleOptionalInstallsChange(event)" creationComplete="installComponentsList_creationCompleteHandler(event)">
