@@ -1005,7 +1005,7 @@ variables are not required because the locations of these pieces are known.
                 var currentVersion:String = applicationDescriptor.xmlns::versionNumber.toString();
 
                 // Log the Installer version to help with any support issues that arise.
-                log("Version " + currentVersion + " (" + _os.os + ")", 0);
+                log("Installer version " + currentVersion + " (" + _os.os + ")", 0);
                 loggedVersion = true;
             }
         }
