@@ -35,7 +35,7 @@ package com.adobe.linguistics.spelling.ui
 	import flashx.textLayout.edit.SelectionManager;
 	import flashx.textLayout.elements.TextFlow;
 	import flashx.textLayout.tlf_internal;
-	import com.adobe.linguistics.spelling.ui.IHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
 
 
 	use namespace tlf_internal;	
