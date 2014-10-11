@@ -2353,7 +2353,6 @@ variables are not required because the locations of these pieces are known.
 			}
 			
 			if (isAbort) {
-				log(abortInfo);
 				tracker.trackInstallerFailure(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, 
 					_os.os + "&info=" + abortInfo);
 			}
@@ -2404,9 +2403,11 @@ variables are not required because the locations of these pieces are known.
 			browseBtn.enabled = false;
 			installBtn.enabled = false;
             wasAborted = true;
-			log(_viewResourceConstants.INFO_ABORT_INSTALLATION);
+			if (_viewResourceConstants)
+				log(_viewResourceConstants.INFO_ABORT_INSTALLATION);
 			cleanup(true, reason);
-            firstStepGroup.title = secondStepGroup.title = thirdStepGroup.title = _viewResourceConstants.INFO_ABORT_INSTALLATION;
+			if (_viewResourceConstants)
+            	firstStepGroup.title = secondStepGroup.title = thirdStepGroup.title = _viewResourceConstants.INFO_ABORT_INSTALLATION;
 		}
 		
 		protected function _langSelect_changeHandler(event:IndexChangeEvent):void {
@@ -2872,7 +2873,8 @@ variables are not required because the locations of these pieces are known.
                 {
                     // User aborted the installation by closing the installer
                     var activeStep:StepItem = getActiveStepItem();
-                    abortInstallation(_viewResourceConstants.INFO_USER_ABORT_INSTALLATION + activeStep.label);
+					if (_viewResourceConstants)
+                    	abortInstallation(_viewResourceConstants.INFO_USER_ABORT_INSTALLATION + activeStep.label);
                 }
             }
 			// TODO only enable close button when finished or when an error occurs
