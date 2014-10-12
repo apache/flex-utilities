@@ -89,7 +89,12 @@
 			
 		private function loadApp(application:String, source:String):void
 		{
-			swfLoader.loadApp(application + ".swf");
+			if (application.indexOf(".swf") > 0) {
+				swfLoader.loadApp(application);
+			}
+			else {
+				swfLoader.loadApp(application + ".swf");
+			}
             vs.loadSource(application, source);
 		}
 			

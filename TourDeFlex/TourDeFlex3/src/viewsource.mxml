@@ -32,7 +32,12 @@
 				{
 					var files:Array = new Array();
 					// the first file shown will be the mxml source
-					files[0] = appUrl + ".mxml";
+					if (appUrl.indexOf(".mxml") >= 0 || appUrl.indexOf(".as") >= 0) {
+						files[0] = appUrl;
+					}
+					else if (appUrl.indexOf(".swf") == 0) {
+						files[0] = appUrl + ".mxml";
+					}
 					
 					if (srcUrl != null && srcUrl != "")
 					{
@@ -41,7 +46,7 @@
 						files = files.concat(otherSrc);
 					}
 
-	        		for (var i:int ; i < files.length ; i++)
+	        		for (var i:int = 0; i < files.length ; i++)
     	    		{
 						tabs[i] = new SourceTab();
 						tn.addChild(tabs[i]);
