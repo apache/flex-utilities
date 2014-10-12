@@ -24,7 +24,7 @@
         <![CDATA[
 		import mx.core.FlexGlobals;
 
-		static protected const VERSION:String = "1.1";	
+		static protected const VERSION:String = "1.2";	
 		static protected const TITLE:String = "Tour De Flex Component Explorer";
 		static protected const FULL_TITLE:String = "Apache Flex® Tour De Flex Component Explorer " + VERSION;
 
@@ -80,7 +80,7 @@
 		{
 			var urlRequest:URLRequest = new URLRequest("http://flex.apache.org/download-tourdeflex.html");
 			navigateToURL(urlRequest);
-		}	
+		}
 		
 		private function openNode(application:String):void
 		{
