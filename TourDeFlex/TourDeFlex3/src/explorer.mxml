@@ -42,8 +42,25 @@
             compLibTree.dataProvider = explorerTree;
 			
 			noExamples = (explorerTree..node.(hasOwnProperty("@app") && @app.length() > 0)).length();
+			
+			var loader:URLLoader = new URLLoader();
+			var request:URLRequest = new URLRequest("3rdparty.xml");
+			loader.addEventListener(Event.COMPLETE, load3rdParty);
+			loader.load(request);
 		}
-		
+			
+		protected function load3rdParty(event:Event):void
+		{
+		  var loader:URLLoader = URLLoader(event.target);
+		  var newNode:XML = new XML(loader.data);
+		  
+		  if (newNode..node.length() > 0) {
+			  explorerTree.appendChild(newNode.node);
+              compLibTree.dataProvider = explorerTree;
+			  noExamples += (newNode..node.(hasOwnProperty("@app") && @app.length() > 0)).length();
+		  }
+		}
+					
 		protected function checkParameters():void
 		{		
 			var parameters:Object = FlexGlobals.topLevelApplication.parameters;
