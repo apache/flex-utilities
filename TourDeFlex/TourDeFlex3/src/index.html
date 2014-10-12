@@ -19,33 +19,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Apache Flex® Tour De Flex Component Explorer</title>
 <script src="AC_OETags.js" language="javascript"></script>
-<style>
-body { margin: 0px; overflow:hidden }
+<style type="text/css" media="screen"> 
+    html, body  { height:100%; }
+    body { margin:0; padding:0; overflow:auto; text-align:center; 
+           background-color: #ffffff; }   
+    object:focus { outline:none; }
+    #flashContent { display:none; }
 </style>
-</head>
-
-<body scroll='no'>
-<script language="JavaScript" type="text/javascript">
-<!--
-		AC_FL_RunContent(
-					"src", "explorer",
-					"width", "100%",
-					"height", "100%",
-					"align", "middle",
-					"id", "explorer",
-					"quality", "high",
-					"bgcolor", "#869ca7",
-					"name", "explorer",
-					"allowScriptAccess","sameDomain",
-					"type", "application/x-shockwave-flash",
-					"pluginspage", "http://www.adobe.com/go/getflashplayer"
-	);
-// -->
-</script>
+<script type="text/javascript" src="swfobject.js"></script>
+<script type="text/javascript">
+    var swfVersionStr = "11.1.0";
+    var xiSwfUrlStr = "";
+    var flashvars = {};
+    if (swfobject.getQueryParamValue("app") && swfobject.getQueryParamValue("app")) {
+ 		flashvars.app = swfobject.getQueryParamValue("app");
+	}
+    var params = {};
+    params.quality = "high";
+    params.bgcolor = "#ffffff";
+    params.allowscriptaccess = "sameDomain";
+    params.allowfullscreen = "true";
+    var attributes = {};
+    attributes.id = "TourDeFlex";
+    attributes.name = "TourDeFlex";
+    attributes.align = "middle";
+    swfobject.embedSWF(
+        "explorer.swf", "flashContent", 
+        "100%", "100%", 
+        swfVersionStr, xiSwfUrlStr, 
+        flashvars, params, attributes);
+    swfobject.createCSS("#flashContent", "display:block;text-align:left;");
 </script>
 <!-- Google Analytics -->
 <script type="text/javascript">
-
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', 'UA-37926454-1']);
 	_gaq.push(['_trackPageview']);
@@ -55,26 +61,19 @@ body { margin: 0px; overflow:hidden }
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
-
 </script>
-<noscript>
-	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-			id="explorer" width="100%" height="100%"
-			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
-			<param name="movie" value="explorer.swf" />
-			<param name="quality" value="high" />
-			<param name="bgcolor" value="#869ca7" />
-			<param name="allowScriptAccess" value="sameDomain" />
-			<embed src="explorer.swf" quality="high" bgcolor="#869ca7"
-				width="100%" height="100%" name="explorer" align="middle"
-				play="true"
-				loop="false"
-				quality="high"
-				allowScriptAccess="sameDomain"
-				type="application/x-shockwave-flash"
-				pluginspage="http://www.adobe.com/go/getflashplayer">
-			</embed>
-	</object>
-</noscript>
+</head>
+
+<body scroll='no'>
+<div id="flashContent">
+    <p>
+        To view this page ensure that Adobe Flash Player is installed. 
+    </p>
+    <script type="text/javascript"> 
+        var pageHost = ((document.location.protocol == "https:") ? "https://" : "http://"); 
+        document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" 
+                        + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>" ); 
+    </script> 
+</div>
 </body>
 </html>
