@@ -99,7 +99,9 @@
                 <include name="LICENSE" />
                 <include name="NOTICE" />
                 <include name="README" />
-                <include name="RELEASE_NOTES" />
+            	<include name="RELEASE_NOTES" />
+            	<include name="CONTRIBUTING" />
+            	<include name="CONTRIBUTORS" />
                 <include name="**/*.xml" />
                 <include name="**/*.mxml" />
             	<include name="**/*.as" />
@@ -109,12 +111,14 @@
             	<include name="**/*.sh" />
             	<include name="**/*.properties" />
             	<include name="docs/**" />
+            	<include name="dictionaries/**" />
             	<exclude name="ane/**" />
             	<exclude name="main/ASDocExamples/**" />
             	<exclude name="main/Automation/**" />
             	<exclude name="main/Data/**" />
             	<exclude name="main/Demo/**" />
             	<exclude name="main/Tools/**" />
+            	<exclude name="main/generated/**" />
              </tarfileset>
          </tar>
 	</target>
@@ -126,6 +130,8 @@
                 <include name="NOTICE" />
                 <include name="README" />
                 <include name="RELEASE_NOTES" />
+            	<include name="CONTRIBUTING" />
+            	<include name="CONTRIBUTORS" />
                 <include name="**/*.xml" />
                 <include name="**/*.mxml" />
             	<include name="**/*.as" />
@@ -135,12 +141,14 @@
             	<include name="**/*.sh" />
             	<include name="**/*.properties" />
             	<include name="docs/**" />
+            	<include name="dictionaries/**" />
             	<exclude name="ane/**" />
             	<exclude name="main/ASDocExamples/**" />
             	<exclude name="main/Automation/**" />
             	<exclude name="main/Data/**" />
             	<exclude name="main/Demo/**" />
             	<exclude name="main/Tools/**" />
+            	<exclude name="main/generated/**" />
              </fileset>
          </zip>
 	</target>
@@ -154,6 +162,8 @@
 	                <include name="NOTICE" />
 	                <include name="README" />
 	                <include name="RELEASE_NOTES" />
+	            	<include name="CONTRIBUTING" />
+	            	<include name="CONTRIBUTORS" />
 	                <include name="**/*.xml" />
 	                <include name="**/*.mxml" />
 	            	<include name="**/*.as" />
@@ -163,6 +173,7 @@
 	            	<include name="**/*.sh" />
 	            	<include name="**/*.properties" />
 	            	<include name="docs/**" />
+	            	<include name="dictionaries/**" />
 	                <include name="**/*.swc" />
 	            	<exclude name="ane/**" />
 	            	<exclude name="main/ASDocExamples/**" />
@@ -170,6 +181,7 @@
 	            	<exclude name="main/Data/**" />
 	            	<exclude name="main/Demo/**" />
 	            	<exclude name="main/Tools/**" />
+	            	<exclude name="main/generated/**" />
 	             </tarfileset>
 	         </tar>
 		</target>
@@ -181,6 +193,8 @@
 	                <include name="NOTICE" />
 	                <include name="README" />
 	                <include name="RELEASE_NOTES" />
+	            	<include name="CONTRIBUTING" />
+	            	<include name="CONTRIBUTORS" />
 	                <include name="**/*.xml" />
 	                <include name="**/*.mxml" />
 	            	<include name="**/*.as" />
@@ -190,6 +204,7 @@
 	            	<include name="**/*.sh" />
 	            	<include name="**/*.properties" />
 	            	<include name="docs/**" />
+	            	<include name="dictionaries/**" />
 	                <include name="**/*.swc" />
 	            	<exclude name="ane/**" />
 	            	<exclude name="main/ASDocExamples/**" />
@@ -197,6 +212,7 @@
 	            	<exclude name="main/Data/**" />
 	            	<exclude name="main/Demo/**" />
 	            	<exclude name="main/Tools/**" />
+	            	<exclude name="main/generated/**" />
 	             </fileset>
 	         </zip>
 		</target>
