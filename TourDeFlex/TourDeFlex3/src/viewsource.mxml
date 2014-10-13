@@ -35,7 +35,7 @@
 					if (appUrl.indexOf(".mxml") >= 0 || appUrl.indexOf(".as") >= 0) {
 						files[0] = appUrl;
 					}
-					else if (appUrl.indexOf(".swf") == 0) {
+					else if (appUrl.indexOf(".swf") == -1) {
 						files[0] = appUrl + ".mxml";
 					}
 					
