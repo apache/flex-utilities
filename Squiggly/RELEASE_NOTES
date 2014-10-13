@@ -6,7 +6,7 @@ Squiggly 1.1 has the following changes from Squiggly 1.0:
 - Mavenized version of Squiggly
 - Added installer ant file
 - Added en_US and en_GB dictionaries
-- Nows work with halo and saprk components
+- Now works with both halo and saprk components
 
 ------------------------------------------------
 Apche Flex Squiggly 1.0
