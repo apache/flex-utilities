@@ -17,10 +17,11 @@
   -->
 
 <mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:explorer="*"
-    width="100%" height="100%" pageTitle="{TITLE}"
-    initialize="init()" creationComplete="checkParameters()" layout="vertical">
+				pageTitle="{TITLE}" layout="vertical" width="100%" height="100%"
+				paddingBottom="2" paddingTop="2" paddingLeft="2" paddingRight="2"
+			    initialize="init()" creationComplete="checkParameters()">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
 		import mx.core.FlexGlobals;
 
@@ -70,7 +71,10 @@
 				var source:String = explorerTree..node.(hasOwnProperty("@app") && @app == application).@src;
 				loadApp(application, source);
 				openNode(application);
-			}			
+			}
+			else {
+				loadApp("Welcome", null);
+			}
 		}
 
         private function treeChanged(event:Event):void
