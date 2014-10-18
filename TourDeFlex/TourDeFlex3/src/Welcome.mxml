@@ -16,40 +16,37 @@
       limitations under the License.
   -->
 
-<!-- Simple example to demonstrate the Button control. -->
 <mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
 				xmlns:mx="library://ns.adobe.com/flex/mx"
-				xmlns:s="library://ns.adobe.com/flex/spark" 
-				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				xmlns:s="library://ns.adobe.com/flex/spark"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
 				height="100%" width="100%">
 
     <mx:Panel title="Welcome to Tour De Flex"
 			  paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
 			  height="100%" width="100%">
-
-	<s:HGroup>
-		<s:Image source="@Embed('/apache/assets/ApacheFlexLogo.png')" width="50" height="50" />
-		<s:VGroup height="100%" verticalAlign="middle">
-			<s:Label text="Apache Tour De Flex" fontSize="20" fontWeight="bold" />
-		</s:VGroup>	
-	</s:HGroup>
-		
-	<s:RichText width="100%">
-		<s:p />
-		<s:p>The Apache Flex Tour De Flex component explorer provides a sample set of working
-  Apache Flex examples.</s:p>
-		<s:p />
-		<s:p>New in this version:</s:p>
-		<s:list>
-			<s:li>Added this welcome page</s:li>
-			<s:li>Changed examples look and feel to be more consistent</s:li>
-			<s:li>Added support for 3rd party examples</s:li>
-			<s:li>Added Squiggly spelling engine examples</s:li>
-		</s:list>
-		<s:p />
-		<s:p>For a full list of changes please see the README.</s:p>
-		<s:p />
-	</s:RichText>
-
+		<s:HGroup>
+			<s:Image source="@Embed('/apache/assets/ApacheFlexLogo.png')" width="50" height="50" />
+			<s:VGroup height="100%" verticalAlign="middle">
+				<s:Label text="Apache Tour De Flex" fontSize="20" fontWeight="bold" />
+			</s:VGroup>	
+		</s:HGroup>
+			
+		<s:RichText width="100%" height="100%">
+			<s:p />
+			<s:p>The Apache Flex Tour De Flex component explorer provides a sample set of working
+	  Apache Flex examples.</s:p>
+			<s:p />
+			<s:p>New in this version:</s:p>
+			<s:list>
+				<s:li>Added this welcome page</s:li>
+				<s:li>Changed examples look and feel to be more consistent</s:li>
+				<s:li>Added support for 3rd party examples</s:li>
+				<s:li>Added Squiggly spelling engine examples</s:li>
+			</s:list>
+			<s:p />
+			<s:p>For a full list of changes please see the README.</s:p>
+			<s:p />
+		</s:RichText>
     </mx:Panel>
 </mx:Application>
