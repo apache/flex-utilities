@@ -58,6 +58,6 @@
 		]]>
 	</fx:Script>
 
-	<mx:TabNavigator id="tn" width="100%" height="100%" paddingTop="0"/>
+	<mx:TabNavigator id="tn" width="100%" height="100%" paddingTop="0" borderStyle="none" />
 
 </mx:VBox>
