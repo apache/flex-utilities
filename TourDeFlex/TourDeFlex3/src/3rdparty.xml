@@ -18,9 +18,10 @@
 
 <compTree>
 	<node label="3rd Party Components">
-		<node label="Some Company">
-			<node label="Example1" app="" src="" />
-			<node label="Example2" app="" src="" />
+		<node label="Flexicious">
+			<node label="Dashboard Framework" app="http://www.flexicious.com/resources/demo/FlexiciousClassic.swf" src="" />
+			<node label="Ultimate DataGrid" app="http://www.flexicious.com/resources/demo/FlexiciousUltimate.swf" src="" />
+			<node label="Classic DataGrid" app="http://www.flexicious.com/resources/demo/FlexiciousDashboard.swf" src="" />
 		</node>
 	</node>
 </compTree>
