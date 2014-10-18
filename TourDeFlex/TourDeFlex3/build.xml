@@ -88,6 +88,7 @@
 		<compile-mxml example="/explorer"/>
 		<compile-mxml-locales example="/loaderPanel"/>
 		<compile-mxml example="/SourceTab"/>
+		<compile-mxml example="/Welcome"/>
 	</target>
 	
 	<target name="compile-mx" description="compile mx examples">
