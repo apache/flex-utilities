@@ -17,23 +17,26 @@
   -->
 
 <!-- Simple example to demonstrate the ViewStack layout container. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-     <mx:Panel title="ViewStack Container Example" height="95%" width="95%" 
-         paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+     <mx:Panel title="ViewStack Container Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue"
+        <mx:Text width="100%"
             text="Use the Button controls to change panels of the ViewStack container."/>
 
         <mx:HBox borderStyle="solid" width="100%"
             paddingTop="5" paddingLeft="5" paddingRight="5" paddingBottom="5">
             
             <mx:Button id="searchButton" label="Search Panel"
-                click="myViewStack.selectedChild=search;"/>
+                click="myViewStack.selectedChild=search"/>
             <mx:Button id="cInfoButton" label="Customer Info Panel"
-                click="myViewStack.selectedChild=custInfo;"/>
+                click="myViewStack.selectedChild=custInfo"/>
             <mx:Button id="aInfoButton" label="Account Panel"
-                click="myViewStack.selectedChild=accountInfo;"/>
+                click="myViewStack.selectedChild=accountInfo"/>
         </mx:HBox>
 
         <!-- Define the ViewStack and the three child containers and have it

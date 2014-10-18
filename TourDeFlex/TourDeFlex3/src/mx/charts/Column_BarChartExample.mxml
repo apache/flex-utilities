@@ -17,8 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the ColumnChart and BarChart controls. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
-    <fx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+
+     <fx:Script>
         <![CDATA[          
         import mx.collections.ArrayCollection;
 
@@ -42,8 +45,9 @@
 	    <mx:SolidColorStroke id="s3" color="0xFFCC66" weight="2"/>
 	</fx:Declarations>
 
-    <mx:Panel title="ColumnChart and BarChart Controls Example" 
-        height="100%" width="100%" layout="horizontal">
+    <mx:Panel title="ColumnChart and BarChart Controls Example"
+			  paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+			  layout="horizontal" height="100%" width="100%">
         <mx:ColumnChart id="column" 
             height="100%" 
             width="45%" 

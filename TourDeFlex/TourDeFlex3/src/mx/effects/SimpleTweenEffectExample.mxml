@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the TweenEffect class. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
         
             import mx.events.TweenEvent;
@@ -44,14 +46,15 @@
 	<fx:Declarations>
 	    <mx:Resize id="expand" target="{img}" widthTo="100" heightTo="200" 
 	        duration="10000" 
-	        tweenUpdate="tweenUpdateHandler(event);" 
-	        tweenEnd="tweenUpdateHandler(event);"/>
+	        tweenUpdate="tweenUpdateHandler(event)" 
+	        tweenEnd="tweenUpdateHandler(event)"/>
 	</fx:Declarations>
 
-    <mx:Panel title="Resize Effect Example" width="100%" height="100%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="Resize Effect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue" 
+        <mx:Text width="100%" 
             text="Use the Button controls to resize the image."/>
 
         <mx:HBox width="100%">
@@ -61,12 +64,12 @@
         </mx:HBox>
             
         <mx:ControlBar>
-            <mx:Button id="button1" label="Start" click="expand.play(); button1.enabled=false;"/>
-            <mx:Button label="Pause" click="expand.pause();"/>
-            <mx:Button label="Resume" click="expand.resume();"/>
-            <mx:Button label="Reverse" click="expand.reverse();"/>
-            <mx:Button label="End" click="expand.end();"/>
-            <mx:Button label="Reset" click="resetHandler();"/>
+            <mx:Button id="button1" label="Start" click="expand.play(); button1.enabled=false"/>
+            <mx:Button label="Pause" click="expand.pause()"/>
+            <mx:Button label="Resume" click="expand.resume()"/>
+            <mx:Button label="Reverse" click="expand.reverse()"/>
+            <mx:Button label="End" click="expand.end()"/>
+            <mx:Button label="Reset" click="resetHandler()"/>
         </mx:ControlBar>
         
     </mx:Panel>

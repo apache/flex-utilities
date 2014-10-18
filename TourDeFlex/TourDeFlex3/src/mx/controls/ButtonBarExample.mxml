@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the ButtonBar control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
 
             import mx.events.ItemClickEvent;
@@ -33,15 +35,16 @@
         ]]>
     </fx:Script>
 
-    <mx:Panel title="ButtonBar Control Example" height="75%" width="75%"
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="ButtonBar Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-       <mx:Label width="100%" color="blue"
+       <mx:Label width="100%"
            text="Select a button in the ButtonBar control."/>
 
         <mx:TextArea id="myTA" width="100%" height="100%"/>
 
-        <mx:ButtonBar itemClick="clickHandler(event);">
+        <mx:ButtonBar itemClick="clickHandler(event)">
             <mx:dataProvider>
                 <fx:Array>
                     <fx:String>Flex SDK</fx:String>

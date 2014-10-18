@@ -21,7 +21,7 @@
 <mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
 	xmlns="*" backgroundColor="#FFFFFF" paddingTop="50" paddingBottom="50" paddingLeft="50">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
             import mx.core.*
             // Declare and initialize the variables used in the component.

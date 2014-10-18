@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the ComboBox control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
             import mx.collections.ArrayCollection;
 
@@ -36,15 +38,15 @@
         ]]>
     </fx:Script>
 
-    <mx:Panel title="ComboBox Control Example" 
-        height="75%" width="75%" layout="horizontal"
-        paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel title="ComboBox Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
         <mx:ComboBox dataProvider="{cards}" width="150" 
-            close="closeHandler(event);"/>
+            close="closeHandler(event)"/>
 
         <mx:VBox width="250">
-            <mx:Text  width="200" color="blue" text="Select a type of credit card."/>
+            <mx:Text  width="200" text="Select a type of credit card."/>
             <mx:Label id="myLabel" text="You selected:"/>
             <mx:Label id="myData" text="Data:"/>
         </mx:VBox>         

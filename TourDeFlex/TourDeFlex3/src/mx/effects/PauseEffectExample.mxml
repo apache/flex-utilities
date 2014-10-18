@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the Pause effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
             import mx.effects.easing.*;                   
         ]]>
@@ -33,14 +35,15 @@
 	    </mx:Sequence>
 	</fx:Declarations>
 
-    <mx:Panel title="Pause Effect Example" width="75%" height="75%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="Pause Effect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue" 
+        <mx:Text width="100%" 
 		    text="Click the logo to start the Sequence effect. The effect pauses for 2 seconds between moves."/>
 
-        <mx:Image
-            source="@Embed(source='assets/ApacheFlexLogo.png')" 
+        <mx:Image source="@Embed(source='assets/ApacheFlexLogo.png')"
+			width="50%" height="50%"
             mouseDownEffect="{movePauseMove}"/>
 
     </mx:Panel>

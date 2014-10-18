@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the Zoom effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[		
             import flash.events.MouseEvent;
 		
@@ -37,18 +39,19 @@
     </fx:Script>
 
 	<fx:Declarations>
-   		<mx:Zoom id="zoomAll" zoomWidthTo="1" zoomHeightTo="1" zoomWidthFrom=".5" zoomHeightFrom=".5"  />
+   		<mx:Zoom id="zoomAll" zoomWidthTo="0.5" zoomHeightTo="0.5" zoomWidthFrom="0.25" zoomHeightFrom="0.25"  />
 	</fx:Declarations>
 	
-    <mx:Panel title="Zoom Effect Example" width="95%" height="95%" horizontalAlign="center"
-        paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">
+    <mx:Panel title="Zoom Effect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue"
+        <mx:Text width="100%"
             text="Move the mouse over the image to enlarge it. Move the mouse off of the image to shrink it."/>
 
         <mx:Image id="img"
             source="@Embed(source='assets/ApacheFlexLogo.png')"
-            scaleX=".5" scaleY=".5"
+            scaleX="0.25" scaleY="0.25"
             rollOver="doZoom(event)"
             rollOut="doZoom(event)"/>
 

@@ -17,16 +17,19 @@
   -->
 
 <!-- Simple example to demonstrate the Dissolve effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+
 
 	<fx:Declarations>
 	    <mx:Dissolve id="dissolveOut" duration="1000" alphaFrom="1.0" alphaTo="0.0"/>
 	    <mx:Dissolve id="dissolveIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
 	</fx:Declarations>
 	
-    <mx:Panel title="Dissolve Effect Example" 
-        width="95%" height="95%" layout="horizontal" 
-        paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">
+    <mx:Panel title="Dissolve Effect Example" layout="horizontal"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
         <mx:VBox height="100%">
             <mx:Label text="Apache Flex"  
@@ -34,13 +37,14 @@
                 visible="{cb1.selected}"
                 hideEffect="{dissolveOut}" showEffect="{dissolveIn}"/>
             
-            <mx:Image source="@Embed(source='assets/ApacheFlexLogo.png')" 
+            <mx:Image source="@Embed(source='assets/ApacheFlexLogo.png')"
+				width="50%" height="50%"
                 visible="{cb1.selected}"
                 hideEffect="{dissolveOut}" showEffect="{dissolveIn}"/>
         </mx:VBox>
             
         <mx:VBox height="100%" width="100%">
-            <mx:Text width="100%" color="blue" 
+            <mx:Text width="100%" 
                 text="Use the Dissolve effect to show or hide the text, image, and button."/>
             
                 <mx:Spacer height="100%"/>

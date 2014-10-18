@@ -17,7 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the AnimateProperty effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
 	<fx:Declarations>
 	    <mx:Sequence id="animateScaleXUpDown" >
@@ -26,14 +28,15 @@
 	    </mx:Sequence>
 	</fx:Declarations>
 
-    <mx:Panel title="AnimateProperty Effect Example" width="75%" height="75%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="AnimateProperty Effect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue" 
+        <mx:Text width="100%" 
             text="Click on the image to use the AnimateProperty effect with the scaleX property."/>
 
         <mx:Image id="flex" source="@Embed(source='assets/ApacheFlexLogo.png')"
-            mouseDownEffect="{animateScaleXUpDown}"/>
+            mouseDownEffect="{animateScaleXUpDown}" width="50%" height="50%" />
 
     </mx:Panel>
 </mx:Application>

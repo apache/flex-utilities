@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the CheckBox control -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
 
            import mx.controls.Alert;         
@@ -55,9 +57,9 @@
         ]]>
     </fx:Script>
 
-    <mx:Panel title="CheckBox Control Example" 
-        height="75%" width="75%" layout="horizontal"
-        paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel title="CheckBox Control Example" layout="horizontal"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
         <mx:VBox>
             <mx:CheckBox id="milkCB" label="milk" click="modifyCart()"/>
@@ -70,7 +72,7 @@
             <mx:TextArea id="cartItems" width="300" height="50" verticalScrollPolicy="off"/>
             <!-- Event handler sendMessages() is used to handle event click -->
             <mx:CheckBox id="couponCB" label="Send me coupons for items in my cart"
-                click="sendMessage()" selected="true" color="blue"/>
+                click="sendMessage()" selected="true"/>
         </mx:VBox>
     </mx:Panel>
 </mx:Application>

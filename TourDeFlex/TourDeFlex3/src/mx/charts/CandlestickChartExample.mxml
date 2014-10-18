@@ -17,8 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the CandlestickChart control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
-    <fx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+
+     <fx:Script>
         <![CDATA[          
         import mx.collections.ArrayCollection;
 
@@ -49,7 +52,9 @@
 	    <mx:SolidColorStroke id="box" color="black" weight="1"/>
 	</fx:Declarations>
 
-    <mx:Panel title="CandlestickChart Control Example" height="100%" width="100%">
+    <mx:Panel title="CandlestickChart Control Example"
+			  paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+			  height="100%" width="100%">
         <mx:CandlestickChart id="candlestickchart" 
             height="100%" 
             width="100%"

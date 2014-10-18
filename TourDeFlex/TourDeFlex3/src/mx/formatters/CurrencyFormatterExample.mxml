@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the CurrencyFormatter. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
 
               import mx.events.ValidationResultEvent;			
@@ -52,8 +54,7 @@
 	        allowNegative="true" domain="real"/>	
 	</fx:Declarations>
 
-    <mx:Panel title="CurrencyFormatter Example" width="75%" height="75%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="CurrencyFormatter Example" height="100%" width="100%">
 
         <mx:Form>
             <mx:FormItem label="Enter U.S. dollar amount:">
@@ -65,7 +66,7 @@
             </mx:FormItem>
 
             <mx:FormItem>
-                <mx:Button label="Validate and Format" click="Format();"/>
+                <mx:Button label="Validate and Format" click="Format()"/>
             </mx:FormItem>
         </mx:Form>
 

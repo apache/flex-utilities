@@ -17,8 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the PieChart control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
-    <fx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+
+     <fx:Script>
         <![CDATA[          
         import mx.collections.ArrayCollection;
 
@@ -37,7 +40,7 @@
 
 	<fx:Declarations>
 	    <!-- Define custom colors for use as pie wedge fills. -->
-	    <mx:SolidColor id="sc1" color="blue" alpha=".6"/>
+	    <mx:SolidColor id="sc1" alpha=".6"/>
 	    <mx:SolidColor id="sc2" color="red" alpha=".6"/>
 	    <mx:SolidColor id="sc3" color="0x663300" alpha=".6"/>
 	
@@ -51,7 +54,9 @@
 	    <mx:SolidColorStroke id="pieborder" color="0x000000" weight="2" alpha=".5"/>
 	</fx:Declarations>
 
-    <mx:Panel title="Olympics 2004 Medals Tally Panel" height="100%" width="100%">
+    <mx:Panel title="Olympics 2004 Medals Tally Panel"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
         <mx:PieChart id="chart" 
             height="100%" 
             width="100%"

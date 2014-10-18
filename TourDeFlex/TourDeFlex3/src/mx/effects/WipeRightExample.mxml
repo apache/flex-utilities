@@ -17,17 +17,20 @@
   -->
 
 <!-- Simple example to demonstrate the WipeRight effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
 	<fx:Declarations>
     	<mx:WipeRight id="wipeOut" duration="1000"/>
     	<mx:WipeRight id="wipeIn" duration="1000"/>
 	</fx:Declarations>
 
-    <mx:Panel title="WipeRight Effect Example" width="95%" height="95%" 
-        paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">
+    <mx:Panel title="WipeRight Effect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue" 
+        <mx:Text width="100%" 
             text="Use the WipeRight effect to show or hide the text and image."/>
 
         <mx:Label text="Apache Flex"  
@@ -35,7 +38,8 @@
             visible="{cb1.selected}"
             hideEffect="{wipeOut}" showEffect="{wipeIn}"/>
 			
-        <mx:Image source="@Embed(source='assets/ApacheFlexLogo.png')" 
+        <mx:Image source="@Embed(source='assets/ApacheFlexLogo.png')"
+			width="50%" height="50%"
             visible="{cb1.selected}"
             hideEffect="{wipeOut}" showEffect="{wipeIn}"/>
             

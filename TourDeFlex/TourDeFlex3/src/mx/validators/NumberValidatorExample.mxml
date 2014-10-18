@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the NumberValidator. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         import mx.controls.Alert;
     </fx:Script>
 
@@ -27,11 +29,12 @@
 	    <mx:NumberValidator source="{age}" property="text" integerError="Enter Integer value"
 	        minValue="18" maxValue="50" domain="int" 
 	        trigger="{myButton}" triggerEvent="click"
-	        valid="Alert.show('Validation Succeeded!');"/>
+	        valid="Alert.show('Validation Succeeded!')"/>
 	</fx:Declarations>
 
-    <mx:Panel title="NumberValidator Example" width="75%" height="75%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="NumberValidator Example"	
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
         <mx:Form>
             <mx:FormItem label="Enter an age between 18 and 50: ">

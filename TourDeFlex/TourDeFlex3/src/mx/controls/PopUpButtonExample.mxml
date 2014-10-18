@@ -17,8 +17,10 @@
   -->
 
 <!-- Simple example to demonstrate the PopUpButton control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
-
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+	
 	<fx:Script>
 		<![CDATA[
 
@@ -51,12 +53,13 @@
 		]]>
 	</fx:Script>
 
-    <mx:Panel title="PopUpButton Control Example" height="75%" width="75%" 
-        paddingTop="10" paddingBottom="10" paddingRight="10" paddingLeft="10">
+    <mx:Panel title="PopUpButton Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Label width="100%" color="blue"
+        <mx:Label width="100%"
             text="Button label contains the name of the last selected menu item." />
-        <mx:PopUpButton id="popB" label="Edit" creationComplete="initMenu();" width="135" />
+        <mx:PopUpButton id="popB" label="Edit" creationComplete="initMenu()" width="135" />
 		
         <mx:Spacer height="50" />
         <mx:TextInput id="popTypeB" />

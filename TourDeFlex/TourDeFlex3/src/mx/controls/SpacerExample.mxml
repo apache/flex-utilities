@@ -17,18 +17,21 @@
   -->
 
 <!-- Simple example to demonstrate the Spacer control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <mx:Panel id="panel" title="Spacer Control Example" height="75%" width="75%" 
-        paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel id="panel" title="Spacer Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
         
-        <mx:Text width="100%" color="blue" 
-            text="The Spacer control pushes the second image to the right edge of the HBox container."/>
+        <mx:Text width="100%" 
+            text="The Spacer control pushes the second image to the right edge of the HBox container." />
 
         <mx:HBox width="100%">
-            <mx:Image source="@Embed('assets/ApacheFlexLogo.png')"/>
+            <mx:Image source="@Embed('assets/ApacheFlexLogo.png')" width="50%" height="50%" />
             <mx:Spacer width="100%"/>
-            <mx:Image source="@Embed('assets/ApacheFlexLogo.png')"/>
+            <mx:Image source="@Embed('assets/ApacheFlexLogo.png')" width="50%" height="50%" />
         </mx:HBox>
        
     </mx:Panel>

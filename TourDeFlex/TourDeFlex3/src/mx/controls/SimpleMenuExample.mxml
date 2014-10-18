@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the Menu control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
        
             import mx.controls.Menu;
@@ -60,13 +62,14 @@
 	    </fx:XML>
 	</fx:Declarations>	
 
-    <mx:Panel id="panel" title="Menu Control Example" height="75%" width="75%" 
-        paddingTop="10" paddingLeft="10">
+    <mx:Panel id="panel" title="Menu Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Label width="100%" color="blue"
+        <mx:Label width="100%"
            text="Click the button to open the Menu control."/>
 
-        <mx:Button id="mybutton" label="Open Menu" click="showMenu();"/>
+        <mx:Button id="mybutton" label="Open Menu" click="showMenu()"/>
 
     </mx:Panel>
 </mx:Application>          

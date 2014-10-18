@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate SwitchSymbolFormatter. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
         
             import mx.formatters.SwitchSymbolFormatter;                
@@ -50,13 +52,14 @@
     	<mx:SocialSecurityValidator id="scVal" source="{scNum}" property="text"/>
 	</fx:Declarations>
 
-    <mx:Panel title="SwitchSymbolFormatter Example" width="75%" height="75%" 
-            paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="SwitchSymbolFormatter Example"
+			  paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+			  height="100%" width="100%">
 
         <mx:Label text="Enter a 9 digit Social Security number with no separator characters:"/>
         <mx:TextInput id="scNum" text="" maxChars="9" width="50%"/>
 
-        <mx:Button label="Validate and Format" click="Format();"/>
+        <mx:Button label="Validate and Format" click="Format()"/>
         <mx:TextInput id="formattedSCNumber" editable="false" width="75%"/>
 
     </mx:Panel>

@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the Alert control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
             import mx.controls.Alert;
             import mx.events.CloseEvent;
@@ -56,19 +58,21 @@
         ]]>
     </fx:Script>
 
-    <mx:Panel title="Alert Control Example" width="75%" horizontalAlign="center" paddingTop="10">
-      <mx:Text width="100%" color="blue" textAlign="center"
+    <mx:Panel title="Alert Control Example" horizontalAlign="center"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
+      <mx:Text width="100%" textAlign="center"
           text="Click the button below to display a simple Alert window."/>
-      <mx:Button label="Click Me" click="Alert.show('Hello World!', 'Message');"/>
+      <mx:Button label="Click Me" click="Alert.show('Hello World!', 'Message')"/>
 
-      <mx:Text width="100%" color="blue" textAlign="center"
+      <mx:Text width="100%" textAlign="center"
           text="Click the button below to display an Alert window and capture the button pressed by the user."/>
-      <mx:Button label="Click Me" click="clickHandler(event);"/>
+      <mx:Button label="Click Me" click="clickHandler(event)"/>
       <mx:Label id="status" fontWeight="bold"/>
 
-      <mx:Text width="100%" color="blue" textAlign="center"
+      <mx:Text width="100%" textAlign="center"
           text="Click the button below to display an Alert window that uses custom Button labels."/>
-      <mx:Button label="Click Me" click="secondClickHandler(event);"/>
+      <mx:Button label="Click Me" click="secondClickHandler(event)"/>
     </mx:Panel>
 
 </mx:Application>

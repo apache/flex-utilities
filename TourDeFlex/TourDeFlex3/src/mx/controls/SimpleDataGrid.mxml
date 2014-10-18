@@ -17,7 +17,9 @@
   -->
 
 <!-- DataGrid control example. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
 	<fx:Declarations>
 	    <fx:XMLList id="employees">
@@ -48,10 +50,11 @@
 	    </fx:XMLList>
 	</fx:Declarations>
 
-    <mx:Panel title="DataGrid Control Example" height="100%" width="100%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel title="DataGrid Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Label width="100%" color="blue"
+        <mx:Label width="100%"
             text="Select a row in the DataGrid control."/>
 
         <mx:DataGrid id="dg" width="100%" height="100%" rowCount="5" dataProvider="{employees}">

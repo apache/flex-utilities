@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the Rotate effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
             [Bindable]
             public var angle:int=0;
@@ -44,23 +46,24 @@
     	<mx:Rotate id="rotate" angleFrom="{angle-45}" angleTo="{angle}" target="{myVB}"/>
 	</fx:Declarations>
 
-    <mx:Panel title="Rotate Effect Example" horizontalAlign="center" 
-        width="75%" height="75%" layout="horizontal"
-        paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">
+    <mx:Panel title="Rotate Effect Example" layout="horizontal"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
         <mx:VBox id="myVB" width="50%" horizontalAlign="center">
             <mx:Label text="Apache Flex"  
                 fontFamily="OpenSans" fontSize="14"/>
 
-            <mx:Image id="img" 
+            <mx:Image id="img"
+				width="50%" height="50%"
                 source="@Embed(source='assets/ApacheFlexLogo.png')"/>
         </mx:VBox>
 
-        <mx:Text width="50%" color="blue" 
+        <mx:Text width="50%" 
             text="Click the button to rotate the image 45 degrees. Use an embedded font when applying the Rotate effect to text."/>
 
         <mx:ControlBar>
-            <mx:Button label="Rotate 45 Degrees" click="rotateImage();"/>
+            <mx:Button label="Rotate 45 Degrees" click="rotateImage()"/>
         </mx:ControlBar>
     </mx:Panel>
 </mx:Application>

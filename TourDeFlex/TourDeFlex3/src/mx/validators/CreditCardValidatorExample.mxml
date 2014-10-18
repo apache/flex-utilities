@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the CreditCardValidator. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
-
-    <fx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+	
+     <fx:Script>
         import mx.controls.Alert;
     </fx:Script>
 
@@ -38,12 +40,13 @@
 	        trigger="{myButton}" triggerEvent="click"
 	        cardTypeListener="{cardTypeCombo}"
 	        cardNumberListener="{cardNumberInput}"
-	        valid="Alert.show('Validation Succeeded!');"/>
+	        valid="Alert.show('Validation Succeeded!')"/>
 	</fx:Declarations>
   
-    <mx:Panel title="CreditCardValidator Example" width="75%" height="75%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
-
+    <mx:Panel title="CreditCardValidator Example"	
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
+		
         <mx:Form id="creditCardForm">
             <mx:FormItem label="Card Type">    
                 <mx:ComboBox id="cardTypeCombo">

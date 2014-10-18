@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate ZipCodeFormatter. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
 
             import mx.events.ValidationResultEvent;			
@@ -47,8 +49,7 @@
     	<mx:ZipCodeValidator id="zcVal" source="{zip}" property="text" allowedFormatChars=""/>
 	</fx:Declarations>
 	
-    <mx:Panel title="ZipCodeFormatter Example" width="75%" height="75%" 
-            paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="ZipCodeFormatter Example" height="100%" width="100%">
 
         <mx:Form width="100%">
             <mx:FormItem label="Enter a 5 or 9 digit U.S. ZIP code:" width="100%">
@@ -60,7 +61,7 @@
             </mx:FormItem>
 
             <mx:FormItem>
-                <mx:Button label="Validate and Format" click="Format();"/>
+                <mx:Button label="Validate and Format" click="Format()"/>
             </mx:FormItem>
         </mx:Form>
 

@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the HorizontalList Control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
              
              [Bindable]
@@ -44,10 +46,11 @@
         ]]>
     </fx:Script>
 
-    <mx:Panel title="HorizontalList Control Example" height="75%" width="75%" 
-        paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel title="HorizontalList Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Label width="100%" color="blue"
+        <mx:Label width="100%"
            text="A HorizontalList control displays items in a single row."/>
 
         <mx:HorizontalList id="CameraSelection" height="250" columnCount="3" columnWidth="125">

@@ -17,8 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the PlotChart control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
-    <fx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+
+     <fx:Script>
         <![CDATA[
         import mx.collections.ArrayCollection;
 
@@ -32,17 +35,19 @@
 
 	<fx:Declarations>
 	    <!-- Define custom colors for use as plot point fills. -->
-	    <mx:SolidColor id="sc1" color="blue" alpha=".3"/>
+	    <mx:SolidColor id="sc1" alpha=".3"/>
 	    <mx:SolidColor id="sc2" color="red" alpha=".3"/>
 	    <mx:SolidColor id="sc3" color="green" alpha=".3"/>
 	
 	    <!-- Define custom Strokes. -->
-	    <mx:SolidColorStroke id="s1" color="blue" weight="1"/>
+	    <mx:SolidColorStroke id="s1" weight="1"/>
 	    <mx:SolidColorStroke id="s2" color="red" weight="1"/>
 	    <mx:SolidColorStroke id="s3" color="green" weight="1"/>
 	</fx:Declarations>
 
-    <mx:Panel title="PlotChart Control Example" height="100%" width="100%">
+    <mx:Panel title="PlotChart Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
         <mx:PlotChart id="plot" 
             height="100%" 
             width="100%"
