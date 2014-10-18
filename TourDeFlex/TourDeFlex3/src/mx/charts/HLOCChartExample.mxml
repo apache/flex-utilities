@@ -74,8 +74,7 @@
                     openTickStroke="{s1}"
                     closeTickStroke="{s1}"
                     openTickLength="7"
-                    closeTickLength="7"
-                />
+                    closeTickLength="7" />
             </mx:series>
         </mx:HLOCChart>
     </mx:Panel>

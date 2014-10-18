@@ -61,8 +61,7 @@
             paddingRight="5" 
             paddingLeft="5" 
             showDataTips="true"
-            dataProvider="{expensesAC}"
-        >            
+            dataProvider="{expensesAC}">            
             <mx:verticalAxis>
                 <mx:LinearAxis id="vaxis" baseAtZero="false" title="Price"/>
             </mx:verticalAxis>
@@ -84,8 +83,7 @@
                     fill="{up}"
                     declineFill="{down}"
                     stroke="{wick}"
-                    boxStroke="{box}"
-                />
+                    boxStroke="{box}" />
             </mx:series>
         </mx:CandlestickChart>
     </mx:Panel>

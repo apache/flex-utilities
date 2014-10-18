@@ -63,10 +63,7 @@
             paddingRight="5" 
             paddingLeft="5" 
             showDataTips="true" 
-            dataProvider="{medalsAC}"
-        >          
-            <!--
-            -->
+            dataProvider="{medalsAC}">          
             <mx:series>
                 <mx:PieSeries 
                     nameField="Country"
@@ -76,8 +73,7 @@
                     calloutStroke="{callouts}" 
                     radialStroke="{radial}" 
                     stroke="{pieborder}"
-                    fills="{[sc1, sc2, sc3]}"
-                >
+                    fills="{[sc1, sc2, sc3]}">
                     <!-- Clear the drop shadow filters from the chart. -->
                     <mx:filters>
                         <fx:Array/>

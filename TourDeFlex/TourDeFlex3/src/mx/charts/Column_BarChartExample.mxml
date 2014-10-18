@@ -54,8 +54,7 @@
             paddingLeft="5" 
             paddingRight="5" 
             showDataTips="true" 
-            dataProvider="{medalsAC}"
-        >                
+            dataProvider="{medalsAC}">                
             <mx:horizontalAxis>
                 <mx:CategoryAxis categoryField="Country"/>
             </mx:horizontalAxis>
@@ -66,22 +65,19 @@
                     yField="Gold" 
                     displayName="Gold"
                     fill="{sc1}"
-                    stroke="{s1}"
-                />
+                    stroke="{s1}" />
                 <mx:ColumnSeries 
                     xField="Country" 
                     yField="Silver" 
                     displayName="Silver"
                     fill="{sc2}"
-                    stroke="{s2}"
-                />
+                    stroke="{s2}" />
                 <mx:ColumnSeries 
                     xField="Country" 
                     yField="Bronze" 
                     displayName="Bronze"
                     fill="{sc3}"
-                    stroke="{s3}"
-                />
+                    stroke="{s3}" />
             </mx:series>
         </mx:ColumnChart>
 
@@ -101,22 +97,19 @@
                     xField="Gold" 
                     displayName="Gold"
                     fill="{sc1}"
-                    stroke="{s1}"
-                />
+                    stroke="{s1}" />
                 <mx:BarSeries 
                     yField="Country" 
                     xField="Silver" 
                     displayName="Silver"
                     fill="{sc2}"
-                    stroke="{s2}"
-                />
+                    stroke="{s2}" />
                 <mx:BarSeries 
                     yField="Country" 
                     xField="Bronze" 
                     displayName="Bronze"
                     fill="{sc3}"
-                    stroke="{s3}"
-                />
+                    stroke="{s3}" />
             </mx:series>
         </mx:BarChart>
 

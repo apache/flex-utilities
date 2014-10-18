@@ -54,30 +54,26 @@
             paddingLeft="5" 
             paddingRight="5" 
             showDataTips="true" 
-            dataProvider="{expensesAC}"
-        >                
+            dataProvider="{expensesAC}">                
             <mx:series>
                 <mx:PlotSeries
                     xField="Expenses"
                     yField="Profit"
                     displayName="Plot 1"
                     fill="{sc1}"
-                    stroke="{s1}"
-                />
+                    stroke="{s1}" />
                 <mx:PlotSeries
                     xField="Amount"
                     yField="Expenses"
                     displayName="Plot 2"
                     fill="{sc2}"
-                    stroke="{s2}"
-                />
+                    stroke="{s2}" />
                 <mx:PlotSeries
                     xField="Profit"
                     yField="Amount"
                     displayName="Plot 3"
                     fill="{sc3}"
-                    stroke="{s3}"
-                />
+                    stroke="{s3}" />
             </mx:series>
         </mx:PlotChart>
         <mx:Legend dataProvider="{plot}"/>
