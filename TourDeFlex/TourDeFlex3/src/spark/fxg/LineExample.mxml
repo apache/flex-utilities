@@ -22,7 +22,7 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	
-	<s:Panel title="Line Graphic Sample" width="100%" height="100%" skinClass="skins.TDFPanelSkin">
+	<s:Panel title="Line Graphic Sample" width="100%" height="100%" >
 		<s:Group left="133" top="100">
 			
 			<s:Line xFrom="0" xTo="0" yFrom="0" yTo="100">
@@ -90,7 +90,7 @@
 				</s:stroke>
 			</s:Line>
 		</s:Group>
-		<s:Label color="0x323232" right="20" top="15" width="250" text="The Line class is a graphic element that draws a line between two points.
+		<s:Label right="20" top="15" width="250" text="The Line class is a graphic element that draws a line between two points.
 The default stroke for a line is undefined; therefore, if you do not specify the stroke, the line is invisible."/>
 	</s:Panel>
 </s:Application>

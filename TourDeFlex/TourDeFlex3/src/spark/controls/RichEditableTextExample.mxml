@@ -20,7 +20,7 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   preinitialize="init();">
+			   preinitialize="init()">
 	
 	<!-- Based on samples from Peter DeHaan's blog: http://blog.flexexamples.com/ --> 
 	
@@ -59,17 +59,12 @@
 			TextFlow.defaultConfiguration = cfg;
 		}
 	</fx:Script>
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
+	
+	<s:Panel title="RichEditableText Sample" width="100%" height="100%">
 		
-		s|VGroup s|Label {
-			fontWeight: "bold";
-		}
-	</fx:Style>
-	<s:Panel width="100%" height="100%"
-			 skinClass="skins.TDFPanelSkin"
-			 title="RichEditableText Sample">
+		<s:layout>
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
 		
 		<s:VGroup id="vgrp" width="100%" height="100%" top="10" left="15">
 			<s:HGroup>
@@ -83,7 +78,7 @@
 			<s:HGroup>
 				<s:Label text="Editable text:"/>
 				<s:RichEditableText id="richEdTxt" widthInChars="20" heightInLines="10" 
-									change="richEdTxt_changeHandler(event);" backgroundColor="0xCCCCCC" text="Hello world!">
+									change="richEdTxt_changeHandler(event)" backgroundColor="0xCCCCCC" text="Hello world!">
 				</s:RichEditableText>	
 			</s:HGroup>
 			<s:HGroup>
@@ -92,7 +87,7 @@
 			</s:HGroup>
 			
 		</s:VGroup>
-		<s:Label width="266" height="180" right="10" top="38" color="0x323232" text="RichEditableText is a low-level UIComponent for displaying, scrolling, selecting, and editing richly-formatted text.
+		<s:Label width="266" height="180" right="10" top="38" text="RichEditableText is a low-level UIComponent for displaying, scrolling, selecting, and editing richly-formatted text.
 The rich text can contain clickable hyperlinks and inline graphics that are either embedded or loaded from URLs. RichEditableText does not have scrollbars, but it implements 
 the IViewport interface for programmatic scrolling so that it can be controlled by a Scroller, which does provide scrollbars. It also supports vertical scrolling with the mouse wheel." />
 	</s:Panel>

@@ -21,25 +21,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   width="100%" height="100%">
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		s|Label {
-			color: #FFFFFF;
-			font-weight: bold;
-		}
-		#titleL {
-			font-size: 20;
-		}
-		s|ComboBox {
-			alternating-item-colors: #424242;
-		}
-		
-		s|Form {
-			background-color: #424242;
-		}
-	</fx:Style>
-	
+
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -57,45 +39,48 @@
 			}
 		]]>
 	</fx:Script>
+	
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
 		<s:DateTimeFormatter id="dtf"/>
 	</fx:Declarations>
+
 	<s:layout>
 		<s:VerticalLayout/>
 	</s:layout>
-	<s:Scroller id="scroller" width="100%" height="100%">
-		<s:Group>
-			<s:Form>
-				<s:Label id="titleL" text="Spark DateTimeFormatter"/>
-				<s:Label text="Select a locale to see the formatted date, weekday names and month names: "/>
-				<s:Spacer height="15"/>
-				
-				<s:FormItem label="Locale: ">
-					<s:ComboBox id="localeCB" dataProvider="{locales}" selectedIndex="0" updateComplete="dtf.setStyle('locale',localeCB.selectedItem)"/>
-				</s:FormItem>
-				<s:FormItem label="Please select the format of date:">
-					<s:ComboBox id="dtpCB" dataProvider="{dateTimePatternAryColl}" selectedIndex="0" updateComplete="dtf.dateTimePattern=dtpCB.selectedItem"/>
-				</s:FormItem>
-				<s:FormItem label="Please select a date to format:">
-					<mx:DateField id="dateField"/>
-				</s:FormItem>
-				<s:FormItem label="The Weekday Names are:">
-					<s:Label text="{dtf.getWeekdayNames()}"/>
-				</s:FormItem>
-				<s:FormItem label="The Month Names are:">
-					<s:Label text="{dtf.getMonthNames()}"/>
-				</s:FormItem>
-				<s:Label text="     ==========================================================================="/>
-				<s:FormItem label="The formatted result is:">
-					<s:Label id="resultL"/>
-				</s:FormItem>
-				<s:FormItem>
-					<s:Button id="bt" label="Format Date" click="formatDate()"/>
-				</s:FormItem>
-			</s:Form>
-		</s:Group>
-	</s:Scroller>
-	
-	
+
+	<s:Panel title="Spark DateTimeFormatter" width="100%" height="100%">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+		
+		<s:Form height="100%" width="100%">
+			<s:Label text="Select a locale to see the formatted date, weekday names and month names: "/>
+			<s:Spacer height="15"/>
+			
+			<s:FormItem label="Locale: ">
+				<s:ComboBox id="localeCB" dataProvider="{locales}" selectedIndex="0" updateComplete="dtf.setStyle('locale',localeCB.selectedItem)"/>
+			</s:FormItem>
+			<s:FormItem label="Please select the format of date:">
+				<s:ComboBox id="dtpCB" dataProvider="{dateTimePatternAryColl}" selectedIndex="0" updateComplete="dtf.dateTimePattern=dtpCB.selectedItem"/>
+			</s:FormItem>
+			<s:FormItem label="Please select a date to format:">
+				<mx:DateField id="dateField"/>
+			</s:FormItem>
+			<s:FormItem label="The Weekday Names are:">
+				<s:Label text="{dtf.getWeekdayNames()}"/>
+			</s:FormItem>
+			<s:FormItem label="The Month Names are:">
+				<s:Label text="{dtf.getMonthNames()}"/>
+			</s:FormItem>
+			<s:Label text="     ==========================================================================="/>
+			<s:FormItem label="The formatted result is:">
+				<s:Label id="resultL"/>
+			</s:FormItem>
+			<s:FormItem>
+				<s:Button id="bt" label="Format Date" click="formatDate()"/>
+			</s:FormItem>
+		</s:Form>
+
+	</s:Panel>
 </s:Application>

@@ -47,28 +47,27 @@
 							  useThousandsSeparator="true" alignSymbol="left"/>
 	</fx:Declarations>
 
-	<!-- Note: A custom panel skin is used for the Tour de Flex samples and is included in the
-	source tabs for each sample.	-->
-	<s:Panel title="CheckBox Sample"
-			 width="100%" height="100%" 
-			 skinClass="skins.TDFPanelSkin">
-		<s:VGroup left="10" right="10" top="10" bottom="10">
-			<s:Label text="Hamburger Base Price: $4.50" />
-			<s:Label text="Select condiments for your hamburger (0.25 each):" />
-			
-			<s:CheckBox id="lettuceCB" label="Pickles" click="modifyBurger(event);"/>
-			<s:CheckBox id="tomatoCB" label="Tomato" click="modifyBurger(event);"/>
-			<s:CheckBox id="pickleCB" label="Lettuce" click="modifyBurger(event);"/>
-			<s:CheckBox id="mayoCB" label="Mayonnaise" click="modifyBurger(event);"/>
-			
-			<mx:Spacer height="10" />
-			<s:HGroup>
-				<s:Label text="Total Price: " color="0x336699" fontWeight="bold"/>
-				<s:Label id="totalString" text="$4.50" color="0x336699" fontWeight="bold"/>
-			</s:HGroup>
-		</s:VGroup>
-		<s:Label top="10" right="10" width="250" verticalAlign="justify" color="#323232" 
-					  text="The CheckBox control is a commonly used graphical control that can
+	<s:Panel title="CheckBox Sample" width="100%" height="100%">
+		
+		<s:layout>
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+
+		<s:Label text="Hamburger Base Price: $4.50" />
+		<s:Label text="Select condiments for your hamburger (0.25 each):" />
+		
+		<s:CheckBox id="lettuceCB" label="Pickles" click="modifyBurger(event)"/>
+		<s:CheckBox id="tomatoCB" label="Tomato" click="modifyBurger(event)"/>
+		<s:CheckBox id="pickleCB" label="Lettuce" click="modifyBurger(event)"/>
+		<s:CheckBox id="mayoCB" label="Mayonnaise" click="modifyBurger(event)"/>
+		
+		<mx:Spacer height="10" />
+		<s:HGroup>
+			<s:Label text="Total Price: " color="0x336699" fontWeight="bold"/>
+			<s:Label id="totalString" text="$4.50" color="0x336699" fontWeight="bold"/>
+		</s:HGroup>
+		<s:Label top="10" right="10" width="250" verticalAlign="justify"
+				 text="The CheckBox control is a commonly used graphical control that can
 contain a check mark or not. You can use CheckBox controls to gather a 
 set of true or false values that aren’t mutually exclusive."/>
 	</s:Panel>

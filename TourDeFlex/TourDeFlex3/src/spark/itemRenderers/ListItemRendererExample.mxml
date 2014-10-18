@@ -58,7 +58,7 @@
 		
 	<s:Panel title="List Sample" 
 			 width="100%" height="100%"  
-			 skinClass="skins.TDFPanelSkin">
+			 >
 		<s:VGroup id="vGrp" horizontalCenter="0" top="3" 
 				  width="80%" height="75%">
 			<s:HGroup verticalAlign="middle">
@@ -91,7 +91,7 @@
 				</s:VGroup>
 			</s:HGroup>
 		</s:VGroup>
-		<s:Label bottom="15" horizontalCenter="0" width="95%" verticalAlign="justify" color="#323232" 
+		<s:Label bottom="15" horizontalCenter="0" width="95%" verticalAlign="justify" 
 					  text="The Spark List control displays a list of data items. Its functionality is
 very similar to that of the SELECT form element in HTML. The user can select one or more items from the list. 
 The List control automatically displays horizontal and vertical scroll bar when the list items do not fit 

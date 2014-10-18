@@ -41,59 +41,55 @@
 				   zFrom="{targetImg.z}" zBy="{Number(zVal.text)}"
 				   duration="{duration.value}"
 				   repeatCount="{repeatCnt.value}" repeatBehavior="{chkReverse.selected?'reverse':'loop'}"
-				   effectStart="this.targetImg.alpha=.7" effectEnd="this.targetImg.alpha=1.0;"/>
+				   effectStart="this.targetImg.alpha=.7" effectEnd="this.targetImg.alpha=1.0"/>
 	</fx:Declarations>
 	
-	<!-- Note: A custom panel skin is used for the Tour de Flex samples and is included in the
-	source tabs for each sample.	-->
-	<s:Panel width="100%" height="100%" 
-			 horizontalCenter="0" 
-			 title="Move3D Effect Sample" 
-			 skinClass="skins.TDFPanelSkin">
+	<s:Panel title="Move3D Effect Sample" width="100%" height="100%" >
 		
-		<s:HGroup left="10" top="5" width="100%" height="100%" horizontalCenter="0">
-			<s:VGroup width="40%">
-				
-			
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+		
+		<s:VGroup>
+		
 			<s:HGroup verticalAlign="middle">
 				<s:Label text="Move X By" verticalAlign="bottom"/>
 				<s:TextInput id="xVal" text="40" widthInChars="3"/>
 			</s:HGroup>
-				
-				<s:HGroup verticalAlign="middle">
-					<s:Label text="Move Y By" verticalAlign="bottom"/>
-					<s:TextInput id="yVal" text="40" widthInChars="3"/>
-				</s:HGroup>
-				<s:HGroup verticalAlign="middle">
-					<s:Label text="Move Z By" verticalAlign="bottom"/>
-					<s:TextInput id="zVal" text="-150" widthInChars="3"/>
-				</s:HGroup>
-				<s:HGroup verticalAlign="middle">
-					<s:Label text="Repeat Num" verticalAlign="bottom"/>
-					<s:NumericStepper id="repeatCnt" width="35" 
-									  value="2" minimum="1"/>
-				</s:HGroup>
-				<s:HGroup verticalAlign="middle">
-					<s:Label text="Duration" verticalAlign="bottom"/>
-					<s:NumericStepper id="duration" width="58" 
-									  minimum="100" maximum="9999"  
-									  value="1000"  
-									  snapInterval="100" />
-				</s:HGroup>
-				<s:CheckBox id="chkReverse" label="Repeat in Reverse?" selected="true"/>
-				<s:Button id="playButton"
-						  label="Move Image" click="moveEffect.play();"/>
-			</s:VGroup>
-			<s:HGroup horizontalCenter="0" height="30%" verticalAlign="middle" width="40%">
-				<s:BitmapImage id="targetImg" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>				
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Move Y By" verticalAlign="bottom"/>
+				<s:TextInput id="yVal" text="40" widthInChars="3"/>
 			</s:HGroup>
-			<s:VGroup top="0" right="5" horizontalAlign="right" width="30%">
-				<s:Label text="Move3D Effect Sample" fontSize="18" color="#B7B6B6"/>
-				<s:Label color="#323232" width="200" verticalAlign="justify"
-						 text="The Move3D class moves a target object in three dimensions around the transform center. A scale of 
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Move Z By" verticalAlign="bottom"/>
+				<s:TextInput id="zVal" text="-150" widthInChars="3"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Repeat Num" verticalAlign="bottom"/>
+				<s:NumericStepper id="repeatCnt" width="35" 
+								  value="2" minimum="1"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Duration" verticalAlign="bottom"/>
+				<s:NumericStepper id="duration" width="58" 
+								  minimum="100" maximum="9999"  
+								  value="1000"  
+								  snapInterval="100" />
+			</s:HGroup>
+			<s:CheckBox id="chkReverse" label="Repeat in Reverse?" selected="true"/>
+			<s:Button id="playButton"
+					  label="Move Image" click="moveEffect.play()"/>
+		</s:VGroup>
+		<s:HGroup>
+			<s:BitmapImage id="targetImg" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>				
+		</s:HGroup>
+		<s:VGroup>
+			<s:Label text="Move3D Effect Sample" fontSize="18"/>
+			<s:Label width="200" verticalAlign="justify"
+					 text="The Move3D class moves a target object in three dimensions around the transform center. A scale of 
 2.0 means the object has been magnified by a factor of 2, and a scale of 0.5 means the object has been 
 reduced by a factor of 2. A scale value of 0.0 is invalid."/>
-			</s:VGroup>
-		</s:HGroup>
+		</s:VGroup>
 	</s:Panel>
 </s:Application>

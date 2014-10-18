@@ -43,12 +43,9 @@
 		]]>
 	</fx:Script>
 	
-	<!-- Note: A custom panel skin is used for the Tour de Flex samples and is included in the
-	source tabs for each sample.	-->
-	<s:Panel title="VideoPlayer Sample" 
-			 width="100%" height="100%" 
-			 skinClass="skins.TDFPanelSkin">
-		<s:Label top="10" right="10" width="250" verticalAlign="justify" color="#323232" 
+	<s:Panel title="VideoPlayer Sample" width="100%" height="100%">
+		
+		<s:Label top="10" right="10" width="250" verticalAlign="justify" 
 					  text="The VideoPlayer control lets you play progressively downloaded or streaming
 video, live or recorded video. It supports multi-bit rate streaming when used with a server that supports
 multi-bit rate streaming, such as Flash Media Server 3.5. The VideoPlayer control contains a full UI 

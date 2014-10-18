@@ -19,8 +19,7 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<fx:Script>
 		<![CDATA[
@@ -55,13 +54,7 @@
 		]]>
 	</fx:Script>
 	
-	<s:layout>
-		<s:HorizontalLayout horizontalAlign="center" />
-	</s:layout>
-	
-	<s:Panel title="PopUpButton Control" color="0x000000" 
-			 borderAlpha="0.15" 
-			 width="600">
+	<s:Panel title="PopUpButton Control" width="100%" height="100%">
 		
 		<s:layout>
 			<s:VerticalLayout horizontalAlign="center" 
@@ -69,13 +62,13 @@
 							  paddingTop="10" paddingBottom="10"/>
 		</s:layout>
          
-         <s:Label width="100%" color="0x323232"
+         <s:Label width="100%"
             text="Button label contains the name of the last selected menu item." />
-        <mx:PopUpButton id="popB" label="Edit" creationComplete="initMenu();" width="140" color="0x323232" click="{Alert.show('Action: ' + popB.label);}" />
+        <mx:PopUpButton id="popB" label="Edit" creationComplete="initMenu()" width="140" click="{Alert.show('Action: ' + popB.label);}" />
 		
         <mx:Spacer height="65" />
 		
-        <s:TextInput id="popTypeB" color="0x323232" text="...waiting" />
+        <s:TextInput id="popTypeB" text="...waiting" />
         
 	</s:Panel>
 	

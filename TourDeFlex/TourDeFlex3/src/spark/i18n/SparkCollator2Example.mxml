@@ -21,24 +21,6 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   width="100%" height="100%" creationComplete="compareStrings()">
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		s|Label {
-			color: #FFFFFF;
-			font-weight: bold;
-		}
-		#titleL {
-			font-size: 20;
-		}
-		s|ComboBox {
-			alternating-item-colors: #424242;
-		}
-		s|Form {
-			background-color: #424242;
-		}
-		
-	</fx:Style>
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -64,37 +46,41 @@
 			}
 		]]>
 	</fx:Script>
+	
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
 		<s:SortingCollator id="sortCollator" locale="{localeCB.selectedItem}"/>
 	</fx:Declarations>
-	<s:Scroller width="100%" height="100%">
-		<s:Group>
-			<s:Form>
-				<s:Label id="titleL" text="Spark Collator"/>
-				<s:Label text="Compare two strings by using SortingCollator"/>
-				<s:Spacer height="15"/>
-				
-				<s:FormItem label="Locales:" toolTip="Select a locale for the collator instance.">
-					<s:ComboBox id="localeCB" dataProvider="{_locales}" selectedIndex="5" change="compareStrings()"/>
-				</s:FormItem>
-				<s:FormItem label="Collator Options:" toolTip="Set properties for the collator instance.">
-					<s:HGroup>
-						<s:CheckBox id="ignoreCaseCB" label="ignoreCase" change="sortCollator.ignoreCase = ignoreCaseCB.selected;compareStrings()"/>
-						<s:CheckBox id="ignDiacriticsCB" label="ignoreDiacritics" change="sortCollator.ignoreDiacritics = ignDiacriticsCB.selected;compareStrings()"/>
-						<s:CheckBox id="ignSymbolsCB" label="ignoreSymbols" change="sortCollator.ignoreSymbols = ignSymbolsCB.selected;compareStrings()"/>
-						<s:CheckBox id="ignKanaTypeCB" label="ignoreKanaType" change="sortCollator.ignoreKanaType = ignKanaTypeCB.selected;compareStrings()"/>
-						<s:CheckBox id="ignCharacterWidthCB" label="ignoreCharacterWidth" change="sortCollator.ignoreCharacterWidth = ignCharacterWidthCB.selected;compareStrings()"/>
-					</s:HGroup>
-				</s:FormItem>
-				<s:FormItem label="Strings:" toolTip="Input two strings and find out their compare result.">
-					<s:HGroup>
-						<s:TextInput id="firstTI" text="coté" change="compareStrings()"/>
-						<s:Label id="operatorL" text=" " fontSize="15"/>
-						<s:TextInput id="secondTI" text="côte" change="compareStrings()"/>
-					</s:HGroup>
-				</s:FormItem>
-			</s:Form>
-		</s:Group>
-	</s:Scroller>
+
+	<s:Panel title="Spark Collator" width="100%" height="100%">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+			
+		<s:Form height="100%" width="100%">
+			<s:Label text="Compare two strings by using SortingCollator"/>
+			<s:Spacer height="15"/>
+			
+			<s:FormItem label="Locales:" toolTip="Select a locale for the collator instance.">
+				<s:ComboBox id="localeCB" dataProvider="{_locales}" selectedIndex="5" change="compareStrings()"/>
+			</s:FormItem>
+			<s:FormItem label="Collator Options:" toolTip="Set properties for the collator instance.">
+				<s:HGroup>
+					<s:CheckBox id="ignoreCaseCB" label="ignoreCase" change="sortCollator.ignoreCase = ignoreCaseCB.selected;compareStrings()"/>
+					<s:CheckBox id="ignDiacriticsCB" label="ignoreDiacritics" change="sortCollator.ignoreDiacritics = ignDiacriticsCB.selected;compareStrings()"/>
+					<s:CheckBox id="ignSymbolsCB" label="ignoreSymbols" change="sortCollator.ignoreSymbols = ignSymbolsCB.selected;compareStrings()"/>
+					<s:CheckBox id="ignKanaTypeCB" label="ignoreKanaType" change="sortCollator.ignoreKanaType = ignKanaTypeCB.selected;compareStrings()"/>
+					<s:CheckBox id="ignCharacterWidthCB" label="ignoreCharacterWidth" change="sortCollator.ignoreCharacterWidth = ignCharacterWidthCB.selected;compareStrings()"/>
+				</s:HGroup>
+			</s:FormItem>
+			<s:FormItem label="Strings:" toolTip="Input two strings and find out their compare result.">
+				<s:HGroup>
+					<s:TextInput id="firstTI" text="coté" change="compareStrings()"/>
+					<s:Label id="operatorL" text=" " fontSize="15"/>
+					<s:TextInput id="secondTI" text="côte" change="compareStrings()"/>
+				</s:HGroup>
+			</s:FormItem>
+		</s:Form>
+
+	</s:Panel>
 </s:Application>

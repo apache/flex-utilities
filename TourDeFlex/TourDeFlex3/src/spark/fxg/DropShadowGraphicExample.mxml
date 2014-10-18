@@ -23,7 +23,7 @@
 	
 	<s:Panel width="100%" height="100%"
 			 title="DropShadows with MXML Graphics Example"
-			 skinClass="skins.TDFPanelSkin" x="0">
+			 x="0">
 			  
 	    <s:Group horizontalCenter="0" y="5" width="117">
 			<s:Graphic id="ellipse1">
@@ -54,7 +54,7 @@
 			</s:Graphic>
 			
 		</s:Group>
-	    <s:Label width="250" verticalAlign="justify" color="#323232" x="10" y="30" 
+	    <s:Label width="250" verticalAlign="justify" x="10" y="30" 
 	    			  text="The DropShadowFilter class lets you add a drop shadow to display
 objects. The shadow algorithm is based on the same box filter that the blur filter uses. You have 
 several options for the style of the drop shadow, including inner or outer shadow and knockout mode. 

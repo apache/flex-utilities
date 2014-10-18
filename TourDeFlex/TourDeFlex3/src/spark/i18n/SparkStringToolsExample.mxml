@@ -21,28 +21,6 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   width="100%" height="100%">
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		s|Label {
-			color: #FFFFFF;
-			font-weight: bold;
-		}
-		#titleL {
-			font-size: 20;
-		}
-		s|ComboBox {
-			alternating-item-colors: #424242;
-		}
-		
-		s|Form {
-			background-color: #424242;
-		}
-		
-		s|List {
-			alternating-item-colors: #424242;
-		}
-	</fx:Style>
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -92,33 +70,33 @@
 			}  
 		]]>
 	</fx:Script>
+	
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
 		<s:StringTools id="st"/>
 	</fx:Declarations>
-	<s:layout>
-		<s:VerticalLayout/>
-	</s:layout>
-	<s:Scroller id="scroller" width="100%" height="100%">
-		<s:Group>
-			<s:Form>
-				<s:Label id="titleL" text="Spark StringTools"/>
-				<s:Label text="Enter strings and find the case conversion result"/>
-				<s:Spacer height="15"/>
-				<s:FormItem label="Locales:">
-					<s:ComboBox id="localesCB" dataProvider="{_locales}" selectedIndex="0" change="localesCB_changeHandler()"/>
-				</s:FormItem>
-				<s:FormItem label="Please enter a string:">
-					<s:TextInput id="inputTI" width="380" text="{_initStr}" change="converString()"/>
-				</s:FormItem>
-				<s:FormItem label="ToLowerCase:">
-					<s:Label id="lowerL"/>
-				</s:FormItem>
-				<s:FormItem label="ToUpperCase:">
-					<s:Label id="upperL"/>
-				</s:FormItem>
-			</s:Form>
-		</s:Group>
-	</s:Scroller>
+
+	<s:Panel title="Spark StringTools" width="100%" height="100%">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+		
+		<s:Form height="100%" width="100%">
+			<s:Label text="Enter strings and find the case conversion result"/>
+			<s:Spacer height="15"/>
+			<s:FormItem label="Locales:">
+				<s:ComboBox id="localesCB" dataProvider="{_locales}" selectedIndex="0" change="localesCB_changeHandler()"/>
+			</s:FormItem>
+			<s:FormItem label="Please enter a string:">
+				<s:TextInput id="inputTI" width="380" text="{_initStr}" change="converString()"/>
+			</s:FormItem>
+			<s:FormItem label="ToLowerCase:">
+				<s:Label id="lowerL"/>
+			</s:FormItem>
+			<s:FormItem label="ToUpperCase:">
+				<s:Label id="upperL"/>
+			</s:FormItem>
+		</s:Form>
+	</s:Panel>
 </s:Application>
 

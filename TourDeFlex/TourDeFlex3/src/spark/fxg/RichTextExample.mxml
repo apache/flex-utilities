@@ -21,7 +21,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
-	<s:Panel title="RichText Sample" width="100%" height="100%" skinClass="skins.TDFPanelSkin">
+	<s:Panel title="RichText Sample" width="100%" height="100%" >
 		<s:layout>
 			<s:HorizontalLayout paddingLeft="8" paddingRight="8" paddingTop="8"/>
 		</s:layout>
@@ -36,7 +36,7 @@
 				</s:RichText>
 				<s:Rect width="100%" height="100%">
 					<s:stroke>
-						<s:SolidColorStroke color="blue"/>
+						<s:SolidColorStroke/>
 					</s:stroke>
 				</s:Rect>
 			</s:Group>
@@ -47,12 +47,12 @@
 				</s:RichText>
 				<s:Rect width="100%" height="100%">
 					<s:stroke>
-						<s:SolidColorStroke color="blue"/>
+						<s:SolidColorStroke/>
 					</s:stroke>
 				</s:Rect>
 			</s:Group>
 		</s:Group>
-		<s:Label width="270" color="0x323232" text="RichText is a low-level UIComponent that can display one or more lines of richly-formatted text and embedded images. For performance reasons, it does not support scrolling, selection, editing, clickable hyperlinks, or images loaded from URLs. If you need those capabilities, see the RichEditableText class."/>
+		<s:Label width="270" text="RichText is a low-level UIComponent that can display one or more lines of richly-formatted text and embedded images. For performance reasons, it does not support scrolling, selection, editing, clickable hyperlinks, or images loaded from URLs. If you need those capabilities, see the RichEditableText class."/>
 	</s:Panel>
 
 </s:Application>

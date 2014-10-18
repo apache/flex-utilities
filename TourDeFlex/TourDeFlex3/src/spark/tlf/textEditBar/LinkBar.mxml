@@ -154,5 +154,5 @@
 		selectedIndex="0" dataProvider = "{targetArray}"/>
 	<mx:CheckBox id = "linkExtendCheckBox" label="Extend"/>
 	<mx:Button label="Apply Link" 
-		click="changeLink(linkTextInput.text, linkTargetCombo.text, linkExtendCheckBox.selected);" />
+		click="changeLink(linkTextInput.text, linkTargetCombo.text, linkExtendCheckBox.selected)" />
 </mx:HBox>

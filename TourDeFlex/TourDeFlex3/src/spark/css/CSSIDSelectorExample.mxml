@@ -23,7 +23,7 @@
 	<fx:Style>
 		#submitButton {
 			baseColor: #1E407E;
-			color: #FFFFFF;
+			color: #003399;
 		}
 		
 	</fx:Style>
@@ -43,12 +43,16 @@
 	
 	<s:Panel height="100%" width="100%"
 			 horizontalCenter="0" verticalCenter="0"
-			 title="Advanced CSS: ID Selector Example" 
-			 skinClass="skins.TDFPanelSkin">
-		<s:Label top="20" left="30" width="140" color="0x323232" verticalAlign="justify" 
+			 title="Advanced CSS: ID Selector Example">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+		
+		<s:Label verticalAlign="justify" 
 					  text="Only the Button with the id 'submitButton' will have custom colors."/>
 		
-		<s:VGroup horizontalCenter="0" horizontalAlign="center" verticalCenter="0">
+		<s:VGroup>
 				<s:HGroup verticalAlign="middle">
 					<s:Label text="First Name:"/>
 					<s:TextInput id="firstName" width="100"/>

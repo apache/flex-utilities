@@ -21,24 +21,6 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   width="100%" height="100%">
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		s|Label {
-			color: #FFFFFF;
-			font-weight: bold;
-		}
-		#titleL {
-			font-size: 20;
-		}
-		s|ComboBox {
-			alternating-item-colors: #424242;
-		}
-		
-		s|Form {
-			background-color: #424242;
-		}
-	</fx:Style>
 	
 	<fx:Script>
 		<![CDATA[
@@ -51,54 +33,51 @@
 			
 		]]>
 	</fx:Script>
+	
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-		
-		<!--Click Tab key to validate the number-->
 		<s:NumberValidator id="nv" source="{inputTI}" property="text"/>
 	</fx:Declarations>
-	<s:layout>
-		<s:VerticalLayout/>
-	</s:layout>
-	<s:Scroller id="scroller" width="100%" height="100%">
-		<s:Group>
-			<s:Form>
-				<s:Label id="titleL" text="Spark NumberValidator"/>
-				<s:Label text="Create some criterions and validate the input number: "/>
-				<s:Spacer height="15"/>
-				
-				<s:FormItem label="Locale:">
-					<s:ComboBox id="localeCB" dataProvider="{locales}" selectedIndex="0" updateComplete="nv.setStyle('locale',localeCB.selectedItem);"/>
-				</s:FormItem>
-				<s:Label text="==================================================================="/>
-				<s:Label text="     Create some criterions to validate number:" color="#DEB887"/>
-				<s:FormItem label="Max Value:">
-					<s:TextInput id="maxTI" change="nv.maxValue = Number(maxTI.text)"/>
-				</s:FormItem>
-				<s:FormItem label="Min Value:">
-					<s:TextInput id="minTI" change="nv.minValue = Number(minTI.text)"/>
-				</s:FormItem>
-				<s:FormItem label="Fraction Digits:">
-					<s:NumericStepper id="fdNS" maximum="5" minimum="0" change="nv.fractionalDigits = fdNS.value"/>
-				</s:FormItem>
-				<s:FormItem label="Decimal Separator:">
-					<s:TextInput id="dsTI" change="nv.decimalSeparator = dsTI.text"/>
-				</s:FormItem>
-				<s:FormItem label="Grouping Separator:">
-					<s:TextInput id="gsTI" change="nv.groupingSeparator = gsTI.text"/>
-				</s:FormItem>
-				<s:Label text="     Customize error messages:" color="#DEB887"
-						 toolTip="Spark NumberValidator provide the ability to let user customize all the error messages."/>
-				<s:FormItem label="Greater Than Max Error:" toolTip="Error message when the value exceeds the max value.">
-					<s:TextInput id="gtmTI" change="nv.greaterThanMaxError = gtmTI.text"/>
-				</s:FormItem>
-				<s:Label text="==================================================================="/>
-				<s:FormItem label="Input a number and press TAB key to validate:">
-					<s:TextInput id="inputTI"/>
-				</s:FormItem>
-			</s:Form>
-		</s:Group>
-	</s:Scroller>
-	
-	
+
+	<s:Panel title="Spark NumberValidator" width="100%" height="100%">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+		
+		<s:Form height="100%" width="100%">
+			<s:Label text="Create some criterions and validate the input number: "/>
+			<s:Spacer height="15"/>
+			
+			<s:FormItem label="Locale:">
+				<s:ComboBox id="localeCB" dataProvider="{locales}" selectedIndex="0" updateComplete="nv.setStyle('locale',localeCB.selectedItem)"/>
+			</s:FormItem>
+			<s:Label text="==================================================================="/>
+			<s:Label text="     Create some criterions to validate number:" />
+			<s:FormItem label="Max Value:">
+				<s:TextInput id="maxTI" change="nv.maxValue = Number(maxTI.text)"/>
+			</s:FormItem>
+			<s:FormItem label="Min Value:">
+				<s:TextInput id="minTI" change="nv.minValue = Number(minTI.text)"/>
+			</s:FormItem>
+			<s:FormItem label="Fraction Digits:">
+				<s:NumericStepper id="fdNS" maximum="5" minimum="0" change="nv.fractionalDigits = fdNS.value"/>
+			</s:FormItem>
+			<s:FormItem label="Decimal Separator:">
+				<s:TextInput id="dsTI" change="nv.decimalSeparator = dsTI.text"/>
+			</s:FormItem>
+			<s:FormItem label="Grouping Separator:">
+				<s:TextInput id="gsTI" change="nv.groupingSeparator = gsTI.text"/>
+			</s:FormItem>
+			<s:Label text="     Customize error messages:"
+					 toolTip="Spark NumberValidator provide the ability to let user customize all the error messages."/>
+			<s:FormItem label="Greater Than Max Error:" toolTip="Error message when the value exceeds the max value.">
+				<s:TextInput id="gtmTI" change="nv.greaterThanMaxError = gtmTI.text"/>
+			</s:FormItem>
+			<s:Label text="==================================================================="/>
+			<s:FormItem label="Input a number and press TAB key to validate:">
+				<s:TextInput id="inputTI"/>
+			</s:FormItem>
+		</s:Form>
+
+	</s:Panel>
 </s:Application>

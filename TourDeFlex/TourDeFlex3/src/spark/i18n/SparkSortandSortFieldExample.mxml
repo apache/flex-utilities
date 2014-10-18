@@ -21,24 +21,6 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   width="100%" height="100%">
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		s|Label {
-			color: #FFFFFF;
-			font-weight: bold;
-		}
-		#titleL {
-			font-size: 20;
-		}
-		s|ComboBox {
-			alternating-item-colors: #424242;
-		}
-		
-		s|Form {
-			background-color: #424242;
-		}
-	</fx:Style>
 	
 	<fx:Script>
 		<![CDATA[
@@ -69,8 +51,8 @@
 			}
 		]]>
 	</fx:Script>
+	
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
 		<s:Sort id="mySort" locale="{localeCB.selectedItem}"/>
 		
 		<s:SortField id="firstField" name="first"/>
@@ -87,36 +69,39 @@
 			<fx:Object first="Torolf" last="Aaron" age="40"/>
 		</s:ArrayCollection>
 	</fx:Declarations>
-	<s:Scroller id="scroller" width="100%" height="100%">
-		<s:Group>
-			<s:Form>
-				<s:Label id="titleL" text="Spark Sort and SortField"/>
-				<s:Label text="Select a locale to see the strings sorting result:"/>
-				<s:Spacer height="15"/>
-				
-				<s:FormItem label="Locale: ">
-					<s:ComboBox id="localeCB" dataProvider="{_locales}" selectedIndex="0"/>
-				</s:FormItem>
-				<s:Label text="     ==========================================================================="/>
-				<s:FormItem label="Sorting Priority:" toolTip="Click priority radio button to sort multiple columns">
-					<s:RadioButton id="flaRB" groupName="priority" label="first name > last name > age" click="sortInOrder(1)"/>
-					<s:RadioButton id="lfaRB" groupName="priority" label="last name > first name > age" click="sortInOrder(2)"/>
-					<s:RadioButton id="alfRB" groupName="priority" label="age > first name > last name" click="sortInOrder(3)"/>
-					<s:RadioButton id="falRB" groupName="priority" label="first name > age > last name" click="sortInOrder(4)"/>
-				</s:FormItem>
-				<s:FormItem label="Employee Table:" toolTip="Click data grid column header to sort single one column">
-					<s:DataGrid id="dg" dataProvider="{employeeArrColl}" width="100%">
-						<s:columns>
-							<s:ArrayList>
-								<s:GridColumn dataField="first" headerText="First Name"/>
-								<s:GridColumn dataField="last" headerText="Last Name"/>
-								<s:GridColumn dataField="age" headerText="Age"/>
-							</s:ArrayList>
-						</s:columns>
-					</s:DataGrid>
-				</s:FormItem>
-			</s:Form>
-		</s:Group>
-	</s:Scroller>
 	
+	<s:Panel title="Spark Sort and SortField" width="100%" height="100%">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+		
+		<s:Form height="100%" width="100%">
+			<s:Label text="Select a locale to see the strings sorting result:"/>
+			<s:Spacer height="15"/>
+			
+			<s:FormItem label="Locale: ">
+				<s:ComboBox id="localeCB" dataProvider="{_locales}" selectedIndex="0"/>
+			</s:FormItem>
+			<s:Label text="     ==========================================================================="/>
+			<s:FormItem label="Sorting Priority:" toolTip="Click priority radio button to sort multiple columns">
+				<s:RadioButton id="flaRB" groupName="priority" label="first name > last name > age" click="sortInOrder(1)"/>
+				<s:RadioButton id="lfaRB" groupName="priority" label="last name > first name > age" click="sortInOrder(2)"/>
+				<s:RadioButton id="alfRB" groupName="priority" label="age > first name > last name" click="sortInOrder(3)"/>
+				<s:RadioButton id="falRB" groupName="priority" label="first name > age > last name" click="sortInOrder(4)"/>
+			</s:FormItem>
+			<s:FormItem label="Employee Table:" toolTip="Click data grid column header to sort single one column">
+				<s:DataGrid id="dg" dataProvider="{employeeArrColl}" width="100%">
+					<s:columns>
+						<s:ArrayList>
+							<s:GridColumn dataField="first" headerText="First Name"/>
+							<s:GridColumn dataField="last" headerText="Last Name"/>
+							<s:GridColumn dataField="age" headerText="Age"/>
+						</s:ArrayList>
+					</s:columns>
+				</s:DataGrid>
+			</s:FormItem>
+		</s:Form>
+
+	</s:Panel>	
 </s:Application>

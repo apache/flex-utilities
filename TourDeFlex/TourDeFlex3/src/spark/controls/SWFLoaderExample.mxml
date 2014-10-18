@@ -19,8 +19,7 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   creationComplete="init()">
 	
 	<fx:Script>
@@ -34,21 +33,13 @@
 		]]>
 	</fx:Script>
 	
-	<s:layout>
-		<s:HorizontalLayout horizontalAlign="center" />
-	</s:layout>
-	
-	<s:Panel title="SWFLoader Control" color="0x000000" 
-			 borderAlpha="0.15" 
-			 width="600">
-		
+	<s:Panel title="SWFLoader Control" width="100%" height="100%">
+
 		<s:layout>
-			<s:VerticalLayout horizontalAlign="center" 
-							  paddingLeft="10" paddingRight="10" 
-							  paddingTop="10" paddingBottom="10"/>
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
 		</s:layout>
 		
-		<s:Label id="txt" color="0x323232" fontWeight="bold" text="Flash content embedded at compile time | 10 gumballs left" />
+		<s:Label id="txt" fontWeight="bold" text="Flash content embedded at compile time | 10 gumballs left" />
 		
 		<mx:SWFLoader id="swfObj" source="@Embed('assets/swf_sample.swf')"  />
 	</s:Panel>

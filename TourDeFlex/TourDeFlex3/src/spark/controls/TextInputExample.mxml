@@ -43,56 +43,56 @@
 		]]>
 	</fx:Script>
 	 
-	<s:Panel skinClass="skins.TDFPanelSkin" 
-			 width="100%" height="100%"
-			 title="TextInput Sample">
+	<s:Panel title="TextInput Sample" width="100%" height="100%">
 		
-		<s:VGroup top="20" width="100%" height="100%" left="200">
-			<s:HGroup verticalAlign="middle">
-				<s:Label text="Specify Max Character Input:"/>
-				<s:NumericStepper id="maxChars" value="30" stepSize="2" change="this.changeHandler(null)"/>
-			</s:HGroup>
-			<s:HGroup verticalAlign="middle">
-				<s:Label text="Specify Text Alignment:"/>
-				<s:DropDownList id="alignVal" prompt="left" change="this.changeHandler(null)">
-					<s:dataProvider>
-						<mx:ArrayList>
-							<fx:String>left</fx:String>
-							<fx:String>right</fx:String>
-							<fx:String>center</fx:String>
-							<fx:String>justify</fx:String>
-							<fx:String>start</fx:String>
-							<fx:String>end</fx:String>
-						</mx:ArrayList>
-					</s:dataProvider>
-				</s:DropDownList>
-			</s:HGroup>
-			<s:HGroup verticalAlign="middle">
-				<s:Label text="Direction:"/>
-				<s:DropDownList id="direction" prompt="ltr" change="this.changeHandler(null)">
-					<s:dataProvider>
-						<mx:ArrayList>
-							<fx:String>rtl</fx:String>
-							<fx:String>ltr</fx:String>
-						</mx:ArrayList>
-					</s:dataProvider>
-				</s:DropDownList>
-			</s:HGroup>
-			<s:HGroup verticalAlign="middle">
-				<s:Label text="Specify characters to restrict (use - for range):"/>
-				<s:TextInput id="restrictStr" change="this.changeHandler(null)"/> 
-			</s:HGroup>
-			<s:HGroup verticalAlign="middle">
-				<s:Label text="Text Input:"/>
-				<s:TextInput id="txt" maxChars="{maxChars.value}" maxWidth="150" 
-							 change="txtChangeHandler(event)" textAlign="{alignVal.selectedItem}"/>	
-			</s:HGroup>
-			<mx:Spacer height="10"/>
-			<s:Label width="85%" horizontalCenter="0" color="#323232"
-					 text="TextInput is a text-entry control that lets users enter and edit a single line of uniformly-formatted text.
+		<s:layout>
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+		
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Specify Max Character Input:"/>
+			<s:NumericStepper id="maxChars" value="30" stepSize="2" change="this.changeHandler(null)"/>
+		</s:HGroup>
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Specify Text Alignment:"/>
+			<s:DropDownList id="alignVal" prompt="left" change="this.changeHandler(null)">
+				<s:dataProvider>
+					<mx:ArrayList>
+						<fx:String>left</fx:String>
+						<fx:String>right</fx:String>
+						<fx:String>center</fx:String>
+						<fx:String>justify</fx:String>
+						<fx:String>start</fx:String>
+						<fx:String>end</fx:String>
+					</mx:ArrayList>
+				</s:dataProvider>
+			</s:DropDownList>
+		</s:HGroup>
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Direction:"/>
+			<s:DropDownList id="direction" prompt="ltr" change="this.changeHandler(null)">
+				<s:dataProvider>
+					<mx:ArrayList>
+						<fx:String>rtl</fx:String>
+						<fx:String>ltr</fx:String>
+					</mx:ArrayList>
+				</s:dataProvider>
+			</s:DropDownList>
+		</s:HGroup>
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Specify characters to restrict (use - for range):"/>
+			<s:TextInput id="restrictStr" change="this.changeHandler(null)"/> 
+		</s:HGroup>
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Text Input:"/>
+			<s:TextInput id="txt" maxChars="{maxChars.value}" maxWidth="150" 
+						 change="txtChangeHandler(event)" textAlign="{alignVal.selectedItem}"/>	
+		</s:HGroup>
+		<mx:Spacer height="10"/>
+		<s:Label width="85%" horizontalCenter="0"
+				 text="TextInput is a text-entry control that lets users enter and edit a single line of uniformly-formatted text.
 This Spark version of TextInput makes use of the Text Layout Framework (TLF). Numerous properties are available to be set using the 
 textFlow object from the TLF framework. Uses of some are shown above."/>
-		</s:VGroup>
 		
 	</s:Panel>
 	

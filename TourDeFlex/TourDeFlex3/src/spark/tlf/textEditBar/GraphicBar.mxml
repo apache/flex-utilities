@@ -149,5 +149,5 @@
 	<mx:Label text="Height:" fontWeight="bold"/>
 	<mx:TextInput id="imageHeight" width="60"/>			
 	<mx:Button id="imageButton" label="Insert Image" 
-		click="applyChange();" />
+		click="applyChange()" />
 </mx:HBox>

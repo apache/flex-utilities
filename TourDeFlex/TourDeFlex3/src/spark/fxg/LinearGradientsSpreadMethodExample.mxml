@@ -28,10 +28,10 @@
 	
 	<s:Panel title="LinearGradient Control" 
 			  width="100%" height="100%"
-			 skinClass="skins.TDFPanelSkin">
+			 >
 		
 		<s:HGroup horizontalCenter="0" top="10">
-		<s:Label verticalAlign="justify" color="#323232" x="10" y="30" width="200"
+		<s:Label verticalAlign="justify" x="10" y="30" width="200"
 					  text="The LinearGradient class lets you specify the fill of a graphical element, where a gradient specifies a gradual color transition in the fill color. You add a series of GradientEntry objects to the LinearGradient object's entries Array to define the colors that make up the gradient fill."/>	
 		<s:Rect id="rect1" height="150" width="160" >
 			<s:fill>

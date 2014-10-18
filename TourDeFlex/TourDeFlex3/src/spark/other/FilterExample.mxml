@@ -19,8 +19,7 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   creationComplete="init()">
 	
 	<fx:Script>
@@ -54,11 +53,7 @@
 			}
 		]]>
 	</fx:Script>
-	
-	<s:layout>
-		<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" />
-	</s:layout>
-	
+
 	<fx:Declarations>
 		<!--filters-->
 		<s:GlowFilter id="glow" blurX="12" blurY="12" color="#88AEF7" quality="2" strength="1"/>
@@ -68,9 +63,7 @@
 	</fx:Declarations>
 	
 	<s:Panel title="Filters Samples"
-			 width="600" height="100%"
-			 color="0x000000" 
-			 borderAlpha="0.15">
+			 width="100%" height="100%">
 		
 		<s:layout>
 			<s:VerticalLayout horizontalAlign="center" 
@@ -81,14 +74,14 @@
 		<s:Label id="textSample" text="SAMPLE TEXT" color="0x000000" 
 				 fontWeight="bold" fontSize="40" filters="{[bevel]}" />
 		
-		<s:HGroup width="100%" color="#323232" horizontalAlign="center">
+		<s:HGroup width="100%" horizontalAlign="center">
 			<s:CheckBox id="blurBox" label="Blur" click="filterHandler(event)" />
 			<s:CheckBox id="glowBox" label="Glow" click="filterHandler(event)" />
 			<s:CheckBox id="shadowBox" label="Drop Shadow" click="filterHandler(event)" />
 			<s:CheckBox id="bevelBox" label="Bevel" selected="true" click="filterHandler(event)" />
 		</s:HGroup>
 		
-		<s:Label id="dynamicText" text="0" color="#323232" fontSize="18" filters="{[bevel]}" />
+		<s:Label id="dynamicText" text="0" fontSize="18" filters="{[bevel]}" />
 		
 	</s:Panel>
 	

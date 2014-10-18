@@ -28,89 +28,52 @@
 				<s:motionPaths>
 					<s:MotionPath property="translationX" >
 						<s:keyframes>
-							<s:Keyframe time="250" value="0"/>
-							<s:Keyframe time="550" value="60"/>
-							<s:Keyframe time="850" value="100"/>
-							<s:Keyframe time="1150" value="140"/>
-							<s:Keyframe time="1450" value="180"/>
-							<s:Keyframe time="1750" value="220"/>
-							<s:Keyframe time="2050" value="140"/>
-							<s:Keyframe time="2350" value="100"/>
-							<s:Keyframe time="2650" value="60"/>
-							<s:Keyframe time="2950" value="0"/>
+							<s:Keyframe time="250" value="20"/>
+							<s:Keyframe time="550" value="80"/>
+							<s:Keyframe time="850" value="120"/>
+							<s:Keyframe time="1150" value="160"/>
+							<s:Keyframe time="1450" value="200"/>
+							<s:Keyframe time="1750" value="240"/>
+							<s:Keyframe time="2050" value="160"/>
+							<s:Keyframe time="2350" value="120"/>
+							<s:Keyframe time="2650" value="80"/>
+							<s:Keyframe time="2950" value="20"/>
 						</s:keyframes>
 					</s:MotionPath>
 				
 					<s:MotionPath property="translationY" >
 						<s:keyframes>
-							<s:Keyframe time="250" value="100"/>
-							<s:Keyframe time="550" value="0"/>
-							<s:Keyframe time="850" value="100"/>
-							<s:Keyframe time="1150" value="0"/>
-							<s:Keyframe time="1450" value="100"/>
-							<s:Keyframe time="1750" value="0"/>
-							<s:Keyframe time="2050" value="100"/>
-							<s:Keyframe time="2350" value="0"/>
-							<s:Keyframe time="2650" value="100"/>
-							<s:Keyframe time="2950" value="0"/>
+							<s:Keyframe time="250" value="160"/>
+							<s:Keyframe time="550" value="60"/>
+							<s:Keyframe time="850" value="160"/>
+							<s:Keyframe time="1150" value="60"/>
+							<s:Keyframe time="1450" value="160"/>
+							<s:Keyframe time="1750" value="60"/>
+							<s:Keyframe time="2050" value="160"/>
+							<s:Keyframe time="2350" value="60"/>
+							<s:Keyframe time="2650" value="160"/>
+							<s:Keyframe time="2950" value="60"/>
 						</s:keyframes>
 					</s:MotionPath>
 				</s:motionPaths>
 		</s:AnimateTransform>
 	</fx:Declarations>
 	
-	<fx:Style>
-		@namespace "library://ns.adobe.com/flex/spark";
+	<s:Panel title="AnimateTransform Effect Sample (Bounce)" width="100%" height="100%">
 		
-		Button:up{ 
-			baseColor: #000000; 
-			color: #FFFFFF; 
-			fontWeight: "bold";
-		}
-		Button:over{ 
-			baseColor: #878787; 
-			color: #FFFFFF; 
-			fontWeight: "bold";
-		}
-		Button:down{ 
-			baseColor: #878787; 
-			color: #000000; 
-			fontWeight: "bold";
-		}
-		Button:disabled { 
-			baseColor: #FFFFFF; 
-			color: #878787; 
-			fontWeight: "bold";
-		}
-		Label { 
-			fontFamily: "Arial";
-			fontWeight: "bold";
-		}
-	</fx:Style>
-	
-	<!-- Note: A custom panel skin is used for the Tour de Flex samples and is included in the
-	source tabs for each sample.	-->
-	<s:Panel title="AnimateTransform Effect Sample (Bounce)" 
-			 width="100%" height="100%" 
-			 skinClass="skins.TDFPanelSkin">
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
 		
-		<s:Group left="3">
-			<mx:Image y="0" id="myImage" 
-					  source="@Embed(source='assets/ApacheFlexIcon.png')"
-					  click="bounceEffect.end();bounceEffect.play();"/>	
-		</s:Group>
+		<s:Label text="Click the Apache Flex logo to bounce it!" />
 		
-		<s:HGroup bottom="5" left="3">
-			<s:Label text="Click the Apache Flex logo to bounce it!" color="0x000000"/>
-		</s:HGroup>
-		<s:HGroup top="5" right="5">
-			<s:VGroup width="100%" >
-				<s:Label text="Cross Fade Sample" fontSize="18" color="#B7B6B6"/>
-				<s:Label width="250" verticalAlign="justify" color="#323232" 
-							  text="Unlike the Animate class, which you can use to animate any target property, the AnimateTransform effect only supports the animation of certain properties on the target. To use keyframes and motion paths with the AnimateTransform effect, use the MotionPath class to specify keyframes for one or more of the following properties of the AnimateTransform class:
-							  movement (translationX, translationY, and translationZ), rotation (rotationX, rotationY, and rotationZ), scale (scaleX, scaleY, and scaleZ)."/>
-			</s:VGroup>
-		</s:HGroup>
+		<s:Label width="250" verticalAlign="justify" 
+					  text="Unlike the Animate class, which you can use to animate any target property, the AnimateTransform effect only supports the animation of certain properties on the target. To use keyframes and motion paths with the AnimateTransform effect, use the MotionPath class to specify keyframes for one or more of the following properties of the AnimateTransform class:
+					  movement (translationX, translationY, and translationZ), rotation (rotationX, rotationY, and rotationZ), scale (scaleX, scaleY, and scaleZ)."/>
 	</s:Panel>
+		
+	<mx:Image x="20" y="60" id="myImage" 
+			  source="@Embed(source='assets/ApacheFlexIcon.png')"
+			  click="bounceEffect.end();bounceEffect.play()"/>	
 	
 </s:Application>
