@@ -51,7 +51,7 @@ variables are not required because the locations of these pieces are known.
         <fx:Component className="CacheDialog" >
             <s:TitleWindow title="Download Cache Configuration" width="400" height="130" 
                            backgroundColor="0xDDDDDD" close="closeUp()">
-                <fx:Script>
+                 <fx:Script>
                     <![CDATA[
                         import mx.managers.PopUpManager;
                         
@@ -98,7 +98,7 @@ variables are not required because the locations of these pieces are known.
             </s:TitleWindow>
         </fx:Component>
     </fx:Declarations>
-    <fx:Script><![CDATA[
+     <fx:Script><![CDATA[
         import flash.globalization.LocaleID;
         import flash.globalization.StringTools;
         
@@ -2464,7 +2464,7 @@ variables are not required because the locations of these pieces are known.
                 return;
             }
             
-            var file:File = file = _flexHomeDir.resolvePath("installer.log");
+            var file:File = _flexHomeDir.resolvePath("installer.log");
             var fs:FileStream = new FileStream();
             
             try {
