@@ -1096,6 +1096,27 @@ variables are not required because the locations of these pieces are known.
         
         protected function handleInstallBtnClick(event:MouseEvent):void
         {
+			 var airVersionID:String = airVersion.selectedItem.versionID;
+            var flashVersionID:String = flashPlayerVersion.selectedItem.versionID;
+            
+            log("SDK version " + APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY);
+            
+            if (flexVersion.selectedItem.needsAIR)
+            {
+                if (airVersionID)
+                    log("AIR version " + airVersionID);
+                else
+                    log("AIR version " + AIR_VERSION);
+            }
+            
+            if (flexVersion.selectedItem.needsFlash)
+            {
+                if (flashVersionID)
+                    log("Flash Player version " + flashVersionID);
+                else
+                    log("Flash Player version " + FLASH_PLAYER_VERSION);
+            }
+
             if (flexSDKTxtInput.text == "") {
                 log(_viewResourceConstants.INFO_ENTER_VALID_FLEX_SDK_PATH);
             } else {
@@ -1118,23 +1139,6 @@ variables are not required because the locations of these pieces are known.
             var flashVersionID:String = flashPlayerVersion.selectedItem.versionID;
             
             setXMLVariables(); // as AIR and Flash version may of changed
-           
-            log("SDK version " + APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY);
-            
-            if (flexVersion.selectedItem.needsAIR) {
-            
-                if (airVersionID)
-                    log("AIR version " + airVersionID);
-                else
-                    log("AIR version " + AIR_VERSION);
-            }
-            
-            if (flexVersion.selectedItem.needsFlash) {
-                if (flashVersionID)
-                    log("Flash Player version " + flashVersionID);
-                else
-                    log("Flash Player version " + FLASH_PLAYER_VERSION);
-            }
             
             if (!legacy)
             {
@@ -1152,7 +1156,24 @@ variables are not required because the locations of these pieces are known.
             }
         }
         
-        protected function handleFirstStepNextBtnClick(event:MouseEvent):void
+		protected function handleFirstStepBackBtnClick(event:MouseEvent):void
+        {
+            showDefaultState();
+        }
+        
+        protected function handleSecondStepBackBtnClick(event:MouseEvent):void
+        {
+            showDirectoryState();
+        }
+		 
+        protected function showDefaultState():void
+        {
+            zeroStepGroup.visible = true;
+            directoryBtn.enabled = true;
+            currentState = "default";
+        }        
+
+		protected function handleFirstStepNextBtnClick(event:MouseEvent):void
         {
             // Quick check to see if the selected directory is writable
             try {
@@ -3337,6 +3358,14 @@ variables are not required because the locations of these pieces are known.
                   click="browseForSDK(event)"
                   toolTip="{_viewResourceConstants.INFO_SELECT_DIRECTORY}"/>
         <s:controlBarContent>
+            <s:Button id="firstStepBackBtn"
+                      styleName="mainBtnStyle"
+                      width="{_standardButtonWidth}"
+                      height="32"
+                      right="10"
+                      label="{_viewResourceConstants.BTN_LABEL_BACK}"
+                      enabled="true"
+                      click="handleFirstStepBackBtnClick(event)"/>
             <s:Spacer
                 width="100%"/>
             <s:Button id="nextBtn"
@@ -3358,6 +3387,14 @@ variables are not required because the locations of these pieces are known.
              visible.optionsState="true"
              backgroundAlpha="0"> 
         <s:controlBarContent>
+            <s:Button id="secondStepBackBtn"
+                      styleName="mainBtnStyle"
+                      width="{_standardButtonWidth}"
+                      height="32"
+                      right="10"
+                      label="{_viewResourceConstants.BTN_LABEL_BACK}"
+                      enabled="true"
+                      click="handleSecondStepBackBtnClick(event)"/>
             <s:Spacer
                 width="100%"/>
             <s:Button id="installBtn"
