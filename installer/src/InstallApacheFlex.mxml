@@ -145,7 +145,7 @@ variables are not required because the locations of these pieces are known.
         import ws.tink.spark.skins.controls.InstallApacheFlexSkin;
         
         // embed us strings so we can always have them if we can't get to the locale files
-        [Embed(source="properties/en_US.properties",mimeType="application/octet-stream")]
+        [Embed(source="properties/en_US.properties", mimeType="application/octet-stream")]
         private var en_US_Properties:Class;
         
         private var cleanedUp:Boolean;
@@ -160,6 +160,7 @@ variables are not required because the locations of these pieces are known.
         private var showDevBuilds:Boolean = false;
         private var usingDownloadCache:Boolean;
         private var downloadCacheFolder:String;
+        private var userDefaultLanguage:String;
         private var firstTime:Boolean = true;
         private var legacy:Boolean = true;
         private var nocache:Boolean = true;
@@ -393,6 +394,7 @@ variables are not required because the locations of these pieces are known.
             var so:SharedObject = SharedObject.getLocal("InstallApacheFlex");
             usingDownloadCache = so.data.usingDownloadCache;
             downloadCacheFolder = so.data.downloadCacheFolder;
+            userDefaultLanguage = so.data.userDefaultLanguage;
         }
         
         protected function handleApplicationComplete(event:FlexEvent):void
@@ -460,9 +462,9 @@ variables are not required because the locations of these pieces are known.
         
         private function getIndexOfEnUS():int
         {
-            for (var i:int = 0; i < _langSelect.dataProvider.length; i++) 
+            for (var i:int = 0; i < _langSelect.dataProvider.length; i++)
             {
-                if(_langSelect.dataProvider.getItemAt(i).data == "en_US")
+                if (_langSelect.dataProvider.getItemAt(i).data == "en_US")
                 {
                     return i;
                 }
@@ -491,11 +493,22 @@ variables are not required because the locations of these pieces are known.
         {
             loadLanguage("en_US", loadUSComplete);
         }
+
         private function loadUSComplete():void
         {
-            var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
+            var userLocale:String;
             
-            if (languageOverride) {
+            if (userDefaultLanguage)
+            {
+                userLocale = userDefaultLanguage;
+            }
+            else
+            {
+                userLocale = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
+            }
+            
+            if (languageOverride)
+            {
                 userLocale = languageOverride;
             }
             
@@ -583,16 +596,28 @@ variables are not required because the locations of these pieces are known.
         {
             resourceManager.localeChain = [ ViewResourceConstants.DEFAULT_LANGUAGE ];
             
-            var userLocale:String = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
+            var userLocale:String;
             
-            if (languageOverride) {
+            if (userDefaultLanguage)
+            {
+                userLocale = userDefaultLanguage;
+            }
+            else
+            {
+                userLocale = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
+            }
+            
+            if (languageOverride)
+            {
                 userLocale = languageOverride;
             }
             log("Using Locale: " + userLocale);
             
             var n:int = supportedLanguages.length;
-            for (var i:int = 0; i < n; i++) {
-                if (supportedLanguages[i].data == userLocale) {
+            for (var i:int = 0; i < n; i++)
+            {
+                if (supportedLanguages[i].data == userLocale)
+                {
                     _langSelect.selectedIndex = i;
                     
                     resourceManager.localeChain = [ userLocale, "en_US" ];
@@ -611,7 +636,7 @@ variables are not required because the locations of these pieces are known.
             updateWindow();
             
             _mirrorURLUtil.logMessages = new LogMessagesVO(_viewResourceConstants.FETCH_MIRROR_CGI, _viewResourceConstants.FETCH_MIRROR_CGI_DONE,
-                _viewResourceConstants.FETCH_MIRROR_CGI_ERROR);
+                    _viewResourceConstants.FETCH_MIRROR_CGI_ERROR);
             
             _mirrorURLUtil.getMirrorURL(Constants.APACHE_FLEX_URL + _mirrorURLCGI, getMirrorURLResultHandler);
             CursorManager.removeBusyCursor();
@@ -1093,7 +1118,7 @@ variables are not required because the locations of these pieces are known.
             var flashVersionID:String = flashPlayerVersion.selectedItem.versionID;
             
             setXMLVariables(); // as AIR and Flash version may of changed
-            
+           
             log("SDK version " + APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY);
             
             if (flexVersion.selectedItem.needsAIR) {
@@ -2510,11 +2535,18 @@ variables are not required because the locations of these pieces are known.
         {
             var defaultLanguage:String = ViewResourceConstants.DEFAULT_LANGUAGE;
             
-            if (_langSelect.selectedItem["data"] == defaultLanguage) {
+            var so:SharedObject = SharedObject.getLocal("InstallApacheFlex");
+            so.data.userDefaultLanguage = _langSelect.selectedItem["data"];
+            so.flush();
+            
+            if (_langSelect.selectedItem["data"] == defaultLanguage)
+            {
                 resourceManager.localeChain = [ defaultLanguage ];
                 resourceManager.update();
                 setButtonWidths();
-            } else {
+            }
+            else
+            {
                 loadLanguage(_langSelect.selectedItem["data"], _langSelect_changeCompleteHandler);
             }
         }
@@ -2662,7 +2694,7 @@ variables are not required because the locations of these pieces are known.
             }                
             if (usingDownloadCache && !nocache)
             {
-                var cacheURL:String
+                var cacheURL:String;
                 if (_useMirror && url.indexOf(useMirrorPath(_mirrorURLUtil.mirrorURL)) != -1)
                 {
                     cacheURL = url.substr(useMirrorPath(_mirrorURLUtil.mirrorURL).length);
@@ -2705,7 +2737,7 @@ variables are not required because the locations of these pieces are known.
                 {
                     if (debugMode)
                         log("download complete preparing to cache");
-                    var cacheURL:String
+                    var cacheURL:String;
                     if (_useMirror && url.indexOf(useMirrorPath(_mirrorURLUtil.mirrorURL)) != -1)
                     {
                         cacheURL = url.substr(useMirrorPath(_mirrorURLUtil.mirrorURL).length);
