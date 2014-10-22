@@ -1,7 +1,7 @@
 
-  Apache Flex Squiggly is a ActionScript spell checking library.
+  Apache Flex Squiggly is an ActionScript spell checking library.
 	 
-  This application is based on work donated by Adobe.
+  This application is based on work donated by Adobe Systems Inc.
   
 ==========================================================================================
 Initial Setup Required
@@ -63,7 +63,7 @@ How to use the Squiggly SDK
 Please read the ASDocs (found in docs directory) first to understand the
 classes in Squiggly.
 
-For Apache FLex projects if you are using the SpellChecker class directly, you need:
+For Apache Flex projects if you are using the SpellChecker class directly, you need:
 - ApacheFlexSpellingEngine.swc in [YourProject]/libs folder
 - ApacheFlexSpellingFramwork.swc in [YourProject]/libs folder
 - ApacheFlexLinguisticUtils.swc in [YourProject]/libs folder
@@ -87,7 +87,7 @@ But note that many of these dictionaries are under LPGL licenses.
 If you are using the simple UI integration feature (SpellUI class), in addition
 to what mentioned above, you also need:
 - SpellingConfig.xml in [YourProject]/src
-- ApacheFlexSpellingUI.swc (if you need mx spoort) in [YourProject]/libs
+- ApacheFlexSpellingUI.swc (if you need mx support) in [YourProject]/libs
 - ApacheFlexSpellingUIEx.swc (if you need spark support) in [YourProject]/libs 
 
 Note that you can only support spelling in mx or spark components not both at once.
