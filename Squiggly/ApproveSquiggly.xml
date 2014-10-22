@@ -227,6 +227,14 @@
                 <exclude name="**/*.mp3"/>
                 <exclude name="**/*.flv"/>
                 <exclude name="docs/**"/>
+                <exclude name="CONTRIBUTORS"/>
+                <exclude name="CONTRIBUTING"/>
+                <exclude name="dictionaries/en_GB/README_en_GB.txt"/>
+                <exclude name="dictionaries/en_GB/en_GB.aff"/>
+                <exclude name="dictionaries/en_GB/en_GB.dic"/>
+                <exclude name="dictionaries/en_US/README_en_US.txt"/>
+                <exclude name="dictionaries/en_US/en_US.aff"/>
+                <exclude name="dictionaries/en_US/en_US.dic"/>
                 <exclude name="main/Data/usa.txt"/>
                 <exclude name="main/Tools/AdobeSpellingDictGen/sample/sampleWordList.txt"/>
             </fileset>
