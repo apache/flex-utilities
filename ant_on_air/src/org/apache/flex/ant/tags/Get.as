@@ -47,6 +47,11 @@ package org.apache.flex.ant.tags
             Ant.antTagProcessors["get"] = Get;
         }
         
+        private static const DOWNLOADS_SOURCEFORGE_NET = "http://downloads.sourceforge.net/";
+        private static const SOURCEFORGE_NET = "http://sourceforge.net/";
+        private static const DL_SOURCEFORGE_NET = ".dl.sourceforge.net/";
+        private static const USE_MIRROR = "use_mirror=";
+        
         public function Get()
         {
             super();
@@ -94,6 +99,7 @@ package org.apache.flex.ant.tags
             var actualSrc:String = src;
             var urlRequest:URLRequest = new URLRequest(actualSrc);
             urlRequest.followRedirects = false;
+            urlRequest.manageCookies = false;
             urlRequest.userAgent = "Java";	// required to get sourceforge redirects to do the right thing
             urlLoader = new URLLoader();
             urlLoader.load(urlRequest);
@@ -132,10 +138,24 @@ package org.apache.flex.ant.tags
                 }
                 if (newlocation)
                 {
+                    var srcIndex:int = src.indexOf(DOWNLOADS_SOURCEFORGE_NET);
+                    var sfIndex:int = newlocation.indexOf(SOURCEFORGE_NET);
+                    var mirrorIndex:int = newlocation.indexOf(USE_MIRROR);
+                    if (srcIndex == 0 && sfIndex == 0 && mirrorIndex != -1 && event.status == 307)
+                    {
+                        // SourceForge redirects AIR requests differently from Ant requests.
+                        // We can't control some of the additional headers that are sent
+                        // but that appears to make the difference.  Just pick out the
+                        // mirror and use it against dl.sourceforge.net
+                        var mirror:String = newlocation.substring(mirrorIndex + USE_MIRROR.length);
+                        newlocation = "http://" + mirror + DL_SOURCEFORGE_NET;
+                        newlocation += src.substring(DOWNLOADS_SOURCEFORGE_NET.length);
+                    }
                     ant.output(ant.formatOutput("get", "Redirected to: " + newlocation));
                     var urlRequest:URLRequest = new URLRequest(newlocation);
                     var refHeader:URLRequestHeader = new URLRequestHeader("Referer", src);
                     urlRequest.requestHeaders.push(refHeader);
+                    urlRequest.manageCookies = false;
                     urlRequest.followRedirects = false;
                     urlRequest.userAgent = "Java";	// required to get sourceforge redirects to do the right thing
                     urlLoader = new URLLoader();
