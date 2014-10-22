@@ -72,7 +72,7 @@
 			<arg value="-include-sources"/>
 			<arg value="SpellingEngine/src"/>
 			<arg value="-output"/>
-			<arg value="${OUTPUT_DIR}/ApacheflexSpellingEngine.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheFlexSpellingEngine.swc"/>
 		</java>
 	</target>
 
@@ -98,7 +98,7 @@
 			<arg value="-external-library-path"/>
 			<arg value="${OUTPUT_DIR}/ApacheFlexLinguisticUtils.swc"/>
 			<arg value="-external-library-path"/>
-			<arg value="${OUTPUT_DIR}/ApacheflexSpellingEngine.swc"/>
+			<arg value="${OUTPUT_DIR}/ApacheFlexSpellingEngine.swc"/>
 			<arg value="-output"/>
 			<arg value="${OUTPUT_DIR}/ApacheFlexSpellingFramework.swc"/>
 		</java>
@@ -154,7 +154,7 @@
 			<arg value="-external-library-path"/>
 			<arg value="${PLAYERGLOBAL_HOME}/${playerglobal.version}/playerglobal.swc"/>
             <arg value="-external-library-path"/>
-            <arg value="${OUTPUT_DIR}/ApacheflexLinguisticUtils.swc"/>
+            <arg value="${OUTPUT_DIR}/ApacheFlexLinguisticUtils.swc"/>
             <arg value="-external-library-path"/>
             <arg value="${OUTPUT_DIR}/ApacheFlexSpellingEngine.swc"/>
             <arg value="-external-library-path"/>
