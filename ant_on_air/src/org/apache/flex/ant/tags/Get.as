@@ -47,10 +47,10 @@ package org.apache.flex.ant.tags
             Ant.antTagProcessors["get"] = Get;
         }
         
-        private static const DOWNLOADS_SOURCEFORGE_NET = "http://downloads.sourceforge.net/";
-        private static const SOURCEFORGE_NET = "http://sourceforge.net/";
-        private static const DL_SOURCEFORGE_NET = ".dl.sourceforge.net/";
-        private static const USE_MIRROR = "use_mirror=";
+        private static const DOWNLOADS_SOURCEFORGE_NET:String = "http://downloads.sourceforge.net/";
+        private static const SOURCEFORGE_NET:String = "http://sourceforge.net/";
+        private static const DL_SOURCEFORGE_NET:String = ".dl.sourceforge.net/";
+        private static const USE_MIRROR:String = "use_mirror=";
         
         public function Get()
         {
