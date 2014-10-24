@@ -365,7 +365,7 @@ variables are not required because the locations of these pieces are known.
             calc.buttonWidth(installLogBtn);
             calc.buttonWidth(openApacheFlexFolderBtn);
             
-            _standardButtonWidth = calc.maxButtonWidth([installBtn, browseBtn, closeBtn, nextBtn]);
+            _standardButtonWidth = calc.maxButtonWidth([installBtn, browseBtn, closeBtn, nextBtn, firstStepBackBtn, secondStepBackBtn]);
         }
         
         private function parseArgs(event:InvokeEvent):void
@@ -1166,13 +1166,6 @@ variables are not required because the locations of these pieces are known.
             showDirectoryState();
         }
 		 
-        protected function showDefaultState():void
-        {
-            zeroStepGroup.visible = true;
-            directoryBtn.enabled = true;
-            currentState = "default";
-        }        
-
 		protected function handleFirstStepNextBtnClick(event:MouseEvent):void
         {
             // Quick check to see if the selected directory is writable
@@ -1261,17 +1254,27 @@ variables are not required because the locations of these pieces are known.
             abortInstallation("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
         }
         
+        protected function showDefaultState():void
+        {
+            zeroStepGroup.visible = true;
+            directoryBtn.enabled = true;
+            currentState = "default";
+        }
+        
         protected function showDirectoryState():void
         {
             initiateInstallStepsActivity();
+            if (currentState != "optionsState")
+            {
             initializeInstallerComponentsDataProvider();
-            
+            }
             currentState = "directoryState";
         }
         
         protected function showOptionsState():void
         {
             currentState = "optionsState";
+            checkIfAllRequiredComponentsPromptsAnswered();
         }
         
         protected function initiateInstallStepsActivity():void
@@ -3216,6 +3219,24 @@ variables are not required because the locations of these pieces are known.
                 <s:Move target="{thirdStepGroup}" xFrom="800" xTo="{this.width/2 - thirdStepGroup.width/2}" duration="500" easer="{ease}"/>
             </s:Sequence>
         </s:Transition>
+        <s:Transition id="backToDefault" fromState="directoryState" toState="default">
+            <s:Sequence id="t4" targets="{[zeroStepGroup]}" effectEnd="placeGroup(zeroStepGroup)">
+                <s:SetAction target="{zeroStepGroup}" property="visible" value="true"/>
+                <s:SetAction target="{firstStepGroup}" property="visible" value="false"/>
+                <s:SetAction target="{secondStepGroup}" property="visible" value="false"/>
+                <s:SetAction target="{thirdStepGroup}" property="visible" value="false"/>
+                <s:Move target="{zeroStepGroup}" xFrom="-800" xTo="{this.width/2 - zeroStepGroup.width/2}" duration="500" easer="{ease}"/>
+            </s:Sequence>
+        </s:Transition>
+        <s:Transition id="backToDirectory" fromState="optionsState" toState="directoryState">
+            <s:Sequence id="t5" targets="{[firstStepGroup]}" effectEnd="placeGroup(firstStepGroup)">
+                <s:SetAction target="{zeroStepGroup}" property="visible" value="false"/>
+                <s:SetAction target="{firstStepGroup}" property="visible" value="true"/>
+                <s:SetAction target="{secondStepGroup}" property="visible" value="false"/>
+                <s:SetAction target="{thirdStepGroup}" property="visible" value="false"/>
+                <s:Move target="{firstStepGroup}" xFrom="-800" xTo="{this.width/2 - firstStepGroup.width/2}" duration="500" easer="{ease}"/>
+            </s:Sequence>
+        </s:Transition>
     </s:transitions>
     <s:layout>
         <s:BasicLayout/>
@@ -3362,7 +3383,7 @@ variables are not required because the locations of these pieces are known.
                       styleName="mainBtnStyle"
                       width="{_standardButtonWidth}"
                       height="32"
-                      right="10"
+                      left="10"
                       label="{_viewResourceConstants.BTN_LABEL_BACK}"
                       enabled="true"
                       click="handleFirstStepBackBtnClick(event)"/>
@@ -3391,7 +3412,7 @@ variables are not required because the locations of these pieces are known.
                       styleName="mainBtnStyle"
                       width="{_standardButtonWidth}"
                       height="32"
-                      right="10"
+                      left="10"
                       label="{_viewResourceConstants.BTN_LABEL_BACK}"
                       enabled="true"
                       click="handleSecondStepBackBtnClick(event)"/>
