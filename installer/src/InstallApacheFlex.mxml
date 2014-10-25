@@ -51,7 +51,7 @@ variables are not required because the locations of these pieces are known.
         <fx:Component className="CacheDialog" >
             <s:TitleWindow title="Download Cache Configuration" width="400" height="130" 
                            backgroundColor="0xDDDDDD" close="closeUp()">
-                <fx:Script>
+                 <fx:Script>
                     <![CDATA[
                         import mx.managers.PopUpManager;
                         
@@ -98,7 +98,7 @@ variables are not required because the locations of these pieces are known.
             </s:TitleWindow>
         </fx:Component>
     </fx:Declarations>
-    <fx:Script><![CDATA[
+     <fx:Script><![CDATA[
         import flash.globalization.LocaleID;
         import flash.globalization.StringTools;
         
@@ -117,7 +117,7 @@ variables are not required because the locations of these pieces are known.
         import spark.events.IndexChangeEvent;
         import spark.events.TextOperationEvent;
         
-        import AntClasses;
+        import AntClasses; AntClasses;
         import org.apache.flex.ant.Ant;
         import org.apache.flex.ant.tags.Checksum;
         import org.apache.flex.ant.tags.Copy;
@@ -1106,7 +1106,7 @@ variables are not required because the locations of these pieces are known.
         
         protected function handleInstallBtnClick(event:MouseEvent):void
         {
-            var airVersionID:String = airVersion.selectedItem.versionID;
+			 var airVersionID:String = airVersion.selectedItem.versionID;
             var flashVersionID:String = flashPlayerVersion.selectedItem.versionID;
             
             log("SDK version " + APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY);
@@ -1126,7 +1126,7 @@ variables are not required because the locations of these pieces are known.
                 else
                     log("Flash Player version " + FLASH_PLAYER_VERSION);
             }
-            
+
             if (flexSDKTxtInput.text == "") {
                 log(_viewResourceConstants.INFO_ENTER_VALID_FLEX_SDK_PATH);
             } else {
@@ -1149,7 +1149,7 @@ variables are not required because the locations of these pieces are known.
             var flashVersionID:String = flashPlayerVersion.selectedItem.versionID;
             
             setXMLVariables(); // as AIR and Flash version may of changed
-           
+            
             if (!legacy)
             {
                 var req:URLRequest = new URLRequest(APACHE_FLEX_BIN_INSTALLER_URL);
@@ -1166,7 +1166,7 @@ variables are not required because the locations of these pieces are known.
             }
         }
         
-        protected function handleFirstStepBackBtnClick(event:MouseEvent):void
+		protected function handleFirstStepBackBtnClick(event:MouseEvent):void
         {
             showDefaultState();
         }
@@ -1175,8 +1175,8 @@ variables are not required because the locations of these pieces are known.
         {
             showDirectoryState();
         }
-        
-        protected function handleFirstStepNextBtnClick(event:MouseEvent):void
+		 
+		protected function handleFirstStepNextBtnClick(event:MouseEvent):void
         {
             // Quick check to see if the selected directory is writable
             try {
@@ -1276,7 +1276,7 @@ variables are not required because the locations of these pieces are known.
             initiateInstallStepsActivity();
             if (currentState != "optionsState")
             {
-                initializeInstallerComponentsDataProvider();
+            initializeInstallerComponentsDataProvider();
             }
             currentState = "directoryState";
         }
