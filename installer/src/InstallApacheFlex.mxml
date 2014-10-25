@@ -674,8 +674,18 @@ variables are not required because the locations of these pieces are known.
                 abortInstallation("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
             }
             
+            _loader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, xmlLoadStatus, false, 0, true);
             _loader.addEventListener(IOErrorEvent.IO_ERROR, xmlError, false, 0, true);
             _loader.addEventListener(Event.COMPLETE, xmlLoaded, false, 0, true);
+        }
+        
+        protected function xmlLoadStatus(event:HTTPStatusEvent):void
+        {
+            if (event.status >= 400)
+            {
+                log("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
+                log("\tServer Status: " + event.status);
+            }
         }
         
         protected function xmlError(event:IOErrorEvent):void
