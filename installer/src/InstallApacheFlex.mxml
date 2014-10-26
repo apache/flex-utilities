@@ -117,7 +117,11 @@ variables are not required because the locations of these pieces are known.
         import spark.events.IndexChangeEvent;
         import spark.events.TextOperationEvent;
         
+        // This force-links all of the ant task handlers into the Installer.
+        // The Installer doesn't use most of them directly but some script
+        // it runs might.
         import AntClasses; AntClasses;
+         
         import org.apache.flex.ant.Ant;
         import org.apache.flex.ant.tags.Checksum;
         import org.apache.flex.ant.tags.Copy;
