@@ -21,8 +21,11 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
-	<s:Panel width="100%" height="100%" title="SkinnableDataContainer" skinClass="skins.TDFPanelSkin">
-		<s:layout><s:HorizontalLayout paddingLeft="8" paddingTop="8" paddingRight="12"/></s:layout>
+	<s:Panel title="SkinnableDataContainer" width="100%" height="100%" >
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
 		
 		<s:VGroup>
 			<s:Label text="Famous Astronauts" fontWeight="bold" fontSize="14"/>
@@ -54,7 +57,7 @@
 				</s:ArrayCollection>
 			</s:SkinnableDataContainer>
 		</s:VGroup>
-		<s:Label color="0x323232" width="200" text="The SkinnableDataContainer is the skinnable version of the DataGroup and
+		<s:Label width="200" text="The SkinnableDataContainer is the skinnable version of the DataGroup and
 while it can hold visual elements, they are often used only to hold data items as children. Data items can be simple data items 
 such String and Number objects, and more complicated data items such as Object and XMLNode objects."/>
 	</s:Panel>

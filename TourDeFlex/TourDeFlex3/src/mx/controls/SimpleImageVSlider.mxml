@@ -17,13 +17,15 @@
   -->
 
 <!-- Simple example to demonstrate the VSlider control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
    
-          private var imageWidth:Number=0;
-          private var imageHeight:Number=0;
+          private var imageWidth:Number = 0;
+          private var imageHeight:Number = 0;
           
           // Event handler function to change the image size.
           private function changeSize():void
@@ -34,28 +36,27 @@
         ]]>
     </fx:Script>
 
-        <mx:Panel id="panel" title="VSlider Control Example" 
-            height="100%" width="100%" 
-            layout="horizontal"
-            paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+        <mx:Panel id="panel" title="VSlider Control Example" layout="horizontal"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
         
             <mx:HBox width="50%">
                 <mx:Image id="logo" source="@Embed('assets/ApacheFlexLogo.png')" 
-                    creationComplete="imageWidth=logo.width; imageHeight=logo.height;" />
+                    creationComplete="imageWidth = logo.width; imageHeight = logo.height; changeSize()" />
             </mx:HBox>
 
             <mx:VBox horizontalAlign="center">
-                <mx:Label color="blue" text="Drag the slider to resize the image."/>
+                <mx:Label text="Drag the slider to resize the image."/>
     
                 <mx:VSlider id="hSlider" 
                     dataTipPlacement="top" 
-                    minimum="0" maximum="100" value="100" 
+                    minimum="0" maximum="100" value="50" 
                     tickColor="black" 
                     snapInterval="1" tickInterval="10" 
                     labels="['0%','100%']" 
                     allowTrackClick="true" 
                     liveDragging="true" 
-                    change="changeSize();"/>
+                    change="changeSize()"/>
             </mx:VBox>
             
         </mx:Panel>

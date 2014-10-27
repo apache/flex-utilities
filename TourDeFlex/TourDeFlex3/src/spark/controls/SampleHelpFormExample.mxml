@@ -19,26 +19,33 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" backgroundColor="haloSilver" fontSize="14">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
-	<s:Form horizontalCenter="0">
-		<s:FormItem label="Enter some text">
-			<s:TextInput/>
-			<s:helpContent>
-				<s:Label text="I've fallen and I can't get up!"/>
-			</s:helpContent>
-		</s:FormItem>
-		<s:FormItem label="Check a box">
-			<s:CheckBox label="option 1"/>
-			<s:CheckBox label="option 2"/>
-			<s:helpContent>
-				<s:Label text="What does it mean?"/>
-				<s:Button label="?" width="30" x="120"/>
-			</s:helpContent>
-		</s:FormItem>
-		<s:FormItem>
-			<s:Button label="Submit!"/>
-		</s:FormItem>
-	</s:Form>
-	
+	<s:Panel title="Form Sample" width="100%" height="100%">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+			
+		<s:Form>
+			<s:FormItem label="Enter some text">
+				<s:TextInput/>
+				<s:helpContent>
+					<s:Label text="I've fallen and I can't get up!"/>
+				</s:helpContent>
+			</s:FormItem>
+			<s:FormItem label="Check a box">
+				<s:CheckBox label="option 1"/>
+				<s:CheckBox label="option 2"/>
+				<s:helpContent>
+					<s:Label text="What does it mean?"/>
+					<s:Button label="?" width="30" x="120"/>
+				</s:helpContent>
+			</s:FormItem>
+			<s:FormItem>
+				<s:Button label="Submit!"/>
+			</s:FormItem>
+		</s:Form>
+
+	</s:Panel>
 </s:Application>

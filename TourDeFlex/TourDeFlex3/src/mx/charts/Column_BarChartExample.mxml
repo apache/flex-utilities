@@ -17,8 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the ColumnChart and BarChart controls. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
-    <fx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+
+     <fx:Script>
         <![CDATA[          
         import mx.collections.ArrayCollection;
 
@@ -42,16 +45,16 @@
 	    <mx:SolidColorStroke id="s3" color="0xFFCC66" weight="2"/>
 	</fx:Declarations>
 
-    <mx:Panel title="ColumnChart and BarChart Controls Example" 
-        height="100%" width="100%" layout="horizontal">
+    <mx:Panel title="ColumnChart and BarChart Controls Example"
+			  paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+			  layout="horizontal" height="100%" width="100%">
         <mx:ColumnChart id="column" 
             height="100%" 
             width="45%" 
             paddingLeft="5" 
             paddingRight="5" 
             showDataTips="true" 
-            dataProvider="{medalsAC}"
-        >                
+            dataProvider="{medalsAC}">                
             <mx:horizontalAxis>
                 <mx:CategoryAxis categoryField="Country"/>
             </mx:horizontalAxis>
@@ -62,22 +65,19 @@
                     yField="Gold" 
                     displayName="Gold"
                     fill="{sc1}"
-                    stroke="{s1}"
-                />
+                    stroke="{s1}" />
                 <mx:ColumnSeries 
                     xField="Country" 
                     yField="Silver" 
                     displayName="Silver"
                     fill="{sc2}"
-                    stroke="{s2}"
-                />
+                    stroke="{s2}" />
                 <mx:ColumnSeries 
                     xField="Country" 
                     yField="Bronze" 
                     displayName="Bronze"
                     fill="{sc3}"
-                    stroke="{s3}"
-                />
+                    stroke="{s3}" />
             </mx:series>
         </mx:ColumnChart>
 
@@ -97,22 +97,19 @@
                     xField="Gold" 
                     displayName="Gold"
                     fill="{sc1}"
-                    stroke="{s1}"
-                />
+                    stroke="{s1}" />
                 <mx:BarSeries 
                     yField="Country" 
                     xField="Silver" 
                     displayName="Silver"
                     fill="{sc2}"
-                    stroke="{s2}"
-                />
+                    stroke="{s2}" />
                 <mx:BarSeries 
                     yField="Country" 
                     xField="Bronze" 
                     displayName="Bronze"
                     fill="{sc3}"
-                    stroke="{s3}"
-                />
+                    stroke="{s3}" />
             </mx:series>
         </mx:BarChart>
 

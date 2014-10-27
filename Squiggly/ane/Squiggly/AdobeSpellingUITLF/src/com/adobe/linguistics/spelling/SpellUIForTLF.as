@@ -23,10 +23,10 @@ package com.adobe.linguistics.spelling
 	import com.adobe.linguistics.spelling.framework.ResourceTable;
 	import com.adobe.linguistics.spelling.framework.SpellingConfiguration;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
-	import com.adobe.linguistics.spelling.ui.IHighlighter;
-	import com.adobe.linguistics.spelling.ui.IWordProcessor;
-	import com.adobe.linguistics.spelling.ui.TLFHighlighter;
-	import com.adobe.linguistics.spelling.ui.TLFWordProcessor;
+	import com.adobe.linguistics.spelling.ui.framework.IHighlighter;
+	import com.adobe.linguistics.spelling.ui.framework.IWordProcessor;
+	import com.adobe.linguistics.spelling.ui.framework.TLFHighlighter;
+	import com.adobe.linguistics.spelling.ui.framework.TLFWordProcessor;
 	import com.adobe.linguistics.utils.TextFilter;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;

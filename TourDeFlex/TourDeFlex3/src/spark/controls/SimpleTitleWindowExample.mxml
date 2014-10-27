@@ -25,9 +25,9 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"  
     			title="Title Window"
-				close="PopUpManager.removePopUp(this);" >
+				close="PopUpManager.removePopUp(this)" >
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[       
 			import mx.managers.PopUpManager;
 			
@@ -55,8 +55,8 @@
 	</s:HGroup>
    
 	<s:HGroup>
-        <s:Button label="OK" click="returnName();"/>
-        <s:Button label="Cancel" click="PopUpManager.removePopUp(this);"/>
+        <s:Button label="OK" click="returnName()"/>
+        <s:Button label="Cancel" click="PopUpManager.removePopUp(this)"/>
 	</s:HGroup>
 
 </s:TitleWindow>  

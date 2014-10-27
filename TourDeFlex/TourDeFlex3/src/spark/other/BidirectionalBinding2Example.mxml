@@ -50,19 +50,16 @@
 		<local:Contact id="contact"/>
 	</fx:Declarations>
 	
-	<s:Panel width="100%" height="100%" skinClass="skins.TDFPanelSkin" title="TabBar Sample with Custom Skin and Bidirectional Binding" >
-		<s:TabBar id="tabs" left="8" y="2" dataProvider="{vs}" skinClass="skins.CustomTabBarSkin" cornerRadius="4"/>
+	<s:Panel width="100%" height="100%" title="TabBar Sample with Bidirectional Binding">
+		
+		<s:layout>
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+		
+		<s:TabBar id="tabs" dataProvider="{vs}" cornerRadius="4"/>
 		<mx:ViewStack id="vs" width="95%" height="85%" left="8" y="23">
 			<s:NavigatorContent label="Contact Info"  width="100%" height="100%">
-				<s:BorderContainer borderColor="0xCC0000" width="100%" height="100%" borderWeight="2" cornerRadius="3" 
-						  dropShadowVisible="true">
-					<!-- This background fill could also be specified in a custom skin to apply to other containers as well -->
-					<s:backgroundFill>
-						<s:LinearGradient rotation="90">
-							<s:GradientEntry color="0xE2E2E2"/>
-							<s:GradientEntry color="0xCC0000" alpha=".5" />
-						</s:LinearGradient>
-					</s:backgroundFill>
+				<s:BorderContainer width="100%" height="100%" dropShadowVisible="false">
 					<mx:Form id="contactForm" defaultButton="{submitBtn}" width="100%" height="100%">
 						<mx:FormItem label="Name:">
 							<s:TextInput id="nameTxt" text="@{contact.name}"/>
@@ -86,14 +83,7 @@
 				</s:BorderContainer>
 			</s:NavigatorContent>
 			<s:NavigatorContent label="Contact List" width="100%" height="100%" >
-				<s:BorderContainer borderColor="0xCC0000" width="100%" height="100%" borderWeight="2" cornerRadius="3" 
-						  dropShadowVisible="true">
-					<s:backgroundFill>
-						<s:LinearGradient rotation="90">
-							<s:GradientEntry color="0xCC0000" />
-							<s:GradientEntry color="0xE2E2E2" />
-						</s:LinearGradient>
-					</s:backgroundFill>
+				<s:BorderContainer width="100%" height="100%" dropShadowVisible="false">
 					<mx:DataGrid id="dg" dataProvider="{contacts}" x="5" y="5"  doubleClickEnabled="true" 
 								 doubleClick="{tabs.selectedIndex=0}" itemClick="dg_itemClickHandler(event)">
 						<mx:columns>

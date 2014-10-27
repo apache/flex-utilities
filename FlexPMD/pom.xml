@@ -95,7 +95,7 @@ limitations under the License.
 		<!-- Flex project versions -->
 		<!-- Plugin versions -->
 
-		<flex-mojos-plugin.version>7.1.0-SNAPSHOT</flex-mojos-plugin.version>
+		<flex-mojos-plugin.version>7.0.1</flex-mojos-plugin.version>
 		<ant-run-plugin.version>1.2</ant-run-plugin.version>
 		<maven-dependency-plugin.version>2.0</maven-dependency-plugin.version>
 	</properties>

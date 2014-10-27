@@ -21,7 +21,7 @@
                 xmlns:s="library://ns.adobe.com/flex/spark"
                 xmlns:mx="library://ns.adobe.com/flex/mx" click="itemrenderer1_clickHandler(event)">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
             import spark.components.supportClasses.GroupBase;
             import spark.effects.Animate;

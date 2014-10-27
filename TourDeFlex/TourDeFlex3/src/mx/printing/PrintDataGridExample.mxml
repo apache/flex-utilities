@@ -18,9 +18,10 @@
 
 <!-- Main application to print a DataGrid control on multiple pages. -->
 
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx" initialize="initData();">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0" initialize="initData()">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
 
 		import mx.core.FlexGlobals;
@@ -120,8 +121,9 @@
         ]]>
     </fx:Script>
 
-    <mx:Panel title="DataGrid Printing Example" height="75%" width="75%"
-        paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel title="DataGrid Printing Example"
+			  paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+			  height="100%" width="100%">
 
         <mx:DataGrid id="myDataGrid" dataProvider="{dgProvider}">
             <mx:columns>
@@ -130,14 +132,14 @@
             </mx:columns>
         </mx:DataGrid>
 
-        <mx:Text width="100%" color="blue"
+        <mx:Text width="100%"
             text="Specify the number of lines and click Fill Grid first. Then you can click Print."/>
 
         <mx:TextInput id="dataItems" text="35"/>
 
         <mx:HBox>
-            <mx:Button id="setDP" label="Fill Grid" click="setdgProvider(int(dataItems.text));"/>
-            <mx:Button id="printDG" label="Print" click="doPrint();"/>
+            <mx:Button id="setDP" label="Fill Grid" click="setdgProvider(int(dataItems.text))"/>
+            <mx:Button id="printDG" label="Print" click="doPrint()"/>
         </mx:HBox>
     </mx:Panel>
 </mx:Application>

@@ -27,8 +27,6 @@
 		<![CDATA[
 			import mx.collections.XMLListCollection;
 			
-			import skins.TDFPanelSkin;
-			
 			[Bindable]
 			private var employees:XMLListCollection;
 			
@@ -44,16 +42,16 @@
 		]]>
 	</fx:Script>
 
-	<s:Panel width="100%" height="100%" title="Custom Item Renderer with Animation" skinClass="skins.TDFPanelSkin">
+	<s:Panel title="Custom Item Renderer with Animation" width="100%" height="100%">
 		<s:layout>
-			<s:HorizontalLayout paddingLeft="100" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
 		</s:layout>
 		<s:DataGroup dataProvider="{employees}" width="300" itemRenderer="renderers.ImageRenderer1">
 			<s:layout>
 				<s:TileLayout horizontalGap="0" verticalGap="0"/>
 			</s:layout>
 		</s:DataGroup>
-		<s:Label color="0x323232" width="200" text="The item renderer on this DataGroup uses the Spark Animate to scale the image
+		<s:Label width="200" text="The item renderer on this DataGroup uses the Spark Animate to scale the image
 when hovered over each item. See the ImageRenderer1.mxml source for more information."/>
 	</s:Panel>
 	

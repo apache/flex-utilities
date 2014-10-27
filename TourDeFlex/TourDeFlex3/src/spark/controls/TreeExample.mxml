@@ -19,8 +19,7 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<fx:Script>
         <![CDATA[
@@ -57,20 +56,18 @@
 		<s:VerticalLayout horizontalAlign="center" />
 	</s:layout>
     
-	<s:Panel title="Tree Control" color="0x000000" 
-			 borderAlpha="0.15" 
-			 width="600">
-		
+	<s:Panel title="Tree Control" width="100%" height="100%">
+
 		<s:layout>
 			<s:VerticalLayout horizontalAlign="center" 
 							  paddingLeft="10" paddingRight="10" 
 							  paddingTop="10" paddingBottom="10"/>
 		</s:layout>
          
-         <s:Label width="100%" color="0x323232" 
+         <s:Label width="100%"
             text="Select a node in the Tree control."/>
 
-        <mx:HDividedBox width="100%" height="100%" color="0x323232">
+        <mx:HDividedBox width="100%" height="100%">
             <mx:Tree id="myTree" width="50%" height="100%" labelField="@label"
                 showRoot="false" dataProvider="{treeData}" change="treeChanged(event)"/>
             <s:TextArea height="100%" width="50%"

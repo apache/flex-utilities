@@ -17,16 +17,19 @@
   -->
 
 <!-- Simple example to demonstrate the NumericStepper control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <mx:Panel title="NumericStepper Control Example" height="75%" width="75%" 
-        paddingTop="10" paddingLeft="10">
+    <mx:Panel title="NumericStepper Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue"
+        <mx:Text width="100%"
             text="Default NumericStepper control with a minimum=0, maximum=10, and stepSize=1."/>
         <mx:NumericStepper/>
 
-        <mx:Text width="100%"  color="blue"
+        <mx:Text width="100%" 
             text="NumericStepper control with a minimum=10, maximum=40, stepSize=0.01, and starting value of 20."/>
 
         <mx:NumericStepper id="ns" 
@@ -35,7 +38,7 @@
             value="20.00" 
             width="65"/>
 
-        <mx:Label  color="blue" text="You selected {ns.value}"/>
+        <mx:Label  text="You selected {ns.value}"/>
 
     </mx:Panel>
 </mx:Application>

@@ -22,7 +22,7 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<s:Panel id="myPanel" title="SkinnableContainer sample" 
-			 width="100%" height="100%" skinClass="skins.TDFPanelSkin">
+			 width="100%" height="100%" >
 		
 		<!-- Set a custom skin for the container to show a gradient background and border -->
 		<s:SkinnableContainer skinClass="skins.CustomSkinnableContainerSkin" 

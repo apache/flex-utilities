@@ -19,34 +19,26 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<fx:Script>
         import mx.controls.Alert;
     </fx:Script>
 	
-	<s:layout>
-		<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" />
-	</s:layout>
-
 	<fx:Declarations>
 		<mx:CurrencyValidator source="{priceUS}" property="text" precision="2" 
         trigger="{myButton}" triggerEvent="click" 
-        valid="Alert.show('Validation Succeeded!');"/>
+        valid="Alert.show('Validation Succeeded!')"/>
 	</fx:Declarations>
         
-	<s:Panel title="CurrencyValidator Example" width="600" height="100%"
-			 color="0x000000" 
-			 borderAlpha="0.15">
+	<s:Panel title="CurrencyValidator Example" width="100%" height="100%">
 		
 		<s:layout>
-			<s:HorizontalLayout horizontalAlign="center" 
-								paddingLeft="10" paddingRight="10" 
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" 
 								paddingTop="10" paddingBottom="10"/>
 		</s:layout>
          
-         <mx:Form color="0x323232">
+         <mx:Form>
             <mx:FormItem label="Enter a U.S. dollar amount: ">
                  <s:TextInput id="priceUS" width="100%"/>
             </mx:FormItem>

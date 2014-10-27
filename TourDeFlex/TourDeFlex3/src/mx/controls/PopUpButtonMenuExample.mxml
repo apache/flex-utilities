@@ -17,9 +17,11 @@
   -->
 
 <!-- PopUpMenuButton control example. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
             import mx.events.*;
             import mx.controls.*;
@@ -41,16 +43,17 @@
 	    </fx:XMLList>
 	</fx:Declarations>
 
-    <mx:Panel title="PopUpMenuButton Control Example" height="100%" width="100%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel title="PopUpMenuButton Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-		<mx:Label width="100%" color="blue"
+		<mx:Label width="100%"
 		    text="Click the down arrow to open the menu."/>
 
         <mx:PopUpMenuButton id="p2" 
             dataProvider="{treeDP2}" 
             labelField="@label"
-            itemClick="itemClickHandler(event);"/>
+            itemClick="itemClickHandler(event)"/>
 
 	</mx:Panel>
 </mx:Application>

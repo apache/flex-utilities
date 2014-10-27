@@ -23,7 +23,7 @@
 <mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
     title="Title Window" x="168" y="86">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[       
             import mx.managers.PopUpManager;
             import mx.controls.Text;
@@ -45,8 +45,8 @@
     </mx:HBox>
 
     <mx:HBox>
-        <mx:Button label="OK" click="returnName();"/>
-        <mx:Button label="Cancel" click="PopUpManager.removePopUp(this);"/>
+        <mx:Button label="OK" click="returnName()"/>
+        <mx:Button label="Cancel" click="PopUpManager.removePopUp(this)"/>
     </mx:HBox>
 
 </mx:TitleWindow>  

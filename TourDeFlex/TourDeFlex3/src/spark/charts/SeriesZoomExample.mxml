@@ -19,8 +19,7 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<fx:Script>
 		<![CDATA[
@@ -56,24 +55,16 @@
 		]]>
 	</fx:Script>
 	
-	<s:layout>
-		<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" />
-	</s:layout>
-	
 	<fx:Declarations>
 		<mx:SeriesZoom id="zoomIn" duration="1000"/>
 		<mx:SeriesZoom id="zoomOut" duration="1000"/>
 	</fx:Declarations>
 	
 	
-	<s:Panel title="Zoom Effect" width="600" height="100%"
-			 color="0x000000" 
-			 borderAlpha="0.15">
+	<s:Panel title="Zoom Effect" width="100%" height="100%">
 		
 		<s:layout>
-			<s:HorizontalLayout horizontalAlign="center" 
-								paddingLeft="10" paddingRight="10" 
-								paddingTop="10" paddingBottom="10"/>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
 		</s:layout>
 		
 		<mx:CandlestickChart id="candlestickchart" height="100%" paddingRight="5" paddingLeft="5" color="0x323232"
@@ -105,9 +96,9 @@
 					 text="Choose a company to view recent stock data."/>
 			
 			<s:RadioButton groupName="stocks" label="View Company A"
-						   selected="true" click="candlestickchart.dataProvider=companyAAC;"/>
+						   selected="true" click="candlestickchart.dataProvider=companyAAC"/>
 			<s:RadioButton groupName="stocks" label="View Company B"
-						   click="candlestickchart.dataProvider=companyBAC;"/>
+						   click="candlestickchart.dataProvider=companyBAC"/>
 		</s:BorderContainer>
 		
 	</s:Panel>

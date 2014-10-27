@@ -17,7 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the Glow effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
 	<fx:Declarations>
 	    <mx:Glow id="glowImage" duration="1000" 
@@ -32,13 +34,15 @@
 	        color="0x0000FF"/>
 	</fx:Declarations>
 
-    <mx:Panel title="Glow Effect Example" width="75%" height="75%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
-
-        <mx:Text width="100%" color="blue"
+    <mx:Panel title="Glow Effect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
+		
+        <mx:Text width="100%"
             text="Click and hold the mouse on the image to see glowImage effect. Release the mouse to see unglowImage effect."/>
             
-        <mx:Image source="@Embed(source='assets/ApacheFlexLogo.png')" 
+        <mx:Image source="@Embed(source='assets/ApacheFlexLogo.png')"
+			width="50%" height="50%"
             mouseDownEffect="{glowImage}" 
             mouseUpEffect="{unglowImage}"/>
         

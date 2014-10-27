@@ -67,9 +67,10 @@
 		}
 	]]></fx:Script>
 	
-	<s:Panel skinClass="skins.TDFPanelSkin" title="Importing Text using TLF and Flex 4" width="100%" height="100%">
+	<s:Panel title="Importing Text using TLF and Flex 4" width="100%" height="100%">
+		
 		<s:layout>
-			<s:HorizontalLayout paddingTop="8" paddingLeft="8" paddingRight="12"/>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
 		</s:layout>
 		
 		<s:VGroup>
@@ -82,7 +83,7 @@
 						textFlow="{TextFlowUtil.importFromXML(textFlowAsXML)}"
 						horizontalCenter="0" verticalCenter="0" />
 		</s:VGroup>
-		<s:Label width="200" color="0x323232" verticalAlign="justify" text="This sample shows how you can use different types of text markup within
+		<s:Label width="200" verticalAlign="justify" text="This sample shows how you can use different types of text markup within
 the Flex 4 components that are based on TLF through an import. This can be especially useful for dynamically loading text
 that is returned from an HTTPService call at runtime for instance."/>
 		

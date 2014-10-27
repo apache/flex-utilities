@@ -21,21 +21,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:local="*" xmlns:layouts="layouts.*"
-			   backgroundColor="0x323232" color="0xFFFFFF"
 			   initialize="init()">
-	
-	<fx:Style>
-
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		
-		
-		s|Application {
-			font-family: main;
-			font-size: 14;
-		}
-		
-	</fx:Style>
 	
 	<fx:Script>
 		<![CDATA[
@@ -94,19 +80,26 @@
 		]]>
 	</fx:Script>
 
-	<s:HGroup verticalAlign="middle" paddingLeft="8" left="50" top="5">
-		<s:Label text="Max Price:"/>
-		<s:HSlider id="priceSlider" minimum="0" maximum="1000" snapInterval="100" value="@{_maxPrice}" change="selectionChange()"/>
-		<mx:Spacer width="20"/>
-		<s:CheckBox label="Camera" selected="@{_camera}" change="selectionChange()"/>
-		<s:CheckBox label="Video" selected="@{_video}" change="selectionChange()"/>
-		<s:CheckBox label="Triband" selected="@{_triband}" change="selectionChange()"/>
-	</s:HGroup>
-	
-	<s:DataGroup dataProvider="{items}" itemRenderer="renderers.PhoneRenderer" top="50" left="0" right="0" horizontalCenter="0">
+	<s:Panel title="Custom Layout Sample" width="100%" height="100%">
+		
 		<s:layout>
-			<layouts:FilteredTileLayout id="filterLayout" filteredItems="{filteredItems}" />
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
 		</s:layout>
-	</s:DataGroup>
-	
+		
+		<s:HGroup>
+			<s:Label text="Max Price:"/>
+			<s:HSlider id="priceSlider" minimum="0" maximum="1000" snapInterval="100" value="@{_maxPrice}" change="selectionChange()"/>
+			<mx:Spacer width="20"/>
+			<s:CheckBox label="Camera" selected="@{_camera}" change="selectionChange()"/>
+			<s:CheckBox label="Video" selected="@{_video}" change="selectionChange()"/>
+			<s:CheckBox label="Triband" selected="@{_triband}" change="selectionChange()"/>
+		</s:HGroup>
+		
+		<s:DataGroup dataProvider="{items}" itemRenderer="renderers.PhoneRenderer" width="100%" height="100%">
+			<s:layout>
+				<layouts:FilteredTileLayout id="filterLayout" filteredItems="{filteredItems}" />
+			</s:layout>
+		</s:DataGroup>
+		
+	</s:Panel>
 </s:Application>

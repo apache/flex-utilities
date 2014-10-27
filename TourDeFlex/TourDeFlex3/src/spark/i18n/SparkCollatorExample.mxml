@@ -21,28 +21,6 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   width="100%" height="100%" creationComplete="matchRB_clickHandler()">
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		s|Label {
-			color: #FFFFFF;
-			font-weight: bold;
-		}
-		#titleL {
-			font-size: 20;
-		}
-		s|ComboBox {
-			alternating-item-colors: #424242;
-		}
-		
-		s|Form {
-			background-color: #424242;
-		}
-		
-		s|List {
-			alternating-item-colors: #424242;
-		}
-	</fx:Style>
 	
 	<fx:Script>
 		<![CDATA[
@@ -114,52 +92,51 @@
 			}
 		]]>
 	</fx:Script>
+	
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
 		<s:SortingCollator id="sortingCollator"/>
 		<s:MatchingCollator id="matchingCollator"/>
 	</fx:Declarations>
-	<s:layout>
-		<s:VerticalLayout/>
-	</s:layout>
 	
-	<s:Scroller id="scroller" width="100%" height="100%">
-		<s:Group id="myGroup">
-			<s:Form id="myForm">
-				<s:Label id="titleL" text="Spark Collator"/>
-				<s:Label text="Customize Collator options and find out the string sorting results: "/>
-				<s:Spacer height="15"/>
-				
-				<s:FormItem label="Collator Type:" toolTip="Please select a Collator type first!">
-					<s:HGroup>
-						<s:RadioButton id="sortRB" groupName="collatorType" label="SortingCollator" click="sortRB_clickHandler()"/>
-						<s:RadioButton id="matchRB" groupName="collatorType" label="MatchingCollator" selected="true" click="matchRB_clickHandler()"/>
-					</s:HGroup>
-				</s:FormItem>
-				<s:FormItem label="Locale:">
-					<s:ComboBox id="localeCB" dataProvider="{_locales}" selectedIndex="0" 
-								change="_collatorInstance.setStyle('locale',localeCB.selectedItem); sortStr()"/>
-				</s:FormItem>
-				<s:FormItem label="Collator Options:" toolTip="Customize below options to see the sorting result.">
-					<s:CheckBox id="ignCaseCB" label="ignoreCase" selected="{_collatorInstance.ignoreCase}" 
-								change="_collatorInstance.ignoreCase = ignCaseCB.selected; sortStr()"/>
-					<s:CheckBox id="ignDiacriticsCB" label="ignoreDiacritics" selected="{_collatorInstance.ignoreDiacritics}" 
-								change="_collatorInstance.ignoreDiacritics = ignDiacriticsCB.selected; sortStr()"/>
-					<s:CheckBox id="ignSymbolsCB" label="ignoreSymbols" selected="{_collatorInstance.ignoreSymbols}" 
-								change="_collatorInstance.ignoreSymbols = ignSymbolsCB.selected; sortStr()"/>
-					<s:CheckBox id="ignKanaTypeCB" label="ignoreKanaType" selected="{_collatorInstance.ignoreKanaType}" 
-								change="_collatorInstance.ignoreKanaType = ignKanaTypeCB.selected; sortStr()"/>
-					<s:CheckBox id="ignCharacterWidthCB" label="ignoreCharacterWidth" selected="{_collatorInstance.ignoreCharacterWidth}" 
-								change="_collatorInstance.ignoreCharacterWidth = ignCharacterWidthCB.selected; sortStr()"/>
-				</s:FormItem>
-				<s:Label text="============================================================================"/>
+	<s:Panel title="Spark Collator" width="100%" height="100%">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+		
+		<s:Form id="myForm" height="100%" width="100%">
+			<s:Label text="Customize Collator options and find out the string sorting results: "/>
+			<s:Spacer height="15"/>
+			
+			<s:FormItem label="Collator Type:" toolTip="Please select a Collator type first!">
 				<s:HGroup>
-					<s:FormItem label="Sorting Result:">
-						<s:List id="sCltResult" dataProvider="{_resultArrColl}" toolTip="Strings that are equal will show within one line."/>
-					</s:FormItem>
+					<s:RadioButton id="sortRB" groupName="collatorType" label="SortingCollator" click="sortRB_clickHandler()"/>
+					<s:RadioButton id="matchRB" groupName="collatorType" label="MatchingCollator" selected="true" click="matchRB_clickHandler()"/>
 				</s:HGroup>
-			</s:Form>
-		</s:Group>
-	</s:Scroller>
-	
+			</s:FormItem>
+			<s:FormItem label="Locale:">
+				<s:ComboBox id="localeCB" dataProvider="{_locales}" selectedIndex="0" 
+							change="_collatorInstance.setStyle('locale',localeCB.selectedItem); sortStr()"/>
+			</s:FormItem>
+			<s:FormItem label="Collator Options:" toolTip="Customize below options to see the sorting result.">
+				<s:CheckBox id="ignCaseCB" label="ignoreCase" selected="{_collatorInstance.ignoreCase}" 
+							change="_collatorInstance.ignoreCase = ignCaseCB.selected; sortStr()"/>
+				<s:CheckBox id="ignDiacriticsCB" label="ignoreDiacritics" selected="{_collatorInstance.ignoreDiacritics}" 
+							change="_collatorInstance.ignoreDiacritics = ignDiacriticsCB.selected; sortStr()"/>
+				<s:CheckBox id="ignSymbolsCB" label="ignoreSymbols" selected="{_collatorInstance.ignoreSymbols}" 
+							change="_collatorInstance.ignoreSymbols = ignSymbolsCB.selected; sortStr()"/>
+				<s:CheckBox id="ignKanaTypeCB" label="ignoreKanaType" selected="{_collatorInstance.ignoreKanaType}" 
+							change="_collatorInstance.ignoreKanaType = ignKanaTypeCB.selected; sortStr()"/>
+				<s:CheckBox id="ignCharacterWidthCB" label="ignoreCharacterWidth" selected="{_collatorInstance.ignoreCharacterWidth}" 
+							change="_collatorInstance.ignoreCharacterWidth = ignCharacterWidthCB.selected; sortStr()"/>
+			</s:FormItem>
+			<s:Label text="============================================================================"/>
+			<s:HGroup>
+				<s:FormItem label="Sorting Result:">
+					<s:List id="sCltResult" dataProvider="{_resultArrColl}" toolTip="Strings that are equal will show within one line."/>
+				</s:FormItem>
+			</s:HGroup>
+		</s:Form>
+		
+	</s:Panel>	
 </s:Application>

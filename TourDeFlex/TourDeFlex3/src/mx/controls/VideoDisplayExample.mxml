@@ -17,21 +17,23 @@
   -->
 
 <!-- Simple example to demonstrate the VideoDisplay control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <mx:Panel title="VideoDisplay Control Example" height="75%" width="75%" 
-        horizontalAlign="center" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="VideoDisplay Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-       <mx:Text width="75%" color="blue"
+       <mx:Text width="75%"
            text="Use the buttons to control the video. The Stop button resets the video to the beginning."/>
 
 		<mx:VideoDisplay id="myVid" height="158" width="211" source="assets/FlexInstaller.mp4" autoPlay="false"/>
 
 		<mx:HBox>
-		    <mx:Button label="Play" click="myVid.play();"/>
-		    <mx:Button label="Pause" click="myVid.pause();"/>
-		    <mx:Button label="Stop" click="myVid.stop();"/>
+		    <mx:Button label="Play" click="myVid.play()"/>
+		    <mx:Button label="Pause" click="myVid.pause()"/>
+		    <mx:Button label="Stop" click="myVid.stop()"/>
 		</mx:HBox>
 
 	</mx:Panel>

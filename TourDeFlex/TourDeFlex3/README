@@ -18,9 +18,9 @@ How to build Tour De Flex using ant (no IDE is required)
 ==========================================================================================
 
 1.  On Linux or Mac un tar/gzip the source distribution:
-	    tar -zxvf apache-flex-tour-de-flex-component-explorer-1.0.tar.gz
+	    tar -zxvf apache-flex-tour-de-flex-component-explorer-1.2.tar.gz
 	Or if on windows unzip 
-		apache-flex-tour-de-flex-component-explorer-1.0.zip
+		apache-flex-tour-de-flex-component-explorer-1.2.zip
 
 2.  In the base directory, run:
         ant compile
@@ -43,14 +43,15 @@ Some other useful ant targets
 There are several other useful ant targets. Note that compile-shell is required if you want
 changes to explorer.xml to take effect.
 
-	 compile-shell   compile explorer shell
-	 compile-mx      compile mx examples
-	 compile-spark   compile first set of spark examples
-	 compile-spark2  compile second set of spark examples
-	 compile-spark3  compile third set of spark examples
- 	 compile-apache  compile apache examples
-	 package-tar     tar up all source files
-	 package-zip     zip up all source files
+	 compile-shell     compile explorer shell
+	 compile-mx        compile mx examples
+	 compile-spark     compile first set of spark examples
+	 compile-spark2    compile second set of spark examples
+	 compile-spark3    compile third set of spark examples
+ 	 compile-apache    compile apache examples
+ 	 compile-squiggly  compile apache squiggly examples
+	 package-tar       tar up all source files
+	 package-zip       zip up all source files
 
 ==========================================================================================
 Compiling a single example

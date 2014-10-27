@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+
+<project name="squiggly_install" default="install" basedir=".">
+    
+    <!-- Required for OSX 10.6 / Snow Leopard Performance. -->
+    <!-- Java 7 on Mac requires OSX 10.7.3 or higher and is 64-bit only -->
+    <!-- local.d32 is set/used in build.properties so this needs to be done first. -->
+    <condition property="local.d32" value="-d32">
+        <and>
+            <os family="windows"/>
+            <equals arg1="${sun.arch.data.model}" arg2="64"/>
+            <equals arg1="${os.arch}" arg2="x86_64"/>
+            <equals arg1="${ant.java.version}" arg2="1.6"/>
+        </and>
+    </condition>
+    	
+    <condition property="isMacOrLinux" value="mac">
+    	<or>
+    		<os family="mac" />
+    		<os family="unix" />
+    	</or>
+    </condition>
+    <condition property="isWindows" value="windows">
+        <os family="windows" />
+    </condition>
+        	
+	<property environment="env"/>
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
+        <isset property="env.FLEX_HOME" />
+    </condition>
+
+    <property file="${FLEX_HOME}/local.properties"/>
+    <property file="${FLEX_HOME}/build.properties"/>
+    <property file="${basedir}/${bundle}.properties"/>
+
+	<property name="download.dir" value="${FLEX_HOME}/in"/>
+	<property name="unpack.dir" value="${FLEX_HOME}/squiggly"/>
+	<property name="mirror.url" value="http://flex.apache.org/single-mirror-url.cgi" />
+	
+    <property name="squiggly.url.folder" value="flex/squiggly/1.1" />
+   
+    <target name="file-setup-win" if="isWindows">
+    	<property name="squiggly.url.file" value="apache-flex-squiggly-1.1-bin.zip" />
+    	<property name="squiggly.url.md5" value="34a0d8d445f8f1307cad35e25d1377bd" />
+    </target>
+	
+    <target name="file-setup-unix" if="isMacOrLinux">
+    	<property name="squiggly.url.file" value="apache-flex-squiggly-1.1-bin.tar.gz" />
+    	<property name="squiggly.url.md5" value="ea03691ec15f625c5281e0d01dcc9570" />
+    </target>
+
+    <target name="install" depends="file-setup-win,file-setup-unix,squiggly-download-unpack" description="Adds squiggly to an Apache Flex SDK">
+        <delete dir="${download.dir}" />
+        <echo>Squiggly installed</echo>
+    </target>
+    
+    <target name="squiggly-download-unpack" description="Downloads squiggly and copies into the Apache Flex SDK">
+        <mkdir dir="${download.dir}"/>
+    	
+    	<get src="${mirror.url}" dest="${download.dir}/mirror.txt" />
+    	<replace file="${download.dir}/mirror.txt" token="&lt;p&gt;" />
+    	<replace file="${download.dir}/mirror.txt" token="&lt;/p&gt;" />
+    	<loadfile property="squiggly.url.server" srcFile="${download.dir}/mirror.txt" />
+    	
+    	<echo>Downloading ${squiggly.url.server}/${squiggly.url.folder}/${squiggly.url.file}</echo>
+        
+    	<antcall target="download-check-md5">
+            <param name="domain" value="${squiggly.url.server}" />
+            <param name="folder" value="${squiggly.url.folder}" />
+            <param name="file" value="${squiggly.url.file}" />
+            <param name="dest" value="${download.dir}/${squiggly.url.file}"/>
+			<param name="failmessage" value="Squiggly download failed" />
+			<param name="md5" value="${squiggly.url.md5}" />
+        </antcall>
+    	
+    	<mkdir dir="${unpack.dir}"/>
+    	<antcall target="files-unzip" />
+    	<antcall target="files-untar" />
+    </target>
+			
+    <target name="files-unzip" if="isWindows">
+    	<unzip dest="${unpack.dir}">
+    		<fileset file="${download.dir}/${squiggly.url.file}" />
+    	</unzip>
+    </target>
+	
+    <target name="files-untar" if="isMacOrLinux">
+    	<untar dest="${unpack.dir}" compression="gzip">
+    		<fileset file="${download.dir}/${squiggly.url.file}" />
+    	</untar>
+    </target>
+
+    <target name="download-check-md5" description="Downloads file, and verifies checksum.">     
+    	<tstamp />
+    	<property name="ts" value="${DSTAMP}${TSTAMP}" />
+        <get src="${domain}/${folder}/${file}?ts=${ts}" dest="${dest}" verbose="true" />
+        <antcall target="check-md5" />
+    </target>
+
+    <target name="check-md5" description="Verifies MD5 checksum, and fails if checksum doesn't match">
+        <echo>Checking ${dest} matches ${md5}</echo>
+        <checksum file="${dest}" algorithm="MD5" verifyproperty="md5.failed" property="${md5}" />
+        <fail message="${failmessage}">
+            <condition>
+                <equals arg1="${md5.failed}" arg2="false" />
+            </condition>
+        </fail>
+    </target>
+</project>

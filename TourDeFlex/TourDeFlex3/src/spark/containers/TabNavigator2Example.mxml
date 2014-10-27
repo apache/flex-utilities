@@ -49,7 +49,7 @@
 		<s:ArrayCollection id="contacts"/>
 	</fx:Declarations>
 	
-	<s:Panel width="100%" height="100%" skinClass="skins.TDFPanelSkin" title="TabBar Sample with Custom Skin and Bidirectional Binding" >
+	<s:Panel title="TabBar Sample with Custom Skin and Bidirectional Binding" width="100%" height="100%">
 		<s:TabBar id="tabs" left="8" y="2" dataProvider="{vs}" skinClass="skins.CustomTabBarSkin" cornerRadius="4"/>
 		<mx:ViewStack id="vs" width="95%" height="85%" left="8" y="23">
 			<s:NavigatorContent label="Contact Info"  width="100%" height="100%">

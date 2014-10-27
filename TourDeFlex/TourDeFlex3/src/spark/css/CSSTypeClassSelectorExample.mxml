@@ -43,30 +43,32 @@
 		}
 	</fx:Style>
 	
-	<s:Panel title="Advanced CSS: Type+Class Selector Sample" height="100%" width="100%"
-			 styleName="blueTheme" skinClass="skins.TDFPanelSkin">
-		<s:HGroup horizontalCenter="0" top="15">
-			<s:Label width="270" color="0x323232" text="This Panel has a styleName, but the Lists and Panel have some different styles defined in a Type+Class selector. See the style section for the styles applied."/>
-			<s:ComboBox selectedIndex="0">
-				<s:ArrayCollection source="[Monday,Tuesday,Wednesday,Thursday,Friday]"/>
-			</s:ComboBox>		
-			<s:VGroup horizontalCenter="0" top="8">
-				<s:Label text="Text:"/>
-				<s:TextInput text="some text" styleName="blueTheme"/>
-				<s:Label text="Units:"/>
-				<s:NumericStepper styleName="blueTheme"/>
-				<s:List id="carList" selectedIndex="2" styleName="blueTheme">
-					<s:dataProvider>
-						<mx:ArrayCollection source="[Civic, M3, Prius, Blazer, Tahoe]" />
-					</s:dataProvider>
-				</s:List>
-			</s:VGroup>
-			<s:List id="fruitList" selectedIndex="2" styleName="greenTheme">
+	<s:Panel title="Advanced CSS: Type+Class Selector Sample" height="100%" width="100%" styleName="blueTheme">
+		
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+		
+		<s:Label width="270" text="This Panel has a styleName, but the Lists and Panel have some different styles defined in a Type+Class selector. See the style section for the styles applied."/>
+		<s:ComboBox selectedIndex="0">
+			<s:ArrayCollection source="[Monday,Tuesday,Wednesday,Thursday,Friday]"/>
+		</s:ComboBox>		
+		<s:VGroup horizontalCenter="0" top="8">
+			<s:Label text="Text:"/>
+			<s:TextInput text="some text" styleName="blueTheme"/>
+			<s:Label text="Units:"/>
+			<s:NumericStepper styleName="blueTheme"/>
+			<s:List id="carList" selectedIndex="2" styleName="blueTheme">
 				<s:dataProvider>
-					<mx:ArrayCollection source="[Apples,Bananas,Grapes]" />
+					<mx:ArrayCollection source="[Civic, M3, Prius, Blazer, Tahoe]" />
 				</s:dataProvider>
 			</s:List>
-		</s:HGroup>
+		</s:VGroup>
+		<s:List id="fruitList" selectedIndex="2" styleName="greenTheme">
+			<s:dataProvider>
+				<mx:ArrayCollection source="[Apples,Bananas,Grapes]" />
+			</s:dataProvider>
+		</s:List>
 	</s:Panel>
 
 </s:Application>

@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the HScrollBar control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
- 
-     <fx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+
+      <fx:Script>
         <![CDATA[
     
             import mx.events.ScrollEvent;
@@ -37,19 +39,20 @@
         ]]>
     </fx:Script> 
   
-    <mx:Panel id="panel" title="HScrollBar Control Example" height="75%" width="75%" 
-        paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel id="panel" title="HScrollBar Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
         
-        <mx:Label width="100%" color="blue"
+        <mx:Label width="100%"
            text="Click on the scroll bar to view its properties."/> 
         
         <mx:HScrollBar id="bar" width="100%" 
             minScrollPosition="0" maxScrollPosition="{panel.width - 20}" 
             lineScrollSize="50" pageScrollSize="100" 
-            scroll="myScroll(event);" 
+            scroll="myScroll(event)" 
             repeatDelay="1000" repeatInterval="500" />
           
-        <mx:TextArea height="100%" width="100%" id="showPosition" color="blue" />
+        <mx:TextArea height="100%" width="100%" id="showPosition" />
   
     </mx:Panel>  
 </mx:Application>

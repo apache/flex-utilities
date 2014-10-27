@@ -26,8 +26,6 @@
 		<![CDATA[
 			import mx.events.ScrollEvent;
 			
-			import skins.TDFPanelSkin;
-			
 			private function vbarScroll():void {
 				log.text = "VScrollBar properties summary:" + '\n' +
 					"------------------------------------" + '\n' +
@@ -54,10 +52,13 @@
 			}
 		]]>
 	</fx:Script> 
-	<s:Panel width="100%" height="100%" title="VScrollBar and HScrollBar Sample" skinClass="skins.TDFPanelSkin">
+	
+	<s:Panel title="VScrollBar and HScrollBar Sample" width="100%" height="100%">
+		
 		<s:layout>
-			<s:HorizontalLayout paddingLeft="5" paddingRight="5" paddingTop="5"/>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
 		</s:layout>
+		
 		<s:VGroup>
 			<s:Label 
 				width="100%" 
@@ -77,7 +78,7 @@
 						<s:LinearGradient rotation="90">
 							<s:GradientEntry color="#6191c3"/>
 							<s:GradientEntry color="#6191c3"/>
-							<s:GradientEntry color="#323232" alpha=".3"/>
+							<s:GradientEntry alpha=".3"/>
 						</s:LinearGradient>
 					</s:fill>
 				</s:Rect>
@@ -88,7 +89,7 @@
 		<s:VGroup width="200">
 			<s:TextArea id="log" editable="false" height="88"/>	
 			
-			<s:Label color="0x323232" width="188" text="The ScrollBar controls (HScrollBar and VScrollBar) can be used stand-alone, but typically you would combine it as part of 
+			<s:Label text="The ScrollBar controls (HScrollBar and VScrollBar) can be used stand-alone, but typically you would combine it as part of 
 another group of components to provide scrolling functionality. "/>	
 		</s:VGroup>
 		

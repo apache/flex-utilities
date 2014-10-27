@@ -17,8 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the BubbleChart control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
-    <fx:Script>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
+
+     <fx:Script>
         <![CDATA[        
         import mx.collections.ArrayCollection;
 
@@ -34,11 +37,13 @@
 
 	<fx:Declarations>
 		<!-- Define custom color and line style for the bubbles. -->
-    	<mx:SolidColor id="sc1" color="blue" alpha=".3"/>
-    	<mx:SolidColorStroke id="stroke1" color="blue" weight="1"/>
+    	<mx:SolidColor id="sc1" alpha=".3"/>
+    	<mx:SolidColorStroke id="stroke1" weight="1"/>
 	</fx:Declarations>
 
-    <mx:Panel title="BubbleChart Control Example" height="100%" width="100%">
+    <mx:Panel title="BubbleChart Control Example"
+			  paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+			  height="100%" width="100%">
         <mx:BubbleChart id="bubblechart" 
             height="100%" width="100%"
             paddingRight="5" paddingLeft="5" 
@@ -51,8 +56,7 @@
                     yField="Expenses" 
                     radiusField="Amount"
                     fill="{sc1}"
-                    stroke="{stroke1}"
-                />
+                    stroke="{stroke1}" />
             </mx:series>            
         </mx:BubbleChart>            
         <mx:Legend dataProvider="{bubblechart}"/>            

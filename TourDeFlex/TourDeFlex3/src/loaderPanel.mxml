@@ -17,9 +17,9 @@
       limitations under the License.
   -->
 
-<mx:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
-		  horizontalAlign="center" headerHeight="10" dropShadowVisible="false">
-   <fx:Script>
+<mx:Box xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="100%" height="100%">
+    <fx:Script>
      <![CDATA[
      
 	public function loadApp(swfApp:String):void
@@ -30,6 +30,6 @@
     ]]>
   </fx:Script>
 
-<mx:SWFLoader id="myLoader" width="100%" height="100%" />
+<mx:SWFLoader id="myLoader" width="100%" height="100%"  horizontalAlign="center" verticalAlign="middle" />
 
-</mx:Panel>
+</mx:Box>

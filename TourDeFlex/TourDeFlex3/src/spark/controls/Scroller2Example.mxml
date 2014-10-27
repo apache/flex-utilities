@@ -41,43 +41,43 @@
 	<!-- you want to mark the children of the viewport as focusable so you're able to tab to them, 
 	but if you don't want the container itself to be focusable then you must turn tabEnabled off on it -->
 	
-	<s:Panel width="100%" height="100%" 
-			 skinClass="skins.TDFPanelSkin" 
-			 title="Scrollers and Tabbing">
+	<s:Panel title="Scrollers and Tabbing" width="100%" height="100%">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
 		
 		<!-- The fields are tab-able within the VGroup container -->
-		<s:HGroup horizontalCenter="0" top="10">
-			<s:VGroup left="0" horizontalAlign="center" width="20%">
-				<s:BitmapImage id="img" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
-				<s:Label text="Item For Sale"/>
+		<s:VGroup left="0" horizontalAlign="center" width="20%">
+			<s:BitmapImage id="img" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
+			<s:Label text="Item For Sale"/>
+		</s:VGroup>
+		<s:Scroller tabEnabled="true" hasFocusableChildren="true">
+			<s:VGroup>
+				<s:Label text="First Name:"/>
+				<s:TextInput id="firstName" text="firstname" color="#959494" change="txtChangeHandler(event)"/>
+				<s:Label text="Last Name:"/>
+				<s:TextInput id="lastName" text="lastname" color="#959494" change="txtChangeHandler(event)"/>
+				<s:Label text="Email:"/>
+				<s:TextInput id="emailAdd" text="email" color="#959494" change="txtChangeHandler(event)"/>
 			</s:VGroup>
-			<s:Scroller tabEnabled="true" hasFocusableChildren="true">
-				<s:VGroup>
-					<s:Label text="First Name:"/>
-					<s:TextInput id="firstName" text="firstname" color="#959494" change="txtChangeHandler(event)"/>
-					<s:Label text="Last Name:"/>
-					<s:TextInput id="lastName" text="lastname" color="#959494" change="txtChangeHandler(event)"/>
-					<s:Label text="Email:"/>
-					<s:TextInput id="emailAdd" text="email" color="#959494" change="txtChangeHandler(event)"/>
-				</s:VGroup>
-			</s:Scroller>
-			
-			<!-- Note: The scroller container automatically sets the clipAndEnableScrolling to false for
-			containers within it. See 'Controlling Viewport' sample under 'Coding Techniques' --> 
-			
-			<s:Scroller hasFocusableChildren="true" tabEnabled="false">
-				<s:VGroup width="200" height="200"> 
-					<s:Label text="Enter item name:"/>
-					<s:TextInput id="itemNameTxt" text="image-name" width="100%" color="#959494" change="txtChangeHandler(event)"/>
-					<s:Label text="Enter description of your item:"/>
-					<s:TextArea id="itemDescTxt" text="title" color="#959494" change="txtChangeHandler(event)"/>
-				</s:VGroup>
-			</s:Scroller>	
-			<s:Label right="10" width="180" verticalAlign="justify"
-						  text="If you have items within a Scroller that need to be tabbed to, you can
+		</s:Scroller>
+		
+		<!-- Note: The scroller container automatically sets the clipAndEnableScrolling to false for
+		containers within it. See 'Controlling Viewport' sample under 'Coding Techniques' --> 
+		
+		<s:Scroller hasFocusableChildren="true" tabEnabled="false">
+			<s:VGroup width="200" height="200"> 
+				<s:Label text="Enter item name:"/>
+				<s:TextInput id="itemNameTxt" text="image-name" width="100%" color="#959494" change="txtChangeHandler(event)"/>
+				<s:Label text="Enter description of your item:"/>
+				<s:TextArea id="itemDescTxt" text="title" color="#959494" change="txtChangeHandler(event)"/>
+			</s:VGroup>
+		</s:Scroller>	
+		<s:Label right="10" width="180" verticalAlign="justify"
+					  text="If you have items within a Scroller that need to be tabbed to, you can
 need to set hasFocusableChildren to true. If you do not want the container itself to be tab enabled, 
 then you must set tabEnabled to false, such as shown here."/>
-		</s:HGroup>
 	</s:Panel>
 </s:Application>
 
