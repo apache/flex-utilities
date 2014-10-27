@@ -1590,7 +1590,7 @@ variables are not required because the locations of these pieces are known.
 				}
             } else {
 				updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.COMPLETE);
-				log("Unable to verify MD5 as MD5 is not valid. Trying to continue.");
+				log(_viewResourceConstants.INFO_VERIFY_FLEX_SDK_DONE);
             }
             
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.ACTIVE);
