@@ -1576,17 +1576,21 @@ variables are not required because the locations of these pieces are known.
         
         protected function uncompressApacheFlexSDK():void
         {
-            if (!_md5CompareUtil.fileIsVerified) {
-                updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.ERROR);
-                
-                log(_viewResourceConstants.ERROR_VERIFY_FLEX_SDK);
-                
-                abortInstallation(_viewResourceConstants.ERROR_VERIFY_FLEX_SDK);
-                return;
+            if (_md5CompareUtil.validMD5) {
+				if (!_md5CompareUtil.fileIsVerified) {
+	                updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.ERROR);
+	                
+	                log(_viewResourceConstants.ERROR_VERIFY_FLEX_SDK);
+	                
+	                abortInstallation(_viewResourceConstants.ERROR_VERIFY_FLEX_SDK);
+	                return;
+				} else {
+	                updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.COMPLETE);      
+	                log(_viewResourceConstants.INFO_VERIFY_FLEX_SDK_DONE);
+				}
             } else {
-                updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.COMPLETE);
-                
-                log(_viewResourceConstants.INFO_VERIFY_FLEX_SDK_DONE);
+				updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.COMPLETE);
+				log("Unable to verify MD5 as MD5 is not valid. Trying to continue.");
             }
             
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.ACTIVE);

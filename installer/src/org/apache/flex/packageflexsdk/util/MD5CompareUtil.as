@@ -137,6 +137,13 @@ public class MD5CompareUtil extends EventDispatcher
 	{
 		return _fileIsVerified;
 	}
+	
+	private var _validMD5:Boolean;
+
+	public function get validMD5():Boolean
+	{
+		return _validMD5;
+	}
 
 	//--------------------------------------------------------------------------
 	//
@@ -204,6 +211,9 @@ public class MD5CompareUtil extends EventDispatcher
 			_remoteMD5Value = _remoteMD5Value.split("\n")[0];
 			_remoteMD5Value = _remoteMD5Value.split("\r")[0];
 			
+			// Valid MD5 hashes are 32 hexidecimal characters
+			_validMD5 = (_remoteMD5Value.search(new RegExp("[a-fA-F0-9]{32}")) == 0);
+
 			compareSignatures();
 		}
 		else
