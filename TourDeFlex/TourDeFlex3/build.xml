@@ -441,13 +441,13 @@
 	<property name="download.dir" value="temp"/>
 	<property name="unpack.dir" value="squiggly"/>
 	<property name="mirror.url" value="http://flex.apache.org/single-mirror-url.cgi" />
-    <property name="squiggly.folder" value="flex/squiggly/1.0" />
+    <property name="squiggly.folder" value="flex/squiggly/1.1" />
  
-	<condition property="squiggly.file" value="apache-flex-squiggly-1.0-bin.zip">
+	<condition property="squiggly.file" value="apache-flex-squiggly-1.1-bin.zip">
     	<os family="windows" />
     </condition>
 	
-    <condition property="squiggly.file" value="apache-flex-squiggly-1.0-bin.tar.gz">
+    <condition property="squiggly.file" value="apache-flex-squiggly-1.1-bin.tar.gz">
     	<or>
     		<os family="mac" />
     		<os family="unix" />
@@ -455,12 +455,13 @@
     </condition>
 	
 	<target name="compile-squiggly" description="compile apache squiggly examples" depends="squiggly-download">
+		<compile-mxml example="/apache/Squiggly1_1"/>
 		<compile-mxml-libs example="/apache/squiggly/SpellingExample"/>
 		<compile-mxml-libs example="/apache/squiggly/SpellingExExample"/>
 	</target>
 	
     <target name="squiggly-check" description="Checks if Squiggly has been downloaded.">
-        <available file="${basedir}/libs/ApacheflexSpellingEngine.swc" property="sqigggly.present"/>
+        <available file="${basedir}/libs/ApacheFlexSpellingEngine.swc" property="sqigggly.present"/>
     </target>
         	
     <target name="squiggly-download" depends="squiggly-check" unless="sqigggly.present" description="Downloads squiggly SDK">
@@ -477,7 +478,7 @@
             dest="${download.dir}/${squiggly.file}" 
             verbose="true"/>
     	
-    	<!-- TOSO upzip on windows -->
+    	<!-- TODO upzip on windows -->
     	<mkdir dir="${unpack.dir}"/>
     	<untar dest="${unpack.dir}" src="${download.dir}/${squiggly.file}" compression="gzip" />
     	
