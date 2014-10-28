@@ -69,21 +69,23 @@
 			if (parameters.hasOwnProperty("app")) {
 				var application:String = parameters.app;
 				var source:String = explorerTree..node.(hasOwnProperty("@app") && @app == application).@src;
-				loadApp(application, source);
+				loadApp(application, source, false);
 				openNode(application);
 			}
 			else {
-				loadApp("Welcome", null);
+				loadApp("Welcome", null, false);
 			}
 		}
 
         private function treeChanged(event:Event):void
         {
             var nodeApp:String = compLibTree.selectedItem.@app;
+			var thirdParty:Boolean = compLibTree.selectedItem.hasOwnProperty("@thirdParty")
+				&& compLibTree.selectedItem.@thirdParty == "true";
 			
             if (nodeApp != null && nodeApp != "")
             {
-				loadApp(nodeApp, compLibTree.selectedItem.@src);
+				loadApp(nodeApp, compLibTree.selectedItem.@src, thirdParty);
             }
             else
             {
@@ -91,7 +93,7 @@
             }
         }
 			
-		private function loadApp(application:String, source:String):void
+		private function loadApp(application:String, source:String, thirdParty:Boolean):void
 		{
 			if (application.indexOf(".swf") > 0) {
 				swfLoader.loadApp(application);
@@ -99,7 +101,12 @@
 			else {
 				swfLoader.loadApp(application + ".swf");
 			}
-            vs.loadSource(application, source);
+			if (thirdParty) {
+				vs.thirdPartyWarning();
+			}
+			else {
+            	vs.loadSource(application, source);
+			}
 		}
 			
 		private function gotoHome(event:Event):void
