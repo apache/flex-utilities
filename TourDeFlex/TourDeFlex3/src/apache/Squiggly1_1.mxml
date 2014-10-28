@@ -29,7 +29,7 @@
 			<s:Image source="@Embed('/assets/ApacheFlexLogo.png')" width="50" height="50" />
 			<s:VGroup height="100%" verticalAlign="middle">
 				<s:Label text="Apache Flex Squiggly 1.1" fontSize="20" fontWeight="bold" />
-				<s:Label text="Released Oct 28, 2013" />	
+				<s:Label text="Released Oct 28, 2014" />	
 			</s:VGroup>	
 		</s:HGroup>
 		<s:RichText width="100%">
