@@ -26,6 +26,6 @@
 		 width="100%" height="100%">
 
  	<s:RichText width="100%" height="100%">
-		<s:p>This example or component has been developed by a 3rd party and is hosted outside of the Tour De Flex site and may contain links to non ASF sites. It's code may not be Open Source or may be under a license other than the Apache license so please check carefully before using it. Neither the ASF or the Apache Flex PMC can endorse or recommend using this example for legal reasons but you may still find it useful.</s:p>
+		<s:p>This example or component has been developed by a 3rd party and is hosted outside of the Tour De Flex site and may contain links to non ASF sites. It's code may not be Open Source or may be under a license other than the Apache license so please check carefully before using it. Neither the ASF or the Apache Flex PMC can endorse or recommend using this example but you may still find it useful.</s:p>
 	</s:RichText>
 </mx:VBox>
