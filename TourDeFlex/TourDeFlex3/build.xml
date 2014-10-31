@@ -498,6 +498,24 @@
     	<unzip dest="${unpack.dir}" src="${download.dir}/${squiggly.file}" />
 	</target>
 	
+	<target name="copy-squiggly-dicts">
+		<!-- So squiggly works in Tour De Flex app -->
+		<mkdir dir="${basedir}/dictionaries"/>
+		<copy todir="${basedir}/dictionaries">
+			<fileset dir="${unpack.dir}/dictionaries/">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+		<!-- So squiggly works stand alone -->
+		<mkdir dir="${basedir}/src/apache/squiggly/dictionaries"/>
+		<copy todir="${basedir}/src/apache/squiggly/dictionaries/">
+			<fileset dir="${unpack.dir}/dictionaries/">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+	
     <target name="squiggly-download" depends="squiggly-check" unless="sqigggly.present" description="Downloads squiggly SDK">
     	
     	<mkdir dir="${download.dir}"/>
@@ -522,21 +540,7 @@
     		</fileset>
     	</copy>
     	
-    	<!-- So squiggly works in Tour De Flex app -->
-    	<mkdir dir="dictionaries"/>
-    	<copy todir="dictionaries">
-    		<fileset dir="${unpack.dir}/dictionaries">
-    			<include name="*.*" />
-    		</fileset>
-    	</copy>
-    	
-    	<!-- So squiggly works stand alone -->
-    	<mkdir dir="dictionaries"/>
-    	<copy todir="dictionaries">
-    		<fileset dir="${unpack.dir}/dictionaries">
-    			<include name="*.*" />
-    		</fileset>
-    	</copy>
+		<ant target="copy-squiggly-dicts" />
     </target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
@@ -576,6 +580,9 @@
                 <include name="**/*.xml" />
             	<exclude name="**/*.swf" />
             	<exclude name="installer.xml" />
+            	<exclude name="squiggly" />
+            	<exclude name="dictionaries" />
+            	<exclude name="src/apache/squiggly/dictionaries" />
              </tarfileset>
          </tar>
 	</target>
@@ -607,6 +614,9 @@
                 <include name="**/*.xml" />
                 <exclude name="**/*.swf" />
             	<exclude name="installer.xml" />
+            	<exclude name="squiggly" />
+            	<exclude name="dictionaries" />
+            	<exclude name="src/apache/squiggly/dictionaries" />
              </fileset>
          </zip>
 	</target>
@@ -615,5 +625,8 @@
     	<delete>
     		<fileset dir="${basedir}" includes="**/*.swf" />
     	</delete>
+    	<delete dir="${basedir}/squiggly" />
+    	<delete dir="${basedir}/dictionaries" />
+    	<delete dir="${basedir}/src/apache/squiggly/dictionaries" />
     </target>
 </project>
