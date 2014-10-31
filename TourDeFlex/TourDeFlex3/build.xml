@@ -67,16 +67,36 @@
 		</sequential>
 	</macrodef>
 	
-    <macrodef name="compile-mxml-libs">
+    <macrodef name="compile-mxml-squiggly-mx-libs">
     	 <attribute name="example"/>
         
         <sequential>
    			<mxmlc file="${basedir}/src/@{example}.mxml"
             	output="${basedir}/src/@{example}.swf" fork="true" failonerror="true">
 				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
-   	            <compiler.library-path dir="${basedir}/libs" append="true">
-   	                <include name="*.swc" />
-   	            </compiler.library-path>
+   	            <compiler.include-libraries dir="${basedir}/libs" append="true">
+   	            	<include name="ApacheFlexLinguisticUtils.swc" />
+   	            	<include name="ApacheflexSpellingEngine.swc" />
+   	            	<include name="ApacheFlexSpellingFramework.swc" />
+   	            	<include name="ApacheFlexSpellingUI.swc" />
+   	            </compiler.include-libraries>
+			</mxmlc>
+		</sequential>
+	</macrodef>
+	
+    <macrodef name="compile-mxml-squiggly-spark-libs">
+    	 <attribute name="example"/>
+        
+        <sequential>
+   			<mxmlc file="${basedir}/src/@{example}.mxml"
+            	output="${basedir}/src/@{example}.swf" fork="true" failonerror="true">
+				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+   	            <compiler.include-libraries dir="${basedir}/libs" append="true">
+   	            	<include name="ApacheFlexLinguisticUtils.swc" />
+   	            	<include name="ApacheflexSpellingEngine.swc" />
+   	            	<include name="ApacheFlexSpellingFramework.swc" />
+   	            	<include name="ApacheFlexSpellingUIEx.swc" />
+   	            </compiler.include-libraries>
 			</mxmlc>
 		</sequential>
 	</macrodef>	
@@ -443,6 +463,10 @@
 	<property name="mirror.url" value="http://flex.apache.org/single-mirror-url.cgi" />
     <property name="squiggly.folder" value="flex/squiggly/1.1" />
  
+	<condition property="isWindows" value="true">
+    	<os family="windows" />
+    </condition>
+
 	<condition property="squiggly.file" value="apache-flex-squiggly-1.1-bin.zip">
     	<os family="windows" />
     </condition>
@@ -456,14 +480,24 @@
 	
 	<target name="compile-squiggly" description="compile apache squiggly examples" depends="squiggly-download">
 		<compile-mxml example="/apache/Squiggly1_1"/>
-		<compile-mxml-libs example="/apache/squiggly/SpellingExample"/>
-		<compile-mxml-libs example="/apache/squiggly/SpellingExExample"/>
+		<compile-mxml-squiggly-mx-libs example="/apache/squiggly/SpellingExample"/>
+		<compile-mxml-squiggly-spark-libs example="/apache/squiggly/SpellingExExample"/>
 	</target>
 	
     <target name="squiggly-check" description="Checks if Squiggly has been downloaded.">
         <available file="${basedir}/libs/ApacheFlexSpellingEngine.swc" property="sqigggly.present"/>
     </target>
-        	
+        
+	<target name="squiggly-untar" unless="isWindows">
+    	<mkdir dir="${unpack.dir}"/>
+    	<untar dest="${unpack.dir}" src="${download.dir}/${squiggly.file}" compression="gzip" />
+	</target>
+		
+	<target name="squiggly-unzip" if="isWindows">
+    	<mkdir dir="${unpack.dir}"/>
+    	<unzip dest="${unpack.dir}" src="${download.dir}/${squiggly.file}" />
+	</target>
+	
     <target name="squiggly-download" depends="squiggly-check" unless="sqigggly.present" description="Downloads squiggly SDK">
     	
     	<mkdir dir="${download.dir}"/>
@@ -477,10 +511,9 @@
         <get src="${squiggly.url}/${squiggly.folder}/${squiggly.file}" 
             dest="${download.dir}/${squiggly.file}" 
             verbose="true"/>
-    	
-    	<!-- TODO upzip on windows -->
-    	<mkdir dir="${unpack.dir}"/>
-    	<untar dest="${unpack.dir}" src="${download.dir}/${squiggly.file}" compression="gzip" />
+
+    	<ant target="squiggly-untar" />
+    	<ant target="squiggly-unzip" />
     	
     	<mkdir dir="libs"/>
     	<copy todir="libs">
@@ -489,6 +522,15 @@
     		</fileset>
     	</copy>
     	
+    	<!-- So squiggly works in Tour De Flex app -->
+    	<mkdir dir="dictionaries"/>
+    	<copy todir="dictionaries">
+    		<fileset dir="${unpack.dir}/dictionaries">
+    			<include name="*.*" />
+    		</fileset>
+    	</copy>
+    	
+    	<!-- So squiggly works stand alone -->
     	<mkdir dir="dictionaries"/>
     	<copy todir="dictionaries">
     		<fileset dir="${unpack.dir}/dictionaries">
@@ -521,7 +563,7 @@
             	<include name="src/favicon.ico" />
                 <include name="src/index.html" />
                 <include name="src/explorer.xml" />
-                <include name="src/AC_OETags.js" />
+                <include name="src/swfobject.js" />
                 <include name="**/*.mxml" />
                 <include name="**/*.as" />
                 <include name="**/*.jpg" />
@@ -552,7 +594,7 @@
             	<include name="src/favicon.ico" />
                 <include name="src/index.html" />
                 <include name="src/explorer.xml" />
-                <include name="src/AC_OETags.js" />
+                <include name="src/swfobject.js" />
                 <include name="**/*.mxml" />
                 <include name="**/*.as" />
                 <include name="**/*.jpg" />
