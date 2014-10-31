@@ -18,6 +18,9 @@
 
 <compTree>
 	<node label="3rd Party Components">
+		<node label="Ardisia">
+			<node thirdParty="true" label="Ardisia Component Library" app="http://www.ardisialabs.com/swfs/TourDeFlex.swf" src="" />
+		</node>
 		<node label="Flexicious">
 			<node thirdParty="true" label="Dashboard Framework" app="http://www.flexicious.com/resources/demo/FlexiciousClassic.swf" src="" />
 			<node thirdParty="true" label="Ultimate DataGrid" app="http://www.flexicious.com/resources/demo/FlexiciousUltimate.swf" src="" />
