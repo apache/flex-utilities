@@ -68,6 +68,8 @@
         <module>retrievers</module>
         <module>converters</module>
         <module>deployers</module>
+
+        <module>mavenizer</module>
     </modules>
 
     <build>
