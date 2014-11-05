@@ -55,4 +55,16 @@
         <url>https://git-wip-us.apache.org/repos/asf/flex-utilities.git</url>
     </scm>
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

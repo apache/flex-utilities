@@ -19,28 +19,19 @@
 
 package org.apache.flex.tools;
 
-/**
- * This interface defines the entry point for any tool needing to
- * invoke a flex tool.
- */
-public interface FlexTool {
+import java.util.Collection;
 
-    /**
-     * Return the name of the tool. This name should match the names of
-     * tools in alternate tool groups: MXML, COMPC, ASDOC
-     *
-     * An enum was deliberately not selected in order to allow easy addition
-     * of new future tools without having to touch the tool-api.
-     * @return Symbolic name of this tool.
-     */
+/**
+ * Interface for defining a group of flex tools. Classes implementing this
+ * interface will allow loading of flex tools using the java ServiceLoader
+ * mechanism.
+ */
+public interface FlexToolGroup {
+
     String getName();
 
-    /**
-     * Execute the flex tool and pass in an array of commandline arguments.
-     *
-     * @param args arguments passed to the tool.
-     * @return the return code returned by the tool.
-     */
-    int execute(String[] args);
+    Collection<String> getFlexToolNames();
+
+    FlexTool getFlexTool(String name);
 
 }
