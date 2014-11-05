@@ -96,11 +96,8 @@
 		
     <fail message="The release version is not set.  Specify -Drelease.version=&lt;release version (e.g. 3.1, 3.2, etc)&gt;"
     unless="release.version"/>
-
-    <fail message="The release candidate number is not set.  Specify -Drc=&lt;rc number (e.g. 1, 2, 3, etc)&gt;"
-    unless="rc"/>
-        
-	<property name="package.url.path" value="https://dist.apache.org/repos/dist/dev/flex/TourDeFlex/${release.version}/rc${rc}" />
+       
+	<property name="package.url.path" value="http://apacheflexbuild.cloudapp.net:8080/job/flex-utilities_tour-de-flex-release/lastSuccessfulBuild/artifact/TourDeFlex/TourDeFlex3/out" />
 	<property name="package.url.name" value="apache-flex-tour-de-flex-component-explorer-${release.version}-src" />
 	
     <condition property="zip.compressed">
@@ -171,16 +168,18 @@
 		</antcall>
 	</target>
 	
-    <target name="download" description="download the release package">
+    <target name="download" depends="download-asc" description="download the release package">
         <get src="${package.url.path}/${package.url.name}.${package.suffix}"
             dest="${basedir}/${package.url.name}.${package.suffix}" />
         <get src="${package.url.path}/${package.url.name}.${package.suffix}.md5"
             dest="${basedir}/${package.url.name}.${package.suffix}.md5" />
-        <get src="${package.url.path}/${package.url.name}.${package.suffix}.asc"
-            dest="${basedir}/${package.url.name}.${package.suffix}.asc" />
     </target>
     
-    <target name="check-sigs" description="check md5 and gpg sigs">
+    <target name="download-asc" unless="no.asc" description="download the release package">
+    </target>
+
+    <target name="check-md5" description="check md5">
+        <echo message="Checking MD5..."/>
 		<replace file="${basedir}/${package.url.name}.${package.suffix}.md5"
 			token=" " />
 		<checksum file="${basedir}/${package.url.name}.${package.suffix}" algorithm="md5" verifyproperty="md5.ok" />
@@ -190,12 +189,16 @@
 			</not>
         </condition>
         <fail message="MD5 checksum did not match" if="MD5Invalid" />
+    </target>
+
+    <target name="check-sigs" depends="check-md5" unless="no.asc" description="check md5 and gpg sigs">
 		<exec executable="gpg" failonerror="true">
 			<arg value="--verify" />
 			<arg value="${basedir}/${package.url.name}.${package.suffix}.asc" />
 			<arg value="${basedir}/${package.url.name}.${package.suffix}" />
 		</exec>
     </target>
+
 
     <target name="uncompress" depends="pre-clean, untar-file, unzip-file" />
 
@@ -362,5 +365,10 @@ No unapproved binaries: ${rat.binaries.ok}
 	            <equals arg1="-1" arg2="${vote}"/>
 			</condition>
 		</fail>
+		<antcall target="no-asc" />
+	</target>
+
+	<target name="no-asc" if="no.asc" >
+		<echo>PGP signature not checked</echo>
 	</target>
 </project>
