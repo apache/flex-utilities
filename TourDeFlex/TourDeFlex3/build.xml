@@ -568,6 +568,12 @@
          </zip>
 	</target>
    
+   <target name="create-md5" >
+       <echo message="Generating MD5 hashes for release artifacts"/>
+       <checksum algorithm="md5" file="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}-src.tar.gz" forceOverwrite="yes"/>
+       <checksum algorithm="md5" file="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}-src.zip" forceOverwrite="yes"/>
+   </target>
+
     <target name="clean" description="clean up">
     	<delete>
     		<fileset dir="${basedir}" includes="**/*.swf" />
