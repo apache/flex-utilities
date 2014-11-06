@@ -230,6 +230,9 @@
                 <exclude name="**/*.mp3"/>
                 <exclude name="**/*.flv"/>
                 <exclude name="installer/build.number"/>
+                <exclude name="**/swfobject.js"/>
+                <exclude name="CONTRIBUTORS"/>
+                <exclude name="CONTRIBUTING"/>
             </fileset>
         </rat:report>
 		<antcall target="display-text" >
