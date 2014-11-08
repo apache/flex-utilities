@@ -80,12 +80,13 @@
         private function treeChanged(event:Event):void
         {
             var nodeApp:String = compLibTree.selectedItem.@app;
+			var link:String = compLibTree.selectedItem.@link;
 			var thirdParty:Boolean = compLibTree.selectedItem.hasOwnProperty("@thirdParty")
 				&& compLibTree.selectedItem.@thirdParty == "true";
 			
             if (nodeApp != null && nodeApp != "")
             {
-				loadApp(nodeApp, compLibTree.selectedItem.@src, thirdParty);
+				loadApp(nodeApp, compLibTree.selectedItem.@src, thirdParty, link);
             }
             else
             {
@@ -93,10 +94,14 @@
             }
         }
 			
-		private function loadApp(application:String, source:String, thirdParty:Boolean):void
+		private function loadApp(application:String, source:String, thirdParty:Boolean, link:String=""):void
 		{
 			if (application.indexOf(".swf") > 0) {
 				swfLoader.loadApp(application);
+			}
+			else if(application.indexOf(".jpg") > 0 || application.indexOf(".png") > 0)
+			{
+				swfLoader.loadApp(application,link);
 			}
 			else {
 				swfLoader.loadApp(application + ".swf");
