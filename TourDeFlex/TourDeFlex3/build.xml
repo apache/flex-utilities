@@ -76,7 +76,7 @@
 				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
    	            <compiler.include-libraries dir="${basedir}/libs" append="true">
    	            	<include name="ApacheFlexLinguisticUtils.swc" />
-   	            	<include name="ApacheflexSpellingEngine.swc" />
+   	            	<include name="ApacheFlexSpellingEngine.swc" />
    	            	<include name="ApacheFlexSpellingFramework.swc" />
    	            	<include name="ApacheFlexSpellingUI.swc" />
    	            </compiler.include-libraries>
@@ -93,7 +93,7 @@
 				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
    	            <compiler.include-libraries dir="${basedir}/libs" append="true">
    	            	<include name="ApacheFlexLinguisticUtils.swc" />
-   	            	<include name="ApacheflexSpellingEngine.swc" />
+   	            	<include name="ApacheFlexSpellingEngine.swc" />
    	            	<include name="ApacheFlexSpellingFramework.swc" />
    	            	<include name="ApacheFlexSpellingUIEx.swc" />
    	            </compiler.include-libraries>
