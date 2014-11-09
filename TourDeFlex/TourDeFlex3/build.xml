@@ -589,7 +589,8 @@
             	<exclude name="**/*.swf" />
             	<exclude name="installer.xml" />
             	<exclude name="squiggly" />
-            	<exclude name="dictionaries" />
+                <exclude name="dictionaries" />
+            	<exclude name="src/dictionaries" />
             	<exclude name="src/apache/squiggly/dictionaries" />
              </tarfileset>
          </tar>
@@ -624,6 +625,7 @@
             	<exclude name="installer.xml" />
             	<exclude name="squiggly" />
             	<exclude name="dictionaries" />
+                <exclude name="src/dictionaries" />
             	<exclude name="src/apache/squiggly/dictionaries" />
              </fileset>
          </zip>
@@ -641,6 +643,7 @@
     	</delete>
     	<delete dir="${basedir}/squiggly" />
     	<delete dir="${basedir}/dictionaries" />
+        <delete dir="${basedir}/src/dictionaries" />
     	<delete dir="${basedir}/src/apache/squiggly/dictionaries" />
     </target>
 </project>
