@@ -507,6 +507,14 @@
 			</fileset>
 		</copy>
 
+        <!-- So squiggly works in nightly builds of Tour De Flex app -->
+        <mkdir dir="${basedir}/src/dictionaries"/>
+        <copy todir="${basedir}/src/dictionaries">
+            <fileset dir="${unpack.dir}/dictionaries/">
+                <include name="**" />
+            </fileset>
+        </copy>
+
 		<!-- So squiggly works stand alone -->
 		<mkdir dir="${basedir}/src/apache/squiggly/dictionaries"/>
 		<copy todir="${basedir}/src/apache/squiggly/dictionaries/">
