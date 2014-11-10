@@ -1,0 +1,105 @@
+Apache Flex Tool API
+=====================
+
+    Apache Flex Tool API 1.0.0 is the first release of an API allowing to utilize
+    all Apache Flex compilers in a uniform way. Besides the FlexToolGroup and FlexTool
+    interfaces it provides a convenience AbstractFlexToolGroup implementing
+    all necessary methods as well as a FlexToolRegistry class using Javas
+    ServiceLoader mechanism to find an load FlexToolGroup instances.
+
+Getting the latest sources via git
+==================================
+
+    Getting the source code is the recommended way to get the Apache Flex Tool API.
+
+    You can always checkout the latest source via git using the following
+    command:
+
+	 git clone https://git-wip-us.apache.org/repos/asf/flex-utilities.git flex-utilities
+	 cd flex-utilities
+	 git checkout develop
+	 cd flex-tools-api
+
+
+Building the Apache Tool API
+=================================
+
+    The Apache Flex Tool API is built using Apache Maven.
+
+
+Install Prerequisites
+---------------------
+
+    Before building the Apache Flex Tool API you must install the following software
+    and set the corresponding environment variables using absolute file paths.  
+    Relative file paths will result in build errors.
+
+    ==================================================================================
+    SOFTWARE                                    ENVIRONMENT VARIABLE (absolute paths)
+    ==================================================================================
+
+    Java SDK 1.6 or greater (*1)                JAVA_HOME
+        (for Java 1.7 see note at (*2))
+
+    Maven 2.2.0 or greater (*1)                 MAVEN_HOME
+
+    ==================================================================================
+
+    *1) The bin directories for MAVEN_HOME and JAVA_HOME should be added to your
+        PATH.
+
+        On Windows, set PATH to
+
+            PATH=%PATH%;%MAVEN_HOME%\bin;%JAVA_HOME%\bin
+
+        On the Mac (bash), set PATH to
+
+            export PATH="$PATH:$MAVEN_HOME/bin:$JAVA_HOME/bin"
+
+         On Linux make sure you path include MAVEN_HOME and JAVA_HOME.
+
+
+Software Dependencies
+---------------------
+
+    The Apache Flex Compiler doesn't use any third-party code.
+
+    The Apache Version 2.0 license is in the LICENSE file.
+
+
+Using the Binary Distribution
+-----------------------------
+
+    Binary artifacts of the Flex Tool API are available on Apaches
+    public Maven repository.
+
+    By adding a Dependency to the following Maven artifact the
+    binary version of the Flex Tool API will automatically be downloaded
+
+    <dependency>
+        <groupId>org.apache.flex</groupId>
+        <artifactId>flex-tool-api</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+
+
+Building the Source
+----------------------------------------------
+
+    When you have all the prerequisites in place and the environment variables
+    set (see Install Prerequisites above), use
+
+        cd <flex-tool-api.dir>
+        mvn install
+
+
+Running Tests
+-------------
+
+Currently there are no Tests
+
+
+Thanks for using Apache Flex.  Enjoy!
+
+                                          The Apache Flex Project
+                                          <http://flex.apache.org>
