@@ -80,7 +80,7 @@
         private function treeChanged(event:Event):void
         {
             var nodeApp:String = compLibTree.selectedItem.@app;
-			var link:String = compLibTree.selectedItem.@link;
+			var link:String = compLibTree.selectedItem.hasOwnProperty("@link") ? compLibTree.selectedItem.@link : "";
 			var thirdParty:Boolean = compLibTree.selectedItem.hasOwnProperty("@thirdParty")
 				&& compLibTree.selectedItem.@thirdParty == "true";
 			
