@@ -32,6 +32,8 @@ public interface FlexToolGroup {
 
     Collection<String> getFlexToolNames();
 
+    boolean hasFlexTool(String name);
+
     FlexTool getFlexTool(String name);
 
 }
