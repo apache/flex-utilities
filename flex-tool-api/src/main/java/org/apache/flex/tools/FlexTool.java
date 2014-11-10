@@ -25,6 +25,13 @@ package org.apache.flex.tools;
  */
 public interface FlexTool {
 
+    // Some well known constants.
+    public static final String FLEX_TOOL_COMPC = "COMPC";
+    public static final String FLEX_TOOL_MXMLC = "MXMLC";
+    public static final String FLEX_TOOL_ASDOC = "ASDOC";
+    public static final String FLEX_TOOL_DIGEST = "DIGEST";
+    public static final String FLEX_TOOL_OPTIMIZER = "OPTIMIZER";
+
     /**
      * Return the name of the tool. This name should match the names of
      * tools in alternate tool groups: MXML, COMPC, ASDOC

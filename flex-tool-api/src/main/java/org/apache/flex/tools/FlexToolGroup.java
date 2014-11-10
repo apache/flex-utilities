@@ -25,6 +25,10 @@ import java.util.Collection;
  * Interface for defining a group of flex tools. Classes implementing this
  * interface will allow loading of flex tools using the java ServiceLoader
  * mechanism.
+ *
+ * We intentionally decided to use String names instead of constants
+ * to allow extendability in the future, so we can support more tools
+ * without having to release a new version of the tools api.
  */
 public interface FlexToolGroup {
 
