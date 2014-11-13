@@ -17,9 +17,7 @@
   limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -31,7 +29,7 @@
 
     <groupId>org.apache.flex</groupId>
     <artifactId>flex-tool-api</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>Flex Tool API</name>
@@ -50,9 +48,9 @@
     </mailingLists>
 
     <scm>
-        <connection>scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</connection>
-        <developerConnection>scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</developerConnection>
-        <url>https://git-wip-us.apache.org/repos/asf/flex-utilities.git</url>
+        <connection>scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git/tags/flex-tool-api-1.0.0-RC1</connection>
+        <developerConnection>scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git/tags/flex-tool-api-1.0.0-RC1</developerConnection>
+        <url>https://git-wip-us.apache.org/repos/asf/flex-utilities.git/tags/flex-tool-api-1.0.0-RC1</url>
     </scm>
 
     <build>
@@ -68,79 +66,5 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <profiles>
-        <profile>
-            <id>apache-release</id>
-            <properties>
-                <isApacheRelease>true</isApacheRelease>
-            </properties>
-
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-javadoc-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <id>attach-javadocs</id>
-                                    <goals>
-                                        <goal>jar</goal>
-                                    </goals>
-                                    <phase>package</phase>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <version>2.5.1</version>
-                        <executions>
-                            <execution>
-                                <id>source-release-assembly</id>
-                                <!-- note: this is configured above to run only at execution root -->
-                                <configuration>
-                                    <!-- Prevent Maven from releasing the source release assembly to the Maven repos -->
-                                    <attach>false</attach>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-sources-nf</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>attach-sources</id>
-                                <!-- turn off the plain jar one -->
-                                <phase/>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.rat</groupId>
-                        <artifactId>apache-rat-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>default-cli</id>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>
