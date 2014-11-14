@@ -63,18 +63,39 @@
                         <target>1.6</target>
                     </configuration>
                 </plugin>
-				<plugin>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.5.1</version>
-					<configuration>
-						<descriptors>
-							<descriptor>src/main/resources/assemblies/assemble-zip.xml</descriptor>
-							<descriptor>src/main/resources/assemblies/assemble-gz.xml</descriptor>
-						</descriptors>
-					</configuration>
-				</plugin>
             </plugins>
         </pluginManagement>
     </build>
+
+    <!-- When building on the apache ci server, we want to get some source-release archives -->
+    <profiles>
+        <profile>
+            <id>flex-ci-build</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.5.1</version>
+                        <executions>
+                            <execution>
+                                <id>assemble-sources-releases</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/assemble-zip.xml</descriptor>
+                                <descriptor>src/assembly/assemble-gz.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
