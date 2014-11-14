@@ -235,6 +235,7 @@
                 <exclude name="docs/**"/>
                 <exclude name="CONTRIBUTORS"/>
                 <exclude name="CONTRIBUTING"/>
+                <exclude name="**/DEPENDENCIES"/>
             </fileset>
         </rat:report>
 		<antcall target="display-text" >
