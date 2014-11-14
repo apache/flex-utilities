@@ -21,10 +21,12 @@
 		<node label="Ardisia">
 			<node thirdParty="true" label="Ardisia Component Library" app="http://www.ardisialabs.com/tourDeFlex/tour-de-flex.jpg" src="" link="http://www.ardisialabs.com/tour-de-flex" />
 		</node>
+		<!--
 		<node label="Flexicious">
 			<node thirdParty="true" label="Dashboard Framework" app="http://www.flexicious.com/resources/demo/FlexiciousClassic.swf" src="" />
 			<node thirdParty="true" label="Ultimate DataGrid" app="http://www.flexicious.com/resources/demo/FlexiciousUltimate.swf" src="" />
 			<node thirdParty="true" label="Classic DataGrid" app="http://www.flexicious.com/resources/demo/FlexiciousDashboard.swf" src="" />
 		</node>
+		 -->
 	</node>
 </compTree>
