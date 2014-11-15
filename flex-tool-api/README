@@ -7,7 +7,8 @@ Apache Flex Tool API
     It provides:
     - The FlexToolGroup and FlexTool interfaces.
     - A convenience AbstractFlexToolGroup class implementing all the FlexToolGroup methods.
-    - A FlexToolRegistry class using Java's ServiceLoader mechanism to find on loading the FlexToolGroup instance.
+    - A FlexToolRegistry class using Java's ServiceLoader mechanism to find on loading
+      the FlexToolGroup instance.
 
 Getting the latest sources via Git
 ==================================
