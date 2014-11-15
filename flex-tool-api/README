@@ -1,19 +1,21 @@
 Apache Flex Tool API
 =====================
 
-    Apache Flex Tool API 1.0.0 is the first release of an API allowing to utilize
-    all Apache Flex compilers in a uniform way. Besides the FlexToolGroup and FlexTool
-    interfaces it provides a convenience AbstractFlexToolGroup implementing
-    all necessary methods as well as a FlexToolRegistry class using Javas
-    ServiceLoader mechanism to find an load FlexToolGroup instances.
+    Apache Flex Tool API 1.0.0 is the first release of an API allowing to utilise
+    all Apache Flex compilers in a uniform way.
+    
+    It provides:
+    - The FlexToolGroup and FlexTool interfaces.
+    - A convenience AbstractFlexToolGroup class implementing all the FlexToolGroup methods.
+    - A FlexToolRegistry class using Java's ServiceLoader mechanism to find on loading the FlexToolGroup instance.
 
-Getting the latest sources via git
+Getting the latest sources via Git
 ==================================
 
     Getting the source code is the recommended way to get the Apache Flex Tool API.
 
-    You can always checkout the latest source via git using the following
-    command:
+    You can always checkout the latest source from Apache's source control repository
+    using the following commands:
 
 	 git clone https://git-wip-us.apache.org/repos/asf/flex-utilities.git flex-utilities
 	 cd flex-utilities
@@ -64,17 +66,15 @@ Software Dependencies
 
     The Apache Flex Compiler doesn't use any third-party code.
 
-    The Apache Version 2.0 license is in the LICENSE file.
-
 
 Using the Binary Distribution
 -----------------------------
 
-    Binary artifacts of the Flex Tool API are available on Apaches
+    Binary artifacts of the Flex Tool API are available on Apache's
     public Maven repository.
 
     By adding a Dependency to the following Maven artifact the
-    binary version of the Flex Tool API will automatically be downloaded
+    binary version of the Flex Tool API will automatically be downloaded.
 
     <dependency>
         <groupId>org.apache.flex</groupId>
