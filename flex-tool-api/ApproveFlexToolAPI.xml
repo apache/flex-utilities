@@ -94,7 +94,7 @@
     <fail message="The release version is not set.  Specify -Drelease.version=&lt;release version (e.g. 3.1, 3.2, etc)&gt;"
     unless="release.version"/>
     
-	<property name="package.url.path" value="https://repository.apache.org/content/repositories/orgapacheflex-1001/org/apache/flex/flex-tool-api/${release.version}" />
+	<property name="package.url.path" value="https://repository.apache.org/content/repositories/orgapacheflex-1002/org/apache/flex/flex-tool-api/${release.version}" />
 	<property name="package.url.name" value="flex-tool-api-${release.version}-source-release" />
 	
     <condition property="zip.compressed">
