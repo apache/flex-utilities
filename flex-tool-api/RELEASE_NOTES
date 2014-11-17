@@ -1,8 +1,8 @@
 Apache Flex Tool API 1.0.0
 ===========================
 
-Apache Flex Tool API 1.0.0 is the first release of an API allowing to utilise
-all Apache Flex compilers in a uniform way.
+Apache Flex Tool API 1.0.0 is the first release of an API allowing Maven users
+to use all Apache Flex compilers in a uniform way.
 
 Known Issues
 _____________
@@ -10,7 +10,7 @@ _____________
 Currently None.
 
 
-Please report new issues to our bug base at:
+Please report new issues to our bug tracker at:
 
     https://issues.apache.org/jira/browse/FLEX
 

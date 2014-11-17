@@ -1,8 +1,8 @@
 Apache Flex Tool API
 =====================
 
-    Apache Flex Tool API 1.0.0 is the first release of an API allowing to utilise
-    all Apache Flex compilers in a uniform way.
+    Apache Flex Tool API 1.0.0 is the first release of an API allowing Maven users
+    to use all Apache Flex compilers in a uniform way.
     
     It provides:
     - The FlexToolGroup and FlexTool interfaces.
@@ -21,7 +21,7 @@ Getting the latest sources via Git
 	 git clone https://git-wip-us.apache.org/repos/asf/flex-utilities.git flex-utilities
 	 cd flex-utilities
 	 git checkout develop
-	 cd flex-tools-api
+	 cd flex-tool-api
 
 
 Building the Apache Tool API
@@ -65,7 +65,7 @@ Install Prerequisites
 Software Dependencies
 ---------------------
 
-    The Apache Flex Compiler doesn't use any third-party code.
+    The Apache Flex Tool API does not use any third-party code.
 
 
 Using the Binary Distribution
@@ -97,7 +97,7 @@ Building the Source
 Running Tests
 -------------
 
-Currently there are no Tests
+Currently there are no tests.
 
 
 Thanks for using Apache Flex.  Enjoy!
