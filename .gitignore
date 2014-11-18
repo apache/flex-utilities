@@ -117,3 +117,4 @@ rc
 *.project
 *.actionScriptProperties
 bin-release
+Squiggly/main/generated/
