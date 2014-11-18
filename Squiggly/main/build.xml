@@ -40,9 +40,63 @@
 	<property name="COMPC.JAR" value="${FLEX_HOME}/lib/compc.jar"/>
 	<property name="ADL" value="${AIR_HOME}/bin/adl.exe"/>
     <property name="ADT.JAR" value="${AIR_HOME}/lib/adt.jar"/>
-    <property name="playerglobal.version" value="14.0" />
+    <property name="playerglobal.version" value="15.0" />
 	
     <property name="OUTPUT_DIR" value="libs"/>
+
+	<macrodef name="create-rsl">
+		<attribute name="rsl-dir"/>
+		<attribute name="swc-dir"/>
+		<attribute name="swc-name"/>
+		<sequential>
+			<mkdir dir="@{rsl-dir}"/>
+			<delete>
+				<fileset dir="@{rsl-dir}">
+					<include name="@{swc-name}.swc"/>
+				</fileset>
+			</delete>
+			<unzip src="@{swc-dir}/@{swc-name}.swc" dest="@{rsl-dir}" overwrite="true">
+				<patternset>
+					<include name="library.swf"/>
+				</patternset>
+				<mapper type="glob" from="library.swf" to="@{swc-name}.library.swf"/>
+			</unzip>
+			<exec executable="${FLEX_HOME}/bin/optimizer.bat"
+				  output="${OUTPUT_DIR}/flex-optimizer-@{swc-name}.log" append="true" osfamily="windows">
+				<arg value="-input=@{rsl-dir}/@{swc-name}.library.swf"/>
+				<arg value="-output=@{rsl-dir}/@{swc-name}.swf"/>
+			</exec>
+			<exec executable="${FLEX_HOME}/bin//digest.bat"
+				  output="${OUTPUT_DIR}/flex-optimizer-@{swc-name}.log" append="true" osfamily="windows">
+				<arg value="-digest.rsl-file=@{rsl-dir}/@{swc-name}.swf"/>
+				<arg value="-digest.swc-path=@{swc-dir}/@{swc-name}.swc"/>
+			</exec>
+			<delete file="@{rsl-dir}/@{swc-name}.library.swf"/>
+		</sequential>
+	</macrodef>
+
+	<!-- To remove along with the condition check in the target "extract-rsls" as soon as "optimize" and "digest"
+	will be setup and tested on Mac and Unix based OSes, see the MacroDef "create-rsl" -->
+	<condition property="isWindows">
+		<os family="windows" />
+	</condition>
+
+	<target name="extract-rsls" if="isWindows">
+		<create-rsl rsl-dir="${OUTPUT_DIR}/rsls" swc-dir="${OUTPUT_DIR}"
+					swc-name="ApacheFlexLinguisticUtils"/>
+		<create-rsl rsl-dir="${OUTPUT_DIR}/rsls" swc-dir="${OUTPUT_DIR}"
+					swc-name="ApacheFlexSpellingEngine"/>
+		<create-rsl rsl-dir="${OUTPUT_DIR}/rsls" swc-dir="${OUTPUT_DIR}"
+					swc-name="ApacheFlexSpellingFramework"/>
+		<create-rsl rsl-dir="${OUTPUT_DIR}/rsls" swc-dir="${OUTPUT_DIR}"
+					swc-name="ApacheFlexSpellingUI"/>
+		<create-rsl rsl-dir="${OUTPUT_DIR}/rsls" swc-dir="${OUTPUT_DIR}"
+					swc-name="ApacheFlexSpellingUIAPI"/>
+		<create-rsl rsl-dir="${OUTPUT_DIR}/rsls" swc-dir="${OUTPUT_DIR}"
+					swc-name="ApacheFlexSpellingUITLF"/>
+		<create-rsl rsl-dir="${OUTPUT_DIR}/rsls" swc-dir="${OUTPUT_DIR}"
+					swc-name="ApacheFlexSpellingUIEx"/>
+	</target>
     
      <target name="init" depends="clean">
      	<mkdir dir="${OUTPUT_DIR}"/>
@@ -220,7 +274,7 @@
         </java>
     </target>
 
-    <target name="test" depends="compilelinguistics, compileengine, compileframework, compileui, compileuiapi, compileuitlf, compileuiex">
+    <target name="test" depends="compilelinguistics, compileengine, compileframework, compileui, compileuiapi, compileuitlf, compileuiex, extract-rsls">
     </target>
    
     <target name="clean" description="clean up">

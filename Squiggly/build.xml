@@ -175,6 +175,7 @@
 	            	<include name="docs/**" />
 	            	<include name="dictionaries/**" />
 	                <include name="**/*.swc" />
+					<include name="**/*.swf" />
 	            	<exclude name="ane/**" />
 	            	<exclude name="main/ASDocExamples/**" />
 	            	<exclude name="main/Automation/**" />
@@ -206,6 +207,7 @@
 	            	<include name="docs/**" />
 	            	<include name="dictionaries/**" />
 	                <include name="**/*.swc" />
+					<include name="**/*.swf" />
 	            	<exclude name="ane/**" />
 	            	<exclude name="main/ASDocExamples/**" />
 	            	<exclude name="main/Automation/**" />

@@ -19,7 +19,7 @@
 -->
 <project default="install" basedir=".">
 
-    <property name="version" value="1.1"/>
+    <property name="version" value="1.0"/>
 
     <!-- Set type to RELEASE in order to deploy to the release repo -->
     <property name="type" value="SNAPSHOT"/>
@@ -199,6 +199,7 @@
             </filterchain>
         </copy>
         <copy file="libs/ApacheFlex${moduleName}.swc" tofile="generated/maven/${artifactName}.swc"/>
+        <copy file="libs/rsls/ApacheFlex${moduleName}.swf" tofile="generated/maven/${artifactName}.swf"/>
         <zip destfile="generated/maven/${artifactName}-sources.jar">
             <fileset dir="${moduleName}/src"/>
         </zip>
@@ -218,6 +219,7 @@
         <artifact:install>
             <artifact:pom file="generated/maven/${artifactName}.pom"/>
             <artifact:artifact file="generated/maven/${artifactName}.swc"/>
+            <artifact:artifact file="generated/maven/${artifactName}.swf"/>
             <artifact:artifact file="generated/maven/${artifactName}-sources.jar" classifier="sources"/>
         </artifact:install>
     </target>
@@ -238,6 +240,7 @@
             <artifact:remoterepo id="${maven.repositoryId}" url="${maven.repositoryUrl}"/>
             <artifact:pom file="generated/maven/${artifactName}.pom"/>
             <artifact:artifact file="generated/maven/${artifactName}.swc"/>
+            <artifact:artifact file="generated/maven/${artifactName}.swf"/>
             <artifact:artifact file="generated/maven/${artifactName}-sources.jar" classifier="sources"/>
         </artifact:deploy>
     </target>
