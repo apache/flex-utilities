@@ -19,7 +19,7 @@
 -->
 <project default="install" basedir=".">
 
-    <property name="version" value="1.0"/>
+    <property name="version" value="1.1"/>
 
     <!-- Set type to RELEASE in order to deploy to the release repo -->
     <property name="type" value="SNAPSHOT"/>
