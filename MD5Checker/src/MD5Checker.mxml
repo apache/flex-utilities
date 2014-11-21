@@ -39,11 +39,18 @@ limitations under the License.
                 nativeApplication.addEventListener(InvokeEvent.INVOKE, parseArgs);
             }
             private var logFileName:String = "MD5CheckerLog.txt";
+            private var outFileName:String;
             
             private function parseArgs(event:InvokeEvent):void {
                 for each (var s:String in event.arguments) {
                     if (s.indexOf("-log=") == 0) {
                         logFileName = s.substring(5);
+                    }
+                    if (s.indexOf("-out=") == 0) {
+                        outFileName = s.substring(5);
+                    }
+                    if (s.indexOf("-config=") == 0) {
+                        configURL = s.substring(8);
                     }
                 }
             }
@@ -74,6 +81,9 @@ limitations under the License.
             
             private function xmlcompleteHandler(event:Event):void
             {
+                XML.ignoreComments = false;
+                XML.prettyIndent = 4;
+                
                 xml = new XML(xmlLoader.data as String);
                 var xmlList:XMLList;
                 
@@ -169,6 +179,18 @@ limitations under the License.
                 if (current >= data.length)
                 {
                     fs.close();
+                    if (nodeChanged && outFileName)
+                    {
+                        f = File.applicationDirectory.resolvePath("ApacheHeader.txt");
+                        fs.open(f, FileMode.READ);
+                        var header:String = fs.readUTFBytes(fs.bytesAvailable);
+                        fs.close();
+                        f = File.documentsDirectory.resolvePath(outFileName);
+                        fs.open(f, FileMode.WRITE);
+                        fs.writeUTFBytes(header);
+                        fs.writeUTFBytes(xml.toXMLString());
+                        fs.close();
+                    }
                     this.nativeApplication.exit(nodeChanged ? -1 : 0);
                     return;
                 }
@@ -206,12 +228,16 @@ limitations under the License.
                     var headers:Array = event.responseHeaders;
                     for each (var header:URLRequestHeader in headers)
                     {
-                        if (header.name == "Last-Modified")
+                        if (header.name == "Etag" || header.name == "ETag")
                         {
                             lastModified = header.value;
+                            if (lastModified.indexOf('"') == 0)
+                                lastModified = lastModified.substr(1);
+                            if (lastModified.indexOf('"') == lastModified.length - 1)
+                                lastModified = lastModified.substr(0, lastModified.length - 1);
                             foundLastModified = true;
                         }
-                        else if ((header.name == "Etag" || header.name == "ETag") && lastModified == null)
+                        else if ((header.name == "Last-Modified") && lastModified == null)
                         {
                             lastModified = header.value;
                             foundLastModified = true;
