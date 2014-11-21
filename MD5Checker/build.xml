@@ -47,22 +47,6 @@
 		<os family="mac"/>
     </condition>
 
-    <available file="${env.ProgramFiles}/SlikSVN/bin/svn.exe"
-        type="file"
-        property="svn" value="${env.ProgramFiles}/SlikSVN/bin/svn.exe" />
-    <available file="${env.ProgramFiles(x86)}/SlikSVN/bin/svn.exe"
-        type="file"
-        property="svn" value="${env.ProgramFiles}/SlikSVN/bin/svn.exe" />
-    <available file="/opt/subversion/bin/svn"
-        type="file"
-        property="svn" value="/opt/subversion/bin/svn" />
-    <available file="/usr/bin/svn"
-        type="file"
-        property="svn" value="/usr/bin/svn" />
-    <fail message="Could not locate SVN command-line.  Please specify the path to SVN with
-    -Dsvn=&lt;path-to-svn&gt;"
-        unless="svn"/>
-
 	<target name="main" depends="build">
         <exec executable="${AIR_HOME}/bin/adl.exe" dir="${basedir}/src" osfamily="windows" resultproperty="md5result" failonerror="false">
             <arg value="-runtime"/>
@@ -118,6 +102,22 @@
     </target>
     
     <target name="updatesvn" if="needsupdate">
+        <available file="${env.ProgramFiles}/SlikSVN/bin/svn.exe"
+            type="file"
+            property="svn" value="${env.ProgramFiles}/SlikSVN/bin/svn.exe" />
+        <available file="${env.ProgramFiles(x86)}/SlikSVN/bin/svn.exe"
+            type="file"
+            property="svn" value="${env.ProgramFiles}/SlikSVN/bin/svn.exe" />
+        <available file="/opt/subversion/bin/svn"
+            type="file"
+            property="svn" value="/opt/subversion/bin/svn" />
+        <available file="/usr/bin/svn"
+            type="file"
+            property="svn" value="/usr/bin/svn" />
+        <fail message="Could not locate SVN command-line.  Please specify the path to SVN with
+            -Dsvn=&lt;path-to-svn&gt;"
+            unless="svn"/>
+        
         <available file="${svn.site}"
             type="dir"
             property="site" value="${svn.site}" />
