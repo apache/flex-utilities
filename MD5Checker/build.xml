@@ -22,6 +22,7 @@
 
     <!--load environment variables prefixed with env -->
     <property environment="env"/>
+    <property file="${basedir}/local.properties" />
 
     <!--
         Properties are immutable so value frozen first time property is set.
@@ -46,42 +47,21 @@
 		<os family="mac"/>
     </condition>
 
-    <condition property="and_success" value="success" >
-        <and>
-            <matches string="foobar" pattern=".*bar" />
-            <isset property="env.FLEX_HOME" />
-        </and>
-    </condition>
-	
-    <condition property="and_failure" value="success" >
-        <and>
-            <matches string="foobar" pattern=".*bar" />
-            <isset property="env.NONEXISTANT" />
-        </and>
-    </condition>
-	
-    <condition property="or_success" value="success" >
-        <or>
-            <matches string="foobar" pattern=".*bar" />
-            <isset property="env.NONEXISTANT" />
-        </or>
-    </condition>
-	
-    <condition property="or_failure" value="success" >
-        <or>
-            <matches string="foobar" pattern=".*fred" />
-            <isset property="env.NONEXISTANT" />
-        </or>
-    </condition>
-
-    <condition property="should_fail" value="success" >
-        <and>
-            <matches string="foobar" pattern=".*bar" />
-            <not>
-                <isset property="env.FLEX_HOME" />
-            </not>
-        </and>
-    </condition>
+    <available file="${env.ProgramFiles}/SlikSVN/bin/svn.exe"
+        type="file"
+        property="svn" value="${env.ProgramFiles}/SlikSVN/bin/svn.exe" />
+    <available file="${env.ProgramFiles(x86)}/SlikSVN/bin/svn.exe"
+        type="file"
+        property="svn" value="${env.ProgramFiles}/SlikSVN/bin/svn.exe" />
+    <available file="/opt/subversion/bin/svn"
+        type="file"
+        property="svn" value="/opt/subversion/bin/svn" />
+    <available file="/usr/bin/svn"
+        type="file"
+        property="svn" value="/usr/bin/svn" />
+    <fail message="Could not locate SVN command-line.  Please specify the path to SVN with
+    -Dsvn=&lt;path-to-svn&gt;"
+        unless="svn"/>
 
 	<target name="main" depends="build">
         <exec executable="${AIR_HOME}/bin/adl.exe" dir="${basedir}/src" osfamily="windows" resultproperty="md5result" failonerror="false">
@@ -101,6 +81,7 @@
         </exec>
 		<loadfile property="md5log" srcfile="${basedir}/MD5CheckerLog.txt" />
 		<echo>${md5log}</echo>
+        <antcall target="autoupdate" />
         <fail message="MD5's changed!" >
             <condition>
 				<not>
@@ -127,4 +108,75 @@
         </mxmlc>
     </target>
     
+    <target name="autoupdate" if="svn.site">
+        <condition property="needsupdate">
+            <not>
+                <equals arg1="0" arg2="${md5result}" />
+            </not>
+        </condition>
+        <antcall target="updatesvn" />
+    </target>
+    
+    <target name="updatesvn" if="needsupdate">
+        <available file="${svn.site}"
+            type="dir"
+            property="site" value="${svn.site}" />
+        
+        <fail message="The svn.site property is not set to the working copy for https://flex.apache.org."
+            unless="site"/>
+        
+        <echo>updating svn</echo>
+        <exec executable="${svn}" dir="${site}" failonerror="true" >
+            <arg value="update" />
+            <arg value="sdk-installer-config-4.0.xml" />
+        </exec>
+        <copy file="${basedir}/sdk-installer-config-4.0.xml" tofile="${svn.site}/sdk-installer-config-4.0.xml" />
+        <antcall target="commit" />
+    </target>
+    
+    <target name="commit" depends="credentials">
+        <exec executable="${svn}" dir="${site}" failonerror="true" >
+            <arg value="commit" />
+            <arg value="--username" />
+            <arg value="${apache.username}" />
+            <arg value="--password" />
+            <arg value="${apache.password}" />
+            <arg value="-m" />
+            <arg value="&quot;update md5s&quot;" />
+        </exec>
+        <!-- pause to give buildbot chance to react -->
+        <sleep seconds="5" />
+        <get src="https://cms.apache.org/flex/publish" username="${apache.username}" password="${apache.password}" dest="${basedir}/getresult.txt" />
+        <delete file="${basedir}/getresult.txt" />
+    </target>
+    
+    <target name="credentials" depends="get-username,get-password">
+        <echo>${apache.username}</echo>
+        <echo>${apache.password}</echo>
+    </target>
+    <target name="get-username" unless="apache.username" >
+        <input
+        message="Enter Apache account username:"
+        addproperty="apache.username"/>
+        <condition property="have.username">
+            <not>
+                <equals trim="true" arg1="" arg2="${apache.username}"/>
+            </not>
+        </condition>
+        <fail message="The apache.username property is not set.  It should be the username for Apache SVN and Git."
+        unless="have.username"/>
+    </target>
+    <target name="get-password" unless="apache.password" >
+        <input
+        message="Enter Apache account password:"
+        addproperty="apache.password"/>
+        <condition property="have.password">
+            <not>
+                <equals trim="true" arg1="" arg2="${apache.password}"/>
+            </not>
+        </condition>
+        <fail message="The apache.password property is not set.  It should be the password for Apache SVN and Git."
+        unless="have.password"/>
+    </target>
+
 </project>
