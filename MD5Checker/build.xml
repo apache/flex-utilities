@@ -97,6 +97,7 @@
 			<arg value="${basedir}/src/MD5Checker-app.xml"/>
 			<arg value="--" />
 			<arg value="-log=${basedir}/MD5CheckerLog.txt"/>
+            <arg value="-out=${basedir}/sdk-installer-config-4.0.xml"/>
         </exec>
 		<loadfile property="md5log" srcfile="${basedir}/MD5CheckerLog.txt" />
 		<echo>${md5log}</echo>
