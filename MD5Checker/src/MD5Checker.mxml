@@ -206,16 +206,12 @@ limitations under the License.
                     var headers:Array = event.responseHeaders;
                     for each (var header:URLRequestHeader in headers)
                     {
-                        if (header.name == "Etag" || header.name == "ETag")
+                        if (header.name == "Last-Modified")
                         {
                             lastModified = header.value;
-                            if (lastModified.indexOf('"') == 0)
-                                lastModified = lastModified.substr(1);
-                            if (lastModified.indexOf('"') == lastModified.length - 1)
-                                lastModified = lastModified.substr(0, lastModified.length - 1);
                             foundLastModified = true;
                         }
-                        else if ((header.name == "Last-Modified") && lastModified == null)
+                        else if ((header.name == "Etag" || header.name == "ETag") && lastModified == null)
                         {
                             lastModified = header.value;
                             foundLastModified = true;
