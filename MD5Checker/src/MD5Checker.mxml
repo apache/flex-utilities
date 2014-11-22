@@ -99,6 +99,7 @@ limitations under the License.
                     if (!item.md5)
                         continue;
                     item.cacheID = node.@cacheID.toString();
+                    item.cacheID2 = node.@cacheID2.toString();
                     item.node = node;
                     data.push(item);
                 }
@@ -113,6 +114,7 @@ limitations under the License.
                     if (!item.md5)
                         continue;
                     item.cacheID = node.@cacheID.toString();
+                    item.cacheID2 = node.@cacheID2.toString();
                     item.node = node;
                     data.push(item);
                 }
@@ -127,6 +129,7 @@ limitations under the License.
                     if (!item.md5)
                         continue;
                     item.cacheID = node.@cacheID.toString();
+                    item.cacheID2 = node.@cacheID2.toString();
                     item.node = node;
                     data.push(item);
                 }
@@ -141,6 +144,7 @@ limitations under the License.
                     if (!item.md5)
                         continue;
                     item.cacheID = node.@cacheID.toString();
+                    item.cacheID2 = node.@cacheID2.toString();
                     item.node = node;
                     data.push(item);
                 }
@@ -252,7 +256,7 @@ limitations under the License.
 
             private function headcompleteHandler(event:Event):void
             {
-                if (data[current].cacheID != lastModified)
+                if (data[current].cacheID != lastModified && data[current].cacheID2 != lastModified)
                 {
                     download();
                 }
