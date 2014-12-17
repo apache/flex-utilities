@@ -125,7 +125,7 @@ package ws.tink.spark.controls
 		{
 			super.partAdded( partName, instance );
 			
-			if( instance == percentLayout ) percentLayout.percent = percent;;
+			if( instance == percentLayout ) percentLayout.percent = percent;
 		}
 	}
 }
