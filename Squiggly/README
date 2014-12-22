@@ -8,7 +8,12 @@ Initial Setup Required
 ==========================================================================================            
   
     The environment variable FLEX_HOME needs to be set to the absolute path of the Apache
-    Flex SDK. If you prefer you can set this in env.properties.
+    Flex SDK. If you prefer you can set this in env.properties as env.FLEX_HOME.
+
+    The environment variable PLAYERGLOBAL_HOME needs to be set to the absolute path of the
+    <flex-sdk>\frameworks\libs\player directory (i.e. not including the version subdirectory).
+    The `playerglobal.version` option controls which PLAYERGLOBAL_HOME subdirectory is used.
+    You can also set this in env.properties as env.PLAYERGLOBAL_HOME.
   
 ==========================================================================================
 How to build Squiggly using ant (no IDE is required)
@@ -93,12 +98,11 @@ to what mentioned above, you also need:
 Note that you can only support spelling in mx or spark components not both at once.
 
 You can download dictionaries and use those by editing SpellingConfig.xml.
+(Note that the default name of the config file has changed from AdobeSpellingConfig.xml
+to SpellingConfig.xml.)
 
-The default name of the config file has changed from AdobeSpellingConfig.xml to
-SpellingConfig.xml.
-
-Here's the typical content of SpellingConfig.xml, each entry maps the languageCode
-with the relative path for resource files. 
+Here's the typical content of SpellingConfig.xml. Each entry maps the languageCode
+with the relative path for resource files.
 
 <SpellingConfig>
   <LanguageResource language="English" languageCode="en_US"
