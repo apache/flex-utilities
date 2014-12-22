@@ -23,7 +23,7 @@
 package com.adobe.linguistics.spelling.core.container
 {
 	import flash.utils.Dictionary;
-	
+
 	/**
 	 * A collection that contains no duplicate elements. More formally, sets 
 	 * contain no pair of elements e1 and e2 such that e1.equals(e2), and at 
@@ -149,7 +149,7 @@ package com.adobe.linguistics.spelling.core.container
 }
 
 
-import com.adobe.linguistics.spelling.core.container.Iterator
+import com.adobe.linguistics.spelling.core.container.Iterator;
 import com.adobe.linguistics.spelling.core.container.Set;
 
 internal class SetIterator implements Iterator

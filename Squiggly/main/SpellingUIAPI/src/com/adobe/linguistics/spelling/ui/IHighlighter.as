@@ -20,9 +20,9 @@
 package com.adobe.linguistics.spelling.ui
 {
 	import com.adobe.linguistics.utils.Token;
-	import __AS3__.vec.Vector;
+
 	import flash.geom.Point;
-	
+
 	public interface IHighlighter
 	{
 		function drawSquiggles(tokens:Vector.<Token>):void;

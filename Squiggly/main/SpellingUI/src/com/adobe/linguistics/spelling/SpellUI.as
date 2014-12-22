@@ -19,17 +19,15 @@
  
 package com.adobe.linguistics.spelling
 {
-	import com.adobe.linguistics.spelling.UserDictionary;
-	import com.adobe.linguistics.spelling.framework.ResourceTable;
 	import com.adobe.linguistics.spelling.framework.SpellingConfiguration;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
-    import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
-    import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.geom.Point;
@@ -39,14 +37,14 @@ package com.adobe.linguistics.spelling
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.utils.Dictionary;
-	
+
 	import mx.controls.RichTextEditor;
 	import mx.controls.TextArea;
 	import mx.controls.TextInput;
 	import mx.core.UIComponent;
 	import mx.core.mx_internal;
 	import mx.events.ScrollEvent;
-	
+
 	use namespace mx_internal;
 	
 	/**

@@ -22,13 +22,13 @@ package com.adobe.linguistics.spelling.framework.ui
 	import com.adobe.linguistics.utils.ITokenizer;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flashx.textLayout.edit.SelectionManager;
 	import flashx.textLayout.tlf_internal;
-	
+
 	import spark.components.RichEditableText;
-	
-	use namespace tlf_internal;	
+
+	use namespace tlf_internal;
 	
 	public class SparkWordProcessor implements IWordProcessor
 	{

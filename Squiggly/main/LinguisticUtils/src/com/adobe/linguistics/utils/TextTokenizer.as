@@ -20,15 +20,11 @@
 
 package com.adobe.linguistics.utils
 {
-	import __AS3__.vec.Vector;
-	
+	import flash.text.engine.ElementFormat;
+	import flash.text.engine.TextBlock;
+	import flash.text.engine.TextElement;
 	import flash.utils.Dictionary;
-	
-    import flash.text.engine.TextBlock;
-    import flash.text.engine.TextElement;
-    import flash.text.engine.ElementFormat;
 
-		
 	/**
 	 * <p>The <code>TextTokenizer</code> class locates the boundaries of words in a 
 	 * block of text.</p>

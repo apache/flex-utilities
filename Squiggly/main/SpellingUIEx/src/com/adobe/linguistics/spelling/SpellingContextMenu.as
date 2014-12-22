@@ -19,25 +19,14 @@
 
 package com.adobe.linguistics.spelling
 {
-	import com.adobe.linguistics.spelling.SpellUI;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
 	import com.adobe.linguistics.spelling.framework.ui.*;
 	import com.adobe.linguistics.utils.Token;
-	import com.adobe.linguistics.utils.TextTokenizer;
-	
+
 	import flash.events.ContextMenuEvent;
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
-	
-	import flash.text.TextField;
-	import mx.core.UIComponent;
-	
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	
+
 	public class SpellingContextMenu
 	{
 		private var disableMenuItem:ContextMenuItem = new ContextMenuItem("Disable spell checking",true);

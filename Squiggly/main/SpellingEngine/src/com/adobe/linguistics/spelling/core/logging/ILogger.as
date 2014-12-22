@@ -22,9 +22,9 @@
 package com.adobe.linguistics.spelling.core.logging
 {
 
-import flash.events.IEventDispatcher;
+    import flash.events.IEventDispatcher;
 
-public interface ILogger extends IEventDispatcher
+    public interface ILogger extends IEventDispatcher
 {
     function get category():String;
 

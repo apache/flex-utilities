@@ -20,20 +20,20 @@
 package com.adobe.linguistics.spelling.ui
 {
 	import com.adobe.linguistics.utils.Token;
-	import com.adobe.linguistics.utils.TextTokenizer;
-	import flash.geom.Point;
-	
+
 	import flash.display.Shape;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.engine.TextLine;
-	
+
 	import flashx.textLayout.compose.TextFlowLine;
 	import flashx.textLayout.edit.SelectionManager;
 	import flashx.textLayout.elements.TextFlow;
 	import flashx.textLayout.tlf_internal;
-	
+
 	import spark.components.RichEditableText;
-	use namespace tlf_internal;	
+
+	use namespace tlf_internal;
 
 	public class SparkHighlighter implements IHighlighter
 	{

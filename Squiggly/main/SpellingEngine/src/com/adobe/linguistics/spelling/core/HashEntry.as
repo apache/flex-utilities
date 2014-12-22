@@ -21,6 +21,7 @@
 package com.adobe.linguistics.spelling.core
 {
 	import com.adobe.linguistics.spelling.core.utils.StringUtils;
+
 	public class HashEntry
 	{
 		private var _affStr:String; // affix flag vector

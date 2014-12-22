@@ -19,15 +19,12 @@
 
 package com.adobe.linguistics.spelling.ui
 {
-	import __AS3__.vec.Vector;
-	
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flash.geom.Point;
 	import flash.text.TextField;
-	
-	import mx.core.IUITextField;
 
+	import mx.core.IUITextField;
 
 	public class HaloHighlighter implements IHighlighter
 	{

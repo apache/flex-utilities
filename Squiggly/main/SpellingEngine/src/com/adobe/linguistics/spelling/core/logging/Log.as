@@ -20,8 +20,9 @@
 
 package com.adobe.linguistics.spelling.core.logging
 {
-	import flash.errors.IllegalOperationError;
-public class Log
+    import flash.errors.IllegalOperationError;
+
+    public class Log
 {
 
     private static var _targetLevel:int = LogEventLevel.NONE;

@@ -20,8 +20,9 @@
 
 package com.adobe.linguistics.spelling.core.logging
 {
-	import flash.errors.IllegalOperationError;
-public class AbstractTarget implements ILoggingTarget
+    import flash.errors.IllegalOperationError;
+
+    public class AbstractTarget implements ILoggingTarget
 {
 	private var _usingLevelMaskMode:Boolean;
     public function AbstractTarget(usingLevelMaskMode:Boolean = false)

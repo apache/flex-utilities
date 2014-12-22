@@ -22,7 +22,8 @@ package com.adobe.linguistics.spelling.core.logging
 {
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
-public class LogLogger extends EventDispatcher implements ILogger
+
+	public class LogLogger extends EventDispatcher implements ILogger
 {
 	public function LogLogger(category:String)
 	{

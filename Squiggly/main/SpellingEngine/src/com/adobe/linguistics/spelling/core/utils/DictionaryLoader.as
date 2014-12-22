@@ -29,8 +29,7 @@ package com.adobe.linguistics.spelling.core.utils
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
-	import flash.utils.getTimer;
-	
+
 	public class DictionaryLoader extends EventDispatcher
 	{
 		private var dataloader:URLLoader;

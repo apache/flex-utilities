@@ -19,7 +19,7 @@
 
 
 package com.adobe.linguistics.spelling
-{	
+{
 	import com.adobe.linguistics.spelling.core.*;
 
 	/**

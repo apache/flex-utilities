@@ -24,15 +24,15 @@ package com.adobe.linguistics.spelling.core.utils
 	import com.adobe.linguistics.spelling.core.env.InternalConstants;
 	import com.adobe.linguistics.spelling.core.error.*;
 	import com.adobe.linguistics.spelling.core.logging.*;
-	
+
 	import flash.errors.IllegalOperationError;
-	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
+	import flash.utils.getQualifiedClassName;
 
 	public class LinguisticRuleLoader extends EventDispatcher
 	{
@@ -44,7 +44,7 @@ package com.adobe.linguistics.spelling.core.utils
 
 		
 		//setup logger for sending message.
-		private var className:String = flash.utils.getQualifiedClassName(this).split("::").join(".");
+		private var className:String = getQualifiedClassName(this).split("::").join(".");
 		private var logger:ILogger = Log.getLogger( className );
 
 		public function LinguisticRuleLoader()

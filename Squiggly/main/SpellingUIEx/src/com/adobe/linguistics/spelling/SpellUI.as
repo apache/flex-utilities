@@ -19,19 +19,17 @@
 
 package com.adobe.linguistics.spelling
 {
-	import com.adobe.linguistics.spelling.UserDictionary;
-	import com.adobe.linguistics.spelling.framework.ResourceTable;
 	import com.adobe.linguistics.spelling.framework.SpellingConfiguration;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
-    import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.SparkHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
-    import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
-    import com.adobe.linguistics.spelling.framework.ui.SparkWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.SparkHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.SparkWordProcessor;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.geom.Point;
@@ -41,23 +39,21 @@ package com.adobe.linguistics.spelling
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.utils.Dictionary;
-	
+
+	import flashx.textLayout.edit.SelectionManager;
+	import flashx.textLayout.tlf_internal;
+
 	import mx.controls.RichTextEditor;
 	import mx.controls.TextArea;
 	import mx.controls.TextInput;
 	import mx.core.UIComponent;
 	import mx.core.mx_internal;
 	import mx.events.ScrollEvent;
-	
+
 	import spark.components.RichEditableText;
 	import spark.components.TextArea;
 	import spark.components.TextInput;
-	
-	import flashx.textLayout.tlf_internal;
-	import flashx.textLayout.compose.TextFlowLine;
-	import flashx.textLayout.edit.SelectionManager;
-	import flashx.textLayout.elements.TextFlow;
-	
+
 	use namespace mx_internal;
 	
 	use namespace tlf_internal;	
@@ -246,7 +242,7 @@ package com.adobe.linguistics.spelling
 			var txt:TextField = null;
 			var txt2:RichEditableText = null;
 			if ( (comp == null) || !( (comp is mx.controls.TextArea) || (comp is mx.controls.TextInput) || (comp is RichTextEditor) 
-								|| (comp is spark.components.TextArea) || (comp is spark.components.TextInput) || (comp is spark.components.RichEditableText)) )
+								|| (comp is spark.components.TextArea) || (comp is spark.components.TextInput) || (comp is RichEditableText)) )
 				return null;
 			if ((comp as RichTextEditor) != null) {
 				txt = (comp as RichTextEditor).textArea.getTextField() as TextField;
@@ -269,7 +265,7 @@ package com.adobe.linguistics.spelling
                 else
     				txt2 = (comp as spark.components.TextInput).textDisplay as RichEditableText;
 			}
-			else if ((comp as spark.components.RichEditableText) !=null) {
+			else if ((comp as RichEditableText) !=null) {
 				txt2 = comp as RichEditableText;
 			}
 			else {
@@ -468,7 +464,7 @@ package com.adobe.linguistics.spelling
 			
 				SpellingConfiguration.resourceTable.setResource(_dictname,{rule:SpellUI._configXML.LanguageResource.(@languageCode==_dictname).@ruleFile, 
 																		dict:SpellUI._configXML.LanguageResource.(@languageCode==_dictname).@dictionaryFile});
-		}
+			}
                 //New Added
 			_spellingservice = new SpellingService(_dictname);
 			_spellingservice.addEventListener(Event.COMPLETE, loadDictComplete);

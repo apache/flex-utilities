@@ -21,7 +21,7 @@
 package com.adobe.linguistics.spelling.core.container
 {
 	import flash.utils.Dictionary;
-	
+
 	/**
 	 * A hash table
 	 */

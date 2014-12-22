@@ -23,8 +23,6 @@
 
 package com.adobe.linguistics.utils
 {
-	import __AS3__.vec.Vector;
-	
 	import flash.utils.Dictionary;
 	
     import flash.text.engine.TextBlock;

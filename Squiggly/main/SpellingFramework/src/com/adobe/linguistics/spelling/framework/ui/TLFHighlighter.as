@@ -19,25 +19,20 @@
 
 package com.adobe.linguistics.spelling.framework.ui
 {
-	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
-	import flash.display.Graphics;
+
 	import flash.display.Shape;
-	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.engine.TextLine;
 	import flash.utils.Dictionary;
-	
+
 	import flashx.textLayout.compose.TextFlowLine;
 	import flashx.textLayout.container.ContainerController;
-	import flashx.textLayout.edit.SelectionManager;
 	import flashx.textLayout.elements.TextFlow;
 	import flashx.textLayout.tlf_internal;
 
-
-	use namespace tlf_internal;	
+	use namespace tlf_internal;
 
 	/**
 	 * <p>This class facilitates drawing of squiggly lines below words for TLF TextFlow class.</p>

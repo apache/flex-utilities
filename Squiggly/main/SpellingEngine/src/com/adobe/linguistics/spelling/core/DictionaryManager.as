@@ -20,7 +20,6 @@
 
 package com.adobe.linguistics.spelling.core
 {
-	import com.adobe.linguistics.spelling.core.container.HashTable;
 	public class DictionaryManager
 	{
 		private var _table:Array;

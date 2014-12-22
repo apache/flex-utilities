@@ -21,7 +21,8 @@
 package com.adobe.linguistics.spelling.core.logging
 {
 	import flash.errors.IllegalOperationError;
-public final class LogEventLevel
+
+	public final class LogEventLevel
 {
 	    public static const FATAL:int = 16;
 	

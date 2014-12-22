@@ -19,8 +19,6 @@
 
 package com.adobe.linguistics.spelling.framework
 {
-	import __AS3__.vec.Vector;
-	
 	import com.adobe.linguistics.spelling.UserDictionary;
 	/**
 	 * Represents a user dictionary.

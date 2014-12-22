@@ -24,10 +24,10 @@ package com.adobe.linguistics.spelling.framework
 	import com.adobe.linguistics.spelling.SpellChecker;
 	import com.adobe.linguistics.spelling.UserDictionary;
 	import com.adobe.linguistics.spelling.core.UserDictionaryEngine;
-	import com.adobe.linguistics.spelling.core.env.InternalConstants;
-	
+
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+
 //	import flash.utils.Timer;
 //	import flash.events.TimerEvent;
 	

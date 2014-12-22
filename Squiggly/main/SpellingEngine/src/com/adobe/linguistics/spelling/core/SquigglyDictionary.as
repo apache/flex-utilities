@@ -24,12 +24,10 @@ package  com.adobe.linguistics.spelling.core
 
 	import com.adobe.linguistics.spelling.core.container.HashTable;
 	import com.adobe.linguistics.spelling.core.env.InternalConstants;
-	import com.adobe.linguistics.spelling.core.error.*;
 	import com.adobe.linguistics.spelling.core.utils.StringUtils;
-	
+
 	import flash.utils.Dictionary;
-	
-	
+
 	public class SquigglyDictionary
 	{
 		private var _hashtbl:HashTable;
