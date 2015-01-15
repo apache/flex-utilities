@@ -558,8 +558,16 @@ package com.adobe.linguistics.spelling
 		 *	@private
 		 */
 		private function cleanUp():void {
-			hh.clearSquiggles();
-			scm.cleanUp();
+			if(hh != null)
+			{
+				hh.clearSquiggles();
+			}
+
+			if(scm != null)
+			{
+				scm.cleanUp();
+			}
+
 			_actualParent.removeEventListener(Event.ADDED_TO_STAGE, addContextMenu);
 			
 			mTextField.removeEventListener(ScrollEvent.SCROLL, spellCheckScreen);
