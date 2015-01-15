@@ -107,8 +107,8 @@ package com.adobe.linguistics.spelling
 		private static var _configXMLLoading:Boolean = false;
 		private static var _configXMLLoader:URLLoader = new URLLoader();
 		
-		// Work around for the memory usage problem, ideally a better fix is to provide a dicitonary unload function
-		private static var _cache:Object = new Object();
+		// Work around for the memory usage problem, ideally a better fix is to provide a dictionary unload function
+		private static var _cache:Object = {};
 
 		/**
 		 * Enables the spell checking feature for a UI component.
@@ -116,8 +116,9 @@ package com.adobe.linguistics.spelling
 		 * <p>Note: This version provides only enabling function but no disabling function.</p>
 		 *
 		 * @param comp	A text editing Flex UI component.
-		 				It can be a <code>TextArea</code>, <code>TextInput</code> or <code>RichTextEditor</code>.
-		 * @param dict	A URL for the dictionary to be used with the <code>SpellChecker.</code>
+		 				It can be a <code>TextArea</code>, <code>TextInput</code>, <code>RichTextEditor</code>
+		 				(both spark and mx), or a <code>RichTextEditor</code>.
+		 * @param lang	The language of the dictionary to use when checking the text spelling in <code>comp</code>.
 		 *
 		 * @includeExample Examples/Flex/SquigglyUIExample/src/SquigglyUIExample.mxml
 		 * @playerversion Flash 10
@@ -281,8 +282,8 @@ package com.adobe.linguistics.spelling
 		/**
 		 * Constructs a SpellUI object.
 		 *
-		 *	@param	textFiled	A Flex UI component to include spell-check capability
-		 *	@param	dict		A URL for Squiggly spelling dictionary.
+		 *	@param	textModel	A Flex UI component to include spell-check capability.
+		 *	@param	lang		The language code to use for spell checking.
 		 *
 		 * @playerversion Flash 10
 		 * @langversion 3.0

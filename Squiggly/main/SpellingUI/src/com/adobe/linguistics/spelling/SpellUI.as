@@ -126,7 +126,7 @@ package com.adobe.linguistics.spelling
 		
 		
 		// Work around for the memory usage problem, ideally a better fix is to provide a dicitonary unload function
-		private static var _cache:Object = new Object();
+		private static var _cache:Object = {};
 
 		/**
 		 * Enable the spell checking feature in the specified language for a UI component. Once a component is spell checking enabled, misspelled words will be highlighted with a squiggly line. Users can 
@@ -302,8 +302,8 @@ package com.adobe.linguistics.spelling
 		 * Constructs a SpellUI object.
 		 *	@private
 		 *
-		 *	@param	textFiled	A Flex UI component to include spell-check capability
-		 * 	@param lang	The language code used for spell checking
+		 *	@param	textModel	A Flex UI component to include spell-check capability.
+		 *	@param	lang		The language code to use for spell checking.
 		 *
 		 * @playerversion Flash 10
 		 * @langversion 3.0
