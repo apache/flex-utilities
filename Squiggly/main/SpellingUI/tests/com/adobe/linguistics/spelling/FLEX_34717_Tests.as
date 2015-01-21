@@ -25,7 +25,7 @@ package com.adobe.linguistics.spelling {
     import org.flexunit.asserts.assertTrue;
     import org.fluint.uiImpersonation.UIImpersonator;
 
-    public class FLEX_34717_Test {
+    public class FLEX_34717_Tests {
         private var _input:TextArea;
 
         [Before]
