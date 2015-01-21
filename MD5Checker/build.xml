@@ -135,6 +135,7 @@
     </target>
     
     <target name="commit" depends="credentials">
+        <delete file="${basedir}/getresult.txt" failonerror="false"/>
         <exec executable="${svn}" dir="${site}" failonerror="true" >
             <arg value="commit" />
             <arg value="--username" />
@@ -145,9 +146,8 @@
             <arg value="&quot;update md5s&quot;" />
         </exec>
         <!-- pause to give buildbot chance to react -->
-        <sleep seconds="5" />
+        <sleep seconds="60" />
         <get src="https://cms.apache.org/flex/publish" username="${apache.username}" password="${apache.password}" dest="${basedir}/getresult.txt" />
-        <delete file="${basedir}/getresult.txt" />
     </target>
     
     <target name="credentials" depends="get-username,get-password">
