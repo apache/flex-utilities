@@ -51,7 +51,7 @@ package com.adobe.linguistics.spelling {
             SpellUI.disableSpelling(_input);
 
             //then
-            assertTrue(true); //no error was thrown
+            assertTrue("If the unit test reaches this point, it means no RTE was thrown, which means the bug is not present", true);
         }
     }
 }
