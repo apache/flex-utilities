@@ -281,9 +281,7 @@
     </target>
 	
 	<target name="unit-tests" description="Runs the FlexUnit tests for this project">
-        <ant antfile="${FLEX_HOME}/flexunit-tests.xml">
-            <property name="project.root" value="${basedir}/SpellingUIEx"/>
-            <property name="project.libs" value="${basedir}/libs"/>
-        </ant>
+        <ant dir="SpellingUIEx" target="unit-tests" />
+        <ant dir="SpellingUI" target="unit-tests" />
     </target>
 </project>
