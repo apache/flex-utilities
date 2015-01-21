@@ -274,10 +274,16 @@
         </java>
     </target>
 
-    <target name="test" depends="compilelinguistics, compileengine, compileframework, compileui, compileuiapi, compileuitlf, compileuiex, extract-rsls">
-    </target>
+    <target name="test" depends="compilelinguistics, compileengine, compileframework, compileui, compileuiapi, compileuitlf, compileuiex, extract-rsls"/>
    
     <target name="clean" description="clean up">
     	<delete dir="${OUTPUT_DIR}"/>
+    </target>
+	
+	<target name="unit-tests" description="Runs the FlexUnit tests for this project">
+        <ant antfile="${FLEX_HOME}/flexunit-tests.xml">
+            <property name="project.root" value="${basedir}/SpellingUIEx"/>
+            <property name="project.libs" value="${basedir}/libs"/>
+        </ant>
     </target>
 </project>

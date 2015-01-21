@@ -225,4 +225,8 @@
     	</delete>
     	<delete dir="${basedir}/out"/> 
     </target>
+	
+	<target name="test" description="Runs the FlexUnit tests for this project">
+		<ant dir="main" target="unit-tests" />
+    </target>
 </project>
