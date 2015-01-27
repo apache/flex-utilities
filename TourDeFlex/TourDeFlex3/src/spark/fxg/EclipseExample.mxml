@@ -21,7 +21,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
-	<s:Panel title="Ellipse Graphic Sample" skinClass="skins.TDFPanelSkin"
+	<s:Panel title="Ellipse Graphic Sample" 
 			 width="100%" height="100%">
 		
 		<s:Graphic horizontalCenter="0" verticalCenter="0">
@@ -40,7 +40,7 @@
 				</s:fill>
 			</s:Ellipse>
 		</s:Graphic>
-		<s:Label right="25" top="10" width="270" color="0x323232" text="The Ellipse class is a filled graphic element that draws an ellipse. Graphic
+		<s:Label right="25" top="10" width="270" text="The Ellipse class is a filled graphic element that draws an ellipse. Graphic
 objects are placed in a Graphic tag which defines the root of an FXG document."/>
 	</s:Panel>
 </s:Application>

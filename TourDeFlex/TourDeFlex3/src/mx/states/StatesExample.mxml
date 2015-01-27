@@ -17,7 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the States class. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
     <!-- Define one view state, in addition to the base state.-->
     <mx:states>
@@ -27,10 +29,11 @@
 
     <!-- Define a Panel container that defines the login form.-->
     <mx:Panel title="Login" title.register="Register" id="loginPanel" 
-        horizontalScrollPolicy="off" verticalScrollPolicy="off"
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+        		horizontalScrollPolicy="off" verticalScrollPolicy="off"	
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue"
+        <mx:Text width="100%"
             text="Click the 'Need to Register?' link to change state. Click the 'Return to Login' link to return to the base state."/>
 
         <mx:Form id="loginForm">

@@ -19,8 +19,7 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<fx:Script>
         <![CDATA[
@@ -46,10 +45,6 @@
         ]]>
     </fx:Script>
 	
-	<s:layout>
-		<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" />
-	</s:layout>
-
 	<fx:Declarations>
 		<!-- The Validator class defines the required property and the validator events
          used by all validator subclasses. -->
@@ -58,17 +53,14 @@
         valid="handleValid(event)" invalid="handleValid(event)"/>
 	</fx:Declarations>
         
-	<s:Panel title="Validator Example" width="620" height="100%"
-			 color="0x000000" 
-			 borderAlpha="0.15">
+	<s:Panel title="Validator Example" width="100%" height="100%">
 		
 		<s:layout>
-			<s:VerticalLayout horizontalAlign="center" 
-							  paddingLeft="10" paddingRight="10" 
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" 
 							  paddingTop="10" paddingBottom="10"/>
 		</s:layout>
          
-         <mx:Form color="0x323232">
+         <mx:Form>
             <s:Label width="100%"
                 text="Enter a value in the Name field before you can submit. The E-mail field is optional."/>
 
@@ -82,7 +74,7 @@
             
             <mx:FormItem>
                 <s:Button id="submitButton" enabled="false" 
-                    label="Submit" click="submitForm();"/>
+                    label="Submit" click="submitForm()"/>
             </mx:FormItem>
         </mx:Form>
         

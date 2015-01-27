@@ -19,16 +19,10 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600">
-	
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
-	
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
+
 	<fx:Script>
 		<![CDATA[
-			import skins.TDFPanelSkin;
-			
 			private function applyProperties():void
 			{
 				this.mainHGroup.paddingTop = this.padTop.value;
@@ -40,7 +34,7 @@
 		]]>
 	</fx:Script>
 	
-	<s:Panel skinClass="skins.TDFPanelSkin" title="HGroup" width="100%" height="100%">
+	<s:Panel title="HGroup" width="100%" height="100%">
 		
 		<s:HGroup left="300" top="25" id="mainHGroup">
 			<s:Rect width="100" height="75">
@@ -87,7 +81,7 @@
 			</s:HGroup>    
 			
 			<s:Button label="Apply Properties" click="this.applyProperties()"/>
-			<s:Label width="75%" horizontalCenter="0" color="#323232"
+			<s:Label width="75%" horizontalCenter="0"
 					 text="The HGroup container is an instance of the Group container that uses the HorizontalLayout class. You can use
 					 the properties of the HGroup class to modify the characteristics of the HorizontalLayout class."/>
 		</s:VGroup>

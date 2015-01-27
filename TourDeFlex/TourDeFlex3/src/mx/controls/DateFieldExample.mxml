@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the DateField control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
       <![CDATA[
 
          // Event handler for the DateField change event.
@@ -37,21 +39,22 @@
  		<mx:DateFormatter id="df"/>
 	</fx:Declarations>
 
-    <mx:Panel title="DateField Control Example" height="75%" width="75%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel title="DateField Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Label width="100%"  color="blue"
+        <mx:Label width="100%" 
             text="Select a date in the DateField control. Select it again to clear it."/>
 
         <mx:Label text="Basic DateField:"/>
         <mx:DateField id="dateField1" yearNavigationEnabled="true" 
             change="dateChanged(DateField(event.target).selectedDate)" />
-        <mx:Label id="selection"  color="blue" text="Date selected:" />
+        <mx:Label id="selection"  text="Date selected:" />
 
         <mx:Label text="Disable dates on or before June 1, 2006."/>
         <mx:DateField id="dateField2" yearNavigationEnabled="true" 
             disabledRanges="{[ {rangeEnd: new Date(2006, 5, 1)} ]}" />
-        <mx:Label  color="blue" text="Date selected: {df.format(dateField2.selectedDate)}"/>
+        <mx:Label  text="Date selected: {df.format(dateField2.selectedDate)}"/>
 
     </mx:Panel>
 </mx:Application>

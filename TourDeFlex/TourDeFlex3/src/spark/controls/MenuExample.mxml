@@ -26,8 +26,6 @@
 			import mx.events.FlexEvent;
 			import mx.events.MenuEvent;
 			
-			import skins.TDFPanelSkin;
-			
 			protected var myMenu:Menu; 
 			
 			protected function showHandler(event:MouseEvent):void
@@ -74,14 +72,19 @@
 		</fx:XML>
 	</fx:Declarations>
 	
-	<s:Panel title="Menu Sample" width="100%" height="100%" skinClass="skins.TDFPanelSkin">
+	<s:Panel title="Menu Sample" width="100%" height="100%">
+		
+		<s:layout>
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+		
 		<s:HGroup bottom="15" horizontalCenter="0" verticalAlign="middle">
 			<s:Button label="Show Menu" click="showHandler(event)" />
 			<s:Button label="Hide Menu" click="hideHandler(event)" />
-			<s:Label text="Menu Item Selected:" fontWeight="bold" fontSize="12" color="0x336699"/>
+			<s:Label text="Menu Item Selected:" fontWeight="bold" />
 			<s:Label id="lblSelected" />
 		</s:HGroup>
-		<s:Label width="220" color="#323232" top="15" right="50"
+		<s:Label width="220" top="15" right="50"
 				 text="The Menu control is a pop-up control that contains a menu of individually selectable choices. You use ActionScript 
 				 to create a Menu control that pops up in response to a user action, typically as part of an event listener."/>	
 

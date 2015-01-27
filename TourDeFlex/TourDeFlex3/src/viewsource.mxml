@@ -17,7 +17,7 @@
   -->
 
 <mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
-		 backgroundColor="#CCCCCC" usePreloader="false" paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0">
+		 usePreloader="false" paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0">
 
 	<fx:Script>
 		<![CDATA[		
@@ -32,7 +32,12 @@
 				{
 					var files:Array = new Array();
 					// the first file shown will be the mxml source
-					files[0] = appUrl + ".mxml";
+					if (appUrl.indexOf(".mxml") >= 0 || appUrl.indexOf(".as") >= 0) {
+						files[0] = appUrl;
+					}
+					else if (appUrl.indexOf(".swf") == -1) {
+						files[0] = appUrl + ".mxml";
+					}
 					
 					if (srcUrl != null && srcUrl != "")
 					{
@@ -41,7 +46,7 @@
 						files = files.concat(otherSrc);
 					}
 
-	        		for (var i:int ; i < files.length ; i++)
+	        		for (var i:int = 0; i < files.length ; i++)
     	    		{
 						tabs[i] = new SourceTab();
 						tn.addChild(tabs[i]);
@@ -53,6 +58,6 @@
 		]]>
 	</fx:Script>
 
-	<mx:TabNavigator id="tn" width="100%" height="100%" paddingTop="0"/>
+	<mx:TabNavigator id="tn" width="100%" height="100%" paddingTop="0" borderStyle="none" />
 
 </mx:VBox>

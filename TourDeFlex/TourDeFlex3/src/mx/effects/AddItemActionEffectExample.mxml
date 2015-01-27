@@ -16,9 +16,11 @@
       limitations under the License.
   -->
 
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
             import mx.effects.easing.Elastic;
             import mx.collections.ArrayCollection;
@@ -75,8 +77,9 @@
 	    </mx:Sequence>   
 	</fx:Declarations>
 
-    <mx:Panel title="AddItemEffect/RemoveItemEffect Example" width="75%" height="75%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="AddItemEffect/RemoveItemEffect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
         <!-- This TileList uses a custom data change effect -->
         <mx:TileList id="tlist0" 
@@ -91,10 +94,10 @@
     
         <mx:Button 
             label="Delete selected item(s)" 
-            click="deleteItem();"/>
+            click="deleteItem()"/>
         <mx:Button 
             label="Add item" 
-            click="addItem();"/>
+            click="addItem()"/>
         
     </mx:Panel>         
 </mx:Application>

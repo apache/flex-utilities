@@ -23,16 +23,16 @@
                xmlns:fxg="*">
 	
 	
-	<s:Panel width="100%" height="100%"
-			 title="Static FXG Sample"
-			 skinClass="skins.TDFPanelSkin">
-		<s:Label verticalAlign="justify" color="#323232" x="10" y="30" width="200"
+	<s:Panel title="Static FXG Sample" width="100%" height="100%">
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+		
+		<s:Label verticalAlign="justify" width="200"
 					  text="You can use a static file of fxg within your MXML. You include the inline
 component as shown here."/>
-					  		
-		<fxg:OrangeCrayonStar id="crayonStar" right="160"/>
 		
-		<s:VGroup right="180" bottom="20">
+		<s:VGroup>
 				<s:VGroup bottom="100">
 					<s:HSlider id="star_width" maximum="400" change="crayonStar.width=star_width.value" 
 							   horizontalCenter="-90" y="250" />
@@ -42,9 +42,10 @@ component as shown here."/>
 					<s:HSlider id="star_height" maximum="400" change="crayonStar.height=star_height.value" 
 							   horizontalCenter="90" y="250" />
 					<s:Label horizontalCenter="90" y="269" text="height"/>	
-				</s:VGroup>	
-			
+				</s:VGroup>				
 		</s:VGroup>
+		
+		<fxg:OrangeCrayonStar id="crayonStar" />
 	</s:Panel>
 	
 	

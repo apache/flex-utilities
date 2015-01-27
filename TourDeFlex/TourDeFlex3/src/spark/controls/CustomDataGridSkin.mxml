@@ -47,7 +47,7 @@
         <!--- @private -->        
         <fx:Component id="alternatingRowColorsBackground">
             <s:Rect implements="spark.components.gridClasses.IGridVisualElement">
-                <fx:Script>
+                 <fx:Script>
                     <![CDATA[
                         import spark.components.DataGrid;
                         import spark.components.Grid;
@@ -85,7 +85,7 @@
         <!--- @private -->        
         <fx:Component id="caretIndicator">
             <s:Rect implements="spark.components.gridClasses.IGridVisualElement">
-                <fx:Script>
+                 <fx:Script>
                     <![CDATA[
                         import spark.components.DataGrid;
                         import spark.components.Grid;
@@ -139,7 +139,7 @@
         <!--- @private -->
         <fx:Component id="hoverIndicator">
             <s:Rect implements="spark.components.gridClasses.IGridVisualElement">
-                <fx:Script>
+                 <fx:Script>
                     <![CDATA[
                         import spark.components.DataGrid;
                         import spark.components.Grid;
@@ -178,7 +178,7 @@
         <!--- @private -->
         <fx:Component id="selectionIndicator">
             <s:Rect implements="spark.components.gridClasses.IGridVisualElement">
-                <fx:Script>
+                 <fx:Script>
                     <![CDATA[
                         import spark.components.DataGrid;
                         import spark.components.Grid;

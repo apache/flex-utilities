@@ -17,7 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the Parallel effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
 	<fx:Declarations>
 	   <mx:Parallel id="expand" target="{img}">
@@ -31,10 +33,11 @@
 	    </mx:Parallel>
 	</fx:Declarations>
 
-    <mx:Panel title="Parallel Effect Example" width="100%" height="100%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="Parallel Effect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue" 
+        <mx:Text width="100%" 
             text="Use the Button controls to move and resize the logo in parallel."/>
 
         <mx:Canvas id="canvas" width="100%" height="100%">
@@ -43,8 +46,8 @@
         </mx:Canvas>
 
         <mx:ControlBar>
-            <mx:Button label="Expand" click="expand.end(); expand.play();"/>
-            <mx:Button label="Contract" click="contract.end(); contract.play();"/>
+            <mx:Button label="Expand" click="expand.end(); expand.play()"/>
+            <mx:Button label="Contract" click="contract.end(); contract.play()"/>
         </mx:ControlBar>
 
     </mx:Panel>

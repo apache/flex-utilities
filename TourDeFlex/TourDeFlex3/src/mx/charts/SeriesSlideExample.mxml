@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the CandlestickChart control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
           
         import mx.collections.ArrayCollection;
@@ -57,8 +59,9 @@
     	<mx:SeriesSlide id="slideOut" duration="1000" direction="down"/>
 	</fx:Declarations>
 
-    <mx:Panel title="CandlestickChart Control Example" height="100%" width="100%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="CandlestickChart Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
         <mx:CandlestickChart id="candlestickchart" height="100%" width="100%"
             paddingRight="5" paddingLeft="5" 
@@ -85,14 +88,14 @@
             </mx:series>
         </mx:CandlestickChart>
         
-        <mx:Label width="100%" color="blue"
+        <mx:Label width="100%"
             text="Choose a company to view recent stock data."/>
 
         <mx:HBox>
             <mx:RadioButton groupName="stocks" label="View Company A"
-                selected="true" click="candlestickchart.dataProvider=companyAAC;"/>
+                selected="true" click="candlestickchart.dataProvider=companyAAC"/>
             <mx:RadioButton groupName="stocks" label="View Company B"
-                click="candlestickchart.dataProvider=companyBAC;"/>
+                click="candlestickchart.dataProvider=companyBAC"/>
         </mx:HBox>
     </mx:Panel>
 </mx:Application>

@@ -17,9 +17,12 @@
   -->
 
 <!-- Simple example to demonstrate the MenuBar control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="initCollections();" >
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%"
+				creationComplete="initCollections()">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
 
             import mx.events.MenuEvent;
@@ -64,13 +67,14 @@
          ]]>
     </fx:Script>
 
-    <mx:Panel title="MenuBar Control Example" height="75%" width="75%" 
-        paddingTop="10" paddingLeft="10">
+    <mx:Panel title="MenuBar Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Label width="100%" color="blue"
+        <mx:Label width="100%"
            text="Select a menu item."/>
 
-        <mx:MenuBar labelField="@label" itemClick="menuHandler(event);" 
+        <mx:MenuBar labelField="@label" itemClick="menuHandler(event)" 
             dataProvider="{menuBarCollection}" />
             
     </mx:Panel>

@@ -21,24 +21,6 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   width="100%" height="100%">
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-		@namespace mx "library://ns.adobe.com/flex/mx";
-		s|Label {
-			color: #FFFFFF;
-			font-weight: bold;
-		}
-		#titleL {
-			font-size: 20;
-		}
-		s|ComboBox {
-			alternating-item-colors: #424242;
-		}
-		
-		s|Form {
-			background-color: #424242;
-		}
-	</fx:Style>
 	
 	<fx:Script>
 		<![CDATA[
@@ -59,54 +41,54 @@
 			
 		]]>
 	</fx:Script>
+	
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
 		<s:CurrencyFormatter id="cf" locale="{localeCB.selectedItem}"/>
 		<s:CurrencyFormatter id="cf_default" locale="{localeCB.selectedItem}"/>
 	</fx:Declarations>
-	<s:layout>
-		<s:VerticalLayout/>
-	</s:layout>
-	<s:Scroller id="scroller" width="100%" height="100%">
-		<s:Group>
-			<s:Form>
-				<s:Label id="titleL" text="Spark CurrencyFormatter"/>
-				<s:Label text="Select a locale to see the property value and formatted currency: "/>
-				<s:Spacer height="15"/>
-				<s:FormItem label="Locale:">
-					<s:ComboBox id="localeCB" dataProvider="{locales}" selectedIndex="0" updateComplete="formatCurr()"/>
-				</s:FormItem>
-				<s:FormItem label="Input a number to format:">
-					<s:TextInput id="inputTI" text="12345" change="formatCurr()"/>
-				</s:FormItem>
-				<s:FormItem label="Fraction Digits: (default: {cf_default.fractionalDigits})">
-					<s:NumericStepper id="fdNS" maximum="10" minimum="0" change="cf.fractionalDigits = fdNS.value;formatCurr()"/>
-				</s:FormItem>
-				<s:FormItem label="Decimal Separator: (default: {cf_default.decimalSeparator})">
-					<s:TextInput id="dsTI" change="cf.decimalSeparator = dsTI.text;formatCurr()"/>
-				</s:FormItem>
-				<s:FormItem label="Grouping Pattern: (default: {cf_default.groupingPattern})">
-					<s:ComboBox id="gpCB" dataProvider="{groupPatternArrColl}" change="cf.groupingPattern = gpCB.selectedItem;formatCurr()"/>
-				</s:FormItem>
-				<s:FormItem label="Grouping Separator: (default: {cf_default.groupingSeparator})">
-					<s:TextInput id="gsTI" change="cf.groupingSeparator = gsTI.text;formatCurr()"/>
-				</s:FormItem>
-				<s:FormItem label="Negative Currency Format: (default: {cf_default.negativeCurrencyFormat})">
-					<s:NumericStepper id="ncfNS" minimum="0" maximum="15" change="cf.negativeCurrencyFormat = ncfNS.value;formatCurr()"/>
-				</s:FormItem>
-				<s:FormItem label="Positive Currency Format: (default: {cf_default.positiveCurrencyFormat})">
-					<s:NumericStepper id="pcfNS" middleClick="0" maximum="3" change="cf.positiveCurrencyFormat = pcfNS.value;formatCurr()"/>
-				</s:FormItem>
-				<s:Label text="==================================================================="/>
-				<s:FormItem label="Formatted Currency with ISO code is:">
-					<s:Label id="resultL"/>
-				</s:FormItem>
-				<s:FormItem label="Formatted Currency with currency symbol is:">
-					<s:Label id="resultSymbolL"/>
-				</s:FormItem>
-			</s:Form>
-		</s:Group>
-	</s:Scroller>
-	
-	
+
+
+	<s:Panel title="Spark CurrencyFormatter" width="100%" height="100%">
+
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+			
+		<s:Form height="100%" width="100%">
+			<s:Label text="Select a locale to see the property value and formatted currency: "/>
+			<s:Spacer height="15"/>
+			<s:FormItem label="Locale:">
+				<s:ComboBox id="localeCB" dataProvider="{locales}" selectedIndex="0" updateComplete="formatCurr()"/>
+			</s:FormItem>
+			<s:FormItem label="Input a number to format:">
+				<s:TextInput id="inputTI" text="12345" change="formatCurr()"/>
+			</s:FormItem>
+			<s:FormItem label="Fraction Digits: (default: {cf_default.fractionalDigits})">
+				<s:NumericStepper id="fdNS" maximum="10" minimum="0" change="cf.fractionalDigits = fdNS.value;formatCurr()"/>
+			</s:FormItem>
+			<s:FormItem label="Decimal Separator: (default: {cf_default.decimalSeparator})">
+				<s:TextInput id="dsTI" change="cf.decimalSeparator = dsTI.text;formatCurr()"/>
+			</s:FormItem>
+			<s:FormItem label="Grouping Pattern: (default: {cf_default.groupingPattern})">
+				<s:ComboBox id="gpCB" dataProvider="{groupPatternArrColl}" change="cf.groupingPattern = gpCB.selectedItem;formatCurr()"/>
+			</s:FormItem>
+			<s:FormItem label="Grouping Separator: (default: {cf_default.groupingSeparator})">
+				<s:TextInput id="gsTI" change="cf.groupingSeparator = gsTI.text;formatCurr()"/>
+			</s:FormItem>
+			<s:FormItem label="Negative Currency Format: (default: {cf_default.negativeCurrencyFormat})">
+				<s:NumericStepper id="ncfNS" minimum="0" maximum="15" change="cf.negativeCurrencyFormat = ncfNS.value;formatCurr()"/>
+			</s:FormItem>
+			<s:FormItem label="Positive Currency Format: (default: {cf_default.positiveCurrencyFormat})">
+				<s:NumericStepper id="pcfNS" middleClick="0" maximum="3" change="cf.positiveCurrencyFormat = pcfNS.value;formatCurr()"/>
+			</s:FormItem>
+			<s:Label text="==================================================================="/>
+			<s:FormItem label="Formatted Currency with ISO code is:">
+				<s:Label id="resultL"/>
+			</s:FormItem>
+			<s:FormItem label="Formatted Currency with currency symbol is:">
+				<s:Label id="resultSymbolL"/>
+			</s:FormItem>
+		</s:Form>
+
+	</s:Panel>
 </s:Application>

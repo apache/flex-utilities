@@ -28,7 +28,7 @@
         <isset property="env.FLEX_HOME" />
     </condition>
         	
-    <property name="version" value="1.0" />
+    <property name="version" value="1.1" />
 	
     <path id="flexTasks.path">
         <fileset dir="${FLEX_HOME}">
@@ -68,10 +68,10 @@
 		    <doc-classes class="com.adobe.linguistics.spelling.framework.ResourceTable"/>
 		    <doc-classes class="com.adobe.linguistics.spelling.framework.SpellingConfiguration"/>		    
 		    <doc-classes class="com.adobe.linguistics.spelling.framework.SpellingService"/>		    
-		    <doc-classes class="com.adobe.linguistics.spelling.ui.IHighlighter"/>
-		    <doc-classes class="com.adobe.linguistics.spelling.ui.HaloHighlighter"/>
-			<doc-classes class="com.adobe.linguistics.spelling.ui.SparkHighlighter"/>
-			<doc-classes class="com.adobe.linguistics.spelling.ui.TLFHighlighter"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.framework.ui.IHighlighter"/>
+		    <doc-classes class="com.adobe.linguistics.spelling.framework.ui.HaloHighlighter"/>
+			<doc-classes class="com.adobe.linguistics.spelling.framework.ui.SparkHighlighter"/>
+			<doc-classes class="com.adobe.linguistics.spelling.framework.ui.TLFHighlighter"/>
 	    		    
 			<compiler.source-path path-element="main/SpellingUI/src"/>
 			<compiler.source-path path-element="main/SpellingUITLF/src"/>
@@ -80,7 +80,7 @@
 			<compiler.source-path path-element="main/SpellingFramework/src"/>
 			
 			<package name="com.adobe.linguistics.spelling" description="This package providing spell checking functionality to your action script applications. This includes the core spell checking engine and the optional SpellUI class for easy integration with your existing Flex projects." />
-			<package name="com.adobe.linguistics.spelling.ui" description="This package provides text highlighting related functionalities." />
+			<package name="com.adobe.linguistics.spelling.framework.ui" description="This package provides text highlighting related functionalities." />
 			<package name="com.adobe.linguistics.spelling.framework" description="This package provides spelling service and spelling configuration related functionalities." />
 			<package name="com.adobe.linguistics.utils" description="This package provides text parsing and tokenizing related classes." />
 		</asdoc>
@@ -99,7 +99,9 @@
                 <include name="LICENSE" />
                 <include name="NOTICE" />
                 <include name="README" />
-                <include name="RELEASE_NOTES" />
+            	<include name="RELEASE_NOTES" />
+            	<include name="CONTRIBUTING" />
+            	<include name="CONTRIBUTORS" />
                 <include name="**/*.xml" />
                 <include name="**/*.mxml" />
             	<include name="**/*.as" />
@@ -109,12 +111,14 @@
             	<include name="**/*.sh" />
             	<include name="**/*.properties" />
             	<include name="docs/**" />
+            	<include name="dictionaries/**" />
             	<exclude name="ane/**" />
             	<exclude name="main/ASDocExamples/**" />
             	<exclude name="main/Automation/**" />
             	<exclude name="main/Data/**" />
             	<exclude name="main/Demo/**" />
             	<exclude name="main/Tools/**" />
+            	<exclude name="main/generated/**" />
              </tarfileset>
          </tar>
 	</target>
@@ -126,6 +130,8 @@
                 <include name="NOTICE" />
                 <include name="README" />
                 <include name="RELEASE_NOTES" />
+            	<include name="CONTRIBUTING" />
+            	<include name="CONTRIBUTORS" />
                 <include name="**/*.xml" />
                 <include name="**/*.mxml" />
             	<include name="**/*.as" />
@@ -135,12 +141,14 @@
             	<include name="**/*.sh" />
             	<include name="**/*.properties" />
             	<include name="docs/**" />
+            	<include name="dictionaries/**" />
             	<exclude name="ane/**" />
             	<exclude name="main/ASDocExamples/**" />
             	<exclude name="main/Automation/**" />
             	<exclude name="main/Data/**" />
             	<exclude name="main/Demo/**" />
             	<exclude name="main/Tools/**" />
+            	<exclude name="main/generated/**" />
              </fileset>
          </zip>
 	</target>
@@ -154,6 +162,8 @@
 	                <include name="NOTICE" />
 	                <include name="README" />
 	                <include name="RELEASE_NOTES" />
+	            	<include name="CONTRIBUTING" />
+	            	<include name="CONTRIBUTORS" />
 	                <include name="**/*.xml" />
 	                <include name="**/*.mxml" />
 	            	<include name="**/*.as" />
@@ -163,6 +173,7 @@
 	            	<include name="**/*.sh" />
 	            	<include name="**/*.properties" />
 	            	<include name="docs/**" />
+	            	<include name="dictionaries/**" />
 	                <include name="**/*.swc" />
 	            	<exclude name="ane/**" />
 	            	<exclude name="main/ASDocExamples/**" />
@@ -170,6 +181,7 @@
 	            	<exclude name="main/Data/**" />
 	            	<exclude name="main/Demo/**" />
 	            	<exclude name="main/Tools/**" />
+	            	<exclude name="main/generated/**" />
 	             </tarfileset>
 	         </tar>
 		</target>
@@ -181,6 +193,8 @@
 	                <include name="NOTICE" />
 	                <include name="README" />
 	                <include name="RELEASE_NOTES" />
+	            	<include name="CONTRIBUTING" />
+	            	<include name="CONTRIBUTORS" />
 	                <include name="**/*.xml" />
 	                <include name="**/*.mxml" />
 	            	<include name="**/*.as" />
@@ -190,6 +204,7 @@
 	            	<include name="**/*.sh" />
 	            	<include name="**/*.properties" />
 	            	<include name="docs/**" />
+	            	<include name="dictionaries/**" />
 	                <include name="**/*.swc" />
 	            	<exclude name="ane/**" />
 	            	<exclude name="main/ASDocExamples/**" />
@@ -197,6 +212,7 @@
 	            	<exclude name="main/Data/**" />
 	            	<exclude name="main/Demo/**" />
 	            	<exclude name="main/Tools/**" />
+	            	<exclude name="main/generated/**" />
 	             </fileset>
 	         </zip>
 		</target>

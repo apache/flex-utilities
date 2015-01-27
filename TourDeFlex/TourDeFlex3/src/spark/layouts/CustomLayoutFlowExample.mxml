@@ -22,7 +22,7 @@
 				xmlns:mx="library://ns.adobe.com/flex/halo"
 				xmlns:my="*">
 	
-	<s:Panel width="100%" height="100%" title="Custom Layout - Flow Layout" skinClass="skins.TDFPanelSkin">
+	<s:Panel width="100%" height="100%" title="Custom Layout - Flow Layout" >
 		<s:layout>
 			<s:VerticalLayout horizontalAlign="center"
 							  paddingTop="10" gap="10"/>

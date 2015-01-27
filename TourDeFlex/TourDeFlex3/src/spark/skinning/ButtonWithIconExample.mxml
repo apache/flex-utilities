@@ -23,7 +23,7 @@
 	
 	<!-- Custom skins used for this example are shown in the source tabs for reference -->
 	<s:Panel width="100%" height="100%" title="Button Skinned With Icon" 
-			 skinClass="skins.TDFPanelSkin">
+			 >
 		<s:HGroup width="100%" left="35" top="15">
 			<s:VGroup width="50%">
 				<s:HGroup verticalAlign="middle">

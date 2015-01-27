@@ -19,8 +19,7 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<fx:Script>
 		<![CDATA[
@@ -49,10 +48,6 @@
 		]]>
 	</fx:Script>
 	
-	<s:layout>
-		<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" />
-	</s:layout>
-	
 	<fx:Declarations>
 		<mx:RegExpValidator id="regExpV" 
 							source="{regex_text}" property="text" 
@@ -61,13 +56,10 @@
 							trigger="{myButton}" triggerEvent="click"/>
 	</fx:Declarations>
 	
-	<s:Panel title="RegExpValidator Example" width="620" height="100%"
-			 color="0x000000" 
-			 borderAlpha="0.15">
+	<s:Panel title="RegExpValidator Example" width="100%" height="100%">
 		
 		<s:layout>
-			<s:VerticalLayout horizontalAlign="center" 
-							  paddingLeft="10" paddingRight="10" 
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" 
 							  paddingTop="10" paddingBottom="10"/>
 		</s:layout>
 		
@@ -77,7 +69,7 @@
 		<s:Label width="100%" color="0x323232" text="3. Click the Button control to trigger the validation."/>
 		<s:Label width="100%" color="0x323232" text="4. The results show the index in the text where the matching pattern begins, and the matching pattern. "/>
 		
-		<mx:Form color="0x323232">
+		<mx:Form>
 			<mx:FormItem label="Enter text: ">
 				<s:TextInput id="regex_text" text="xxxxABC4xxx" width="100%"/>
 			</mx:FormItem>

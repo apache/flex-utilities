@@ -31,34 +31,31 @@
 			}
 		]]>
 	</fx:Script>
-	
-	<!-- Note: A custom panel skin is used for the Tour de Flex samples and is included in the
-			   source tabs for each sample.	-->
-	<s:Panel width="100%" height="100%" 
-			 horizontalCenter="0" 
-			 title="Button Sample" 
-			 skinClass="skins.TDFPanelSkin">
+
+	<s:Panel title="Button Sample" height="100%" width="100%">
 		
-		<s:HGroup left="5" top="5" width="100%" height="100%">
-		<s:Label width="50%" fontSize="13" color="0x323232"  verticalAlign="justify"
-					  text="The Button component is a commonly used rectangular button. The Button
+		<s:layout>
+            <s:HorizontalLayout paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10" />
+        </s:layout>
+		
+		<s:Label width="50%" verticalAlign="justify"
+				 text="The Button component is a commonly used rectangular button. The Button
 component looks like it can be pressed. The default skin has a text label."/>
 					  	
-			<s:VGroup right="10" bottom="5" color="0x000000" horizontalAlign="center">
-					<s:Label text="Output"/>
-					<s:TextArea id="repeatText" top="5" right="50" width="180" height="100"/>
-					<s:Button id="standardBtn" label="Standard Button" 
-							  click="buttonClickHandler(event)" 
-							  fontWeight="normal"/>
-					<s:Button id="disabledBtn" label="Disabled Button" enabled="false"/>
-					<s:Button id="repeatBtn" label="Repeat Button" 
-							  buttonDown="buttonClickHandler(event)"  
-							  autoRepeat="true"/>
-					<s:Label verticalAlign="justify" 
-								  text="Hold down on repeat button to see autoRepeat behavior."/>
-				
-			</s:VGroup>
-		</s:HGroup>
+		<s:VGroup right="10" bottom="5" color="0x000000" horizontalAlign="center">
+			<s:Label text="Output"/>
+			<s:TextArea id="repeatText" top="5" right="50" width="180" height="100"/>
+			<s:Button id="standardBtn" label="Standard Button" 
+					  click="buttonClickHandler(event)" 
+					  fontWeight="normal"/>
+			<s:Button id="disabledBtn" label="Disabled Button" enabled="false"/>
+			<s:Button id="repeatBtn" label="Repeat Button" 
+					  buttonDown="buttonClickHandler(event)"  
+					  autoRepeat="true"/>
+			<s:Label verticalAlign="justify" 
+						  text="Hold down on repeat button to see autoRepeat behavior."/>
+			
+		</s:VGroup>
 	</s:Panel>
 	
 </s:Application>

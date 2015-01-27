@@ -47,12 +47,12 @@
 		</s:Group>
 	</s:HGroup>
 	<s:VGroup top="10" right="5" width="30%">
-		<s:Label text="AnimateShaderTransition Sample" fontSize="18" color="#B7B6B6"/>
+		<s:Label text="AnimateShaderTransition Sample" fontSize="18"/>
 		<s:Label color="#FFFFFF" width="200" verticalAlign="justify"
 				 text="AnimateShaderTransition animates a shader between two images. Click the button below to see the effect."/>
 		<s:Button id="playButton"
 				  label="Play Animation"
-				  click="currentState = (currentState == 'flipped') ? 'default' : 'flipped';" />
+				  click="currentState = (currentState == 'flipped') ? 'default' : 'flipped'" />
 	</s:VGroup>
 	
 </s:Application>

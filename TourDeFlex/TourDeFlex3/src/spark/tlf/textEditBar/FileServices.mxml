@@ -89,8 +89,8 @@ TextLayout format.-->
 
    	<mx:Button label="Open..." click="openDialog()"/>
    		
-	<mx:Button id="textLayoutExportButton" label="Markup..." click="dispatchEvent(new Event('textLayoutExport'));"/>
-	<mx:Button id="htmlExportButton" label="HTML Markup..." click="dispatchEvent(new Event('htmlExport'));"/>
+	<mx:Button id="textLayoutExportButton" label="Markup..." click="dispatchEvent(new Event('textLayoutExport'))"/>
+	<mx:Button id="htmlExportButton" label="HTML Markup..." click="dispatchEvent(new Event('htmlExport'))"/>
 
 	<mx:Label id="buildLabel" text="{buildString}" fontWeight="bold" paddingTop="3" paddingBottom="1"/>
 </mx:HBox>

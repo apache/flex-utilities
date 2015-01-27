@@ -17,7 +17,9 @@
   -->
 
 <!-- Simple example to demonstrate the Fade effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 	
 	<fx:Style>
 	     @font-face {
@@ -32,10 +34,11 @@
     	<mx:Fade id="fadeIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
 	</fx:Declarations>
 
-    <mx:Panel title="Fade Effect Example" width="95%" height="95%" 
-        paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">
+    <mx:Panel title="Fade Effect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-        <mx:Text width="100%" color="blue" 
+        <mx:Text width="100%" 
             text="Use the Fade effect to show or hide the text and image. Use an embedded font when applying the Fade effect to text."/>
 
         <mx:Label text="Apache Flex"  
@@ -44,6 +47,7 @@
             hideEffect="{fadeOut}" showEffect="{fadeIn}"/>
             
         <mx:Image source="@Embed(source='assets/ApacheFlexLogo.png')" 
+			width="50%" height="50%"
             visible="{cb1.selected}"
             hideEffect="{fadeOut}" showEffect="{fadeIn}"/>
             

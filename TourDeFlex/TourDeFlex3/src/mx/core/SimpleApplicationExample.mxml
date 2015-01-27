@@ -19,11 +19,12 @@
 <!-- Simple example to demonstrate the Application container. -->
 
 <mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
-    backgroundColor="0xCCCCCC"
+	paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+    backgroundColor="0xCCCCCC" borderStyle="solid"
     horizontalAlign="center" verticalAlign="middle"
-    applicationComplete="appComplete();">
+    applicationComplete="appComplete()">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
             
             // Event handlers for the components.
@@ -43,18 +44,18 @@
 
     <mx:ApplicationControlBar dock="true">
         <mx:Button label="Set Grey Solid Fill" 
-            click="this.setStyle('backgroundColor', 0xCCCCCC);"/>
+            click="this.setStyle('backgroundColor', 0xCCCCCC)"/>
         <mx:Button label="Set Blue Solid Fill" 
-            click="this.setStyle('backgroundColor', 0x66CCFF);"/>
+            click="this.setStyle('backgroundColor', 0x66CCFF)"/>
     </mx:ApplicationControlBar> 
 
     <mx:Panel title="Application Container Example" backgroundColor="0x9CB0BA"
         width="75%" height="75%" 
-        creationComplete="panelCreationComplete();">
+        creationComplete="panelCreationComplete()">
         
         <mx:TextArea id="myTA" height="100%" width="100%" 
             text="Event order: "
-            creationComplete="textAreaCreationComplete();"/>
+            creationComplete="textAreaCreationComplete()"/>
 
     </mx:Panel>
 </mx:Application>

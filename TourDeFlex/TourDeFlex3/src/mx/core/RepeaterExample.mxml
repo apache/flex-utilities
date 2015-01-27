@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the Repeater class. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
 		
 		    import mx.controls.Alert;
@@ -30,10 +32,11 @@
         ]]>
     </fx:Script>
 
-    <mx:Panel title="Repeater Example" width="75%" height="75%" 
-        paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10">
+    <mx:Panel title="Repeater Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
   
-        <mx:Text width="100%" color="blue" 
+        <mx:Text width="100%" 
             text="Use the Repeater class to create 9 Button controls in a 3 by 3 Tile container."/>
 
         <mx:Tile direction="horizontal" borderStyle="inset" 

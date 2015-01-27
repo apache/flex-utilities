@@ -54,13 +54,13 @@
 		
 	</fx:Style>
 	
-	<!-- Note: A custom panel skin is used for the Tour de Flex samples and is included in the
-	source tabs for each sample.	-->
-	<s:Panel title="RadioButton Sample" 
-			 width="100%" height="100%" 
-			 skinClass="skins.TDFPanelSkin">
+	<s:Panel title="RadioButton Sample" width="100%" height="100%">
 		
-		<s:HGroup horizontalCenter="0" top="10">
+		<s:layout>
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+		
+		<s:HGroup>
 			<s:VGroup>
 				<s:Label text="1) The sky is blue:"/>
 				<s:RadioButton id="trueRadioBtn" label="True" groupName="group1"/>
@@ -84,8 +84,8 @@
 			</s:VGroup>
 		</s:HGroup>
 		
-		<s:Label bottom="20" left="5" width="100%" verticalAlign="justify" color="#323232" 
-					  text="The RadioButton control is a single choice in a set of mutually 
+		<s:Label width="100%" verticalAlign="justify"
+				 text="The RadioButton control is a single choice in a set of mutually 
 exclusive choices. A RadioButton group is composed of two or more RadioButton controls with
 the same group name. Only one member of the group can be selected at any given time." />
 	</s:Panel>

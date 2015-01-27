@@ -18,13 +18,10 @@
 
 -->
 <!-- BitmapGraphicExample.mxml -->
-<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" 
-			   width="694" height="277">
-	    <s:Panel title="BitmapImage Sample"
-            width="100%" height="100%"
-            horizontalCenter="0" verticalCenter="0" skinClass="skins.TDFPanelSkin">
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark">
+	<s:Panel title="BitmapImage Sample" width="100%" height="100%">
 		<s:layout>
-			<s:HorizontalLayout paddingLeft="15" paddingRight="15" paddingTop="15" paddingBottom="15"/>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
 		</s:layout>
 		<s:VGroup>
 			<s:ComboBox id="fillModes" selectedItem="repeat">
@@ -66,7 +63,7 @@
         </s:Graphic>
 
         
-		<s:Label color="0x323232" width="200" text="A BitmapImage element defines a rectangular region in its parent element's coordinate space, filled with bitmap data drawn from a source file."/>
+		<s:Label width="200" text="A BitmapImage element defines a rectangular region in its parent element's coordinate space, filled with bitmap data drawn from a source file."/>
     </s:Panel>
 
 </s:Application>

@@ -19,36 +19,28 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<fx:Script>
 		<![CDATA[
 			import mx.controls.Alert;
 		]]>
 	</fx:Script>
-	
-	<s:layout>
-		<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" />
-	</s:layout>
-	
+
 	<fx:Declarations>
 		<mx:SocialSecurityValidator source="{ssn}" property="text" 
 									trigger="{myButton}" triggerEvent="click"
-									valid="Alert.show('Validation Succeeded!');"/>
+									valid="Alert.show('Validation Succeeded!')"/>
 	</fx:Declarations>
 	
-	<s:Panel title="SocialSecurityValidator Example" width="620" height="100%"
-			 color="0x000000" 
-			 borderAlpha="0.15">
+	<s:Panel title="SocialSecurityValidator Example" width="100%" height="100%">
 		
 		<s:layout>
-			<s:VerticalLayout horizontalAlign="center" 
-							  paddingLeft="10" paddingRight="10" 
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" 
 							  paddingTop="10" paddingBottom="10"/>
 		</s:layout>
 		
-		<mx:Form color="0x323232">
+		<mx:Form>
 			<mx:FormItem label="Enter Social Security number: ">
 				<s:TextInput id="ssn" width="100%"/>
 			</mx:FormItem>

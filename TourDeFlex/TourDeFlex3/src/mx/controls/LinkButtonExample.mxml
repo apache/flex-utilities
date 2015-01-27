@@ -17,21 +17,23 @@
   -->
 
 <!-- Simple example to demonstrate the LinkButton control. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         import mx.controls.Alert;
     </fx:Script>
 
-    <mx:Panel title="LinkButton Control Example" 
-        height="75%" width="75%" horizontalAlign="center"
-        paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+    <mx:Panel title="LinkButton Control Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
        
         <mx:Label width="100%" 
             text="Select the LinkButton control to open the Alert control."/>
 
         <mx:LinkButton label="LinkButton control" color="#0000FF" fontWeight="bold" 
-            click="Alert.show('LinkButton selected!');"/>
+            click="Alert.show('LinkButton selected!')"/>
 
     </mx:Panel>
 </mx:Application>   

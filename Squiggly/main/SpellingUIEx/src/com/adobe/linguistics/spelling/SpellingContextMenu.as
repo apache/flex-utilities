@@ -21,7 +21,7 @@ package com.adobe.linguistics.spelling
 {
 	import com.adobe.linguistics.spelling.SpellUI;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
-	import com.adobe.linguistics.spelling.ui.*;
+	import com.adobe.linguistics.spelling.framework.ui.*;
 	import com.adobe.linguistics.utils.Token;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	

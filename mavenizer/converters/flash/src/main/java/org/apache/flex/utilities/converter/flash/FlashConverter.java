@@ -241,13 +241,6 @@ public class FlashConverter extends BaseConverter implements Converter {
                 playerglobal.setPackaging("swc");
                 playerglobal.addDefaultBinaryArtifact(playerglobalSwc);
                 writeArtifact(playerglobal);
-
-                // Generate dummy pom-artifact which we are allowed to deploy.
-                final MavenArtifact playerglobalDummy = new MavenArtifact();
-                playerglobalDummy.setGroupId("org.apache.flex.runtime");
-                playerglobalDummy.setArtifactId("flashplayer");
-                playerglobalDummy.setVersion(version);
-                writeArtifact(playerglobalDummy);
             }
         }
     }

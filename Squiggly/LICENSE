@@ -206,11 +206,13 @@
 
 Apache Squiggly Subcomponents:
    
-   The dictionaries found in dictionaries directory are licensed under
-   a BSD / MIT like license and are Copyright 2000-2014 by Kevin Atkinson.
+   This product bundles the SCOWL (and friends) Hunspell dictionaries
+   licensed under a BSD / MIT like license and are Copyright 2000-2014
+   by Kevin Atkinson.
    
-   For a complete details of the LICENSE please see the README in the en_GB
-   and en_US directories.
+   For complete details of the LICENSE please see:
+      dictionaries/en_US/README_en_US.txt
+      dictionaries/en_GB/README_en_GB.txt
 
   Copyright 2000-2014 by Kevin Atkinson
 
@@ -222,7 +224,4 @@ Apache Squiggly Subcomponents:
   supporting documentation. Kevin Atkinson makes no representations
   about the suitability of this array for any purpose. It is provided
   "as is" without express or implied warranty.
-
-
-
 

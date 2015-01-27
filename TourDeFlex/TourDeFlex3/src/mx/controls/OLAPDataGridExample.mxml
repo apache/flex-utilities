@@ -17,9 +17,11 @@
   -->
 
 <mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
-        creationComplete="creationCompleteHandler();">
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%"
+				creationComplete="creationCompleteHandler()">
 
-    <fx:Script>
+     <fx:Script>
       <![CDATA[
         import mx.rpc.AsyncResponder;
         import mx.rpc.AsyncToken;
@@ -167,7 +169,7 @@
 	    <mx:OLAPCube name="FlatSchemaCube" 
 	        dataProvider="{flatData}" 
 	        id="myMXMLCube"
-	        complete="runQuery(event);">
+	        complete="runQuery(event)">
 	         
 	        <mx:OLAPDimension name="CustomerDim">
 	            <mx:OLAPAttribute name="Customer" dataField="customer"/>
@@ -197,9 +199,10 @@
     </fx:Declarations>
 		
     <mx:Panel title="OLAPCube Control Example"
-        height="75%" width="75%" layout="horizontal"
-        paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
         <mx:OLAPDataGrid id="myOLAPDG" width="100%" height="100%"/>
+		
     </mx:Panel>
 </mx:Application>

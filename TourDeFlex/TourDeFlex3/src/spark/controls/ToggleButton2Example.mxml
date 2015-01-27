@@ -22,7 +22,6 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   currentState="hide">
 	
-
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -70,42 +69,40 @@
 			color: #FFFFFF;
 		}
 	</fx:Style>
+	
 	<s:states> 
 		<s:State name="show"/>    
 		<s:State name="hide"/> 
 	</s:states> 
 	
-	<!-- Note: A custom panel skin is used for the Tour de Flex samples and is included in the
-	source tabs for each sample.	-->
-	<s:Panel width="100%" height="100%" 
-			 horizontalCenter="0" 
-			 title="ToggleButton Sample"
-			 skinClass="skins.TDFPanelSkin">
-				
-			<s:HGroup left="5" top="5" width="100%" height="100%">
-				<s:VGroup color="0x000000">
-						<s:Label text="The Outfitters Clothing Store" fontSize="18" color="0x014f9f"/>
-						<s:Label text="Order Number: 904234113441-2342"/>
-						<s:VGroup width="80%"  horizontalCenter="0">
-							<s:Label text="Purchaser: Anna Thomas"/>
-							<s:Label text="Date: 7/20/2009"/>
-							<s:Label text="Order Total: $114.00"/>
-							<s:ToggleButton id="showBtn" label.hide="Show Details" label.show="Hide Details"
-											click="myBtn_clickHandler(event)"/>
-						</s:VGroup>
-				</s:VGroup>
-				<s:HGroup right="50" top="5">
-					<s:Panel title="Details" horizontalCenter="0" top="300" width="350" height="170"  
-							color="#FFFFFF" includeIn="show">
-						<mx:DataGrid dataProvider="{items}" width="100%" height="100%" color="0x000000"/>
-					</s:Panel>
-				</s:HGroup>
-			</s:HGroup>
-			<s:HGroup horizontalCenter="0" bottom="15"  verticalAlign="middle" width="88%">
-			<s:Label fontSize="13" color="0x323232" verticalAlign="justify" width="100%"
-						  text="Clicking the button toggles it between the up and down states. If you click the button while it is in the up state, it toggles to the down state. You must click
-the button again to toggle it back to the up state."/>
+	<s:Panel title="ToggleButton Sample" width="100%" height="100%">
+		
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+
+		<s:VGroup color="0x000000">
+			<s:Label text="The Outfitters Clothing Store" fontSize="18" color="0x014f9f"/>
+			<s:Label text="Order Number: 904234113441-2342"/>
+			<s:VGroup width="80%"  horizontalCenter="0">
+				<s:Label text="Purchaser: Anna Thomas"/>
+				<s:Label text="Date: 7/20/2009"/>
+				<s:Label text="Order Total: $114.00"/>
+				<s:ToggleButton id="showBtn" label.hide="Show Details" label.show="Hide Details"
+								click="myBtn_clickHandler(event)"/>
+			</s:VGroup>
+		</s:VGroup>
+		<s:HGroup right="50" top="5">
+			<s:Panel title="Details" horizontalCenter="0" top="300" width="350" height="170"  
+					color="#FFFFFF" includeIn="show">
+				<mx:DataGrid dataProvider="{items}" width="100%" height="100%" color="0x000000"/>
+			</s:Panel>
 		</s:HGroup>
+		<s:HGroup horizontalCenter="0" bottom="15"  verticalAlign="middle" width="88%">
+			<s:Label verticalAlign="justify" width="100%"
+					 text="Clicking the button toggles it between the up and down states. If you click the button while it is in the up state, it toggles to the down state. You must click the button again to toggle it back to the up state."/>
+		</s:HGroup>
+
 	</s:Panel>	
 	
 	
@@ -141,6 +138,7 @@ the button again to toggle it back to the up state."/>
 			</s:Panel>
 		</s:HGroup>
 		
-	</s:Group>-->
+	</s:Group>
+	-->
 	
 </s:Application>

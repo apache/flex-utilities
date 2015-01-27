@@ -29,55 +29,48 @@
 					angleZFrom="0.0" angleZTo="{Number(zVal.text)}"
 					duration="{duration.value}"
 					repeatCount="{repeatCnt.value}" repeatBehavior="{chkReverse.selected?'reverse':'loop'}"
-				   	effectStart="this.targetImg.alpha=.8" effectEnd="this.targetImg.alpha=1.0;"/>
+				   	effectStart="this.targetImg.alpha=.8" effectEnd="this.targetImg.alpha=1.0"/>
 	</fx:Declarations>
 	
-	<!-- Note: A custom panel skin is used for the Tour de Flex samples and is included in the
-	source tabs for each sample.	-->
-	<s:Panel width="100%" height="100%" 
-			 horizontalCenter="0" 
-			 title="Rotate3D Effect Sample" 
-			 skinClass="skins.TDFPanelSkin">
+	<s:Panel title="Rotate3D Effect Sample" width="100%" height="100%">
 		
-		<s:HGroup horizontalCenter="0" top="10">
-			<s:VGroup >
-				<s:HGroup verticalAlign="middle">
-					<s:Label text="Rotate X To" verticalAlign="bottom"/>
-					<s:TextInput id="xVal" text="0.0" widthInChars="3"/>
-				</s:HGroup>
-				<s:HGroup verticalAlign="middle">
-					<s:Label text="Rotate Y By" verticalAlign="bottom"/>
-					<s:TextInput id="yVal" text="360.0" widthInChars="3"/>
-				</s:HGroup>
-				<s:HGroup verticalAlign="middle">
-					<s:Label text="Rotate Z To" verticalAlign="bottom"/>
-					<s:TextInput id="zVal" text="0.0" widthInChars="3"/>
-				</s:HGroup>
-				<s:HGroup verticalAlign="middle">
-					<s:Label text="Repeat Num" verticalAlign="bottom"/>
-					<s:NumericStepper id="repeatCnt" value="2" width="35" minimum="1"/>
-				</s:HGroup>
-				<s:HGroup verticalAlign="middle">
-					<s:Label text="Duration" verticalAlign="bottom"/>
-					<s:NumericStepper id="duration" width="58" 
-									  minimum="100" maximum="9999"  
-									  value="1000"  
-									  snapInterval="100" />
-				</s:HGroup>
-				<s:CheckBox id="chkReverse" label="Repeat in Reverse?" selected="true"/>
-				<s:Button id="playButton"
-						  label="Rotate Image" click="rotateEffect.play();"/>
-			</s:VGroup>
-			<s:HGroup horizontalCenter="0" height="60%" verticalAlign="middle" width="10%">
-				<s:BitmapImage id="targetImg" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10" />
+		</s:layout>
+		
+		<s:VGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Rotate X To" verticalAlign="bottom"/>
+				<s:TextInput id="xVal" text="0.0" widthInChars="3"/>
 			</s:HGroup>
-			<s:VGroup top="0" right="5" horizontalAlign="right">
-				<s:Label text="Rotate3D Effect Sample" fontSize="18" color="#B7B6B6"/>
-				<s:Label color="#323232" width="200" verticalAlign="justify"
-							  text="The Rotate3D class rotates a target object in three dimensions around the x, y, or z
-axes. The rotation occurs around the transform center of the target." textAlign="left"/>
-			</s:VGroup>
-		</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Rotate Y By" verticalAlign="bottom"/>
+				<s:TextInput id="yVal" text="360.0" widthInChars="3"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Rotate Z To" verticalAlign="bottom"/>
+				<s:TextInput id="zVal" text="0.0" widthInChars="3"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Repeat Num" verticalAlign="bottom"/>
+				<s:NumericStepper id="repeatCnt" value="2" width="35" minimum="1"/>
+			</s:HGroup>
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Duration" verticalAlign="bottom"/>
+				<s:NumericStepper id="duration" width="58" 
+								  minimum="100" maximum="9999"  
+								  value="1000"  
+								  snapInterval="100" />
+			</s:HGroup>
+			<s:CheckBox id="chkReverse" label="Repeat in Reverse?" selected="true"/>
+			<s:Button id="playButton"
+					  label="Rotate Image" click="rotateEffect.play()"/>
+		</s:VGroup>
 		
+		<s:BitmapImage id="targetImg" width="200" height="200" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
+
+		<s:Label width="200" verticalAlign="justify"
+				 text="The Rotate3D class rotates a target object in three dimensions around the x, y, or z
+axes. The rotation occurs around the transform center of the target." textAlign="left"/>		
 	</s:Panel>
 </s:Application>

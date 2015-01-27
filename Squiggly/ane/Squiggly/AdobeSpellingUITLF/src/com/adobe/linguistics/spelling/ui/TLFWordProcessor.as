@@ -36,7 +36,7 @@ package com.adobe.linguistics.spelling.ui
 	import flashx.textLayout.container.ContainerController;
 	import flashx.textLayout.elements.FlowLeafElement;
 	import flashx.textLayout.elements.ParagraphElement;
-	import com.adobe.linguistics.spelling.ui.IWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
 	
 	use namespace tlf_internal;	
 	

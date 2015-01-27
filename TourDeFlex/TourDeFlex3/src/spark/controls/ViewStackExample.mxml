@@ -19,43 +19,34 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"  
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   skinClass="TDFGradientBackgroundSkin">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
-	<s:layout>
-		<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" />
-	</s:layout>
-	
-	<s:Panel title="ViewStack Container" width="600" height="100%"
-			 color="0x000000" 
-			 borderAlpha="0.15">
+	<s:Panel title="ViewStack Container" width="100%" height="100%">
 		
 		<s:layout>
 			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
 		</s:layout>
 		
-		<s:Label width="100%" color="0x323232" textAlign="center"
+		<s:Label width="100%" textAlign="center"
 				 text="Use the Button controls to change panels of the ViewStack container."/>
 		
-		<s:BorderContainer borderStyle="solid" width="100%" color="0x323232">
+		<s:BorderContainer borderStyle="solid" width="100%">
 			
 			<s:layout>
-				<s:HorizontalLayout horizontalAlign="center"  
-									paddingTop="5" paddingLeft="5" 
-									paddingRight="5" paddingBottom="5" />
+				<s:HorizontalLayout paddingTop="10" paddingLeft="10" paddingRight="10" paddingBottom="10" />
 			</s:layout>
 			
 			<s:Button id="searchButton" label="Search Panel"
-					  click="myViewStack.selectedChild=search;"/>
+					  click="myViewStack.selectedChild=search"/>
 			<s:Button id="cInfoButton" label="Customer Info Panel"
-					  click="myViewStack.selectedChild=custInfo;"/>
+					  click="myViewStack.selectedChild=custInfo"/>
 			<s:Button id="aInfoButton" label="Account Panel"
-					  click="myViewStack.selectedChild=accountInfo;"/>
+					  click="myViewStack.selectedChild=accountInfo"/>
 		</s:BorderContainer>
 		
 		<!-- Define the ViewStack and the three child containers and have it
 		resize up to the size of the container for the buttons. -->
-		<mx:ViewStack id="myViewStack" borderStyle="solid" width="100%" height="80%" color="0x323232">
+		<mx:ViewStack id="myViewStack" borderStyle="solid" width="100%" height="80%">
 			
 			<s:NavigatorContent id="search" label="Search" backgroundColor="0xDCDCDC" width="100%" height="100%" fontWeight="bold" >
 				
@@ -85,7 +76,7 @@
 				<s:HGroup>
 					<s:Label text="Email Address"/>
 					<s:TextInput id="email" width="200"/>
-					<s:Button label="Submit" click="email.text='';" />
+					<s:Button label="Submit" click="email.text=''" />
 				</s:HGroup>
 			</s:NavigatorContent>
 			

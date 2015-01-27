@@ -54,7 +54,12 @@
 		}
 	</fx:Style>
 	
-	<s:Panel title="Advanced CSS: Descendant Selector Example" height="100%" width="100%" skinClass="skins.TDFPanelSkin">
+	<s:Panel title="Advanced CSS: Descendant Selector Example" height="100%" width="100%">
+		
+		<s:layout>
+			<s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+		
 		<s:Group width="50%" height="50%">
 			<s:ButtonBar id="viewMenu" requireSelection="true" x="10" y="10">
 				<s:dataProvider>
@@ -68,7 +73,7 @@
 				<mx:Text text="This text component has a style setting with a reference to a Halo Text component."/>
 			</s:VGroup>
 		</s:Group>
-		<s:Label width="200" color="0x323232" text="Descendant selectors can be used to specifically qualify the component you 
+		<s:Label width="200" text="Descendant selectors can be used to specifically qualify the component you 
 want to style via the namespace and component. See the Style settings in the code for reference." x="440" y="10"/>
 	</s:Panel>
 </s:Application>

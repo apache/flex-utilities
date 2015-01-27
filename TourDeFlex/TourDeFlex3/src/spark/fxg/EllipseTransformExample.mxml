@@ -42,16 +42,22 @@
 				  b="0.34202014332"
 				  c="0.34202014332"
 				  d="0.939692620786"
-				  tx="100"
-				  ty="310"
+				  tx="50"
+				  ty="210"
 				  />
 	</fx:Declarations>
 	
-	<s:Label text="An Ellipse Using a Transform for Rotation" fontWeight="bold" fontSize="14" horizontalCenter="0"
-				  y="20" />
-	
-	<s:Label id="descriptionText" horizontalCenter="0" y="45" width="300"/>
-	<s:Ellipse id="ellipse1" width="60" height="70" horizontalCenter="0" y="90">
+	<s:Panel title="Ellipse Transform Sample" width="100%" height="100%">
+		<s:layout>
+			<s:VerticalLayout paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+		</s:layout>
+			
+		<s:Label text="An Ellipse Using a Transform for Rotation" />
+		
+		<s:Label id="descriptionText" width="300"/>
+		<s:Button label="Apply Transform" click="addMatrix()" x="40" y="330" />
+	</s:Panel>
+	<s:Ellipse id="ellipse1" width="60" height="70" x="40" y="120">
 		<s:fill>
 			<s:LinearGradient>
 				<s:GradientEntry color="#00FF00" alpha="1" ratio="0"/>
@@ -62,5 +68,4 @@
 			<s:SolidColorStroke color="0x666666" weight="1"/>
 		</s:stroke>
 	</s:Ellipse>
-	<s:Button label="Apply Transform" click="addMatrix()" x="40" y="330" />
 </s:Application>

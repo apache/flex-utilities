@@ -17,9 +17,11 @@
   -->
 
 <!-- Simple example to demonstrate the Move effect. -->
-<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx">
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:mx="library://ns.adobe.com/flex/mx"
+				paddingBottom="0" paddingTop="0" paddingLeft="0" paddingRight="0"
+				height="100%" width="100%">
 
-    <fx:Script>
+     <fx:Script>
         <![CDATA[
 
             private function moveImage():void {
@@ -34,15 +36,17 @@
     	<mx:Move id="myMove" target="{img}"/>
 	</fx:Declarations>
 
-    <mx:Panel title="Move Effect Example" width="95%" height="95%" 
-        paddingTop="5" paddingLeft="10" paddingRight="10" paddingBottom="5">
+    <mx:Panel title="Move Effect Example"
+				paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+				height="100%" width="100%">
 
-       <mx:Text width="100%" color="blue" 
+       <mx:Text width="100%" 
            text="Click anywhere on the canvas to move the logo horizontally to that position"/>
 
-        <mx:Canvas id="canvas" width="100%" height="100%" mouseDown="moveImage();">
+        <mx:Canvas id="canvas" width="100%" height="100%" mouseDown="moveImage()">
 
-            <mx:Image id="img" source="@Embed(source='assets/ApacheFlexLogo.png')"/>
+            <mx:Image id="img" source="@Embed(source='assets/ApacheFlexLogo.png')"
+				width="50%" height="50%"/>
 
         </mx:Canvas>
     
