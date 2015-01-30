@@ -21,6 +21,7 @@
 package com.adobe.linguistics.spelling.core.logging.targets
 {
 	import com.adobe.linguistics.spelling.core.logging.*;
+
 	public class CollectionTarget extends AbstractTarget
 	{
 	    public var fieldSeparator:String = " ";

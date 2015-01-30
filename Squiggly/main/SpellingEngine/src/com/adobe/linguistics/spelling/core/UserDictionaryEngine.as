@@ -21,7 +21,7 @@
 package com.adobe.linguistics.spelling.core
 {
 	import com.adobe.linguistics.spelling.UserDictionaryInternal;
-	
+
 	public class UserDictionaryEngine
 	{
 		// Private properties

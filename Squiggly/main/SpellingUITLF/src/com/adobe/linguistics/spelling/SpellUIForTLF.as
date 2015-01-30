@@ -19,8 +19,6 @@
 
 package com.adobe.linguistics.spelling
 {
-	import com.adobe.linguistics.spelling.UserDictionary;
-	import com.adobe.linguistics.spelling.framework.ResourceTable;
 	import com.adobe.linguistics.spelling.framework.SpellingConfiguration;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
 	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
@@ -29,30 +27,22 @@ package com.adobe.linguistics.spelling
 	import com.adobe.linguistics.spelling.framework.ui.TLFWordProcessor;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flash.events.Event;
-	import flash.events.FocusEvent;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.net.SharedObject;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
-	
-	import flashx.textLayout.compose.StandardFlowComposer;
+
 	import flashx.textLayout.compose.TextFlowLine;
 	import flashx.textLayout.container.ContainerController;
-	import flashx.textLayout.conversion.TextConverter;
-	import flashx.textLayout.edit.SelectionManager;
 	import flashx.textLayout.elements.FlowLeafElement;
 	import flashx.textLayout.elements.ParagraphElement;
 	import flashx.textLayout.elements.TextFlow;
 	import flashx.textLayout.events.CompositionCompleteEvent;
-	
 	import flashx.textLayout.tlf_internal;
-	
-	
-	use namespace tlf_internal;	
+
+	use namespace tlf_internal;
 	/**
 	 * <p>A comprehensive convenience class that bundles a context menu UI, 
 	 * the spelling engine, the dictionary loader, and user dictionary support 
@@ -294,7 +284,7 @@ package com.adobe.linguistics.spelling
 			_actualParent = textModel;
 			mTextFlow = textModel;					
 			
-			mTextFlow.addEventListener(flashx.textLayout.events.CompositionCompleteEvent.COMPOSITION_COMPLETE, spellCheckScreen,false, 0,true);
+			mTextFlow.addEventListener(CompositionCompleteEvent.COMPOSITION_COMPLETE, spellCheckScreen,false, 0,true);
 			//mTextFlow.addEventListener(flashx.textLayout.events.StatusChangeEvent.INLINE_GRAPHIC_STATUS_CHANGE, spellCheckScreen);
 			
 			_dictname = lang;			
@@ -514,7 +504,7 @@ package com.adobe.linguistics.spelling
 			scm.cleanUp();
 			_actualParent.removeEventListener(Event.ADDED_TO_STAGE, addContextMenu);
 			
-			mTextFlow.removeEventListener(flashx.textLayout.events.CompositionCompleteEvent.COMPOSITION_COMPLETE, spellCheckScreen);
+			mTextFlow.removeEventListener(CompositionCompleteEvent.COMPOSITION_COMPLETE, spellCheckScreen);
 			//mTextFlow.removeEventListener(flashx.textLayout.events.StatusChangeEvent.INLINE_GRAPHIC_STATUS_CHANGE, spellCheckScreen);
 		}
 		

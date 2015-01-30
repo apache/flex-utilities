@@ -21,6 +21,7 @@
 package com.adobe.linguistics.spelling.core.utils
 {
 	import com.adobe.linguistics.spelling.core.env.InternalConstants;
+
 	public final class StringUtils
 	{
 		

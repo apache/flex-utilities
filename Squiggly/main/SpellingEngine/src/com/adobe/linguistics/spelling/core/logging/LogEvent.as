@@ -21,9 +21,9 @@
 package com.adobe.linguistics.spelling.core.logging
 {
 
-import flash.events.Event;
+    import flash.events.Event;
 
-public class LogEvent extends Event
+    public class LogEvent extends Event
 {
     public static const eventID:String = "com.adobe.linguistics.spelling.core.logging.LogEvent";
 

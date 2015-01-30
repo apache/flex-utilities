@@ -24,7 +24,7 @@ package com.adobe.linguistics.spelling.core
 	import com.adobe.linguistics.spelling.core.env.ExternalConstants;
 	import com.adobe.linguistics.spelling.core.env.InternalConstants;
 	import com.adobe.linguistics.spelling.core.utils.*;
-	
+
 	public class SquigglyEngine
 	{
 

@@ -19,8 +19,6 @@
 
 package com.adobe.linguistics.spelling
 {
-	import __AS3__.vec.Vector;
-	
 	import com.adobe.linguistics.spelling.UserDictionaryInternal;
 	import com.adobe.linguistics.spelling.utils.WordList;
 	

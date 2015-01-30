@@ -23,7 +23,7 @@ package com.adobe.linguistics.spelling.core.rule
 	import com.adobe.linguistics.spelling.core.HashEntry;
 	import com.adobe.linguistics.spelling.core.env.InternalConstants;
 	import com.adobe.linguistics.spelling.core.utils.StringUtils;
-	
+
 	public class OptimizedSuffixEntry  extends AffixEntry
 	{
 		private var _flagNext:OptimizedSuffixEntry;

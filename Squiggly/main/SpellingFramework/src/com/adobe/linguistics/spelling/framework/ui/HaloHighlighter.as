@@ -19,13 +19,11 @@
 
 package com.adobe.linguistics.spelling.framework.ui
 {
-	import __AS3__.vec.Vector;
-	
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flash.geom.Point;
 	import flash.text.TextField;
-	
+
 	import mx.core.IUITextField;
 
 	/**

@@ -24,8 +24,6 @@
 package com.adobe.linguistics.spelling.utils
 {
 
-	import com.adobe.linguistics.spelling.utils.Token;
-		
 	public class Tokenizer
 	{
 		private var _data:String;

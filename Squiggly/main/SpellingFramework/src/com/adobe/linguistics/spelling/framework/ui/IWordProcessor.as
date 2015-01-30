@@ -21,7 +21,7 @@ package com.adobe.linguistics.spelling.framework.ui
 {
 	import com.adobe.linguistics.utils.ITokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
+
 	public interface IWordProcessor
 	{
 		function getWordAtPoint(x:uint, y:uint, externalTokenizer:ITokenizer=null):Token;

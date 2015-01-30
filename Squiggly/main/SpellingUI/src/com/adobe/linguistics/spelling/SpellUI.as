@@ -19,17 +19,15 @@
  
 package com.adobe.linguistics.spelling
 {
-	import com.adobe.linguistics.spelling.UserDictionary;
-	import com.adobe.linguistics.spelling.framework.ResourceTable;
 	import com.adobe.linguistics.spelling.framework.SpellingConfiguration;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
-    import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
-    import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.geom.Point;
@@ -39,14 +37,14 @@ package com.adobe.linguistics.spelling
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.utils.Dictionary;
-	
+
 	import mx.controls.RichTextEditor;
 	import mx.controls.TextArea;
 	import mx.controls.TextInput;
 	import mx.core.UIComponent;
 	import mx.core.mx_internal;
 	import mx.events.ScrollEvent;
-	
+
 	use namespace mx_internal;
 	
 	/**
@@ -128,7 +126,7 @@ package com.adobe.linguistics.spelling
 		
 		
 		// Work around for the memory usage problem, ideally a better fix is to provide a dicitonary unload function
-		private static var _cache:Object = new Object();
+		private static var _cache:Object = {};
 
 		/**
 		 * Enable the spell checking feature in the specified language for a UI component. Once a component is spell checking enabled, misspelled words will be highlighted with a squiggly line. Users can 
@@ -304,8 +302,8 @@ package com.adobe.linguistics.spelling
 		 * Constructs a SpellUI object.
 		 *	@private
 		 *
-		 *	@param	textFiled	A Flex UI component to include spell-check capability
-		 * 	@param lang	The language code used for spell checking
+		 *	@param	textModel	A Flex UI component to include spell-check capability.
+		 *	@param	lang		The language code to use for spell checking.
 		 *
 		 * @playerversion Flash 10
 		 * @langversion 3.0
@@ -548,8 +546,16 @@ package com.adobe.linguistics.spelling
 		 *	@private
 		 */
 		private function cleanUp():void {
-			hh.clearSquiggles();
-			scm.cleanUp();
+			if(hh != null)
+			{
+				hh.clearSquiggles();
+			}
+
+			if(scm)
+			{
+				scm.cleanUp();
+			}
+
 			_actualParent.removeEventListener(Event.ADDED_TO_STAGE, addContextMenu);
 			
 			mTextField.removeEventListener(ScrollEvent.SCROLL, spellCheckScreen);

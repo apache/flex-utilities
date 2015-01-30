@@ -22,6 +22,7 @@ package com.adobe.linguistics.spelling
 {
 	import com.adobe.linguistics.spelling.core.LinguisticRule;
 	import com.adobe.linguistics.spelling.core.SquigglyDictionary;
+
 	public interface ISpellingDictionary
 	{
 

@@ -22,6 +22,7 @@ package com.adobe.linguistics.spelling.core.rule
 {
 	import com.adobe.linguistics.spelling.core.HashEntry;
 	import com.adobe.linguistics.spelling.core.env.InternalConstants;
+
 	public class OptimizedPrefixEntry extends AffixEntry
 	{
 		private var _flagNext:OptimizedPrefixEntry;

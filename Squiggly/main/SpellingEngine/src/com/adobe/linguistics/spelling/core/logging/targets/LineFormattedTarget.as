@@ -20,8 +20,9 @@
 
 package com.adobe.linguistics.spelling.core.logging.targets
 {
-	import com.adobe.linguistics.spelling.core.logging.*;
-public class LineFormattedTarget extends AbstractTarget
+    import com.adobe.linguistics.spelling.core.logging.*;
+
+    public class LineFormattedTarget extends AbstractTarget
 {
     public function LineFormattedTarget(usingLevelMaskMode:Boolean = false)
     {

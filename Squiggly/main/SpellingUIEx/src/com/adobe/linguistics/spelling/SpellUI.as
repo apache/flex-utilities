@@ -19,19 +19,17 @@
 
 package com.adobe.linguistics.spelling
 {
-	import com.adobe.linguistics.spelling.UserDictionary;
-	import com.adobe.linguistics.spelling.framework.ResourceTable;
 	import com.adobe.linguistics.spelling.framework.SpellingConfiguration;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
-    import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.SparkHighlighter;
-    import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
-    import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
-    import com.adobe.linguistics.spelling.framework.ui.SparkWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
+	import com.adobe.linguistics.spelling.framework.ui.SparkHighlighter;
+	import com.adobe.linguistics.spelling.framework.ui.SparkWordProcessor;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.geom.Point;
@@ -41,23 +39,21 @@ package com.adobe.linguistics.spelling
 	import flash.net.URLRequest;
 	import flash.text.TextField;
 	import flash.utils.Dictionary;
-	
+
+	import flashx.textLayout.edit.SelectionManager;
+	import flashx.textLayout.tlf_internal;
+
 	import mx.controls.RichTextEditor;
 	import mx.controls.TextArea;
 	import mx.controls.TextInput;
 	import mx.core.UIComponent;
 	import mx.core.mx_internal;
 	import mx.events.ScrollEvent;
-	
+
 	import spark.components.RichEditableText;
 	import spark.components.TextArea;
 	import spark.components.TextInput;
-	
-	import flashx.textLayout.tlf_internal;
-	import flashx.textLayout.compose.TextFlowLine;
-	import flashx.textLayout.edit.SelectionManager;
-	import flashx.textLayout.elements.TextFlow;
-	
+
 	use namespace mx_internal;
 	
 	use namespace tlf_internal;	
@@ -111,8 +107,8 @@ package com.adobe.linguistics.spelling
 		private static var _configXMLLoading:Boolean = false;
 		private static var _configXMLLoader:URLLoader = new URLLoader();
 		
-		// Work around for the memory usage problem, ideally a better fix is to provide a dicitonary unload function
-		private static var _cache:Object = new Object();
+		// Work around for the memory usage problem, ideally a better fix is to provide a dictionary unload function
+		private static var _cache:Object = {};
 
 		/**
 		 * Enables the spell checking feature for a UI component.
@@ -120,8 +116,9 @@ package com.adobe.linguistics.spelling
 		 * <p>Note: This version provides only enabling function but no disabling function.</p>
 		 *
 		 * @param comp	A text editing Flex UI component.
-		 				It can be a <code>TextArea</code>, <code>TextInput</code> or <code>RichTextEditor</code>.
-		 * @param dict	A URL for the dictionary to be used with the <code>SpellChecker.</code>
+		 				It can be a <code>TextArea</code>, <code>TextInput</code>, <code>RichTextEditor</code>
+		 				(both spark and mx), or a <code>RichTextEditor</code>.
+		 * @param lang	The language of the dictionary to use when checking the text spelling in <code>comp</code>.
 		 *
 		 * @includeExample Examples/Flex/SquigglyUIExample/src/SquigglyUIExample.mxml
 		 * @playerversion Flash 10
@@ -246,7 +243,7 @@ package com.adobe.linguistics.spelling
 			var txt:TextField = null;
 			var txt2:RichEditableText = null;
 			if ( (comp == null) || !( (comp is mx.controls.TextArea) || (comp is mx.controls.TextInput) || (comp is RichTextEditor) 
-								|| (comp is spark.components.TextArea) || (comp is spark.components.TextInput) || (comp is spark.components.RichEditableText)) )
+								|| (comp is spark.components.TextArea) || (comp is spark.components.TextInput) || (comp is RichEditableText)) )
 				return null;
 			if ((comp as RichTextEditor) != null) {
 				txt = (comp as RichTextEditor).textArea.getTextField() as TextField;
@@ -269,7 +266,7 @@ package com.adobe.linguistics.spelling
                 else
     				txt2 = (comp as spark.components.TextInput).textDisplay as RichEditableText;
 			}
-			else if ((comp as spark.components.RichEditableText) !=null) {
+			else if ((comp as RichEditableText) !=null) {
 				txt2 = comp as RichEditableText;
 			}
 			else {
@@ -285,8 +282,8 @@ package com.adobe.linguistics.spelling
 		/**
 		 * Constructs a SpellUI object.
 		 *
-		 *	@param	textFiled	A Flex UI component to include spell-check capability
-		 *	@param	dict		A URL for Squiggly spelling dictionary.
+		 *	@param	textModel	A Flex UI component to include spell-check capability.
+		 *	@param	lang		The language code to use for spell checking.
 		 *
 		 * @playerversion Flash 10
 		 * @langversion 3.0
@@ -468,7 +465,7 @@ package com.adobe.linguistics.spelling
 			
 				SpellingConfiguration.resourceTable.setResource(_dictname,{rule:SpellUI._configXML.LanguageResource.(@languageCode==_dictname).@ruleFile, 
 																		dict:SpellUI._configXML.LanguageResource.(@languageCode==_dictname).@dictionaryFile});
-		}
+			}
                 //New Added
 			_spellingservice = new SpellingService(_dictname);
 			_spellingservice.addEventListener(Event.COMPLETE, loadDictComplete);
@@ -562,8 +559,16 @@ package com.adobe.linguistics.spelling
 		 *	@private
 		 */
 		private function cleanUp():void {
-			hh.clearSquiggles();
-			scm.cleanUp();
+			if(hh != null)
+			{
+				hh.clearSquiggles();
+			}
+
+			if(scm != null)
+			{
+				scm.cleanUp();
+			}
+
 			_actualParent.removeEventListener(Event.ADDED_TO_STAGE, addContextMenu);
 			
 			mTextField.removeEventListener(ScrollEvent.SCROLL, spellCheckScreen);

@@ -24,10 +24,10 @@ package com.adobe.linguistics.spelling.core
 	import com.adobe.linguistics.spelling.core.rule.PrefixEntry;
 	import com.adobe.linguistics.spelling.core.rule.SuffixEntry;
 	import com.adobe.linguistics.spelling.core.utils.*;
-	
+
 	import flash.utils.Dictionary;
 	import flash.utils.getTimer;
-	
+
 	public class SuggestionManager
 	{
 		
@@ -955,6 +955,8 @@ package com.adobe.linguistics.spelling.core
 	}
 }
 
+import com.adobe.linguistics.spelling.core.HashEntry;
+
 
 internal class GuessWord {
 	private var _score:int;
@@ -989,7 +991,6 @@ internal class GuessWord {
 }
 
 internal class SuggestionEntry {
-	import com.adobe.linguistics.spelling.core.HashEntry;
 	private var _score:int;
 	private var _key:String;
 	private var _hashEntry:HashEntry; 

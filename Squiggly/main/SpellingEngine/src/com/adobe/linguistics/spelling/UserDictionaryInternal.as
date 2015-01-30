@@ -22,7 +22,7 @@
 package com.adobe.linguistics.spelling
 {
 	import com.adobe.linguistics.spelling.utils.WordList;
-	
+
 	/**
 	 * Represents a user dictionary.
 	 *

@@ -22,7 +22,7 @@ package com.adobe.linguistics.spelling.framework
 	import flash.utils.IDataInput;
 	import flash.utils.IDataOutput;
 	import flash.utils.IExternalizable;
-	
+
 	[RemoteClass(alias='com.adobe.linguistics.spelling.framework.ResourceConfig')]
 		
 	/**

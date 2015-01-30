@@ -21,6 +21,7 @@
 package com.adobe.linguistics.spelling.core.container
 {
 	import com.adobe.linguistics.spelling.core.utils.*;
+
 	public final class SparseHashTable implements Collection
 	{
 		

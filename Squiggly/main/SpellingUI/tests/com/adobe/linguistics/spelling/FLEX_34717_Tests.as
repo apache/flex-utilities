@@ -17,18 +17,41 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.adobe.linguistics.spelling.framework.ui
-{
-	import com.adobe.linguistics.utils.Token;
+package com.adobe.linguistics.spelling {
+    import com.adobe.linguistics.spelling.SpellUI;
 
-	import flash.geom.Point;
+    import mx.controls.TextArea;
 
-	public interface IHighlighter
-	{
-		function drawSquiggleAt(token:Token):void;
-		function clearSquiggles():void;
-		function set offsetPoint(op:Point):void;
-		function get offsetPoint():Point;
-		
-	}
+    import org.flexunit.asserts.assertTrue;
+    import org.fluint.uiImpersonation.UIImpersonator;
+
+    public class FLEX_34717_Tests {
+        private var _input:TextArea;
+
+        [Before]
+        public function setUp():void
+        {
+            _input = new TextArea();
+        }
+
+        [After]
+        public function tearDown():void
+        {
+            _input = null;
+        }
+
+        [Test]
+        public function test_immediate_disable_after_enable():void
+        {
+            //given
+            UIImpersonator.addChild(_input);
+
+            //when
+            SpellUI.enableSpelling(_input, "en_US");
+            SpellUI.disableSpelling(_input);
+
+            //then
+            assertTrue("If the unit test reaches this point, it means no RTE was thrown, which means the bug is not present", true);
+        }
+    }
 }

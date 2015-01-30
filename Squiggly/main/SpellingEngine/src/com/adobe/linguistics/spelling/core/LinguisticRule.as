@@ -22,12 +22,10 @@ package com.adobe.linguistics.spelling.core
 {
 //	import com.adobe.linguistics.spelling.core.PhoneticTable;
 	import com.adobe.linguistics.spelling.core.env.*;
-	import com.adobe.linguistics.spelling.core.error.*;
 	import com.adobe.linguistics.spelling.core.rule.*;
 	import com.adobe.linguistics.spelling.core.utils.SimpleNumberParser;
-	
-	import flash.utils.Dictionary;
 
+	import flash.utils.Dictionary;
 
 	public class LinguisticRule
 	{

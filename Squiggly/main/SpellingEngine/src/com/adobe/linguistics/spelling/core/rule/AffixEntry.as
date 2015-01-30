@@ -21,7 +21,7 @@
 package com.adobe.linguistics.spelling.core.rule
 {
 	import com.adobe.linguistics.spelling.core.LinguisticRule;
-	
+
 	public class AffixEntry
 	{
 		private var _flag:int;

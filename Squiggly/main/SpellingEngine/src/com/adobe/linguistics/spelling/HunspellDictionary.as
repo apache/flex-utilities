@@ -24,9 +24,8 @@ package com.adobe.linguistics.spelling
 	import com.adobe.linguistics.spelling.core.SquigglyDictionary;
 	import com.adobe.linguistics.spelling.core.utils.LinguisticRuleLoader;
 	import com.adobe.linguistics.spelling.core.utils.SquigglyDictionaryLoader;
-	
+
 	import flash.errors.IllegalOperationError;
-	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;

@@ -20,12 +20,12 @@
   
 package com.adobe.linguistics.spelling.framework
 {
-	
-	
-	import flash.errors.IllegalOperationError;
+
+
 	import com.adobe.linguistics.spelling.core.env.InternalConstants;
-	import com.adobe.linguistics.spelling.framework.ResourceTable;
-	
+
+	import flash.errors.IllegalOperationError;
+
 	/**
 	 * The SpellingConfiguration is for setting and getting the configuration for the spell checker.
 	 * 

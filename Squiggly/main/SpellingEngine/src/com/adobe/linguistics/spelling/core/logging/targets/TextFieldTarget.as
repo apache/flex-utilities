@@ -20,9 +20,10 @@
 
 package com.adobe.linguistics.spelling.core.logging.targets
 {
-    
+
     import flash.text.TextField;
-    public class TextFieldTarget extends LineFormattedTarget 
+
+    public class TextFieldTarget extends LineFormattedTarget
     {
         public var autoScroll:Boolean = true ;
         public var textfield:TextField ;

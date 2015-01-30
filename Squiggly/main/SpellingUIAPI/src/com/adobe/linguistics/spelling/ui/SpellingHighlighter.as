@@ -22,11 +22,9 @@ package com.adobe.linguistics.spelling.ui
 	import flash.display.Shape;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.text.TextLineMetrics;
-	
+
 	import mx.core.IUITextField;
 	import mx.flash.UIMovieClip;
-
 
 	public class SpellingHighlighter extends UIMovieClip
 	{

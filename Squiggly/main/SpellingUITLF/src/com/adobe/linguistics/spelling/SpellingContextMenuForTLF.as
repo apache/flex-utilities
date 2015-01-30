@@ -19,40 +19,21 @@
 
 package com.adobe.linguistics.spelling
 {
-	import com.adobe.linguistics.spelling.SpellUIForTLF;
-	import com.adobe.linguistics.spelling.SquigglyCustomContainerController;
 	import com.adobe.linguistics.spelling.framework.SpellingService;
 	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
 	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
-	import com.adobe.linguistics.spelling.framework.ui.TLFHighlighter;
-	import com.adobe.linguistics.spelling.framework.ui.TLFWordProcessor;
-	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flash.events.ContextMenuEvent;
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
 	import flash.utils.describeType;
-	import flash.utils.getQualifiedClassName;
-		
-	import flashx.textLayout.compose.StandardFlowComposer;
-	import flashx.textLayout.compose.TextFlowLine;
+
 	import flashx.textLayout.container.ContainerController;
-	import flashx.textLayout.conversion.TextConverter;
-	import flashx.textLayout.edit.SelectionManager;
-	import flashx.textLayout.elements.FlowLeafElement;
-	import flashx.textLayout.elements.ParagraphElement;
 	import flashx.textLayout.elements.TextFlow;
-	import flashx.textLayout.events.CompositionCompleteEvent;
-	import flashx.textLayout.events.StatusChangeEvent;
 	import flashx.textLayout.tlf_internal;
-	
-	
-	use namespace tlf_internal;	
+
+	use namespace tlf_internal;
 	
 	public class SpellingContextMenuForTLF
 	{

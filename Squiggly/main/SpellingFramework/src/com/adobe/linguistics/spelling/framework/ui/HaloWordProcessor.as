@@ -22,13 +22,12 @@ package com.adobe.linguistics.spelling.framework.ui
 	import com.adobe.linguistics.utils.ITokenizer;
 	import com.adobe.linguistics.utils.TextTokenizer;
 	import com.adobe.linguistics.utils.Token;
-	
+
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-	
+
 	import mx.controls.TextArea;
 	import mx.controls.TextInput;
-
 
 	public class HaloWordProcessor implements IWordProcessor
 	{
