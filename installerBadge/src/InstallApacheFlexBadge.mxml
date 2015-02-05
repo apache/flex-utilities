@@ -43,7 +43,7 @@ limitations under the License.
 		//
 		//----------------------------------------------------------------------
 		
-		private const INFO_ERROR_OPERATING_SYSTEM:String = "The Apache Flex SDK Installer application\nis not supported on your operating system.";
+		private const INFO_ERROR_OPERATING_SYSTEM:String = "The Apache Flex SDK Installer application\nis not supported on your operating system.\n\nPlease see https://cwiki.apache.org/confluence/display/FLEX/Installation+help for alternatives.";
 		private const INFO_ERROR_RETRIEVE_CONFIG:String = "The application was unable to retrieve\nthe configuration file.";
 		
 		private const LABEL_DOWNLOAD:String = "DOWNLOAD";
@@ -108,6 +108,10 @@ limitations under the License.
 		private function creationCompleteHandler(event:FlexEvent):void
 
 		{
+			if( Capabilities.manufacturer.toLowerCase().indexOf('linux') > -1 ){
+				Alert.show(INFO_ERROR_OPERATING_SYSTEM, TITLE_ERROR_PLATFORM);
+			}
+		
 			_serviceURL = FlexGlobals.topLevelApplication.parameters.serviceURL;
 			
 			var displayType:String = ExternalInterface.call("displayType"); 
