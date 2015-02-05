@@ -300,6 +300,7 @@ variables are not required because the locations of these pieces are known.
         private var licensePropertyMap:Object = {};
         private var progressLabels:XML;
         private var installStepsData:XMLList;
+        private var compList:XMLList;
         private var stepIDs:Vector.<String> = new Vector.<String>();
         private var stepLabels:Vector.<String> = new Vector.<String>();
         private var currentStep:int = 0;
@@ -1211,7 +1212,7 @@ variables are not required because the locations of these pieces are known.
             var data:XML = XML(event.target.data);
             var localeList:Array = resourceManager.localeChain;
             _installerComponentsDataProvider = new ArrayCollection();
-            var compList:XMLList = data.component;
+            compList = data.component.copy();
             for each (var comp:XML in compList)
             {
                 var vo:InstallerComponentVO = new InstallerComponentVO(getLocalizedString(comp, "label"),
@@ -1242,6 +1243,7 @@ variables are not required because the locations of these pieces are known.
                 additionalProps[x.@name.toString()] = x.@value.toString();
             }
             currentState = "directoryState";
+            System.disposeXML(data);
         }
         
         private function getLocalizedString(xml:XML, propName:String):String
@@ -1355,7 +1357,26 @@ variables are not required because the locations of these pieces are known.
         
         protected function initializeInstallerComponentsDataProvider():void
         {
+            var versionNum:int = int(APACHE_FLEX_BIN_DISTRO_VERSION.split('.').join(''));
             _installerComponentsDataProvider = new ArrayCollection();
+            /**
+             * version 4.13.0 of the SDK is when the installer started using the new xml based
+             * way of displaying/updating required or optional components of the installer
+             */
+            if (usingXML && (versionNum >= 4130))
+            {
+                for each (var comp:XML in compList)
+                {
+                    var vo:InstallerComponentVO = new InstallerComponentVO(getLocalizedString(comp, "label"),
+                            getLocalizedString(comp, "message"), getLocalizedString(comp, "license"),
+                            getLocalizedString(comp, "licenseURL"),
+                            comp.@id.toString(), comp.@required.toString() == "true");
+                    licensePropertyMap[comp.@property.toString()] = vo;
+                    _installerComponentsDataProvider.addItem(vo);
+                }
+            }
+            else
+            {
             _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK,
                     _viewResourceConstants.ASK_APACHE_FLEX, _viewResourceConstants.LICENSE_APACHE_V2,
                     _viewResourceConstants.LICENSE_URL_APACHE_V2,
@@ -1380,37 +1401,22 @@ variables are not required because the locations of these pieces are known.
                     _viewResourceConstants.LICENSE_OSMF,
                     _viewResourceConstants.LICENSE_URL_OSMF,
                     "STEP_REQUIRED_INSTALL_OSMF", true));
-
-            /**
-             * If the SDK version being installed is greater than 4.13.0
-             * Don't show this option because the jar file from BlazeDS
-             * that handles remoting is installed as a default from 4.14.0 and higher.
-             * The OFL_FONTS are only required in the 4.14.0+ due to the new FlatSpark
-             * Skins being added.
-             */
-            var versionNum:int = int(APACHE_FLEX_BIN_DISTRO_VERSION.split('.').join(''));
-            if (versionNum <= 4130)
-            {
                 _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS,
                         _viewResourceConstants.ASK_BLAZEDS,
                         _viewResourceConstants.LICENSE_BLAZEDS,
                         _viewResourceConstants.LICENSE_URL_BLAZEDS,
                         "STEP_OPTIONAL_INSTALL_BLAZEDS", false));
-            }
-            else
-            {
-                _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_OFL_FONTS,
-                        _viewResourceConstants.ASK_OFL_FONTS,
-                        _viewResourceConstants.LICENSE_OFL_FONTS,
-                        _viewResourceConstants.LICENSE_URL_OFL_FONTS,
-                        "STEP_REQUIRED_INSTALL_OFL_FONTS", true));
-            }
-
             _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF,
                     _viewResourceConstants.ASK_FONTSWF,
                     _viewResourceConstants.LICENSE_FONTSWF,
                     _viewResourceConstants.LICENSE_URL_FONTSWF,
                     "STEP_OPTIONAL_INSTALL_FONTSWF", false));
+//              _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_OFL_FONTS,
+//                      _viewResourceConstants.ASK_OFL_FONTS,
+//                      _viewResourceConstants.LICENSE_OFL_FONTS,
+//                      _viewResourceConstants.LICENSE_URL_OFL_FONTS,
+//                      "STEP_REQUIRED_INSTALL_OFL_FONTS", true));
+            }
         }
         
         protected function install():void
