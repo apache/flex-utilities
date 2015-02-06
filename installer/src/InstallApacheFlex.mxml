@@ -425,12 +425,13 @@ variables are not required because the locations of these pieces are known.
              {
                  loadXML();
              }
-             logVersion();
-             if (!hasInternet)
+
+             else
              {
                  log("Internet connection unavailable");
                  abortInstallation("Internet connection unavailable.");
              }
+             logVersion();
          }
 
          private function uncaughtErrorHandler(event:UncaughtErrorEvent):void
@@ -1213,7 +1214,7 @@ variables are not required because the locations of these pieces are known.
                  loader.dataFormat = URLLoaderDataFormat.TEXT;
                  loader.addEventListener(Event.COMPLETE, handleInstallerXMLLoaded);
                  loader.addEventListener(ErrorEvent.ERROR, handleInstallerXMLError);
-                 loader.addEventListener(IOErrorEvent.IO_ERROR, handleInstallerXMLError);
+                 loader.addEventListener(IOErrorEvent.IO_ERROR, handleInstallIOXMLError);
 
                  loader.load(req);
              }
@@ -1269,7 +1270,6 @@ variables are not required because the locations of these pieces are known.
                  _installerComponentsDataProvider.addItem(vo);
              }
              usingXML = true;
-             // progressLabels = data.progressLabels[0];
              installStepsData = data.steps.step;
              var strings:XMLList = data.strings.string;
              for each (var x:XML in strings)
@@ -1321,6 +1321,13 @@ variables are not required because the locations of these pieces are known.
          protected function handleInstallerXMLError(event:Event):void
          {
              log("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
+             abortInstallation("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
+         }
+
+         protected function handleInstallIOXMLError(event:IOErrorEvent):void
+         {
+             // Stream Error 2032 here means that the SSL connection can't be created.  TLS/SSL error?
+             log("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL + " with  " + event.text);
              abortInstallation("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
          }
 
@@ -2825,17 +2832,6 @@ variables are not required because the locations of these pieces are known.
          {
              var selectedItem:InstallerComponentVO = InstallerComponentVO(event.target.selectedItem);
              optionalInstallsTxtArea.text = selectedItem.message;
-             /*installChkBx.label = _viewResourceConstants.INSTALL_AGREE;
-              if (selectedItem.answered) {
-              if (selectedItem.selected) {
-              installChkBx.selected = true;
-              } else {
-              installChkBx.selected = false;
-              }
-              } else {
-              installChkBx.selected = false;
-              }*/
-
              licenseLinkBtn.includeInLayout = true;
              _currentLicenseLabel = selectedItem.licenseName;
              _currentLicenseURL = selectedItem.licenseURL;
