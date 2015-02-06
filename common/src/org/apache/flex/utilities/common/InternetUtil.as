@@ -71,7 +71,7 @@ public class InternetUtil
 		array = result.split(".");
 		array.shift();
 
-		return array.join(".");;
+		return array.join(".");
 	}
 	
 	//--------------------------------------------------------------------------

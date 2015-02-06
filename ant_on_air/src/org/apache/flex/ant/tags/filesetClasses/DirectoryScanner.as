@@ -1097,7 +1097,7 @@ package org.apache.flex.ant.tags.filesetClasses
             var arr2:Array = [];
             for each (var f:File in arr)
             arr2.push(f.name);
-            var newfiles:Vector.<String> = Vector.<String>(arr2);;
+            var newfiles:Vector.<String> = Vector.<String>(arr2);
             _scandir(dir, path, fast, newfiles, new Vector.<String>());
         }
         
