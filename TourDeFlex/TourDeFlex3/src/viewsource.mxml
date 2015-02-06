@@ -55,6 +55,13 @@
     	    		}
 				}
 			}
+			
+						
+			public function thirdPartyWarning():void
+			{
+				tn.removeAllChildren();
+				tn.addChild(new ThirdPartyTab());
+			}
 		]]>
 	</fx:Script>
 
