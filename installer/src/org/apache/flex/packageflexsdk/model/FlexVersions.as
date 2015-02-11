@@ -25,8 +25,7 @@ package org.apache.flex.packageflexsdk.model
 
     public class FlexVersions extends ArrayCollection
     {
-        public var defaultVersion:int = -1;
-        private var _os:OS = new OS();
+        public var defaultVersionIndex:int = -1;
 
         public function FlexVersions()
         {
@@ -45,7 +44,7 @@ package org.apache.flex.packageflexsdk.model
             this.refresh();
         }
 
-        public function processXML(flexData:XMLList):void
+        public function processXML(flexData:XMLList, isWindows:Boolean):void
         {
             for each (var productData:XML in flexData)
             {
@@ -55,7 +54,7 @@ package org.apache.flex.packageflexsdk.model
                 {
                     var newFlexVersion:AvailableFlexVersion = new AvailableFlexVersion();
                     newFlexVersion.shortName = productVersion.@file.toString();
-                    newFlexVersion.fileName = newFlexVersion.shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
+                    newFlexVersion.fileName = newFlexVersion.shortName + (isWindows ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
                     newFlexVersion.version = newFlexVersion.fileName.substr(productData.@prefix.toString().length).split("-")[0];
                     newFlexVersion.label = productData.@name.toString() + " " + productVersion.@version.toString();
                     newFlexVersion.path = productVersion.@path.toString();
@@ -68,7 +67,7 @@ package org.apache.flex.packageflexsdk.model
                     newFlexVersion.icon =  productData.@icon.toString();
                     if (productVersion["@default"].length() == 1)
                     {
-                        defaultVersion = this.length;
+                        defaultVersionIndex = this.length;
                     }
                     this.addItem(newFlexVersion);
                 }

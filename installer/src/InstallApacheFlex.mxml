@@ -62,6 +62,9 @@ variables are not required because the locations of these pieces are known.
         import mx.rpc.http.HTTPService;
         import mx.utils.StringUtil;
 
+        import org.apache.flex.packageflexsdk.model.AirVersions;
+        import org.apache.flex.packageflexsdk.model.FlashVersions;
+
         import org.apache.flex.packageflexsdk.model.FlexVersions;
 
         import org.apache.flex.packageflexsdk.view.components.CacheDialog;
@@ -163,7 +166,7 @@ variables are not required because the locations of these pieces are known.
          *
          */
         [Bindable]
-        private var AIR_VERSIONS:ArrayCollection = new ArrayCollection();
+        private var AIR_VERSIONS:AirVersions = new AirVersions();
         private var AIR_VERSION:String = "14.0";
         private var ADOBE_AIR_SDK_WIN_FILE:String;
         private var ADOBE_AIR_SDK_WIN_URL:String;
@@ -179,7 +182,7 @@ variables are not required because the locations of these pieces are known.
          *
          */
         [Bindable]
-        private var FLASH_PLAYER_VERSIONS:ArrayCollection = new ArrayCollection();
+        private var FLASH_PLAYER_VERSIONS:FlashVersions = new FlashVersions();
         private var FLASH_PLAYER_VERSION:String = "11.1";
         private var FLASH_PLAYER_SWF_VERSION:String = "14";
         private var ADOBE_FB_GLOBALPLAYER_SWC_FILE:String;
@@ -340,6 +343,9 @@ variables are not required because the locations of these pieces are known.
             _standardButtonWidth = calc.maxButtonWidth([installBtn, browseBtn, closeBtn, nextBtn, firstStepBackBtn, secondStepBackBtn]);
         }
 
+        /**
+         *  This function parses the command-line properties passed into the app and loads prefs into memory
+         */
         private function parseArgs(event:InvokeEvent):void
         {
             for each (var s:String in event.arguments)
@@ -376,6 +382,9 @@ variables are not required because the locations of these pieces are known.
             userDefaultLanguage = so.data.userDefaultLanguage;
         }
 
+        /**
+         *  This function is called when the application finishes drawing the UI.
+         */
         protected function handleApplicationComplete(event:FlexEvent):void
         {
             CursorManager.setBusyCursor();
@@ -659,7 +668,6 @@ variables are not required because the locations of these pieces are known.
             else
             {
                 request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
-                //request = new URLRequest(Constants.CONFIG_XML_NAME);
             }
 
             _loader = new URLLoader();
@@ -717,11 +725,6 @@ variables are not required because the locations of these pieces are known.
             }
         }
 
-        //        private function devBuildFilterFunction(o:Object):Boolean
-        //        {
-        //            return !o.devBuild;
-        //        }
-
         private function debugModeHandler(event:Event):void
         {
             debugMode = true;
@@ -777,6 +780,8 @@ variables are not required because the locations of these pieces are known.
             var keepGoing:Boolean = true;
             if (firstTime)
             {
+                setupUI();
+
                 firstTime = false;
 
                 _latestVersion = data.version.latest.toString();
@@ -785,21 +790,6 @@ variables are not required because the locations of these pieces are known.
                 installerAppFileName = data.installer.(@name == 'SDKInstallerApp').@file.toString();
 
                 _mirrorURLCGI = data.mirror.(@name == 'MirrorURLCGI').@file.toString();
-
-                customMenuItem1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, devBuildShowHandler);
-                customMenuItem2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, downloadCacheHandler);
-                customMenuItem3.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugModeHandler);
-                customMenuItem4.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugProgressHandler);
-
-                var contextMenuCustomItems:Array = ContextMenu(contextMenu).customItems;
-                contextMenuCustomItems.push(customMenuItem1);
-                contextMenuCustomItems.push(customMenuItem2);
-                contextMenuCustomItems.push(customMenuItem3);
-                contextMenuCustomItems.push(customMenuItem4);
-
-                var name:String;
-                var versionString:String;
-                var versionID:String;
 
                 var languages:XMLList = data.languages.children();
                 for each (var lang:XML in languages)
@@ -813,42 +803,23 @@ variables are not required because the locations of these pieces are known.
                 }
 
                 var airData:XMLList = data.airsdk[_os.os].versions;
-                var airVersionList:XMLList = airData[0].children();
-                var airVersions:Array = [];
-                var selected:String = airData[0]["@default"].toString();
-                for each (var airVersion:XML in airVersionList)
-                {
-                    var displayVersion:String = airVersion.@displayVersion.toString();
-                    versionString = airVersion.@version.toString();
-                    versionID = null;
-                    if (airVersion.@versionID.length() > 0)
-                    {
-                        versionID = airVersion.@versionID.toString();
-                    }
-                    airVersions.push(versionString);
-                    var airPath:String = airVersion.path.toString();
-                    var airFile:String = airVersion.file.toString();
-                    AIR_VERSIONS.addItem({
-                        label: "AIR " + displayVersion, version: versionString, versionID: versionID,
-                        path: airPath, file: airFile
-                    });
-                }
 
+                AIR_VERSIONS.processXML(airData);
                 if (this.airVersion.selectedIndex == -1)
                 {
-                    this.airVersion.selectedIndex = airVersions.indexOf(selected);
+                    this.airVersion.selectedIndex = AIR_VERSIONS.defaultVersionIndex;
                 }
 
                 var flexData:XMLList = data.products.children();
 
-                FLEX_VERSIONS.processXML(flexData);
+                FLEX_VERSIONS.processXML(flexData, _os.isWindows());
                 FLEX_VERSIONS.hideDevBuilds();
 
                 flexVersionSelectList.validateNow();
 
                 if (this.flexVersionSelectList.selectedIndex == -1)
                 {
-                    this.flexVersionSelectList.selectedIndex = FLEX_VERSIONS.defaultVersion;
+                    this.flexVersionSelectList.selectedIndex = FLEX_VERSIONS.defaultVersionIndex;
                 }
 
                 var selectedFlexVersionObject:Object = this.flexVersionSelectList.selectedItem;
@@ -861,34 +832,11 @@ variables are not required because the locations of these pieces are known.
                 }
 
                 var flashData:XMLList = data.flashsdk.versions;
-                var flashVersionList:XMLList = flashData[0].children();
-                var flashPlayerVersions:Array = [];
-                selected = flashData[0]["@default"].toString();
-                for each (var flashVersion:XML in flashVersionList)
-                {
-                    displayVersion = flashVersion.@displayVersion.toString();
-                    versionString = flashVersion.@version.toString();
-                    versionID = null;
-                    if (flashVersion.@versionID.length() > 0)
-                    {
-                        versionID = flashVersion.@versionID.toString();
-                    }
-                    flashPlayerVersions.push(versionString);
-                    if (!_os.isLinux() || Number(versionString) <= 11.2)
-                    {
-                        var swfVersion:String = flashVersion.swfversion.toString();
-                        var flashPath:String = flashVersion.path.toString();
-                        var flashFile:String = flashVersion.file.toString();
-                        FLASH_PLAYER_VERSIONS.addItem({
-                            label: "Flash Player " + displayVersion, version: versionString, swfVersion: swfVersion,
-                            versionID: versionID, path: flashPath, file: flashFile
-                        });
-                    }
-                }
+                FLASH_PLAYER_VERSIONS.processXML(flashData, _os.isLinux());
 
                 if (this.flashPlayerVersion.selectedIndex == -1)
                 {
-                    this.flashPlayerVersion.selectedIndex = flashPlayerVersions.indexOf(selected);
+                    this.flashPlayerVersion.selectedIndex = FLASH_PLAYER_VERSIONS.defaultVersionIndex;
                 }
             }
 
@@ -963,6 +911,20 @@ variables are not required because the locations of these pieces are known.
 
 
             return keepGoing;
+        }
+
+        protected function setupUI():void
+        {
+            customMenuItem1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, devBuildShowHandler);
+            customMenuItem2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, downloadCacheHandler);
+            customMenuItem3.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugModeHandler);
+            customMenuItem4.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugProgressHandler);
+
+            var contextMenuCustomItems:Array = ContextMenu(contextMenu).customItems;
+            contextMenuCustomItems.push(customMenuItem1);
+            contextMenuCustomItems.push(customMenuItem2);
+            contextMenuCustomItems.push(customMenuItem3);
+            contextMenuCustomItems.push(customMenuItem4);
         }
 
         protected function updateFlexVersionStrings(selectedFlexVersionObject:Object):void
