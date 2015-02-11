@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"
+               xmlns:s="library://ns.adobe.com/flex/spark"
+               backgroundColor="0xDDDDDD" close="closeUp()"
+               title="Download Cache Configuration"
+               width="400"
+               height="130">
+
+    <fx:Script>
+        <![CDATA[
+        import mx.managers.PopUpManager;
+
+        private function browseFolders():void
+        {
+            var file:File;
+            if (folder.text.length > 0)
+                file = File.applicationStorageDirectory.resolvePath(folder.text);
+            else
+                file = File.applicationStorageDirectory;
+            file.browseForDirectory("Download Cache Folder");
+            file.addEventListener(Event.SELECT, folderSelected);
+        }
+
+        private function folderSelected(event:Event):void
+        {
+            folder.text = event.target.nativePath;
+        }
+
+        private function closeUp():void
+        {
+            PopUpManager.removePopUp(this);
+        }
+
+        private function updateCache():void
+        {
+            dispatchEvent(new Event(Event.COMPLETE));
+            closeUp();
+        }
+        ]]>
+    </fx:Script>
+
+    <s:VGroup left="10" top="10" right="10">
+        <s:CheckBox id="cb" label="Cache Downloaded Files" />
+        <s:HGroup width="100%" verticalAlign="baseline">
+            <s:Label text="Cache Folder: " />
+            <s:TextInput id="folder" width="100%" enabled="{cb.selected}"/>
+            <s:Button label="Browse..." click="browseFolders()" styleName="genericBtnStyle" enabled="{cb.selected}"/>
+        </s:HGroup>
+        <s:HGroup horizontalAlign="center" width="100%" >
+            <s:Button label="OK" click="updateCache()" enabled="{cb.selected == false || folder.text.length > 0}" styleName="genericBtnStyle" />
+            <s:Button label="Cancel" click="closeUp()" styleName="genericBtnStyle" />
+        </s:HGroup>
+    </s:VGroup>
+
+</s:TitleWindow>

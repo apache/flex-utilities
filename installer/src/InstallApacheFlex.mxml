@@ -31,77 +31,25 @@ variables are not required because the locations of these pieces are known.
 
 -->
 
-
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
                        xmlns:s="library://ns.adobe.com/flex/spark"
+                       xmlns:controls="ws.tink.spark.controls.*"
+                       xmlns:controls1="org.apache.flex.packageflexsdk.view.controls.*"
+                       xmlns:components="org.apache.flex.packageflexsdk.view.components.*"
+                       xmlns:controls2="org.apache.flex.utilities.common.controls.*"
                        width="800" height="700" maxWidth="800" maxHeight="700" minWidth="800" minHeight="700"
                        backgroundColor="0xDDDDDD"
                        preinitialize="getInvoke()"
                        applicationComplete="handleApplicationComplete(event)" showStatusBar="false"
-                       skinClass="ws.tink.spark.skins.controls.InstallApacheFlexSkin"
-                       xmlns:controls="ws.tink.spark.controls.*"
-                       xmlns:controls1="org.apache.flex.packageflexsdk.view.controls.*"
-                       xmlns:components="org.apache.flex.packageflexsdk.view.components.*"
-                       xmlns:controls2="org.apache.flex.utilities.common.controls.*">
+                       skinClass="ws.tink.spark.skins.controls.InstallApacheFlexSkin">
     
     <fx:Style source="assets/styles/ApacheFlexToolsStyle.css"/>
     <fx:Style source="assets/styles/InstallApacheFlexStyle.css"/> 
     
-    <fx:Declarations>
-        <fx:Component className="CacheDialog" >
-            <s:TitleWindow title="Download Cache Configuration" width="400" height="130" 
-                           backgroundColor="0xDDDDDD" close="closeUp()">
-                <fx:Script>
-                    <![CDATA[
-                        import mx.managers.PopUpManager;
-                        
-                        private function browseFolders():void
-                        {
-                            var file:File;
-                            if (folder.text.length > 0)
-                                file = File.applicationStorageDirectory.resolvePath(folder.text);
-                            else
-                                file = File.applicationStorageDirectory;
-                            file.browseForDirectory("Download Cache Folder");
-                            file.addEventListener(Event.SELECT, folderSelected);
-                        }
-                        
-                        private function folderSelected(event:Event):void
-                        {
-                            folder.text = event.target.nativePath;
-                        }
-                        
-                        private function closeUp():void
-                        {
-                            PopUpManager.removePopUp(this);
-                        }
-                        
-                        private function updateCache():void
-                        {
-                            dispatchEvent(new Event(Event.COMPLETE));
-                            closeUp();
-                        }
-                    ]]>
-                </fx:Script>
-                <s:VGroup left="10" top="10" right="10">
-                    <s:CheckBox id="cb" label="Cache Downloaded Files" />
-                    <s:HGroup width="100%" verticalAlign="baseline">
-                        <s:Label text="Cache Folder: " />
-                        <s:TextInput id="folder" width="100%" enabled="{cb.selected}"/>
-                        <s:Button label="Browse..." click="browseFolders()" styleName="genericBtnStyle" enabled="{cb.selected}"/>
-                    </s:HGroup>
-                    <s:HGroup horizontalAlign="center" width="100%" >
-                        <s:Button label="OK" click="updateCache()" enabled="{cb.selected == false || folder.text.length > 0}" styleName="genericBtnStyle" />
-                        <s:Button label="Cancel" click="closeUp()" styleName="genericBtnStyle" />
-                    </s:HGroup>
-                </s:VGroup>
-            </s:TitleWindow>
-        </fx:Component>
-    </fx:Declarations>
     <fx:Script><![CDATA[
         import flash.globalization.LocaleID;
         import flash.globalization.StringTools;
-        
+
         import mx.collections.ArrayCollection;
         import mx.core.IFlexDisplayObject;
         import mx.events.FlexEvent;
@@ -113,15 +61,21 @@ variables are not required because the locations of these pieces are known.
         import mx.rpc.events.ResultEvent;
         import mx.rpc.http.HTTPService;
         import mx.utils.StringUtil;
-        
+
+        import org.apache.flex.packageflexsdk.model.FlexVersions;
+
+        import org.apache.flex.packageflexsdk.view.components.CacheDialog;
+
         import spark.events.IndexChangeEvent;
         import spark.events.TextOperationEvent;
-        
+
         // This force-links all of the ant task handlers into the Installer.
         // The Installer doesn't use most of them directly but some script
         // it runs might.
-        import AntClasses; AntClasses;
-         
+        import AntClasses;
+
+        AntClasses;
+
         import org.apache.flex.ant.Ant;
         import org.apache.flex.ant.tags.Checksum;
         import org.apache.flex.ant.tags.Copy;
@@ -144,16 +98,16 @@ variables are not required because the locations of these pieces are known.
         import org.as3commons.zip.ZipEvent;
         import org.as3commons.zip.ZipFile;
         import org.osmf.utils.OSMFStrings;
-        
+
         import ws.tink.spark.controls.StepItem;
         import ws.tink.spark.skins.controls.InstallApacheFlexSkin;
-        
+
         // embed us strings so we can always have them if we can't get to the locale files
         [Embed(source="properties/en_US.properties", mimeType="application/octet-stream")]
         private var en_US_Properties:Class;
-        
+
         private var cleanedUp:Boolean;
-        
+
         private var _mirrorURLCGI:String;
         private var _useMirror:Boolean = true;
         private var _latestVersion:String;
@@ -170,21 +124,21 @@ variables are not required because the locations of these pieces are known.
         private var nocache:Boolean = true;
         private var wasAborted:Boolean;
         private var newSDKSelected:Boolean = true;
-        
+
         public var installerAppPath:String;
         public var installerAppFileName:String;
-        
+
         // loader needs to be in instance var otherwise it can get GC'd.
         // We only load one thing at a time, so we can all share this
         // var
         private var loader:URLLoader;
-        
+
         /**
          * Utility Singleton Instances
          */
         private var _md5CompareUtil:MD5CompareUtil = MD5CompareUtil.instance;
         private var _mirrorURLUtil:MirrorURLUtil = MirrorURLUtil.instance;
-        
+
         /**
          * Apache Flex binary distribution
          *
@@ -197,16 +151,19 @@ variables are not required because the locations of these pieces are known.
         private var APACHE_FLEX_BIN_DISTRO_FILE_SHORT:String;
         private var APACHE_FLEX_BIN_DISTRO_URL:String;
         private var APACHE_FLEX_BIN_INSTALLER_URL:String;
-        [Bindable] private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
-        [Bindable] private var APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY:String = "";
-        
+        [Bindable]
+        private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
+        [Bindable]
+        private var APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY:String = "";
+
         /**
          * Adobe AIR SDK
          *
          * Values stored in sdk-installer-config.xml edit file to change
          *
          */
-        [Bindable] private var AIR_VERSIONS:ArrayCollection = new ArrayCollection();
+        [Bindable]
+        private var AIR_VERSIONS:ArrayCollection = new ArrayCollection();
         private var AIR_VERSION:String = "14.0";
         private var ADOBE_AIR_SDK_WIN_FILE:String;
         private var ADOBE_AIR_SDK_WIN_URL:String;
@@ -214,27 +171,29 @@ variables are not required because the locations of these pieces are known.
         private var ADOBE_AIR_SDK_MAC_URL:String;
         private var ADOBE_AIR_SDK_LINUX_FILE:String;
         private var ADOBE_AIR_SDK_LINUX_URL:String;
-        
+
         /**
          * Adobe Flash Player
          *
          * Values stored in sdk-installer-config.xml edit file to change
          *
          */
-        [Bindable] private var FLASH_PLAYER_VERSIONS:ArrayCollection = new ArrayCollection();
+        [Bindable]
+        private var FLASH_PLAYER_VERSIONS:ArrayCollection = new ArrayCollection();
         private var FLASH_PLAYER_VERSION:String = "11.1";
         private var FLASH_PLAYER_SWF_VERSION:String = "14";
         private var ADOBE_FB_GLOBALPLAYER_SWC_FILE:String;
         private var ADOBE_FB_GLOBALPLAYER_SWC_URL:String;
-        
+
         /**
          * Apache Flex
          *
          * Values stored in sdk-installer-config.xml edit file to change
          *
          */
-        [Bindable] private var FLEX_VERSIONS:ArrayCollection = new ArrayCollection();
-        
+        [Bindable]
+        private var FLEX_VERSIONS:FlexVersions = new FlexVersions();
+
         /**
          *
          * SwfObject
@@ -242,7 +201,7 @@ variables are not required because the locations of these pieces are known.
          */
         private var SWF_OBJECT_FILE:String;
         private var SWF_OBJECT_URL:String;
-        
+
         /**
          * Optional installs
          *
@@ -250,10 +209,10 @@ variables are not required because the locations of these pieces are known.
         private var OSMF_SWC_FILE:String;
         private var OSMF_SWC_URL:String;
         private var OSMF_SWF_FILE:String = "osmf.swf";
-        
+
         private var BLAZEDS_FILE:String;
         private var BLAZEDS_URL:String;
-        
+
         private var AFE_FILE:String;
         private var AFE_URL:String;
         private var AGLJ40_FILE:String;
@@ -262,7 +221,7 @@ variables are not required because the locations of these pieces are known.
         private var FLEX_FONTKIT_URL:String;
         private var RIDEAU_FILE:String;
         private var RIDEAU_URL:String;
-        
+
         [Bindable]
         private var _flexHome:String;
         private var _flexTemp:String;
@@ -279,7 +238,7 @@ variables are not required because the locations of these pieces are known.
         private var _rideauJarFile:File;
         private var _osmfSWCFile:File;
         private var _osmfSWFFile:File;
-        
+
         private var _os:OS = new OS();
         private var _loader:URLLoader;
         private var _process:NativeProcess;
@@ -288,12 +247,12 @@ variables are not required because the locations of these pieces are known.
         private var _numOptionalComponents:int = 4;
         private var _numOptionalComponentsPermissions:int = 0;
         private var _useOSMF2:Boolean = true;
-        
+
         private var languageOverride:String;
         private var configOverride:String = "";
         private var stepsOverride:String = "";
         private var installOverride:String = "";
-        
+
         private var overlaying:Boolean;
         private var usingXML:Object;
         private var additionalProps:Object = {};
@@ -304,14 +263,14 @@ variables are not required because the locations of these pieces are known.
         private var stepIDs:Vector.<String> = new Vector.<String>();
         private var stepLabels:Vector.<String> = new Vector.<String>();
         private var currentStep:int = 0;
-        
+
         private var lastLicenseItemSelected:int = 0;
-        
+
         private var customMenuItem1:ContextMenuItem = new ContextMenuItem("Show Dev Builds");
         private var customMenuItem2:ContextMenuItem = new ContextMenuItem("Configure Download Cache...");
         private var customMenuItem3:ContextMenuItem = new ContextMenuItem("Enable Verbose Logging");
         private var customMenuItem4:ContextMenuItem = new ContextMenuItem("Enable Progress Logging");
-        
+
         [Bindable]
         private var _viewResourceConstants:ViewResourceConstants;
         [Bindable]
@@ -326,14 +285,14 @@ variables are not required because the locations of these pieces are known.
         private var _currentLicenseLabel:String;
         [Bindable]
         public var _messages:ArrayCollection = new ArrayCollection();
-        
+
         private var _lastTag:String;
         private var _lastPublicMessage:String;
         public function set lastPublicMessage(s:String):void
         {
             var tag:String;
             var c:int;
-            
+
             c = s.indexOf("[");
             if (c != -1)
             {
@@ -345,56 +304,68 @@ variables are not required because the locations of these pieces are known.
                 }
             }
             if (tag && tag == _lastTag && tag == "get")
+            {
                 _lastPublicMessage += "\n" + s;
+            }
             else
+            {
                 _lastPublicMessage = s;
+            }
             _lastTag = tag;
             dispatchEvent(new Event("messageChanged"));
         }
-        
+
         [Bindable("messageChanged")]
         public function get lastFilteredPublicMessage():String
         {
             return _lastPublicMessage;
         }
-        
+
         private function getInvoke():void
         {
             var nativeApplication:NativeApplication = NativeApplication.nativeApplication;
             nativeApplication.addEventListener(InvokeEvent.INVOKE, parseArgs);
         }
-        
-        [Bindable] private var _standardButtonWidth:Number = 88;
-        
+
+        [Bindable]
+        private var _standardButtonWidth:Number = 88;
+
         public function setButtonWidths():void
         {
             var calc:CalcButtonWidth = new CalcButtonWidth(hiddenButton);
-            
+
             calc.buttonWidth(installLogBtn);
             calc.buttonWidth(openApacheFlexFolderBtn);
-            
+
             _standardButtonWidth = calc.maxButtonWidth([installBtn, browseBtn, closeBtn, nextBtn, firstStepBackBtn, secondStepBackBtn]);
         }
-        
+
         private function parseArgs(event:InvokeEvent):void
         {
-            for each (var s:String in event.arguments) {
-                if (s.indexOf("-language=") == 0) {
+            for each (var s:String in event.arguments)
+            {
+                if (s.indexOf("-language=") == 0)
+                {
                     languageOverride = s.substring(10);
                 }
-                if (s.indexOf("-config=") == 0) {
+                if (s.indexOf("-config=") == 0)
+                {
                     configOverride = s.substring(8);
                 }
-                if (s.indexOf("-install=") == 0) {
+                if (s.indexOf("-install=") == 0)
+                {
                     installOverride = s.substring(9);
                 }
-                if (s.indexOf("-steps=") == 0) {
+                if (s.indexOf("-steps=") == 0)
+                {
                     stepsOverride = s.substring(7);
                 }
-                if (s.indexOf("-debug") == 0) {
+                if (s.indexOf("-debug") == 0)
+                {
                     debugMode = true;
                 }
-                if (s.indexOf("-log=") == 0) {
+                if (s.indexOf("-log=") == 0)
+                {
                     debugMode = true;
                     logFile = s.substring(5);
                 }
@@ -404,7 +375,7 @@ variables are not required because the locations of these pieces are known.
             downloadCacheFolder = so.data.downloadCacheFolder;
             userDefaultLanguage = so.data.userDefaultLanguage;
         }
-        
+
         protected function handleApplicationComplete(event:FlexEvent):void
         {
             CursorManager.setBusyCursor();
@@ -432,11 +403,13 @@ variables are not required because the locations of these pieces are known.
                 abortInstallation("Internet connection unavailable.");
             }
         }
-        
+
         private function uncaughtErrorHandler(event:UncaughtErrorEvent):void
         {
             if (currentStep > 0)
+            {
                 updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
+            }
             if (event.error is Error)
             {
                 var error:Error = event.error as Error;
@@ -457,7 +430,7 @@ variables are not required because the locations of these pieces are known.
                 abortInstallation(event.toString());
             }
         }
-        
+
         /**
          * Define on ResourceManager all keys for translation.
          * If some key is not present on any other language selected by user, the default value will be displayed
@@ -467,7 +440,7 @@ variables are not required because the locations of these pieces are known.
         {
             selectDefaultLanguage();
         }
-        
+
         private function getIndexOfEnUS():int
         {
             for (var i:int = 0; i < _langSelect.dataProvider.length; i++)
@@ -479,24 +452,26 @@ variables are not required because the locations of these pieces are known.
             }
             return -1;
         }
-        
+
         private function updateWindowTitle():void
         {
             if (_viewResourceConstants)
+            {
                 this.nativeWindow.title = StringUtil.substitute(_viewResourceConstants.INFO_WINDOW_TITLE, [APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY]);
+            }
         }
-        
+
         protected function selectDefaultLanguageInEmergency():void
         {
             loadLanguage("en_US", loadUSInEmergencyComplete);
         }
-        
+
         private function loadUSInEmergencyComplete():void
         {
             _viewResourceConstants = ViewResourceConstants.instance;
             _viewResourceConstants.update();
         }
-        
+
         protected function selectDefaultLanguage():void
         {
             loadLanguage("en_US", loadUSComplete);
@@ -505,7 +480,7 @@ variables are not required because the locations of these pieces are known.
         private function loadUSComplete():void
         {
             var userLocale:String;
-            
+
             if (userDefaultLanguage)
             {
                 userLocale = userDefaultLanguage;
@@ -514,28 +489,30 @@ variables are not required because the locations of these pieces are known.
             {
                 userLocale = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
             }
-            
+
             if (languageOverride)
             {
                 userLocale = languageOverride;
             }
-            
+
             loadDefaultLanguage(userLocale);
         }
-        
+
         private function loadDefaultLanguage(userLocale:String):void
         {
             loadLanguage(userLocale, defaultLanguageLoaded);
         }
-        
+
         private var languageURL:String;
         private var languageID:String;
-        
+
         private function loadLanguage(userLocale:String, completeFunction:Function):void
         {
             if (languageURL && loader) // busy loading another language
+            {
                 loader.close();
-            
+            }
+
             if (userLocale == "en_US")
             {
                 var ba:ByteArray = new en_US_Properties() as ByteArray;
@@ -545,8 +522,10 @@ variables are not required because the locations of these pieces are known.
                 return;
             }
             var n:int = supportedLanguages.length;
-            for (var i:int = 0; i < n; i++) {
-                if (supportedLanguages[i].data == userLocale) {
+            for (var i:int = 0; i < n; i++)
+            {
+                if (supportedLanguages[i].data == userLocale)
+                {
                     languageID = userLocale;
                     languageURL = supportedLanguages[i].path;
                     var url:URLRequest = new URLRequest(languageURL);
@@ -554,7 +533,8 @@ variables are not required because the locations of these pieces are known.
                     loader.dataFormat = URLLoaderDataFormat.TEXT;
                     loader.addEventListener(IOErrorEvent.IO_ERROR, languageLoadErrorHandler);
                     loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, languageLoadErrorHandler);
-                    loader.addEventListener(Event.COMPLETE, function(e:Event):void {
+                    loader.addEventListener(Event.COMPLETE, function (e:Event):void
+                    {
                         languageURL = null;
                         installLanguage(userLocale, loader.data);
                         completeFunction();
@@ -565,47 +545,55 @@ variables are not required because the locations of these pieces are known.
             }
             completeFunction();
         }
-        
+
         private function installLanguage(userLocale:String, data:String):void
         {
             var resource:ResourceBundle = new ResourceBundle(userLocale, ViewResourceConstants.BUNDLE_NAME);
             var variables:Array;
             if (data.indexOf("\r\n") != -1)
+            {
                 variables = data.split("\r\n");
+            }
             else
+            {
                 variables = data.split("\n");
+            }
             for each (var p:String in variables)
             {
                 if (p.charAt(0) == "#")
+                {
                     continue;
-                
+                }
+
                 var c:int = p.indexOf("=");
                 if (c != -1)
                 {
                     var key:String = p.substr(0, c);
-                    var value:String = p.substr(c+1);
+                    var value:String = p.substr(c + 1);
                     while (value.indexOf("\\n") != -1)
+                    {
                         value = value.replace("\\n", "\n");
+                    }
                     resource.content[key] = value;
                 }
             }
-            
+
             resourceManager.addResourceBundle(resource);
         }
-        
+
         private function languageLoadErrorHandler(event:Event):void
         {
             log("Unable to load language file " + languageURL);
             log(event.toString());
             abortInstallation("Unable to load language file " + languageURL);
         }
-        
+
         private function defaultLanguageLoaded():void
         {
-            resourceManager.localeChain = [ ViewResourceConstants.DEFAULT_LANGUAGE ];
-            
+            resourceManager.localeChain = [ViewResourceConstants.DEFAULT_LANGUAGE];
+
             var userLocale:String;
-            
+
             if (userDefaultLanguage)
             {
                 userLocale = userDefaultLanguage;
@@ -614,79 +602,85 @@ variables are not required because the locations of these pieces are known.
             {
                 userLocale = new StringTools(LocaleID.DEFAULT).actualLocaleIDName.replace("-", "_");
             }
-            
+
             if (languageOverride)
             {
                 userLocale = languageOverride;
             }
             log("Using Locale: " + userLocale);
-            
+
             var n:int = supportedLanguages.length;
             for (var i:int = 0; i < n; i++)
             {
                 if (supportedLanguages[i].data == userLocale)
                 {
                     _langSelect.selectedIndex = i;
-                    
-                    resourceManager.localeChain = [ userLocale, "en_US" ];
-                    
+
+                    resourceManager.localeChain = [userLocale, "en_US"];
+
                     break;
                 }
             }
             _viewResourceConstants = ViewResourceConstants.instance;
-            
+
             resourceManager.addEventListener(Event.CHANGE, _viewResourceConstants.update);
-            
+
             _viewResourceConstants.update();
             setButtonWidths();
             directoryBtn.enabled = true;
-            
+
             updateWindow();
-            
+
             _mirrorURLUtil.logMessages = new LogMessagesVO(_viewResourceConstants.FETCH_MIRROR_CGI, _viewResourceConstants.FETCH_MIRROR_CGI_DONE,
                     _viewResourceConstants.FETCH_MIRROR_CGI_ERROR);
-            
+
             _mirrorURLUtil.getMirrorURL(Constants.APACHE_FLEX_URL + _mirrorURLCGI, getMirrorURLResultHandler);
             CursorManager.removeBusyCursor();
-            
+
             checkValidOS();
         }
-        
+
         protected function updateWindow():void
         {
             updateWindowTitle();
-            
+
             this.nativeWindow.x = Screen.mainScreen.bounds.width / 2 - this.nativeWindow.width / 2;
             this.nativeWindow.y = Screen.mainScreen.bounds.height / 2 - this.nativeWindow.height / 2;
         }
-        
+
         protected function loadXML():void
         {
             var request:URLRequest;
-            
-            if (configOverride != "") {
+
+            if (configOverride != "")
+            {
                 request = new URLRequest(configOverride);
-            } else {
+            }
+            else
+            {
                 request = new URLRequest(Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
                 //request = new URLRequest(Constants.CONFIG_XML_NAME);
             }
-            
+
             _loader = new URLLoader();
-            
-            try {
+
+            try
+            {
                 _loader.load(request);
-            } catch (error:Error) {
+            }
+            catch (error:Error)
+            {
                 selectDefaultLanguageInEmergency();
                 log("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
                 log(_viewResourceConstants.ERROR_CONFIG_XML_LOAD + error.errorID + " " + error.message);
                 abortInstallation("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME);
             }
-            
+
             _loader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, xmlLoadStatus, false, 0, true);
             _loader.addEventListener(IOErrorEvent.IO_ERROR, xmlError, false, 0, true);
             _loader.addEventListener(Event.COMPLETE, xmlLoaded, false, 0, true);
         }
-        
+
         protected function xmlLoadStatus(event:HTTPStatusEvent):void
         {
             if (event.status >= 400)
@@ -695,7 +689,7 @@ variables are not required because the locations of these pieces are known.
                 log("\tServer Status: " + event.status);
             }
         }
-        
+
         protected function xmlError(event:IOErrorEvent):void
         {
             selectDefaultLanguageInEmergency();
@@ -703,49 +697,51 @@ variables are not required because the locations of these pieces are known.
             log(_viewResourceConstants.ERROR_CONFIG_XML_LOAD + event.errorID);
             abortInstallation("Unable to load " + Constants.APACHE_FLEX_URL + Constants.CONFIG_XML_NAME + " " + event.toString());
         }
-        
+
         protected function xmlLoaded(event:Event):void
         {
-            if (setXMLVariables()) {
+            if (setXMLVariables())
+            {
                 _langSelect.dataProvider = supportedLanguages;
                 _langSelect.selectedIndex = getIndexOfEnUS();
                 _langSelect.enabled = true;
                 defineResourceManagerDefaultLanguage();
             }
         }
-        
+
         protected function checkValidOS():void
         {
             if (_os.isOther())
+            {
                 log(_viewResourceConstants.ERROR_UNSUPPORTED_OPERATING_SYSTEM);
+            }
         }
-        
-        private function devBuildFilterFunction(o:Object):Boolean
-        {
-            return !o.devBuild;
-        }
-        
+
+        //        private function devBuildFilterFunction(o:Object):Boolean
+        //        {
+        //            return !o.devBuild;
+        //        }
+
         private function debugModeHandler(event:Event):void
         {
             debugMode = true;
             customMenuItem3.caption = "Verbose Logging Enabled";
         }
-        
+
         private function debugProgressHandler(event:Event):void
         {
             logProgressEvents = true;
             customMenuItem4.caption = "Logging Progress Events";
         }
-        
+
         private function devBuildShowHandler(event:Event):void
         {
-            var item:Object = flexVersion.selectedItem;
-            FLEX_VERSIONS.filterFunction = null;
-            FLEX_VERSIONS.refresh();
-            flexVersion.selectedItem = item;
+            var item:Object = flexVersionSelectList.selectedItem;
+            FLEX_VERSIONS.showDevBuilds();
+            flexVersionSelectList.selectedItem = item;
             customMenuItem1.caption = "Showing Dev Builds";
         }
-        
+
         private function downloadCacheHandler(event:Event):void
         {
             var dlg:CacheDialog = new CacheDialog();
@@ -755,7 +751,7 @@ variables are not required because the locations of these pieces are known.
             dlg.cb.selected = usingDownloadCache;
             dlg.folder.text = downloadCacheFolder;
         }
-        
+
         private function updateDownloadCache(event:Event):void
         {
             downloadCacheFolder = event.target.folder.text;
@@ -765,13 +761,13 @@ variables are not required because the locations of these pieces are known.
             so.data.downloadCacheFolder = downloadCacheFolder;
             so.flush();
         }
-        
+
         protected function setXMLVariables():Boolean
         {
-            try 
+            try
             {
                 var data:XML = XML(_loader.data);
-            } 
+            }
             catch (e:Error)
             {
                 log("Error parsing configuration file");
@@ -782,165 +778,162 @@ variables are not required because the locations of these pieces are known.
             if (firstTime)
             {
                 firstTime = false;
-                
+
                 _latestVersion = data.version.latest.toString();
-                
+
                 installerAppPath = data.installer.(@name == 'SDKInstallerApp').@path.toString();
                 installerAppFileName = data.installer.(@name == 'SDKInstallerApp').@file.toString();
-                
+
                 _mirrorURLCGI = data.mirror.(@name == 'MirrorURLCGI').@file.toString();
-                
+
                 customMenuItem1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, devBuildShowHandler);
                 customMenuItem2.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, downloadCacheHandler);
                 customMenuItem3.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugModeHandler);
                 customMenuItem4.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, debugProgressHandler);
-                
+
                 var contextMenuCustomItems:Array = ContextMenu(contextMenu).customItems;
                 contextMenuCustomItems.push(customMenuItem1);
                 contextMenuCustomItems.push(customMenuItem2);
                 contextMenuCustomItems.push(customMenuItem3);
                 contextMenuCustomItems.push(customMenuItem4);
-                
+
                 var name:String;
                 var versionString:String;
                 var versionID:String;
-                
+
                 var languages:XMLList = data.languages.children();
                 for each (var lang:XML in languages)
                 {
-                    var item:Object = {label: lang.@name.toString(), data: lang.@id.toString(), path: lang.@path.toString() };
+                    var item:Object = {
+                        label: lang.@name.toString(),
+                        data: lang.@id.toString(),
+                        path: lang.@path.toString()
+                    };
                     supportedLanguages.addItem(item);
                 }
-                
+
                 var airData:XMLList = data.airsdk[_os.os].versions;
                 var airVersionList:XMLList = airData[0].children();
                 var airVersions:Array = [];
                 var selected:String = airData[0]["@default"].toString();
-                for each (var airVersion:XML in airVersionList) {
+                for each (var airVersion:XML in airVersionList)
+                {
                     var displayVersion:String = airVersion.@displayVersion.toString();
                     versionString = airVersion.@version.toString();
                     versionID = null;
                     if (airVersion.@versionID.length() > 0)
+                    {
                         versionID = airVersion.@versionID.toString();
+                    }
                     airVersions.push(versionString);
                     var airPath:String = airVersion.path.toString();
                     var airFile:String = airVersion.file.toString();
-                    AIR_VERSIONS.addItem({label:"AIR " + displayVersion, version: versionString, versionID: versionID, 
-                        path: airPath, file: airFile});
+                    AIR_VERSIONS.addItem({
+                        label: "AIR " + displayVersion, version: versionString, versionID: versionID,
+                        path: airPath, file: airFile
+                    });
                 }
-                
-                if (this.airVersion.selectedIndex == -1) {
+
+                if (this.airVersion.selectedIndex == -1)
+                {
                     this.airVersion.selectedIndex = airVersions.indexOf(selected);
                 }
-                
+
                 var flexData:XMLList = data.products.children();
-                var selectedFlexVersion:int;
-                for each (var productData:XML in flexData)
+
+                FLEX_VERSIONS.processXML(flexData);
+                FLEX_VERSIONS.hideDevBuilds();
+
+                flexVersionSelectList.validateNow();
+
+                if (this.flexVersionSelectList.selectedIndex == -1)
                 {
-                    var productName:String = productData.@name.toString();
-                    var productPrefix:String = productData.@prefix.toString();
-                    var productVersionList:XMLList = productData.versions.children();
-                    var isOverlay:Boolean = productData.@overlay.toString() == "true";
-                    var needsAIR:Boolean = productData.@needsAIR.toString() != "false";
-                    var needsFlash:Boolean = productData.@needsFlash.toString() != "false";
-                    var icon:String = productData.@icon.toString();
-                    for each (var productVersion:XML in productVersionList) {
-                        var shortName:String = productVersion.@file.toString();
-                        var fileName:String = shortName + (_os.isWindows() ? Constants.ARCHIVE_EXTENSION_WIN : Constants.ARCHIVE_EXTENSION_MAC);
-                        versionString = productVersion.@version.toString();
-                        var label:String = productName + " " + versionString;
-                        var ver:String = fileName.substr(productPrefix.length).split("-")[0];
-                        var path:String = productVersion.@path.toString();
-                        var devBuild:Boolean = productVersion.@dev.toString() == "true";
-                        var legacy:Boolean = productVersion.@legacy.toString() == "true";
-                        var nocache:Boolean = productVersion.@nocache.toString() == "true";
-                        if (productVersion["@default"].length() == 1)
-                            selectedFlexVersion = FLEX_VERSIONS.length;
-                        FLEX_VERSIONS.addItem({shortName: shortName, fileName:fileName,label:label, version:ver,
-                            path:path, overlay: isOverlay, prefix: productPrefix, legacy: legacy, nocache: nocache,
-                            needsAIR: needsAIR, needsFlash: needsFlash, devBuild: devBuild, icon: icon});
-                    }
+                    this.flexVersionSelectList.selectedIndex = FLEX_VERSIONS.defaultVersion;
                 }
-                
-                FLEX_VERSIONS.filterFunction = devBuildFilterFunction;
-                FLEX_VERSIONS.refresh();
-                flexVersion.validateNow();
-                
-                if (this.flexVersion.selectedIndex == -1) {
-                    this.flexVersion.selectedIndex = selectedFlexVersion;
-                }
-                
-                var selectedFlexVersionObject:Object = this.flexVersion.selectedItem;
+
+                var selectedFlexVersionObject:Object = this.flexVersionSelectList.selectedItem;
                 updateFlexVersionStrings(selectedFlexVersionObject);
-                
-                if (!APACHE_FLEX_BIN_DISTRO_FILE || !APACHE_FLEX_BIN_DISTRO_PATH) {
+
+                if (!APACHE_FLEX_BIN_DISTRO_FILE || !APACHE_FLEX_BIN_DISTRO_PATH)
+                {
                     log(_viewResourceConstants.ERROR_INVALID_SDK_URL);
                     keepGoing = false;
                 }
-                
+
                 var flashData:XMLList = data.flashsdk.versions;
                 var flashVersionList:XMLList = flashData[0].children();
                 var flashPlayerVersions:Array = [];
                 selected = flashData[0]["@default"].toString();
-                for each (var flashVersion:XML in flashVersionList) {
+                for each (var flashVersion:XML in flashVersionList)
+                {
                     displayVersion = flashVersion.@displayVersion.toString();
                     versionString = flashVersion.@version.toString();
                     versionID = null;
                     if (flashVersion.@versionID.length() > 0)
+                    {
                         versionID = flashVersion.@versionID.toString();
+                    }
                     flashPlayerVersions.push(versionString);
-                    if (!_os.isLinux() || Number(versionString) <= 11.2) {
+                    if (!_os.isLinux() || Number(versionString) <= 11.2)
+                    {
                         var swfVersion:String = flashVersion.swfversion.toString();
                         var flashPath:String = flashVersion.path.toString();
                         var flashFile:String = flashVersion.file.toString();
-                        FLASH_PLAYER_VERSIONS.addItem({label:"Flash Player " + displayVersion, version:versionString, swfVersion:swfVersion,
-                            versionID: versionID, path: flashPath, file: flashFile});
+                        FLASH_PLAYER_VERSIONS.addItem({
+                            label: "Flash Player " + displayVersion, version: versionString, swfVersion: swfVersion,
+                            versionID: versionID, path: flashPath, file: flashFile
+                        });
                     }
                 }
-                
-                if (this.flashPlayerVersion.selectedIndex == -1) {
+
+                if (this.flashPlayerVersion.selectedIndex == -1)
+                {
                     this.flashPlayerVersion.selectedIndex = flashPlayerVersions.indexOf(selected);
                 }
             }
-            
-            ADOBE_AIR_SDK_WIN_FILE = data.airsdk.windows.versions.children().(@version==AIR_VERSION).file.toString();
-            ADOBE_AIR_SDK_WIN_URL = data.airsdk.windows.versions.children().(@version==AIR_VERSION).path.toString();
-            if (_os.isWindows() && (!ADOBE_AIR_SDK_WIN_FILE || !ADOBE_AIR_SDK_WIN_URL)) {
+
+            ADOBE_AIR_SDK_WIN_FILE = data.airsdk.windows.versions.children().(@version == AIR_VERSION).file.toString();
+            ADOBE_AIR_SDK_WIN_URL = data.airsdk.windows.versions.children().(@version == AIR_VERSION).path.toString();
+            if (_os.isWindows() && (!ADOBE_AIR_SDK_WIN_FILE || !ADOBE_AIR_SDK_WIN_URL))
+            {
                 log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_WINDOWS);
                 keepGoing = false;
             }
             ADOBE_AIR_SDK_WIN_URL += ADOBE_AIR_SDK_WIN_FILE;
-            
-            ADOBE_AIR_SDK_MAC_FILE = data.airsdk.mac.versions.children().(@version==AIR_VERSION).file.toString();
-            ADOBE_AIR_SDK_MAC_URL = data.airsdk.mac.versions.children().(@version==AIR_VERSION).path.toString();
-            if (_os.isMac() && (!ADOBE_AIR_SDK_MAC_FILE || !ADOBE_AIR_SDK_MAC_URL)) {
+
+            ADOBE_AIR_SDK_MAC_FILE = data.airsdk.mac.versions.children().(@version == AIR_VERSION).file.toString();
+            ADOBE_AIR_SDK_MAC_URL = data.airsdk.mac.versions.children().(@version == AIR_VERSION).path.toString();
+            if (_os.isMac() && (!ADOBE_AIR_SDK_MAC_FILE || !ADOBE_AIR_SDK_MAC_URL))
+            {
                 log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_MAC);
                 keepGoing = false;
             }
             ADOBE_AIR_SDK_MAC_URL += ADOBE_AIR_SDK_MAC_FILE;
-            
-            ADOBE_AIR_SDK_LINUX_FILE = data.airsdk.linux.versions.children().(@version==AIR_VERSION).file.toString();
-            ADOBE_AIR_SDK_LINUX_URL = data.airsdk.linux.versions.children().(@version==AIR_VERSION).path.toString();
-            if (_os.isLinux() && (!ADOBE_AIR_SDK_LINUX_FILE || !ADOBE_AIR_SDK_LINUX_URL)) {
+
+            ADOBE_AIR_SDK_LINUX_FILE = data.airsdk.linux.versions.children().(@version == AIR_VERSION).file.toString();
+            ADOBE_AIR_SDK_LINUX_URL = data.airsdk.linux.versions.children().(@version == AIR_VERSION).path.toString();
+            if (_os.isLinux() && (!ADOBE_AIR_SDK_LINUX_FILE || !ADOBE_AIR_SDK_LINUX_URL))
+            {
                 log(_viewResourceConstants.ERROR_INVALID_AIR_SDK_URL_LINUX);
                 keepGoing = false;
             }
             ADOBE_AIR_SDK_LINUX_URL += ADOBE_AIR_SDK_LINUX_FILE;
-            
-            ADOBE_FB_GLOBALPLAYER_SWC_FILE = data.flashsdk.versions.children().(@version==FLASH_PLAYER_VERSION).file.toString();
-            ADOBE_FB_GLOBALPLAYER_SWC_URL = data.flashsdk.versions.children().(@version==FLASH_PLAYER_VERSION).path.toString();
-            FLASH_PLAYER_SWF_VERSION = data.flashsdk.versions.children().(@version==FLASH_PLAYER_VERSION).swfversion.toString();
-            if (!ADOBE_FB_GLOBALPLAYER_SWC_FILE || !ADOBE_FB_GLOBALPLAYER_SWC_URL) {
+
+            ADOBE_FB_GLOBALPLAYER_SWC_FILE = data.flashsdk.versions.children().(@version == FLASH_PLAYER_VERSION).file.toString();
+            ADOBE_FB_GLOBALPLAYER_SWC_URL = data.flashsdk.versions.children().(@version == FLASH_PLAYER_VERSION).path.toString();
+            FLASH_PLAYER_SWF_VERSION = data.flashsdk.versions.children().(@version == FLASH_PLAYER_VERSION).swfversion.toString();
+            if (!ADOBE_FB_GLOBALPLAYER_SWC_FILE || !ADOBE_FB_GLOBALPLAYER_SWC_URL)
+            {
                 log(_viewResourceConstants.ERROR_INVALID_FLASH_PLAYER_SWC_URL);
                 keepGoing = false;
             }
             ADOBE_FB_GLOBALPLAYER_SWC_URL += ADOBE_FB_GLOBALPLAYER_SWC_FILE;
-            
+
             SWF_OBJECT_FILE = data.swfobject.@file.toString();
             SWF_OBJECT_URL = data.swfobject.@path.toString();
-            
+
             //Supporting OSMF 2.0 from 4.11 onwards.  
-            if(APACHE_FLEX_BIN_DISTRO_VERSION == "4.9.1" || APACHE_FLEX_BIN_DISTRO_VERSION == "4.10.0" )
+            if (APACHE_FLEX_BIN_DISTRO_VERSION == "4.9.1" || APACHE_FLEX_BIN_DISTRO_VERSION == "4.10.0")
             {
                 OSMF_SWC_FILE = data.OSMF_SWC.@file.toString();
                 OSMF_SWC_URL = data.OSMF_SWC.@path.toString();
@@ -952,40 +945,41 @@ variables are not required because the locations of these pieces are known.
                 OSMF_SWC_URL = data["OSMF_SWC_2.0"].@path.toString();
                 _useOSMF2 = true;
             }
-            
+
             BLAZEDS_FILE = data.BlazeDS.@file.toString();
             BLAZEDS_URL = data.BlazeDS.@path.toString();
-            
+
             AFE_FILE = data.fontswf.afe.@file.toString();
             AFE_URL = data.fontswf.afe.@path.toString();
-            
+
             AGLJ40_FILE = data.fontswf.aglj40.@file.toString();
             AGLJ40_URL = data.fontswf.aglj40.@path.toString();
-            
+
             FLEX_FONTKIT_FILE = data.fontswf["flex-fontkit"].@file.toString();
             FLEX_FONTKIT_URL = data.fontswf["flex-fontkit"].@path.toString();
-            
+
             RIDEAU_FILE = data.fontswf.rideau.@file.toString();
             RIDEAU_URL = data.fontswf.rideau.@path.toString();
-            
-            
+
+
             return keepGoing;
         }
-        
+
         protected function updateFlexVersionStrings(selectedFlexVersionObject:Object):void
         {
             APACHE_FLEX_BIN_DISTRO_FILE_SHORT = selectedFlexVersionObject.shortName;
             APACHE_FLEX_BIN_DISTRO_VERSION = selectedFlexVersionObject.version;
             APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY = selectedFlexVersionObject.label;
-            
+
             APACHE_FLEX_BIN_DISTRO_FILE = selectedFlexVersionObject.fileName;
             APACHE_FLEX_BIN_DISTRO_PATH = selectedFlexVersionObject.path;
-            legacy =  selectedFlexVersionObject.legacy;
+            legacy = selectedFlexVersionObject.legacy;
             nocache = selectedFlexVersionObject.nocache;
             APACHE_FLEX_BIN_INSTALLER_FILE = selectedFlexVersionObject.prefix + "installer-config.xml";
-            
+
             // ApacheFlex is full URL so download directly and dont use mirror useful for testing release candidates
-            if (APACHE_FLEX_BIN_DISTRO_PATH.indexOf("http") == 0) {
+            if (APACHE_FLEX_BIN_DISTRO_PATH.indexOf("http") == 0)
+            {
                 _useMirror = false;
             }
             else
@@ -995,69 +989,85 @@ variables are not required because the locations of these pieces are known.
 
             newSDKSelected = true;
         }
-        
+
         private function useMirrorPath(path:String):String
         {
-            if (_useMirror) {
+            if (_useMirror)
+            {
                 return path;
             }
-            
+
             return "";
         }
-        
+
         private function getMirrorURLResultHandler():void
         {
             var logMessages:ArrayCollection = ILog(_mirrorURLUtil).log;
             var i:int;
             var n:int = logMessages.length;
-            for (i = 0; i < n; i++) {
+            for (i = 0; i < n; i++)
+            {
                 log(String(logMessages.getItemAt(i)));
             }
-            
-            if (_mirrorURLUtil.errorOccurred) {
+
+            if (_mirrorURLUtil.errorOccurred)
+            {
                 abortInstallation("mirrorURLUtil.errorOccurred");
                 main();
-            } else {
+            }
+            else
+            {
                 updatePaths();
             }
-            
+
         }
-        
+
         protected function updatePaths():void
         {
             if (APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.URL_PREFIX.length) == Constants.URL_PREFIX
-                || APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) == Constants.FILE_PREFIX
-                || APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.HTTPS_PREFIX.length) == Constants.HTTPS_PREFIX) {
+                    || APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.FILE_PREFIX.length) == Constants.FILE_PREFIX
+                    || APACHE_FLEX_BIN_DISTRO_PATH.substr(0, Constants.HTTPS_PREFIX.length) == Constants.HTTPS_PREFIX)
+            {
                 APACHE_FLEX_BIN_DISTRO_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
-                if (stepsOverride != "") {
+                if (stepsOverride != "")
+                {
                     APACHE_FLEX_BIN_INSTALLER_URL = stepsOverride;
-                } else {
+                }
+                else
+                {
                     APACHE_FLEX_BIN_INSTALLER_URL = APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
                 }
-            } else {
+            }
+            else
+            {
                 APACHE_FLEX_BIN_DISTRO_URL = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE;
-                if (stepsOverride != "") {
+                if (stepsOverride != "")
+                {
                     APACHE_FLEX_BIN_INSTALLER_URL = stepsOverride;
-                } else {
+                }
+                else
+                {
                     APACHE_FLEX_BIN_INSTALLER_URL = MD5CompareUtil.MD5_DOMAIN + APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_INSTALLER_FILE;
                 }
             }
-            
-            if (installerAppPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX) {
+
+            if (installerAppPath.substr(0, Constants.URL_PREFIX.length) != Constants.URL_PREFIX)
+            {
                 installerAppPath = useMirrorPath(_mirrorURLUtil.mirrorURL) + installerAppPath;
             }
-            
+
             main();
         }
-        
+
         protected function main():void
         {
-            
-            if (shouldUpdate()) {
+
+            if (shouldUpdate())
+            {
                 doUpdate();
             }
         }
-        
+
         private function logVersion():void
         {
             if (!loggedVersion)
@@ -1066,13 +1076,13 @@ variables are not required because the locations of these pieces are known.
                 var applicationDescriptor:XML = NativeApplication.nativeApplication.applicationDescriptor;
                 var xmlns:Namespace = new Namespace(applicationDescriptor.namespace());
                 var currentVersion:String = applicationDescriptor.xmlns::versionNumber.toString();
-                
+
                 // Log the Installer version to help with any support issues that arise.
                 log("Installer version " + currentVersion + " (" + _os.os + ")", 0);
                 loggedVersion = true;
             }
         }
-        
+
         protected function shouldUpdate():Boolean
         {
             var shouldUpdate:Boolean = false;
@@ -1080,27 +1090,34 @@ variables are not required because the locations of these pieces are known.
             var applicationDescriptor:XML = NativeApplication.nativeApplication.applicationDescriptor;
             var xmlns:Namespace = new Namespace(applicationDescriptor.namespace());
             var currentVersion:String = applicationDescriptor.xmlns::versionNumber.toString();
-            
+
             logVersion();
-            
+
             var availBuildNumbers:Array = _latestVersion.split(".");
             var currentBuildNumbers:Array = currentVersion.split(".");
-            
-            if (parseInt(availBuildNumbers[0]) > parseInt(currentBuildNumbers[0])) {
+
+            if (parseInt(availBuildNumbers[0]) > parseInt(currentBuildNumbers[0]))
+            {
                 return true;
-            } else if (parseInt(availBuildNumbers[0]) == parseInt(currentBuildNumbers[0])) {
-                if (parseInt(availBuildNumbers[1]) > parseInt(currentBuildNumbers[1])) {
+            }
+            else if (parseInt(availBuildNumbers[0]) == parseInt(currentBuildNumbers[0]))
+            {
+                if (parseInt(availBuildNumbers[1]) > parseInt(currentBuildNumbers[1]))
+                {
                     return true;
-                } else if (parseInt(availBuildNumbers[1]) == parseInt(currentBuildNumbers[1])) {
-                    if (parseInt(availBuildNumbers[2]) > parseInt(currentBuildNumbers[2])) {
+                }
+                else if (parseInt(availBuildNumbers[1]) == parseInt(currentBuildNumbers[1]))
+                {
+                    if (parseInt(availBuildNumbers[2]) > parseInt(currentBuildNumbers[2]))
+                    {
                         return true;
                     }
                 }
             }
             return false;
-            
+
         }
-        
+
         protected function doUpdate():void
         {
             var updaterDialog:UpdaterDialog = UpdaterDialog(PopUpManager.createPopUp(this, UpdaterDialog, true));
@@ -1108,38 +1125,49 @@ variables are not required because the locations of these pieces are known.
             updaterDialog.latestVersion = _latestVersion;
             PopUpManager.centerPopUp(updaterDialog);
         }
-        
+
         protected function handleUpdaterDialogClose(event:Event):void
         {
             PopUpManager.removePopUp(IFlexDisplayObject(event.target));
         }
-        
+
         protected function handleInstallBtnClick(event:MouseEvent):void
         {
             var airVersionID:String = airVersion.selectedItem.versionID;
             var flashVersionID:String = flashPlayerVersion.selectedItem.versionID;
-            
+
             log("SDK version " + APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY);
-            
-            if (flexVersion.selectedItem.needsAIR)
+
+            if (flexVersionSelectList.selectedItem.needsAIR)
             {
                 if (airVersionID)
+                {
                     log("AIR version " + airVersionID);
+                }
                 else
+                {
                     log("AIR version " + AIR_VERSION);
+                }
             }
-            
-            if (flexVersion.selectedItem.needsFlash)
+
+            if (flexVersionSelectList.selectedItem.needsFlash)
             {
                 if (flashVersionID)
+                {
                     log("Flash Player version " + flashVersionID);
+                }
                 else
+                {
                     log("Flash Player version " + FLASH_PLAYER_VERSION);
+                }
             }
-            
-            if (flexSDKTxtInput.text == "") {
+
+            if (flexSDKTxtInput.text == "")
+            {
                 log(_viewResourceConstants.INFO_ENTER_VALID_FLEX_SDK_PATH);
-            } else {
+            }
+            else
+            {
                 _langSelect.enabled = false;
                 _flexHome = flexSDKTxtInput.text;
                 resetInstallStepsActivity();
@@ -1148,30 +1176,30 @@ variables are not required because the locations of these pieces are known.
                 install();
             }
         }
-        
+
         protected function handleZeroStepNextBtnClick(event:MouseEvent):void
         {
             directoryBtn.enabled = false;
-            
+
             AIR_VERSION = airVersion.selectedItem.version;
             var airVersionID:String = airVersion.selectedItem.versionID;
             FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.version;
             var flashVersionID:String = flashPlayerVersion.selectedItem.versionID;
-            
+
             setXMLVariables(); // as AIR and Flash version may of changed
-            
+
             if (!legacy)
             {
                 if (newSDKSelected)
                 {
-                var req:URLRequest = new URLRequest(APACHE_FLEX_BIN_INSTALLER_URL);
-                loader = new URLLoader();
-                loader.dataFormat = URLLoaderDataFormat.TEXT;
-                loader.addEventListener(Event.COMPLETE, handleInstallerXMLLoaded);
-                loader.addEventListener(ErrorEvent.ERROR, handleInstallerXMLError);
-                loader.addEventListener(IOErrorEvent.IO_ERROR, handleInstallerXMLError);
-                
-                loader.load(req);
+                    var req:URLRequest = new URLRequest(APACHE_FLEX_BIN_INSTALLER_URL);
+                    loader = new URLLoader();
+                    loader.dataFormat = URLLoaderDataFormat.TEXT;
+                    loader.addEventListener(Event.COMPLETE, handleInstallerXMLLoaded);
+                    loader.addEventListener(ErrorEvent.ERROR, handleInstallerXMLError);
+                    loader.addEventListener(IOErrorEvent.IO_ERROR, handleInstallerXMLError);
+
+                    loader.load(req);
                 }
             }
             else
@@ -1179,34 +1207,37 @@ variables are not required because the locations of these pieces are known.
                 showDirectoryState();
             }
         }
-        
+
         protected function handleFirstStepBackBtnClick(event:MouseEvent):void
         {
             showDefaultState();
         }
-        
+
         protected function handleSecondStepBackBtnClick(event:MouseEvent):void
         {
             showDirectoryState();
         }
-        
+
         protected function handleFirstStepNextBtnClick(event:MouseEvent):void
         {
             // Quick check to see if the selected directory is writable
-            try {
+            try
+            {
                 var f:File = new File(_flexHome + File.separator + "flex.txt");
                 checkDirWritable(f);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY);
                 flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_DIR_REQUIRE_ADMIN_RIGHTS;
                 flexSDKTxtInput.prompt = _viewResourceConstants.ERROR_DIR_REQUIRE_ADMIN_RIGHTS;
                 updateActivityStep(_viewResourceConstants.STEP_CREATE_DIRECTORIES, StepItem.ERROR);
                 return;
             }
-            
+
             showOptionsState();
         }
-        
+
         protected function handleInstallerXMLLoaded(event:Event):void
         {
             var data:XML = XML(event.target.data);
@@ -1216,9 +1247,9 @@ variables are not required because the locations of these pieces are known.
             for each (var comp:XML in compList)
             {
                 var vo:InstallerComponentVO = new InstallerComponentVO(getLocalizedString(comp, "label"),
-                    getLocalizedString(comp, "message"), getLocalizedString(comp, "license"),
-                    getLocalizedString(comp, "licenseURL"),
-                    comp.@id.toString(), comp.@required.toString() == "true");
+                        getLocalizedString(comp, "message"), getLocalizedString(comp, "license"),
+                        getLocalizedString(comp, "licenseURL"),
+                        comp.@id.toString(), comp.@required.toString() == "true");
                 licensePropertyMap[comp.@property.toString()] = vo;
                 _installerComponentsDataProvider.addItem(vo);
             }
@@ -1245,7 +1276,7 @@ variables are not required because the locations of these pieces are known.
             currentState = "directoryState";
             System.disposeXML(data);
         }
-        
+
         private function getLocalizedString(xml:XML, propName:String):String
         {
             var compBundle:XMLList;
@@ -1266,26 +1297,28 @@ variables are not required because the locations of these pieces are known.
                     {
                         var s:String = compBundle[0].toString();
                         if (s.length > 0)
+                        {
                             return s;
+                        }
                     }
                 }
             }
             return "";
         }
-        
+
         protected function handleInstallerXMLError(event:Event):void
         {
             log("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
             abortInstallation("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
         }
-        
+
         protected function showDefaultState():void
         {
             zeroStepGroup.visible = true;
             directoryBtn.enabled = true;
             currentState = "default";
         }
-        
+
         protected function showDirectoryState():void
         {
             initiateInstallStepsActivity();
@@ -1295,17 +1328,17 @@ variables are not required because the locations of these pieces are known.
             }
             currentState = "directoryState";
         }
-        
+
         protected function showOptionsState():void
         {
             currentState = "optionsState";
             checkIfAllRequiredComponentsPromptsAnswered();
         }
-        
+
         protected function initiateInstallStepsActivity():void
         {
             _installationSteps = new ArrayCollection();
-            
+
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_CREATE_DIRECTORIES));
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK));
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_VERIFY_FLEX_SDK));
@@ -1317,26 +1350,28 @@ variables are not required because the locations of these pieces are known.
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT));
             _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF));
         }
-        
+
         protected function resetInstallStepsActivity():void
         {
-            for each(var step:StepItem in _installationSteps) {
+            for each(var step:StepItem in _installationSteps)
+            {
                 step.status = StepItem.NORMAL;
             }
         }
-        
+
         protected function addOptionalComponentsToInstallSteps():void
         {
             if (usingXML)
             {
                 _installationSteps = new ArrayCollection();
-                
+
                 _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_CREATE_DIRECTORIES));
                 _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK));
                 _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_VERIFY_FLEX_SDK));
                 _installationSteps.addItem(new StepItem(_viewResourceConstants.STEP_UNZIP_FLEX_SDK));
-                
-                for each (var stepData:XML in installStepsData) {
+
+                for each (var stepData:XML in installStepsData)
+                {
                     var propName:String = stepData.@property.toString();
                     if (!propName || InstallerComponentVO(licensePropertyMap[propName]).selected)
                     {
@@ -1348,13 +1383,15 @@ variables are not required because the locations of these pieces are known.
                 }
                 return;
             }
-            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider) {
-                if (!obj.required && obj.selected) {
+            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
+            {
+                if (!obj.required && obj.selected)
+                {
                     _installationSteps.addItem(new StepItem(obj.label));
                 }
             }
         }
-        
+
         protected function initializeInstallerComponentsDataProvider():void
         {
             var versionNum:int = int(APACHE_FLEX_BIN_DISTRO_VERSION.split('.').join(''));
@@ -1377,40 +1414,40 @@ variables are not required because the locations of these pieces are known.
             }
             else
             {
-            _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK,
-                    _viewResourceConstants.ASK_APACHE_FLEX, _viewResourceConstants.LICENSE_APACHE_V2,
-                    _viewResourceConstants.LICENSE_URL_APACHE_V2,
-                    "STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK", true));
-            _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK,
-                    _viewResourceConstants.ASK_ADOBE_AIR_SDK,
-                    _viewResourceConstants.LICENSE_ADOBE_AIR_SDK,
-                    _viewResourceConstants.LICENSE_URL_ADOBE_AIR_SDK,
-                    "STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK", true));
-            _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC,
-                    _viewResourceConstants.ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC,
-                    _viewResourceConstants.LICENSE_ADOBE_SDK,
-                    _viewResourceConstants.LICENSE_URL_ADOBE_SDK,
-                    "STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC", true));
-            _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT,
-                    _viewResourceConstants.ASK_SWFOBJECT,
-                    _viewResourceConstants.LICENSE_SWFOBJECT,
-                    _viewResourceConstants.LICENSE_URL_SWFOBJECT,
-                    "STEP_REQUIRED_INSTALL_SWFOBJECT", true));
-            _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,
-                    _viewResourceConstants.ASK_OSMF,
-                    _viewResourceConstants.LICENSE_OSMF,
-                    _viewResourceConstants.LICENSE_URL_OSMF,
-                    "STEP_REQUIRED_INSTALL_OSMF", true));
+                _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK,
+                        _viewResourceConstants.ASK_APACHE_FLEX, _viewResourceConstants.LICENSE_APACHE_V2,
+                        _viewResourceConstants.LICENSE_URL_APACHE_V2,
+                        "STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK", true));
+                _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK,
+                        _viewResourceConstants.ASK_ADOBE_AIR_SDK,
+                        _viewResourceConstants.LICENSE_ADOBE_AIR_SDK,
+                        _viewResourceConstants.LICENSE_URL_ADOBE_AIR_SDK,
+                        "STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK", true));
+                _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC,
+                        _viewResourceConstants.ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC,
+                        _viewResourceConstants.LICENSE_ADOBE_SDK,
+                        _viewResourceConstants.LICENSE_URL_ADOBE_SDK,
+                        "STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC", true));
+                _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT,
+                        _viewResourceConstants.ASK_SWFOBJECT,
+                        _viewResourceConstants.LICENSE_SWFOBJECT,
+                        _viewResourceConstants.LICENSE_URL_SWFOBJECT,
+                        "STEP_REQUIRED_INSTALL_SWFOBJECT", true));
+                _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF,
+                        _viewResourceConstants.ASK_OSMF,
+                        _viewResourceConstants.LICENSE_OSMF,
+                        _viewResourceConstants.LICENSE_URL_OSMF,
+                        "STEP_REQUIRED_INSTALL_OSMF", true));
                 _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS,
                         _viewResourceConstants.ASK_BLAZEDS,
                         _viewResourceConstants.LICENSE_BLAZEDS,
                         _viewResourceConstants.LICENSE_URL_BLAZEDS,
                         "STEP_OPTIONAL_INSTALL_BLAZEDS", false));
-            _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF,
-                    _viewResourceConstants.ASK_FONTSWF,
-                    _viewResourceConstants.LICENSE_FONTSWF,
-                    _viewResourceConstants.LICENSE_URL_FONTSWF,
-                    "STEP_OPTIONAL_INSTALL_FONTSWF", false));
+                _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF,
+                        _viewResourceConstants.ASK_FONTSWF,
+                        _viewResourceConstants.LICENSE_FONTSWF,
+                        _viewResourceConstants.LICENSE_URL_FONTSWF,
+                        "STEP_OPTIONAL_INSTALL_FONTSWF", false));
 //              _installerComponentsDataProvider.addItem(new InstallerComponentVO(_viewResourceConstants.STEP_REQUIRED_INSTALL_OFL_FONTS,
 //                      _viewResourceConstants.ASK_OFL_FONTS,
 //                      _viewResourceConstants.LICENSE_OFL_FONTS,
@@ -1418,39 +1455,41 @@ variables are not required because the locations of these pieces are known.
 //                      "STEP_REQUIRED_INSTALL_OFL_FONTS", true));
             }
         }
-        
+
         protected function install():void
         {
             createDirectories();
         }
-        
+
         protected function handleAirVersionChange(event:Event):void
         {
             AIR_VERSION = airVersion.selectedItem.version;
-            
+
             // Match AIR and Flash versions
-            if (flashPlayerVersion.selectedIndex != airVersion.selectedIndex) {
+            if (flashPlayerVersion.selectedIndex != airVersion.selectedIndex)
+            {
                 flashPlayerVersion.selectedIndex = airVersion.selectedIndex;
                 FLASH_PLAYER_VERSION = FLASH_PLAYER_VERSIONS[airVersion.selectedIndex].version;
             }
         }
-        
+
         protected function handleFlashPlayerVersionChange(event:Event):void
         {
             FLASH_PLAYER_VERSION = flashPlayerVersion.selectedItem.version;
-            
+
             // Match AIR and Flash versions
-            if (airVersion.selectedIndex != flashPlayerVersion.selectedIndex) {
+            if (airVersion.selectedIndex != flashPlayerVersion.selectedIndex)
+            {
                 airVersion.selectedIndex = flashPlayerVersion.selectedIndex;
                 AIR_VERSION = AIR_VERSIONS[flashPlayerVersion.selectedIndex].version;
             }
         }
-        
+
         protected function handleFlexVersionChange(event:Event):void
         {
             /*APACHE_FLEX_BIN_DISTRO_VERSION =  flexVersion.selectedItem.version;
-            APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY = flexVersion.selectedItem.label;*/
-            var item:Object = flexVersion.selectedItem;
+             APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY = flexVersion.selectedItem.label;*/
+            var item:Object = flexVersionSelectList.selectedItem;
             airVersion.enabled = item.needsAIR;
             flashPlayerVersion.enabled = item.needsFlash;
             updateFlexVersionStrings(item);
@@ -1458,15 +1497,15 @@ variables are not required because the locations of these pieces are known.
             updateWindowTitle();
             InstallApacheFlexSkin(skin).textIcon.source = item.icon;
         }
-        
+
         protected function browseForSDK(event:MouseEvent):void
         {
             var file:File = new File();
-            
+
             file.addEventListener(Event.SELECT, flexSDKDirSelected, false, 0, true);
             file.browseForDirectory(_viewResourceConstants.INFO_SELECT_DIRECTORY);
         }
-        
+
         protected function checkDirWritable(file:File):void
         {
             var ba:ByteArray = new ByteArray();
@@ -1474,17 +1513,20 @@ variables are not required because the locations of these pieces are known.
             writeFileToDirectory(file, ba);
             file.deleteFile();
         }
-        
+
         protected function flexSDKDirSelected(event:Event):void
         {
             var selectedDir:File = File(event.target);
-            var overlay:Boolean = flexVersion.selectedItem.overlay;
-            
+            var overlay:Boolean = flexVersionSelectList.selectedItem.overlay;
+
             // Quick check to see if the selected directory is writable
-            try {
+            try
+            {
                 var f:File = new File(selectedDir.nativePath + File.separator + "flex.txt");
                 checkDirWritable(f);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY);
                 log(_viewResourceConstants.ERROR_DIR_REQUIRE_ADMIN_RIGHTS);
                 flexSDKTxtInput.text = selectedDir.nativePath;
@@ -1493,18 +1535,21 @@ variables are not required because the locations of these pieces are known.
                 updateActivityStep(_viewResourceConstants.STEP_CREATE_DIRECTORIES, StepItem.ERROR);
                 return;
             }
-           
+
             overlaying = overlay;
             if (!overlay)
             {
-                if (isDirectoryEmpty(selectedDir)) {
+                if (isDirectoryEmpty(selectedDir))
+                {
                     _flexHome = selectedDir.nativePath;
                     flexSDKTxtInput.text = _flexHome;
                     nextBtn.enabled = true;
                     _langSelect.enabled = true;
                     flexSDKTxtInput.errorString = "";
                     flexSDKTxtInput.prompt = _viewResourceConstants.SELECT_PATH_PROMPT;
-                } else {
+                }
+                else
+                {
                     nextBtn.enabled = false;
                     flexSDKTxtInput.text = selectedDir.nativePath;
                     flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_DIR_NOT_EMPTY + " : " + selectedDir.nativePath;
@@ -1521,153 +1566,194 @@ variables are not required because the locations of these pieces are known.
                 flexSDKTxtInput.prompt = _viewResourceConstants.SELECT_PATH_PROMPT;
             }
         }
-        
+
         protected function handleFlexSDXTxtInputChange(event:TextOperationEvent):void
         {
             var tempDir:File;
             var path:String = flexSDKTxtInput.text;
-            
-            try {
+
+            try
+            {
                 tempDir = new File(path);
-                
-                if (isDirectoryEmpty(tempDir)) {
+
+                if (isDirectoryEmpty(tempDir))
+                {
                     flexSDKTxtInput.errorString = "";
                     _flexHome = path;
                     nextBtn.enabled = true;
                     _langSelect.enabled = true;
-                } else {
+                }
+                else
+                {
                     flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_INVALID_FLEX_SDK_DIRECTORY;
                     nextBtn.enabled = false;
                 }
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 flexSDKTxtInput.errorString = _viewResourceConstants.ERROR_INVALID_FLEX_SDK_DIRECTORY;
                 nextBtn.enabled = false;
             }
         }
-        
+
         protected function createDirectories():void
         {
             updateActivityStep(_viewResourceConstants.STEP_CREATE_DIRECTORIES, StepItem.ACTIVE);
-            
-            try {
+
+            try
+            {
                 if (!overlaying)
+                {
                     log(_viewResourceConstants.INFO_CREATING_FLEX_HOME);
+                }
                 _flexHomeDir = createFolder(_flexHome);
                 log(_viewResourceConstants.INFO_CREATING_TEMP_DIR);
                 _flexTemp = _flexHome + File.separator + "temp";
                 _flexTempDir = createFolder(_flexTemp);
                 updateActivityStep(_viewResourceConstants.STEP_CREATE_DIRECTORIES, StepItem.COMPLETE);
                 downloadApacheFlexSDK();
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_CREATE_DIRECTORIES, StepItem.ERROR);
                 log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY);
                 abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY);
             }
         }
-        
+
         protected function downloadApacheFlexSDK():void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ACTIVE);
-            
-            try {
+
+            try
+            {
                 log(_viewResourceConstants.INFO_DOWNLOADING_FLEX_SDK + APACHE_FLEX_BIN_DISTRO_URL);
                 _apacheFlexSDKCompressedFile = File.userDirectory.resolvePath(_flexTemp + File.separator + APACHE_FLEX_BIN_DISTRO_FILE);
                 copyOrDownload(APACHE_FLEX_BIN_DISTRO_URL, handleApacheFlexSDKDownload, _apacheFlexSDKCompressedFile, handleApacheFlexSDKDownloadError, nocache);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
                 log(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY + "(error: " + e.message);
                 abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_CREATE_TEMP_DIRECTORY + "(error: " + e.message);
             }
-            
+
         }
-        
+
         protected function handleApacheFlexSDKDownload(event:Event):void
         {
-            try {
+            try
+            {
                 writeFileToDirectory(_apacheFlexSDKCompressedFile, event.target.data);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
                 abortInstallation("handleApacheFlexSDKDownload " + e.message);
             }
-            
+
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.COMPLETE);
-            
+
             updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.ACTIVE);
-            
+
             log(_viewResourceConstants.STEP_VERIFY_FLEX_SDK);
-            
+
             _md5CompareUtil.addEventListener(ProgressEvent.PROGRESS, md5VerificationProgressHandler);
             _md5CompareUtil.verifyMD5(_apacheFlexSDKCompressedFile, APACHE_FLEX_BIN_DISTRO_PATH + APACHE_FLEX_BIN_DISTRO_FILE, uncompressApacheFlexSDK);
         }
-        
+
         protected function md5VerificationProgressHandler(event:ProgressEvent):void
         {
             if (logProgressEvents)
+            {
                 log("md5 progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
+            }
             if (event.bytesTotal > 0)
+            {
                 progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
+            }
         }
-        
+
         protected function handleApacheFlexSDKDownloadError(event:* = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_APACHE_FLEX_SDK, StepItem.ERROR);
             log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK);
             abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLEX_SDK);
         }
-        
+
         protected function uncompressApacheFlexSDK():void
         {
-            if (_md5CompareUtil.validMD5) {
-                if (!_md5CompareUtil.fileIsVerified) {
+            if (_md5CompareUtil.validMD5)
+            {
+                if (!_md5CompareUtil.fileIsVerified)
+                {
                     updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.ERROR);
-                    
+
                     log(_viewResourceConstants.ERROR_VERIFY_FLEX_SDK);
-                    
+
                     abortInstallation(_viewResourceConstants.ERROR_VERIFY_FLEX_SDK);
                     return;
-				} else {
-	                updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.COMPLETE);      
-	                log(_viewResourceConstants.INFO_VERIFY_FLEX_SDK_DONE);
-				}
-            } else {
+                }
+                else
+                {
+                    updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.COMPLETE);
+                    log(_viewResourceConstants.INFO_VERIFY_FLEX_SDK_DONE);
+                }
+            }
+            else
+            {
                 updateActivityStep(_viewResourceConstants.STEP_VERIFY_FLEX_SDK, StepItem.COMPLETE);
-                
+
                 log(_viewResourceConstants.INFO_VERIFY_FLEX_SDK_DONE);
             }
-            
+
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.ACTIVE);
-            
-            try {
+
+            try
+            {
                 log(_viewResourceConstants.INFO_UNZIPPING + _apacheFlexSDKCompressedFile.nativePath);
-                
-                if (_os.isWindows()) {
+
+                if (_os.isWindows())
+                {
                     unzip(_apacheFlexSDKCompressedFile, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError);
-                } else {
+                }
+                else
+                {
                     untar(_apacheFlexSDKCompressedFile, _flexTempDir, handleApacheFlexSDKZipFileUnzipComplete, handleApacheFlexSDKZipFileUnzipError);
                 }
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.ERROR);
                 abortInstallation(_viewResourceConstants.STEP_UNZIP_FLEX_SDK + " " + e.message);
             }
         }
-        
+
         protected function handleApacheFlexSDKZipFileUnzipComplete(event:Event):void
         {
             log(_viewResourceConstants.INFO_FINISHED_UNZIPPING + _apacheFlexSDKCompressedFile.nativePath);
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.COMPLETE);
-            
-            if (_os.isWindows()) {
+
+            if (_os.isWindows())
+            {
                 if (usingXML)
+                {
                     runInstallerScript();
+                }
                 else
+                {
                     downloadAIRRuntimeKitForWindows();
-            } else {
+                }
+            }
+            else
+            {
                 if (!overlaying)
                 {
                     /* Copy all files from the unarchived directory to the root */
                     var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
                     var files:Array = directory.getDirectoryListing();
-                    for each(var file:File in files) {
+                    for each(var file:File in files)
+                    {
                         file.copyTo(_flexHomeDir.resolvePath(file.name));
                     }
                 }
@@ -1677,52 +1763,59 @@ variables are not required because the locations of these pieces are known.
                 }
                 else
                 {
-                    if (_os.isMac()) {
+                    if (_os.isMac())
+                    {
                         downloadAIRRuntimeKitForMac();
                     }
-                    else {
+                    else
+                    {
                         downloadAIRRuntimeKitForLinux();
                     }
                 }
             }
         }
-        
+
         protected function handleApacheFlexSDKZipFileUnzipError(error:ErrorEvent = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_FLEX_SDK, StepItem.ERROR);
             abortInstallation(_viewResourceConstants.STEP_UNZIP_FLEX_SDK + " " + error.toString());
         }
-        
+
         protected function runInstallerScript():void
         {
             ant = new Ant();
             ant.output = output;
-            
+
             var file:File;
-            if (installOverride != "") {
+            if (installOverride != "")
+            {
                 file = new File(installOverride);
             }
             else if (overlaying)
             {
                 var directory:File = _flexTempDir.resolvePath(APACHE_FLEX_BIN_DISTRO_FILE_SHORT);
-                if (_os.isWindows()) {
+                if (_os.isWindows())
+                {
                     file = _flexTempDir.resolvePath("installer.xml");
                 }
-                else {
+                else
+                {
                     file = directory.resolvePath("installer.xml");
                 }
             }
-            else {
+            else
+            {
                 file = _flexHomeDir.resolvePath("installer.xml");
             }
             addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-            var context:Object = { installer: true };
+            var context:Object = {installer: true};
             if (usingDownloadCache)
             {
                 context["usingDownloadCache"] = usingDownloadCache;
                 context["downloadCacheFolder"] = downloadCacheFolder;
             }
-            if (configOverride != "") {
+            if (configOverride != "")
+            {
                 context["xml.properties"] = configOverride;
             }
             if (resourceManager.localeChain.length > 1)
@@ -1732,58 +1825,74 @@ variables are not required because the locations of these pieces are known.
             for (var p:String in licensePropertyMap)
             {
                 if (InstallerComponentVO(licensePropertyMap[p]).selected)
+                {
                     context[p] = true;
+                }
             }
             for (p in additionalProps)
+            {
                 context[p] = additionalProps[p];
-            
+            }
+
             context["air.sdk.version"] = AIR_VERSION;
             if (airVersion.selectedItem.versionID)
+            {
                 context["air.sdk.versionID"] = airVersion.selectedItem.versionID;
+            }
             context["air.sdk.url.path"] = airVersion.selectedItem.path;
             context["air.sdk.url.file"] = airVersion.selectedItem.file;
             context["flash.sdk.version"] = FLASH_PLAYER_VERSION;
             if (flashPlayerVersion.selectedItem.versionID)
+            {
                 context["flash.sdk.versionID"] = flashPlayerVersion.selectedItem.versionID;
+            }
             if (debugMode)
+            {
                 context["verbose"] = true;
+            }
             if (flashPlayerVersion.selectedItem.path)
             {
                 context["flash.sdk.url.path"] = flashPlayerVersion.selectedItem.path;
                 context["flash.sdk.url.file"] = flashPlayerVersion.selectedItem.file;
             }
-            
+
             if (file.exists && !ant.processXMLFile(file, context, true))
             {
                 ant.addEventListener(Event.COMPLETE, completeHandler);
                 ant.addEventListener(ProgressEvent.PROGRESS, progressEventHandler);
             }
             else
+            {
                 completeHandler(null);
+            }
         }
-        
+
         private function progressEventHandler(event:ProgressEvent):void
         {
             if (logProgressEvents)
+            {
                 log("progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
+            }
             if (event.bytesTotal > 0)
+            {
                 progressBar.percent = Math.round((event.bytesLoaded / event.bytesTotal) * 100);
+            }
             /*
-            if (ant.progressClass is Copy)
-            {
-            progressBar.label = getLocalizedString(progressLabels, "Copy");
-            }
-            else if (ant.progressClass is Get)
-            {
-            progressBar.label = getLocalizedString(progressLabels, "Get");
-            }
-            else if (ant.progressClass is Checksum)
-            {
-            progressBar.label = getLocalizedString(progressLabels, "Checksum");
-            }
-            */
+             if (ant.progressClass is Copy)
+             {
+             progressBar.label = getLocalizedString(progressLabels, "Copy");
+             }
+             else if (ant.progressClass is Get)
+             {
+             progressBar.label = getLocalizedString(progressLabels, "Get");
+             }
+             else if (ant.progressClass is Checksum)
+             {
+             progressBar.label = getLocalizedString(progressLabels, "Checksum");
+             }
+             */
         }
-        
+
         private function completeHandler(event:Event):void
         {
             if (Ant.currentAnt && !Ant.currentAnt.project.status)
@@ -1791,26 +1900,38 @@ variables are not required because the locations of these pieces are known.
                 var msg:String = Ant.currentAnt.project.failureMessage;
                 log(msg ? msg : "no failure message provided");
                 if (currentStep > 0)
+                {
                     updateActivityStep(stepLabels[currentStep - 1], StepItem.ERROR);
+                }
             }
             else if (currentStep == stepLabels.length && currentStep > 0)
+            {
                 updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
-            
-            if (Ant.currentAnt) {
-                if (Ant.currentAnt.project.status)
-                    tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
-                if (Ant.currentAnt.project.failureMessage)
-                    cleanup(!Ant.currentAnt.project.status, "&info=" + escape(Ant.currentAnt.project.failureMessage));
-                else
-                    cleanup(!Ant.currentAnt.project.status);
             }
-            else {
+
+            if (Ant.currentAnt)
+            {
+                if (Ant.currentAnt.project.status)
+                {
+                    tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
+                }
+                if (Ant.currentAnt.project.failureMessage)
+                {
+                    cleanup(!Ant.currentAnt.project.status, "&info=" + escape(Ant.currentAnt.project.failureMessage));
+                }
+                else
+                {
+                    cleanup(!Ant.currentAnt.project.status);
+                }
+            }
+            else
+            {
                 cleanup();
             }
         }
-        
+
         private var ant:Ant;
-        
+
         private function output(s:String):void
         {
             var isPublic:Boolean = false;
@@ -1821,9 +1942,13 @@ variables are not required because the locations of these pieces are known.
                 if (currentStep < stepLabels.length && "\n" + stepIDs[currentStep] + ":" == s)
                 {
                     if (currentStep > 0)
+                    {
                         updateActivityStep(stepLabels[currentStep - 1], StepItem.COMPLETE);
+                    }
                     if (currentStep < stepLabels.length)
+                    {
                         updateActivityStep(stepLabels[currentStep++], StepItem.ACTIVE);
+                    }
                 }
                 isPublic = false;
             }
@@ -1841,205 +1966,235 @@ variables are not required because the locations of these pieces are known.
             }
             log(s, -1, isPublic, skipLog);
         }
-        
+
         private function enterFrameHandler(event:Event):void
         {
             ant.doCallback();
         }
-        
+
         protected function downloadAIRRuntimeKitForWindows():void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
-            
-            try {
+
+            try
+            {
                 log(_viewResourceConstants.INFO_DOWNLOADING_AIR_RUNTIME_KIT_WINDOWS + ADOBE_AIR_SDK_WIN_URL);
                 _adobeAIRSDKZipFile = File.userDirectory.resolvePath(_flexTemp + File.separator + ADOBE_AIR_SDK_WIN_FILE);
                 copyOrDownload(ADOBE_AIR_SDK_WIN_URL, handleAIRSDKDownload, _adobeAIRSDKZipFile, handleAIRSDKDownloadError);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
                 abortInstallation();
             }
         }
-        
+
         protected function downloadAIRRuntimeKitForMac():void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
-            
-            try {
+
+            try
+            {
                 log(_viewResourceConstants.INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC + ADOBE_AIR_SDK_MAC_URL);
                 _adobeAIRSDKZipFile = File.userDirectory.resolvePath(_flexTemp + File.separator + ADOBE_AIR_SDK_MAC_FILE);
                 copyOrDownload(ADOBE_AIR_SDK_MAC_URL, handleAIRSDKDownload, _adobeAIRSDKZipFile, handleAIRSDKDownloadError);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
                 abortInstallation();
             }
         }
-        
+
         protected function downloadAIRRuntimeKitForLinux():void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ACTIVE);
-            
-            try {
+
+            try
+            {
                 log(_viewResourceConstants.INFO_DOWNLOADING_AIR_RUNTIME_KIT_MAC + ADOBE_AIR_SDK_LINUX_URL);
                 _adobeAIRSDKZipFile = File.userDirectory.resolvePath(_flexTemp + File.separator + ADOBE_AIR_SDK_LINUX_FILE);
                 copyOrDownload(ADOBE_AIR_SDK_LINUX_URL, handleAIRSDKDownload, _adobeAIRSDKZipFile, handleAIRSDKDownloadError);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
                 abortInstallation();
             }
         }
-        
+
         protected function handleAIRSDKDownload(event:Event):void
         {
-            try {
+            try
+            {
                 writeFileToDirectory(_adobeAIRSDKZipFile, event.target.data);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
                 abortInstallation();
             }
-            
+
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.COMPLETE);
-            
+
             unzipAdobeAIRSDK();
         }
-        
+
         protected function handleAIRSDKDownloadError(error:* = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
             log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK);
             abortInstallation();
         }
-        
+
         protected function unzipAdobeAIRSDK():void
         {
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.ACTIVE);
-            
-            try {
-                if (_os.isWindows()) {
+
+            try
+            {
+                if (_os.isWindows())
+                {
                     unzipAdobeAIRSDKWindows()
-                } else {
+                }
+                else
+                {
                     unzipAdobeAIRSDKMac();
                 }
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.ERROR);
                 abortInstallation();
             }
         }
-        
+
         protected function unzipAdobeAIRSDKWindows():void
         {
             log(_viewResourceConstants.INFO_UNZIPPING + _adobeAIRSDKZipFile.nativePath);
             unzip(_adobeAIRSDKZipFile, handleAdobeAIRSDKWinZipFileUnzipComplete, handleAdobeAIRSDKWinZipFileUnzipError);
         }
-        
+
         protected function unzipAdobeAIRSDKMac():void
         {
-            if (NativeProcess.isSupported) {
+            if (NativeProcess.isSupported)
+            {
                 untar(_adobeAIRSDKZipFile, _flexHomeDir, handleAdobeAIRSDKMacUntarComplete, handleAdobeAIRSDKMacUntarError);
-            } else {
+            }
+            else
+            {
                 log(_viewResourceConstants.ERROR_NATIVE_PROCESS_NOT_SUPPORTED);
                 updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.ERROR);
             }
         }
-        
+
         protected function handleAdobeAIRSDKMacUntarError(error:ProgressEvent = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.ERROR);
             abortInstallation();
         }
-        
+
         protected function handleAdobeAIRSDKMacUntarComplete(event:Event):void
         {
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.COMPLETE);
             log(_viewResourceConstants.INFO_FINISHED_UNTARING + _adobeAIRSDKZipFile.nativePath);
             downloadPlayerGlobalSWC();
         }
-        
+
         protected function handleAdobeAIRSDKWinZipFileUnzipComplete(event:Event):void
         {
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.COMPLETE);
             log(_viewResourceConstants.INFO_FINISHED_UNZIPPING + _adobeAIRSDKZipFile.nativePath);
             downloadPlayerGlobalSWC();
         }
-        
+
         protected function handleAdobeAIRSDKWinZipFileUnzipError(error:ErrorEvent = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.ERROR);
         }
-        
+
         protected function downloadPlayerGlobalSWC():void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ACTIVE);
-            
-            try {
+
+            try
+            {
                 log(_viewResourceConstants.INFO_INSTALLING_PLAYERGLOBAL_SWC + ADOBE_FB_GLOBALPLAYER_SWC_URL);
                 _fbGlobalPlayerDir = createFolder(_flexHome + File.separator + "frameworks" + File.separator + "libs" + File.separator + "player"
-                    + File.separator + FLASH_PLAYER_VERSION);
+                + File.separator + FLASH_PLAYER_VERSION);
                 _fbGlobalPlayerFile = File.userDirectory.resolvePath(_fbGlobalPlayerDir.nativePath + File.separator + "playerglobal.swc");
                 copyOrDownload(ADOBE_FB_GLOBALPLAYER_SWC_URL, handlePlayerGlobalDownload, _fbGlobalPlayerFile, handlePlayerGlobalDownloadError);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ERROR);
                 abortInstallation();
             }
         }
-        
+
         protected function handlePlayerGlobalDownload(event:Event):void
         {
-            try {
+            try
+            {
                 var playerGlobalFile:File = File.userDirectory.resolvePath(_fbGlobalPlayerDir.nativePath + File.separator + "playerglobal.swc");
                 writeFileToDirectory(playerGlobalFile, event.target.data);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ERROR);
                 abortInstallation();
             }
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.COMPLETE);
             copyConfigFiles();
         }
-        
+
         protected function handlePlayerGlobalDownloadError(event:ErrorEvent = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ERROR);
             log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC);
             abortInstallation();
         }
-        
+
         protected function changeConfig(frameworksDir:File, file:File, flashPlayerVersion:String, swfVersion:String):void
         {
-            if (isValidConfigFile(file)) {
+            if (isValidConfigFile(file))
+            {
                 var configFile:FileStream = new FileStream();
                 configFile.open(file, FileMode.READ);
                 var contents:String = configFile.readMultiByte(configFile.bytesAvailable, "utf-8");
                 var playerVersion:RegExp = /<target-player>\d\d\.\d<\/target-player>/;
                 contents = contents.replace(playerVersion, "<target-player>" + flashPlayerVersion + "<\/target-player>");
                 var playerSwfVersion:RegExp = /<swf-version>\d\d<\/swf-version>/;
-                contents = contents.replace(playerSwfVersion, "<swf-version>" + swfVersion + "<\/swf-version>" );
+                contents = contents.replace(playerSwfVersion, "<swf-version>" + swfVersion + "<\/swf-version>");
                 configFile.close();
-                configFile.open(file,FileMode.WRITE);
+                configFile.open(file, FileMode.WRITE);
                 configFile.writeMultiByte(contents, "utf-8");
                 var copyToFile:File = frameworksDir.resolvePath(file.name);
                 configFile.close();
                 file.copyTo(copyToFile, true);
             }
         }
-        
+
         protected function copyConfigFiles():void
         {
             var aborted:Boolean = false;
-            
+
             updateActivityStep(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES, StepItem.ACTIVE);
-            
-            try {
+
+            try
+            {
                 //Config files
                 var configFilesDir:File = File.userDirectory.resolvePath(_flexHome + File.separator + "ide" + File.separator + "flashbuilder" + File.separator
-                    + "config");
+                + "config");
                 var configFiles:Array = configFilesDir.getDirectoryListing();
                 var flexHomeFrameworksDir:File = File.userDirectory.resolvePath(_flexHome + File.separator + "frameworks");
                 log(_viewResourceConstants.INFO_INSTALLING_CONFIG_FILES);
-                
-                for each (var file:File in configFiles) {
+
+                for each (var file:File in configFiles)
+                {
                     changeConfig(flexHomeFrameworksDir, file, FLASH_PLAYER_VERSION, FLASH_PLAYER_SWF_VERSION);
                 }
-                
+
                 file = File.userDirectory.resolvePath(_flexHome + File.separator + "flex-sdk-description.xml");
                 var descriptionFile:FileStream = new FileStream();
                 descriptionFile.open(file, FileMode.READ);
@@ -2047,35 +2202,41 @@ variables are not required because the locations of these pieces are known.
                 var description:RegExp = /<name>[^<]*<\/name>/;
                 contents = contents.replace(description, "<name>Apache Flex " + APACHE_FLEX_BIN_DISTRO_VERSION + " FP " + FLASH_PLAYER_VERSION + " AIR " + AIR_VERSION + " en_US</name>");
                 descriptionFile.close();
-                descriptionFile.open(file,FileMode.WRITE);
+                descriptionFile.open(file, FileMode.WRITE);
                 descriptionFile.writeMultiByte(contents, "utf-8");
                 descriptionFile.close();
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES, StepItem.ERROR);
                 log(_viewResourceConstants.ERROR_UNABLE_TO_INSTALL_CONFIG_FILES);
                 abortInstallation();
                 aborted = true;
             }
-            
-            if (!aborted) {
+
+            if (!aborted)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES, StepItem.COMPLETE);
                 downloadSwfObject();
             }
         }
-        
+
         protected function downloadSwfObject():void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ACTIVE);
-            
-            try {
+
+            try
+            {
                 log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [SWF_OBJECT_FILE, SWF_OBJECT_URL]));
                 copyOrDownload(SWF_OBJECT_URL + SWF_OBJECT_FILE, handlSWFObjectDownload, null, handleSWFObjectDownloadError);
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
                 abortInstallation();
             }
         }
-        
+
         protected function handlSWFObjectDownload(event:Event):void
         {
             log(_viewResourceConstants.INFO_DOWNLOADED);
@@ -2083,52 +2244,58 @@ variables are not required because the locations of these pieces are known.
             writeFileToDirectory(swfObjectZipFile, event.target.data);
             unzip(swfObjectZipFile, handleSWFObjectUnzipComplete, handleSWFObjectZipFileUnzipError);
         }
-        
+
         protected function handleSWFObjectDownloadError(event:ErrorEvent = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
             log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
             abortInstallation();
         }
-        
+
         protected function handleSWFObjectUnzipComplete(event:Event):void
         {
-            try {
+            try
+            {
                 var expressInstallFile:File = File.userDirectory.resolvePath(_flexHome + File.separator + "swfobject" + File.separator + "expressInstall.swf");
                 expressInstallFile.copyTo(_flexHomeDir.resolvePath("templates" + File.separator + "swfobject" + File.separator + "expressInstall.swf"));
-                
+
                 var swfObjectJSFile:File = File.userDirectory.resolvePath(_flexHome + File.separator + "swfobject" + File.separator + "swfobject.js");
                 swfObjectJSFile.copyTo(_flexHomeDir.resolvePath("templates" + File.separator + "swfobject" + File.separator + "swfobject.js"));
-                
+
                 swfObjectJSFile.copyTo(_flexHomeDir.resolvePath("javascript" + File.separator + "FABridge" + File.separator + "samples" + File.separator
-                    + "fabridge" + File.separator + "swfobject" + File.separator + "swfobject.js"));
-                
+                + "fabridge" + File.separator + "swfobject" + File.separator + "swfobject.js"));
+
                 var swfObjectDir:File = _flexHomeDir.resolvePath("swfobject");
                 swfObjectDir.deleteDirectory(true);
-                
+
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.COMPLETE);
                 installOSMF();
-                
-            } catch (e:Error) {
+
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
                 log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
                 abortInstallation();
             }
-            
+
         }
-        
+
         protected function handleSWFObjectZipFileUnzipError(event:Event):void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
             log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
             abortInstallation();
         }
-        
+
         protected function installNextOptionalComponent():void
         {
-            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider) {
-                if (obj.selected && !obj.installed && !obj.aborted) {
-                    switch (obj.label) {
+            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
+            {
+                if (obj.selected && !obj.installed && !obj.aborted)
+                {
+                    switch (obj.label)
+                    {
                         case _viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS:
                         {
                             installBlazeDS();
@@ -2150,7 +2317,7 @@ variables are not required because the locations of these pieces are known.
             }
             checkAndHandleAllOptionalComponentsInstalled();
         }
-        
+
         protected function installBlazeDS():void
         {
             updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS, StepItem.ACTIVE);
@@ -2158,10 +2325,11 @@ variables are not required because the locations of these pieces are known.
             _blazeDSJarFile = File.userDirectory.resolvePath(_flexTemp + File.separator + BLAZEDS_FILE);
             copyOrDownload(BLAZEDS_URL + BLAZEDS_FILE, handleBlazeDSDownloadComplete, null, handleBlazeDSInstallError);
         }
-        
+
         protected function handleBlazeDSDownloadComplete(event:Event):void
         {
-            try {
+            try
+            {
                 writeFileToDirectory(_blazeDSJarFile, event.target.data);
                 copyFileToOptionalLibDir(_blazeDSJarFile);
                 updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS, true);
@@ -2169,133 +2337,147 @@ variables are not required because the locations of these pieces are known.
                 updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS, StepItem.COMPLETE);
                 clearData(URLLoader(event.target));
                 installNextOptionalComponent();
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS, StepItem.ERROR);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS, true);
                 installNextOptionalComponent();
             }
         }
-        
+
         protected function installFontSwf():void
         {
             updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, StepItem.ACTIVE);
             downloadFontSwfAFEFile();
         }
-        
+
         protected function downloadFontSwfAFEFile():void
         {
             log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [AFE_FILE, AFE_URL]));
             _afeJarFile = File.userDirectory.resolvePath(_flexTemp + File.separator + AFE_FILE);
             copyOrDownload(AFE_URL + AFE_FILE, handleFontSWFAFEFileDownloaded, null, handleFontSWFInstallError);
         }
-        
+
         protected function handleFontSWFAFEFileDownloaded(event:Event):void
         {
-            try {
+            try
+            {
                 writeFileToDirectory(_afeJarFile, event.target.data);
                 copyFileToOptionalLibDir(_afeJarFile);
                 clearData(URLLoader(event.target));
-                
+
                 downloadFontSwfAGLFile();
-                
-            } catch (e:Error) {
+
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, StepItem.ERROR);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, true);
                 installNextOptionalComponent();
             }
         }
-        
+
         protected function downloadFontSwfAGLFile():void
         {
             log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [AGLJ40_FILE, AGLJ40_URL]));
             _aglj40JarFile = File.userDirectory.resolvePath(_flexTemp + File.separator + AGLJ40_FILE);
             copyOrDownload(AGLJ40_URL + AGLJ40_FILE, handleFontSWFAGLFileDownloaded, null, handleFontSWFInstallError);
         }
-        
+
         protected function handleFontSWFAGLFileDownloaded(event:Event):void
         {
-            try {
+            try
+            {
                 writeFileToDirectory(_aglj40JarFile, event.target.data);
                 copyFileToOptionalLibDir(_aglj40JarFile);
                 clearData(URLLoader(event.target));
-                
+
                 downloadFontSwfFlexFontKitFile();
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, StepItem.ERROR);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, true);
                 installNextOptionalComponent();
             }
         }
-        
+
         protected function downloadFontSwfFlexFontKitFile():void
         {
             log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [FLEX_FONTKIT_FILE, FLEX_FONTKIT_URL]));
             _flexFontKitJarFile = File.userDirectory.resolvePath(_flexTemp + File.separator + FLEX_FONTKIT_FILE);
             copyOrDownload(FLEX_FONTKIT_URL + FLEX_FONTKIT_FILE, handleFontSWFFlexFontKitFileDownloaded, null, handleFontSWFInstallError);
         }
-        
+
         protected function handleFontSWFFlexFontKitFileDownloaded(event:Event):void
         {
-            try {
+            try
+            {
                 writeFileToDirectory(_flexFontKitJarFile, event.target.data);
                 copyFileToOptionalLibDir(_flexFontKitJarFile);
                 clearData(URLLoader(event.target));
-                
+
                 downloadFontSwfRideauKitFile();
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, StepItem.ERROR);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, true);
                 installNextOptionalComponent();
             }
         }
-        
+
         protected function downloadFontSwfRideauKitFile():void
         {
             log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [RIDEAU_FILE, RIDEAU_URL]));
             _rideauJarFile = File.userDirectory.resolvePath(_flexTemp + File.separator + RIDEAU_FILE);
             copyOrDownload(RIDEAU_URL + RIDEAU_FILE, handleFontSWFRideauFileDownloaded, null, handleFontSWFInstallError);
         }
-        
+
         protected function handleFontSWFRideauFileDownloaded(event:Event):void
         {
-            try {
+            try
+            {
                 writeFileToDirectory(_rideauJarFile, event.target.data);
                 copyFileToOptionalLibDir(_rideauJarFile);
                 clearData(URLLoader(event.target));
-                
+
                 updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, true);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, false);
                 updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, StepItem.COMPLETE);
                 installNextOptionalComponent();
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, StepItem.ERROR);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, true);
                 installNextOptionalComponent();
             }
         }
-        
+
         protected function installOSMF():void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ACTIVE);
             downloadOSMFFile();
         }
-        
+
         protected function downloadOSMFFile():void
         {
             _osmfSWFFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_SWF_FILE.toLowerCase());
-            
+
             log(StringUtil.substitute(_viewResourceConstants.INFO_DOWNLOADING_FILE_FROM, [OSMF_SWC_FILE, OSMF_SWC_URL]));
             _osmfSWCFile = File.userDirectory.resolvePath(_flexTemp + File.separator + OSMF_SWC_FILE.toLowerCase());
-            if(_useOSMF2)
+            if (_useOSMF2)
             {
                 downloadOSMF2SWC();
             }
             else
             {
-                copyOrDownload(OSMF_SWC_URL + OSMF_SWC_FILE,handleOSMFSWCFileDownloaded,null,handleOSMFSWCInstallError);
+                copyOrDownload(OSMF_SWC_URL + OSMF_SWC_FILE, handleOSMFSWCFileDownloaded, null, handleOSMFSWCInstallError);
             }
         }
-        
+
         protected function downloadOSMF2SWC():void
         {
             var url:String;
@@ -2313,16 +2495,22 @@ variables are not required because the locations of these pieces are known.
                     // that should find the slash after the server.
                     cacheURL = url.substr(c + 1);
                     if (debugMode)
+                    {
                         log("http caching.  url = " + cacheURL);
+                    }
                 }
                 var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
                 cacheFile = cacheFile.resolvePath(escape(cacheURL));
                 if (debugMode)
+                {
                     log("searching cache for " + cacheFile.url);
+                }
                 if (cacheFile.exists)
                 {
                     if (debugMode)
+                    {
                         log("found file in cache");
+                    }
                     url = cacheFile.url;
                     actuallyDownloadOSMF2SWC(new URLRequest(url));
                     return;
@@ -2332,39 +2520,41 @@ variables are not required because the locations of these pieces are known.
             httpService.addEventListener(FaultEvent.FAULT, handleOSMFSWCUnzipError);
             httpService.send();
         }
-        
+
         protected function getMirrorInfo(event:ResultEvent):void
         {
             var mirror:String = String(event.result);
             mirror = mirror.substr(mirror.indexOf('use_mirror=') + 'use_mirror='.length, mirror.length);
             mirror = mirror.substring(0, mirror.indexOf('">'));
-            
+
             var mirrorURL:String = 'http://' + mirror + Constants.SOURCEFORGE_DL_URL + OSMF_SWC_URL + OSMF_SWC_FILE;
             var refererURL:String = Constants.SOURCEFORGE_DOWNLOAD_URL + OSMF_SWC_URL + '/download?use_mirror=' + mirror;
-            
+
             var req:URLRequest = new URLRequest(mirrorURL);
-            req.requestHeaders = [ new URLRequestHeader('Referer', refererURL) ];
-            
+            req.requestHeaders = [new URLRequestHeader('Referer', refererURL)];
+
             actuallyDownloadOSMF2SWC(req);
         }
-        
+
         protected function actuallyDownloadOSMF2SWC(req:URLRequest):void
         {
             loader = new URLLoader();
             loader.dataFormat = URLLoaderDataFormat.BINARY;
             if (usingDownloadCache)
+            {
                 loader.addEventListener(Event.COMPLETE, cacheOSMF2SWC);
+            }
             loader.addEventListener(Event.COMPLETE, handleOSMFSWCFileDownloaded);
             loader.addEventListener(ErrorEvent.ERROR, handleOSMFSWCInstallError);
             loader.addEventListener(IOErrorEvent.IO_ERROR, handleOSMFSWCInstallError);
-            
+
             loader.load(req);
         }
-        
+
         protected function cacheOSMF2SWC(event:Event):void
         {
             var url:String;
-            url  = Constants.SOURCEFORGE_DOWNLOAD_URL + OSMF_SWC_URL + OSMF_SWC_FILE;
+            url = Constants.SOURCEFORGE_DOWNLOAD_URL + OSMF_SWC_URL + OSMF_SWC_FILE;
             var cacheURL:String;
             if (url.indexOf("http") == 0)
             {
@@ -2374,14 +2564,18 @@ variables are not required because the locations of these pieces are known.
                 // that should find the slash after the server.
                 cacheURL = url.substr(c + 1);
                 if (debugMode)
+                {
                     log("http caching.  url = " + cacheURL);
+                }
             }
             if (cacheURL)
             {
                 var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
                 cacheFile = cacheFile.resolvePath(escape(cacheURL));
                 if (debugMode)
+                {
                     log("caching " + cacheFile.url);
+                }
                 if (!cacheFile.exists)
                 {
                     var fs:FileStream = new FileStream();
@@ -2397,80 +2591,87 @@ variables are not required because the locations of these pieces are known.
                 else
                 {
                     if (debugMode)
+                    {
                         log("file was already in cache");
+                    }
                 }
             }
         }
-        
+
         protected function handleOSMFSWCFileDownloaded(event:Event):void
         {
-            try {
+            try
+            {
                 writeFileToDirectory(_osmfSWCFile, event.target.data);
                 copyFileToLibDir(_osmfSWCFile);
-                unzip(_osmfSWCFile,handleOSMFSWCUnzipped,handleOSMFSWCUnzipError);
+                unzip(_osmfSWCFile, handleOSMFSWCUnzipped, handleOSMFSWCUnzipError);
                 clearData(URLLoader(event.target));
-                
+
                 updateOptionalComponentInstallStatus(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, false);
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.COMPLETE);
                 installNextOptionalComponent();
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
                 abortInstallation();
             }
         }
-        
+
         /**
          * Unzip osmf.swc, extract library.swf from it and copy it into frameworks/rsls/osmf_<flexversion>.<buildnumber>
          * Delete other files extracted from osmf.swc
          */
         protected function handleOSMFSWCUnzipped(event:Event):void
         {
-            try {
-                var osmfFileName:String =  "osmf_" + getFlexVersionBuildString() + ".swf";
+            try
+            {
+                var osmfFileName:String = "osmf_" + getFlexVersionBuildString() + ".swf";
                 var copyToFile:File = _flexHomeDir.resolvePath("frameworks" + File.separator + "rsls" + File.separator + osmfFileName);
                 var osmfLibrarySwfFile:File = _flexHomeDir.resolvePath("library.swf");
                 osmfLibrarySwfFile.moveTo(copyToFile);
                 var catalogXMLFile:File = _flexHomeDir.resolvePath("catalog.xml");
-                if(catalogXMLFile.exists)
+                if (catalogXMLFile.exists)
                 {
                     catalogXMLFile.deleteFile();
                 }
                 var manifestXMLFile:File = _flexHomeDir.resolvePath("manifest.xml");
-                if(manifestXMLFile.exists)
+                if (manifestXMLFile.exists)
                 {
                     manifestXMLFile.deleteFile();
                 }
             }
-            catch (e:Error) {
+            catch (e:Error)
+            {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
                 abortInstallation();
             }
         }
-        
+
         protected function handleOSMFSWCUnzipError(event:Event):void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
             updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
             abortInstallation();
         }
-        
+
         protected function copyFileToOptionalLibDir(file:File):void
         {
             //Copy to "${FLEX_HOME}/lib/external/optional"
             var copyToFile:File = _flexHomeDir.resolvePath("lib" + File.separator + "external" + File.separator + "optional" + File.separator + file.name);
             file.copyTo(copyToFile, true);
         }
-        
+
         protected function copyFileToLibDir(file:File):void
         {
             //Copy to "${FLEX_HOME}/frameworks/libs/"
             var copyToFile:File = _flexHomeDir.resolvePath("frameworks" + File.separator + "libs" + File.separator + file.name);
             file.copyTo(copyToFile, true);
         }
-        
+
         protected function handleBlazeDSInstallError(event:* = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_BLAZEDS, StepItem.ERROR);
@@ -2478,7 +2679,7 @@ variables are not required because the locations of these pieces are known.
             log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE, ["BlazeDS"]));
             installNextOptionalComponent();
         }
-        
+
         protected function handleFontSWFInstallError(event:* = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_OPTIONAL_INSTALL_FONTSWF, StepItem.ERROR);
@@ -2486,7 +2687,7 @@ variables are not required because the locations of these pieces are known.
             log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE, ["FontSwf Utility"]));
             installNextOptionalComponent();
         }
-        
+
         protected function handleOSMFSWFInstallError(event:* = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
@@ -2494,7 +2695,7 @@ variables are not required because the locations of these pieces are known.
             log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE, ["OSMF_SWF"]));
             installNextOptionalComponent();
         }
-        
+
         protected function handleOSMFSWCInstallError(event:* = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
@@ -2502,93 +2703,112 @@ variables are not required because the locations of these pieces are known.
             log(StringUtil.substitute(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FILE, ["OSMF_SWC"]));
             installNextOptionalComponent();
         }
-        
+
         protected function updateOptionalComponentInstallStatus(label:String, isInstalled:Boolean):void
         {
-            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider) {
-                if (obj.label == label) {
+            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
+            {
+                if (obj.label == label)
+                {
                     obj.installed = isInstalled;
                 }
             }
         }
-        
+
         protected function updateOptionalComponentInstallStatusAborted(label:String, isAborted:Boolean):void
         {
-            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider) {
-                if (obj.label == label) {
+            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
+            {
+                if (obj.label == label)
+                {
                     obj.aborted = isAborted;
                 }
             }
         }
-        
+
         protected function checkAndHandleAllOptionalComponentsInstalled():void
         {
             var allComponentsInstalled:Boolean = true;
-            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider) {
-                if (!obj.required && obj.selected && !(obj.installed || obj.aborted)) {
+            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
+            {
+                if (!obj.required && obj.selected && !(obj.installed || obj.aborted))
+                {
                     allComponentsInstalled = false;
                 }
             }
-            if (allComponentsInstalled) {
+            if (allComponentsInstalled)
+            {
                 tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
                 cleanup(false);
             }
         }
-        
+
         protected function cleanup(isAbort:Boolean = false, abortInfo:String = ""):void
         {
             if (cleanedUp)
+            {
                 return;
-            
+            }
+
             cleanedUp = true;
-            
+
             CursorManager.removeBusyCursor();
-            if (!_viewResourceConstants) {
+            if (!_viewResourceConstants)
+            {
                 selectDefaultLanguageInEmergency();
             }
-            try {
-                if (_flexTempDir) {
+            try
+            {
+                if (_flexTempDir)
+                {
                     _flexTempDir.deleteDirectory(true);
                 }
-            } catch (e:Error) {
+            }
+            catch (e:Error)
+            {
                 log(_viewResourceConstants.ERROR_UNABLE_TO_DELETE_TEMP_DIRECTORY);
             }
-            
-            if (isAbort) {
-                tracker.trackInstallerFailure(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, 
-                    _os.os + "&info=" + abortInfo);
+
+            if (isAbort)
+            {
+                tracker.trackInstallerFailure(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION,
+                        _os.os + "&info=" + abortInfo);
             }
             else if (!wasAborted)
             {
                 log(_viewResourceConstants.INFO_INSTALLATION_COMPLETE);
                 updateUIHandleInstallationComplete();
             }
-            
+
             saveLogToDisk();
         }
-        
+
         protected function saveLogToDisk():void
         {
-            if (!_flexHomeDir) {
+            if (!_flexHomeDir)
+            {
                 return;
             }
-            
+
             var file:File = _flexHomeDir.resolvePath("installer.log");
             var fs:FileStream = new FileStream();
-            
-            try {
+
+            try
+            {
                 fs.open(file, FileMode.WRITE);
-                for each (var message:String in _messages) {
+                for each (var message:String in _messages)
+                {
                     fs.writeUTFBytes(message);
                     fs.writeUTFBytes("\n");
                 }
                 fs.close();
             }
-            catch (e:Error) {
+            catch (e:Error)
+            {
                 // TODO log error?
             }
         }
-        
+
         protected function updateUIHandleInstallationComplete():void
         {
             browseBtn.enabled = true;
@@ -2598,34 +2818,40 @@ variables are not required because the locations of these pieces are known.
             progressBar.includeInLayout = false;
             thirdStepGroup.title = _viewResourceConstants.INFO_INSTALLATION_COMPLETE;
         }
-        
+
         protected function abortInstallation(reason:String = ""):void
         {
             if (currentState != "installState")
+            {
                 showConsole(null);
-            
+            }
+
             directoryBtn.enabled = false;
             browseBtn.enabled = false;
             installBtn.enabled = false;
             wasAborted = true;
             if (_viewResourceConstants)
+            {
                 log(_viewResourceConstants.INFO_ABORT_INSTALLATION);
+            }
             cleanup(true, reason);
             if (_viewResourceConstants)
+            {
                 firstStepGroup.title = secondStepGroup.title = thirdStepGroup.title = _viewResourceConstants.INFO_ABORT_INSTALLATION;
+            }
         }
-        
+
         protected function _langSelect_changeHandler(event:IndexChangeEvent):void
         {
             var defaultLanguage:String = ViewResourceConstants.DEFAULT_LANGUAGE;
-            
+
             var so:SharedObject = SharedObject.getLocal("InstallApacheFlex");
             so.data.userDefaultLanguage = _langSelect.selectedItem["data"];
             so.flush();
-            
+
             if (_langSelect.selectedItem["data"] == defaultLanguage)
             {
-                resourceManager.localeChain = [ defaultLanguage ];
+                resourceManager.localeChain = [defaultLanguage];
                 resourceManager.update();
                 setButtonWidths();
             }
@@ -2634,20 +2860,20 @@ variables are not required because the locations of these pieces are known.
                 loadLanguage(_langSelect.selectedItem["data"], _langSelect_changeCompleteHandler);
             }
         }
-        
+
         private function _langSelect_changeCompleteHandler():void
         {
             var defaultLanguage:String = ViewResourceConstants.DEFAULT_LANGUAGE;
-            resourceManager.localeChain = [ languageID, defaultLanguage ];
+            resourceManager.localeChain = [languageID, defaultLanguage];
             resourceManager.update();
             log("Using Locale: " + languageID);
             setButtonWidths();
         }
-        
+
         override protected function resourcesChanged():void
         {
             super.resourcesChanged();
-            
+
             if (_viewResourceConstants)
             {
                 rememberInstallerComponents();
@@ -2661,46 +2887,49 @@ variables are not required because the locations of these pieces are known.
 
             }
         }
-        
+
         private var _selectedInstallerComponents:Vector.<InstallerComponentVO>;
-        
+
         protected function rememberInstallerComponents():void
         {
             _selectedInstallerComponents = new Vector.<InstallerComponentVO>;
-            for each(var item:InstallerComponentVO in _installerComponentsDataProvider) {
-                if (item.selected) {
+            for each(var item:InstallerComponentVO in _installerComponentsDataProvider)
+            {
+                if (item.selected)
+                {
                     _selectedInstallerComponents.push(item);
                 }
             }
         }
-        
+
         protected function recallInstallerComponents():void
         {
-            for each(var item:InstallerComponentVO in _selectedInstallerComponents) {
+            for each(var item:InstallerComponentVO in _selectedInstallerComponents)
+            {
                 getInstallerComponentFromLabel(item.key).selected = true;
             }
         }
-        
+
         protected function placeGroup(panel:Panel):void
         {
             panel.x = this.width / 2 - panel.width / 2;
         }
-        
+
         protected function handleOptionalInstallsChange(event:IndexChangeEvent):void
         {
             var selectedItem:InstallerComponentVO = InstallerComponentVO(event.target.selectedItem);
             optionalInstallsTxtArea.text = selectedItem.message;
             /*installChkBx.label = _viewResourceConstants.INSTALL_AGREE;
-            if (selectedItem.answered) {
-            if (selectedItem.selected) {
-            installChkBx.selected = true;
-            } else {
-            installChkBx.selected = false;
-            }
-            } else {
-            installChkBx.selected = false;
-            }*/
-            
+             if (selectedItem.answered) {
+             if (selectedItem.selected) {
+             installChkBx.selected = true;
+             } else {
+             installChkBx.selected = false;
+             }
+             } else {
+             installChkBx.selected = false;
+             }*/
+
             // Store the current selected item in order to have the license title update if the language is changed
             lastLicenseItemSelected = installComponentsList.selectedIndex;
 
@@ -2708,71 +2937,88 @@ variables are not required because the locations of these pieces are known.
             _currentLicenseLabel = selectedItem.licenseName;
             _currentLicenseURL = selectedItem.licenseURL;
             checkIfAllRequiredComponentsPromptsAnswered();
-            
+
         }
-        
+
         protected function handleLicenceBtnClick(event:Event):void
         {
             navigateToURL(new URLRequest(_currentLicenseURL), "_blank");
         }
-        
+
         protected function handleInstallPermissionChange(event:InstallItemSelectionEvent):void
         {
-            if (installComponentsList.selectedItem != null) {
+            if (installComponentsList.selectedItem != null)
+            {
                 installComponentsList.selectedItem.selected = (event.item.selected);
                 installComponentsList.selectedItem.answered = true;
-            } else {
-                for (var i:int = 0; i < _installerComponentsDataProvider.length; i++) {
+            }
+            else
+            {
+                for (var i:int = 0; i < _installerComponentsDataProvider.length; i++)
+                {
                     _installerComponentsDataProvider.getItemAt(i).selected = event.item.selected;
                     _installerComponentsDataProvider.getItemAt(i).answered = true;
                 }
             }
             checkIfAllRequiredComponentsPromptsAnswered();
         }
-        
+
         protected function checkIfAllRequiredComponentsPromptsAnswered():void
         {
             var success:Boolean = true;
-            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider) {
-                if (obj.required && !obj.selected) {
+            for each (var obj:InstallerComponentVO in _installerComponentsDataProvider)
+            {
+                if (obj.required && !obj.selected)
+                {
                     success = false;
                 }
             }
             installBtn.enabled = success;
         }
-        
+
         /************************ Utility methods *****************/
-        
+
         private function createFolder(path:String):File
         {
             var dir:File = new File(path);
-            
+
             if (!dir.exists)
+            {
                 dir.createDirectory();
-            
+            }
+
             return dir;
         }
-        
+
         private function copyOrDownload(url:String, handlerFunction:Function, dest:File = null, errorFunction:Function = null, nocache:Boolean = false):void
         {
-            if (url.search("http") == 0) {
+            if (url.search("http") == 0)
+            {
                 download(url, handlerFunction, errorFunction, nocache);
-            } else if (url.search("file://") == 0) {
+            }
+            else if (url.search("file://") == 0)
+            {
                 download(url, handlerFunction, errorFunction, nocache);
-            } else {
+            }
+            else
+            {
                 var source:File = new File(url);
-                
-                try {
+
+                try
+                {
                     source.copyTo(dest, true);
-                } catch (error:Error) {
-                    if (errorFunction != null) {
+                }
+                catch (error:Error)
+                {
+                    if (errorFunction != null)
+                    {
                         errorFunction.call(null);
                     }
                     log(_viewResourceConstants.ERROR_UNABLE_TO_COPY_FILE + error.errorID + " " + error.message);
                 }
             }
         }
-        
+
         private function download(url:String, handlerFunction:Function, errorFunction:Function = null, nocache:Boolean = false):void
         {
             loader = new URLLoader();
@@ -2780,10 +3026,14 @@ variables are not required because the locations of these pieces are known.
             {
                 log("downloading " + url);
                 if (usingDownloadCache)
+                {
                     log("using download cache");
+                }
                 if (nocache)
+                {
                     log("not caching this download");
-            }                
+                }
+            }
             if (usingDownloadCache && !nocache)
             {
                 var cacheURL:String;
@@ -2791,7 +3041,9 @@ variables are not required because the locations of these pieces are known.
                 {
                     cacheURL = url.substr(useMirrorPath(_mirrorURLUtil.mirrorURL).length);
                     if (debugMode)
+                    {
                         log("mirror caching.  url = " + cacheURL);
+                    }
                 }
                 else
                 {
@@ -2803,7 +3055,9 @@ variables are not required because the locations of these pieces are known.
                         // that should find the slash after the server.
                         cacheURL = url.substr(c + 1);
                         if (debugMode)
+                        {
                             log("http caching.  url = " + cacheURL);
+                        }
                     }
                 }
                 if (cacheURL)
@@ -2811,7 +3065,9 @@ variables are not required because the locations of these pieces are known.
                     var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
                     cacheFile = cacheFile.resolvePath(escape(cacheURL));
                     if (debugMode)
+                    {
                         log("searching cache for " + cacheFile.url);
+                    }
                     if (cacheFile.exists)
                     {
                         log(_viewResourceConstants.INFO_USING_CACHED_FILE + " " + cacheFile.url);
@@ -2822,19 +3078,24 @@ variables are not required because the locations of these pieces are known.
             var req:URLRequest = new URLRequest(url);
             //Wait for 5 minutes before aborting download attempt.  Adobe download sites as well as some Apache mirrors are extremely slow.
             req.idleTimeout = 300000;
-            
+
             loader.dataFormat = URLLoaderDataFormat.BINARY;
             if (usingDownloadCache)
+            {
                 loader.addEventListener(Event.COMPLETE, function (event:Event):void
                 {
                     if (debugMode)
+                    {
                         log("download complete preparing to cache");
+                    }
                     var cacheURL:String;
                     if (_useMirror && url.indexOf(useMirrorPath(_mirrorURLUtil.mirrorURL)) != -1)
                     {
                         cacheURL = url.substr(useMirrorPath(_mirrorURLUtil.mirrorURL).length);
                         if (debugMode)
+                        {
                             log("mirror caching.  url = " + cacheURL);
+                        }
                     }
                     else
                     {
@@ -2846,7 +3107,9 @@ variables are not required because the locations of these pieces are known.
                             // that should find the slash after the server.
                             cacheURL = url.substr(c + 1);
                             if (debugMode)
+                            {
                                 log("http caching.  url = " + cacheURL);
+                            }
                         }
                     }
                     if (cacheURL && !nocache)
@@ -2854,7 +3117,9 @@ variables are not required because the locations of these pieces are known.
                         var cacheFile:File = File.applicationStorageDirectory.resolvePath(downloadCacheFolder);
                         cacheFile = cacheFile.resolvePath(escape(cacheURL));
                         if (debugMode)
+                        {
                             log("caching " + cacheFile.url);
+                        }
                         if (!cacheFile.exists)
                         {
                             var fs:FileStream = new FileStream();
@@ -2870,25 +3135,29 @@ variables are not required because the locations of these pieces are known.
                         else
                         {
                             if (debugMode)
+                            {
                                 log("file was already in cache");
+                            }
                         }
                     }
-                    
+
                 });
+            }
             loader.addEventListener(Event.COMPLETE, handlerFunction, false, 0, true);
             loader.addEventListener(Event.COMPLETE, handleDownloadComplete, false, 0, true);
-            
+
             progressBar.percent = 0;
-            
-            if (errorFunction != null) {
+
+            if (errorFunction != null)
+            {
                 loader.addEventListener(ErrorEvent.ERROR, errorFunction, false, 0, true);
                 loader.addEventListener(IOErrorEvent.IO_ERROR, errorFunction, false, 0, true);
             }
             loader.addEventListener(ProgressEvent.PROGRESS, handleDownloadProgress, false, 0, true);
-            
+
             loader.load(req);
         }
-        
+
         private function handleDownloadProgress(event:ProgressEvent):void
         {
             var bytesTotal:int = event.bytesTotal;
@@ -2897,77 +3166,89 @@ variables are not required because the locations of these pieces are known.
             {
                 var percentLoaded:int = Math.round(bytesLoaded * 100 / bytesTotal);
                 if (logProgressEvents)
+                {
                     log("download progress " + event.bytesLoaded + "  " + event.bytesTotal, -1, false);
-                
+                }
+
                 progressBar.percent = percentLoaded;
             }
         }
-        
+
         private function handleDownloadComplete(event:Event):void
         {
             _previousDisplayedPercent = 0;
             clearData(URLLoader(event.target));
         }
-        
+
         private function clearData(v:URLLoader):void
         {
             ByteArray(v.data).clear();
             System.gc();
         }
-        
+
         private function unzip(fileToUnzip:File, unzipCompleteFunction:Function, unzipErrorFunction:Function = null):void
         {
             var zipFileBytes:ByteArray = new ByteArray();
             var fs:FileStream = new FileStream();
             var fzip:Zip = new Zip();
-            
+
             fs.open(fileToUnzip, FileMode.READ);
             fs.readBytes(zipFileBytes);
             fs.close();
-            
+
             fzip.addEventListener(ZipEvent.FILE_LOADED, onFileLoaded, false, 0, true);
             fzip.addEventListener(Event.COMPLETE, unzipCompleteFunction, false, 0, true);
             fzip.addEventListener(Event.COMPLETE, onUnzipComplete, false, 0, true);
-            if (unzipErrorFunction != null) {
+            if (unzipErrorFunction != null)
+            {
                 fzip.addEventListener(ErrorEvent.ERROR, unzipErrorFunction, false, 0, true);
                 _fileUnzipErrorFunction = unzipErrorFunction
             }
             fzip.loadBytes(zipFileBytes);
         }
-        
+
         private function onFileLoaded(e:ZipEvent):void
         {
-            try {
+            try
+            {
                 var fzf:ZipFile = e.file;
                 var f:File;
                 if (overlaying)
+                {
                     f = _flexTempDir.resolvePath(fzf.filename);
+                }
                 else
+                {
                     f = _flexHomeDir.resolvePath(fzf.filename);
+                }
                 var fs:FileStream = new FileStream();
-                
-                if (isDirectory(fzf)) {
+
+                if (isDirectory(fzf))
+                {
                     // Is a directory, not a file. Dont try to write anything into it.
                     return;
                 }
-                
+
                 fs.open(f, FileMode.WRITE);
                 fs.writeBytes(fzf.content);
                 fs.close();
-                
-            } catch (error:Error) {
+
+            }
+            catch (error:Error)
+            {
                 _fileUnzipErrorFunction.call();
             }
         }
-        
+
         private function isDirectory(f:ZipFile):Boolean
         {
-            if (f.filename.substr(f.filename.length - 1) == "/" || f.filename.substr(f.filename.length - 1) == "\\") {
+            if (f.filename.substr(f.filename.length - 1) == "/" || f.filename.substr(f.filename.length - 1) == "\\")
+            {
                 return true;
             }
             return false;
         }
-        
+
         private function onUnzipComplete(event:Event):void
         {
             var fzip:Zip = event.target as Zip;
@@ -2975,28 +3256,30 @@ variables are not required because the locations of these pieces are known.
             fzip.removeEventListener(ZipEvent.FILE_LOADED, onFileLoaded);
             fzip.removeEventListener(Event.COMPLETE, onUnzipComplete);
         }
-        
+
         private function untar(source:File, destination:File, unTarCompleteFunction:Function, unTarErrorFunction:Function):void
         {
             var tar:File;
             var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
             var arguments:Vector.<String> = new Vector.<String>();
-            
-            if (_os.isLinux()) {
+
+            if (_os.isLinux())
+            {
                 tar = new File("/bin/tar");
             }
-            else {
+            else
+            {
                 tar = new File("/usr/bin/tar");
             }
-            
+
             arguments.push("xf");
             arguments.push(source.nativePath);
             arguments.push("-C");
             arguments.push(destination.nativePath);
-            
+
             startupInfo.executable = tar;
             startupInfo.arguments = arguments;
-            
+
             _process = new NativeProcess();
             _process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, unTarFileProgress, false, 0, true);
             _process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, unTarErrorFunction, false, 0, true);
@@ -3005,28 +3288,28 @@ variables are not required because the locations of these pieces are known.
             _process.addEventListener(NativeProcessExitEvent.EXIT, unTarComplete, false, 0, true);
             _process.start(startupInfo);
         }
-        
+
         private function unTarError(event:Event):void
         {
             var output:String = _process.standardError.readUTFBytes(_process.standardError.bytesAvailable);
-            
+
             log(_viewResourceConstants.ERROR_NATIVE_PROCESS_ERROR);
             log(output);
         }
-        
+
         private function unTarFileProgress(event:Event):void
         {
             var output:String = _process.standardOutput.readUTFBytes(_process.standardOutput.bytesAvailable);
-            
+
             log(output);
         }
-        
+
         private function unTarComplete(event:NativeProcessExitEvent):void
         {
             _process.closeInput();
             _process.exit(true);
         }
-        
+
         private function writeFileToDirectory(file:File, data:ByteArray):void
         {
             var fs:FileStream = new FileStream();
@@ -3034,43 +3317,60 @@ variables are not required because the locations of these pieces are known.
             fs.writeBytes(data);
             fs.close();
         }
-        
+
         private function isValidConfigFile(file:File):Boolean
         {
             var name:String = file.name;
-            
-            if (name.search("-config.xml") == -1) {
+
+            if (name.search("-config.xml") == -1)
+            {
                 return false;
-            } else {
+            }
+            else
+            {
                 return true;
             }
         }
-        
+
         private function isAirConfigFile(file:File):Boolean
         {
             var name:String = file.name;
-            
-            if (name.search("air") == 0) {
+
+            if (name.search("air") == 0)
+            {
                 return true;
-            } else {
+            }
+            else
+            {
                 return false;
             }
         }
-        
+
         private function log(text:String, position:int = -1, isPublic:Boolean = true, skipLog:Boolean = false):void
         {
             if (text == null)
+            {
                 text = "";
-            if (position == -1) {
+            }
+            if (position == -1)
+            {
                 if (!skipLog)
+                {
                     _messages.addItem(text);
+                }
                 if (isPublic)
+                {
                     lastPublicMessage = text;
-            } else {
+                }
+            }
+            else
+            {
                 _messages.addItemAt(text, position);
             }
             if (debugMode)
+            {
                 trace(text);
+            }
             if (logFile)
             {
                 var f:File = new File(logFile);
@@ -3080,21 +3380,26 @@ variables are not required because the locations of these pieces are known.
                 fs.close();
             }
         }
-        
+
         private var console:ConsoleWindow;
+
         private function showConsole(event:Event):void
         {
             if (!console || console.closed)
+            {
                 console = new ConsoleWindow();
+            }
             else if (console)
+            {
                 console.orderToFront();
-            
+            }
+
             console.messages = _messages;
             console.open();
             console.nativeWindow.x = this.nativeWindow.x + this.nativeWindow.width / 2 - console.nativeWindow.width / 2;
             console.nativeWindow.y = this.nativeWindow.y + this.nativeWindow.height / 2 - console.nativeWindow.height / 2;
         }
-        
+
         private function showMPLLicense(event:Event):void
         {
             var licenseWindow:MPLLicense = new MPLLicense();
@@ -3102,7 +3407,7 @@ variables are not required because the locations of these pieces are known.
             licenseWindow.nativeWindow.x = this.nativeWindow.x + this.nativeWindow.width / 2 - licenseWindow.nativeWindow.width / 2;
             licenseWindow.nativeWindow.y = this.nativeWindow.y + this.nativeWindow.height / 2 - licenseWindow.nativeWindow.height / 2;
         }
-        
+
         private function showAdobeLicense(event:Event):void
         {
             var licenseWindow:AdobeLicense = new AdobeLicense();
@@ -3110,16 +3415,16 @@ variables are not required because the locations of these pieces are known.
             licenseWindow.nativeWindow.x = this.nativeWindow.x + this.nativeWindow.width / 2 - licenseWindow.nativeWindow.width / 2;
             licenseWindow.nativeWindow.y = this.nativeWindow.y + this.nativeWindow.height / 2 - licenseWindow.nativeWindow.height / 2;
         }
-        
+
         private function openApacheFlexFolder(event:Event):void
         {
             _flexHomeDir.openWithDefaultApplication();
         }
-        
+
         private function closeApplication(event:Event):void
         {
             removeEventListener(Event.CLOSING, closeApplication);
-            
+
             if (currentState == "installState")
             {
                 if (currentStep < stepLabels.length)
@@ -3127,105 +3432,120 @@ variables are not required because the locations of these pieces are known.
                     // User aborted the installation by closing the installer
                     var activeStep:StepItem = getActiveStepItem();
                     if (_viewResourceConstants)
+                    {
                         abortInstallation(_viewResourceConstants.INFO_USER_ABORT_INSTALLATION + activeStep.label);
+                    }
                 }
             }
-            
+
             // TODO only enable close button when finished or when an error occurs
             // TODO anything we need to clean up?
             if (console && !console.closed)
+            {
                 console.closeWindow(null);
+            }
             cleanup();
             close();
         }
-        
+
         protected function getActiveStepItem():StepItem
         {
-            for each (var s:StepItem in _installationSteps) {
-                if (s.status == StepItem.ACTIVE) {
+            for each (var s:StepItem in _installationSteps)
+            {
+                if (s.status == StepItem.ACTIVE)
+                {
                     return s;
                 }
             }
             return null;
         }
-        
+
         protected function clickLogo(event:MouseEvent):void
         {
             navigateToURL(new URLRequest(Constants.APACHE_FLEX_URL));
         }
-        
+
         protected function getStepItemFromStepLabel(stepLabel:String):StepItem
         {
-            for each (var s:StepItem in _installationSteps) {
-                if (s.label == stepLabel) {
+            for each (var s:StepItem in _installationSteps)
+            {
+                if (s.label == stepLabel)
+                {
                     return s;
                 }
             }
-            
+
             return null;
         }
-        
+
         protected function getInstallerComponentFromLabel(key:String):InstallerComponentVO
         {
-            for each (var s:InstallerComponentVO in _installerComponentsDataProvider) {
-                if (s.key == key) {
+            for each (var s:InstallerComponentVO in _installerComponentsDataProvider)
+            {
+                if (s.key == key)
+                {
                     return s;
                 }
             }
-            
+
             return null;
         }
-        
+
         protected function updateActivityStep(stepLabel:String, status:String):void
         {
             var step:StepItem = getStepItemFromStepLabel(stepLabel);
-            
-            if (step) {
+
+            if (step)
+            {
                 step.status = status;
             }
         }
-        
+
         private function isDirectoryEmpty(dir:File):Boolean
         {
             var result:Boolean;
-            
+
             var filesArray:Array = dir.getDirectoryListing();
-            
+
             var length:int = filesArray.length;
             result = length == 0;
-            if (length == 1) {
+            if (length == 1)
+            {
                 var explodedPath:Array = File(filesArray[0]).url.split("/");
-                
+
                 // the .DS_Store file doesn't bother anybody, so we can safely ignore it.
                 // also ignore local.properties so you an override install settings
                 result = explodedPath[explodedPath.length - 1] == ".DS_Store" ||
-                    explodedPath[explodedPath.length - 1] == "local.properties";
+                explodedPath[explodedPath.length - 1] == "local.properties";
             }
-            
+
             return result;
         }
-        
+
         protected function showDisclaimer():void
         {
             var request:URLRequest = new URLRequest(Constants.APACHE_FLEX_URL + Constants.DISCLAIMER_PATH);
-            
+
             navigateToURL(request, "_blank");
         }
-        
+
         protected function installComponentsList_creationCompleteHandler(event:FlexEvent):void
         {
             installComponentsList.addEventListener(InstallItemSelectionEvent.INSTALL_ITEM_SELECTION_CHANGED, handleInstallPermissionChange);
         }
-        
+
         private function onMouseRoll(event:MouseEvent):void
         {
-            if (event.type == MouseEvent.MOUSE_OVER) {
+            if (event.type == MouseEvent.MOUSE_OVER)
+            {
                 event.target.styleName = "linkTextHover";
-            } else {
+            }
+            else
+            {
                 event.target.styleName = "linkText";
             }
         }
-        
+
         private function getFlexVersionBuildString():String
         {
             var flexPropertiesFile:File = _flexHomeDir.resolvePath("flex-sdk-description.xml");
@@ -3235,8 +3555,7 @@ variables are not required because the locations of these pieces are known.
             fs.close();
             return contents.version + "." + contents.build;
         }
-        
-    ]]></fx:Script>
+        ]]></fx:Script>
     
     <fx:Declarations>
         <s:Sine id="ease"/>
@@ -3371,7 +3690,7 @@ variables are not required because the locations of these pieces are known.
         </s:layout>
         <s:HGroup verticalAlign="middle">
             <s:Label text="{_viewResourceConstants.INFO_SELECT_FLEX}" width="200" fontFamily="openSansBold" />
-            <s:DropDownList id="flexVersion"
+            <s:DropDownList id="flexVersionSelectList"
                             dataProvider="{FLEX_VERSIONS}"
                             labelField="label"
                             width="200"
