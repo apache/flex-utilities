@@ -118,4 +118,3 @@ rc
 *.actionScriptProperties
 bin-release
 Squiggly/main/generated/
-installer/temp.p12
