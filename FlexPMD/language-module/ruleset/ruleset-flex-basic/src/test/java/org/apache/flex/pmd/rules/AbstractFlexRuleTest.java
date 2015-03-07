@@ -172,7 +172,7 @@ public abstract class AbstractFlexRuleTest extends FlexPmdTestBase {
         try {
             final List<IFlexViolation> violations = processFile(resourcePath);
 
-            assertEquals(expectedPositions.length, violations.size(),
+            assertEquals(violations.size(), expectedPositions.length,
                     VIOLATIONS_NUMBER_NOT_CORRECT + " for " + resourcePath);
 
             if (expectedPositions.length != 0) {

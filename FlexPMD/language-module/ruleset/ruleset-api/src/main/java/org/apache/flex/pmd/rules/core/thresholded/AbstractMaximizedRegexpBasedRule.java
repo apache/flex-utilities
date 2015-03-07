@@ -29,6 +29,7 @@ public abstract class AbstractMaximizedRegexpBasedRule extends AbstractRegexpBas
      * com.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#getThreshold()
      */
     public final int getThreshold() {
+        // TODO: This needs fixing ...
         return 1;//getIntProperty( propertyDescriptorFor( getThresholdName() ) );
     }
 

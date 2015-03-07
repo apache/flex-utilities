@@ -28,6 +28,7 @@ public abstract class AbstractMaximizedFlexRule extends AbstractFlexRule impleme
      * com.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#getThreshold()
      */
     public int getThreshold() {
+        // TODO: This needs fixing ...
         return 0;//getIntProperty( propertyDescriptorFor( getThresholdName() ) );
     }
 
