@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<mx:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						xmlns:s="library://ns.adobe.com/flex/spark" 
+						xmlns:mx="library://ns.adobe.com/flex/halo"
+						applicationComplete="init()"
+						showFlexChrome="false">
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.events.MouseEvent;
+			
+			private var lineWidth:Number = 1;
+			private var lineColor:uint = 0x000000;
+			private var prevX:Number;
+			private var prevY:Number;
+			
+			private function init():void
+			{
+				stage.displayState =
+					StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				myCanvas.addEventListener(MouseEvent.MOUSE_MOVE,
+					drawingOn);
+			}
+			
+			private function drawingOff():void
+			{
+				myCanvas.removeEventListener(MouseEvent.MOUSE_MOVE,
+					drawingOn);
+				myButton.label = "Drawing On"
+			}
+			
+			//This never gets called but it did not throw an error for Flex PMD???
+				private function iDontGetCalled():void
+				{
+					var i:int = 5;
+				}
+				
+				private function drawingOn(event:MouseEvent):void
+				{
+					if(!isNaN(prevX))
+					{   
+						
+						myCanvas.graphics.lineStyle(lineWidth,
+							lineColor);
+						myCanvas.graphics.moveTo(prevX, prevY);
+						myCanvas.graphics.lineTo(event.localX,
+							event.localY);
+						
+						//Unnecessary and deeply nested IF - ELSE should have been caught too??
+							if(!isNaN(prevX))
+							{
+								//Do nothing
+							} else { 
+								if(!isNaN(prevX))
+								{
+									//Do nothing
+								} else { 
+									if(!isNaN(prevX))
+									{
+										//Do nothing
+									} else { 
+										
+										if(!isNaN(prevX))
+										{
+											//Do
+											nothing
+										} else { 
+											//do
+											nothing too
+										}
+									}
+								}
+							}
+					}
+					prevX = event.localX;
+					prevY = event.localY;
+					myButton.label = "Drawing Off";
+				}
+				
+				private function clear():void
+				{
+					myCanvas.graphics.clear();
+				}
+				
+				private function toggleDrawing():void
+				{
+					if (myButton.label == "Drawing Off")
+					{
+						drawingOff();
+						myButton.label = "Drawing On";
+					} else if (myButton.label == "Drawing On")
+					{
+						init();
+						myButton.label = "Drawing Off";
+					}
+				}
+				
+				private function changeColor():void
+				{
+					lineColor = myCP.selectedColor;
+					myLabel.text = String(myCP.value);
+				}
+				
+				
+				
+				private function changeThickness():void
+				{
+					lineWidth = mySlider.value;
+				}    
+		]]>
+	</fx:Script>
+	
+	<mx:Canvas id="myCanvas" width="100%" height="100%" fontWeight="bold"
+			   backgroundAlpha="0.00001"  backgroundColor="0xFF44FF" >
+		
+		<mx:TitleWindow  alpha="1.0" layout="absolute" close="close()"
+						 title="Scribbler Settings" showCloseButton="true"  width="200"
+						 height="178"  cornerRadius="16">
+			<s:Button id="myButton" x="10" y="10" width="95"
+					  click="toggleDrawing()"/>
+			<mx:ColorPicker x="148" y="10" id="myCP"
+							change="changeColor()"/>
+			<mx:HSlider x="10" y="57" id="mySlider"
+						change="changeThickness()" minimum="1" maximum="10" snapInterval="1"
+						enabled="true" allowTrackClick="true"/>
+			<mx:Label  id="myLabel" x="83" y="111" text="Label" width="87"/>
+			
+			<mx:Label x="20" y="111" text="Color:"/>
+			<mx:Label x="26.5" y="76" text="Adjust Line Thickness"/>
+			<s:Button x="10" y="39" label="Clear" width="95" click="clear()"
+					  />
+		</mx:TitleWindow>
+	</mx:Canvas>		
+	
+</mx:WindowedApplication>
