@@ -17,6 +17,7 @@
 package org.apache.flex.pmd.rules.mxml;
 
 import net.sourceforge.pmd.PropertyDescriptor;
+import net.sourceforge.pmd.lang.rule.properties.IntegerProperty;
 import org.apache.flex.pmd.rules.IFlexViolation;
 import org.apache.flex.pmd.rules.core.AbstractXpathRelatedRule;
 import org.apache.flex.pmd.rules.core.ViolationPosition;
@@ -34,6 +35,13 @@ import java.util.List;
  */
 public class TooManyStatesInMxmlRule extends AbstractXpathRelatedRule implements IThresholdedRule {
     private Double statesNb = 0.0;
+
+    public TooManyStatesInMxmlRule() {
+        definePropertyDescriptor(new IntegerProperty("maximum",
+                "TODO: Put some real text here ...",
+                Integer.MAX_VALUE, Integer.MAX_VALUE,
+                getDefaultThreshold(), 1.0f));
+    }
 
     /*
      * (non-Javadoc)

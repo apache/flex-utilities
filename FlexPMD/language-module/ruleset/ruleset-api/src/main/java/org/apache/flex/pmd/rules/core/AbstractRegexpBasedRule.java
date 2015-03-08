@@ -34,7 +34,6 @@ public abstract class AbstractRegexpBasedRule extends AbstractFlexRule {
      */
     public AbstractRegexpBasedRule() {
         super();
-        compilePattern();
     }
 
     /**
@@ -84,6 +83,9 @@ public abstract class AbstractRegexpBasedRule extends AbstractFlexRule {
      * @return
      */
     protected final Matcher getMatcher(final String line) {
+        if(pattern == null) {
+            compilePattern();
+        }
         final Matcher matcher = pattern.matcher(line);
 
         return matcher;

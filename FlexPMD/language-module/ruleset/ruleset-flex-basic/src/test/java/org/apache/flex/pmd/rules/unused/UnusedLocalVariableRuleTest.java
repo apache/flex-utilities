@@ -21,9 +21,9 @@ import org.apache.flex.pmd.rules.core.AbstractFlexRule;
 import org.apache.flex.pmd.rules.core.ViolationPosition;
 import org.testng.annotations.Test;
 
-@Test(enabled = false) // This test requires test-data that was not donated to Apache
-public class UnusedLocalVariableRuleTest extends AbstractAstFlexRuleTest {
-    @Override
+// This test requires test-data that was not donated to Apache
+public class UnusedLocalVariableRuleTest /*extends AbstractAstFlexRuleTest*/ {
+/*    @Override
     protected ExpectedViolation[] getExpectedViolatingFiles() {
         return new ExpectedViolation[]
                 {new ExpectedViolation("src.epg.StateExit_AS2.as", new ViolationPosition[]
@@ -79,5 +79,5 @@ public class UnusedLocalVariableRuleTest extends AbstractAstFlexRuleTest {
     @Override
     protected AbstractFlexRule getRule() {
         return new UnusedLocalVariableRule();
-    }
+    }*/
 }

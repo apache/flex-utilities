@@ -16,16 +16,9 @@
  */
 package org.apache.flex.pmd.rules.naming;
 
-import org.apache.flex.pmd.rules.AbstractAstFlexRuleTest;
-import org.apache.flex.pmd.rules.core.AbstractFlexRule;
-import org.apache.flex.pmd.rules.core.ViolationPosition;
-import org.testng.annotations.Test;
-
-import java.util.List;
-
-@Test(enabled = false) // This test requires test-data that was not donated to Apache
-public class VariableNameEndingWithNumericRuleTest extends AbstractAstFlexRuleTest {
-    @Override
+// This test requires test-data that was not donated to Apache
+public class VariableNameEndingWithNumericRuleTest /*extends AbstractAstFlexRuleTest*/ {
+    /*@Override
     protected ExpectedViolation[] getExpectedViolatingFiles() {
         return new ExpectedViolation[]
                 {new ExpectedViolation("PngEncoder.as", new ViolationPosition[]
@@ -71,5 +64,5 @@ public class VariableNameEndingWithNumericRuleTest extends AbstractAstFlexRuleTe
     @Override
     protected AbstractFlexRule getRule() {
         return new VariableNameEndingWithNumericRule();
-    }
+    }*/
 }

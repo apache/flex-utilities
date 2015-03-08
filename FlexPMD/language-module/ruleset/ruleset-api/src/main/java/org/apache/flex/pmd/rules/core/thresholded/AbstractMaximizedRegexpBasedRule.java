@@ -16,6 +16,7 @@
  */
 package org.apache.flex.pmd.rules.core.thresholded;
 
+import net.sourceforge.pmd.lang.rule.properties.IntegerProperty;
 import org.apache.flex.pmd.rules.core.AbstractRegexpBasedRule;
 
 /**
@@ -23,14 +24,21 @@ import org.apache.flex.pmd.rules.core.AbstractRegexpBasedRule;
  */
 public abstract class AbstractMaximizedRegexpBasedRule extends AbstractRegexpBasedRule implements
         IThresholdedRule {
+
+    public AbstractMaximizedRegexpBasedRule() {
+        definePropertyDescriptor(new IntegerProperty("maximum",
+                "TODO: Put some real text here ...",
+                0, Integer.MAX_VALUE,
+                getDefaultThreshold(), 1.0f));
+    }
+
     /*
-     * (non-Javadoc)
-     * @see
-     * com.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#getThreshold()
-     */
+         * (non-Javadoc)
+         * @see
+         * com.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#getThreshold()
+         */
     public final int getThreshold() {
-        // TODO: This needs fixing ...
-        return 1;//getIntProperty( propertyDescriptorFor( getThresholdName() ) );
+        return (Integer) getProperty(getPropertyDescriptor(getThresholdName()));
     }
 
     /*

@@ -17,6 +17,8 @@
 package org.apache.flex.pmd.rules.naming;
 
 import net.sourceforge.pmd.PropertyDescriptor;
+import net.sourceforge.pmd.lang.rule.properties.IntegerProperty;
+import net.sourceforge.pmd.lang.rule.properties.StringProperty;
 import org.apache.flex.pmd.rules.core.AbstractRegexpBasedRule;
 import org.apache.flex.pmd.rules.core.ViolationPriority;
 import org.apache.flex.pmd.rules.core.thresholded.IThresholdedRule;
@@ -27,14 +29,26 @@ import java.util.regex.Matcher;
  * @author xagnetti
  */
 public class TooShortVariableRule extends AbstractRegexpBasedRule implements IThresholdedRule {
+
     public static final int DEFAULT_THRESHOLD = 3;
     private int length;
 
+    public TooShortVariableRule() {
+        definePropertyDescriptor(new IntegerProperty(
+                MINIMUM,
+                MINIMUM,
+                0,
+                Integer.MAX_VALUE,
+                DEFAULT_THRESHOLD,
+                1.0f
+        ));
+    }
+
     /*
-     * (non-Javadoc)
-     * @seecom.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#
-     * getActualValueForTheCurrentViolation()
-     */
+         * (non-Javadoc)
+         * @seecom.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#
+         * getActualValueForTheCurrentViolation()
+         */
     public final int getActualValueForTheCurrentViolation() {
         return length;
     }

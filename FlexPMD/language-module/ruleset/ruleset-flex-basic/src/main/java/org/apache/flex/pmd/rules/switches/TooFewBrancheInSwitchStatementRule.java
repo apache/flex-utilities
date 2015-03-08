@@ -17,6 +17,7 @@
 package org.apache.flex.pmd.rules.switches;
 
 import net.sourceforge.pmd.PropertyDescriptor;
+import net.sourceforge.pmd.lang.rule.properties.IntegerProperty;
 import org.apache.flex.pmd.parser.IParserNode;
 import org.apache.flex.pmd.rules.core.AbstractAstFlexRule;
 import org.apache.flex.pmd.rules.core.ViolationPriority;
@@ -29,11 +30,18 @@ public class TooFewBrancheInSwitchStatementRule extends AbstractAstFlexRule impl
     public static final int DEFAULT_THRESHOLD = 3;
     private int switchCases;
 
+    public TooFewBrancheInSwitchStatementRule() {
+        super();
+        definePropertyDescriptor(new IntegerProperty(
+                getThresholdName(), "TODO: Put some real text here ...",
+                0, Integer.MAX_VALUE, getDefaultThreshold(), 1.0f));
+    }
+
     /*
-     * (non-Javadoc)
-     * @seecom.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#
-     * getActualValueForTheCurrentViolation()
-     */
+         * (non-Javadoc)
+         * @seecom.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#
+         * getActualValueForTheCurrentViolation()
+         */
     public final int getActualValueForTheCurrentViolation() {
         return switchCases;
     }

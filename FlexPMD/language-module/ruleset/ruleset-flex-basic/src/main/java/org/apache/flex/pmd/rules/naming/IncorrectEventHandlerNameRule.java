@@ -17,6 +17,7 @@
 package org.apache.flex.pmd.rules.naming;
 
 import net.sourceforge.pmd.lang.rule.properties.StringProperty;
+
 import org.apache.flex.pmd.nodes.IFunction;
 import org.apache.flex.pmd.parser.IParserNode;
 import org.apache.flex.pmd.rules.core.AbstractAstFlexRule;
@@ -24,30 +25,27 @@ import org.apache.flex.pmd.rules.core.ViolationPriority;
 
 public class IncorrectEventHandlerNameRule extends AbstractAstFlexRule {
 
-    private static final StringProperty PREFIX_DESCRIPTOR = new StringProperty(
-            "prefix",
-            "",
-            "on",
-            1.0f
-    );
-    private static final StringProperty SUFFIX_DESCRIPTOR = new StringProperty(
-            "suffix",
-            "",
-            "",
-            1.0f
-    );
-
-    private final String prefix;
-    private final String suffix;
-
     public IncorrectEventHandlerNameRule() {
         super();
-        prefix = getProperty(PREFIX_DESCRIPTOR);
-        suffix = getProperty(SUFFIX_DESCRIPTOR);
+        definePropertyDescriptor(new StringProperty(
+                "prefix",
+                "prefix",
+                "on",
+                1.0f
+        ));
+        definePropertyDescriptor(new StringProperty(
+                "suffix",
+                "suffix",
+                "",
+                1.0f
+        ));
     }
 
     @Override
     protected void findViolations(final IFunction function) {
+        String prefix = (String) getProperty(getPropertyDescriptor("prefix"));
+        String suffix = (String) getProperty(getPropertyDescriptor("suffix"));
+
         if (function.isEventHandler()
                 && !(function.getName().startsWith(prefix) && function.getName().endsWith(suffix))) {
             final IParserNode name = getNameFromFunctionDeclaration(function.getInternalNode());

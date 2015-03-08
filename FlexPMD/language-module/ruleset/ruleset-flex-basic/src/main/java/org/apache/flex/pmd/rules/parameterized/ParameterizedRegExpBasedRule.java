@@ -24,17 +24,23 @@ import org.apache.flex.pmd.rules.core.ViolationPriority;
  * @author xagnetti
  */
 public class ParameterizedRegExpBasedRule extends AbstractRegexpBasedRule {
-    private static final StringProperty EXPRESSION_DESCRIPTOR = new StringProperty(
+
+    public static StringProperty EXPRESSION_DESCRIPTOR = new StringProperty(
             "expression",
-            "",
+            "expression",
             "",
             1.0f
     );
 
+    public ParameterizedRegExpBasedRule() {
+        super();
+        definePropertyDescriptor(EXPRESSION_DESCRIPTOR);
+    }
+
     /*
-     * (non-Javadoc)
-     * @see com.adobe.ac.pmd.rules.core.AbstractFlexRule#getDefaultPriority()
-     */
+         * (non-Javadoc)
+         * @see com.adobe.ac.pmd.rules.core.AbstractFlexRule#getDefaultPriority()
+         */
     @Override
     protected ViolationPriority getDefaultPriority() {
         return ViolationPriority.NORMAL;
@@ -46,7 +52,7 @@ public class ParameterizedRegExpBasedRule extends AbstractRegexpBasedRule {
      */
     @Override
     protected String getRegexp() {
-        return getProperty(EXPRESSION_DESCRIPTOR);
+        return (String) getProperty(getPropertyDescriptor("expression"));
     }
 
     /*

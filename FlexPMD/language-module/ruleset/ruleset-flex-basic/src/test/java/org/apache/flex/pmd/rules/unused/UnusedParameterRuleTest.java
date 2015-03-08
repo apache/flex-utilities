@@ -23,9 +23,9 @@ import org.testng.annotations.Test;
 
 import java.util.LinkedHashMap;
 
-@Test(enabled = false) // This test requires test-data that was not donated to Apache
-public class UnusedParameterRuleTest extends AbstractAstFlexRuleTest {
-    @Override
+// This test requires test-data that was not donated to Apache
+public class UnusedParameterRuleTest /*extends AbstractAstFlexRuleTest*/ {
+/*    @Override
     protected ExpectedViolation[] getExpectedViolatingFiles() {
         new LinkedHashMap<String, ViolationPosition[]>();
 
@@ -48,5 +48,5 @@ public class UnusedParameterRuleTest extends AbstractAstFlexRuleTest {
     @Override
     protected AbstractFlexRule getRule() {
         return new UnusedParameterRule();
-    }
+    }*/
 }

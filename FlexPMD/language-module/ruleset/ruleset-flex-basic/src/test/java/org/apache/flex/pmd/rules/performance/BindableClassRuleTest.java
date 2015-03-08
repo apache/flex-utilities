@@ -21,9 +21,9 @@ import org.apache.flex.pmd.rules.core.AbstractFlexRule;
 import org.apache.flex.pmd.rules.core.ViolationPosition;
 import org.testng.annotations.Test;
 
-@Test(enabled = false) // This test requires test-data that was not donated to Apache
-public class BindableClassRuleTest extends AbstractAstFlexRuleTest {
-    @Override
+// This test requires test-data that was not donated to Apache
+public class BindableClassRuleTest /*extends AbstractAstFlexRuleTest*/ {
+/*    @Override
     protected ExpectedViolation[] getExpectedViolatingFiles() {
         return new ExpectedViolation[]
                 {new ExpectedViolation("bug.FlexPMD60.as", new ViolationPosition[]
@@ -35,5 +35,5 @@ public class BindableClassRuleTest extends AbstractAstFlexRuleTest {
     @Override
     protected AbstractFlexRule getRule() {
         return new BindableClassRule();
-    }
+    }*/
 }

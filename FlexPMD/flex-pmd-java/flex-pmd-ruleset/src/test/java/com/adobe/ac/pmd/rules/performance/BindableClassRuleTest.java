@@ -16,15 +16,10 @@
  */
 package com.adobe.ac.pmd.rules.performance;
 
-import com.adobe.ac.pmd.rules.core.AbstractAstFlexRuleTest;
-import com.adobe.ac.pmd.rules.core.AbstractFlexRule;
-import com.adobe.ac.pmd.rules.core.ViolationPosition;
-import org.junit.Ignore;
-
-@Ignore("This test requires test-data that was not donated to Apache")
-public class BindableClassRuleTest extends AbstractAstFlexRuleTest
+// This test requires test-data that was not donated to Apache")
+public class BindableClassRuleTest /*extends AbstractAstFlexRuleTest*/
 {
-   @Override
+/*   @Override
    protected ExpectedViolation[] getExpectedViolatingFiles()
    {
       return new ExpectedViolation[]
@@ -38,5 +33,5 @@ public class BindableClassRuleTest extends AbstractAstFlexRuleTest
    protected AbstractFlexRule getRule()
    {
       return new BindableClassRule();
-   }
+   }*/
 }

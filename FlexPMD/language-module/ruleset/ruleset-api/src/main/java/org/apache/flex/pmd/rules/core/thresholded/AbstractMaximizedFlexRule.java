@@ -16,20 +16,28 @@
  */
 package org.apache.flex.pmd.rules.core.thresholded;
 
+import net.sourceforge.pmd.lang.rule.properties.IntegerProperty;
 import org.apache.flex.pmd.rules.core.AbstractFlexRule;
 
 /**
  * @author xagnetti
  */
 public abstract class AbstractMaximizedFlexRule extends AbstractFlexRule implements IThresholdedRule {
+
+    public AbstractMaximizedFlexRule() {
+        definePropertyDescriptor(new IntegerProperty("maximum",
+                "TODO: Put some real text here ...",
+                Integer.MAX_VALUE, Integer.MAX_VALUE,
+                getDefaultThreshold(), 1.0f));
+    }
+
     /*
-     * (non-Javadoc)
-     * @see
-     * com.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#getThreshold()
-     */
+         * (non-Javadoc)
+         * @see
+         * com.adobe.ac.pmd.rules.core.thresholded.IThresholdedRule#getThreshold()
+         */
     public int getThreshold() {
-        // TODO: This needs fixing ...
-        return 0;//getIntProperty( propertyDescriptorFor( getThresholdName() ) );
+        return (Integer) getProperty(getPropertyDescriptor(getThresholdName()));
     }
 
     /*
