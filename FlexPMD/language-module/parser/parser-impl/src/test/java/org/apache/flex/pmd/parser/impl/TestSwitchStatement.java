@@ -17,7 +17,7 @@
 package org.apache.flex.pmd.parser.impl;
 
 import org.apache.flex.pmd.parser.exceptions.TokenException;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class TestSwitchStatement extends AbstractStatementTestBase {
 

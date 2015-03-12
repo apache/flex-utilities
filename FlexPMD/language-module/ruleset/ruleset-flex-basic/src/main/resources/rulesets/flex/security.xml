@@ -27,7 +27,7 @@
       The Security AS3 Ruleset contains a collection of best practices related to secure code.
     </description>
     
-	<rule class="com.adobe.ac.pmd.rules.security.InsecureExactSettingsRule"
+	<rule class="org.apache.flex.pmd.rules.security.InsecureExactSettingsRule"
 		message="Security.exactSettings is set to an insecure value">
 		<description>The security.exactSettings value should remain set at the default true value. Setting this value to false could make the SWF vulnerable to cross-domain attacks.</description>
 		<priority>1</priority>
@@ -37,7 +37,7 @@
       	</example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.security.AllowAllSecureDomainRule"
+	<rule class="org.apache.flex.pmd.rules.security.AllowAllSecureDomainRule"
 		message="Security.allowDomain is set to an insecure value">
 		<description>The security.allowDomain value of "*" will allow any domain to cross-script into the domain of this SWF and exercise its functionality.</description>
 		<priority>1</priority>
@@ -47,7 +47,7 @@
       	</example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.security.LocalConnectionStarRule"
+	<rule class="org.apache.flex.pmd.rules.security.LocalConnectionStarRule"
 		message="LocalConnection.allowDomain is set to an insecure value">
 		<description>The LocalConnection.allowDomain value of "*" will allow any domain to connect to this SWF and call its functions.</description>
 		<priority>1</priority>
@@ -57,7 +57,7 @@
       	</example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.security.AllowInsecureDomainRule"
+	<rule class="org.apache.flex.pmd.rules.security.AllowInsecureDomainRule"
 		message="Potentially unnecessary use of allowInsecureDomain">
 		<description>Using allowInsecureDomain will allow untrusted content from an HTTP site to inject data into a trusted HTTPS connection which may comprimise the integrity of the HTTPS connection. The use of allowDomain is preferred.</description>
 		<priority>1</priority>
@@ -68,7 +68,7 @@
       	</example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.security.LSOSecureFalseRule"
+	<rule class="org.apache.flex.pmd.rules.security.LSOSecureFalseRule"
 		message="The secure flag is set to false">
 		<description>If this SWF is being served over HTTPS then the secure flag should be set to true. This can help prevent sensitive SSL protected information from being shared within insecure HTTP content. If this SWF is served over HTTP then you can ignore this warning.</description>
 		<priority>5</priority>
@@ -78,7 +78,7 @@
       	</example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.security.ImportLoadBestPracticeRule"
+	<rule class="org.apache.flex.pmd.rules.security.ImportLoadBestPracticeRule"
 		message="Set allowCodeImport to false when import loading images">
 		<description>If this loader is only intended to load image files (GIF,JPG,PNG) then be sure to set the allowCodeImport value to false. Setting this flag will reduce the chances of an untrusted SWF gaining access to your site. If your intent is to load a SWF, the URL for the request is a static value for a trusted site and/or you have already set the allowCodeImport flag, then you can ignore this warning.</description>
 		<priority>5</priority>

@@ -16,10 +16,10 @@
  */
 package org.apache.flex.pmd.parser.impl;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import org.apache.flex.pmd.parser.exceptions.TokenException;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class TestInterfaceContent extends AbstractAs3ParserTestBase {
 
@@ -83,6 +83,6 @@ public class TestInterfaceContent extends AbstractAs3ParserTestBase {
         asp.nextToken(); // first call
         asp.nextToken(); // skip {
         final String result = new ASTToXMLConverter().convert(asp.parseInterfaceContent());
-        assertEquals("<content line=\"2\">" + expected + "</content>", result, message);
+        assertEquals(message, "<content line=\"2\">" + expected + "</content>", result);
     }
 }

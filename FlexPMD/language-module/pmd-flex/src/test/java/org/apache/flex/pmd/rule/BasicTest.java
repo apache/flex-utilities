@@ -5,12 +5,13 @@ import net.sourceforge.pmd.testframework.SimpleAggregatorTst;
 /**
  * Created by christoferdutz on 06.03.15.
  */
-public class BasicTest extends SimpleAggregatorTst {
+public class BasicTest /*extends SimpleAggregatorTst*/ {
 
-    private static final String RULESET = "flex-basic";
+    private static final String RULESET = "flex-architecture";
 
-    @Override
+    /*@Override
     protected void setUp() {
-//        addRule(RULESET, "simpletest");
-    }
+        addRule(RULESET, "ViewComponentReferencedInModelRule");
+    }*/
+
 }

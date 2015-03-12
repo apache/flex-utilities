@@ -28,7 +28,7 @@
 	</description>
 	
 	<rule
-		class="com.adobe.ac.pmd.rules.switchrules.SwitchStatementsShouldHaveDefaultRule"
+		class="org.apache.flex.pmd.rules.switchrules.SwitchStatementsShouldHaveDefaultRule"
 		message="A switch statement does not contain a default statement">
 		<description>Switch statements should have a default label in order to detect corner cases.</description>
 		<priority>1</priority>
@@ -47,7 +47,7 @@ public class Foo
       </example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.switchrules.NestedSwitchRule"
+	<rule class="org.apache.flex.pmd.rules.switchrules.NestedSwitchRule"
 		message="Switch must not be nested">
 		<description>As a general practice, switch statement should not be used. Prefer using inheritance. It is even harder to read when switch statements are nested.</description>
 		<priority>3</priority>
@@ -72,7 +72,7 @@ public function foo( a : Number, b : Number ) : void
       </example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.switchrules.NonBreakableSwitchCaseRule"
+	<rule class="org.apache.flex.pmd.rules.switchrules.NonBreakableSwitchCaseRule"
 		message="Switch case must include break statement">
 		<priority>1</priority>
 		<example>
@@ -91,7 +91,7 @@ switch(event.type){
 
 	
 	<rule
-		class="com.adobe.ac.pmd.rules.switchrules.TooFewBrancheInSwitchStatementRule"
+		class="org.apache.flex.pmd.rules.switchrules.TooFewBrancheInSwitchStatementRule"
 		message="There are too few branches in this switch statement ({0} minimum, but {1} actual)">
 		<description>Switch statements are designed for complex branches, and allow branches to share treatment. Using a switch for only 2 branches is ill advised, as switches are not as easy to understand as if. In this case, it's most likely is a good idea to use a if statement</description>
 		<priority>5</priority>
@@ -104,7 +104,7 @@ switch(event.type){
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.switchrules.IdenticalSwitchCasesRule"
+	<rule class="org.apache.flex.pmd.rules.switchrules.IdenticalSwitchCasesRule"
 		message="Two switch cases should not be identical">
 		<priority>1</priority>
 	</rule>

@@ -16,10 +16,10 @@
  */
 package org.apache.flex.pmd.parser.impl;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import org.apache.flex.pmd.parser.exceptions.TokenException;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class NodeTest extends AbstractAs3ParserTestBase {
 

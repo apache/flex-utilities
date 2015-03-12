@@ -27,7 +27,7 @@
       The FlexUnit Ruleset contains a collection of good practices related to FlexUnit (1 and 4).
     </description>
     
-	<rule class="com.adobe.ac.pmd.rules.flexunit.EmptyUnitTest"
+	<rule class="org.apache.flex.pmd.rules.flexunit.EmptyUnitTest"
 		message="A test should contain at least one assertion">
 		<priority>3</priority>
 	</rule>

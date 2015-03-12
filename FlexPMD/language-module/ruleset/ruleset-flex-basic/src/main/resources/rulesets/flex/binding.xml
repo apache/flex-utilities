@@ -27,7 +27,7 @@
       The Binding ruleset contains a collection of good practices around usage of binding.
 	</description>
 
-	<rule class="com.adobe.ac.pmd.rules.binding.BindingUtilsRule"
+	<rule class="org.apache.flex.pmd.rules.binding.BindingUtilsRule"
 		message="BindingUtils class uses hard coded strings, which won't be picked up by the compiler if you rename this attribute. You should probably consider refactoring using events">
 		<description></description>
 		<priority>1</priority>
@@ -42,7 +42,7 @@ public class Controller extends FrontController
       	 </example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.binding.ChangeWatcherRule"
+	<rule class="org.apache.flex.pmd.rules.binding.ChangeWatcherRule"
 		message="ChangeWatcher class uses hard coded strings to specify the attribute name, to listen to. Prefer listening to events or setters">
 		<priority>1</priority>
 		<example>
@@ -53,7 +53,7 @@ public final class Title
 		</example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.binding.TooLongBindingExpressionRule"
+	<rule class="org.apache.flex.pmd.rules.binding.TooLongBindingExpressionRule"
 		message="This binding expression is too long ({0} dots maximum, but {1} actually)">
 		<description>A Binding expression is executed as soon as one of the bindable attributes changed. If a binding expression contains too many expression, there could be some performance issue.</description>
 		<priority>3</priority>

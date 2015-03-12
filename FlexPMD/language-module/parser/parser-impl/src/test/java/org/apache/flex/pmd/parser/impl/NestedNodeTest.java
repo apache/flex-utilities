@@ -16,19 +16,19 @@
  */
 package org.apache.flex.pmd.parser.impl;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import org.apache.flex.pmd.parser.NodeKind;
 import org.apache.flex.pmd.parser.exceptions.TokenException;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 public class NestedNodeTest extends AbstractAs3ParserTestBase {
 
     private NestedNode function;
 
     @Override
-    @BeforeMethod
+    @Before
     public void setUp() {
         super.setUp();
 

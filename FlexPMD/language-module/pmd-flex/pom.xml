@@ -43,11 +43,23 @@
             <artifactId>parser-impl</artifactId>
             <version>2.0.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.flex.pmd.ruleset</groupId>
+            <artifactId>ruleset-flex-basic</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+
 
         <dependency>
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-test</artifactId>
             <version>${pmd.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

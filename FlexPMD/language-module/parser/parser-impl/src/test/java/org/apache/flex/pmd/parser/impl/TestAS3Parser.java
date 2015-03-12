@@ -16,12 +16,12 @@
  */
 package org.apache.flex.pmd.parser.impl;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import org.apache.flex.pmd.parser.IParserNode;
 import org.apache.flex.pmd.parser.exceptions.TokenException;
 import org.apache.flex.pmd.utils.FileUtils;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;

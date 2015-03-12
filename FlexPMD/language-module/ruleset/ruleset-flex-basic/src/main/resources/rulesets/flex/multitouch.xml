@@ -27,12 +27,12 @@
       The MultiTouch ruleset contains a collection of good practices when developping multitouch applications.
 	</description>
 	
-	<rule since="1.2" class="com.adobe.ac.pmd.rules.multiscreen.AvoidRollMouseEventRule" 
+	<rule since="1.2" class="org.apache.flex.pmd.rules.multiscreen.AvoidRollMouseEventRule"
 			message="Roll mouse events are not getting caught by a multi-touch device.">
 		<priority>1</priority>
 	</rule>
 
-	<rule since="1.2" class="com.adobe.ac.pmd.rules.multiscreen.AvoidTooltipRule" 
+	<rule since="1.2" class="org.apache.flex.pmd.rules.multiscreen.AvoidTooltipRule"
 			message="Tooltip cannot be visible on a multi-touch device.">
 		<priority>1</priority>
 	</rule>

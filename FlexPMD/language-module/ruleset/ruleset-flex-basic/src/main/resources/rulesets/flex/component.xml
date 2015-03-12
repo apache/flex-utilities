@@ -28,14 +28,14 @@
    </description>
    
 	<rule
-		class="com.adobe.ac.pmd.rules.component.UpdateChildrenNumberInUpdateDisplayListRule"
+		class="org.apache.flex.pmd.rules.component.UpdateChildrenNumberInUpdateDisplayListRule"
 		message="Flex specific - Do not add or remove displayable children from updateDisplayList">
 		<description>UpdateDisplayList is called everytime a child is invalidated. So calling addChild or removeChild in this function could be really CPU consuming</description>
 		<priority>1</priority>
 		<example></example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.component.CallLaterDirectlyRule"
+	<rule class="org.apache.flex.pmd.rules.component.CallLaterDirectlyRule"
 		message="Flex specific - Don't call 'callLater' explicitly">
 		<description>If you needed to call 'callLater' explicitly, then you probably did not extend the correct component life cycle.</description>
 		<priority>1</priority>

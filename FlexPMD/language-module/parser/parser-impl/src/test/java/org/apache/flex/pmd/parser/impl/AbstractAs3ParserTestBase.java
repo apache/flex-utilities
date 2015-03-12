@@ -17,7 +17,7 @@
 package org.apache.flex.pmd.parser.impl;
 
 import org.apache.flex.pmd.parser.IParserNode;
-import org.testng.annotations.BeforeMethod;
+import org.junit.Before;
 
 public abstract class AbstractAs3ParserTestBase {
 
@@ -65,7 +65,7 @@ public abstract class AbstractAs3ParserTestBase {
     protected AS3Parser asp;
     protected AS3Scanner scn;
 
-    @BeforeMethod(alwaysRun = true)
+    @Before
     public void setUp() {
         asp = new AS3Parser(null);
         scn = asp.getScn();

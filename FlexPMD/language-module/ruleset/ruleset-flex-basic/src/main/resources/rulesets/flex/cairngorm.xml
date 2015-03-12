@@ -26,7 +26,7 @@
       The Cairngorm Ruleset contains a collection of good practices related to Cairngorm.
     </description>
     
-	<rule class="com.adobe.ac.pmd.rules.cairngorm.BindableModelLocatorRule"
+	<rule class="org.apache.flex.pmd.rules.cairngorm.BindableModelLocatorRule"
 		message="A modelLocator must not be Bindable at a class level">
 		<description>A bindable ModelLocator could leads to performance issues due to bindings</description>
 		<priority>1</priority>
@@ -39,7 +39,7 @@ public class BindableModelLocator // VIOLATION
 	</rule>
 	
 	<rule
-		class="com.adobe.ac.pmd.rules.cairngorm.ReferenceModelLocatorOutsideTheMainApplicationRule"
+		class="org.apache.flex.pmd.rules.cairngorm.ReferenceModelLocatorOutsideTheMainApplicationRule"
 		message="The ModelLocator should be only accessible from the main application file">
 		<description>The ModelLocator should be only accessible from the main application file. Then sub-models should be injected to the nested views.</description>
 		<priority>3</priority>
@@ -55,7 +55,7 @@ package business
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.cairngorm.FatControllerRule"
+	<rule class="org.apache.flex.pmd.rules.cairngorm.FatControllerRule"
 		message="A FrontController must nor add all its commands within the Controller constructor">
 		<description>Try split them into methods where you add commands depending on their functional area.</description>
 		<priority>3</priority>
@@ -88,7 +88,7 @@ package control
 	</rule>
 
 	<rule
-		class="com.adobe.ac.pmd.rules.cairngorm.BadCairngormEventNameFormatRule"
+		class="org.apache.flex.pmd.rules.cairngorm.BadCairngormEventNameFormatRule"
 		message="A Cairngorm event name should contain the function area name before the actual event name">
 		<description>You would have something like 'productManagement.getProducts' as an event name.</description>
 		<priority>3</priority>
@@ -113,7 +113,7 @@ public class UncorrectConstantEvent extends CairngormEnterpriseEvent
        </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.cairngorm.CairngormEventDispatcherCallExplicitlyRule"
+	<rule class="org.apache.flex.pmd.rules.cairngorm.CairngormEventDispatcherCallExplicitlyRule"
 		  message="CairngormEventDispatcher is called explicitly. {0}">
 		  <priority>3</priority>
 		  <example>
@@ -127,7 +127,7 @@ public function foo() : void
 		  </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.cairngorm.ModelLocatorReferencedMoreThanOncePerClassRule"
+	<rule class="org.apache.flex.pmd.rules.cairngorm.ModelLocatorReferencedMoreThanOncePerClassRule"
 		message="Only one reference of ModelLocator is allowed per class">
 		<priority>3</priority>
 	</rule>

@@ -29,19 +29,19 @@
     </description>
     
 	<rule 
-		class="com.adobe.ac.pmd.rules.asdocs.AttributeAsDocMissingRule"
+		class="org.apache.flex.pmd.rules.asdocs.AttributeAsDocMissingRule"
 		message="This attribute ({0}) should be documented with AsDocs.">
 		<priority>3</priority>
 	</rule>
 
 	<rule 
-		class="com.adobe.ac.pmd.rules.asdocs.ClassAsDocMissingRule"
+		class="org.apache.flex.pmd.rules.asdocs.ClassAsDocMissingRule"
 		message="This class ({0}) should be documented with AsDocs.">
 		<priority>3</priority>
 	</rule>
 
 	<rule 
-		class="com.adobe.ac.pmd.rules.asdocs.MethodAsDocMissingRule"
+		class="org.apache.flex.pmd.rules.asdocs.MethodAsDocMissingRule"
 		message="This method ({0}) should be documented with AsDocs.">
 		<priority>3</priority>
 	</rule>

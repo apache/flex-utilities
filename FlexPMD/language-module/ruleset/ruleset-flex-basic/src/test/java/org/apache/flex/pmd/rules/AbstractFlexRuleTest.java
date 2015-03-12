@@ -16,20 +16,19 @@
  */
 package org.apache.flex.pmd.rules;
 
+import static org.junit.Assert.*;
+
 import org.apache.flex.pmd.files.IFlexFile;
 import org.apache.flex.pmd.parser.exceptions.TokenException;
 import org.apache.flex.pmd.rules.core.AbstractFlexRule;
 import org.apache.flex.pmd.rules.core.ViolationPosition;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.fail;
 
 public abstract class AbstractFlexRuleTest extends FlexPmdTestBase {
     final static class AssertPosition {
@@ -172,8 +171,8 @@ public abstract class AbstractFlexRuleTest extends FlexPmdTestBase {
         try {
             final List<IFlexViolation> violations = processFile(resourcePath);
 
-            assertEquals(violations.size(), expectedPositions.length,
-                    VIOLATIONS_NUMBER_NOT_CORRECT + " for " + resourcePath);
+            assertEquals(VIOLATIONS_NUMBER_NOT_CORRECT + " for " + resourcePath,
+                    violations.size(), expectedPositions.length);
 
             if (expectedPositions.length != 0) {
                 printFailures(buildFailureViolations(resourcePath,

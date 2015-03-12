@@ -27,7 +27,7 @@
       The Empty ruleset contains a collection of rules detecting empty statements.
 	</description>
 	
-	<rule class="com.adobe.ac.pmd.rules.empty.EmptyCatchStatementRule"
+	<rule class="org.apache.flex.pmd.rules.empty.EmptyCatchStatementRule"
 		message="This catch statement is empty">
 		<priority>3</priority>
 		<example>
@@ -46,7 +46,7 @@ public class Foo
 		</example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.empty.EmptyIfStmtRule"
+	<rule class="org.apache.flex.pmd.rules.empty.EmptyIfStmtRule"
 		message="No statements in this if statement">
 		<description>Empty If Statement finds instances where a condition is checked but nothing is done about it. </description>
 		<priority>3</priority>

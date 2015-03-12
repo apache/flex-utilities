@@ -25,7 +25,7 @@
 	
 	<description/>
 	
-	<rule class="com.adobe.ac.pmd.rules.style.TabUsedAsIndentorRule" message="Tabulations are not accepted for indentation. Please use spaces instead.">
+	<rule class="org.apache.flex.pmd.rules.style.TabUsedAsIndentorRule" message="Tabulations are not accepted for indentation. Please use spaces instead.">
 		<priority>3</priority>
 	</rule>
 		

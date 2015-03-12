@@ -16,7 +16,7 @@
  */
 package org.apache.flex.pmd.parser.impl;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import org.apache.flex.pmd.parser.exceptions.TokenException;
 
@@ -28,7 +28,7 @@ public abstract class AbstractStatementTestBase extends AbstractAs3ParserTestBas
         scn.setLines(new String[] {input, "__END__"});
         asp.nextToken();
         final String result = new ASTToXMLConverter().convert(asp.parseStatement());
-        assertEquals(expected, result, message);
+        assertEquals(message, expected, result);
     }
 
 }

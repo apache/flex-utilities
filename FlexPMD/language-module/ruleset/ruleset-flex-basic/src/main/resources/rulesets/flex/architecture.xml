@@ -27,9 +27,10 @@
       The Architecture ruleset contains a collection of good practices around architecture.
 	</description>
 	
-	<rule class="com.adobe.ac.pmd.rules.architecture.ViewComponentReferencedInModelRule"
-		message="A view component should not be referenced in a model class"
-        language="flex">
+	<rule name="ViewComponentReferencedInModelRule"
+          class="org.apache.flex.pmd.rules.architecture.ViewComponentReferencedInModelRule"
+          message="A view component should not be referenced in a model class"
+          language="flex">
 		<description></description>
 		<priority>3</priority>
 		<example>
@@ -44,14 +45,18 @@ package com.adobe.ac
       </example>
 	</rule>
 
-	<rule class="org.apache.flex.pmd.rules.architecture.MonkeyPatchingRule"
-		message="This class looks to be duplicated with a SDK class">
+	<rule name="MonkeyPatchingRule"
+          class="org.apache.flex.pmd.rules.architecture.MonkeyPatchingRule"
+          message="This class looks to be duplicated with a SDK class"
+          language="flex">
 		<description>Monkey patching can be a risky undertaking because it is not using intended extensibility points and thus may have unintended consequences or make migration to newer versions of the SDK more difficult</description>
 		<priority>1</priority>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.architecture.UseInternalClassOutsideApiClass"
-		message="This class imports an internal class ({0}) from another function area ({1})">
+	<rule name="UseInternalClassOutsideApiClass"
+          class="org.apache.flex.pmd.rules.architecture.UseInternalClassOutsideApiClass"
+          message="This class imports an internal class ({0}) from another function area ({1})"
+          language="flex">
 		<description>If you have different functionalities, you probably don't want every class of each to be accessible from any other functional areas.
 So you probably want to use this packaging:
 [org].[project].func1.api

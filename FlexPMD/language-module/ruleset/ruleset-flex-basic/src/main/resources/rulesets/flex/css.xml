@@ -28,13 +28,13 @@
 		styling.
     </description>
     
-	<rule class="com.adobe.ac.pmd.rules.css.StyleBlockInMxmlRule"
+	<rule class="org.apache.flex.pmd.rules.css.StyleBlockInMxmlRule"
 		message="The style block is embed in the MXML file">
 		<description>It is not a good practice to embed style blocks inside the MXML component. Prefer using external CSS files.</description>
 		<priority>3</priority>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.css.UseCssInsteadOfEmbedMetaDataRule"
+	<rule class="org.apache.flex.pmd.rules.css.UseCssInsteadOfEmbedMetaDataRule"
 		message="Embed metadata detected in source code where a stylesheet may be cleaner">
 		<priority>5</priority>
 	</rule>

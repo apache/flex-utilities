@@ -29,7 +29,7 @@
     </description>
     
 	<rule 
-		class="com.adobe.ac.pmd.rules.parsley.InaccessibleMetaDataRule"
+		class="org.apache.flex.pmd.rules.parsley.InaccessibleMetaDataRule"
 		message="Parsley metadata should not be placed on inaccessible members.">
 		<description>Parsley can only process metadata that is placed onto public members.</description>
 		<priority>1</priority>
@@ -42,7 +42,7 @@ private function doSomething() : void // VIOLATION
 	</rule>
 
 	<rule 
-		class="com.adobe.ac.pmd.rules.parsley.MismatchedManagedEventRule"
+		class="org.apache.flex.pmd.rules.parsley.MismatchedManagedEventRule"
 		message="Managed events should have matching [Event] metadata">
 		<description>Each managed event should have matching [Event] metadata.</description>
 		<priority>1</priority>
@@ -56,7 +56,7 @@ public class MyClass
 	</rule>
 
 	<rule 
-		class="com.adobe.ac.pmd.rules.parsley.MessageInterceptorSignatureRule"
+		class="org.apache.flex.pmd.rules.parsley.MessageInterceptorSignatureRule"
 		message="The signature of the message interceptor {0} is not correct. {1}.">
 		<description></description>
 		<priority>1</priority>
@@ -87,7 +87,7 @@ public function messageInterceptor( processor : MessageProcessor, type : MyMessa
 	</rule>
 
 	<rule 
-		class="com.adobe.ac.pmd.rules.parsley.MisplacedMetaDataRule"
+		class="org.apache.flex.pmd.rules.parsley.MisplacedMetaDataRule"
 		message="This metadata {0} is misplaced">
 		<description></description>
 		<priority>1</priority>
@@ -96,7 +96,7 @@ public function messageInterceptor( processor : MessageProcessor, type : MyMessa
 	</rule>
 
 	<rule 
-		class="com.adobe.ac.pmd.rules.parsley.RedundantMessageHandlerTypeAttributeRule"
+		class="org.apache.flex.pmd.rules.parsley.RedundantMessageHandlerTypeAttributeRule"
 		message="This type metadata argument is redundant with the handler argument type">
 		<description></description>
 		<priority>3</priority>
@@ -111,7 +111,7 @@ public function doSomething( message : MyMessage ) : void
 	</rule>
 
 	<rule 
-		class="com.adobe.ac.pmd.rules.parsley.RedundantMethodAttributeRule"
+		class="org.apache.flex.pmd.rules.parsley.RedundantMethodAttributeRule"
 		message="This method metadata argument is redundant with the handler name">
 		<priority>3</priority>
 		<example> <![CDATA[
@@ -124,7 +124,7 @@ public function doSomething( message : MyMessage ) : void
 	</rule>
 
 	<rule 
-		class="com.adobe.ac.pmd.rules.parsley.UnknownMetaDataAttributeRule"
+		class="org.apache.flex.pmd.rules.parsley.UnknownMetaDataAttributeRule"
 		message="This metadata attribute {0} is unknown">
 		<description></description>
 		<priority>1</priority>

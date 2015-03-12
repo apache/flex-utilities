@@ -27,7 +27,7 @@
       The Basic As3 Ruleset contains a collection of good practices which everyone should follow.
   </description>
   
-	<rule class="com.adobe.ac.pmd.rules.naming.TooShortVariableRule"
+	<rule class="org.apache.flex.pmd.rules.naming.TooShortVariableRule"
 		message="This variable name is too short ({0} characters minimum, but {1} actually)">
 		<description>Detects when a field, local, or parameter has a very short name.</description>
 		<priority>5</priority>
@@ -49,7 +49,7 @@ public class Something
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.naming.PackageCaseRule"
+	<rule class="org.apache.flex.pmd.rules.naming.PackageCaseRule"
 		message="A package name should be lower case ({0})">
 		<description>Detects when a package definition contains upper case characters.</description>
 		<priority>3</priority>
@@ -65,7 +65,7 @@ package com.MyCompany  // VIOLATION <- should be lower case name
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.naming.VariableNameEndingWithNumericRule"
+	<rule class="org.apache.flex.pmd.rules.naming.VariableNameEndingWithNumericRule"
 		message="Using digits at the end of a symbol does not help understanging the meaning of it. ({0})">
 		<priority>3</priority>
 		<example>
@@ -78,7 +78,7 @@ public class SomeClass
 		</example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.naming.PropertyHiddenByLocalVariableRule"
+	<rule class="org.apache.flex.pmd.rules.naming.PropertyHiddenByLocalVariableRule"
 		message="A class property is hidden by this local variable ({0})">
 		<priority>3</priority>
 		<example>
@@ -94,7 +94,7 @@ public class SomeClass
 		</example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.naming.IncorrectClassCase"
+	<rule class="org.apache.flex.pmd.rules.naming.IncorrectClassCase"
 		message="A class name must start by an uppercase character">
 		<description></description>
 		<priority>3</priority>
@@ -105,7 +105,7 @@ public class foo // VIOLATION
       </example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.naming.WronglyNamedVariableRule"
+	<rule class="org.apache.flex.pmd.rules.naming.WronglyNamedVariableRule"
 		message="This variable ({0}) seems to be incorrectly named. Let your creativity flow">
 		<priority>3</priority>	
 		<example>
@@ -123,22 +123,22 @@ public class SomeClass
 		</example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.naming.BooleanAttributeShouldContainIsHasRule"
+	<rule class="org.apache.flex.pmd.rules.naming.BooleanAttributeShouldContainIsHasRule"
 		message="Differentiate the Boolean variables from other variable types ({0}); for example: canAnimate, isConnected, or hasChildren.">
 		<priority>5</priority>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.naming.CapitalizeConstantsRule"
+	<rule class="org.apache.flex.pmd.rules.naming.CapitalizeConstantsRule"
 		message="Constant variables should be in all CAPS with each word separated by an underscore ({0})">
 		<priority>3</priority>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.naming.InterfaceNamingRule"
+	<rule class="org.apache.flex.pmd.rules.naming.InterfaceNamingRule"
 		message="Interface name should start with I">
 		<priority>1</priority>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.naming.TooLongFunctionNameRule"
+	<rule class="org.apache.flex.pmd.rules.naming.TooLongFunctionNameRule"
 		message="This function name ({0}) is too long ({1} characters minimum, but {2} actually)">
 		<priority>5</priority>
 		<properties>
@@ -148,7 +148,7 @@ public class SomeClass
 		</properties>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.naming.IncorrectEventHandlerNameRule"
+	<rule class="org.apache.flex.pmd.rules.naming.IncorrectEventHandlerNameRule"
 		message="This event handler name ({0}) is not correct. You should use [{1}] as prefix and [{2}] as suffix">
 		<priority>5</priority>
 		<properties>

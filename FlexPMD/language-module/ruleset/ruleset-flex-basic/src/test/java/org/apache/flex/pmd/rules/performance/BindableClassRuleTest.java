@@ -19,7 +19,7 @@ package org.apache.flex.pmd.rules.performance;
 import org.apache.flex.pmd.rules.AbstractAstFlexRuleTest;
 import org.apache.flex.pmd.rules.core.AbstractFlexRule;
 import org.apache.flex.pmd.rules.core.ViolationPosition;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 // This test requires test-data that was not donated to Apache
 public class BindableClassRuleTest /*extends AbstractAstFlexRuleTest*/ {

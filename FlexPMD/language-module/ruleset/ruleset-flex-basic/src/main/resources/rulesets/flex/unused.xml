@@ -27,7 +27,7 @@
       The Architecture ruleset contains a collection of good practices around architecture.
 	</description>
 	
-	<rule class="com.adobe.ac.pmd.rules.unused.UnusedParameterRule"
+	<rule class="org.apache.flex.pmd.rules.unused.UnusedParameterRule"
 		message="This parameter ({0}) of this function is not used">
 		<description>
       </description>
@@ -40,7 +40,7 @@
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.unused.UnusedLocalVariableRule"
+	<rule class="org.apache.flex.pmd.rules.unused.UnusedLocalVariableRule"
 		message="This variable ({0}) is not used">
 		<description>
       </description>
@@ -53,7 +53,7 @@
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.unused.UnusedPrivateMethodRule"
+	<rule class="org.apache.flex.pmd.rules.unused.UnusedPrivateMethodRule"
 		message="This private method ({0}) does not seem to be used">
 		<description>
       </description>
@@ -62,7 +62,7 @@
       </example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.unused.UnusedFieldRule"
+	<rule class="org.apache.flex.pmd.rules.unused.UnusedFieldRule"
 		message="This private attribute ({0}) does not seem to be used">
 		<description>
       </description>
@@ -71,7 +71,7 @@
       </example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.unused.EmptyPrivateMethodRule"
+	<rule class="org.apache.flex.pmd.rules.unused.EmptyPrivateMethodRule"
 		message="This private method ({0}) is used but its content is empty">
 		<description>
       </description>

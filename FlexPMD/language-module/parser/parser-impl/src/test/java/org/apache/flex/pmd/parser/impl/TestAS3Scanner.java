@@ -16,10 +16,10 @@
  */
 package org.apache.flex.pmd.parser.impl;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import org.apache.flex.pmd.parser.ast.Token;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public class TestAS3Scanner extends AbstractAs3ParserTestBase {
 
@@ -304,8 +304,7 @@ public class TestAS3Scanner extends AbstractAs3ParserTestBase {
     private void assertText(final String message,
                             final String text) {
         Token token = scn.nextToken();
-        assertEquals(text,
-                token.getText(), message);
+        assertEquals(message, text, token.getText());
     }
 
     private String join(final String[] lines,

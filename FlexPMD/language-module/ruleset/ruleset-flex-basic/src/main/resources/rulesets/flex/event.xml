@@ -27,7 +27,7 @@
       The Event ruleset contains a collection of rules related to event bad practices.
 	</description>
 	
-	<rule class="com.adobe.ac.pmd.rules.event.EventMissingCloneFunctionRule"
+	<rule class="org.apache.flex.pmd.rules.event.EventMissingCloneFunctionRule"
 		message="The clone event must be overiden in a custom event">
 		<description>When creating your own custom Event class, you must override the inherited Event.clone() method in order for it to duplicate the properties of your custom class. If you do not set all the properties that you add in your event subclass, those properties will not have the correct values when the event is cloned. This is important because the Flex SDK clones events whenever redispatching takes place. </description>
 		<priority>1</priority>
@@ -44,7 +44,7 @@ public class FirstCustomEvent   // VIOLATION - clone method is missing
 	</rule>
 	
 	<rule
-		class="com.adobe.ac.pmd.rules.event.PublicVariableInCustomEventRule"
+		class="org.apache.flex.pmd.rules.event.PublicVariableInCustomEventRule"
 		message="No public variables should be inside a custom event. This variable ({0}) is public">
 		<description>In order to improve encapsulation in your custom event, it is better not to have public variable in your event. Prefer having read-only attributes, set by the event constructor.</description>
 		<priority>3</priority>
@@ -61,7 +61,7 @@ public class FirstCustomEvent
 	</rule>
 	
 	<rule
-		class="com.adobe.ac.pmd.rules.event.ConstructorDispatchingEventRule"
+		class="org.apache.flex.pmd.rules.event.ConstructorDispatchingEventRule"
 		message="An event is dispatched in a constructor">
 		<description>This is pointless, since event listeners cannot be attached to an object before it has been constructed, so nothing can ever hear the event</description>
 		<priority>1</priority>
@@ -75,7 +75,7 @@ public class BigModel
 }
 		</example>
 	</rule>
-	<rule class="com.adobe.ac.pmd.rules.event.DefaultEventNameRule"
+	<rule class="org.apache.flex.pmd.rules.event.DefaultEventNameRule"
 		message="Event name should be set explicitly">
 		<priority>3</priority>
 		<example>
@@ -89,7 +89,7 @@ public class DefaultNameEvent extends Event
 		</example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.event.DispatchHardCodedEventNameRule"
+	<rule class="org.apache.flex.pmd.rules.event.DispatchHardCodedEventNameRule"
 		message="DispatchEvent function must dispatch constant strings">
 		<description>You should not dispatch a plain string. If you rename this string, you need to replace the string listener as well. Use constants instead</description>
 		<priority>1</priority>
@@ -105,7 +105,7 @@ public class Foo
 	</rule>
 	
 	<rule
-		class="com.adobe.ac.pmd.rules.event.ListenForHardCodedEventNameRule"
+		class="org.apache.flex.pmd.rules.event.ListenForHardCodedEventNameRule"
 		message="addEventListener must not contain hard coded strings">
 		<description>You should not listen for a plain string. If you rename this string, you need to replace the string listener as well. Use constants instead</description>
 		<priority>1</priority>
@@ -121,7 +121,7 @@ public class Foo
 	</rule>
 	
 	<rule
-		class="com.adobe.ac.pmd.rules.event.UnboundTypeInMetadataRule"
+		class="org.apache.flex.pmd.rules.event.UnboundTypeInMetadataRule"
 		message="This type ({0}) was not found within the scope against which PMD was run">
 		<priority>1</priority>
 		<example>
@@ -133,7 +133,7 @@ public class UnboundMetadata
 	</rule>
 	
 	<rule
-		class="com.adobe.ac.pmd.rules.event.UntypedEventMetadataRule"
+		class="org.apache.flex.pmd.rules.event.UntypedEventMetadataRule"
 		message="This event type is not specified">
 		<description>Specifying a type will allow Flash builder and the class to have this event exposed in its API</description>
 		<priority>3</priority>

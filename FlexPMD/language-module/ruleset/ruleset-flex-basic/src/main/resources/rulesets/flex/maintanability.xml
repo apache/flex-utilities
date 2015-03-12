@@ -27,16 +27,16 @@
       The Maintanability ruleset contains a collection of good practices around Maintanability.
 	</description>
 	
-	<rule since="1.1" class="com.adobe.ac.pmd.rules.maintanability.OnlyOneReturnRule" message="A method should have only one exit point, and that should be the last statement in the method">
+	<rule since="1.1" class="org.apache.flex.pmd.rules.maintanability.OnlyOneReturnRule" message="A method should have only one exit point, and that should be the last statement in the method">
 		<priority>3</priority>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.maintanability.AlertShowRule" message="Do not call Alert.show directly">
+	<rule class="org.apache.flex.pmd.rules.maintanability.AlertShowRule" message="Do not call Alert.show directly">
 		<description>You should not Alert.show() directly. If an error occurred in the system, you should probably use an ErrorManager to have a consistent way to manage those errors.</description>
 		<priority>1</priority>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.ExcessiveImportRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.ExcessiveImportRule"
 		message="A high number of imports can indicate a high degree of coupling within an object. ({0} maximum but {1} actually)">
 		<description>A high number of imports can indicate a high degree of coupling within an object. Rule counts the number of unique imports and reports a violation if the count is above the user defined threshold.</description>
 		<priority>3</priority>
@@ -58,7 +58,7 @@ public class Foo
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.TrueFalseConditionRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.TrueFalseConditionRule"
 		message="This test contains a hard coded boolean value. You could remove it by having '{0}'">
 		<priority>3</priority>
 		<example>
@@ -71,12 +71,12 @@ if ( true ) // VIOLATION
 		</example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.AvoidUsingPublicStaticFieldRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.AvoidUsingPublicStaticFieldRule"
 	message="If this field ({0}) was meant to be a constant, make it constant. Otherwise, if it is used as a global variable, you may want to redesign this class">
 		<priority>3</priority>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.DynamicClassRule" message="A class must not be dynamic">
+	<rule class="org.apache.flex.pmd.rules.maintanability.DynamicClassRule" message="A class must not be dynamic">
 		<description>When using dynamic classes, you cannot control how the developer will use your class. It makes refactoring really difficult</description>
 		<priority>1</priority>
 		<example>
@@ -86,7 +86,7 @@ dynamic public class DynamicObject // VIOLATION
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.forbiddentypes.UseObjectTypeRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.forbiddentypes.UseObjectTypeRule"
 		message="Do not use Object class">
 		<description>It is a bad practice to use the dynamic class Object. Prefer using strongly typed object, or marker interface in order to avoid silent compilation errors while refactoring</description>
 		<priority>1</priority>
@@ -98,7 +98,7 @@ public class Foo
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.forbiddentypes.UseDictionaryTypeRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.forbiddentypes.UseDictionaryTypeRule"
 		message="Do not use Dictionnary class">
 		<description>It is a bad practice to use the dynamic class Dictionary. Prefer using strongly typed object, or marker interface in order to avoid silent compilation errors while refactoring</description>
 		<priority>1</priority>
@@ -110,7 +110,7 @@ public class Foo
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.NonStaticConstantFieldRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.NonStaticConstantFieldRule"
 		message="A constant field should be static ({0})">
 		<description>
       </description>
@@ -123,7 +123,7 @@ public class MyObject {
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.forbiddentypes.UseGenericTypeRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.forbiddentypes.UseGenericTypeRule"
 		message="Use strongly typed objects instead of *">
 		<description></description>
 		<priority>1</priority>
@@ -135,7 +135,7 @@ public class Foo
         </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.UselessOverridenFunctionRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.UselessOverridenFunctionRule"
 		message="This method is empty. This should be removed ({0})">
 		<description>This function is not needed.</description>
 		<priority>3</priority>
@@ -147,7 +147,7 @@ override protected function createChildren() : void
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.AvoidProtectedFieldInFinalClassRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.AvoidProtectedFieldInFinalClassRule"
 		message="Protected accessors are useless in a final class. Make it private ({0})">
 		<priority>3</priority>
 		<example>
@@ -158,12 +158,12 @@ final public class Foo
         </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.AvoidUsingWithKeyWordRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.AvoidUsingWithKeyWordRule"
 		message="You should not use the with keyword. It does not help readability">
 		<priority>3</priority>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementTypeRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.ArrayFieldWithNoArrayElementTypeRule"
 		message="ArrayElementType metadata is not specified for this array-type field ({0})">
 		<description>
         </description>
@@ -178,7 +178,7 @@ public class ArrayVO {
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.ClassAndExtensionAreIdenticalRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.ClassAndExtensionAreIdenticalRule"
 		message="The extension name is the same as the class name">
 		<description/>
 		<priority>3</priority>
@@ -192,7 +192,7 @@ package com.MyCompany
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.ProtectedStaticMethodRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.ProtectedStaticMethodRule"
 		message="This method ({0}) should be private">
 		<description/>
 		<priority>3</priority>
@@ -203,7 +203,7 @@ protected static function foo() : void // VIOLATION
 		</example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.EmptyStatementRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.EmptyStatementRule"
 		message="This statement is empty">
 		<description/>
 		<priority>5</priority>
@@ -217,7 +217,7 @@ protected function foo() : void
 		</example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.maintanability.ReferenceToVariableBindingFromItsInitializerRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.ReferenceToVariableBindingFromItsInitializerRule"
 		message="The initializer refers to its variable. Its value will be null.">
 		<priority>1</priority>
 		<example>
@@ -230,7 +230,7 @@ package
 } 		
 		</example>
 	</rule>
-	<rule class="com.adobe.ac.pmd.rules.maintanability.AvoidUseOfAsKeywordRule"
+	<rule class="org.apache.flex.pmd.rules.maintanability.AvoidUseOfAsKeywordRule"
 		message="Enforce that as is not used (silently ignores the cast and nulls the property when the type is wrong)">
 		<priority>5</priority>
 	</rule>

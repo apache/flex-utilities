@@ -27,7 +27,7 @@
       The Architecture ruleset contains a collection of good practices around architecture.
 	</description>
 
-	<rule class="com.adobe.ac.pmd.rules.style.ConstructorNonEmptyReturnTypeRule"
+	<rule class="org.apache.flex.pmd.rules.style.ConstructorNonEmptyReturnTypeRule"
 		message="A constructor should not have a return type">
 		<description>Even if this is syntactically correct, there should not be a return type for a constructor.</description>
 		<priority>5</priority>
@@ -41,7 +41,7 @@
       </example>
 	</rule>
 
-	<rule class="com.adobe.ac.pmd.rules.style.OverLongLineRule"
+	<rule class="org.apache.flex.pmd.rules.style.OverLongLineRule"
 		message="Too long line ({0} maximum, but {1} actually)">
 		<description></description>
 		<priority>5</priority>
@@ -54,7 +54,7 @@
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.style.ImportFromSamePackageRule"
+	<rule class="org.apache.flex.pmd.rules.style.ImportFromSamePackageRule"
 		message="Imports from the same package are not necessary">
 		<description></description>
 		<priority>5</priority>
@@ -71,12 +71,12 @@ package com.adobe.ac
       </example>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.style.CopyrightMissingRule"
+	<rule class="org.apache.flex.pmd.rules.style.CopyrightMissingRule"
 		message="The copyright header is missing in this file">
 		<priority>5</priority>
 	</rule>
 	
-	<rule class="com.adobe.ac.pmd.rules.style.BadFormatLoggerRule"
+	<rule class="org.apache.flex.pmd.rules.style.BadFormatLoggerRule"
 		message="The logger is not correctly formatted because {0}">
 		<description></description>
 		<priority>5</priority>

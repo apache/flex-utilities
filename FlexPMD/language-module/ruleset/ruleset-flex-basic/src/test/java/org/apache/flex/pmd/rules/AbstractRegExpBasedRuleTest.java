@@ -16,10 +16,11 @@
  */
 package org.apache.flex.pmd.rules;
 
+import static org.junit.Assert.*;
+
 import org.apache.flex.pmd.rules.core.AbstractFlexRule;
 import org.apache.flex.pmd.rules.core.AbstractRegexpBasedRule;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 public abstract class AbstractRegExpBasedRuleTest extends AbstractFlexRuleTest {
     @Test
@@ -27,13 +28,13 @@ public abstract class AbstractRegExpBasedRuleTest extends AbstractFlexRuleTest {
         final AbstractRegexpBasedRule rule = getRegexpBasedRule();
 
         if (getMatchableLines().length == 0) {
-            Assert.fail("the getMatchableLines() is empty");
+            fail("the getMatchableLines() is empty");
         }
         for (int i = 0; i < getMatchableLines().length; i++) {
             final String correctLine = getMatchableLines()[i];
 
-            Assert.assertTrue(rule.doesCurrentLineMacthes(correctLine),
-                    "This line (\"" + correctLine + "\") should be matched");
+            assertTrue("This line (\"" + correctLine + "\") should be matched",
+                    rule.doesCurrentLineMacthes(correctLine));
         }
     }
 
@@ -42,13 +43,13 @@ public abstract class AbstractRegExpBasedRuleTest extends AbstractFlexRuleTest {
         final AbstractRegexpBasedRule rule = getRegexpBasedRule();
 
         if (getUnmatchableLines().length == 0) {
-            Assert.fail("the getUnmatchableLines() is empty");
+            fail("the getUnmatchableLines() is empty");
         }
         for (int i = 0; i < getUnmatchableLines().length; i++) {
             final String incorrectLine = getUnmatchableLines()[i];
 
-            Assert.assertFalse(rule.doesCurrentLineMacthes(incorrectLine),
-                    "This line  (\"" + incorrectLine + "\") should not be matched");
+            assertFalse("This line  (\"" + incorrectLine + "\") should not be matched",
+                    rule.doesCurrentLineMacthes(incorrectLine));
         }
     }
 

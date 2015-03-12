@@ -16,11 +16,12 @@
  */
 package org.apache.flex.pmd.parser.impl;
 
-import static org.testng.Assert.*;
+import static org.junit.Assert.*;
 
 import org.apache.flex.pmd.parser.ast.Token;
 import org.apache.flex.pmd.utils.FileUtils;
-import org.testng.annotations.Test;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +29,8 @@ import java.net.URISyntaxException;
 
 public class TestAS3ScannerWithFiles extends AbstractAs3ParserTestBase {
 
-    @Test(enabled = false)
-    // Simple.as has the completely wrong structure ... have to fix this first.
+    @Test
+    @Ignore("Simple.as has the completely wrong structure ... have to fix this first.")
     public void testSimple() throws IOException,
             URISyntaxException {
         final String[] expected = new String[]
@@ -53,9 +54,9 @@ public class TestAS3ScannerWithFiles extends AbstractAs3ParserTestBase {
                         ";",
                         "}",
                         "}"};
-/*      assertFile( expected,
+      assertFile( expected,
                   "Simple.as" );
-*/
+
     }
 
     private void assertFile(final String[] expected,
