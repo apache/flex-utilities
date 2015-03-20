@@ -16,11 +16,5 @@
  */
 package org.apache.flex.maven.plugins.flex.packager;
 
-/**
- * Created with IntelliJ IDEA.
- * User: cdutz
- * Date: 01.12.12
- * Time: 23:13
- */
 public interface Packager {
 }

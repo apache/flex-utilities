@@ -58,10 +58,7 @@ import java.io.Reader;
  * execution.
  *
  * Created with IntelliJ IDEA.
- * User: cdutz
  * Date: 03.11.13
- *
- * @author Christofer Dutz
  */
 public class AetherDeployer {
 

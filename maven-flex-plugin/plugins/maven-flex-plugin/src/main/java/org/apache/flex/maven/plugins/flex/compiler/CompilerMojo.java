@@ -24,12 +24,6 @@ import org.apache.maven.project.MavenProject;
 
 import java.util.Map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: cdutz
- * Date: 01.12.12
- * Time: 17:48
- */
 @Mojo(name = "compile",
         defaultPhase = LifecyclePhase.COMPILE,
         requiresDependencyResolution = ResolutionScope.COMPILE,
