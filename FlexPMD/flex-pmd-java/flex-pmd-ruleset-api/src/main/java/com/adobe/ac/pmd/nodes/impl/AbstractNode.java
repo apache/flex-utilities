@@ -24,9 +24,6 @@ import com.adobe.ac.pmd.nodes.INode;
 import com.adobe.ac.pmd.nodes.Modifier;
 import com.adobe.ac.pmd.parser.IParserNode;
 
-/**
- * @author xagnetti
- */
 abstract class AbstractNode implements INode
 {
    protected static final Logger LOGGER = Logger.getLogger( "Node" );

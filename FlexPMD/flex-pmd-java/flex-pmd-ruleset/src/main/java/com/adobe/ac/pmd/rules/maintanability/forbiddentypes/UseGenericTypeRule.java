@@ -18,9 +18,6 @@ package com.adobe.ac.pmd.rules.maintanability.forbiddentypes;
 
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class UseGenericTypeRule extends AbstractUseForbiddenTypeRule // NO_UCD
 {
    private static final String STAR = "*";

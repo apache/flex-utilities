@@ -22,9 +22,6 @@ import java.util.regex.Matcher;
 import com.adobe.ac.pmd.rules.core.AbstractRegexpBasedRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class ViewComponentReferencedInModelRule extends AbstractRegexpBasedRule // NO_UCD
 {
    private static final String ALERT_CLASS_NAME           = "Alert";

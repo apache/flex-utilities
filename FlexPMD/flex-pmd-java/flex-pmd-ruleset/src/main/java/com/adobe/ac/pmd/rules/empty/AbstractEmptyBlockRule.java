@@ -20,9 +20,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.parser.NodeKind;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 
-/**
- * @author xagnetti
- */
 public abstract class AbstractEmptyBlockRule extends AbstractAstFlexRule
 {
    /**

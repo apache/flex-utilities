@@ -16,9 +16,6 @@
  */
 package com.adobe.ac.pmd.parser;
 
-/**
- * @author xagnetti
- */
 public enum NodeKind
 {
    ADD("add"),

@@ -25,7 +25,6 @@ package
 	
 	/**
 	 *   An app to test function call performance
-	 *   @author Jackson Dunstan
 	 */
 	public class FunctionPerformanceTest extends Base implements IInterface
 	{

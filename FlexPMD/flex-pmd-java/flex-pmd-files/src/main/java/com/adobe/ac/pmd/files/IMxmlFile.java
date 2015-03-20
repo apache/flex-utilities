@@ -16,9 +16,6 @@
  */
 package com.adobe.ac.pmd.files;
 
-/**
- * @author xagnetti
- */
 public interface IMxmlFile extends IFlexFile
 {
    /**

@@ -25,9 +25,6 @@ import com.adobe.ac.pmd.nodes.IPackage;
 import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.parser.NodeKind;
 
-/**
- * @author xagnetti
- */
 class PackageNode extends AbstractNode implements IPackage
 {
    private IClass                    classNode;

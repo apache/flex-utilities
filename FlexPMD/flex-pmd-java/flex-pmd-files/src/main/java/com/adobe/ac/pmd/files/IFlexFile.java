@@ -18,9 +18,6 @@ package com.adobe.ac.pmd.files;
 
 import java.util.Set;
 
-/**
- * @author xagnetti
- */
 public interface IFlexFile
 {
    /**

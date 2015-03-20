@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.rules.css;
 import com.adobe.ac.pmd.rules.core.AbstractRegexpBasedRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class StyleBlockInMxmlRule extends AbstractRegexpBasedRule
 {
    /*

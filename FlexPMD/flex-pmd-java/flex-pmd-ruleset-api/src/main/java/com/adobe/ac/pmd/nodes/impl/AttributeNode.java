@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.nodes.impl;
 import com.adobe.ac.pmd.nodes.IAttribute;
 import com.adobe.ac.pmd.parser.IParserNode;
 
-/**
- * @author xagnetti
- */
 class AttributeNode extends FieldNode implements IAttribute
 {
    /**

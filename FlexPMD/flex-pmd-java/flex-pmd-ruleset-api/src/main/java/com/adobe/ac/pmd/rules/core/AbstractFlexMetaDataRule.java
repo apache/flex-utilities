@@ -23,9 +23,6 @@ import com.adobe.ac.pmd.nodes.IClass;
 import com.adobe.ac.pmd.nodes.IFunction;
 import com.adobe.ac.pmd.nodes.IMetaDataListHolder;
 
-/**
- * @author xagnetti
- */
 public abstract class AbstractFlexMetaDataRule extends AbstractAstFlexRule
 {
    /*

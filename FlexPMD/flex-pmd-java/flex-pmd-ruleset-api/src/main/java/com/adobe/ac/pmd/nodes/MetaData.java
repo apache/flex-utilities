@@ -16,9 +16,6 @@
  */
 package com.adobe.ac.pmd.nodes;
 
-/**
- * @author xagnetti
- */
 public enum MetaData
 {
    ARRAY_ELEMENT_TYPE("ArrayElementType"),

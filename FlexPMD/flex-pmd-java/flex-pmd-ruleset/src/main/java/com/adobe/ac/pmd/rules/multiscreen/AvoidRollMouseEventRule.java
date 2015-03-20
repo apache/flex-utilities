@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.rules.multiscreen;
 import com.adobe.ac.pmd.rules.core.AbstractRegexpBasedRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class AvoidRollMouseEventRule extends AbstractRegexpBasedRule
 {
    /*

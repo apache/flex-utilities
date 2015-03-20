@@ -24,9 +24,6 @@ import com.adobe.ac.pmd.nodes.IFunction;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPosition;
 
-/**
- * @author xagnetti
- */
 abstract class AbstractMoreThanEntryPointInMxmlRule extends AbstractAstFlexRule
 {
    private int lastPublicVarLine = 0;

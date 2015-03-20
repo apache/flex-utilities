@@ -21,9 +21,6 @@ import com.adobe.ac.pmd.nodes.IPackage;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class PackageCaseRule extends AbstractAstFlexRule
 {
    /*

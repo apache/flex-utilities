@@ -32,8 +32,6 @@ import com.adobe.ac.utils.StackTraceUtils;
 /**
  * Internal utility which finds out the test resources, and map them to their
  * qualified names.
- * 
- * @author xagnetti
  */
 public final class ResourcesManagerTest
 {

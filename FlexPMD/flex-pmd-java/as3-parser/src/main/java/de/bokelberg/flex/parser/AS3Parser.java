@@ -34,9 +34,6 @@ import com.adobe.ac.pmd.parser.exceptions.UnExpectedTokenException.Position;
 
 import de.bokelberg.flex.parser.AS3Scanner.Token;
 
-/**
- * @author xagnetti
- */
 public class AS3Parser implements IAS3Parser
 {
    /**

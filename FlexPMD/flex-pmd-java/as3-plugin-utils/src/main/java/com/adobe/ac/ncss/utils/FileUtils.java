@@ -32,9 +32,6 @@ import java.util.logging.Logger;
 
 import com.adobe.ac.utils.StackTraceUtils;
 
-/**
- * @author xagnetti
- */
 public final class FileUtils
 {
    public static class FilePathComparator implements Comparator< File >

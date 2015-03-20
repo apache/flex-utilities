@@ -18,9 +18,6 @@ package com.adobe.ac.pmd.rules.mxml;
 
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class MoreThanTwoEntryPointsInMxmlRule extends AbstractMoreThanEntryPointInMxmlRule
 {
    /*

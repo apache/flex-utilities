@@ -22,9 +22,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.parser.NodeKind;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 
-/**
- * @author xagnetti
- */
 abstract class AbstractUnusedVariableRule extends AbstractAstFlexRule
 {
    private Map< String, IParserNode > variablesUnused;

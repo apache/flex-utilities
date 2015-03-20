@@ -22,9 +22,6 @@ import com.adobe.ac.pmd.nodes.IVariable;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class BadFormatLoggerRule extends AbstractAstFlexRule
 {
    private static final String CORRECT_LOGGER_NAME            = "LOG";

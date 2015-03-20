@@ -38,8 +38,6 @@ import com.adobe.ac.utils.StackTraceUtils;
  * detectable in an AS script block, which can be converted into an Abstract
  * Syntax Tree. Then you will be able to either use the visitor pattern, or to
  * iterate from the package node, in order to find your violation(s).
- * 
- * @author xagnetti
  */
 public abstract class AbstractAstFlexRule extends AbstractFlexRule implements IFlexAstRule
 {

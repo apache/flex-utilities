@@ -21,9 +21,6 @@ import java.util.List;
 import com.adobe.ac.pmd.nodes.IAttribute;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class PublicVariableInCustomEventRule extends AbstractEventRelatedRule
 {
    /*

@@ -34,15 +34,9 @@ import com.adobe.ac.utils.StackTraceUtils;
 
 /**
  * convert a actionscript to a stream of tokens
- * 
- * @author rbokel
- * @author xagnetti
  */
 public class AS3Scanner
 {
-   /**
-    * @author xagnetti
-    */
    public static final class Token
    {
       private static Token create( final String textContent,

@@ -31,9 +31,6 @@ import com.adobe.ac.pmd.rules.parsley.utils.MetaDataTag;
 import com.adobe.ac.pmd.rules.parsley.utils.ParsleyMetaData;
 import com.adobe.ac.pmd.rules.parsley.utils.MetaDataTag.Location;
 
-/**
- * @author xagnetti
- */
 public final class MisplacedMetaDataRule extends AbstractFlexMetaDataRule
 {
    /*

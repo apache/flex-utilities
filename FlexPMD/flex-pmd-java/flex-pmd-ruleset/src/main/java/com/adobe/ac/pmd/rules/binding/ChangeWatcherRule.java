@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.rules.binding;
 import com.adobe.ac.pmd.rules.core.AbstractForbiddenImportRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class ChangeWatcherRule extends AbstractForbiddenImportRule
 {
    /*

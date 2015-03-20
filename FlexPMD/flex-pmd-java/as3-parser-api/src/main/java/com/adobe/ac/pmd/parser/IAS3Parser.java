@@ -20,9 +20,6 @@ import java.io.IOException;
 
 import com.adobe.ac.pmd.parser.exceptions.TokenException;
 
-/**
- * @author xagnetti
- */
 public interface IAS3Parser
 {
    /**

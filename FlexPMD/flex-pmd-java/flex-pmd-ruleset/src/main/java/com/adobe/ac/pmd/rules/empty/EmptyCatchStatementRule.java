@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.rules.empty;
 import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class EmptyCatchStatementRule extends AbstractEmptyBlockRule
 {
    /*

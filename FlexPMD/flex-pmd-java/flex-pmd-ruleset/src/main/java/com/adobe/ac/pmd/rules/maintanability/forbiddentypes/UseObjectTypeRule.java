@@ -21,9 +21,6 @@ import com.adobe.ac.pmd.nodes.IFunction;
 import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class UseObjectTypeRule extends AbstractUseForbiddenTypeRule // NO_UCD
 {
    private boolean isResponder;

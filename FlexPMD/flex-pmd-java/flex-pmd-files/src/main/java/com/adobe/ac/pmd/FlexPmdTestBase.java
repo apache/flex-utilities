@@ -23,8 +23,6 @@ import com.adobe.ac.pmd.files.IFlexFile;
 
 /**
  * This is a base class for any FlexPMD rule test case.
- * 
- * @author xagnetti
  */
 public class FlexPmdTestBase // NO_UCD
 {

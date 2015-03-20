@@ -25,9 +25,6 @@ import com.adobe.ac.pmd.rules.core.ViolationPriority;
 import com.adobe.ac.pmd.rules.parsley.utils.ParsleyMetaData;
 import com.adobe.ac.pmd.rules.parsley.utils.MetaDataTag.Location;
 
-/**
- * @author xagnetti
- */
 public class UnusedParameterRule extends AbstractUnusedVariableRule
 {
    private static final String DATA_GRID_COLUMN         = "DataGridColumn";

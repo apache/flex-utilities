@@ -20,9 +20,6 @@ import com.adobe.ac.pmd.nodes.IFunction;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 import com.adobe.ac.pmd.rules.core.thresholded.AbstractMaximizedAstFlexRule;
 
-/**
- * @author xagnetti
- */
 public class CyclomaticComplexityRule extends AbstractMaximizedAstFlexRule
 {
    public static final int DEFAULT_THRESHOLD = 10;

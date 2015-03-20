@@ -16,9 +16,6 @@
  */
 package com.adobe.ac.pmd.rules.cairngorm;
 
-/**
- * @author xagnetti
- */
 public class ModelLocatorReferencedMoreThanOncePerClassRule extends
                                                            ReferenceModelLocatorOutsideTheMainApplicationRule
 {

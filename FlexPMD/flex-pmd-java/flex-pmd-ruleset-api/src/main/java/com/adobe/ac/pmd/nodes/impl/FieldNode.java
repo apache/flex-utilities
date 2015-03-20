@@ -23,8 +23,6 @@ import com.adobe.ac.pmd.parser.NodeKind;
 
 /**
  * Base class for AttributeNode and for ConstantNode
- * 
- * @author xagnetti
  */
 class FieldNode extends VariableNode implements IField
 {

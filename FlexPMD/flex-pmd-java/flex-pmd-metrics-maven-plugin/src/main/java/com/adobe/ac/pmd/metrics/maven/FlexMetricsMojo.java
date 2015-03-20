@@ -33,7 +33,6 @@ import org.dom4j.io.SAXReader;
 import com.adobe.ac.pmd.LoggerUtils;
 
 /**
- * @author xagnetti
  * @goal check
  * @execute goal="metrics"
  */

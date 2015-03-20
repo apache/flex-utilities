@@ -24,9 +24,6 @@ import com.adobe.ac.pmd.nodes.INamableNode;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class VariableNameEndingWithNumericRule extends AbstractAstFlexRule
 {
    /*

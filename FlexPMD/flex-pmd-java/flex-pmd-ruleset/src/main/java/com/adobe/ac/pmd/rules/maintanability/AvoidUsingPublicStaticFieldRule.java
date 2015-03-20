@@ -22,9 +22,6 @@ import com.adobe.ac.pmd.nodes.IAttribute;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class AvoidUsingPublicStaticFieldRule extends AbstractAstFlexRule
 {
    /*

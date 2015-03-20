@@ -21,9 +21,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class UpdateChildrenNumberInUpdateDisplayListRule extends AbstractAstFlexRule // NO_UCD
 {
    private static final String[] METHOD_NAMES        =

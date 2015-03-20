@@ -30,8 +30,6 @@ import com.adobe.ac.utils.StackTraceUtils;
 
 /**
  * Abstract class representing a Flex File (either MXML or AS)
- * 
- * @author xagnetti
  */
 abstract class AbstractFlexFile implements IFlexFile
 {

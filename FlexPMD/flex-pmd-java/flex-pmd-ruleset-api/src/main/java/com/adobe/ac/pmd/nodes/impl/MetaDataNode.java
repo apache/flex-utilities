@@ -25,9 +25,6 @@ import java.util.Map;
 import com.adobe.ac.pmd.nodes.IMetaData;
 import com.adobe.ac.pmd.parser.IParserNode;
 
-/**
- * @author xagnetti
- */
 class MetaDataNode extends AbstractNode implements IMetaData
 {
    private List< String >          attributeNames;

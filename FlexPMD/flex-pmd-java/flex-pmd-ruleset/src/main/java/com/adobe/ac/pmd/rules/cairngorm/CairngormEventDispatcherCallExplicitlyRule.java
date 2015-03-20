@@ -21,9 +21,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.rules.core.AbstractPrimaryAstRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class CairngormEventDispatcherCallExplicitlyRule extends AbstractPrimaryAstRule // NO_UCD
 {
    private static final String ADD_EVENT_LISTENER_MESSAGE = "The Cairngorm event is listened directly. "

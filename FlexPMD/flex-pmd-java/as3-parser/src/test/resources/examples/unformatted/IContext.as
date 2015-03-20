@@ -22,8 +22,6 @@ package com.commons.context
 	
 	/**
 	 * Interface IContext.
-	 * 
-	 * @author  (resp. mv)
 	 */
 	public interface IContext extends IEventDispatcher
 	{

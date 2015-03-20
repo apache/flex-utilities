@@ -20,9 +20,6 @@ import com.adobe.ac.ncss.utils.FileUtils;
 import com.adobe.ac.pmd.files.IFlexFile;
 import com.adobe.ac.pmd.parser.IParserNode;
 
-/**
- * @author xagnetti
- */
 public final class FunctionUtils
 {
    /**

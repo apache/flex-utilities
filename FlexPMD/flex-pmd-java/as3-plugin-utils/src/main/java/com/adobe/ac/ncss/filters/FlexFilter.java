@@ -20,9 +20,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Locale;
 
-/**
- * @author xagnetti
- */
 public class FlexFilter implements FilenameFilter
 {
    /*

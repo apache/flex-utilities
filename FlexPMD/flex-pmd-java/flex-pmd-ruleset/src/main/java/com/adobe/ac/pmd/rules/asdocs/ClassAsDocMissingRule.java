@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.rules.asdocs;
 import com.adobe.ac.pmd.nodes.IClass;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class ClassAsDocMissingRule extends AbstractAsDocRule
 {
    /*

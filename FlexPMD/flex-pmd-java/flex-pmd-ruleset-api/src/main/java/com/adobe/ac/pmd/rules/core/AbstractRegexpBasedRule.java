@@ -23,9 +23,6 @@ import java.util.regex.Pattern;
 
 import com.adobe.ac.pmd.IFlexViolation;
 
-/**
- * @author xagnetti
- */
 public abstract class AbstractRegexpBasedRule extends AbstractFlexRule
 {
    private Pattern pattern;

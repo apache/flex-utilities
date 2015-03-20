@@ -20,9 +20,6 @@ import com.adobe.ac.pmd.nodes.IPackage;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 import com.adobe.ac.pmd.rules.core.thresholded.AbstractMaximizedAstFlexRule;
 
-/**
- * @author xagnetti
- */
 public class ExcessiveImportRule extends AbstractMaximizedAstFlexRule
 {
    private static final int DEFAULT_THRESHOLD = 15;

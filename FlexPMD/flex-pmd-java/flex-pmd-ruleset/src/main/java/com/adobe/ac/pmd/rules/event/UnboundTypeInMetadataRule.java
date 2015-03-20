@@ -26,9 +26,6 @@ import com.adobe.ac.pmd.nodes.MetaData;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class UnboundTypeInMetadataRule extends AbstractAstFlexRule
 {
    private static final String TYPE = "type";

@@ -27,7 +27,6 @@ import com.adobe.ac.pmd.FlexPmdParameters;
 import com.adobe.ac.pmd.FlexPmdViolations;
 
 /**
- * @author xagnetti
  * @goal report
  * @phase site
  */

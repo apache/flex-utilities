@@ -41,15 +41,9 @@ import org.xml.sax.SAXException;
 import com.adobe.ac.pmd.IFlexViolation;
 import com.adobe.ac.utils.StackTraceUtils;
 
-/**
- * @author xagnetti
- */
 public abstract class AbstractXpathRelatedRule extends AbstractFlexRule
 {
-   /**
-    * @author xagnetti
-    */
-   public class NamespaceContextMap implements NamespaceContext
+      public class NamespaceContextMap implements NamespaceContext
    {
       private final Map< String, String > prefixMap;
 

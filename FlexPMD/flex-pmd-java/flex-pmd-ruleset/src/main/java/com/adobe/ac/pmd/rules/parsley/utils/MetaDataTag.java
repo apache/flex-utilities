@@ -24,15 +24,9 @@ import com.adobe.ac.pmd.nodes.IMetaData;
 import com.adobe.ac.pmd.nodes.IMetaDataListHolder;
 import com.adobe.ac.pmd.nodes.MetaData;
 
-/**
- * @author xagnetti
- */
 public final class MetaDataTag
 {
-   /**
-    * @author xagnetti
-    */
-   public enum Location
+      public enum Location
    {
       ATTRIBUTE, CLASS_DECLARATION, FUNCTION
    };

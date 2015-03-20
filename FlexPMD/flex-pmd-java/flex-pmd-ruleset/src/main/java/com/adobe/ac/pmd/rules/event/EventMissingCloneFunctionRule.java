@@ -22,9 +22,6 @@ import com.adobe.ac.pmd.nodes.IClass;
 import com.adobe.ac.pmd.nodes.IFunction;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class EventMissingCloneFunctionRule extends AbstractEventRelatedRule
 {
    private IClass classNode = null;

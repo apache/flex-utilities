@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.rules.event;
 import com.adobe.ac.pmd.nodes.IClass;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 
-/**
- * @author xagnetti
- */
 public abstract class AbstractEventRelatedRule extends AbstractAstFlexRule
 {
    /*

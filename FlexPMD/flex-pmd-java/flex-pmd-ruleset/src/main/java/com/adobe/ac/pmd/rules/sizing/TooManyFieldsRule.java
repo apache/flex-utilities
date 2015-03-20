@@ -23,9 +23,6 @@ import com.adobe.ac.pmd.nodes.IClass;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 import com.adobe.ac.pmd.rules.core.thresholded.AbstractMaximizedAstFlexRule;
 
-/**
- * @author xagnetti
- */
 public class TooManyFieldsRule extends AbstractMaximizedAstFlexRule
 {
    public static final int DEFAULT_THRESHOLD = 5;

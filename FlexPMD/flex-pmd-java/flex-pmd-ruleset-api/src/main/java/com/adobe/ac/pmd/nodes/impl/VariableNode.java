@@ -38,8 +38,6 @@ import com.adobe.ac.pmd.parser.NodeKind;
  * Node representing a variable (var i : int = 0) It contains the variable name,
  * its type name, the list of modifiers, the list of metadata, and the
  * initialization expression (if any).
- * 
- * @author xagnetti
  */
 class VariableNode extends AbstractNode implements IVariable, IModifiersHolder
 {

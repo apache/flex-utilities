@@ -22,9 +22,6 @@ package org.as3commons.lang {
 	 * <p>Methods in this class give sample code to explain their operation.
 	 * The symbol <code>*</code> is used to indicate any input
 	 * including <code>null</code>.</p>
-	 *
-	 * @author Steffen Leistner
-	 * @author Christophe Herreman
 	 */
 	public class StringUtils { // NO PMD TooManyFunction TooManyPublic
 		

@@ -22,9 +22,6 @@ import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
 import de.bokelberg.flex.parser.AS3Parser;
 
-/**
- * @author xagnetti
- */
 public class ReferenceModelLocatorOutsideTheMainApplicationRule extends AbstractRegexpBasedRule // NO_UCD
 {
    /*

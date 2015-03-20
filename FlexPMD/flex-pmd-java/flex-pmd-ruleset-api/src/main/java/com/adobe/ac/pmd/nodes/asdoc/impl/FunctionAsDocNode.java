@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.nodes.asdoc.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author xagnetti
- */
 public class FunctionAsDocNode extends AsDocNodeBase
 {
    private final List< ParameterAsDocNode > parameters;

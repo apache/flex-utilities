@@ -22,9 +22,6 @@ import java.util.List;
 import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.parser.NodeKind;
 
-/**
- * @author xagnetti
- */
 class NestedNode
 {
    private List< IParserNode > children;

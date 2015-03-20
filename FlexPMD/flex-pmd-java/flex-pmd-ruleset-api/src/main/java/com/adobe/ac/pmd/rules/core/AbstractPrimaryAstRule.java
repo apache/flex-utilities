@@ -24,8 +24,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
 /**
  * Abstract rule which find a primary (or a couple of primaries) in a body
  * function.
- * 
- * @author xagnetti
  */
 public abstract class AbstractPrimaryAstRule extends AbstractAstFlexRule
 {

@@ -16,9 +16,6 @@
  */
 package com.adobe.ac.pmd.nodes.asdoc.impl;
 
-/**
- * @author xagnetti
- */
 public class AsDocNodeBase
 {
    private final String description;

@@ -18,9 +18,6 @@ package com.adobe.ac.pmd.nodes;
 
 import com.adobe.ac.pmd.parser.IParserNode;
 
-/**
- * @author xagnetti
- */
 public interface IAsDocHolder extends INode
 {
    /**

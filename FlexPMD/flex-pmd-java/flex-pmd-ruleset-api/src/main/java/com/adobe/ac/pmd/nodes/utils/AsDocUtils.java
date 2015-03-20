@@ -20,9 +20,6 @@ import com.adobe.ac.pmd.nodes.asdoc.impl.ClassAsDocNode;
 import com.adobe.ac.pmd.nodes.asdoc.impl.FunctionAsDocNode;
 import com.adobe.ac.pmd.nodes.asdoc.impl.ParameterAsDocNode;
 
-/**
- * @author xagnetti
- */
 public final class AsDocUtils
 {
    /**

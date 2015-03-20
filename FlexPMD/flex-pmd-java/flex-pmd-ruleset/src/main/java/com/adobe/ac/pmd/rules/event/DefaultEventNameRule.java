@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.rules.event;
 import com.adobe.ac.pmd.nodes.IFunction;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class DefaultEventNameRule extends AbstractEventRelatedRule
 {
    /*

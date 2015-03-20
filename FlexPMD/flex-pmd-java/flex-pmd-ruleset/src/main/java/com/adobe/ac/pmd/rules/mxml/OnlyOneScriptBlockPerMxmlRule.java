@@ -29,9 +29,6 @@ import com.adobe.ac.pmd.rules.core.AbstractXpathRelatedRule;
 import com.adobe.ac.pmd.rules.core.ViolationPosition;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class OnlyOneScriptBlockPerMxmlRule extends AbstractXpathRelatedRule
 {
    /*

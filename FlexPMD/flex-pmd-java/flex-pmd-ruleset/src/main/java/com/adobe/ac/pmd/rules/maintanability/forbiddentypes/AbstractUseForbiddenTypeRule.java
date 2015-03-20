@@ -25,9 +25,6 @@ import com.adobe.ac.pmd.nodes.IVariable;
 import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 
-/**
- * @author xagnetti
- */
 public abstract class AbstractUseForbiddenTypeRule extends AbstractAstFlexRule
 {
    /*

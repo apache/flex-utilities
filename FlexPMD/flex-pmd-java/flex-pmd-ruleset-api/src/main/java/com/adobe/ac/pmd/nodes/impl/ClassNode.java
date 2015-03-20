@@ -34,9 +34,6 @@ import com.adobe.ac.pmd.nodes.Modifier;
 import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.parser.NodeKind;
 
-/**
- * @author xagnetti
- */
 class ClassNode extends AbstractNode implements IClass
 {
    private IParserNode                              asDoc;

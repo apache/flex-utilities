@@ -34,9 +34,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.parser.KeyWords;
 import com.adobe.ac.pmd.parser.NodeKind;
 
-/**
- * @author xagnetti
- */
 class FunctionNode extends AbstractNode implements IFunction
 {
    private IParserNode                              asDoc;

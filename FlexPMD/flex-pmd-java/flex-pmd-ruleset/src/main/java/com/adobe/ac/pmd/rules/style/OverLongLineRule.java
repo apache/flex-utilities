@@ -25,9 +25,6 @@ import com.adobe.ac.pmd.rules.core.ViolationPosition;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 import com.adobe.ac.pmd.rules.core.thresholded.AbstractMaximizedFlexRule;
 
-/**
- * @author xagnetti
- */
 public class OverLongLineRule extends AbstractMaximizedFlexRule
 {
    private static final int DEFAULT_THRESHOLD = 120;

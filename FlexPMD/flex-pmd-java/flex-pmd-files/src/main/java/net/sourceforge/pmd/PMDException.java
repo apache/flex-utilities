@@ -20,11 +20,6 @@ package net.sourceforge.pmd;
  * A convenience exception wrapper. Contains the original exception, if any.
  * Also, contains a severity number (int). Zero implies no severity. The higher
  * the number the greater the severity.
- * 
- * @author Donald A. Leckie
- * @version $Revision: 5681 $, $Date: 2007-11-30 14:00:56 -0800 (Fri, 30 Nov
- *          2007) $
- * @since August 30, 2002
  */
 public class PMDException extends Exception
 {

@@ -16,9 +16,6 @@
  */
 package com.adobe.ac.pmd.rules.core;
 
-/**
- * @author xagnetti
- */
 public final class ViolationPosition
 {
    /**

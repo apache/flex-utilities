@@ -21,9 +21,6 @@ import java.util.LinkedHashMap;
 import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class UnusedLocalVariableRule extends AbstractUnusedVariableRule
 {
    /*

@@ -16,9 +16,6 @@
  */
 package com.adobe.ac.pmd.parser.exceptions;
 
-/**
- * @author xagnetti
- */
 @SuppressWarnings("serial")
 public class UnExpectedTokenException extends TokenException
 {

@@ -16,9 +16,6 @@
  */
 package com.adobe.ac.pmd.nodes;
 
-/**
- * @author xagnetti
- */
 public interface IVariable extends IMetaDataListHolder, INamableNode
 {
    /**

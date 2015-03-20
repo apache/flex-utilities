@@ -20,9 +20,6 @@ import com.adobe.ac.pmd.nodes.IFunction;
 import com.adobe.ac.pmd.nodes.Modifier;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class MethodAsDocMissingRule extends AbstractAsDocRule
 {
    /*

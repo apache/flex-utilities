@@ -22,9 +22,6 @@ import java.util.List;
 
 import com.adobe.ac.pmd.files.IMxmlFile;
 
-/**
- * @author xagnetti
- */
 class MxmlFile extends AbstractFlexFile implements IMxmlFile
 {
    private static final String METADATA_TAG    = "Metadata";

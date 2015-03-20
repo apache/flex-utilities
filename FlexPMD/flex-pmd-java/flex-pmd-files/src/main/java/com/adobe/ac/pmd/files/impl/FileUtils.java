@@ -29,9 +29,6 @@ import net.sourceforge.pmd.PMDException;
 import com.adobe.ac.ncss.filters.FlexFilter;
 import com.adobe.ac.pmd.files.IFlexFile;
 
-/**
- * @author xagnetti
- */
 public final class FileUtils
 {
    /**

@@ -23,10 +23,6 @@ import org.dom4j.Node;
 
 /**
  * Comparator for numeric xml node tag.
- *
- * @author <a href="jeanlaurentATgmail.com">Jean-Laurent de Morlhon</a>
- * @version $Id: NumericNodeComparator.java 3286 2007-02-08 20:18:51Z
- *          jeanlaurent $
  */
 public final class NumericNodeComparator implements Comparator< Node >, Serializable
 {

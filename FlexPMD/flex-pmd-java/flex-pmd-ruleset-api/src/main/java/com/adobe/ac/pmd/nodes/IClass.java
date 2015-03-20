@@ -24,8 +24,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
  * Node representing a class. It contains different lists (constants, variables,
  * functions, implementations, ...), but also a reference to its constructor (if
  * any), the extension name (if any), and its name.
- * 
- * @author xagnetti
  */
 public interface IClass extends IVisible, IMetaDataListHolder, INamableNode, IAsDocHolder, ICommentHolder
 {

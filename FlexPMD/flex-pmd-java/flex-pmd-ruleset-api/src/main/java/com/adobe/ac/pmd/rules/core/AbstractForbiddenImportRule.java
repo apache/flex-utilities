@@ -19,9 +19,6 @@ package com.adobe.ac.pmd.rules.core;
 import com.adobe.ac.pmd.nodes.IPackage;
 import com.adobe.ac.pmd.parser.IParserNode;
 
-/**
- * @author xagnetti
- */
 public abstract class AbstractForbiddenImportRule extends AbstractAstFlexRule
 {
 

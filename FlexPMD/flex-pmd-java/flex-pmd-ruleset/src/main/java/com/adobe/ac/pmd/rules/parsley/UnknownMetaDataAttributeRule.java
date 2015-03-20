@@ -26,9 +26,6 @@ import com.adobe.ac.pmd.rules.core.ViolationPriority;
 import com.adobe.ac.pmd.rules.parsley.utils.MetaDataTag;
 import com.adobe.ac.pmd.rules.parsley.utils.ParsleyMetaData;
 
-/**
- * @author xagnetti
- */
 public final class UnknownMetaDataAttributeRule extends AbstractFlexMetaDataRule
 {
    /*

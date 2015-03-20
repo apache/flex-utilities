@@ -20,9 +20,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 import com.adobe.ac.pmd.rules.core.thresholded.AbstractMaximizedAstFlexRule;
 
-/**
- * @author xagnetti
- */
 public class TooManyParametersRule extends AbstractMaximizedAstFlexRule
 {
    public static final int DEFAULT_THRESHOLD = 4;

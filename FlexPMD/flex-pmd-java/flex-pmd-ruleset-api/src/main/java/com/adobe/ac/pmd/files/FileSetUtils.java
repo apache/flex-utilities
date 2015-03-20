@@ -41,9 +41,6 @@ import com.adobe.ac.pmd.parser.exceptions.TokenException;
 
 import de.bokelberg.flex.parser.AS3Parser;
 
-/**
- * @author xagnetti
- */
 public final class FileSetUtils
 {
    private static final ThreadPoolExecutor EXECUTOR = ( ThreadPoolExecutor ) Executors.newFixedThreadPool( 5 );

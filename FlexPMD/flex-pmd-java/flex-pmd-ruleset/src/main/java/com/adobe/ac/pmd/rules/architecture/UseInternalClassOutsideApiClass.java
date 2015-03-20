@@ -23,9 +23,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.rules.core.AbstractAstFlexRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class UseInternalClassOutsideApiClass extends AbstractAstFlexRule
 {
    private static final String API_PACKAGE_NAME      = "api";

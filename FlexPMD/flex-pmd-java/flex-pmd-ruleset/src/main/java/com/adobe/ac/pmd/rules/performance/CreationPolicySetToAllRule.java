@@ -21,9 +21,6 @@ import java.util.Locale;
 import com.adobe.ac.pmd.rules.core.AbstractRegexpBasedRule;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class CreationPolicySetToAllRule extends AbstractRegexpBasedRule
 {
    /*

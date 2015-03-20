@@ -20,9 +20,6 @@ import com.adobe.ac.pmd.parser.IParserNode;
 import com.adobe.ac.pmd.parser.NodeKind;
 import com.adobe.ac.pmd.rules.core.ViolationPriority;
 
-/**
- * @author xagnetti
- */
 public class AvoidInstanciationInLoopRule extends AbstractAvoidNodeInLoopRule
 {
    /*

@@ -20,9 +20,6 @@ import java.io.File;
 
 import com.adobe.ac.pmd.files.IAs3File;
 
-/**
- * @author xagnetti
- */
 class As3File extends AbstractFlexFile implements IAs3File
 {
    /**
