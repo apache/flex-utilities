@@ -219,9 +219,13 @@ public class CodeCoverageServer
             return;
         }
         
-        final String dataProperty = config.getProperty(DATA_DIRECTORY_KEY, 
-                System.getProperty("user.home"));
-        final File dataDirectory = new File(dataProperty, "ccdata");
+        final String dataProperty = config.getProperty(DATA_DIRECTORY_KEY);
+        final File dataDirectory;
+        
+        if (dataProperty == null)
+            dataDirectory = new File(System.getProperty("user.home"), "ccdata");
+        else 
+            dataDirectory = new File(dataProperty); 
         
         if (!dataDirectory.exists())
         {
