@@ -1,0 +1,131 @@
+Apache Flex Code Coverage Tool - Java Server
+==============================================
+
+    This code coverage tool is designed to be used at the command line
+    to provide code coverage for nightly builds.
+
+    For detailed information about the Apache Flex Code Coverage Tool please visit
+    https://cwiki.apache.org/confluence/display/FLEX/Code+Coverage+Tool
+
+    For detailed information about Apache Flex please visit
+    http://flex.apache.org/
+
+Getting the latest sources via Git
+==================================
+
+    Getting the source code is the recommended way to get the Apache Flex Code Coverage Tool.
+
+    You can always checkout the latest source from Apache's source control repository
+    using the following commands:
+
+     git clone https://git-wip-us.apache.org/repos/asf/flex-utilities.git flex-utilities
+     cd flex-utilities
+     git checkout develop
+     cd CodeCoverage/JavaServer
+
+Building Apache Flex Code Coverage Tool
+=======================================
+
+    The Apache Flex Code Coverage Tool requires some build tools 
+    which must be installed prior to building it.  
+    Some of these have different licenses.  See the Software Dependencies section 
+    for more information on the external software dependencies.
+
+Install Prerequisites
+---------------------
+
+    Before building this tool you must install the following software 
+    and set the corresponding environment variables using absolute file paths.  
+    Relative file paths will result in build errors.
+
+    ==================================================================================
+    SOFTWARE                                    ENVIRONMENT VARIABLE (absolute paths)
+    ==================================================================================
+
+    Java SDK 1.7 or greater (*1)(*2)            JAVA_HOME
+
+    Ant 1.7.1 or greater (*1)                   ANT_HOME
+        (for Java 1.7 see note at (*2))
+
+    Apache Flex 'Falcon' Compiler (*2)          FALCON_HOME
+
+    Apache Flex SDK or repository               FLEX_HOME
+
+    ==================================================================================
+
+    *1) The bin directories for ANT_HOME and JAVA_HOME should be added to your
+        PATH.
+
+        On Windows, set PATH to
+
+            PATH=%PATH%;%ANT_HOME%\bin;%JAVA_HOME%\bin
+
+        On the Mac (bash), set PATH to
+
+            export PATH="$PATH:$ANT_HOME/bin:$JAVA_HOME/bin"
+
+         On Linux make sure you path include ANT_HOME and JAVA_HOME.
+
+    *2)  If you are using Java SDK 1.7 or greater on a Mac you must use Ant 1.8
+         or greater. If you use Java 1.7 with Ant 1.7, ant reports the java
+         version as 1.6 so the JVM args for the data model (-d32/-d64) will not
+         be set correctly and you will get compile errors.
+
+    *3) Set FALCON_HOME to the root of its SDK.  When using the flex-falcon
+        repository, set 
+             FALCON_HOME=<repo-path>/compiler/generated/dist/sdk
+
+Software Dependencies
+---------------------
+
+    The Apache Flex Code Coverage Tool requires compiler.jar from the 
+    Apache Flex Falcon Compiler. The external dependences for compiler.jar are 
+    (relative to compiler.jar):
+
+    * external/antlr.jar
+    * external/commons-cli.jar
+    * external/commons-io.jar
+    * external/flex-tool-api.jar
+    * external/guava.jar
+    * external/jburg.jar
+    * external/lzma-sdk.jar
+
+    The external jar have various licenses.
+
+    When the Code Coverage Tool is built the Falcon jars are copied from 
+    FALCON_HOME to the Code Coverage Tool's lib directory. This step makes the tool ready to run.
+
+
+Building the Source in the Source Distribution
+----------------------------------------------
+
+    When you have all the prerequisites in place and the environment variables set, 
+    (see Install Prerequisites above), to build the Apache Flex Code Coverage
+    Tool use:
+
+        cd CodeCoverage/JavaServer
+        ant
+ 
+    To clean the build use:
+    
+        ant clean 
+
+Building the Source in the Eclispe and Flash Builder
+----------------------------------------------------
+
+    The Java source comes with an Eclipse project in the JavaServer/java 
+    directory. Before importing the Eclipse project first define a Java 
+    Classpath variable. Under Eclipse Preferences,
+
+        * Go to Java - Build Path - Classpath Varables. 
+        * Click on "New...".
+        * Enter "FALCON_HOME" in "Name" field.
+        * Enter the directory containing "lib/compiler.jar" in the "Path" field.       
+ 
+    The Flex code comes with a Flash Builder project in the JavaServer/flex 
+    directory. This project can be imported without any additional setup.
+
+Thanks for using Apache Flex.  Enjoy!
+
+                                          The Apache Flex Project
+                                          <http://flex.apache.org>
