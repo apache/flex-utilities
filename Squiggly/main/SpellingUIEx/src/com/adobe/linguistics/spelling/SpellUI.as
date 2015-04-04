@@ -19,42 +19,43 @@
 
 package com.adobe.linguistics.spelling
 {
-	import com.adobe.linguistics.spelling.framework.SpellingConfiguration;
-	import com.adobe.linguistics.spelling.framework.SpellingService;
-	import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
-	import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
-	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
-	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
-	import com.adobe.linguistics.spelling.framework.ui.SparkHighlighter;
-	import com.adobe.linguistics.spelling.framework.ui.SparkWordProcessor;
-	import com.adobe.linguistics.utils.TextTokenizer;
-	import com.adobe.linguistics.utils.Token;
+    import com.adobe.linguistics.spelling.framework.SpellingConfiguration;
+    import com.adobe.linguistics.spelling.framework.SpellingService;
+    import com.adobe.linguistics.spelling.framework.ui.HaloHighlighter;
+    import com.adobe.linguistics.spelling.framework.ui.HaloWordProcessor;
+    import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
+    import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
+    import com.adobe.linguistics.spelling.framework.ui.SparkHighlighter;
+    import com.adobe.linguistics.spelling.framework.ui.SparkWordProcessor;
+    import com.adobe.linguistics.utils.TextTokenizer;
+    import com.adobe.linguistics.utils.Token;
 
-	import flash.events.Event;
-	import flash.events.FocusEvent;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	import flash.net.SharedObject;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import flash.text.TextField;
-	import flash.utils.Dictionary;
+    import flash.events.Event;
+    import flash.events.FocusEvent;
+    import flash.geom.Point;
+    import flash.geom.Rectangle;
+    import flash.net.SharedObject;
+    import flash.net.URLLoader;
+    import flash.net.URLRequest;
+    import flash.text.TextField;
+    import flash.utils.Dictionary;
 
-	import flashx.textLayout.edit.SelectionManager;
-	import flashx.textLayout.tlf_internal;
+    import flashx.textLayout.edit.SelectionManager;
+    import flashx.textLayout.elements.TextFlow;
+    import flashx.textLayout.tlf_internal;
 
-	import mx.controls.RichTextEditor;
-	import mx.controls.TextArea;
-	import mx.controls.TextInput;
-	import mx.core.UIComponent;
-	import mx.core.mx_internal;
-	import mx.events.ScrollEvent;
+    import mx.controls.RichTextEditor;
+    import mx.controls.TextArea;
+    import mx.controls.TextInput;
+    import mx.core.UIComponent;
+    import mx.core.mx_internal;
+    import mx.events.ScrollEvent;
 
-	import spark.components.RichEditableText;
-	import spark.components.TextArea;
-	import spark.components.TextInput;
+    import spark.components.RichEditableText;
+    import spark.components.TextArea;
+    import spark.components.TextInput;
 
-	use namespace mx_internal;
+    use namespace mx_internal;
 	
 	use namespace tlf_internal;	
 	/**
@@ -340,21 +341,28 @@ package com.adobe.linguistics.spelling
 			spellCheckScreen(event);
 		}
 		
-		/*private function doSpelling():void
-		{
-			_checkLastWord = true;
-			doSpellingJob();
-		}*/
-				
-		/**
-		 @private
-		 (This property is for Squiggly Developer use only.)
-		 */		
 		public function doSpellingJob():void
 		{
-			if (_spellingEnabled == false) return;
+			if (_spellingEnabled == false)
+                return;
+
+            if(!isTextFieldReadyForSpellingJob())
+                return;
+
 			spellCheckRange(getValidFirstWordIndex(), getValidLastWordIndex());
 		}
+
+        private function isTextFieldReadyForSpellingJob():Boolean
+        {
+            if(!mTextField)
+                return false;
+
+            var textFlow:TextFlow = mTextField is RichEditableText ? RichEditableText(mTextField).textFlow : null;
+            if(!textFlow || !textFlow.flowComposer)
+                return true;
+
+            return textFlow.flowComposer.isDamaged(textFlow.textLength);
+        }
 		
 		private function spellCheckRange(start:uint, end:uint):void {
 			//hh.preSpellCheckRange(start, end);
@@ -388,8 +396,7 @@ package com.adobe.linguistics.spelling
 			}
 			
 			var tokenizer:TextTokenizer = new TextTokenizer(mTextField.text.substring(start,end));
-			var tokens:Vector.<Token> = new Vector.<Token>();
-			
+
 			for ( var token:Token = tokenizer.getFirstToken(); token != tokenizer.getLastToken(); token= tokenizer.getNextToken(token) ) {
 				var result:Boolean=_spellingservice.checkWord(mTextField.text.substring(token.first+start, token.last+start));					
 				if (!result){

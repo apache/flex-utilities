@@ -127,7 +127,7 @@ package com.adobe.linguistics.spelling.framework.ui
 				mTextField.addChild(mHighlighter);	
 			}
 					
-		        drawSquigglyLineForRange(token.first, token.last);
+			drawSquigglyLineForRange(token.first, token.last);
 			
 			// Just adjust the left padding, top padding is not an issue 
 			//var pleft:uint = mTextField.getStyle("paddingLeft");
@@ -144,14 +144,15 @@ package com.adobe.linguistics.spelling.framework.ui
 			var tflIndexFirst:int = tf.flowComposer.findLineIndexAtPosition(start);
 			var tflIndexLast:int = tf.flowComposer.findLineIndexAtPosition(end);
 			
-			// Pointer
 			var tflIndex:int = tflIndexFirst;
-			var tfl:TextFlowLine = tflFirst;
-			
-			if (tflIndexFirst == tflIndexLast) {
+
+			if (tflIndexFirst == tflIndexLast)
+			{
 				// Draw one line
 				drawSquigglyLineAtIndex(tflIndexFirst, start - tflFirst.absoluteStart, end - tflFirst.absoluteStart);
-			} else {
+			}
+			else
+			{
 				// Multiple lines (very long word)
 				drawSquigglyLineAtIndex(tflIndexFirst, start - tflFirst.absoluteStart);
 				
