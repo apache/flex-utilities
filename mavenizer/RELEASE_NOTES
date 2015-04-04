@@ -1,0 +1,19 @@
+Apache Flex Mavenizer 1.0.0
+===========================
+
+Apache Flex Mavenizer 1.0.0 is the first release of a tool allowing, automating
+the conversion of Apache Flex FDKs into Maven artifacts that can be used by
+FlexMojos to build Apache Flex application using Maven.
+
+Known Issues
+_____________
+
+Currently None.
+
+
+Please report new issues to our bug tracker at:
+
+    https://issues.apache.org/jira/browse/FLEX
+
+                                          The Apache Flex Project
+                                          <http://flex.apache.org/>
