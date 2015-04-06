@@ -49,7 +49,7 @@ Maven installation)
 2. Go to the directory {home}
 3. Execute "mvn package"
 
-You should now have a jar file called flex-sdk-converter-1.0.jar in your {home}/target
+You should now have a jar file called flex-sdk-converter-1.0.0.jar in your {home}/core/target
 directory.
 
 Using the generator:
@@ -70,8 +70,8 @@ Using the generator:
 			for the sequence in which the artifacts are generated)
 	d) Create a directory anywhere which will contain the output (I will call it {fdktarget} 
 	   from now on)
-	e) Change to the directory {home}
-	f) Execute the following command: "java -cp target/flex-sdk-converter-1.0.jar SDKGenerator "{sdkhome}" "{fdktarget}""
+	e) Change to the directory {home}/core/target
+	f) Execute the following command: "java -cp flex-sdk-converter-1.0.0.jar "{sdkhome}" "{fdktarget}""
 	   (You should wrap the both directory names in double-quotes if they contain spaces)
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -114,17 +114,43 @@ Flex SDKs (From Adobe):
 http://sourceforge.net/adobe/flexsdk/wiki/downloads/
 
 /////////////////////////////////////////////////////////////////////////////////////////
-Some information (HOWTO) to go with the MavenDeployer
+Some information (HOWTO) to go with the deployer artifacts
 /////////////////////////////////////////////////////////////////////////////////////////
 
-The MavenDeployer allows you to deploy any maven structured directory to a remote maven
-repository as soon as you've got the remote rights.
+The deployers are separate modules. Currently two implementations exist.
+1. The Maven deployer (located in deployers/maven/target/maven-deployer-1.0.0-full.jar)
+2. The Aether deployer (located in deployers/aether/target/aether-deployer-1.0.0-full.jar)
 
-Usage:
-java -cp flex-sdk-converter-1.0.jar org.apache.flex.utilities.converter.deployer.maven.MavenDeployer "directory" "repositoryId" "url" "mvn"
+The Maven-Deployer expects Maven to be installed on your system and issues a set of
+commandline commands in order to deploy the artifacts. This is the safest approach if you
+haven any special settings that need to be handled in order to deploy the artifacts.
 
-The MavenDeployer needs 4 ordered parameters separated by spaces:
+The Aether-Deplyoer uses the Maven-Internal aether libraries to deploy the artifacts from
+within the running JVM. This makes this approach a lot faster than the Maven-Deployer.
+
+/////////////////////////////////////////
+Usage for the Maven Deployer:
+/////////////////////////////////////////
+
+java -cp {home}/deployers/maven/target/maven-deployer-1.0.0-full.jar "directory" "repositoryId" "url" "mvn"
+
+The Maven-Deployer needs 4 ordered parameters separated by spaces:
     1- directory: The path to the directory to deploy.
     2- repositoryId: Server Id to map on the <id> under <server> section of settings.xml.
     3- url: URL where the artifacts will be deployed.
     4- mvn: The path to the mvn.bat / mvn.sh.
+
+/////////////////////////////////////////
+Usage for the Maven Deployer:
+/////////////////////////////////////////
+
+java -cp {home}/deployers/aether/target/maven-aether-1.0.0-full.jar "directory" "url" ["username" "password]
+
+The Aether-Deployer needs 2 ordered parameters separated by spaces:
+    1- directory: The path to the directory to deploy.
+    2- url: URL where the artifacts will be deployed.
+Optionally you can provide the username and password that is used for deploying artifacts.
+    3- username: The username needed to log-in to the remote repository.
+    4- password: The password needed to log-in to the remote repository.
+
+
