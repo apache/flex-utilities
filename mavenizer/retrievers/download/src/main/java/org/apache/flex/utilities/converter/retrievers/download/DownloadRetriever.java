@@ -16,6 +16,7 @@
  */
 package org.apache.flex.utilities.converter.retrievers.download;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.flex.utilities.converter.retrievers.BaseRetriever;
 import org.apache.flex.utilities.converter.retrievers.exceptions.RetrieverException;
@@ -69,13 +70,14 @@ public class DownloadRetriever extends BaseRetriever {
             }
 
             if(type.equals(SdkType.FONTKIT)) {
-                File tmpTargetFile = File.createTempFile(UUID.randomUUID().toString(), "tmp");
+                File tmpTargetFile = File.createTempFile(UUID.randomUUID().toString(), "");
+                String tempSuffix = tmpTargetFile.getName().substring(tmpTargetFile.getName().lastIndexOf("-"));
                 if(!(tmpTargetFile.delete()))
                 {
                     throw new IOException("Could not delete temp file: " + tmpTargetFile.getAbsolutePath());
                 }
 
-                File targetRootDir = new File(tmpTargetFile.getParentFile(), type.toString());
+                File targetRootDir = new File(tmpTargetFile.getParentFile(), type.toString() + tempSuffix);
                 File targetDir = new File(targetRootDir, "/lib/external/optional");
                 if(!(targetDir.mkdirs()))
                 {
@@ -111,7 +113,14 @@ public class DownloadRetriever extends BaseRetriever {
                 ////////////////////////////////////////////////////////////////////////////////
 
                 if (type.equals(SdkType.FLASH)) {
-                    return targetFile;
+                    final File targetDirectory = new File(targetFile.getParent(),
+                            targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
+                    final File libDestFile = new File(targetDirectory, "frameworks/libs/player/" + version + "/playerglobal.swc");
+                    if(!libDestFile.getParentFile().exists()) {
+                        libDestFile.getParentFile().mkdirs();
+                    }
+                    FileUtils.moveFile(targetFile, libDestFile);
+                    return targetDirectory;
                 } else {
                     System.out.println("Extracting archive to temp directory.");
                     final File targetDirectory = new File(targetFile.getParent(),

@@ -37,7 +37,8 @@ public class FontkitConverter extends BaseConverter implements Converter {
         fontkit.setGroupId("com.adobe");
         fontkit.setArtifactId("fontkit");
         fontkit.setVersion("1.0");
-        fontkit.setPackaging("pom");
+        fontkit.setPackaging("jar");
+        fontkit.addDefaultBinaryArtifact(flexFontkitJar);
 
         final MavenArtifact afe = new MavenArtifact();
         afe.setGroupId("com.adobe.fontkit");
@@ -63,18 +64,9 @@ public class FontkitConverter extends BaseConverter implements Converter {
         rideau.addDefaultBinaryArtifact(rideauJar);
         fontkit.addDependency(rideau);
 
-        final MavenArtifact flexFontkit = new MavenArtifact();
-        flexFontkit.setGroupId("com.adobe.fontkit");
-        flexFontkit.setArtifactId("flex-fontkit");
-        flexFontkit.setVersion("1.0");
-        flexFontkit.setPackaging("jar");
-        flexFontkit.addDefaultBinaryArtifact(flexFontkitJar);
-        fontkit.addDependency(flexFontkit);
-
         writeArtifact(afe);
         writeArtifact(aglj40);
         writeArtifact(rideau);
-        writeArtifact(flexFontkit);
         writeArtifact(fontkit);
     }
 
