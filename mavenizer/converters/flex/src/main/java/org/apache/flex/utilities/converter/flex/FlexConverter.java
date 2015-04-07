@@ -423,6 +423,11 @@ public class FlexConverter extends BaseConverter implements Converter {
             try {
                 final File compcLibrary = new File(fdkLibDir, "compc.jar");
                 final File frameworkDir = new File(rootSourceDirectory, "frameworks");
+                final String targetPlayer = getTargetPlayer(new File(frameworkDir, "libs/player"));
+                if(targetPlayer == null) {
+                    System.out.println("Skipping theme compilation due to missing playerglobl.swc");
+                    return null;
+                }
 
                 processCmd.add("java");
                 processCmd.add("-Xmx384m");
@@ -430,6 +435,7 @@ public class FlexConverter extends BaseConverter implements Converter {
                 processCmd.add("-jar");
                 processCmd.add(compcLibrary.getCanonicalPath());
                 processCmd.add("+flexlib=" + frameworkDir.getCanonicalPath());
+                processCmd.add("-target-player=" + targetPlayer);
 
                 if (themeDirectory.isDirectory()) {
                     // Add all the content files.
@@ -612,6 +618,16 @@ public class FlexConverter extends BaseConverter implements Converter {
             }
         }
         return bundles;
+    }
+
+    protected String getTargetPlayer(File playerDir) {
+        if(playerDir.exists() && playerDir.isDirectory()) {
+            File[] files = playerDir.listFiles();
+            if((files != null) && files.length > 0) {
+                return files[0].getName();
+            }
+        }
+        return null;
     }
 
     public static class FlexCompilerFilter implements FilenameFilter {

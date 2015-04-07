@@ -62,14 +62,20 @@ import java.io.Reader;
  */
 public class AetherDeployer {
 
-    private String directory;
+    private File directory;
     private String url;
     private String username;
     private String password;
 
+    public AetherDeployer(File directory, String url, String username, String password) {
+        this.directory = directory;
+        this.url = url;
+        this.username = username;
+        this.password = password;
+    }
 
     public AetherDeployer(String[] parameters) {
-        this.directory = parameters[0];
+        this.directory = new File(parameters[0]);
         this.url = parameters[1];
         if (parameters.length > 2) {
             this.username = parameters[2];
@@ -84,7 +90,7 @@ public class AetherDeployer {
         }
 
         final AetherDeployer deployer = new AetherDeployer(args);
-        deployer.start();
+        deployer.deploy();
     }
 
     private static void printUsage() {
@@ -97,7 +103,7 @@ public class AetherDeployer {
         System.out.println("\t4- password: The password used to authenticate on the target repository.");
     }
 
-    private void start() {
+    public void deploy() {
         try {
             final DefaultServiceLocator locator = new DefaultServiceLocator();
             locator.addService(RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class);
@@ -131,7 +137,7 @@ public class AetherDeployer {
                 session.setLocalRepositoryManager(repositorySystem.newLocalRepositoryManager(session, localRepo));
 
                 // Process all content of the mavenizer target directory.
-                final File rootDir = new File(directory);
+                final File rootDir = directory;
                 processDir(rootDir, repositorySystem, session, remoteRepository);
             }
         } catch (Throwable e) {
@@ -222,21 +228,18 @@ public class AetherDeployer {
     }
 
     private class PomFilter implements java.io.FileFilter {
-        @Override
         public boolean accept(File pathname) {
             return pathname.getName().endsWith(".pom");
         }
     }
 
     private class DirFilter implements java.io.FileFilter {
-        @Override
         public boolean accept(File pathname) {
             return pathname.isDirectory();
         }
     }
 
     private class ArtifactFilter implements java.io.FileFilter {
-        @Override
         public boolean accept(File pathname) {
             return !pathname.getName().endsWith(".pom") && !pathname.isDirectory();
         }
