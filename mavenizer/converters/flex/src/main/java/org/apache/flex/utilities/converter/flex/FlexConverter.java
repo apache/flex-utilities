@@ -94,12 +94,6 @@ public class FlexConverter extends BaseConverter implements Converter {
         final File externalDirectory = new File(directory, "external");
         if(externalDirectory.exists() && externalDirectory.isDirectory()) {
             files.addAll(Arrays.asList(externalDirectory.listFiles(new FlexCompilerFilter())));
-
-            // Add all jars in the "external/optional" directory.
-            final File optionalDirectory = new File(externalDirectory, "optional");
-            if(optionalDirectory.exists() && optionalDirectory.isDirectory()) {
-                files.addAll(Arrays.asList(optionalDirectory.listFiles(new FlexCompilerFilter())));
-            }
         }
 
         // Generate artifacts for every jar in the input directories.
@@ -172,7 +166,6 @@ public class FlexConverter extends BaseConverter implements Converter {
         // After processing the current directory, process any eventually existing child directories.
         final List<File> children = new ArrayList<File>();
         children.addAll(Arrays.asList(directory.listFiles(new FileFilter() {
-            @Override
             public boolean accept(File pathname) {
                 return pathname.isDirectory() && !"player".equals(pathname.getName()) &&
                         !"mx".equals(pathname.getName());
@@ -441,7 +434,6 @@ public class FlexConverter extends BaseConverter implements Converter {
                 if (themeDirectory.isDirectory()) {
                     // Add all the content files.
                     final File contents[] = themeDirectory.listFiles(new FileFilter() {
-                        @Override
                         public boolean accept(File pathname) {
                             return !(pathname.isDirectory() && "src".equals(pathname.getName())) &&
                                     !"preview.jpg".equals(pathname.getName()) && !pathname.getName().endsWith(".fla");

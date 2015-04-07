@@ -16,11 +16,17 @@
  */
 package org.apache.flex.utilities.converter.retrievers.download;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.flex.utilities.converter.retrievers.BaseRetriever;
 import org.apache.flex.utilities.converter.retrievers.exceptions.RetrieverException;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 import org.apache.flex.utilities.converter.retrievers.utils.ProgressBar;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -33,14 +39,12 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * Created by cdutz on 18.05.2014.
@@ -50,40 +54,154 @@ public class DownloadRetriever extends BaseRetriever {
     public static final String FLEX_INSTALLER_CONFIG_URL =
             "http://flex.apache.org/installer/sdk-installer-config-4.0.xml";
 
+    public File retrieve(SdkType type) throws RetrieverException {
+        return retrieve(type, null, null);
+    }
+
     public File retrieve(SdkType type, String version) throws RetrieverException {
         return retrieve(type, version, null);
     }
 
     public File retrieve(SdkType type, String version, PlatformType platformType) throws RetrieverException {
         try {
-            if (type.equals(SdkType.FLASH) || type.equals(SdkType.AIR)) {
+            if (type.equals(SdkType.FLASH) || type.equals(SdkType.AIR) || type.equals(SdkType.FONTKIT)) {
                 confirmLicenseAcceptance(type);
             }
 
-            // Define the source.
-            final URL sourceUrl = new URL(getBinaryUrl(type, version, platformType));
-            final URLConnection connection = sourceUrl.openConnection();
-            final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
+            if(type.equals(SdkType.FONTKIT)) {
+                File tmpTargetFile = File.createTempFile(UUID.randomUUID().toString(), "tmp");
+                if(!(tmpTargetFile.delete()))
+                {
+                    throw new IOException("Could not delete temp file: " + tmpTargetFile.getAbsolutePath());
+                }
 
-            // Create a temp target file.
-            final File targetFile = File.createTempFile(type.toString() + "-" + version +
-                    ((platformType != null) ? "-" + platformType : "") + "-",
-                    sourceUrl.getFile().substring(sourceUrl.getFile().lastIndexOf(".")));
-            final FileOutputStream fos = new FileOutputStream(targetFile);
+                File targetRootDir = new File(tmpTargetFile.getParentFile(), type.toString());
+                File targetDir = new File(targetRootDir, "/lib/external/optional");
+                if(!(targetDir.mkdirs()))
+                {
+                    throw new IOException("Could not create temp directory: " + targetDir.getAbsolutePath());
+                }
 
-            ////////////////////////////////////////////////////////////////////////////////
-            // Do the downloading.
-            ////////////////////////////////////////////////////////////////////////////////
+                final URI afeUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/afe.jar?format=raw");
+                final File afeFile = new File(targetDir, "afe.jar");
+                performSafeDownload(afeUri, afeFile);
 
-            final long expectedSize = connection.getContentLength();
+                final URI aglj40Uri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/aglj40.jar?format=raw");
+                final File aglj40File = new File(targetDir, "aglj40.jar");
+                performSafeDownload(aglj40Uri, aglj40File);
+
+                final URI rideauUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/rideau.jar?format=raw");
+                final File rideauFile = new File(targetDir, "rideau.jar");
+                performSafeDownload(rideauUri, rideauFile);
+
+                final URI flexFontkitUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/flex-fontkit.jar?format=raw");
+                final File flexFontkitFile = new File(targetDir, "flex-fontkit.jar");
+                performSafeDownload(flexFontkitUri, flexFontkitFile);
+
+                return targetRootDir;
+            } else {
+                final URL sourceUrl = new URL(getBinaryUrl(type, version, platformType));
+                final File targetFile = File.createTempFile(type.toString() + "-" + version +
+                                ((platformType != null) ? "-" + platformType : "") + "-",
+                        sourceUrl.getFile().substring(sourceUrl.getFile().lastIndexOf(".")));
+                performFastDownload(sourceUrl, targetFile);
+
+                ////////////////////////////////////////////////////////////////////////////////
+                // Do the extracting.
+                ////////////////////////////////////////////////////////////////////////////////
+
+                if (type.equals(SdkType.FLASH)) {
+                    return targetFile;
+                } else {
+                    System.out.println("Extracting archive to temp directory.");
+                    final File targetDirectory = new File(targetFile.getParent(),
+                            targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
+                    unpack(targetFile, targetDirectory);
+                    System.out.println();
+                    System.out.println("Finished extracting.");
+                    System.out.println("===========================================================");
+
+                    return targetDirectory;
+                }
+            }
+        } catch (MalformedURLException e) {
+            throw new RetrieverException("Error downloading archive.", e);
+        } catch (FileNotFoundException e) {
+            throw new RetrieverException("Error downloading archive.", e);
+        } catch (IOException e) {
+            throw new RetrieverException("Error downloading archive.", e);
+        } catch (URISyntaxException e) {
+            throw new RetrieverException("Error downloading archive.", e);
+        }
+    }
+
+    protected void performFastDownload(URL sourceUrl, File targetFile) throws IOException {
+        final URLConnection connection = sourceUrl.openConnection();
+        final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
+        final FileOutputStream fos = new FileOutputStream(targetFile);
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // Do the downloading.
+        ////////////////////////////////////////////////////////////////////////////////
+
+        final long expectedSize = connection.getContentLength();
+        long transferedSize = 0L;
+
+        System.out.println("===========================================================");
+        System.out.println("Downloading " + sourceUrl.toString());
+        if(expectedSize > 1014 * 1024) {
+            System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
+        } else {
+            System.out.println("Expected size: " + (expectedSize / 1024 ) + "KB");
+        }
+        final ProgressBar progressBar = new ProgressBar(expectedSize);
+        while (transferedSize < expectedSize) {
+            transferedSize += fos.getChannel().transferFrom(rbc, transferedSize, 1 << 20);
+            progressBar.updateProgress(transferedSize);
+        }
+        fos.close();
+        System.out.println();
+        System.out.println("Finished downloading.");
+        System.out.println("===========================================================");
+    }
+
+    protected void performSafeDownload(URI sourceUri, File targetFile) throws IOException {
+        HttpGet httpget = new HttpGet(sourceUri);
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpResponse response = httpclient.execute(httpget);
+
+        String reasonPhrase = response.getStatusLine().getReasonPhrase();
+        int statusCode = response.getStatusLine().getStatusCode();
+        System.out.println(String.format("statusCode: %d", statusCode));
+        System.out.println(String.format("reasonPhrase: %s", reasonPhrase));
+
+        HttpEntity entity = response.getEntity();
+        InputStream content = entity.getContent();
+
+        final ReadableByteChannel rbc = Channels.newChannel(content);
+        final FileOutputStream fos = new FileOutputStream(targetFile);
+
+        ////////////////////////////////////////////////////////////////////////////////
+        // Do the downloading.
+        ////////////////////////////////////////////////////////////////////////////////
+
+        final long expectedSize = entity.getContentLength();
+        System.out.println("===========================================================");
+        System.out.println("Downloading " + sourceUri.toString());
+        if(expectedSize < 0) {
+            try {
+                System.out.println("Unknown size.");
+                IOUtils.copy(content, fos);
+            } finally {
+                // close http network connection
+                content.close();
+            }
+        } else {
             long transferedSize = 0L;
-            System.out.println("===========================================================");
-            System.out.println("Downloading " + type + " version " + version +
-                    ((platformType != null) ? " for platform " + platformType : ""));
-            if(expectedSize > 1014 * 1024) {
+            if (expectedSize > 1014 * 1024) {
                 System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
             } else {
-                System.out.println("Expected size: " + (expectedSize / 1024 ) + "KB");
+                System.out.println("Expected size: " + (expectedSize / 1024) + "KB");
             }
             final ProgressBar progressBar = new ProgressBar(expectedSize);
             while (transferedSize < expectedSize) {
@@ -92,33 +210,9 @@ public class DownloadRetriever extends BaseRetriever {
             }
             fos.close();
             System.out.println();
-            System.out.println("Finished downloading.");
-            System.out.println("===========================================================");
-
-            ////////////////////////////////////////////////////////////////////////////////
-            // Do the extracting.
-            ////////////////////////////////////////////////////////////////////////////////
-
-            if(type.equals(SdkType.FLASH)) {
-                return targetFile;
-            } else {
-                System.out.println("Extracting archive to temp directory.");
-                final File targetDirectory = new File(targetFile.getParent(),
-                        targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
-                unpack(targetFile, targetDirectory);
-                System.out.println();
-                System.out.println("Finished extracting.");
-                System.out.println("===========================================================");
-
-                return targetDirectory;
-            }
-        } catch (MalformedURLException e) {
-            throw new RetrieverException("Error downloading archive.", e);
-        } catch (FileNotFoundException e) {
-            throw new RetrieverException("Error downloading archive.", e);
-        } catch (IOException e) {
-            throw new RetrieverException("Error downloading archive.", e);
         }
+        System.out.println("Finished downloading.");
+        System.out.println("===========================================================");
     }
 
     protected String getBinaryUrl(SdkType sdkType, String version, PlatformType platformType)
@@ -204,6 +298,9 @@ public class DownloadRetriever extends BaseRetriever {
             case FLASH:
                 stringBuilder.append("//*[@id='flash.sdk.version.").append(version).append("']");
                 break;
+            case FONTKIT:
+                stringBuilder.append("//fontswf");
+
         }
         return stringBuilder.toString();
     }
@@ -221,8 +318,10 @@ public class DownloadRetriever extends BaseRetriever {
             question = questionProps.getProperty("ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC");
         } else if(type.equals(SdkType.AIR)) {
             question = questionProps.getProperty("ASK_ADOBE_AIR_SDK");
+        } else if(type.equals(SdkType.FONTKIT)) {
+            question = questionProps.getProperty("ASK_ADOBE_FONTKIT");
         } else {
-            throw new RetrieverException("Unknown SDKType");
+            throw new RetrieverException("Unknown SdkType");
         }
         System.out.println(question);
         System.out.print(questionProps.getProperty("DO_YOU_ACCEPT_QUESTION") + " ");
@@ -244,62 +343,76 @@ public class DownloadRetriever extends BaseRetriever {
         final DownloadRetriever retriever = new DownloadRetriever();
 
         // Test the retrieval of Flex SDKs
-        /*retriever.retrieve(SDKType.FLEX, "4.9.1");
-        retriever.retrieve(SDKType.FLEX, "4.10.0");
-        retriever.retrieve(SDKType.FLEX, "4.11.0");
-        retriever.retrieve(SDKType.FLEX, "4.12.0");
-        retriever.retrieve(SDKType.FLEX, "4.12.1");
-        retriever.retrieve(SDKType.FLEX, "Nightly");*/
+        /*retriever.retrieve(SdkType.FLEX, "4.9.1");
+        retriever.retrieve(SdkType.FLEX, "4.10.0");
+        retriever.retrieve(SdkType.FLEX, "4.11.0");
+        retriever.retrieve(SdkType.FLEX, "4.12.0");
+        retriever.retrieve(SdkType.FLEX, "4.12.1");
+        retriever.retrieve(SdkType.FLEX, "4.13.0");*/
+        retriever.retrieve(SdkType.FLEX, "4.14.1");
+        //retriever.retrieve(SdkType.FLEX, "Nightly");
+
+        // Test the retrieval of Fontkit libraries
+        retriever.retrieve(SdkType.FONTKIT);
 
         // Test the retrieval of AIR SDKs
-        /*retriever.retrieve(SDKType.AIR, "2.6", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "2.6", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "2.6", PlatformType.LINUX);
-        retriever.retrieve(SDKType.AIR, "2.7", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "2.7", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.0", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.0", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.1", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.1", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.2", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.2", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.3", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.3", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.4", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.4", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.5", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.5", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.6", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.6", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.7", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.7", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.8", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.8", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "3.9", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "3.9", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "4.0", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "4.0", PlatformType.MAC);
-        retriever.retrieve(SDKType.AIR, "13.0", PlatformType.WINDOWS);
-        retriever.retrieve(SDKType.AIR, "13.0", PlatformType.MAC);*/
-        //retriever.retrieve(SDKType.AIR, "14.0", PlatformType.WINDOWS);
+        /*retriever.retrieve(SdkType.AIR, "2.6", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "2.6", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "2.6", PlatformType.LINUX);
+        retriever.retrieve(SdkType.AIR, "2.7", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "2.7", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.0", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.0", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.1", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.1", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.2", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.2", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.3", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.3", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.4", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.4", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.5", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.5", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.6", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.6", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.7", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.7", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.8", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.8", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "3.9", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "3.9", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "4.0", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "4.0", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "13.0", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "13.0", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "14.0", PlatformType.WINDOWS);
         retriever.retrieve(SdkType.AIR, "14.0", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "15.0", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "15.0", PlatformType.MAC);
+        retriever.retrieve(SdkType.AIR, "16.0", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "16.0", PlatformType.MAC);*/
+        retriever.retrieve(SdkType.AIR, "17.0", PlatformType.WINDOWS);
+        retriever.retrieve(SdkType.AIR, "17.0", PlatformType.MAC);
 
         // Test the retrieval of Flash SDKs
-        /*retriever.retrieve(SDKType.FLASH, "10.2");
-        retriever.retrieve(SDKType.FLASH, "10.3");
-        retriever.retrieve(SDKType.FLASH, "11.0");
-        retriever.retrieve(SDKType.FLASH, "11.1");
-        retriever.retrieve(SDKType.FLASH, "11.2");
-        retriever.retrieve(SDKType.FLASH, "11.3");
-        retriever.retrieve(SDKType.FLASH, "11.4");
-        retriever.retrieve(SDKType.FLASH, "11.5");
-        retriever.retrieve(SDKType.FLASH, "11.6");
-        retriever.retrieve(SDKType.FLASH, "11.7");
-        retriever.retrieve(SDKType.FLASH, "11.8");
-        retriever.retrieve(SDKType.FLASH, "11.9");
-        retriever.retrieve(SDKType.FLASH, "12.0");
-        retriever.retrieve(SDKType.FLASH, "13.0");
-        retriever.retrieve(SDKType.FLASH, "14.0");*/
+        /*retriever.retrieve(SdkType.FLASH, "10.2");
+        retriever.retrieve(SdkType.FLASH, "10.3");
+        retriever.retrieve(SdkType.FLASH, "11.0");
+        retriever.retrieve(SdkType.FLASH, "11.1");
+        retriever.retrieve(SdkType.FLASH, "11.2");
+        retriever.retrieve(SdkType.FLASH, "11.3");
+        retriever.retrieve(SdkType.FLASH, "11.4");
+        retriever.retrieve(SdkType.FLASH, "11.5");
+        retriever.retrieve(SdkType.FLASH, "11.6");
+        retriever.retrieve(SdkType.FLASH, "11.7");
+        retriever.retrieve(SdkType.FLASH, "11.8");
+        retriever.retrieve(SdkType.FLASH, "11.9");
+        retriever.retrieve(SdkType.FLASH, "12.0");
+        retriever.retrieve(SdkType.FLASH, "13.0");
+        retriever.retrieve(SdkType.FLASH, "14.0");
+        retriever.retrieve(SdkType.FLASH, "15.0");
+        retriever.retrieve(SdkType.FLASH, "16.0");*/
+        retriever.retrieve(SdkType.FLASH, "17.0");
 
     }
 

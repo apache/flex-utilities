@@ -38,6 +38,7 @@
         <module>air</module>
         <module>flash</module>
         <module>flex</module>
+        <module>fontkit</module>
     </modules>
 
 </project>

@@ -19,7 +19,6 @@ package org.apache.flex.utilities.converter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-
 import org.apache.flex.utilities.converter.exceptions.ConverterException;
 import org.apache.flex.utilities.converter.model.MavenArtifact;
 import org.apache.velocity.VelocityContext;

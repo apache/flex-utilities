@@ -20,6 +20,7 @@ import org.apache.flex.utilities.converter.air.AirConverter;
 import org.apache.flex.utilities.converter.exceptions.ConverterException;
 import org.apache.flex.utilities.converter.flash.FlashConverter;
 import org.apache.flex.utilities.converter.flex.FlexConverter;
+import org.apache.flex.utilities.converter.fontkit.FontkitConverter;
 
 import java.io.File;
 
@@ -51,19 +52,25 @@ public class SdkConverter {
             final FlexConverter flexConverter = new FlexConverter(sourceDirectory, targetDirectory);
             flexConverter.convert();
         } catch(ConverterException e) {
-            System.out.println("Skipping generation of FLEX SDK");
+            System.out.println("Error during FLEX SDK generation: " + e.getMessage());
         }
         try {
             final AirConverter airConverter = new AirConverter(sourceDirectory, targetDirectory);
             airConverter.convert();
         } catch(ConverterException e) {
-            System.out.println("Skipping generation of AIR SDK");
+            System.out.println("Error during AIR SDK generation: " + e.getMessage());
         }
         try {
             final FlashConverter flashConverter = new FlashConverter(sourceDirectory, targetDirectory);
             flashConverter.convert();
         } catch(ConverterException e) {
-            System.out.println("Skipping generation of Flash SDK");
+            System.out.println("Error during Flash SDK generation: " + e.getMessage());
+        }
+        try {
+            final FontkitConverter fontkitConverter = new FontkitConverter(sourceDirectory, targetDirectory);
+            fontkitConverter.convert();
+        } catch(ConverterException e) {
+            System.out.println("Error during Fontkit artifacts generation: " + e.getMessage());
         }
     }
 

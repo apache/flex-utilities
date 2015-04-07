@@ -23,6 +23,7 @@ public enum SdkType {
 
     FLASH,
     AIR,
-    FLEX
+    FLEX,
+    FONTKIT
 
 }
