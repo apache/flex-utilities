@@ -137,6 +137,7 @@ Using the Apache Flex SDK Converter
 
 	In gerneral it is able to perform 4 different commands:
 
+	- help		Prints a list of all commands and options available.
 	- list     	Lists all versions and platforms available for download
 	- download  Downloads selected versions and assembles an FDK
 	- convert   Converts a previously installed (using the installer) or

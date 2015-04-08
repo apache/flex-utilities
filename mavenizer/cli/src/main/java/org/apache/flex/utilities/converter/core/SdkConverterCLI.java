@@ -124,6 +124,11 @@ public class SdkConverterCLI {
             // Exectute operations
             ////////////////////////////////////////////////////////////////////////////
 
+            // Print the help screen.
+            if(cmd.getArgList().contains("help")) {
+                printHelp(options);
+            }
+
             // Output a list of all available downloads.
             if(cmd.getArgList().contains("list")) {
                 System.out.println("-----------------------------------------------");
