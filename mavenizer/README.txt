@@ -1,117 +1,182 @@
-/////////////////////////////////////////////////////////////////////////////////////////
-The Mavenizer tool is used to convert the Apache and Adobe Flex SDKs and Air SDKs into
-Maven artifacts. Automatically creating the Directories, pom-files, copying and moving 
-the resources to the correct destinations.
+Apache Flex SDK Converter
+=========================
+	The Mavenizer tool is used to convert the Apache and Adobe Flex SDKs and Air
+	SDKs into Maven artifacts. Automatically creating the Directories, pom-files,
+	copying and moving the resources to the correct destinations.
 
-These artifacts can be used in Maven builds using the Flexmojos plugin (Starting with
-version 6.x).
-/////////////////////////////////////////////////////////////////////////////////////////
+	These artifacts can be used in Maven builds using the Flexmojos plugin
+	(Starting with version 6.x).
 
-The generator automatically converts the desired FDKs into a mavenized form, all you 
-need, is to download and unzip the archives containing the sdks and execute the 
-generator passing in the source and target directory as parameter. 
+	The Apache Flex SDK Converter comes with all the means to download, convert
+	and deploy a mavenized form of an Apache Flex SDK.
 
-The Generator doesn't stupidly copy all java libraries to the destination, but checks
-if the given artifact has already been deployed to maven central or by deploying an
-other FDK previously. For this check you do need an internet connection to do the
-conversion, otherwise I think this will probably take forever.
+    The Converter doesn't stupidly copy all java libraries to the destination, but checks
+    if the given artifact has already been deployed to maven central or by deploying an
+    other FDK previously. For this check you do need an internet connection to do the
+    conversion, otherwise I think this will probably take forever.
 
-Internally it consists of 3 components: 
-- One for deploying the Flash artifacts
-- One for deploying the Air artifacts
-- One for deploying the Flex artifacts
+    Internally it consists of 3 components:
+    - One Retriever
+    	- DownloadRetriever: For downloading binary artifacts
+    - Four Converters
+    	- One for producing the Apache Flex SDK artifacts
+    	- One for producing the Adobe Flash artifacts
+    	- One for producing the Adobe Air artifacts
+    	- One for producing the Adobe Fontkit artifacts
+    - Two Deployers
+    	- One using Aether with no requirement to Maven (Faster, but less configurable)
+    	- One using a local Maven installation (A lot slower, but fully configurable)
 
-As the Adobe FDKs all contained the AIR SDK and the Flash runtime the FDK directories
-are processed by each of the FDK directories. When deploying the Flex SDK the references
-to the flash and air artifacts are done based upon the playerglobal.swc and 
-airglobal.swc. The Generator compares the checksum of the file contained in the FDK
-with that of already deployed artifacts (I think in one of the 3.x FDKs the 
-"AIR SDK Readme.txt" stated the version to be a different version than it actually was).
 
-The Flash version used isn't detected by looking at the playerglobal.swc but by having
-a look at the content of the file "flex-config.xml" in the directory 
-"{fdkroot}/frameworks". Unfortunately I couldn't find a similar reference to a desired
-AIR version in any of the config files.
 
-/////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////
-								!!! WARNING !!!
-/////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////
-I would suggest not to generate the artifacts into your local repo directly, but
-to generate it to an empty directory and then move it from there.
-/////////////////////////////////////////////////////////////////////////////////////////
+Getting the latest sources via git
+==================================
 
-Here come the steps needed to build the Generator (Assuming you already have a working
-Maven installation)
+    Getting the source code is the recommended way to get the Apache Flex SDK
+    Converter.
 
-1. Checkout the code (The directory containing the pom.xml I will call {home} from now on)
-2. Go to the directory {home}
-3. Execute "mvn package"
+    You can always checkout the latest source via git using the following
+    command:
 
-You should now have a jar file called flex-sdk-converter-1.0.0.jar in your {home}/core/target
-directory.
+	 git clone https://git-wip-us.apache.org/repos/asf/flex-utilities.git flex-utilities
+	 cd flex-utilities/mavenizer
+	 git checkout develop
 
-Using the generator:
+Building the Apache Flex SDK Converter
+======================================
 
-1. Prepare the source directory:
-	a) Create a directory anywhere (I will call it {sdkhome} from now on).
-	b) Create a directory {sdkhome}/air (optionally if you want to deploy Air SDKs).
-		I) Copy the AIR SDK archives you downloaded into {sdkhome}/air 
-		II) Unpack the archives in that directory, so the path to the "AIR SDK Readme.txt"
-		    is as follows "{sdkhome}/air/AdobeAIRSDK-{Airversion}-{Airplatform}/AIR SDK Readme.txt"
-			(Actually the name of the "AdobeAIRSDK-*" directory doesn't matter, it's just important
-			for the sequence in which the artifacts are generated)
-	c) Create a directory {sdkhome}/flex (optionally if you want to deploy Flex SDKs).
-		I) Copy the Flex SDK archives you downloaded into {sdkhome}/flex
-		II) Unpack the archived in that directory, so the path to the "flex-sdk-description.xml"
-		    is as follows "{sdkhome}/flex/flex_sdk_{Flexversion}/flex-sdk-description.xml"
-			(Actually the name of the "flex_sdk_*" directory doesn't matter, it's just important
-			for the sequence in which the artifacts are generated)
-	d) Create a directory anywhere which will contain the output (I will call it {fdktarget} 
-	   from now on)
-	e) Change to the directory {home}/core/target
-	f) Execute the following command: "java -cp flex-sdk-converter-1.0.0.jar "{sdkhome}" "{fdktarget}""
-	   (You should wrap the both directory names in double-quotes if they contain spaces)
+    The Apache Flex SDK Converter is a relatively simple project. It requires some
+    build tools which must be installed prior to building the compiler and it depends
+    on some external software which are downloaded as part of the build process.
+    Some of these have different licenses. See the Software Dependencies section
+    for more information on the external software dependencies.
 
-/////////////////////////////////////////////////////////////////////////////////////////
-Some notes to things I noticed in dealing with some of the SDKs
-/////////////////////////////////////////////////////////////////////////////////////////
-	   
-Flex SDK 2.0:
-- Version is strange "3.0 Moxie M2.180927". Has to be changed to 2.0.1.180927 in flex-sdk-description.xml 
+Install Prerequisites
+---------------------
 
-With the first three Flex SDKs (3.0.0.477A, 3.0.1.1732A and 3.2.0.3958A) I did have some 
-trouble finding out the AIR version as well as the binary artifacts. The sizes and 
-checksums of the airglobal.swc didnt match any of the official AIR artifacts and the adl 
-command didn't output a version. Currently without tweaking these FDKs are generated 
-without working AIR support.
-If however you need one of these FDKs you can simply make the generator use the air 
-version you want, by copying the airglobal.swc of the version you want to use into the
-directory "{fdkroot}/frameworks/libs/air" assuming you have deployed any FDK or Air SDK 
-containing that version of airglobal, the generator will correctly add dependencies to
-that AIR version.
+    Before building the Apache Flex Compiler you must install the following software
+    and set the corresponding environment variables using absolute file paths.
+    Relative file paths will result in build errors.
 
-Flex 4.8.0.1359417:
-- Needs a "player" directory in "framework" in order to execute compc (Copy from Flex 4.6.0).
-- Needs all the dependencies in place "textlayout", "osmf" and the stuff that needs to
-  be copied into the "{fdkroot}/lib/external" and "{fdkroot}/lib/external/optional" 
-  directories. For more instructions on this, please read the README.txt in the root of
-  Your FDK.
-- Needs to detect the AIR version the FDK is compatible with, this is currently determined 
-  by checking the version of the airglobal.swc in the framework/libs/air/airglobal.swc. 
-  Simply copy this from the 4.6 FDK
+    ==================================================================================
+    SOFTWARE                                    ENVIRONMENT VARIABLE (absolute paths)
+    ==================================================================================
 
-/////////////////////////////////////////////////////////////////////////////////////////
-Some of the urls to access the binary distributions:  
-/////////////////////////////////////////////////////////////////////////////////////////
-  
-AIR SDKs (From Adobe):  
-http://helpx.adobe.com/air/kb/archived-air-sdk-version.html
+    Java SDK 1.6 or greater (*1)                JAVA_HOME
 
-Flex SDKs (From Adobe):
-(Unfortunately the page seems messed-up, but you can get the URLs from there)
-http://sourceforge.net/adobe/flexsdk/wiki/downloads/
+    Maven 3.1.0 or greater (*1)                 MAVEN_HOME
+
+    ==================================================================================
+
+    *1) The bin directories for MAVEN_HOME and JAVA_HOME should be added to your
+        PATH.
+
+        On Windows, set PATH to
+
+            PATH=%PATH%;%MAVEN_HOME%\bin;%JAVA_HOME%\bin
+
+        On the Mac (bash), set PATH to
+
+            export PATH="$PATH:$MAVEN_HOME/bin:$JAVA_HOME/bin"
+
+         On Linux make sure you path include MAVEN_HOME and JAVA_HOME.
+
+Software Dependencies
+---------------------
+
+    The Apache Flex SDK Converter uses third-party code that will be downloaded as
+    part of the build.
+
+    The Apache Version 2.0 license is in the LICENSE file.
+
+    The following dependencies have licenses which are, or are compatible with,
+    the Apache Version 2.0 license.  You will not be prompted to acknowledge the
+    download.  Most of the jars are installed in your maven local repository and
+    are included in the assembly jars.
+
+TODO: Add them all here ...
+
+Building the Source in the Source Distribution
+----------------------------------------------
+
+    The project is built with Apache Maven so for a reference to Maven commands
+    please have a look at the Maven documentation.
+
+    When you have all the prerequisites in place and the environment variables
+    set (see Install Prerequisites above) use
+
+        cd <mavenizer.dir>
+        mvn install
+
+    to download the thirdparty dependencies and build the binary from the source.
+
+    To clean the build, of everything other than the downloaded third-party
+    dependencies use
+
+        mcn clean
+
+    The packages can be found in the "target" subdirectories.
+
+    The particularly interesting one is the Standalone Command Line Interface:
+    - cli/target/apache-flex-sdk-converter-1.0.0-SNAPSHOT.jar
+
+
+
+Using the Apache Flex SDK Converter
+===================================
+
+	The CLI (Command Line Interface) allows the Apache Flex SDK Converter
+	to be executed from the commandline. Assuming the Java executable is
+	availalbe on the current systems path, it can be called using:
+
+ 	cd <mavenizer.dir>/cli/target
+	java -jar apache-flex-sdk-converter-1.0.0-SNAPSHOT.jar
+
+	If executed without any command, it will output a list of commands and
+	available properties.
+
+	In gerneral it is able to perform 4 different commands:
+
+	- list     	Lists all versions and platforms available for download
+	- download  Downloads selected versions and assembles an FDK
+	- convert   Converts a previously installed (using the installer) or
+				assembled (using download command) FDK into a mavenized form.
+	- deploy    Uploads previously created maven artifacts to a remote repository.
+
+Some typical usage scenarios
+----------------------------
+
+	- Create a mavenized version of a previously installed FDK (Using the installer):
+	   	"... -fdkDir <FDK install dir> -mavenDir <maven local repo> convert"
+
+	- Download and create an FDK (Flex 1.4.1 with playerglobal 17.0 and 16.0
+		AIR SDK 17.0 for Windows and Mac and the fontkit libs):
+   		"... -fdkDir <FDK target dir> -flexVersion 4.14.1 -flashVersion 17.0,16.0 \
+   			-airVersion 17.0 -platform WINDOWS,MAC -fontkit download"
+
+	- Download and convert an FDK (FDK assembled in temp directory using Air for
+		current systems platform only):
+   		"... -flexVersion 4.14.1 -flashVersion 17.0 -airVersion 17.0 -fontkit \
+   			-mavenDir <maven local repo> download convert"
+
+	- Deploy a bunch of maven artifacts to a remote maven repository:
+   		"... -mavenDir <dir with maven artifacts> -repoUrl <url> \
+   			-repoUsername <username> -repoPassword <pasword> deploy"
+
+	- "The works" (TM): Download, Convert and Deploy using only temp directories:
+   		"... -flexVersion 4.14.1 -flashVersion 17.0 -airVersion 17.0 -fontkit \
+   			-repoUrl <url> -repoUsername <username> -repoPassword <pasword> \
+   			download convert deploy"
+
+
+Thanks for using Apache Flex.  Enjoy!
+
+                                          The Apache Flex Project
+                                          <http://flex.apache.org>
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 Some information (HOWTO) to go with the deployer artifacts
