@@ -28,8 +28,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -44,8 +46,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by cdutz on 18.05.2014.
@@ -54,6 +55,15 @@ public class DownloadRetriever extends BaseRetriever {
 
     public static final String FLEX_INSTALLER_CONFIG_URL =
             "http://flex.apache.org/installer/sdk-installer-config-4.0.xml";
+
+    /**
+     * Wrapper to allow simple overriding of this property.
+     *
+     * @return URL from which the version information should be loaded.
+     */
+    protected String getFlexInstallerConfigUrl() {
+        return FLEX_INSTALLER_CONFIG_URL;
+    }
 
     public File retrieve(SdkType type) throws RetrieverException {
         return retrieve(type, null, null);
@@ -229,7 +239,7 @@ public class DownloadRetriever extends BaseRetriever {
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
-            final Document doc = builder.parse(FLEX_INSTALLER_CONFIG_URL);
+            final Document doc = builder.parse(getFlexInstallerConfigUrl());
 
             //Evaluate XPath against Document itself
             final String expression = getUrlXpath(sdkType, version, platformType);
@@ -346,83 +356,64 @@ public class DownloadRetriever extends BaseRetriever {
         }
     }
 
+    public Map<DefaultArtifactVersion, Collection<PlatformType>> getAvailableVersions(SdkType type) {
+        Map<DefaultArtifactVersion, Collection<PlatformType>> result =
+                new HashMap<DefaultArtifactVersion, Collection<PlatformType>>();
+        try {
+            final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            final DocumentBuilder builder = factory.newDocumentBuilder();
+            final Document doc = builder.parse(getFlexInstallerConfigUrl());
+            final XPath xPath = XPathFactory.newInstance().newXPath();
 
+            String expression;
+            NodeList nodes = null;
+            switch (type) {
+                case FLEX:
+                    expression = "/config/products/ApacheFlexSDK/versions/*";
+                    nodes = (NodeList) xPath.evaluate(expression, doc.getDocumentElement(), XPathConstants.NODESET);
+                    break;
+                case FLASH:
+                    expression = "/config/flashsdk/versions/*";
+                    nodes = (NodeList) xPath.evaluate(expression, doc.getDocumentElement(), XPathConstants.NODESET);
+                    break;
+                case AIR:
+                    expression = "/config/airsdk/*/versions/*";
+                    nodes = (NodeList) xPath.evaluate(expression, doc.getDocumentElement(), XPathConstants.NODESET);
+                    break;
+            }
 
-    public static void main(String[] args) throws Exception {
-        final DownloadRetriever retriever = new DownloadRetriever();
-
-        // Test the retrieval of Flex SDKs
-        /*retriever.retrieve(SdkType.FLEX, "4.9.1");
-        retriever.retrieve(SdkType.FLEX, "4.10.0");
-        retriever.retrieve(SdkType.FLEX, "4.11.0");
-        retriever.retrieve(SdkType.FLEX, "4.12.0");
-        retriever.retrieve(SdkType.FLEX, "4.12.1");
-        retriever.retrieve(SdkType.FLEX, "4.13.0");*/
-        retriever.retrieve(SdkType.FLEX, "4.14.1");
-        //retriever.retrieve(SdkType.FLEX, "Nightly");
-
-        // Test the retrieval of Fontkit libraries
-        retriever.retrieve(SdkType.FONTKIT);
-
-        // Test the retrieval of AIR SDKs
-        /*retriever.retrieve(SdkType.AIR, "2.6", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "2.6", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "2.6", PlatformType.LINUX);
-        retriever.retrieve(SdkType.AIR, "2.7", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "2.7", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.0", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.0", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.1", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.1", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.2", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.2", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.3", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.3", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.4", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.4", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.5", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.5", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.6", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.6", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.7", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.7", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.8", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.8", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "3.9", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "3.9", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "4.0", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "4.0", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "13.0", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "13.0", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "14.0", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "14.0", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "15.0", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "15.0", PlatformType.MAC);
-        retriever.retrieve(SdkType.AIR, "16.0", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "16.0", PlatformType.MAC);*/
-        retriever.retrieve(SdkType.AIR, "17.0", PlatformType.WINDOWS);
-        retriever.retrieve(SdkType.AIR, "17.0", PlatformType.MAC);
-
-        // Test the retrieval of Flash SDKs
-        /*retriever.retrieve(SdkType.FLASH, "10.2");
-        retriever.retrieve(SdkType.FLASH, "10.3");
-        retriever.retrieve(SdkType.FLASH, "11.0");
-        retriever.retrieve(SdkType.FLASH, "11.1");
-        retriever.retrieve(SdkType.FLASH, "11.2");
-        retriever.retrieve(SdkType.FLASH, "11.3");
-        retriever.retrieve(SdkType.FLASH, "11.4");
-        retriever.retrieve(SdkType.FLASH, "11.5");
-        retriever.retrieve(SdkType.FLASH, "11.6");
-        retriever.retrieve(SdkType.FLASH, "11.7");
-        retriever.retrieve(SdkType.FLASH, "11.8");
-        retriever.retrieve(SdkType.FLASH, "11.9");
-        retriever.retrieve(SdkType.FLASH, "12.0");
-        retriever.retrieve(SdkType.FLASH, "13.0");
-        retriever.retrieve(SdkType.FLASH, "14.0");
-        retriever.retrieve(SdkType.FLASH, "15.0");
-        retriever.retrieve(SdkType.FLASH, "16.0");*/
-        retriever.retrieve(SdkType.FLASH, "17.0");
-
+            if (nodes != null) {
+                for(int i = 0; i < nodes.getLength(); i++) {
+                    Element element = (Element) nodes.item(i);
+                    DefaultArtifactVersion version = new DefaultArtifactVersion(element.getAttribute("version"));
+                    if(type == SdkType.AIR) {
+                        PlatformType platformType = PlatformType.valueOf(
+                                element.getParentNode().getParentNode().getNodeName().toUpperCase());
+                        if(!result.containsKey(version)) {
+                            result.put(version, new ArrayList<PlatformType>());
+                        }
+                        result.get(version).add(platformType);
+                    } else {
+                        result.put(version, null);
+                    }
+                }
+            }
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
+    public static void main(String[] args) throws Exception {
+        DownloadRetriever downloadRetriever = new DownloadRetriever();
+        //downloadRetriever.getAvailableVersions(SdkType.FLEX);
+        //downloadRetriever.getAvailableVersions(SdkType.FLASH);
+        downloadRetriever.getAvailableVersions(SdkType.AIR);
+    }
 }

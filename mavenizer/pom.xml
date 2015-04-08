@@ -27,7 +27,7 @@
     </parent>
 
     <groupId>org.apache.flex.utilities.converter</groupId>
-    <artifactId>flex-sdk-converter</artifactId>
+    <artifactId>apache-flex-sdk-converter</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -57,12 +57,10 @@
     </scm>
 
     <modules>
-        <module>core</module>
         <module>retrievers</module>
         <module>converters</module>
         <module>deployers</module>
-
-        <module>mavenizer</module>
+        <module>cli</module>
     </modules>
 
     <build>

@@ -11,11 +11,11 @@ import org.apache.flex.utilities.converter.fontkit.FontkitConverter;
 import org.apache.flex.utilities.converter.retrievers.download.DownloadRetriever;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by christoferdutz on 07.04.15.
@@ -24,51 +24,74 @@ public class SdkConverterCLI {
 
     public static void main(String[] args) throws Exception {
         Options options = new Options();
-        options.addOption(OptionBuilder.withDescription("Tells the Converter to download and extract (parts of) an FDK.").create("download"));
-        options.addOption(OptionBuilder.withDescription("Tells the Converter to convert an FDK into a mavenized artifacts.").create("convert"));
-        options.addOption(OptionBuilder.withDescription("Tells the Converter to deploy mavenized artfifacts to a remote repository.").create("deploy"));
+        options.addOption(OptionBuilder.withDescription("List the versions currently available for download.").
+                create("list"));
+        options.addOption(OptionBuilder.
+                withDescription("Tells the Converter to download and extract (parts of) an FDK.").
+                create("download"));
+        options.addOption(OptionBuilder.
+                withDescription("Tells the Converter to convert an FDK into a mavenized artifacts.").
+                create("convert"));
+        options.addOption(OptionBuilder.
+                withDescription("Tells the Converter to deploy mavenized artfifacts to a remote repository.").
+                create("deploy"));
 
         options.addOption(OptionBuilder.withArgName("version").hasArg().
-                withValueSeparator(',').
-                withDescription("(Optional and Only valid for download) Version of the FDK which should be downloaded.").
+                withDescription("(Optional and Only valid for download) Version of the " +
+                        "FDK which should be downloaded.").
                 isRequired(false).
                 create("flexVersion"));
         options.addOption(OptionBuilder.withArgName("version(s)").hasArg().
                 withValueSeparator(',').
-                withDescription("(Optional and Only valid for download) Version(s) of the Adobe Flash SDK which should be downloaded. Multiple versions can be separated by \",\".").
+                withDescription("(Optional and Only valid for download) Version(s) of the " +
+                        "Adobe Flash SDK which should be downloaded. Multiple versions can " +
+                        "be separated by \",\".").
                 isRequired(false).
                 create("flashVersion"));
-        options.addOption(OptionBuilder.withArgName("version(s)").hasArg().
-                withValueSeparator(',').
-                withDescription("(Optional and Only valid for download) Version(s) of the Adobe Air SDK which should be downloaded. Multiple versions can be separated by \",\".").
+        options.addOption(OptionBuilder.withArgName("version").hasArg().
+                withDescription("(Optional and Only valid for download) Version of the " +
+                        "Adobe Air SDK which should be downloaded.").
                 isRequired(false).
                 create("airVersion"));
-        options.addOption(OptionBuilder.withDescription("(Optional and Only valid for download) If provided, the Converter will also download the Fontkit libraries needed for font encoding.").
+        options.addOption(OptionBuilder.
+                withDescription("(Optional and Only valid for download) If provided, the " +
+                        "Converter will also download the Fontkit libraries needed for font " +
+                        "encoding.").
                 isRequired(false).
                 create("fontkit"));
         options.addOption(OptionBuilder.withArgName("platform(s)").hasArg().
                 withValueSeparator(',').
-                withDescription("(Optional and Only valid for download) Platform the artifacts should be downloaded for. If omitted the platform this process is run on will be used. Valid options are: \"WIN\", \"MAC\" and \"LNX\". Multiple versions can be separated by \",\".").
+                withDescription("(Optional and Only valid for download) Platform the artifacts " +
+                        "should be downloaded for. If omitted the platform this process is run " +
+                        "on will be used. Valid options are: \"WINDOWS\", \"MAC\" and \"LNX\". " +
+                        "Multiple versions can be separated by \",\".").
                 isRequired(false).
                 create("platform"));
         options.addOption(OptionBuilder.withArgName("dir").hasArg().
-                withDescription("(Optional) Directory that the mavenized artifacts will be located in. If omitted, a temporary directory will be used.").
+                withDescription("(Optional) Directory that the mavenized artifacts will be located in. " +
+                        "If omitted, a temporary directory will be used.").
                 isRequired(false).
                 create("mavenDir"));
         options.addOption(OptionBuilder.withArgName("dir").hasArg().
-                withDescription("(Optional) Directory that the FDK will be located in. If omitted, a temporary directory will be used.").
+                withDescription("(Optional) Directory that the FDK will be located in. " +
+                        "If omitted, a temporary directory will be used.").
                 isRequired(false).
                 create("fdkDir"));
         options.addOption(OptionBuilder.withArgName("url").hasArg().
-                withDescription("(Optional and only valid for deploy) Url of the remote Maven repository that the generated Maven artifacts should be deployed to.").
+                withDescription("(Optional and only valid for deploy) Url of the remote Maven " +
+                        "repository that the generated Maven artifacts should be deployed to.").
                 isRequired(false).
                 create("repoUrl"));
         options.addOption(OptionBuilder.withArgName("username").hasArg().
-                withDescription("(Optional and only valid for deploy) Username used to authenticate on the remote Maven repository that the generated Maven artifacts should be deployed to.").
+                withDescription("(Optional and only valid for deploy) Username used to authenticate " +
+                        "on the remote Maven repository that the generated Maven artifacts should be " +
+                        "deployed to.").
                 isRequired(false).
                 create("repoUsername"));
         options.addOption(OptionBuilder.withArgName("password").hasArg().
-                withDescription("(Optional and only valid for deploy) Password used to authenticate on the remote Maven repository that the generated Maven artifacts should be deployed to.").
+                withDescription("(Optional and only valid for deploy) Password used to authenticate " +
+                        "on the remote Maven repository that the generated Maven artifacts should be " +
+                        "deployed to.").
                 isRequired(false).
                 create("repoPassword"));
 
@@ -113,10 +136,57 @@ public class SdkConverterCLI {
             // Exectute operations
             ////////////////////////////////////////////////////////////////////////////
 
+            // Output a list of all available downloads.
+            if(cmd.getArgList().contains("list")) {
+                System.out.println("-----------------------------------------------");
+                System.out.println("- Available downloads");
+                System.out.println("-----------------------------------------------");
+
+                DownloadRetriever retriever = new DownloadRetriever();
+                System.out.println("Apache Flex:");
+                List<DefaultArtifactVersion> versions = new ArrayList<DefaultArtifactVersion>(
+                        retriever.getAvailableVersions(SdkType.FLEX).keySet());
+                Collections.sort(versions);
+                for(DefaultArtifactVersion version : versions) {
+                    System.out.println(" - " + version.toString());
+                }
+                System.out.println();
+
+                System.out.println("Adobe Flash:");
+                versions = new ArrayList<DefaultArtifactVersion>(
+                        retriever.getAvailableVersions(SdkType.FLASH).keySet());
+                Collections.sort(versions);
+                for(DefaultArtifactVersion version : versions) {
+                    System.out.println(" - " + version.toString());
+                }
+                System.out.println();
+
+                System.out.println("Adobe AIR:");
+                Map<DefaultArtifactVersion, Collection<PlatformType>> versionData =
+                        retriever.getAvailableVersions(SdkType.AIR);
+                versions = new ArrayList<DefaultArtifactVersion>(versionData.keySet());
+                Collections.sort(versions);
+                for(DefaultArtifactVersion version : versions) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(" - ").append(version.toString()).append(" (");
+                    boolean firstOption = true;
+                    for(PlatformType platformType : versionData.get(version)) {
+                        if(!firstOption) {
+                            sb.append(", ");
+                        }
+                        sb.append(platformType.name());
+                        firstOption = false;
+                    }
+                    sb.append(")");
+                    System.out.println(sb.toString());
+                }
+            }
+
             // Handle the downloading of atifacts.
             if(cmd.getArgList().contains("download")) {
                 System.out.println("-----------------------------------------------");
-                System.out.println("Starting downloads");
+                System.out.println("- Downloading");
+                System.out.println("-----------------------------------------------");
 
                 DownloadRetriever retriever = new DownloadRetriever();
 
@@ -168,7 +238,8 @@ public class SdkConverterCLI {
             // Handle the conversion.
             if(cmd.getArgList().contains("convert")) {
                 System.out.println("-----------------------------------------------");
-                System.out.println("Starting conversion");
+                System.out.println("- Conversion");
+                System.out.println("-----------------------------------------------");
 
                 System.out.println("- Converting Flex SDK from " + fdkDir.getAbsolutePath() +
                         " to " + mavenDir.getAbsolutePath());
@@ -196,7 +267,8 @@ public class SdkConverterCLI {
             // Handle the deployment.
             if(cmd.getArgList().contains("deploy")) {
                 System.out.println("-----------------------------------------------");
-                System.out.println("Starting deployment");
+                System.out.println("- Deployment");
+                System.out.println("-----------------------------------------------");
 
                 if(!cmd.hasOption("repoUrl")) {
                     System.err.println("Parameter 'repoUrl' required for task 'deploy'.");
