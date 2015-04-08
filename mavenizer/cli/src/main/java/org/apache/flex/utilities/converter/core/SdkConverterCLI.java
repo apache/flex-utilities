@@ -24,18 +24,6 @@ public class SdkConverterCLI {
 
     public static void main(String[] args) throws Exception {
         Options options = new Options();
-        options.addOption(OptionBuilder.withDescription("List the versions currently available for download.").
-                create("list"));
-        options.addOption(OptionBuilder.
-                withDescription("Tells the Converter to download and extract (parts of) an FDK.").
-                create("download"));
-        options.addOption(OptionBuilder.
-                withDescription("Tells the Converter to convert an FDK into a mavenized artifacts.").
-                create("convert"));
-        options.addOption(OptionBuilder.
-                withDescription("Tells the Converter to deploy mavenized artfifacts to a remote repository.").
-                create("deploy"));
-
         options.addOption(OptionBuilder.withArgName("version").hasArg().
                 withDescription("(Optional and Only valid for download) Version of the " +
                         "FDK which should be downloaded.").
@@ -294,8 +282,26 @@ public class SdkConverterCLI {
     }
 
     protected static void printHelp(Options options) {
+        String headerText = "Commands: \n" +
+                "If the parameters 'fdkDir' and 'mavenDir' are not specified, the Converter creates two temporary " +
+                "directories in your systems temp directory and uses these for the follwoing commands.\n" +
+                " - list:\nList all available versions and platforms (for download)\n" +
+                " - download:\nDownload the selected versions of FDK parts specified by 'flexVersion', " +
+                "'flashVersion', 'airVersion' and 'fontkit' and creates an FDK in the directory specified by " +
+                "'fdkDir'. If 'airVersion' is specified, the 'platform' parameter specifies the platforms for which " +
+                "the given AIR SDK should be downloaded, if not specified the current systems platform is used. \n" +
+                " - convert:\nConvert the FDK located in 'fdkDir' into a mavenized form at 'mavenDir'.\n" +
+                " - deploy:\nDeploy the maven artifacts located in 'mavenDir', to the remote maven repository " +
+                "specified with 'repoUrl'. If the 'repoUsername' and 'repoPassword' parameters are specified, use " +
+                "these credentials for authenticating at the remote system.\n" +
+                "Options:";
+
         HelpFormatter helpFormatter = new HelpFormatter();
-        helpFormatter.printHelp("[download] [convert] [deploy]", options);
+        helpFormatter.printHelp("java -jar apache-flex-sdk-converter.jar [list] [-fdkDir <fdkDir>] " +
+                        "[-mavenDir <mavenDir>] [[-flexVersion <version>] [-flashVersion <version(s)>] " +
+                        "[-airVersion <version> [-platform <platform(s)>]] [-fontkit] download] [convert] " +
+                        "[-repoUrl <url> [-repoUsername <username> -repoPassword <password>] deploy]",
+                headerText, options, "");
     }
 
     protected static File getTempDir(String prefix) throws IOException {
