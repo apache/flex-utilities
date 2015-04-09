@@ -150,7 +150,7 @@ Some typical usage scenarios
 	- Create a mavenized version of a previously installed FDK (Using the installer):
 	   	"... -fdkDir <FDK install dir> -mavenDir <maven local repo> convert"
 
-	- Download and create an FDK (Flex 1.4.1 with playerglobal 17.0 and 16.0
+	- Download and create an FDK (Flex 4.14.1 with playerglobal 17.0 and 16.0
 		AIR SDK 17.0 for Windows and Mac and the fontkit libs):
    		"... -fdkDir <FDK target dir> -flexVersion 4.14.1 -flashVersion 17.0,16.0 \
    			-airVersion 17.0 -platform WINDOWS,MAC -fontkit download"
