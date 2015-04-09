@@ -10,10 +10,10 @@ Apache Flex SDK Converter
 	The Apache Flex SDK Converter comes with all the means to download, convert
 	and deploy a mavenized form of an Apache Flex SDK.
 
-    The Converter doesn't stupidly copy all java libraries to the destination, but checks
+    The Converter does not simply copy all java libraries to the destination; it checks
     if the given artifact has already been deployed to maven central or by deploying an
     other FDK previously. For this check you do need an internet connection to do the
-    conversion, otherwise I think this will probably take forever.
+    conversion, otherwise it will probably take forever.
 
     Internally it consists of 3 components:
     - One Retriever
@@ -113,7 +113,7 @@ Building the Source in the Source Distribution
     To clean the build, of everything other than the downloaded third-party
     dependencies use
 
-        mcn clean
+        mvn clean
 
     The packages can be found in the "target" subdirectories.
 
@@ -126,8 +126,8 @@ Using the Apache Flex SDK Converter
 ===================================
 
 	The CLI (Command Line Interface) allows the Apache Flex SDK Converter
-	to be executed from the commandline. Assuming the Java executable is
-	availalbe on the current systems path, it can be called using:
+	to be executed from the command-line. Assuming the Java executable is
+	available on the current systems path, it can be called using:
 
  	cd <mavenizer.dir>/cli/target
 	java -jar apache-flex-sdk-converter-1.0.0-SNAPSHOT.jar
@@ -135,7 +135,7 @@ Using the Apache Flex SDK Converter
 	If executed without any command, it will output a list of commands and
 	available properties.
 
-	In gerneral it is able to perform 4 different commands:
+	In general it is able to perform 4 different commands:
 
 	- help		Prints a list of all commands and options available.
 	- list     	Lists all versions and platforms available for download
