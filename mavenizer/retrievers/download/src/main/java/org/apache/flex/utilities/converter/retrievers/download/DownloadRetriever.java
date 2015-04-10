@@ -342,14 +342,19 @@ public class DownloadRetriever extends BaseRetriever {
         } else {
             throw new RetrieverException("Unknown SdkType");
         }
-        System.out.println(question);
-        System.out.print(questionProps.getProperty("DO_YOU_ACCEPT_QUESTION") + " ");
         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
-            final String answer = reader.readLine();
-            if (!"YES".equalsIgnoreCase(answer)) {
-                System.out.println("You have to accept the license agreement in order to proceed.");
-                throw new RetrieverException("You have to accept the license agreement in order to proceed.");
+            while (true) {
+                System.out.println(question);
+                System.out.print(questionProps.getProperty("DO_YOU_ACCEPT_QUESTION") + " ");
+                final String answer = reader.readLine();
+                if ("YES".equalsIgnoreCase(answer) || "Y".equalsIgnoreCase(answer)) {
+                    return;
+                }
+                if ("NO".equalsIgnoreCase(answer) || "N".equalsIgnoreCase(answer)) {
+                    System.out.println("You have to accept the license agreement in order to proceed.");
+                    throw new RetrieverException("You have to accept the license agreement in order to proceed.");
+                }
             }
         } catch(IOException e) {
             throw new RetrieverException("Couldn't read from Stdin.");
