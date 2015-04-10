@@ -52,8 +52,9 @@ public class AirConverter extends BaseConverter implements Converter {
      */
     @Override
     protected void processDirectory() throws ConverterException {
-        if(!rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
-            throw new ConverterException("Air SDK directory '" + rootSourceDirectory.getPath() + "' is invalid.");
+        if((airSdkVersion == null) || !rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
+            System.out.println("Skipping AIR SDK generation.");
+            return;
         }
 
         generateCompilerArtifacts();
@@ -210,9 +211,11 @@ public class AirConverter extends BaseConverter implements Converter {
         // stick to that for now.
 
         final File sdkDescriptor = new File(rootDirectory, "AIR SDK Readme.txt");
+
+        // If the descriptor is not present, return null as this FDK directory doesn't
+        // seem to contain a AIR SDK.
         if(!sdkDescriptor.exists() || !sdkDescriptor.isFile()) {
-            throw new ConverterException("Air SDK directory '" + rootDirectory.getPath() +
-                    "' is missing a the version text-file 'AIR SDK Readme.txt'.");
+            return null;
         }
 
         DataInputStream in = null;
