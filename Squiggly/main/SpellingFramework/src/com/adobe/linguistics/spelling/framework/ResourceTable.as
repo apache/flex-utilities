@@ -41,7 +41,7 @@ package com.adobe.linguistics.spelling.framework
 		 */
 		public function ResourceTable()
 		{
-			_resources = new Object();
+			_resources = {};
 		}
 
 		/**
