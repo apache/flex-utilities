@@ -68,6 +68,10 @@
     <property name="binary.kit" value="${kit.prefix}-bin"/>
     <property name="LOCAL_CONFIG_FILE" value="${basedir}/src/installer/sdk-installer-config-4.0.xml" />
 
+    <!--<property name="commons.zip" value="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc" />-->
+    <!-- use this one for now until we find a better source -->
+    <property name="commons.zip" value="https://github.com/bigosmallm/MakeApacheFlexForFlashBuilder/blob/master/libs/as3commons-zip-1.0.0-alpha.1.swc?raw=true" />
+    
     <!--
         Properties are immutable so value frozen first time property is set.
         If FLEX_HOME is not set with -DFLEX_HOME=/path/to/flex/sdk on the ant command line
@@ -275,10 +279,11 @@
     <target name="get-as3commons.swc" depends="check-as3commons.swc" unless="as3commons.swc.present"
         description="Download as3commons.swc and fail if checksum mismatch.">
         <mkdir dir="${LIBRARY_DIR}"/>
-        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc"
+        <get src="${commons.zip}"
             dest="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc"
             verbose="true"/>
-        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc.md5"
+        <!-- skip checksum until we find a valid file
+        <get src="${commons.zip}.md5"
             dest="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc.md5"
             verbose="true"/>
         <checksum file="${LIBRARY_DIR}/as3commons-zip-1.0.0-alpha.1.swc" algorithm="md5" verifyProperty="isMD5ok"/>
@@ -288,6 +293,7 @@
                 <isfalse value="${isMD5ok}"/>
             </condition>
         </fail>
+         -->
     </target>
 
     <target name="compile" depends="get-as3commons.swc"
