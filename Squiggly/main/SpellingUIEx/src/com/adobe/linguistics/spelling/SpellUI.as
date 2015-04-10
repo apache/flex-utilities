@@ -352,7 +352,7 @@ package com.adobe.linguistics.spelling
             if(!textFlow || !textFlow.flowComposer)
                 return true;
 
-            return textFlow.flowComposer.isDamaged(textFlow.textLength);
+            return !textFlow.flowComposer.isDamaged(textFlow.textLength);
         }
 		
 		private function spellCheckRange(start:uint, end:uint):void {
