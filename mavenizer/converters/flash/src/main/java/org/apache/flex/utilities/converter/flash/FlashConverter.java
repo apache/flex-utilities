@@ -53,7 +53,8 @@ public class FlashConverter extends BaseConverter implements Converter {
     @Override
     protected void processDirectory() throws ConverterException {
         if(!rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
-            throw new ConverterException("Flash SDK directory '" + rootSourceDirectory.getPath() + "' is invalid.");
+            System.out.println("Skipping Flash SDK generation.");
+            return;
         }
 
         generateRuntimeArtifacts();
@@ -69,7 +70,7 @@ public class FlashConverter extends BaseConverter implements Converter {
         // Create a list of all libs that should belong to the Flash SDK runtime.
         final File directory = new File(rootSourceDirectory, "runtimes" + File.separator + "player");
         if(!directory.exists() || !directory.isDirectory()) {
-            System.out.println("Skipping runtime generation.");
+            System.out.println("Skipping Flash runtime generation.");
             return;
         }
         final List<File> playerVersions = new ArrayList<File>();
@@ -214,8 +215,10 @@ public class FlashConverter extends BaseConverter implements Converter {
     protected void generateFrameworkArtifacts() throws ConverterException {
         // Create a list of all libs that should belong to the Flash SDK runtime.
         final File directory = new File(rootSourceDirectory, "frameworks.libs.player".replace(".", File.separator));
+        // It seems the fdk directory doesn't contain any flash resources.
         if (!directory.exists() || !directory.isDirectory()) {
-            throw new ConverterException("Runtime directory does not exist.");
+            System.out.println("Skipping Flash framework generation.");
+            return;
         }
         final List<File> playerVersions = new ArrayList<File>();
         final File[] versions = directory.listFiles();

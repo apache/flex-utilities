@@ -61,8 +61,9 @@ public class FlexConverter extends BaseConverter implements Converter {
      */
     @Override
     protected void processDirectory() throws ConverterException {
-        if(!rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
-            throw new ConverterException("Flex SDK directory '" + rootSourceDirectory.getPath() + "' is invalid.");
+        if((flexSdkVersion == null) || !rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
+            System.out.println("Skipping Flex SDK generation.");
+            return;
         }
 
         generateCompilerArtifacts();
@@ -562,6 +563,12 @@ public class FlexConverter extends BaseConverter implements Converter {
      */
     protected String getFlexVersion(File rootDirectory) throws ConverterException {
         final File sdkDescriptor = new File(rootDirectory, "flex-sdk-description.xml");
+
+        // If the descriptor is not present, return null as this FDK directory doesn't
+        // seem to contain a Flex SDK.
+        if(!sdkDescriptor.exists()) {
+            return null;
+        }
 
         final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
