@@ -88,15 +88,12 @@ package com.adobe.linguistics.spelling
 		
 		//private var mTextField:RichEditableText;
 
-		private var _dictname:String = new String();			
-		private var _hundict:HunspellDictionary = new HunspellDictionary();		
-		private var _userdict:UserDictionary = null;
-		private var _sharedobj:SharedObject = null;
-		private var scm:SpellingContextMenu;
-		
-		private var _newchecker:SpellChecker = null;
+		private var _dictionaryName:String = "";
+		private var _userDictionary:UserDictionary = null;
+		private var _sharedObject:SharedObject = null;
+		private var _scm:SpellingContextMenu;
 		private var _resource_locale:Object = null;
-		private var _spellingservice:SpellingService = null;
+		private var _spellingService:SpellingService = null;
 
 		private static var _contextMenuEntries:Object = {enable:"Enable Spelling", disable:"Disable Spelling", add:"Add to dictionary"};		
 		private static var _spellingConfigUrl:String = "SpellingConfig.xml";
@@ -130,16 +127,11 @@ package com.adobe.linguistics.spelling
 			if ( lang == null ) return;
 		 	// TODO: Change dict parameter type to a SpellCheck class or a URL string.
 			var txt:* = getComponentTextModel(comp);
-			/*var comp1:UIComponent = txt.parent;
-			var comp2:UIComponent = txt.owner;
-			var comp3:UIComponent = txt.parentApplication;
-			var comp4:UIComponent = txt.parentDocument;
-			var comp5:UIComponent = txt.parentDocument.hostComponent; <--spark parent UICOmponent*/
 			if ( txt==null || _UITable[comp]!=undefined )
 				return;	
 			
 			// TODO: dangerous, is garbage collection going to clear this?
-			_UITable[comp]=new SpellUI(txt, lang);
+			_UITable[comp] = new SpellUI(txt, lang);
 			_parentTable[txt] = comp;
 			_cacheDictTable[comp]=lang;
 		}
@@ -307,16 +299,15 @@ package com.adobe.linguistics.spelling
 				return;
 			}
 			_actualParent = textModel;
-			mTextField = textModel ;
+			mTextField = textModel;
 									
 			mTextField.addEventListener(FocusEvent.FOCUS_OUT, handleFocusOut);
 			mTextField.addEventListener(FocusEvent.FOCUS_IN, handleFocusIn);
 			mTextField.addEventListener(ScrollEvent.SCROLL, spellCheckScreen);
 			mTextField.parent.addEventListener(Event.RENDER, spellCheckScreen);
 			mTextField.parent.addEventListener(Event.CHANGE, handleChangeEvent);
-			_dictname = lang;			
+			_dictionaryName = lang;
 			loadConfig();
-			
 		}
 		
 		private function spellCheckScreen(event:Event):void
@@ -398,7 +389,7 @@ package com.adobe.linguistics.spelling
 			var tokenizer:TextTokenizer = new TextTokenizer(mTextField.text.substring(start,end));
 
 			for ( var token:Token = tokenizer.getFirstToken(); token != tokenizer.getLastToken(); token= tokenizer.getNextToken(token) ) {
-				var result:Boolean=_spellingservice.checkWord(mTextField.text.substring(token.first+start, token.last+start));					
+				var result:Boolean=_spellingService.checkWord(mTextField.text.substring(token.first+start, token.last+start));
 				if (!result){
 					if (_checkLastWord || (token.last+start != mTextField.text.length))
 						//hh.highlightWord(token.first+start, token.last+start-1);
@@ -449,36 +440,41 @@ package com.adobe.linguistics.spelling
 			return index;
 		}
 
-			private function loadConfig():void{
-			_resource_locale = SpellingConfiguration.resourceTable.getResource(_dictname);
-			
-			if ((_resource_locale != null) || (SpellUI._configXML != null)) 
-				loadConfigComplete(null);
-			else {	
-				SpellUI._configXMLLoader.addEventListener(Event.COMPLETE, loadConfigComplete);
-			
-				if (SpellUI._configXMLLoading == false)
-				{
-					SpellUI._configXMLLoader.load(new URLRequest(_spellingConfigUrl));
-					SpellUI._configXMLLoading = true;
-				}
-			}
+			private function loadConfig():void
+            {
+                _resource_locale = SpellingConfiguration.resourceTable.getResource(_dictionaryName);
+
+                if ((_resource_locale != null) || (SpellUI._configXML != null))
+                    loadConfigComplete(null);
+                else {
+                    SpellUI._configXMLLoader.addEventListener(Event.COMPLETE, loadConfigComplete);
+
+                    if (SpellUI._configXMLLoading == false)
+                    {
+                        SpellUI._configXMLLoader.load(new URLRequest(_spellingConfigUrl));
+                        SpellUI._configXMLLoading = true;
+                    }
+                }
 		}
 		
 		private function loadConfigComplete(evt:Event):void{
 			if (_resource_locale == null) {
-			if (SpellUI._configXML == null)
-				SpellUI._configXML= new XML(evt.target.data);
-			
-				SpellingConfiguration.resourceTable.setResource(_dictname,{rule:SpellUI._configXML.LanguageResource.(@languageCode==_dictname).@ruleFile, 
-																		dict:SpellUI._configXML.LanguageResource.(@languageCode==_dictname).@dictionaryFile});
-			}
+                if (SpellUI._configXML == null)
+                    SpellUI._configXML = new XML(evt.target.data);
+
+                SpellingConfiguration.resourceTable.setResource(_dictionaryName,{rule:SpellUI._configXML.LanguageResource.(@languageCode==_dictionaryName).@ruleFile,
+                                                                        dict:SpellUI._configXML.LanguageResource.(@languageCode==_dictionaryName).@dictionaryFile});
+            }
                 //New Added
-			_spellingservice = new SpellingService(_dictname);
-			_spellingservice.addEventListener(Event.COMPLETE, loadDictComplete);
-			_spellingservice.init();
+			_spellingService = createSpellingService(_dictionaryName);
+			_spellingService.addEventListener(Event.COMPLETE, loadDictComplete);
+			_spellingService.init();
 		}
-		
+
+		protected function createSpellingService(dictionaryName:String):SpellingService
+		{
+			return new SpellingService(dictionaryName);
+		}
 				
 				
 		
@@ -489,27 +485,27 @@ package com.adobe.linguistics.spelling
 			// Lazy loading the UD only when the main dict is loaded successfully
 			if ((SpellUI._cache["Squiggly_UD"] as UserDictionary) == null)
 			{
-				_sharedobj = SharedObject.getLocal("Squiggly_v03");
+				_sharedObject = SharedObject.getLocal("Squiggly_v03");
 				var vec:Vector.<String> = new Vector.<String>();
-				if (_sharedobj.data.ud) {
-					for each (var w:String in _sharedobj.data.ud)
+				if (_sharedObject.data.ud) {
+					for each (var w:String in _sharedObject.data.ud)
 					vec.push(w);
 				}
-				_userdict = new UserDictionary(vec);
+				_userDictionary = new UserDictionary(vec);
 				
-				SpellUI._cache["Squiggly_SO"] = _sharedobj;
-				SpellUI._cache["Squiggly_UD"] = _userdict;
+				SpellUI._cache["Squiggly_SO"] = _sharedObject;
+				SpellUI._cache["Squiggly_UD"] = _userDictionary;
 			}
 			else 
 			{
-				_sharedobj = SpellUI._cache["Squiggly_SO"];
-				_userdict = SpellUI._cache["Squiggly_UD"];
+				_sharedObject = SpellUI._cache["Squiggly_SO"];
+				_userDictionary = SpellUI._cache["Squiggly_UD"];
 			}
-			_spellingservice.addUserDictionary(_userdict);
+			_spellingService.addUserDictionary(_userDictionary);
 			
 			
 			// Add the context menu, this might be not successful
-			scm = null;
+			_scm = null;
 			try {
 				addContextMenu(null);
 			}
@@ -523,28 +519,21 @@ package com.adobe.linguistics.spelling
 		
 		private function addContextMenu(event:Event):void
 		{
-			if ( scm != null ) return;
-			if ( isHaloComponent ) {
-				hh= new HaloHighlighter( _actualParent);
-				hw= new HaloWordProcessor( _actualParent );
-			}else if ( isSparkComponent ){
-				hh = new SparkHighlighter( _actualParent);
-				hw = new SparkWordProcessor( _actualParent);
-			} else {
-				trace("error now, later will be true");
-			}
+			if ( _scm != null ) return;
+            hh = createHighlighter(isHaloComponent, _actualParent);
+            hw = createWordProcessor(isHaloComponent, _actualParent);
 		
-			scm =  new SpellingContextMenu(hh, hw, _spellingservice, _actualParent, _actualParent.contextMenu); 
-			scm.setIgnoreWordCallback( addWordToUserDictionary );
+			_scm =  new SpellingContextMenu(hh, hw, _spellingService, _actualParent, _actualParent.contextMenu);
+			_scm.setIgnoreWordCallback( addWordToUserDictionary );
 			
 			// Halo need this
 			if (_actualParent.contextMenu == null)
 			{
-				_actualParent.contextMenu = scm.contextMenu;
+				_actualParent.contextMenu = _scm.contextMenu;
 			}
 			
-			//hh.spellingEnabled=true;
 			_spellingEnabled = true;
+
 			try {
 				doSpellingJob();
 			}
@@ -553,13 +542,23 @@ package com.adobe.linguistics.spelling
 				// If it fails here, it should later triggered by the render event, so no need to do anything
 			}
 		}
-		
+
+        protected function createHighlighter(isHaloComoponent:Boolean, parent:*):IHighlighter
+        {
+            return isHaloComoponent ? new HaloHighlighter(parent) : new SparkHighlighter(parent);
+        }
+
+        protected function createWordProcessor(isHaloComoponent:Boolean, parent:*):IWordProcessor
+        {
+            return isHaloComoponent ? new HaloWordProcessor(parent) : new SparkWordProcessor( _actualParent);
+        }
+
 		private function addWordToUserDictionary(word:String):void
 		{
-			_userdict.addWord(word);
+			_userDictionary.addWord(word);
 		
 			// TODO: serialization here might affect ther performance
-			_sharedobj.data.ud = _userdict.wordList;
+			_sharedObject.data.ud = _userDictionary.wordList;
 			
 		}
 		/**
@@ -571,9 +570,9 @@ package com.adobe.linguistics.spelling
 				hh.clearSquiggles();
 			}
 
-			if(scm != null)
+			if(_scm != null)
 			{
-				scm.cleanUp();
+				_scm.cleanUp();
 			}
 
 			_actualParent.removeEventListener(Event.ADDED_TO_STAGE, addContextMenu);
