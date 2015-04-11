@@ -22,6 +22,7 @@ import java.util.*;
  */
 public class SdkConverterCLI {
 
+    public static final String COMMAND_HELP = "help";
     public static final String COMMAND_LIST = "list";
     public static final String COMMAND_DOWNLOAD = "download";
     public static final String COMMAND_CONVERT = "convert";
@@ -106,8 +107,9 @@ public class SdkConverterCLI {
         CommandLineParser parser = new BasicParser();
         try {
             CommandLine cmd = parser.parse(options, args);
-            if(cmd.getArgList().isEmpty() || cmd.getArgList().contains("help")) {
+            if(cmd.getArgList().isEmpty() || cmd.getArgList().contains(COMMAND_HELP)) {
                 printHelp(options);
+                System.exit(0);
             }
 
             // Find out the desired platform(s).
@@ -189,11 +191,6 @@ public class SdkConverterCLI {
             ////////////////////////////////////////////////////////////////////////////
             // Exectute operations
             ////////////////////////////////////////////////////////////////////////////
-
-            // Print the help screen.
-            if(cmd.getArgList().contains("help")) {
-                printHelp(options);
-            }
 
             // Output a list of all available downloads.
             if(cmd.getArgList().contains(COMMAND_LIST)) {
