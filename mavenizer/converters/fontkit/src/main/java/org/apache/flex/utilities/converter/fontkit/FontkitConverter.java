@@ -20,7 +20,8 @@ public class FontkitConverter extends BaseConverter implements Converter {
     protected void processDirectory() throws ConverterException {
         File fontkitRootDir = new File(rootSourceDirectory, "lib/external/optional");
         if(!fontkitRootDir.exists() || !fontkitRootDir.isDirectory()) {
-            throw new ConverterException("Fontkit directory '" + fontkitRootDir.getPath() + "' is invalid.");
+            System.out.println("Skipping Fontkit generation.");
+            return;
         }
 
         File afeJar = new File(fontkitRootDir, "afe.jar");
