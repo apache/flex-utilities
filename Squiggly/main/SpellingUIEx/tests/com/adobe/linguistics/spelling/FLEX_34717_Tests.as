@@ -44,7 +44,7 @@ package com.adobe.linguistics.spelling {
         public function test_immediate_disable_after_enable():void
         {
             //given
-            UIImpersonator.addChild(_input);
+            UIImpersonator.addElement(_input);
 
             //when
             SpellUI.enableSpelling(_input, "en_US");

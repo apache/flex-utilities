@@ -152,12 +152,12 @@ Some typical usage scenarios
 
 	- Download and create an FDK (Flex 4.14.1 with playerglobal 17.0 and 16.0
 		AIR SDK 17.0 for Windows and Mac and the fontkit libs):
-   		"... -fdkDir <FDK target dir> -flexVersion 4.14.1 -flashVersion 17.0,16.0 \
+   		"... -fdkDir <FDK target dir> -flexVersion 4.14.1 -flashVersions 17.0,16.0 \
    			-airVersion 17.0 -platform WINDOWS,MAC -fontkit download"
 
 	- Download and convert an FDK (FDK assembled in temp directory using Air for
 		current systems platform only):
-   		"... -flexVersion 4.14.1 -flashVersion 17.0 -airVersion 17.0 -fontkit \
+   		"... -flexVersion 4.14.1 -flashVersions 17.0 -airVersion 17.0 -fontkit \
    			-mavenDir <maven local repo> download convert"
 
 	- Deploy a bunch of maven artifacts to a remote maven repository:
@@ -165,7 +165,7 @@ Some typical usage scenarios
    			-repoUsername <username> -repoPassword <pasword> deploy"
 
 	- "The works" (TM): Download, Convert and Deploy using only temp directories:
-   		"... -flexVersion 4.14.1 -flashVersion 17.0 -airVersion 17.0 -fontkit \
+   		"... -flexVersion 4.14.1 -flashVersions 17.0 -airVersion 17.0 -fontkit \
    			-repoUrl <url> -repoUsername <username> -repoPassword <pasword> \
    			download convert deploy"
 

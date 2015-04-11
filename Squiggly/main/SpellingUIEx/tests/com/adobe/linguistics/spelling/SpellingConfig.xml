@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<SpellingConfig>
+  <LanguageResource language="English GB" 
+					languageCode="en_GB" 
+					ruleFile="dictionaries/en_GB/en_GB.aff"
+					dictionaryFile="dictionaries/en_GB/en_GB.dic"/>
+</SpellingConfig>
