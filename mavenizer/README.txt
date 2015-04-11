@@ -164,7 +164,7 @@ Some typical usage scenarios
    		"... -mavenDir <dir with maven artifacts> -repoUrl <url> \
    			-repoUsername <username> -repoPassword <pasword> deploy"
 
-	- "The works" (TM): Download, Convert and Deploy using only temp directories:
+	- "The works": Download, Convert and Deploy using only temp directories:
    		"... -flexVersion 4.14.1 -flashVersions 17.0 -airVersion 17.0 -fontkit \
    			-repoUrl <url> -repoUsername <username> -repoPassword <pasword> \
    			download convert deploy"
