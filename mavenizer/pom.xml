@@ -61,6 +61,7 @@
         <module>converters</module>
         <module>deployers</module>
         <module>cli</module>
+        <module>maven-extension</module>
     </modules>
 
     <build>

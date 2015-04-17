@@ -582,7 +582,7 @@ public class FlexConverter extends BaseConverter implements Converter {
             final String build = root.getElementsByTagName("build").item(0).getTextContent();
 
             // In general the version consists of the content of the version element with an appended build-number.
-            return (build.equals("0")) ? version + "-SNAPSHOT" : version + "." + build;
+            return (build.equals("0")) ? version + "-SNAPSHOT" : version;
         } catch (ParserConfigurationException pce) {
             throw new RuntimeException(pce);
         } catch (SAXException se) {
