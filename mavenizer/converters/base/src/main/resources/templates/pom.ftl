@@ -25,17 +25,31 @@
     <version>${artifact.version}</version>
     <packaging>${artifact.packaging}</packaging>
 
-#if ( $artifact.hasDependencies() )
+<#if artifact.hasDependencies()>
     <dependencies>
-#foreach( $dependency in $artifact.dependencies )
+<#list artifact.dependencies as dependency>
         <dependency>
             <groupId>${dependency.groupId}</groupId>
             <artifactId>${dependency.artifactId}</artifactId>
             <version>${dependency.version}</version>
+<#if dependency.packaging != "jar">
             <type>${dependency.packaging}</type>
+</#if>
         </dependency>
-#end
+</#list>
     </dependencies>
-#end
+
+    <dependencyManagement>
+        <dependencies>
+<#list artifact.dependencies as dependency>
+            <dependency>
+                <groupId>${dependency.groupId}</groupId>
+                <artifactId>${dependency.artifactId}</artifactId>
+                <version>${dependency.version}</version>
+            </dependency>
+</#list>
+        </dependencies>
+    </dependencyManagement>
+</#if>
 
 </project>
