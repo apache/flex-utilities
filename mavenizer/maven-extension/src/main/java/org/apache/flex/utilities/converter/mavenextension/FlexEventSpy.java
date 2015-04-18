@@ -18,6 +18,7 @@ import org.codehaus.plexus.logging.Logger;
 import org.eclipse.aether.RepositoryEvent;
 import org.eclipse.aether.artifact.Artifact;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.File;
@@ -29,20 +30,23 @@ import java.io.File;
 @Singleton
 public class FlexEventSpy extends AbstractEventSpy {
 
-    protected Context context;
-    protected PlexusContainer plexusContainer;
+    @Inject
     protected RepositorySystem repositorySystem;
+
+    @Inject
     protected Logger logger;
+
+    @Inject
+    protected PlexusContainer plexusContainer;
 
     protected boolean internalLookup = false;
     protected boolean flexSplashScreenShown = false;
 
+    public FlexEventSpy() {
+    }
+
     @Override
     public void init(Context context) throws Exception {
-        this.context = context;
-        plexusContainer = (PlexusContainer) context.getData().get("plexus");
-        repositorySystem = plexusContainer.lookup(RepositorySystem.class);
-        logger = plexusContainer.lookup(Logger.class);
     }
 
     @Override
@@ -54,28 +58,27 @@ public class FlexEventSpy extends AbstractEventSpy {
                     try {
                         internalLookup = true;
                         Artifact artifact = repositoryEvent.getArtifact();
-                        MavenSession session = plexusContainer.lookup(MavenSession.class);
                         if (artifact.getGroupId().startsWith("org.apache.flex")) {
                             if(!flexSplashScreenShown) {
                                 showFlexSplashScreen();
                             }
                             if(resolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
-                                    artifact.getExtension(), artifact.getClassifier(), session) == null) {
+                                    artifact.getExtension(), artifact.getClassifier()) == null) {
                                 initFlex(artifact.getVersion());
                             }
                         } else if (artifact.getGroupId().startsWith("com.adobe.flash")) {
                             if(resolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
-                                    artifact.getExtension(), artifact.getClassifier(), session) == null) {
+                                    artifact.getExtension(), artifact.getClassifier()) == null) {
                                 initFlash(artifact.getVersion());
                             }
                         } else if (artifact.getGroupId().startsWith("com.adobe.air")) {
                             if(resolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
-                                    artifact.getExtension(), artifact.getClassifier(), session) == null) {
+                                    artifact.getExtension(), artifact.getClassifier()) == null) {
                                 initAir(artifact.getVersion());
                             }
                         } else if (artifact.getGroupId().equals("com.adobe") && artifact.getArtifactId().equals("fontkit")) {
                             if(resolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
-                                    artifact.getExtension(), artifact.getClassifier(), session) == null) {
+                                    artifact.getExtension(), artifact.getClassifier()) == null) {
                                 initFontkit();
                             }
                         }
@@ -88,7 +91,7 @@ public class FlexEventSpy extends AbstractEventSpy {
     }
 
     protected org.apache.maven.artifact.Artifact resolve(String groupId, String artifactId, String version,
-                                                         String type, String classifier, MavenSession session) {
+                                                         String type, String classifier) {
         org.apache.maven.artifact.Artifact artifact;
         if((classifier == null) || (classifier.length() == 0)) {
             artifact = repositorySystem.createArtifact(groupId, artifactId, version, type);
@@ -96,13 +99,17 @@ public class FlexEventSpy extends AbstractEventSpy {
             artifact = repositorySystem.createArtifactWithClassifier(groupId, artifactId, version, type, classifier);
         }
         if (!artifact.isResolved()) {
-
-            ArtifactResolutionRequest req = new ArtifactResolutionRequest();
-            req.setArtifact(artifact);
-            req.setLocalRepository(session.getLocalRepository());
-            req.setRemoteRepositories(session.getRequest().getRemoteRepositories());
-            ArtifactResolutionResult res = repositorySystem.resolve(req);
-            if (!res.isSuccess()) {
+            try {
+                MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
+                ArtifactResolutionRequest req = new ArtifactResolutionRequest();
+                req.setArtifact(artifact);
+                req.setLocalRepository(mavenSession.getLocalRepository());
+                req.setRemoteRepositories(mavenSession.getRequest().getRemoteRepositories());
+                ArtifactResolutionResult res = repositorySystem.resolve(req);
+                if (!res.isSuccess()) {
+                    return null;
+                }
+            } catch (Exception e) {
                 return null;
             }
         }
@@ -113,8 +120,8 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Apache Flex SDK " + version);
         try {
-            MavenSession session = plexusContainer.lookup(MavenSession.class);
-            File localRepoBaseDir = new File(session.getLocalRepository().getBasedir());
+            MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
+            File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.FLEX, version);
 
@@ -139,8 +146,8 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Adobe Flash SDK " + version);
         try {
-            MavenSession session = plexusContainer.lookup(MavenSession.class);
-            File localRepoBaseDir = new File(session.getLocalRepository().getBasedir());
+            MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
+            File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.FLASH, version);
             FlashConverter converter = new FlashConverter(sdkRoot, localRepoBaseDir);
@@ -156,8 +163,8 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Adobe AIR SDK " + version);
         try {
-            MavenSession session = plexusContainer.lookup(MavenSession.class);
-            File localRepoBaseDir = new File(session.getLocalRepository().getBasedir());
+            MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
+            File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version);
             AirConverter converter = new AirConverter(sdkRoot, localRepoBaseDir);
@@ -173,8 +180,8 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Adobe Fontkit libraries");
         try {
-            MavenSession session = plexusContainer.lookup(MavenSession.class);
-            File localRepoBaseDir = new File(session.getLocalRepository().getBasedir());
+            MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
+            File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.FONTKIT);
             FontkitConverter converter = new FontkitConverter(sdkRoot, localRepoBaseDir);
