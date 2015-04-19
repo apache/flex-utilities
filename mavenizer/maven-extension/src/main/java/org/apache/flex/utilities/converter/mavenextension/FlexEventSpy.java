@@ -11,9 +11,9 @@ import org.apache.maven.MavenExecutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
 import org.apache.maven.eventspy.AbstractEventSpy;
+import org.apache.maven.execution.ExecutionEvent;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.repository.RepositorySystem;
-import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.logging.Logger;
 import org.eclipse.aether.RepositoryEvent;
 import org.eclipse.aether.artifact.Artifact;
@@ -36,8 +36,7 @@ public class FlexEventSpy extends AbstractEventSpy {
     @Inject
     protected Logger logger;
 
-    @Inject
-    protected PlexusContainer plexusContainer;
+    protected MavenSession mavenSession;
 
     protected boolean internalLookup = false;
     protected boolean flexSplashScreenShown = false;
@@ -51,7 +50,9 @@ public class FlexEventSpy extends AbstractEventSpy {
 
     @Override
     public void onEvent(Object o) throws Exception {
-        if(o instanceof RepositoryEvent) {
+        if(o instanceof ExecutionEvent) {
+            mavenSession = ((ExecutionEvent) o).getSession();
+        } else if(o instanceof RepositoryEvent) {
             RepositoryEvent repositoryEvent = (RepositoryEvent) o;
             if(repositoryEvent.getType() == RepositoryEvent.EventType.ARTIFACT_RESOLVING) {
                 if(!internalLookup) {
@@ -100,7 +101,6 @@ public class FlexEventSpy extends AbstractEventSpy {
         }
         if (!artifact.isResolved()) {
             try {
-                MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
                 ArtifactResolutionRequest req = new ArtifactResolutionRequest();
                 req.setArtifact(artifact);
                 req.setLocalRepository(mavenSession.getLocalRepository());
@@ -120,7 +120,6 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Apache Flex SDK " + version);
         try {
-            MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.FLEX, version);
@@ -146,7 +145,6 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Adobe Flash SDK " + version);
         try {
-            MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.FLASH, version);
@@ -163,7 +161,6 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Adobe AIR SDK " + version);
         try {
-            MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version);
@@ -180,7 +177,6 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Adobe Fontkit libraries");
         try {
-            MavenSession mavenSession = plexusContainer.lookup(MavenSession.class);
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.FONTKIT);
