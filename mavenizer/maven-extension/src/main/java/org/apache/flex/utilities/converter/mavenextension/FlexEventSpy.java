@@ -99,27 +99,20 @@ public class FlexEventSpy extends AbstractEventSpy {
 
     protected boolean canResolve(String groupId, String artifactId, String version,
                                                             String type, String classifier) {
-        org.apache.maven.artifact.Artifact artifact;
-        if((classifier == null) || (classifier.length() == 0)) {
-            artifact = repositorySystem.createArtifact(groupId, artifactId, version, type);
-        } else {
-            artifact = repositorySystem.createArtifactWithClassifier(groupId, artifactId, version, type, classifier);
-        }
-        if (!artifact.isResolved()) {
-            try {
-                ArtifactResolutionRequest req = new ArtifactResolutionRequest();
-                req.setArtifact(artifact);
-                req.setLocalRepository(mavenSession.getLocalRepository());
-                req.setRemoteRepositories(mavenSession.getRequest().getRemoteRepositories());
-                ArtifactResolutionResult res = repositorySystem.resolve(req);
-                if (!res.isSuccess()) {
-                    return false;
-                }
-            } catch (Exception e) {
-                return false;
+        try {
+            ArtifactResolutionRequest req = new ArtifactResolutionRequest();
+            req.setLocalRepository(mavenSession.getLocalRepository());
+            req.setRemoteRepositories(mavenSession.getRequest().getRemoteRepositories());
+            if((classifier == null) || (classifier.length() == 0)) {
+                req.setArtifact(repositorySystem.createArtifact(groupId, artifactId, version, type));
+            } else {
+                req.setArtifact(repositorySystem.createArtifactWithClassifier(groupId, artifactId, version, type, classifier));
             }
+            ArtifactResolutionResult res = repositorySystem.resolve(req);
+            return res.isSuccess();
+        } catch (Exception e) {
+            return false;
         }
-        return true;
     }
 
     protected void initFlex(String version) throws MavenExecutionException {
