@@ -24,6 +24,11 @@ import javax.inject.Singleton;
 import java.io.File;
 
 /**
+ * Maven EventSpy that listens for resolution requests and in case of Flex related
+ * artifacts, it pre-checks their availability. If they are not available, it uses
+ * the apache flex sdk converter to automatically download and convert the missing
+ * artifacts before continuing the build normally.
+ *
  * Created by christoferdutz on 17.04.15.
  */
 @Named
@@ -60,26 +65,27 @@ public class FlexEventSpy extends AbstractEventSpy {
                         internalLookup = true;
                         Artifact artifact = repositoryEvent.getArtifact();
                         if (artifact.getGroupId().startsWith("org.apache.flex")) {
+                            // Output a cool spash-screen ... sorry for that ... couldn't resist :-)
                             if(!flexSplashScreenShown) {
                                 showFlexSplashScreen();
                             }
-                            if(resolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
-                                    artifact.getExtension(), artifact.getClassifier()) == null) {
+                            if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
+                                    artifact.getExtension(), artifact.getClassifier())) {
                                 initFlex(artifact.getVersion());
                             }
                         } else if (artifact.getGroupId().startsWith("com.adobe.flash")) {
-                            if(resolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
-                                    artifact.getExtension(), artifact.getClassifier()) == null) {
+                            if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
+                                    artifact.getExtension(), artifact.getClassifier())) {
                                 initFlash(artifact.getVersion());
                             }
                         } else if (artifact.getGroupId().startsWith("com.adobe.air")) {
-                            if(resolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
-                                    artifact.getExtension(), artifact.getClassifier()) == null) {
+                            if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
+                                    artifact.getExtension(), artifact.getClassifier())) {
                                 initAir(artifact.getVersion());
                             }
                         } else if (artifact.getGroupId().equals("com.adobe") && artifact.getArtifactId().equals("fontkit")) {
-                            if(resolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
-                                    artifact.getExtension(), artifact.getClassifier()) == null) {
+                            if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
+                                    artifact.getExtension(), artifact.getClassifier())) {
                                 initFontkit();
                             }
                         }
@@ -91,8 +97,8 @@ public class FlexEventSpy extends AbstractEventSpy {
         }
     }
 
-    protected org.apache.maven.artifact.Artifact resolve(String groupId, String artifactId, String version,
-                                                         String type, String classifier) {
+    protected boolean canResolve(String groupId, String artifactId, String version,
+                                                            String type, String classifier) {
         org.apache.maven.artifact.Artifact artifact;
         if((classifier == null) || (classifier.length() == 0)) {
             artifact = repositorySystem.createArtifact(groupId, artifactId, version, type);
@@ -107,13 +113,13 @@ public class FlexEventSpy extends AbstractEventSpy {
                 req.setRemoteRepositories(mavenSession.getRequest().getRemoteRepositories());
                 ArtifactResolutionResult res = repositorySystem.resolve(req);
                 if (!res.isSuccess()) {
-                    return null;
+                    return false;
                 }
             } catch (Exception e) {
-                return null;
+                return false;
             }
         }
-        return artifact;
+        return true;
     }
 
     protected void initFlex(String version) throws MavenExecutionException {
