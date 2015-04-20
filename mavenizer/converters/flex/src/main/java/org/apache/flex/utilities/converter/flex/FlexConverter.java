@@ -41,6 +41,7 @@ import java.util.zip.ZipOutputStream;
 public class FlexConverter extends BaseConverter implements Converter {
 
     protected String flexSdkVersion;
+    protected String flexBuild;
 
     /**
      * @param rootSourceDirectory Path to the root of the original Flex SDK.
@@ -52,6 +53,7 @@ public class FlexConverter extends BaseConverter implements Converter {
 
         // Get the version of the current Flex SDK.
         this.flexSdkVersion = getFlexVersion(rootSourceDirectory);
+        this.flexBuild = getFlexBuild(rootSourceDirectory);
     }
 
     /**
@@ -592,8 +594,40 @@ public class FlexConverter extends BaseConverter implements Converter {
         }
     }
 
+    /**
+     * Get the version of an Flex SDK from the content of the SDK directory.
+     *
+     * @return version string for the current Flex SDK
+     */
+    protected String getFlexBuild(File rootDirectory) throws ConverterException {
+        final File sdkDescriptor = new File(rootDirectory, "flex-sdk-description.xml");
+
+        // If the descriptor is not present, return null as this FDK directory doesn't
+        // seem to contain a Flex SDK.
+        if(!sdkDescriptor.exists()) {
+            return null;
+        }
+
+        final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            // Parse the document
+            final DocumentBuilder db = dbf.newDocumentBuilder();
+            final Document dom = db.parse(sdkDescriptor);
+
+            // Get name, version and build nodes
+            final Element root = dom.getDocumentElement();
+            return root.getElementsByTagName("build").item(0).getTextContent();
+        } catch (ParserConfigurationException pce) {
+            throw new RuntimeException(pce);
+        } catch (SAXException se) {
+            throw new RuntimeException(se);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+    }
+
     protected File getRsl(String artifactId) {
-        final FlexRslFilter filter = new FlexRslFilter(artifactId, flexSdkVersion);
+        final FlexRslFilter filter = new FlexRslFilter(artifactId, flexSdkVersion, flexBuild);
         final File rslDirectory = new File(rootSourceDirectory, "frameworks" + File.separator + "rsls");
         final File[] rsls = rslDirectory.listFiles(filter);
         if ((rsls != null) && (rsls.length == 1)) {
@@ -660,8 +694,8 @@ public class FlexConverter extends BaseConverter implements Converter {
     public static class FlexRslFilter implements FilenameFilter {
         private String fileName;
 
-        public FlexRslFilter(String artifactName, String artifactVersion) {
-            this.fileName = artifactName + "_" + artifactVersion + ".swf";
+        public FlexRslFilter(String artifactName, String artifactVersion, String build) {
+            this.fileName = artifactName + "_" + artifactVersion + "." + build + ".swf";
         }
 
         public boolean accept(File dir, String name) {
