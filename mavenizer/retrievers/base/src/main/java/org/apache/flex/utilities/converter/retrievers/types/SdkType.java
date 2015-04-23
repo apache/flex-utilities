@@ -24,6 +24,7 @@ public enum SdkType {
     FLEX,
     FLASH,
     AIR,
-    FONTKIT
+    FONTKIT,
+    SWFOBJECT
 
 }

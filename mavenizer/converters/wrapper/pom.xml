@@ -26,7 +26,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>flex-converter</artifactId>
+    <artifactId>wrapper-converter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -34,29 +34,6 @@
         <dependency>
             <groupId>org.apache.flex.utilities.converter</groupId>
             <artifactId>base-converter</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <!--
-            Flex usually contains Air and Flash artifacts, so we need to reference them.
-        -->
-        <dependency>
-            <groupId>org.apache.flex.utilities.converter</groupId>
-            <artifactId>air-converter</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flex.utilities.converter</groupId>
-            <artifactId>flash-converter</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flex.utilities.converter</groupId>
-            <artifactId>fontkit-converter</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flex.utilities.converter</groupId>
-            <artifactId>wrapper-converter</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

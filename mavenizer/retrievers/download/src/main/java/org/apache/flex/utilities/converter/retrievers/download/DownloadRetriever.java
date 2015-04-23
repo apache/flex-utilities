@@ -125,19 +125,35 @@ public class DownloadRetriever extends BaseRetriever {
                     final File targetDirectory = new File(targetFile.getParent(),
                             targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
                     final File libDestFile = new File(targetDirectory, "frameworks/libs/player/" + version + "/playerglobal.swc");
-                    if(!libDestFile.getParentFile().exists()) {
+                    if (!libDestFile.getParentFile().exists()) {
                         libDestFile.getParentFile().mkdirs();
                     }
                     FileUtils.moveFile(targetFile, libDestFile);
                     return targetDirectory;
                 } else {
                     System.out.println("Extracting archive to temp directory.");
-                    final File targetDirectory = new File(targetFile.getParent(),
+                    File targetDirectory = new File(targetFile.getParent(),
                             targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
-                    unpack(targetFile, targetDirectory);
+                    if(type.equals(SdkType.SWFOBJECT)) {
+                        unpack(targetFile, new File(targetDirectory, "templates"));
+                    } else {
+                        unpack(targetFile, targetDirectory);
+                    }
                     System.out.println();
                     System.out.println("Finished extracting.");
                     System.out.println("===========================================================");
+
+                    // In case of the swfobject, delete some stuff we don't want in there.
+                    if(type.equals(SdkType.SWFOBJECT)) {
+                        File delFile = new File(targetDirectory, "templates/swfobject/index_dynamic.html");
+                        FileUtils.deleteQuietly(delFile);
+                        delFile = new File(targetDirectory, "templates/swfobject/index.html");
+                        FileUtils.deleteQuietly(delFile);
+                        delFile = new File(targetDirectory, "templates/swfobject/test.swf");
+                        FileUtils.deleteQuietly(delFile);
+                        delFile = new File(targetDirectory, "templates/swfobject/src");
+                        FileUtils.deleteDirectory(delFile);
+                    }
 
                     return targetDirectory;
                 }
@@ -250,7 +266,7 @@ public class DownloadRetriever extends BaseRetriever {
             }
 
             final StringBuilder stringBuilder = new StringBuilder();
-            if (sdkType == SdkType.FLEX) {
+            if ((sdkType == SdkType.FLEX) || (sdkType == SdkType.SWFOBJECT)) {
                 final String path = artifactElement.getAttribute("path");
                 final String file = artifactElement.getAttribute("file");
                 if (!path.startsWith("http://")) {
@@ -260,7 +276,10 @@ public class DownloadRetriever extends BaseRetriever {
                 if(!path.endsWith("/")) {
                     stringBuilder.append("/");
                 }
-                stringBuilder.append(file).append(".zip");
+                stringBuilder.append(file);
+                if(sdkType == SdkType.FLEX) {
+                    stringBuilder.append(".zip");
+                }
             } else {
                 final NodeList pathElements = artifactElement.getElementsByTagName("path");
                 final NodeList fileElements = artifactElement.getElementsByTagName("file");
@@ -318,7 +337,10 @@ public class DownloadRetriever extends BaseRetriever {
                 break;
             case FONTKIT:
                 stringBuilder.append("//fontswf");
-
+                break;
+            case SWFOBJECT:
+                stringBuilder.append("//swfobject");
+                break;
         }
         return stringBuilder.toString();
     }
@@ -412,12 +434,5 @@ public class DownloadRetriever extends BaseRetriever {
             e.printStackTrace();
         }
         return result;
-    }
-
-    public static void main(String[] args) throws Exception {
-        DownloadRetriever downloadRetriever = new DownloadRetriever();
-        //downloadRetriever.getAvailableVersions(SdkType.FLEX);
-        //downloadRetriever.getAvailableVersions(SdkType.FLASH);
-        downloadRetriever.getAvailableVersions(SdkType.AIR);
     }
 }

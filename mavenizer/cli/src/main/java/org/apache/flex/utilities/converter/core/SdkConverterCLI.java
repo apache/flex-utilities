@@ -11,6 +11,7 @@ import org.apache.flex.utilities.converter.fontkit.FontkitConverter;
 import org.apache.flex.utilities.converter.retrievers.download.DownloadRetriever;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
+import org.apache.flex.utilities.converter.wrapper.WrapperConverter;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
 import java.io.File;
@@ -253,6 +254,10 @@ public class SdkConverterCLI {
                     File fdkDownloadDirectory = retriever.retrieve(SdkType.FLEX, flexVersion);
                     // Unpack the archive to the FDK directory.
                     mergeDirectories(fdkDownloadDirectory, fdkDir);
+
+                    // Add the swfobject files.
+                    File swfObjectDirectory = retriever.retrieve(SdkType.SWFOBJECT);
+                    mergeDirectories(swfObjectDirectory, fdkDir);
                 }
 
                 String flashVersions = cmd.getOptionValue(OPTION_FLASH_VERSIONS, "");
@@ -314,6 +319,11 @@ public class SdkConverterCLI {
                         " to " + mavenDir.getAbsolutePath());
                 FontkitConverter fontkitConverter = new FontkitConverter(fdkDir, mavenDir);
                 fontkitConverter.convert();
+
+                System.out.println("- Converting Wrappers from " + fdkDir.getAbsolutePath() +
+                        " to " + mavenDir.getAbsolutePath());
+                WrapperConverter wrapperConverter = new WrapperConverter(fdkDir, mavenDir);
+                wrapperConverter.convert();
 
                 System.out.println("Finished conversion.");
             }

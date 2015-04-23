@@ -7,6 +7,7 @@ import org.apache.flex.utilities.converter.flex.FlexConverter;
 import org.apache.flex.utilities.converter.fontkit.FontkitConverter;
 import org.apache.flex.utilities.converter.retrievers.download.DownloadRetriever;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
+import org.apache.flex.utilities.converter.wrapper.WrapperConverter;
 import org.apache.maven.MavenExecutionException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
@@ -110,7 +111,7 @@ public class FlexEventSpy extends AbstractEventSpy {
             }
             ArtifactResolutionResult res = repositorySystem.resolve(req);
             return res.isSuccess();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return false;
         }
     }
@@ -123,17 +124,25 @@ public class FlexEventSpy extends AbstractEventSpy {
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.FLEX, version);
 
+            // In order to create a fully functional wrapper we need to download
+            // SWFObject and merge that with the fdk first.
+            File swfObjectRoot = downloadRetriever.retrieve(SdkType.SWFOBJECT);
+            FileUtils.copyDirectory(swfObjectRoot, sdkRoot);
+
             // In order to compile some of the themes, we need to download a
             // playerglobal version.
             logger.info("In order to convert the Apache Flex SDK, a Flash SDK has to be downloaded.");
             File flashSdkRoot = downloadRetriever.retrieve(SdkType.FLASH, "10.2");
             FileUtils.copyDirectory(flashSdkRoot, sdkRoot);
 
+            // Convert the FDK itself.
             FlexConverter converter = new FlexConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
-        } catch (Exception ce) {
-            logger.error("Error", ce);
-            ce.printStackTrace();
+
+            // Convert the wrapper.
+            WrapperConverter wrapperConverter = new WrapperConverter(sdkRoot, localRepoBaseDir);
+            wrapperConverter.convert();
+        } catch (Throwable ce) {
             throw new MavenExecutionException(
                     "Caught exception while downloading and converting artifact.", ce);
         }
@@ -149,7 +158,7 @@ public class FlexEventSpy extends AbstractEventSpy {
             File sdkRoot = downloadRetriever.retrieve(SdkType.FLASH, version);
             FlashConverter converter = new FlashConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
-        } catch (Exception ce) {
+        } catch (Throwable ce) {
             throw new MavenExecutionException(
                     "Caught exception while downloading and converting artifact.", ce);
         }
@@ -165,7 +174,7 @@ public class FlexEventSpy extends AbstractEventSpy {
             File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version);
             AirConverter converter = new AirConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
-        } catch (Exception ce) {
+        } catch (Throwable ce) {
             throw new MavenExecutionException(
                     "Caught exception while downloading and converting artifact.", ce);
         }
@@ -181,7 +190,7 @@ public class FlexEventSpy extends AbstractEventSpy {
             File sdkRoot = downloadRetriever.retrieve(SdkType.FONTKIT);
             FontkitConverter converter = new FontkitConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
-        } catch (Exception ce) {
+        } catch (Throwable ce) {
             throw new MavenExecutionException(
                     "Caught exception while downloading and converting artifact.", ce);
         }
