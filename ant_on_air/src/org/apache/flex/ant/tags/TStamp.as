@@ -21,7 +21,8 @@ package org.apache.flex.ant.tags
     import mx.core.IFlexModuleFactory;
     import mx.resources.ResourceManager;
     
-    import spark.formatters.DateTimeFormatter;
+    import flash.globalization.DateTimeFormatter;
+    import flash.globalization.LocaleID;
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
@@ -44,14 +45,14 @@ package org.apache.flex.ant.tags
             super.execute(callbackMode, context);
             
             var d:Date = new Date();
-            var df:DateTimeFormatter = new DateTimeFormatter();
-            df.dateTimePattern = "yyyyMMdd";
+            var df:DateTimeFormatter = new DateTimeFormatter(LocaleID.DEFAULT);
+            df.setDateTimePattern("yyyyMMdd");
             var dstamp:String = df.format(d);
             context["DSTAMP"] = dstamp;
-            df.dateTimePattern = "hhmm";
+            df.setDateTimePattern("hhmm");
             var tstamp:String = df.format(d);
             context["TSTAMP"] = tstamp;
-            df.dateTimePattern = "MMMM dd yyyy";
+            df.setDateTimePattern("MMMM dd yyyy");
             var today:String = df.format(d);
             context["TODAY"] = today;
             
