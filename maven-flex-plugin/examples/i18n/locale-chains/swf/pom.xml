@@ -45,8 +45,8 @@
                     <localesCompiled>
                         <locale>en_US</locale>
                         <locale>en_GB,en_US</locale>
-                        <locale>de_DE,en_US</locale>
-                        <locale>de_AT,de_DE,en_US</locale>
+                        <locale>de_DE</locale>
+                        <locale>de_AT,de_DE</locale>
                     </localesCompiled>
                 </configuration>
                 <dependencies>
