@@ -65,11 +65,14 @@ public class FlexEventSpy extends AbstractEventSpy {
                     try {
                         internalLookup = true;
                         Artifact artifact = repositoryEvent.getArtifact();
-                        if (artifact.getGroupId().startsWith("org.apache.flex")) {
+
+                        if (artifact.getGroupId().startsWith("org.apache.flex") &&
+                                !"rb.swc".equals(artifact.getExtension())) {
                             // Output a cool spash-screen ... sorry for that ... couldn't resist :-)
                             if(!flexSplashScreenShown) {
                                 showFlexSplashScreen();
                             }
+
                             if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                     artifact.getExtension(), artifact.getClassifier())) {
                                 initFlex(artifact.getVersion());
