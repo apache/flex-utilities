@@ -32,19 +32,25 @@ public class WrapperConverter extends BaseConverter implements Converter {
         }
 
         try {
-            final File wrapperJar = File.createTempFile("SWFObjectWrapper-2.2", ".jar");
-            generateZip(wrapperRootDir.listFiles(), wrapperJar);
+            // Rename the index.template.html to index.html
+            File indexHtml = new File(wrapperRootDir, "index.template.html");
+            if(!indexHtml.renameTo(new File(wrapperRootDir, "index.html"))) {
+                System.out.println("Could not rename index.template.html to index.html.");
+            }
+
+            final File wrapperWar = File.createTempFile("SWFObjectWrapper-2.2", ".war");
+            generateZip(wrapperRootDir.listFiles(), wrapperWar);
 
             final MavenArtifact swfobjectWrapper = new MavenArtifact();
             swfobjectWrapper.setGroupId("org.apache.flex.wrapper");
             swfobjectWrapper.setArtifactId("swfobject");
             swfobjectWrapper.setVersion(getFlexVersion(rootSourceDirectory));
-            swfobjectWrapper.setPackaging("jar");
-            swfobjectWrapper.addDefaultBinaryArtifact(wrapperJar);
+            swfobjectWrapper.setPackaging("war");
+            swfobjectWrapper.addDefaultBinaryArtifact(wrapperWar);
 
             writeArtifact(swfobjectWrapper);
         } catch (IOException e) {
-            throw new ConverterException("Error creating wrapper jar.", e);
+            throw new ConverterException("Error creating wrapper war.", e);
         }
     }
 

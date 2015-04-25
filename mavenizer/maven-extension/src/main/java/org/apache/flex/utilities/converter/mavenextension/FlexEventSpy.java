@@ -131,7 +131,8 @@ public class FlexEventSpy extends AbstractEventSpy {
 
             // In order to compile some of the themes, we need to download a
             // playerglobal version.
-            logger.info("In order to convert the Apache Flex SDK, a Flash SDK has to be downloaded.");
+            logger.info("In order to convert some of the skins in the Apache Flex SDK, " +
+                    "a Flash SDK has to be downloaded.");
             File flashSdkRoot = downloadRetriever.retrieve(SdkType.FLASH, "10.2");
             FileUtils.copyDirectory(flashSdkRoot, sdkRoot);
 
