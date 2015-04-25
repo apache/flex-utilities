@@ -18,13 +18,32 @@
 
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
-               xmlns:s="library://ns.adobe.com/flex/spark"
-               xmlns:mx="library://ns.adobe.com/flex/mx">
+               xmlns:s="library://ns.adobe.com/flex/spark">
 
     <fx:Metadata>
         [ResourceBundle("myresources")]
     </fx:Metadata>
 
-    <s:Label text="{resourceManager.getString('myresources','greeting')}"/>
+    <fx:Script>
+      <![CDATA[
+        import mx.collections.ArrayCollection;
+
+        import spark.events.IndexChangeEvent;
+
+        [Bindable]
+        private var locales:ArrayCollection = new ArrayCollection([{label:"English", locale:"en_US"},
+            {label:"German", locale:"de_DE"}]);
+
+        private function onLanguageChange(event:IndexChangeEvent):void {
+            resourceManager.localeChain = [localeSelector.selectedItem.locale];
+        }
+
+        ]]>
+   </fx:Script>
+
+    <s:VGroup>
+        <s:ComboBox id="localeSelector" dataProvider="{locales}" change="onLanguageChange(event)"/>
+        <s:Label text="{resourceManager.getString('myresources','greeting')}"/>
+    </s:VGroup>
 
 </s:Application>

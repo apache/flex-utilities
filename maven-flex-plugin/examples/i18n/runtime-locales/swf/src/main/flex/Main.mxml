@@ -19,12 +19,62 @@
 -->
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
                xmlns:s="library://ns.adobe.com/flex/spark"
-               xmlns:mx="library://ns.adobe.com/flex/mx">
+               creationComplete="onCreationComplete(event)">
 
     <fx:Metadata>
         [ResourceBundle("myresources")]
     </fx:Metadata>
 
-    <s:Label text="{resourceManager.getString('myresources','greeting')}"/>
+    <fx:Script>
+      <![CDATA[
+        import mx.collections.ArrayCollection;
+        import mx.events.FlexEvent;
+        import mx.events.ResourceEvent;
+        import mx.modules.ModuleBase;
+
+        import spark.events.IndexChangeEvent;
+
+        // Actually I don't quite know why I need to do this ...
+        // without it, I get an error, that this class is missing.
+        private var tst:ModuleBase = null;
+
+        [Bindable]
+        private var locales:ArrayCollection = new ArrayCollection([{label: "English", locale: "en_US"},
+            {label: "German", locale: "de_DE"}]);
+
+        private function onCreationComplete(event:FlexEvent):void {
+            if("en" == Capabilities.language) {
+                localeSelector.selectedItem = locales.getItemAt(0);
+            } else if("de" == Capabilities.language) {
+                localeSelector.selectedItem = locales.getItemAt(1);
+            }
+            onLanguageChange();
+        }
+
+        private function onLanguageChange(event:IndexChangeEvent = null):void {
+            var selectedLocale:String = String(localeSelector.selectedItem.locale);
+
+            // Ensure that you are not loading the same resource module more than once.
+            if (resourceManager.getLocales().indexOf(selectedLocale) != -1) {
+                completeHandler(null);
+            } else {
+                var resourceModuleURL:String =
+                        "./locales/runtime-locales-swf-1.0.0-SNAPSHOT-" + selectedLocale + ".swf";
+                var eventDispatcher:IEventDispatcher = resourceManager.loadResourceModule(resourceModuleURL);
+                eventDispatcher.addEventListener(ResourceEvent.COMPLETE, completeHandler);
+            }
+        }
+
+        private function completeHandler(event:ResourceEvent):void {
+            resourceManager.localeChain = [localeSelector.selectedItem.locale];
+        }
+
+        ]]>
+   </fx:Script>
+
+    <s:VGroup>
+        <s:ComboBox id="localeSelector" dataProvider="{locales}" change="onLanguageChange(event)"/>
+        <s:Label text="{resourceManager.getString('myresources','greeting')}"/>
+    </s:VGroup>
 
 </s:Application>

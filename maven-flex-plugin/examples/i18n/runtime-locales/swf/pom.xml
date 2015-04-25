@@ -24,11 +24,11 @@
 
     <parent>
         <groupId>org.apache.flex.examples.i18n</groupId>
-        <artifactId>runtime-locals</artifactId>
+        <artifactId>runtime-locales</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>runtime-locals-swf</artifactId>
+    <artifactId>runtime-locales-swf</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>swf</packaging>
 
@@ -41,6 +41,7 @@
                 <version>7.1.0-SNAPSHOT</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <debug>true</debug>
                     <localesRuntime>
                         <locale>en_US</locale>
                         <locale>de_DE</locale>
