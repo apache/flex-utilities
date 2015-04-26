@@ -454,9 +454,9 @@ public class CodeCoverageReporter
                     {
                         // "id,linenum"
                         // Split line and record linenum as a hit.
-                        if (firstChar >= '0' && firstChar <= '9')
+                        String[] results = inLine.split(",");
+                        if (results.length == 2 && firstChar >= '0' && firstChar <= '9')
                         {
-                            String[] results = inLine.split(",");
                             String file = stringPool.get(Integer.valueOf(results[0]));
                             int hitLineNumber = Integer.valueOf(results[1]);
                             coverageData.setLineExecuted(file, hitLineNumber);
@@ -464,7 +464,7 @@ public class CodeCoverageReporter
                         }
                         else
                         {
-                            System.err.println("Warning: line " + inLineNumber + ": unrecognized data, " + inLine);
+                            System.err.println("Warning: file " + inFile.getAbsolutePath() + ", line " + inLineNumber + ": unrecognized data, " + inLine);
                         }
                     }
                 }
