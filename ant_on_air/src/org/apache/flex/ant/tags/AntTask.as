@@ -122,6 +122,7 @@ package org.apache.flex.ant.tags
             event.target.removeEventListener(ProgressEvent.PROGRESS, progressEventHandler);
             ant.removeEventListener(KeyboardEvent.KEY_DOWN, ant_keyDownHandler);
             ant.project.status = subant.project.status;
+            ant.project.failureMessage = subant.project.failureMessage;
             dispatchEvent(new Event(Event.COMPLETE));
         }
         

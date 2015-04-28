@@ -178,6 +178,20 @@
             <arg value="-Dexitwhendone" />
             <arg value="test" />
         </exec>
+        <antcall target="failuretests" />
+    </target>
+    
+    <target name="failuretests" >
+        <exec executable="${AIR_HOME}/bin/${adl}" dir="${basedir}/tests" failonerror="true">
+            <arg value="-runtime" />
+            <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
+            <arg value="${basedir}/tests/AntOnAir-app.xml" />
+            <arg value="--" />
+            <arg value="-f ${basedir}/tests/failtest.xml" />
+            <arg value="-Dexitwhendone" />
+            <arg value="-Dexpectfailure" />
+            <arg value="test" />
+        </exec>
     </target>
 
     <target name="debug-test" >
