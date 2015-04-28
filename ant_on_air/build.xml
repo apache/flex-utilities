@@ -128,6 +128,7 @@
         description="Compiles the SWC.">
         <compc 
             output="${LIBRARY_DIR}/${LIBRARY_NAME}.swc"
+			swf-version="23"
             debug="${DEBUG_FLAG}"
             failonerror="true"
             fork="true"
@@ -158,6 +159,7 @@
 		<mxmlc file="${basedir}/tests/AntOnAir.mxml"
 			output="${basedir}/tests/AntOnAir.swf"
 			debug="${DEBUG_FLAG}"
+			swf-version="23"
 			failonerror="true"
             fork="true"
             maxmemory="512m">
