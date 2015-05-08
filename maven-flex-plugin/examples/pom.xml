@@ -28,6 +28,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>flexjs</module>
         <module>i18n</module>
     </modules>
 
