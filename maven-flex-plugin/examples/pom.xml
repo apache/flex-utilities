@@ -89,8 +89,21 @@
             </snapshots>
         </pluginRepository>
         <!--
-            This is where we get unreleased Flexmojos stuff from.
-        -->
+           This is where we get unreleased Apache stuff from
+       -->
+        <pluginRepository>
+            <id>apache-snapshots</id>
+            <url>http://repository.apache.org/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <!--
+             This is where we get unreleased Flexmojos stuff from.
+         -->
         <pluginRepository>
             <id>sonatype-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
