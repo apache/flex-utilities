@@ -6,6 +6,7 @@ import org.apache.flex.utilities.converter.flash.FlashConverter;
 import org.apache.flex.utilities.converter.flex.FlexConverter;
 import org.apache.flex.utilities.converter.fontkit.FontkitConverter;
 import org.apache.flex.utilities.converter.retrievers.download.DownloadRetriever;
+import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 import org.apache.flex.utilities.converter.wrapper.WrapperConverter;
 import org.apache.maven.MavenExecutionException;
@@ -175,7 +176,7 @@ public class FlexEventSpy extends AbstractEventSpy {
         try {
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
-            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version);
+            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version, PlatformType.getCurrent());
             AirConverter converter = new AirConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
         } catch (Throwable ce) {
