@@ -16,6 +16,8 @@
  */
 package org.apache.flex.utilities.converter.retrievers.types;
 
+import org.apache.commons.lang3.SystemUtils;
+
 /**
  * Created by cdutz on 18.05.2014.
  */
@@ -25,95 +27,23 @@ public enum PlatformType {
     LINUX,
     MAC;
 
-    public static PlatformType getCurrent()
-    {
+    public static PlatformType getCurrent() throws Exception {
         PlatformType platformType = null;
 
-        if (isWindows())
+        if (SystemUtils.IS_OS_WINDOWS)
         {
             platformType = PlatformType.WINDOWS;
         }
-        else if (isMac())
+        else if (SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX)
         {
             platformType = PlatformType.MAC;
         }
-        else if (isUnixBased())
+        else if (SystemUtils.IS_OS_UNIX)
         {
             platformType = PlatformType.LINUX;
         }
+        else throw new Exception("Unsupported OS.");
 
         return platformType;
-    }
-
-    static final String NET_BSD = "netbsd";
-
-    static final String FREE_BSD = "freebsd";
-
-    static final String WINDOWS_OS = "windows";
-
-    static final String MAC_OS = "mac os x";
-
-    static final String MAC_OS_DARWIN = "darwin";
-
-    static final String LINUX_OS = "linux";
-
-    static final String SOLARIS_OS = "sunos";
-
-    private static String osString()
-    {
-        return System.getProperty( "os.name" ).toLowerCase();
-    }
-
-    /**
-     * Return a boolean to show if we are running on Windows.
-     *
-     * @return true if we are running on Windows.
-     */
-    private static boolean isWindows()
-    {
-        return osString().startsWith( WINDOWS_OS );
-    }
-
-    /**
-     * Return a boolean to show if we are running on Linux.
-     *
-     * @return true if we are running on Linux.
-     */
-    private static boolean isLinux()
-    {
-        return osString().startsWith( LINUX_OS ) ||
-                // I know, but people said that workds...
-                osString().startsWith( NET_BSD ) ||
-                osString().startsWith( FREE_BSD );
-    }
-
-    /**
-     * Return a boolean to show if we are running on Solaris.
-     *
-     * @return true if we are running on Solaris.
-     */
-    private static boolean isSolaris()
-    {
-        return osString().startsWith( SOLARIS_OS );
-    }
-
-    /**
-     * Return a boolean to show if we are running on a unix-based OS.
-     *
-     * @return true if we are running on a unix-based OS.
-     */
-    private static boolean isUnixBased()
-    {
-        return isLinux() || isSolaris();
-    }
-
-    /**
-     * Return a boolean to show if we are running on Mac OS X.
-     *
-     * @return true if we are running on Mac OS X.
-     */
-    private static boolean isMac()
-    {
-        return osString().startsWith( MAC_OS ) || osString().startsWith( MAC_OS_DARWIN );
     }
 }

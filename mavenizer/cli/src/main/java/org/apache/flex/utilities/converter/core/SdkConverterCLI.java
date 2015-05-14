@@ -2,7 +2,6 @@ package org.apache.flex.utilities.converter.core;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.flex.utilities.converter.air.AirConverter;
 import org.apache.flex.utilities.converter.deployer.aether.AetherDeployer;
 import org.apache.flex.utilities.converter.flash.FlashConverter;
@@ -122,14 +121,11 @@ public class SdkConverterCLI {
                     platforms.add(PlatformType.valueOf(platformName));
                 }
             }
+
             if(platforms.isEmpty()) {
-                if(SystemUtils.IS_OS_WINDOWS) {
-                    platforms.add(PlatformType.WINDOWS);
-                } else if(SystemUtils.IS_OS_MAC) {
-                    platforms.add(PlatformType.MAC);
-                } else if(SystemUtils.IS_OS_LINUX) {
-                    platforms.add(PlatformType.LINUX);
-                } else {
+                try {
+                    platforms.add(PlatformType.getCurrent());
+                } catch (Exception e) {
                     System.err.println("Unsupported OS type. Provide manually using 'platform' parameter.");
                     System.exit(1);
                 }

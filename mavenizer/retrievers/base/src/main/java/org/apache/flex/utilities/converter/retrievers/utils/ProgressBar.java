@@ -16,7 +16,7 @@
  */
 package org.apache.flex.utilities.converter.retrievers.utils;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by cdutz on 24.05.2014.

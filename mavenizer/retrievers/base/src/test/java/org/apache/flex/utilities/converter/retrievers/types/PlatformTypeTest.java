@@ -1,61 +1,69 @@
 package org.apache.flex.utilities.converter.retrievers.types;
 
-import org.junit.Rule;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.apache.commons.lang3.SystemUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
-import static org.powermock.api.easymock.PowerMock.*;
 
 /**
  * @author: Frederic Thomas
  * Date: 12/05/2015
  * Time: 01:34
  */
-@PrepareForTest( { PlatformType.class })
-@RunWith(Parameterized.class)
+@RunWith(JUnitParamsRunner.class)
 public class PlatformTypeTest {
 
-	private String osName;
-	private PlatformType platformType;
+	private Class<SystemUtils> systemUtilsClass;
 
-	@Rule
-	public PowerMockRule powerMockRule = new PowerMockRule();
-
-	@Parameterized.Parameters
-	public static Collection<Object[]> data() {
-
+	public static Collection<Object[]> platformParameters() {
 		return Arrays.asList(new Object[][]{
-				{PlatformType.WINDOWS_OS, PlatformType.WINDOWS},
-				{PlatformType.MAC_OS, PlatformType.MAC},
-				{PlatformType.MAC_OS_DARWIN, PlatformType.MAC},
-				{PlatformType.FREE_BSD, PlatformType.LINUX},
-				{PlatformType.LINUX_OS, PlatformType.LINUX},
-				{PlatformType.NET_BSD, PlatformType.LINUX},
-				{PlatformType.SOLARIS_OS, PlatformType.LINUX}
+				{"IS_OS_WINDOWS", PlatformType.WINDOWS},
+				{"IS_OS_MAC", PlatformType.MAC},
+				{"IS_OS_MAC_OSX", PlatformType.MAC},
+				{"IS_OS_UNIX", PlatformType.LINUX}
 		});
 	}
 
-	public PlatformTypeTest(String osName, PlatformType platformType) {
-		this.osName = osName;
-		this.platformType = platformType;
+	@Before
+	public void setUp() throws Exception {
+		systemUtilsClass = SystemUtils.class;
+
+		setFinalStatic(systemUtilsClass.getField("IS_OS_WINDOWS"), false);
+		setFinalStatic(systemUtilsClass.getField("IS_OS_MAC"), false);
+		setFinalStatic(systemUtilsClass.getField("IS_OS_MAC_OSX"), false);
+		setFinalStatic(systemUtilsClass.getField("IS_OS_UNIX"), false);
 	}
 
 	@Test
-	public void it_returns_the_current_platform_type() throws Exception {
-		mockStatic(System.class);
+	@Parameters(method = "platformParameters")
+	public void it_detects_the_current_platform_type(String fieldName, PlatformType platformType) throws Exception {
 
-		expect(System.getProperty("os.name")).andReturn(osName).anyTimes();
-		replayAll();
-
+		setFinalStatic(systemUtilsClass.getField(fieldName), true);
 		assertEquals(platformType, PlatformType.getCurrent());
-		verifyAll();
+	}
+
+	@Test(expected = Exception.class)
+	public void it_throws_an_exception_when_it_can_not_detect_the_current_platform_type() throws Exception {
+		PlatformType.getCurrent();
+	}
+
+	private static void setFinalStatic(Field field, Object newValue) throws Exception {
+		field.setAccessible(true);
+
+		// remove final modifier from field
+		Field modifiersField = Field.class.getDeclaredField("modifiers");
+		modifiersField.setAccessible(true);
+		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+		field.set(null, newValue);
 	}
 }
