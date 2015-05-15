@@ -206,7 +206,7 @@
         </replace>
         <replace file="${basedir}/temp/custom.properties">
             <replacetoken><![CDATA[<test/>]]></replacetoken>
-            <replacevalue><![CDATA[<cdata/>]]></replacevalue>
+            <replacevalue><![CDATA[<replaced/><test/>]]></replacevalue>
         </replace>
         <loadproperties srcFile="${basedir}/temp/custom.properties" />
         <fail message="replace did not work: found somekey">
@@ -240,10 +240,10 @@
                 </not>
             </condition>
         </fail>
-        <fail message="replace did not work: did not find &lt;cdata/&gt;">
+        <fail message="replace did not work: did not find &lt;replaced/&gt;&lt;test/&gt;">
             <condition>
                 <not>
-                    <equals arg1="${xml}" arg2="&lt;cdata/&gt;" />
+                    <equals arg1="${xml}" arg2="&lt;replaced/&gt;&lt;test/&gt;" />
                 </not>
             </condition>
         </fail>

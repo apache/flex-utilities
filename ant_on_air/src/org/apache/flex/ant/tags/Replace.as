@@ -129,7 +129,7 @@ package org.apache.flex.ant.tags
                         var firstHalf:String = s.substr(0, c);
                         var secondHalf:String = s.substr(c);
                         s = firstHalf + secondHalf.replace(tokens[i], reps[i]);
-                        cur = c + 1;
+                        cur = c + reps[i].length;
                     }
                 } while (c != -1)
             }
