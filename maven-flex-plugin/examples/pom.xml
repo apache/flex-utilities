@@ -30,6 +30,7 @@
     <modules>
         <module>flexjs</module>
         <module>i18n</module>
+        <module>mobile</module>
     </modules>
 
     <repositories>
