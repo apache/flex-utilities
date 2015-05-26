@@ -290,7 +290,20 @@
         </fail>
     </target>
 
-    <target name="compile" depends="get-as3commons.swc"
+    <target name="check-as3httpclient.swc">
+        <available file="${LIBRARY_DIR}/as3httpclient.swc" property="as3httpclient.swc.present"/>
+    </target>
+
+    <!-- This has a BSD license which is a reciprocal license with the Apache v2 license.  -->
+    <target name="get-as3httpclient.swc" depends="check-as3commons.swc" unless="as3httpclient.swc.present"
+            description="Download as3httpclient.swc">
+        <mkdir dir="${LIBRARY_DIR}"/>
+        <get src="https://github.com/quetwo/as3httpclient/releases/download/1.0/as3httpclient.swc"
+             dest="${LIBRARY_DIR}/as3httpclient.swc"
+             verbose="true"/>
+    </target>
+
+    <target name="compile" depends="get-as3commons.swc, get-as3httpclient.swc"
         description="Compiles the AIR application to a SWF file and places SWF in a temp directory to be packaged.">
         <mxmlc file="${SOURCE_DIR}/${APP_NAME}.${APP_EXTENSION}"
             output="${BUILD_DIR}/${APP_NAME}.swf"

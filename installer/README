@@ -135,8 +135,8 @@ How to set up the project for working with Adobe Flash Builder (or any other IDE
 
 2.  In the installer directory run: 
         ant get-as3commons.swc
-    This step downloads the required as3commons library and saves it in the libs 
-    directory.
+        ant get-as3httpdclient.swc
+    These step downloads the required libraries and saves it in the libs directory.
 
 3.  If using Adobe Flash Builder, add a linked resource called: 
         APACHE_FLEX_UTILITIES_ROOT 
