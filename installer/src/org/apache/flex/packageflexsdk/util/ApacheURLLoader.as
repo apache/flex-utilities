@@ -27,6 +27,8 @@ package org.apache.flex.packageflexsdk.util
 {
     import com.adobe.net.URI;
 
+    import flash.events.ErrorEvent;
+
     import flash.events.Event;
     import flash.events.IOErrorEvent;
     import flash.events.SecurityErrorEvent;
@@ -36,8 +38,11 @@ package org.apache.flex.packageflexsdk.util
 
     import org.httpclient.HttpClient;
     import org.httpclient.events.HttpDataEvent;
+    import org.httpclient.events.HttpDataListener;
     import org.httpclient.events.HttpErrorEvent;
+    import org.httpclient.events.HttpRequestEvent;
     import org.httpclient.events.HttpResponseEvent;
+    import org.httpclient.events.HttpStatusEvent;
 
     public class ApacheURLLoader extends URLLoader
     {
@@ -57,18 +62,56 @@ package org.apache.flex.packageflexsdk.util
             }
             else
             {
+                trace(request.url);
                 var httpsClient:HttpClient = new HttpClient();
-                httpsClient.addEventListener(HttpErrorEvent.ERROR, httpsErrorEvent);
-                httpsClient.addEventListener(HttpDataEvent.DATA, httpsDataArrived);
-                httpsClient.addEventListener(HttpResponseEvent.COMPLETE, httpsCompleteEvent);
-                httpsClient.addEventListener(IOErrorEvent.IO_ERROR, httpsIOError);
-                httpsClient.addEventListener(SecurityErrorEvent.SECURITY_ERROR, httpsSecurityError);
+                var httpsClientListener:HttpDataListener = new HttpDataListener();
+
+                httpsClientListener.onConnect = function(event:HttpRequestEvent):void
+                {
+                    trace("connect");
+                };
+
+                httpsClientListener.onComplete = function(event:HttpResponseEvent):void
+                {
+                    trace("complete.");
+                };
+
+                httpsClientListener.onClose = function(event:Event):void
+                {
+                    trace("close.");
+                };
+
+                httpsClientListener.onDataComplete = function(event:HttpResponseEvent, data:ByteArray):void
+                {
+                    trace("onDataComplete");
+                };
+
+                httpsClientListener.onStatus = function(event:HttpStatusEvent):void
+                {
+                    trace("onStatus");
+                };
+
+                httpsClientListener.onError = function(event:ErrorEvent):void
+                {
+                    trace("http error");
+                };
+
+                httpsClientListener.onData = function(event:HttpDataEvent):void
+                {
+                    trace("data event.");
+                };
+
+                httpsClientListener.onRequest = function(event:HttpRequestEvent):void
+                {
+                    trace("request event");
+                };
+
                 // ProgressEvent is not available in this manner.
                 // We can't emulate the HTTP Status Event.  It is internal to the Flash Player and won't
                 //    let us override the status item.
 
                 this.httpsData = new ByteArray();
-                httpsClient.get(new URI(request.url));
+                httpsClient.get(new URI(request.url), httpsClientListener);
             }
 
         }
