@@ -30,6 +30,7 @@ package org.apache.flex.packageflexsdk.util
     import flash.events.ErrorEvent;
 
     import flash.events.Event;
+    import flash.events.HTTPStatusEvent;
     import flash.events.IOErrorEvent;
     import flash.events.SecurityErrorEvent;
     import flash.net.URLLoader;
@@ -37,9 +38,7 @@ package org.apache.flex.packageflexsdk.util
     import flash.utils.ByteArray;
 
     import org.httpclient.HttpClient;
-    import org.httpclient.events.HttpDataEvent;
     import org.httpclient.events.HttpDataListener;
-    import org.httpclient.events.HttpErrorEvent;
     import org.httpclient.events.HttpRequestEvent;
     import org.httpclient.events.HttpResponseEvent;
     import org.httpclient.events.HttpStatusEvent;
@@ -62,48 +61,45 @@ package org.apache.flex.packageflexsdk.util
             }
             else
             {
-                trace(request.url);
                 var httpsClient:HttpClient = new HttpClient();
                 var httpsClientListener:HttpDataListener = new HttpDataListener();
 
                 httpsClientListener.onConnect = function(event:HttpRequestEvent):void
                 {
-                    trace("connect");
+                    var e:Event = new Event(Event.OPEN);
+                    dispatchEvent(e);
                 };
 
                 httpsClientListener.onComplete = function(event:HttpResponseEvent):void
                 {
-                    trace("complete.");
+                    var e:HTTPStatusEvent = new HTTPStatusEvent(HTTPStatusEvent.HTTP_RESPONSE_STATUS);
+                    // we are unable to emulate the full event since the built-in event handlers for status and
+                    // many others are marked as private on the set functions.
+                    dispatchEvent(e);
                 };
 
-                httpsClientListener.onClose = function(event:Event):void
+                httpsClientListener.onDataComplete = function(event:HttpResponseEvent, incomingData:ByteArray):void
                 {
-                    trace("close.");
-                };
-
-                httpsClientListener.onDataComplete = function(event:HttpResponseEvent, data:ByteArray):void
-                {
-                    trace("onDataComplete");
+                    data = new ByteArray();
+                    data.writeBytes(incomingData);
+                    data.position=0;
+                    var e:Event = new Event(Event.COMPLETE);
+                    dispatchEvent(e);
                 };
 
                 httpsClientListener.onStatus = function(event:HttpStatusEvent):void
                 {
-                    trace("onStatus");
+                    var e:HTTPStatusEvent = new HTTPStatusEvent(HTTPStatusEvent.HTTP_STATUS);
+                    // we are unable to emulate the full event since the built-in event handlers for status and
+                    // many others are marked as private on the set functions.
+                    dispatchEvent(e);
                 };
 
                 httpsClientListener.onError = function(event:ErrorEvent):void
                 {
-                    trace("http error");
-                };
-
-                httpsClientListener.onData = function(event:HttpDataEvent):void
-                {
-                    trace("data event.");
-                };
-
-                httpsClientListener.onRequest = function(event:HttpRequestEvent):void
-                {
-                    trace("request event");
+                    var e:IOErrorEvent = new IOErrorEvent(IOErrorEvent.NETWORK_ERROR);
+                    e.text = event.text;
+                    dispatchEvent(e);
                 };
 
                 // ProgressEvent is not available in this manner.
@@ -116,11 +112,6 @@ package org.apache.flex.packageflexsdk.util
 
         }
 
-        private function httpsDataArrived(event:HttpDataEvent):void
-        {
-            this.httpsData.writeBytes(event.bytes);
-        }
-
         private function httpsSecurityError(event:SecurityErrorEvent):void
         {
             dispatchEvent(event.clone());
@@ -131,21 +122,6 @@ package org.apache.flex.packageflexsdk.util
             dispatchEvent(event.clone());
         }
 
-        private function httpsCompleteEvent(event:HttpResponseEvent):void
-        {
-            this.data = new ByteArray();
-            this.data.writeBytes(this.httpsData);
-            this.data.position=0;
-            var e:Event = new Event(Event.COMPLETE);
-            dispatchEvent(e);
-        }
-
-        private function httpsErrorEvent(event:HttpErrorEvent):void
-        {
-            var e:IOErrorEvent = new IOErrorEvent(IOErrorEvent.NETWORK_ERROR);
-            e.text = event.text;
-            dispatchEvent(e);
-        }
     }
 
 }
