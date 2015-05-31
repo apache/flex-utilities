@@ -41,6 +41,7 @@ import java.util.zip.ZipOutputStream;
 public class FlexConverter extends BaseConverter implements Converter {
 
     protected String flexSdkVersion;
+    protected String flexBuild;
 
     /**
      * @param rootSourceDirectory Path to the root of the original Flex SDK.
@@ -52,6 +53,7 @@ public class FlexConverter extends BaseConverter implements Converter {
 
         // Get the version of the current Flex SDK.
         this.flexSdkVersion = getFlexVersion(rootSourceDirectory);
+        this.flexBuild = getFlexBuild(rootSourceDirectory);
     }
 
     /**
@@ -61,8 +63,9 @@ public class FlexConverter extends BaseConverter implements Converter {
      */
     @Override
     protected void processDirectory() throws ConverterException {
-        if(!rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
-            throw new ConverterException("Flex SDK directory '" + rootSourceDirectory.getPath() + "' is invalid.");
+        if((flexSdkVersion == null) || !rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
+            System.out.println("Skipping Flex SDK generation.");
+            return;
         }
 
         generateCompilerArtifacts();
@@ -94,12 +97,6 @@ public class FlexConverter extends BaseConverter implements Converter {
         final File externalDirectory = new File(directory, "external");
         if(externalDirectory.exists() && externalDirectory.isDirectory()) {
             files.addAll(Arrays.asList(externalDirectory.listFiles(new FlexCompilerFilter())));
-
-            // Add all jars in the "external/optional" directory.
-            final File optionalDirectory = new File(externalDirectory, "optional");
-            if(optionalDirectory.exists() && optionalDirectory.isDirectory()) {
-                files.addAll(Arrays.asList(optionalDirectory.listFiles(new FlexCompilerFilter())));
-            }
         }
 
         // Generate artifacts for every jar in the input directories.
@@ -172,7 +169,6 @@ public class FlexConverter extends BaseConverter implements Converter {
         // After processing the current directory, process any eventually existing child directories.
         final List<File> children = new ArrayList<File>();
         children.addAll(Arrays.asList(directory.listFiles(new FileFilter() {
-            @Override
             public boolean accept(File pathname) {
                 return pathname.isDirectory() && !"player".equals(pathname.getName()) &&
                         !"mx".equals(pathname.getName());
@@ -430,6 +426,11 @@ public class FlexConverter extends BaseConverter implements Converter {
             try {
                 final File compcLibrary = new File(fdkLibDir, "compc.jar");
                 final File frameworkDir = new File(rootSourceDirectory, "frameworks");
+                final String targetPlayer = getTargetPlayer(new File(frameworkDir, "libs/player"));
+                if(targetPlayer == null) {
+                    System.out.println("Skipping theme compilation due to missing playerglobl.swc");
+                    return null;
+                }
 
                 processCmd.add("java");
                 processCmd.add("-Xmx384m");
@@ -437,11 +438,11 @@ public class FlexConverter extends BaseConverter implements Converter {
                 processCmd.add("-jar");
                 processCmd.add(compcLibrary.getCanonicalPath());
                 processCmd.add("+flexlib=" + frameworkDir.getCanonicalPath());
+                processCmd.add("-target-player=" + targetPlayer);
 
                 if (themeDirectory.isDirectory()) {
                     // Add all the content files.
                     final File contents[] = themeDirectory.listFiles(new FileFilter() {
-                        @Override
                         public boolean accept(File pathname) {
                             return !(pathname.isDirectory() && "src".equals(pathname.getName())) &&
                                     !"preview.jpg".equals(pathname.getName()) && !pathname.getName().endsWith(".fla");
@@ -565,6 +566,12 @@ public class FlexConverter extends BaseConverter implements Converter {
     protected String getFlexVersion(File rootDirectory) throws ConverterException {
         final File sdkDescriptor = new File(rootDirectory, "flex-sdk-description.xml");
 
+        // If the descriptor is not present, return null as this FDK directory doesn't
+        // seem to contain a Flex SDK.
+        if(!sdkDescriptor.exists()) {
+            return null;
+        }
+
         final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             // Parse the document
@@ -577,7 +584,39 @@ public class FlexConverter extends BaseConverter implements Converter {
             final String build = root.getElementsByTagName("build").item(0).getTextContent();
 
             // In general the version consists of the content of the version element with an appended build-number.
-            return (build.equals("0")) ? version + "-SNAPSHOT" : version + "." + build;
+            return (build.equals("0")) ? version + "-SNAPSHOT" : version;
+        } catch (ParserConfigurationException pce) {
+            throw new RuntimeException(pce);
+        } catch (SAXException se) {
+            throw new RuntimeException(se);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+    }
+
+    /**
+     * Get the version of an Flex SDK from the content of the SDK directory.
+     *
+     * @return version string for the current Flex SDK
+     */
+    protected String getFlexBuild(File rootDirectory) throws ConverterException {
+        final File sdkDescriptor = new File(rootDirectory, "flex-sdk-description.xml");
+
+        // If the descriptor is not present, return null as this FDK directory doesn't
+        // seem to contain a Flex SDK.
+        if(!sdkDescriptor.exists()) {
+            return null;
+        }
+
+        final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            // Parse the document
+            final DocumentBuilder db = dbf.newDocumentBuilder();
+            final Document dom = db.parse(sdkDescriptor);
+
+            // Get name, version and build nodes
+            final Element root = dom.getDocumentElement();
+            return root.getElementsByTagName("build").item(0).getTextContent();
         } catch (ParserConfigurationException pce) {
             throw new RuntimeException(pce);
         } catch (SAXException se) {
@@ -588,7 +627,7 @@ public class FlexConverter extends BaseConverter implements Converter {
     }
 
     protected File getRsl(String artifactId) {
-        final FlexRslFilter filter = new FlexRslFilter(artifactId, flexSdkVersion);
+        final FlexRslFilter filter = new FlexRslFilter(artifactId, flexSdkVersion, flexBuild);
         final File rslDirectory = new File(rootSourceDirectory, "frameworks" + File.separator + "rsls");
         final File[] rsls = rslDirectory.listFiles(filter);
         if ((rsls != null) && (rsls.length == 1)) {
@@ -622,6 +661,16 @@ public class FlexConverter extends BaseConverter implements Converter {
         return bundles;
     }
 
+    protected String getTargetPlayer(File playerDir) {
+        if(playerDir.exists() && playerDir.isDirectory()) {
+            File[] files = playerDir.listFiles();
+            if((files != null) && files.length > 0) {
+                return files[0].getName();
+            }
+        }
+        return null;
+    }
+
     public static class FlexCompilerFilter implements FilenameFilter {
         private AirConverter.AirCompilerFilter airFilter = new AirConverter.AirCompilerFilter();
 
@@ -645,8 +694,8 @@ public class FlexConverter extends BaseConverter implements Converter {
     public static class FlexRslFilter implements FilenameFilter {
         private String fileName;
 
-        public FlexRslFilter(String artifactName, String artifactVersion) {
-            this.fileName = artifactName + "_" + artifactVersion + ".swf";
+        public FlexRslFilter(String artifactName, String artifactVersion, String build) {
+            this.fileName = artifactName + "_" + artifactVersion + "." + build + ".swf";
         }
 
         public boolean accept(File dir, String name) {

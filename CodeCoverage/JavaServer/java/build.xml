@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<project default="main" basedir="." name="Code Coverage Server and Code Coverge Reporter">
+    
+    <property file="${basedir}/env.properties"/>
+    <property environment="env"/>    
+    <property name="lib.dir" value="${basedir}/../lib"/>
+
+	<!-- Options for <javac> tasks -->
+    <property name="javac.debug" value="true"/>
+    <property name="javac.deprecation" value="false"/>
+    <property name="javac.src" value="1.7"/>
+
+    <!-- JAR manifest entries -->
+    <property name="manifest.Implementation-Version" value="0.9.0"/>
+    <property name="manifest.Implementation-Vendor" value="Apache Software Foundation"/>
+    
+    <target name="main" depends="check-falcon-home,clean,compile-ccserver,create-ccserver.jar,compile-ccreporter,create-ccreporter.jar,copy-bin-lib">
+    </target>
+
+    <target name="check-falcon-home" unless="FALCON_HOME"
+        description="Check FALCON_HOME is a directory.">
+        
+        <echo message="FALCON_HOME is ${env.FALCON_HOME}"/>
+
+        <available file="${env.FALCON_HOME}/lib/compiler.jar" 
+            type="file" 
+            property="FALCON_HOME"
+            value="${env.FALCON_HOME}"/>
+
+        <fail message="FALCON_HOME must be set to a folder with a lib sub-folder containing compiler.jar such as the compiler/generated/dist/sdk folder in flex-falcon repo."
+            unless="FALCON_HOME"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${basedir}/generated"/>
+        <delete file="${lib.dir}/ccreporter.jar" quiet="true" failonerror="false"/>
+        <delete file="${lib.dir}/ccserver.jar" quiet="true" failonerror="false"/>
+        <delete quiet="true" failonerror="false">
+            <fileset dir="${lib.dir}">
+                <include name="compiler.jar"/>
+                <include name="ccreporter.jar"/>
+                <include name="ccserver.jar"/>
+                <include name="ccserver.properties"/>
+            </fileset>
+        </delete>
+        <delete dir="${lib.dir}/external" quiet="true" failonerror="false"/>
+    </target>
+
+    <path id="classpath">
+        <fileset dir="${env.FALCON_HOME}/lib" includes="**/*.jar" excludes="ccserver.jar,ccreporter.jar"/>
+    </path>
+
+    <target name="create-ccserver.jar" depends="set.ccserver.jar.uptodate" unless="ccserver.jar.uptodate">
+        <jar file="${lib.dir}/ccserver.jar" basedir="${basedir}/generated/classes" includes="**/server/*" whenmanifestonly="fail">
+            <manifest>
+                <attribute name="Implementation-Title" value="Apache Flex Code Coverage Server"/>
+                <attribute name="Implementation-Version" value="${manifest.Implementation-Version}"/>
+                <attribute name="Implementation-Vendor" value="${manifest.Implementation-Vendor}"/>
+                <attribute name="Main-Class" value="org.apache.flex.tools.codecoverage.server.CodeCoverageServer"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="set.ccserver.jar.uptodate">
+        <uptodate property="ccserver.jar.uptodate"
+                  targetfile="${lib.dir}/ccserver.jar">
+            <srcfiles dir="${basedir}/generated/classes">
+                <include name="**/server/*.class"/>
+                <include name="**/*.properties"/>
+            </srcfiles>
+        </uptodate>
+    </target>
+    
+    <target name="compile-ccserver" description="compile">
+        <mkdir dir="${basedir}/generated/classes"/>
+        <javac debug="${javac.debug}" deprecation="${javac.deprecation}"
+               includes="**/server/*.java" destdir="${basedir}/generated/classes" 
+               classpathref="classpath" includeAntRuntime="false"
+               source="${javac.src}" target="${javac.src}">
+            <src path="${basedir}/src"/>
+            <compilerarg value="-Xlint:all,-path,-fallthrough,-cast"/>
+        </javac>
+        <copy todir="${basedir}/generated/classes">
+            <fileset dir="${basedir}/src" includes="**/*.properties"/>
+        </copy>
+    </target>
+    
+    <target name="create-ccreporter.jar" depends="set.ccreporter.jar.uptodate" unless="ccreporter.jar.uptodate">
+        <jar file="${lib.dir}/ccreporter.jar" basedir="${basedir}/generated/classes" includes="**/reporter/**/*" whenmanifestonly="fail">
+            <manifest>
+                <attribute name="Implementation-Title" value="Apache Flex Code Coverage Reporter"/>
+                <attribute name="Implementation-Version" value="${manifest.Implementation-Version}"/>
+                <attribute name="Implementation-Vendor" value="${manifest.Implementation-Vendor}"/>
+                <attribute name="Main-Class" value="org.apache.flex.tools.codecoverage.reporter.CodeCoverageReporter"/>
+                <attribute name="Class-Path" value="compiler.jar ."/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="set.ccreporter.jar.uptodate">
+        <uptodate property="ccreporter.jar.uptodate"
+                  targetfile="${lib.dir}/ccreporter.jar">
+            <srcfiles dir="${basedir}/generated/classes">
+                <include name="**/*.class"/>
+                <include name="**/*.properties"/>
+            </srcfiles>
+        </uptodate>
+    </target>
+    
+	<target name="compile-ccreporter" description="compile">
+        <javac debug="${javac.debug}" deprecation="${javac.deprecation}"
+               includes="**/reporter/**/*.java" destdir="${basedir}/generated/classes" 
+               classpathref="classpath" includeAntRuntime="false"
+               source="${javac.src}" target="${javac.src}">
+            <src path="${basedir}/src"/>
+            <compilerarg value="-Xlint:all,-path,-fallthrough,-cast"/>
+        </javac>
+        <copy todir="${basedir}/generated/classes">
+            <fileset dir="${basedir}/src" includes="**/*.properties"/>
+        </copy>
+    </target>
+
+    <target name="copy-bin-lib" description="copy lib dependencies">
+        <copy todir="${lib.dir}">
+            <fileset dir="${FALCON_HOME}/lib/">
+                <include name="compiler.jar"/>
+                <include name="external/antlr*.*"/>
+                <include name="external/commons-cli*.*"/>
+                <include name="external/commons-io*.*"/>
+                <include name="external/flex-tool-api*.*"/>
+                <include name="external/guava*.*"/>
+                <include name="external/lzma-sdk*.*"/>
+            </fileset>
+            <fileset dir="${basedir}" includes="ccserver.properties"/>
+        </copy>
+    </target>
+
+</project>

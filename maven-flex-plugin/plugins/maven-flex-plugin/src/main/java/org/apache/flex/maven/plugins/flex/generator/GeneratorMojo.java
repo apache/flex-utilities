@@ -20,12 +20,6 @@ import org.apache.flex.maven.plugins.flex.AbstractFlexMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 
-/**
- * Created with IntelliJ IDEA.
- * User: cdutz
- * Date: 01.12.12
- * Time: 17:48
- */
 @Mojo(name = "generate",
         defaultPhase = LifecyclePhase.GENERATE_SOURCES,
         threadSafe = true)

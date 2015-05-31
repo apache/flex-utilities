@@ -16,6 +16,8 @@
  */
 package org.apache.flex.utilities.converter.retrievers.types;
 
+import org.apache.commons.lang3.SystemUtils;
+
 /**
  * Created by cdutz on 18.05.2014.
  */
@@ -23,6 +25,25 @@ public enum PlatformType {
 
     WINDOWS,
     LINUX,
-    MAC
+    MAC;
 
+    public static PlatformType getCurrent() throws Exception {
+        PlatformType platformType = null;
+
+        if (SystemUtils.IS_OS_WINDOWS)
+        {
+            platformType = PlatformType.WINDOWS;
+        }
+        else if (SystemUtils.IS_OS_MAC || SystemUtils.IS_OS_MAC_OSX)
+        {
+            platformType = PlatformType.MAC;
+        }
+        else if (SystemUtils.IS_OS_UNIX)
+        {
+            platformType = PlatformType.LINUX;
+        }
+        else throw new Exception("Unsupported OS.");
+
+        return platformType;
+    }
 }

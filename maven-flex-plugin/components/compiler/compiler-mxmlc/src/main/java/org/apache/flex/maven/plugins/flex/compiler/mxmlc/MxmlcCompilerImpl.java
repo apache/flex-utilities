@@ -20,12 +20,6 @@ import org.apache.flex.maven.plugins.flex.compiler.Compiler;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 
-/**
- * Created with IntelliJ IDEA.
- * User: cdutz
- * Date: 02.12.12
- * Time: 12:40
- */
 @Component(role = Compiler.class, hint = "mxmlc")
 public class MxmlcCompilerImpl implements Compiler {
 

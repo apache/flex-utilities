@@ -19,11 +19,11 @@ package org.apache.flex.utilities.converter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateExceptionHandler;
 import org.apache.flex.utilities.converter.exceptions.ConverterException;
 import org.apache.flex.utilities.converter.model.MavenArtifact;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -31,12 +31,12 @@ import org.codehaus.jettison.json.JSONTokener;
 
 import java.io.*;
 import java.math.BigInteger;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -54,7 +54,7 @@ public abstract class BaseConverter {
     protected File rootSourceDirectory;
     protected File rootTargetDirectory;
 
-    private VelocityEngine velocityEngine;
+    protected Configuration freemarkerConfig;
 
     protected BaseConverter(File rootSourceDirectory, File rootTargetDirectory) throws ConverterException {
         if(rootSourceDirectory == null) {
@@ -67,20 +67,10 @@ public abstract class BaseConverter {
         this.rootSourceDirectory = rootSourceDirectory;
         this.rootTargetDirectory = rootTargetDirectory;
 
-        try {
-            // Load some initial properties from the classpath.
-            final Properties properties = new Properties();
-            final InputStream propertyInputStream =
-                  getClass().getClassLoader().getResourceAsStream("velocity.properties");
-            if(propertyInputStream != null) {
-                properties.load(propertyInputStream);
-            }
-
-            // Instantiate the engine that will be used for every generation.
-            velocityEngine = new VelocityEngine(properties);
-        } catch (Exception e) {
-            throw new ConverterException("Error initializing the velocity template engine.", e);
-        }
+        this.freemarkerConfig = new Configuration(Configuration.VERSION_2_3_22);
+        this.freemarkerConfig.setDefaultEncoding("UTF-8");
+        this.freemarkerConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        this.freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/");
     }
 
     public void convert() throws ConverterException {
@@ -243,17 +233,16 @@ public abstract class BaseConverter {
     protected void createPomDocument(final MavenArtifact metadata, File outputFile) throws ConverterException {
         try {
             // Build a context to hold the model
-            final VelocityContext velocityContext = new VelocityContext();
-            velocityContext.put("artifact", metadata);
+            Map freemarkerContext = new HashMap();
+            freemarkerContext.put("artifact", metadata);
 
             // Try to get a template "templates/{type}.vm".
-            final String templateName;
-            if(velocityEngine.resourceExists("templates/" + metadata.getPackaging() + ".vm")) {
-               templateName = "templates/" + metadata.getPackaging() + ".vm";
-            } else if(velocityEngine.resourceExists("templates/default.vm")) {
-               templateName = "templates/default.vm";
+            Template template;
+            URL check = this.getClass().getClassLoader().getResource("templates/" + metadata.getPackaging() + ".ftl");
+            if(check != null) {
+                template = freemarkerConfig.getTemplate("templates/" + metadata.getPackaging() + ".ftl");
             } else {
-               throw new ConverterException("No template found for generating pom output.");
+                template = freemarkerConfig.getTemplate("templates/default.ftl");
             }
 
             // Prepare an output stream to which the output can be generated.
@@ -267,8 +256,8 @@ public abstract class BaseConverter {
 
                 writer = new FileWriter(outputFile);
 
-                // Have velocity generate the output for the template.
-                velocityEngine.mergeTemplate(templateName, "utf-8", velocityContext, writer);
+                // Have Freemarker generate the output for the template.
+                template.process(freemarkerContext, writer);
             } finally {
                 if(writer != null) {
                     writer.close();

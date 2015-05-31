@@ -23,12 +23,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
 
-/**
- * Created with IntelliJ IDEA.
- * User: cdutz
- * Date: 01.12.12
- * Time: 17:48
- */
 @Mojo(name = "mavenizer",
         defaultPhase = LifecyclePhase.NONE,
         threadSafe = false)

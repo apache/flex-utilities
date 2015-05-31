@@ -22,12 +22,8 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: fthomas
  * Date: 11.08.12
  * Time: 18:17
- *
- * @author Frederic Thomas
- * @author Jose Barragan
  */
 public class MavenDeployer {
 

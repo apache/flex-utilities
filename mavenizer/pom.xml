@@ -17,24 +17,22 @@
   limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>14</version>
+        <version>16</version>
     </parent>
 
     <groupId>org.apache.flex.utilities.converter</groupId>
-    <artifactId>flex-sdk-converter</artifactId>
+    <artifactId>apache-flex-sdk-converter</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
-        <mavenVersion>3.1.0</mavenVersion>
+        <mavenVersion>3.1.1</mavenVersion>
         <aetherVersion>0.9.0.M4</aetherVersion>
         <wagonVersion>2.2</wagonVersion>
     </properties>
@@ -52,24 +50,18 @@
     </mailingLists>
 
     <scm>
-        <connection>
-            scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git
-        </connection>
-        <developerConnection>
-            scm:svn:https://git-wip-us.apache.org/repos/asf/flex-utilities.git
-        </developerConnection>
-        <url>
-            https://git-wip-us.apache.org/repos/asf/flex-utilities.git
-        </url>
+        <connection>scm:git:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</connection>
+        <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</developerConnection>
+        <url>https://git-wip-us.apache.org/repos/asf/flex-utilities.git</url>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>
-        <module>core</module>
         <module>retrievers</module>
         <module>converters</module>
         <module>deployers</module>
-
-        <module>mavenizer</module>
+        <module>cli</module>
+        <module>maven-extension</module>
     </modules>
 
     <build>

@@ -26,6 +26,7 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
+    import org.apache.flex.xml.ITagHandler;
     
     [Mixin]
     public class Replace extends TaskHandler
@@ -89,10 +90,26 @@ package org.apache.flex.ant.tags
             {
                 for (var i:int = 0; i < numChildren; i++)
                 {
-                    var rf:ReplaceFilter = getChildAt(i) as ReplaceFilter;
-                    rf.setContext(context);
-                    tokens.push(rf.token);
-                    reps.push(rf.value);
+                    var child:ITagHandler = getChildAt(i);
+                    if(child is ReplaceFilter)
+                    {
+                        var rf:ReplaceFilter = child as ReplaceFilter;
+                        rf.setContext(context);
+                        tokens.push(rf.token);
+                        reps.push(rf.value);
+                    }
+                    else if(child is ReplaceToken)
+                    {
+                        var rt:ReplaceToken = child as ReplaceToken;
+                        rt.setContext(context);
+                        tokens.push(rt.text);
+                    }
+                    else if(child is ReplaceValue)
+                    {
+                        var rv:ReplaceValue = child as ReplaceValue;
+                        rv.setContext(context);
+                        reps.push(rv.text);
+                    }
                 }
             }
             var n:int = tokens.length;
@@ -112,7 +129,7 @@ package org.apache.flex.ant.tags
                         var firstHalf:String = s.substr(0, c);
                         var secondHalf:String = s.substr(c);
                         s = firstHalf + secondHalf.replace(tokens[i], reps[i]);
-                        cur = c + 1;
+                        cur = c + reps[i].length;
                     }
                 } while (c != -1)
             }

@@ -6,10 +6,6 @@ package org.apache.flex.runtimelocale.ini {
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getClassLogger;
 
-	/**
-	 *
-	 * @author Roland Zwaga
-	 */
 	public class IniReader {
 
 		/** Character code for the APPLE line break. */

@@ -186,6 +186,7 @@
             <entry key="somekey" value="somevalue" />
             <entry key="somekey1" value="somevalue1" />
             <entry key="looptest" value="foo" />
+            <entry key="xml" value="&lt;test/&gt;" />
         </propertyfile>
         <fail message="propertyfile did not result in expected file">
             <condition>
@@ -198,6 +199,14 @@
         <replace file="${basedir}/temp/custom.properties" token="foo" value="food" />
         <replace file="${basedir}/temp/custom.properties">
             <replacefilter token="key" value="ky" />
+        </replace>
+        <replace file="${basedir}/temp/custom.properties">
+            <replacetoken>loop</replacetoken>
+            <replacevalue>lop</replacevalue>
+        </replace>
+        <replace file="${basedir}/temp/custom.properties">
+            <replacetoken><![CDATA[<test/>]]></replacetoken>
+            <replacevalue><![CDATA[<replaced/><test/>]]></replacevalue>
         </replace>
         <loadproperties srcFile="${basedir}/temp/custom.properties" />
         <fail message="replace did not work: found somekey">
@@ -212,6 +221,11 @@
                 </not>
             </condition>
         </fail>
+        <fail message="replace did not work: found looptest">
+            <condition>
+                <isset property="looptest" />
+            </condition>
+        </fail>
         <fail message="replace did not work: did not find replacedkey1">
             <condition>
                 <not>
@@ -222,7 +236,14 @@
         <fail message="replace did not work: did not find food">
             <condition>
                 <not>
-                    <equals arg1="${looptest}" arg2="food" />
+                    <equals arg1="${loptest}" arg2="food" />
+                </not>
+            </condition>
+        </fail>
+        <fail message="replace did not work: did not find &lt;replaced/&gt;&lt;test/&gt;">
+            <condition>
+                <not>
+                    <equals arg1="${xml}" arg2="&lt;replaced/&gt;&lt;test/&gt;" />
                 </not>
             </condition>
         </fail>

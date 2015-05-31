@@ -19,7 +19,7 @@ limitations under the License.
 
 ==========================================================================================
 Overview:
-=========
+==========================================================================================
 
 - The Apache Flex SDK Installer AIR application provides an easy installation of the 
   Apache Flex SDK and all its dependencies.  This will make it suitable for working with 
@@ -127,7 +127,7 @@ How to build the installer using ANT (no Flash Builder or any other IDE required
 	file (var: TEMP_PASS_CHANGE_THIS)
 
 ==========================================================================================
-How to set up the project for working with Adobe Flash Builder (or any other IDE):
+How to set up the project for working with Adobe Flash Builder 4.7:
 ==========================================================================================
 
 1.  Unzip the source distribution.  You should see the 'installer' directory and the 
@@ -151,3 +151,52 @@ How to set up the project for working with Adobe Flash Builder (or any other IDE
 
 7.  In the installer project, add ${APACHE_FLEX_UTILITIES_ROOT}/ant_on_air/locale/{locale} as a source path.
 
+==========================================================================================
+How to set up the project for working with JetBrains IDEA 12+
+==========================================================================================
+
+1.  Setup a new project by either unzipping the downloaded source or grabbing the source from the version control.
+
+2.  During the project setup, DO NOT search for modules or frameworks.  We will set these up later.
+
+3.  Setup a new module by going to the File -> New Module menu.
+    Module Type :  Flash
+    Target Platform : Desktop
+    Output Type : Application
+    Create Sample App :  Unchecked
+    Create HTML Wrapper : Unchecked
+
+    Create the new module, name it "installer" and chose the ${APACHE_FLEX_UTILITIES_ROOT}/installer directory
+
+4.  After the module is created, go into the installer module settings (Right-Click ->  Open Module Settings)
+
+5.  Add the following Content Roots :
+    flex-utilities\ant_on_air
+    flex-utilities\common
+
+6.  Mark the following directories as Sources :   (some may already be marked as src)
+    flex-utilities\ant_on_air\src
+    flex-utilities\ant_on_air\external
+    flex-utilities\common\src
+    flex-utilities\installer\src
+
+7.  Close the Settings dialog
+
+8.  Open the Ant Build tab within IDEA.
+    Add the flex-utilities\build.xml ANT build script.
+
+9.  Run the get-as3commons.swc ant target.  This will download the required SWC to build the installer.
+
+10. Return to the module properties, and go to the dependencies tab.  Make sure the following are listed :
+    Flex SDK
+    flex-utilities\installer\libs
+    flex-utilities\installer\common\bin\common.swc
+    flex-utilities\installer\ant_on_air\bin\ant_on_air.swc
+    flex-utilities\ant_on_air\external\libs\as3commons-zip-1.0.0-alpha.1.swc
+
+11. Apply and close the dialog box.
+
+12. Update the flex-utilities\installer\build.properties to match your settings.  In theory you should only
+    have to update the FLEX_HOME_WIN or FLEX_HOME_MAC property to point to your SDK with AIR 4.0 overlaid.
+
+You should now be able to build and debug the installer.

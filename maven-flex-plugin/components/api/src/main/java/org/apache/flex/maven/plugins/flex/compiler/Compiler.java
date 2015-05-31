@@ -18,12 +18,6 @@ package org.apache.flex.maven.plugins.flex.compiler;
 
 import org.apache.maven.project.MavenProject;
 
-/**
- * Created with IntelliJ IDEA.
- * User: cdutz
- * Date: 01.12.12
- * Time: 23:13
- */
 public interface Compiler {
 
     void compile(MavenProject project);

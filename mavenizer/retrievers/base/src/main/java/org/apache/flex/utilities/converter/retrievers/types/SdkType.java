@@ -21,8 +21,10 @@ package org.apache.flex.utilities.converter.retrievers.types;
  */
 public enum SdkType {
 
+    FLEX,
     FLASH,
     AIR,
-    FLEX
+    FONTKIT,
+    SWFOBJECT
 
 }
