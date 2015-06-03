@@ -1356,7 +1356,6 @@ variables are not required because the locations of these pieces are known.
                 additionalProps[x.@name.toString()] = x.@value.toString();
             }
             currentState = "directoryState";
-            System.disposeXML(data);
         }
 
         private function getLocalizedString(xml:XML, propName:String):String
