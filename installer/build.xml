@@ -574,9 +574,14 @@
         <echo message="not found in anttask.classpath"/>
     </target>
 
+    <target name="create-md5s" >
+        <checksum file="${RELEASE_DIR}/${source.kit}.zip" algorithm="md5" forceOverwrite="yes" />
+        <checksum file="${RELEASE_DIR}/${source.kit}.tar.gz" algorithm="md5" forceOverwrite="yes" />
+        <checksum file="${RELEASE_DIR}/${binary.kit}.${extension}" algorithm="md5" forceOverwrite="yes" />
+        
+    </target>
+    
 	<target name="sign" >
-		<checksum file="${RELEASE_DIR}/${source.kit}.zip" algorithm="md5" forceOverwrite="yes" />
-
 		<exec executable="gpg">
 			<arg value="--armor" />
 			<arg value="--output" />
@@ -585,8 +590,6 @@
 			<arg value="${RELEASE_DIR}/${source.kit}.zip" />
 		</exec>
 
-		<checksum file="${RELEASE_DIR}/${source.kit}.tar.gz" algorithm="md5" forceOverwrite="yes" />
-
 		<exec executable="gpg">
 			<arg value="--armor" />
 			<arg value="--output" />
@@ -594,8 +597,6 @@
 			<arg value="--detach-sig" />
 			<arg value="${RELEASE_DIR}/${source.kit}.tar.gz" />
 		</exec>
-
-		<checksum file="${RELEASE_DIR}/${binary.kit}.${extension}" algorithm="md5" forceOverwrite="yes" />
 
 		<exec executable="gpg">
 			<arg value="--armor" />
