@@ -45,6 +45,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.text.MessageFormat;
 import java.util.*;
 
 /**
@@ -353,6 +354,22 @@ public class DownloadRetriever extends BaseRetriever {
             throw new RetrieverException("Error reading message.properties file", e);
         }
 
+        String property = "com.adobe.systemIdsForWhichTheTermsOfTheAdobeLicenseAgreementAreAccepted";
+
+        // Implement the accepting the license by providing a system-id as system-property.
+        String acceptedSystemIds = System.getProperty(property);
+        if(acceptedSystemIds != null) {
+            String systemId = SystemIdHelper.getSystemId();
+            if(systemId != null) {
+                for (String acceptedSystemId : acceptedSystemIds.split(",")) {
+                    if (systemId.equals(acceptedSystemId)) {
+                        System.out.println(questionProps.getProperty("ACCEPTED_USING_SYSTEM_ID"));
+                        return;
+                    }
+                }
+            }
+        }
+
         final String question;
         if(type.equals(SdkType.FLASH)) {
             question = questionProps.getProperty("ASK_ADOBE_FLASH_PLAYER_GLOBAL_SWC");
@@ -366,7 +383,11 @@ public class DownloadRetriever extends BaseRetriever {
         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
             while (true) {
+                System.out.println(
+                        MessageFormat.format(questionProps.getProperty("SYSTEM_ID"), SystemIdHelper.getSystemId()));
                 System.out.println(question);
+                System.out.println(MessageFormat.format(questionProps.getProperty("ACCEPT_USING_SYSTEM_ID"),
+                        property, SystemIdHelper.getSystemId()));
                 System.out.print(questionProps.getProperty("DO_YOU_ACCEPT_QUESTION") + " ");
                 final String answer = reader.readLine();
                 if ("YES".equalsIgnoreCase(answer) || "Y".equalsIgnoreCase(answer)) {
