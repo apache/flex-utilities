@@ -24,16 +24,18 @@ Overview:
 - The Apache Flex SDK Installer AIR application provides an easy installation of the 
   Apache Flex SDK and all its dependencies.  This will make it suitable for working with 
   IDEs such as Adobe Flash Builder, FDT, IntelliJ IDEA, FlashDevelop, etc.  
-  The application downloads the following dependencies:
+  When installing an Apache Flex SDK, the application downloads the following
+  dependencies:
     - The AIR sdk (Windows vs. Mac) based on the current platform
     - Adobe Flash Player playerglobal.swc
-    - SwfObject
+    - SWFObject
     - Open Source Media Framework (OSMF)
 	 
   Optionally, the application will download these files if the user explicitly agrees to 
   the licensing terms:
-    - Adobe BlazeDS
     - Adobe embedded font support
+
+  Other release packages may download different dependencies.
  
 - The Apache Flex SDK Installer 3.0 and later supports the ability to install 
   virtually anything that can be installed via an Apache Ant script.  The list 
@@ -185,7 +187,7 @@ How to set up the project for working with JetBrains IDEA 12+
 8.  Open the Ant Build tab within IDEA.
     Add the flex-utilities\build.xml ANT build script.
 
-9.  Run the get-as3commons.swc ant target.  This will download the required SWC to build the installer.
+9.  Run the get-as3commons.swc and get-as3httpdclient.swc ant target.  This will download the required SWC to build the installer.
 
 10. Return to the module properties, and go to the dependencies tab.  Make sure the following are listed :
     Flex SDK
