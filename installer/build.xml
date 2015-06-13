@@ -370,6 +370,8 @@
             <arg value="${CERT_PASSWORD}"/>
             <arg value="${BUILD_DIR}/${APP_NAME}.air"/>
             <arg value="${SOURCE_DIR}/${APP_NAME}-app.xml"/>
+			<arg value="${basedir}/LICENSE"/>
+		    <arg value="${basedir}/NOTICE"/>
             <arg value="-C"/>
             <arg value="${BUILD_DIR}"/>
             <arg value="${BUILD_DIR}/${APP_NAME}.swf"/>
