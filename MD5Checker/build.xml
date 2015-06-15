@@ -88,7 +88,7 @@
                file="${basedir}/src/MD5Checker.mxml">
             <jvmarg line="-Xms64m -Xmx384m -ea -Dapple.awt.UIElement=true"/>
             <load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>
-            <source-path path-element="${basedir}/../ant_on_air/src" />
+            <source-path path-element="${basedir}/../flex-installer/ant_on_air/src" />
         </mxmlc>
     </target>
     
