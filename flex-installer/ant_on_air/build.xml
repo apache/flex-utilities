@@ -101,9 +101,13 @@
     <target name="get-as3commons.swc" depends="check-as3commons.swc" unless="as3commons.swc.present"
         description="Download as3commons.swc and fail if checksum mismatch.">
         <mkdir dir="${basedir}/external/libs"/>
-        <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc"
+        <!--<get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc"
+        dest="${basedir}/external/libs/as3commons-zip-1.0.0-alpha.1.swc"
+        verbose="true"/>-->
+        <get src="https://github.com/bigosmallm/MakeApacheFlexForFlashBuilder/blob/master/libs/as3commons-zip-1.0.0-alpha.1.swc?raw=true"
         dest="${basedir}/external/libs/as3commons-zip-1.0.0-alpha.1.swc"
         verbose="true"/>
+        <!--
         <get src="http://projects.yoolab.org/maven/content/repositories/releases/org/as3commons/as3commons-zip/1.0.0-alpha.1/as3commons-zip-1.0.0-alpha.1.swc.md5"
         dest="${basedir}/external/libs/as3commons-zip-1.0.0-alpha.1.swc.md5"
         verbose="true"/>
@@ -113,7 +117,7 @@
             <condition>
                 <isfalse value="${isMD5ok}"/>
             </condition>
-        </fail>
+        </fail>-->
     </target>
     
     <target name="third-party-clean" description="Cleans up 3rd-party files.">
