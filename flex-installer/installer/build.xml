@@ -203,6 +203,7 @@
 
     <target name="clean" description="Cleans up old files.">
         <delete dir="${BUILD_DIR}" failOnError="false" includeEmptyDirs="true" />
+        <delete dir="${DEPS_DIR}" failOnError="false" includeEmptyDirs="true" />
         <delete dir="${LIBRARY_DIR}" failOnError="false" includeEmptyDirs="true" />
         <delete dir="${RELEASE_DIR}" failOnError="false" includeEmptyDirs="true" />
         <delete file="${basedir}/rat.report" failOnError="false"/>
@@ -306,7 +307,7 @@
         <mkdir dir="${LIBRARY_DIR}/temp"/>
         <get src="https://github.com/gabriel/as3httpclient/archive/master.zip"
              dest="${LIBRARY_DIR}/temp"
-             verbose="true"/>
+             />
         <unzip src="${LIBRARY_DIR}/temp/master.zip" dest="${LIBRARY_DIR}/temp"/>
         <replace file="${LIBRARY_DIR}/temp/as3httpclient-master/build-swc.xml"
             token="${flexlib}/libs/player/9/" value="${env.PLAYERGLOBAL_HOME}/${playerglobal.version}/" />
@@ -366,6 +367,17 @@
     <target name="packageair"
         description="Packages the build SWF file from a temp directory to create an AIR file">
     	<echo message="Using cert ${KEYSTORE}" />
+        <mkdir dir="${DEPS_DIR}/as3httpclientlib" />
+        <copy file="${LIBRARY_DIR}/temp/as3httpclient-master/License.txt"
+            tofile="${DEPS_DIR}/as3httpclientlib/License.txt" />
+        <mkdir dir="${DEPS_DIR}/as3corelib" />
+        <get src="https://raw.githubusercontent.com/mikechambers/as3corelib/master/README"
+            dest="${DEPS_DIR}/as3corelib"
+            />
+        <mkdir dir="${DEPS_DIR}/as3crypto" />
+        <get src="http://as3crypto.googlecode.com/svn/trunk/as3crypto/LICENSE.txt"
+            dest="${DEPS_DIR}/as3crypto"
+            />
         <java jar="${ADT}" fork="true"
             failonerror="true"
             maxmemory="512m">
@@ -378,8 +390,11 @@
             <arg value="${CERT_PASSWORD}"/>
             <arg value="${BUILD_DIR}/${APP_NAME}.air"/>
             <arg value="${SOURCE_DIR}/${APP_NAME}-app.xml"/>
-			<arg value="${basedir}/LICENSE"/>
 		    <arg value="${basedir}/NOTICE"/>
+            <arg value="${DEPS_DIR}"/>
+            <arg value="-C"/>
+            <arg value="${basedir}/binary_license"/>
+            <arg value="${basedir}/binary_license/LICENSE"/>
             <arg value="-C"/>
             <arg value="${BUILD_DIR}"/>
             <arg value="${BUILD_DIR}/${APP_NAME}.swf"/>
@@ -535,10 +550,6 @@
             <fileset dir="${rat.dir}">
                 <exclude name="**/Apache License Version 2.txt"/>
                 <!--          Start of source files           -->
-                <!-- Apache Category A: Authorized Licenses -->
-                <!-- "New BSD License" aka Modified BSD License" aka "BSD 3-Clause License" -->
-                <exclude name="${INSTALLER_PROJECT_NAME}/src/com/adobe/crypto/MD5Stream.as"/>
-                <exclude name="${INSTALLER_PROJECT_NAME}/src/com/adobe/utils/IntUtil.as"/>
                 <!-- generated source files that don't have Apache v2 license header -->
                 <exclude name="**/build.number"/>
                 <exclude name="**/.actionScriptProperties"/>
