@@ -3574,6 +3574,18 @@ variables are not required because the locations of these pieces are known.
 
         protected function updateActivityStep(stepLabel:String, status:String):void
         {
+            // try forcing GC before each step
+            try {
+                var lc1:LocalConnection = new LocalConnection();
+                var lc2:LocalConnection = new LocalConnection();
+                
+                lc1.connect("name");
+                lc2.connect("name");
+            }
+            catch (error:Error)
+            {
+            }
+            
             var step:StepItem = getStepItemFromStepLabel(stepLabel);
 
             if (step)
