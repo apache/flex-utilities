@@ -204,6 +204,9 @@
 
 --------------------------------------------------------------------------------
 
+This product bundles ascompress, which is available under the
+MIT license.  For details, see http://www.opensource.org/licenses/mit-license.php  
+
 This product bundles as3httpclientlib, which is available under the
 MIT license.  For details, see deps/as3httpclientlib/.
 
