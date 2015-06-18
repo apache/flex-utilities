@@ -32,22 +32,29 @@ Ant_On_AIR improvements:
 7. fix failure message propagation from child ant scripts
 
 Installer Issues Resolved:
-FLEX-34394: some localization strings mention Adobe Flash Builder in the installer title
-FLEX-34392: Missing localization strings in the installer
-FLEX-34445: some errors in installer are missing info=
+FLEX-34851: Flex SDK Installer Fails on swfobject for flex versions 4.13.0 and below
+FLEX-34762: OSMF download failed - Apache Flex Installer
+FLEX-34687: Error #1009 encountered when changing languages on License Screen
+FLEX-34638: adt.bat missing from SDK
+FLEX-34624: Additional Logging for installer
+FLEX-34623: Russian translation
+FLEX-34606: Redundant variable
+FLEX-34605: Code formatting and cleanup
 FLEX-34591: Don't log FP and AIR versions for products that don't use them
 FLEX-34590: Don't assume installer.xml exists
 FLEX-34589: Set install XML file via command line option
-FLEX-34398: log not saved when installer close button clicked
-FLEX-34408: Installer log does't contain version of Flex SDK installed
+FLEX-34559: Apache Flex SDK Installer - OSMF download failed
+FLEX-34534: Installer breaks on afe.jar when using a cached install (but proceeds correctly with cache switched off)
+FLEX-34533: Installer install font jar even when not ticked
 FLEX-34446: Common windows installer error
-FLEX-34605: Code formatting and cleanup
-FLEX-34606: Redundant variable
-FLEX-34393: installer should remember language
-FLEX-34310: Add button "back" to installer
-FLEX-34624: Additional Logging for installer
+FLEX-34445: some errors in installer are missing info=
 FLEX-34425: Make MD5 change non fatal
-FLEX-34687: Error #1009 encountered when changing languages on License Screen
+FLEX-34408: Installer log does't contain version of Flex SDK installed
+FLEX-34398: log not saved when installer close button clicked
+FLEX-34394: some localization strings mention Adobe Flash Builder in the installer title
+FLEX-34393: installer should remember language
+FLEX-34392: Missing localization strings in the installer
+FLEX-34310: Add button "back" to installer
 
 Other Installer Improvements:
 1. Fine-tuned some Chinese Translations
