@@ -211,8 +211,11 @@ separate copyright notices and license terms. Your use of the source
 code for the these subcomponents is subject to the terms and
 conditions of the following licenses. 
 
+This product bundles as3-simple-untar, which is available under a 3-clause BSD
+license. For details, see http://opensource.org/licenses/BSD-3-Clause
+
 This product bundles ascompress, which is available under the
-MIT license.  For details, see http://www.opensource.org/licenses/mit-license.php  
+MIT license.  For details, see http://www.opensource.org/licenses/mit-license.php
 
 This product bundles as3httpclientlib, which is available under the
 MIT license.  For details, see deps/as3httpclientlib/.
@@ -228,4 +231,6 @@ see common/src/assets/fonts/open-sans/
 
 The NativeApplicationUpdater is available under Apache License 2.0.
 For details see installer/src/com/riaspace/
+
+The AS3Commons Zip is available under Apache License 2.0.
 
