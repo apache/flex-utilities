@@ -220,6 +220,7 @@
 			<arg value="--rebase" />
 		</exec>
 		<ant antfile="build.xml" target="release" />
+        <ant antfile="build.xml" target="create-md5s" />
 		<mkdir dir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" />
 		<copy todir="${dist.dev}/flex/installer/${release.version}/rc${rc}" >
 			<fileset dir="${basedir}/release" >
@@ -239,7 +240,6 @@
 		</exec>
 		<exec executable="${svn}" dir="${dist.dev}/flex/installer" failonerror="true" >
 			<arg value="commit" />
-			<arg value="--force-interactive" />
 			<arg value="-m" />
 			<arg value="rc${rc} of Apache Flex Installer ${release.version}" />
 		</exec>
@@ -256,7 +256,27 @@
 		</exec>
 		<antcall target="mail" />
     </target>
-	
+
+    <target name="commit-and-mail" >
+        <exec executable="${svn}" dir="${dist.dev}/flex/installer" failonerror="true" >
+            <arg value="commit" />
+            <arg value="-m" />
+            <arg value="rc${rc} of Apache Flex Installer ${release.version}" />
+        </exec>
+        <exec executable="${git}" dir="${basedir}/.." failonerror="true" >
+            <arg value="tag" />
+            <arg value="-a" />
+            <arg value="apache-flex-sdk-installer-${release.version}-rc${rc}" />
+            <arg value="-m" />
+            <arg value="&quot;rc${rc} of apache-flex-sdk-installer-${release.version}&quot;" />
+        </exec>
+        <exec executable="${git}" dir="${basedir}/.." failonerror="true" >
+            <arg value="push" />
+            <arg value="--tags" />
+        </exec>
+        <antcall target="mail" />
+    </target>
+    
 	<target name="check-new-version" description="check if svn folder needs to be added" >
 		<condition property="version.folder" value="${dist.dev}/flex/installer/${release.version}" >
 			<not>
