@@ -364,6 +364,17 @@
         </java>
     </target>
 
+    <target name="simple-untar-license" >
+        <mkdir dir="${DEPS_DIR}/as3-simple-untar" />
+        <get src="https://raw.githubusercontent.com/thdtjsdn/as3-simple-untar/master/src/de/ketzler/utils/SimpleUntar.as"
+        dest="${DEPS_DIR}/as3-simple-untar/LICENSE"
+        />
+        <replaceregexp file="${DEPS_DIR}/as3-simple-untar/LICENSE"
+            match="package .*" replace=""
+            flags="s"
+        />
+    </target>
+    
     <target name="packageair"
         description="Packages the build SWF file from a temp directory to create an AIR file">
     	<echo message="Using cert ${KEYSTORE}" />
@@ -378,6 +389,7 @@
         <get src="http://as3crypto.googlecode.com/svn/trunk/as3crypto/LICENSE.txt"
             dest="${DEPS_DIR}/as3crypto"
             />
+        <antcall target="simple-untar-license" />
         <java jar="${ADT}" fork="true"
             failonerror="true"
             maxmemory="512m">
