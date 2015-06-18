@@ -494,6 +494,8 @@
                 <include name="NOTICE"/>
                 <include name="README"/>
                 <include name="RELEASE_GUIDE"/>
+				<include name="CONTRIBUTING"/>
+				<include name="CONTRIBUTORS"/>
                 <include name="RELEASE_NOTES"/>
                 <exclude name="installerBadge/**" />
                 <exclude name="installerLocaleEditor/**" />
