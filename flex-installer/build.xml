@@ -434,27 +434,27 @@
         </copy>
 
         <copy todir="${BUILD_DIR}/temp/ant_on_air" includeEmptyDirs="false">
-            <fileset dir="${basedir}/../ant_on_air">
+            <fileset dir="${basedir}/ant_on_air">
                 <include name="build.properties" />
                 <include name="build.xml" />
             </fileset>
         </copy>
         <copy todir="${BUILD_DIR}/temp/ant_on_air/src" includeEmptyDirs="false">
-            <fileset dir="${basedir}/../ant_on_air/src">
+            <fileset dir="${basedir}/ant_on_air/src">
             </fileset>
         </copy>
         <copy todir="${BUILD_DIR}/temp/ant_on_air/locale" includeEmptyDirs="false">
-            <fileset dir="${basedir}/../ant_on_air/locale">
+            <fileset dir="${basedir}/ant_on_air/locale">
             </fileset>
         </copy>
         <copy todir="${BUILD_DIR}/temp/ant_on_air/tests" includeEmptyDirs="false">
-            <fileset dir="${basedir}/../ant_on_air/tests">
+            <fileset dir="${basedir}/ant_on_air/tests">
                 <exclude name="*.swf" />
             </fileset>
         </copy>
 
         <copy todir="${BUILD_DIR}/temp/${INSTALLER_PROJECT_NAME}" includeEmptyDirs="false">
-			<fileset dir="${basedir}">
+			<fileset dir="${basedir}/${INSTALLER_PROJECT_NAME}">
 				<exclude name="*.p12"/>
 				<exclude name="*.password"/>
                 <exclude name="rat.report"/>
@@ -470,27 +470,30 @@
 				<exclude name="**/.flexLibProperties"/>
                 <exclude name="**/.project"/>
                 <exclude name="**/.idea/**"/>
-				<exclude name="local.properties"/>
-				<!-- These are bumped up to the top-level release directory.  -->
-                <exclude name="DISCLAIMER"/>
-                <exclude name="LICENSE"/>
-                <exclude name="NOTICE"/>
-                <exclude name="README"/>
-                <exclude name="RELEASE_GUIDE"/>
-                <exclude name="RELEASE_NOTES"/>
 			</fileset>
         </copy>
 
 		<!-- Bump these up to the top-level release directory.  -->
 		<copy todir="${BUILD_DIR}/temp" includeEmptyDirs="false">
 			<fileset dir="${basedir}">
-                <include name="DISCLAIMER"/>
+                <include name="build.*"/>
+                <include name="binary_license/LICENSE"/>
                 <include name="LICENSE"/>
                 <include name="NOTICE"/>
                 <include name="README"/>
                 <include name="RELEASE_GUIDE"/>
                 <include name="RELEASE_NOTES"/>
-			</fileset>
+                <exclude name="installerBadge/**" />
+                <exclude name="installerLocaleEditor/**" />
+                <exclude name="common/**" />
+                <exclude name="ant_on_air/**" />
+                <exclude name="*.p12"/>
+                <exclude name="*.password"/>
+                <exclude name="rat.report"/>
+                <exclude name="build/**"/>
+                <exclude name="release/**"/>
+                <exclude name="local.properties"/>
+            </fileset>
         </copy>
 
         <fixcrlf srcdir="${BUILD_DIR}/temp" eol="crlf" encoding="UTF8" excludes="**/assets/**,**/*.ttf,**/*.png" fixlast="false"/>

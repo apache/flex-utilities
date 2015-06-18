@@ -226,7 +226,7 @@
                 <exclude name="**/*.jpg"/>
                 <exclude name="**/*.mp3"/>
                 <exclude name="**/*.flv"/>
-                <exclude name="installer/build.number"/>
+                <exclude name="build.number"/>
             </fileset>
         </rat:report>
 		<antcall target="display-text" >
@@ -322,7 +322,7 @@
             validargs="y"
         defaultvalue="y" />
         <ant dir="${basedir}/${package.url.name}/ant_on_air" target="main" />
-        <ant dir="${basedir}/${package.url.name}/installer" target="build" />
+        <ant dir="${basedir}/${package.url.name}" target="build" />
     </target>
 
     <target name="copy.downloads" if="${do.copy.downloads}" description="instead of actually downloading all of the dependencies, you can save lots of time by just copying from some other folder in some other SDK.">
