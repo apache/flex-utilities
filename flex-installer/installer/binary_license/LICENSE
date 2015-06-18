@@ -204,6 +204,13 @@
 
 --------------------------------------------------------------------------------
 
+APACHE FLEX SUBCOMPONENTS:
+
+The Apache Flex Installer includes a number of subcomponents with
+separate copyright notices and license terms. Your use of the source
+code for the these subcomponents is subject to the terms and
+conditions of the following licenses. 
+
 This product bundles ascompress, which is available under the
 MIT license.  For details, see http://www.opensource.org/licenses/mit-license.php  
 
@@ -216,19 +223,9 @@ as3httpclientlib bundles as3corelib, which is available under a
 as3httpclientlib bundles as3crypto, which is available under a
 “3-clause BSD” license.  For details, see deps/as3httpclientlib/.
 
---------------------------------------------------------------------------------
-
-APACHE FLEX SUBCOMPONENTS:
-
-The Apache Flex Installer includes a number of subcomponents with
-separate copyright notices and license terms. Your use of the source
-code for the these subcomponents is subject to the terms and
-conditions of the following licenses. 
-
 The Open-Sans font is available under Apache License 2.0.  For details
 see common/src/assets/fonts/open-sans/
 
 The NativeApplicationUpdater is available under Apache License 2.0.
 For details see installer/src/com/riaspace/
-
 
