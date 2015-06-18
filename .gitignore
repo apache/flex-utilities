@@ -118,6 +118,6 @@ rc
 *.actionScriptProperties
 bin-release
 Squiggly/main/generated/
-flex-installer/installer/deps
+flex-installer/deps
 MD5Checker/MD5CheckerLog.txt
 
