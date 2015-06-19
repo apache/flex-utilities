@@ -227,6 +227,8 @@
                 <exclude name="**/*.mp3"/>
                 <exclude name="**/*.flv"/>
                 <exclude name="build.number"/>
+                <exclude name="CONTRIBUTING"/>
+                <exclude name="CONTRIBUTORS"/>
             </fileset>
         </rat:report>
 		<antcall target="display-text" >

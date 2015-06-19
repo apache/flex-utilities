@@ -577,6 +577,8 @@
                 <exclude name="**/.settings/**"/>
                 <exclude name="**/.idea/**"/>
                 <exclude name="**/*.iml"/>
+                <exclude name="CONTRIBUTING"/>
+                <exclude name="CONTRIBUTORS"/>
                 <!--          End of source files           -->
                 <!--          Start of binary files           -->
                 <!-- exclude media (png, ico) -->
