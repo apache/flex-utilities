@@ -305,16 +305,9 @@
             description="Download as3httpclient.swc">
         <mkdir dir="${LIBRARY_DIR}"/>
         <mkdir dir="${LIBRARY_DIR}/temp"/>
-        <get src="https://github.com/gabriel/as3httpclient/archive/master.zip"
-             dest="${LIBRARY_DIR}/temp"
+        <get src="https://github.com/quetwo/as3httpclient/releases/download/1.0/as3httpclient.swc"
+             dest="${LIBRARY_DIR}/as3httpclient.swc"
              />
-        <unzip src="${LIBRARY_DIR}/temp/master.zip" dest="${LIBRARY_DIR}/temp"/>
-        <replace file="${LIBRARY_DIR}/temp/as3httpclient-master/build-swc.xml"
-            token="${flexlib}/libs/player/9/" value="${env.PLAYERGLOBAL_HOME}/${playerglobal.version}/" />
-        <compc
-            output="${LIBRARY_DIR}/as3httpclient.swc">
-            <load-config filename="${LIBRARY_DIR}/temp/as3httpclient-master/build-swc.xml" />
-        </compc>
     </target>
 
     <target name="compile" depends="get-as3commons.swc, get-as3httpclient.swc"
@@ -334,7 +327,7 @@
             <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
             <library-path dir="${LIBRARY_DIR}" includes="*.swc" append="true"/>
             <library-path dir="${ANT_ON_AIR_DIR}" includes="*.swc" append="true"/>
-            <library-path dir="${LIBRARY_DIR}/temp/as3httpclient-master/lib" includes="*.swc" append="true"/>
+            <!--<library-path dir="${LIBRARY_DIR}/temp/as3httpclient-master/lib" includes="*.swc" append="true"/>-->
             <define name="INSTALLER::releaseVersion" value="${release.version}"/>
             <define name="INSTALLER::buildNumber" value="${build.number}"/>
         </mxmlc>
@@ -379,8 +372,9 @@
         description="Packages the build SWF file from a temp directory to create an AIR file">
     	<echo message="Using cert ${KEYSTORE}" />
         <mkdir dir="${DEPS_DIR}/as3httpclientlib" />
-        <copy file="${LIBRARY_DIR}/temp/as3httpclient-master/License.txt"
-            tofile="${DEPS_DIR}/as3httpclientlib/License.txt" />
+        <get src="https://raw.githubusercontent.com/quetwo/as3httpclient/as3httpclient-work/License.txt"
+            dest="${DEPS_DIR}/as3httpclientlib"
+        />
         <mkdir dir="${DEPS_DIR}/as3corelib" />
         <get src="https://raw.githubusercontent.com/mikechambers/as3corelib/master/README"
             dest="${DEPS_DIR}/as3corelib"
