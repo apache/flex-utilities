@@ -119,7 +119,7 @@ How to build the installer using ANT (no Flash Builder or any other IDE required
         it is used.  Otherwise, the AIR_HOME_MAC or AIR_HOME_WIN property in 
         installer/build.properties is used.
           	
-3.  In the installer directory, run:
+3.  In the root directory, run:
         ant build [-DFLEX_HOME=/path/to/apache/flex/sdk] [-DAIR_HOME=/path/to/air/sdk]
         
 4.  The installer executable file created in the installer/release directory.  If you are 
