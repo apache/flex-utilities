@@ -176,7 +176,13 @@ public class FlexEventSpy extends AbstractEventSpy {
         try {
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
-            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version, PlatformType.getCurrent());
+            PlatformType platformType;
+            if(System.getProperty("platform-type") == null) {
+                platformType = PlatformType.getCurrent();
+            } else {
+                platformType = PlatformType.valueOf(System.getProperty("platform-type"));
+            }
+            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version, platformType);
             AirConverter converter = new AirConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
         } catch (Throwable ce) {
