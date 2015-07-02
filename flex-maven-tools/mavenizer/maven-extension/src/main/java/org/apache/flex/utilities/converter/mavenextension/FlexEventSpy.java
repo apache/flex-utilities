@@ -7,6 +7,7 @@ import org.apache.flex.utilities.converter.flex.FlexConverter;
 import org.apache.flex.utilities.converter.fontkit.FontkitConverter;
 import org.apache.flex.utilities.converter.retrievers.download.DownloadRetriever;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
+import org.apache.flex.utilities.converter.retrievers.model.ProxySettings;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 import org.apache.flex.utilities.converter.wrapper.WrapperConverter;
 import org.apache.maven.MavenExecutionException;
@@ -176,13 +177,19 @@ public class FlexEventSpy extends AbstractEventSpy {
         try {
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
+
+            ProxySettings proxySettings = null;
+            if(mavenSession.getSettings().getActiveProxy() != null) {
+                proxySettings = getProxySettings();
+            }
+
             PlatformType platformType;
             if(System.getProperty("platform-type") == null) {
                 platformType = PlatformType.getCurrent();
             } else {
                 platformType = PlatformType.valueOf(System.getProperty("platform-type"));
             }
-            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version, platformType);
+            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version, platformType, proxySettings);
             AirConverter converter = new AirConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
         } catch (Throwable ce) {
@@ -242,6 +249,18 @@ public class FlexEventSpy extends AbstractEventSpy {
                 "                                          .:::;:.              ;:;;::: \n" +
                 "                                           ::;,                 `,;;`  \n");
         flexSplashScreenShown = true;
+    }
+
+    protected ProxySettings getProxySettings() {
+        org.apache.maven.settings.Proxy settingsProxy = mavenSession.getSettings().getActiveProxy();
+        String protocol = settingsProxy.getProtocol();
+        String host = settingsProxy.getHost();
+        int port = settingsProxy.getPort();
+        String nonProxyHost = settingsProxy.getNonProxyHosts();
+        String username = settingsProxy.getUsername();
+        String password = settingsProxy.getPassword();
+
+        return new ProxySettings(protocol, host, port, nonProxyHost, username, password);
     }
 
 }

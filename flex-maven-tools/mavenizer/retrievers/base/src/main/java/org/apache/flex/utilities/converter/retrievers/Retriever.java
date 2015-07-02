@@ -18,6 +18,7 @@ package org.apache.flex.utilities.converter.retrievers;
 
 import org.apache.flex.utilities.converter.retrievers.exceptions.RetrieverException;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
+import org.apache.flex.utilities.converter.retrievers.model.ProxySettings;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 
 import java.io.File;
@@ -28,5 +29,8 @@ import java.io.File;
 public interface Retriever {
 
     File retrieve(SdkType sdkType, String version, PlatformType platformType) throws RetrieverException;
+
+    File retrieve(SdkType sdkType, String version, PlatformType platformType, ProxySettings proxySettings)
+            throws RetrieverException;
 
 }

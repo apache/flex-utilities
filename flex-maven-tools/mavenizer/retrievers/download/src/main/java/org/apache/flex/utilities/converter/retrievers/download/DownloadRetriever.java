@@ -20,14 +20,17 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.flex.utilities.converter.retrievers.BaseRetriever;
 import org.apache.flex.utilities.converter.retrievers.exceptions.RetrieverException;
+import org.apache.flex.utilities.converter.retrievers.model.ProxySettings;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 import org.apache.flex.utilities.converter.retrievers.utils.ProgressBar;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -74,6 +77,11 @@ public class DownloadRetriever extends BaseRetriever {
     }
 
     public File retrieve(SdkType type, String version, PlatformType platformType) throws RetrieverException {
+        return retrieve(type, version, platformType, null);
+    }
+
+    public File retrieve(SdkType type, String version, PlatformType platformType, ProxySettings proxySettings)
+            throws RetrieverException {
         try {
             if (type.equals(SdkType.FLASH) || type.equals(SdkType.AIR) || type.equals(SdkType.FONTKIT)) {
                 confirmLicenseAcceptance(type);
@@ -96,19 +104,19 @@ public class DownloadRetriever extends BaseRetriever {
 
                 final URI afeUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/afe.jar?format=raw");
                 final File afeFile = new File(targetDir, "afe.jar");
-                performSafeDownload(afeUri, afeFile);
+                performSafeDownload(afeUri, afeFile, proxySettings);
 
                 final URI aglj40Uri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/aglj40.jar?format=raw");
                 final File aglj40File = new File(targetDir, "aglj40.jar");
-                performSafeDownload(aglj40Uri, aglj40File);
+                performSafeDownload(aglj40Uri, aglj40File, proxySettings);
 
                 final URI rideauUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/rideau.jar?format=raw");
                 final File rideauFile = new File(targetDir, "rideau.jar");
-                performSafeDownload(rideauUri, rideauFile);
+                performSafeDownload(rideauUri, rideauFile, proxySettings);
 
                 final URI flexFontkitUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/flex-fontkit.jar?format=raw");
                 final File flexFontkitFile = new File(targetDir, "flex-fontkit.jar");
-                performSafeDownload(flexFontkitUri, flexFontkitFile);
+                performSafeDownload(flexFontkitUri, flexFontkitFile, proxySettings);
 
                 return targetRootDir;
             } else {
@@ -116,7 +124,7 @@ public class DownloadRetriever extends BaseRetriever {
                 final File targetFile = File.createTempFile(type.toString() + "-" + version +
                                 ((platformType != null) ? "-" + platformType : "") + "-",
                         sourceUrl.getFile().substring(sourceUrl.getFile().lastIndexOf(".")));
-                performFastDownload(sourceUrl, targetFile);
+                performFastDownload(sourceUrl, targetFile, proxySettings);
 
                 ////////////////////////////////////////////////////////////////////////////////
                 // Do the extracting.
@@ -125,9 +133,12 @@ public class DownloadRetriever extends BaseRetriever {
                 if (type.equals(SdkType.FLASH)) {
                     final File targetDirectory = new File(targetFile.getParent(),
                             targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
-                    final File libDestFile = new File(targetDirectory, "frameworks/libs/player/" + version + "/playerglobal.swc");
+                    final File libDestFile = new File(targetDirectory, "frameworks/libs/player/" + version +
+                            "/playerglobal.swc");
                     if (!libDestFile.getParentFile().exists()) {
-                        libDestFile.getParentFile().mkdirs();
+                        if(!libDestFile.getParentFile().mkdirs()) {
+                            throw new RetrieverException("Error creating directory " + libDestFile.getParent());
+                        }
                     }
                     FileUtils.moveFile(targetFile, libDestFile);
                     return targetDirectory;
@@ -170,8 +181,18 @@ public class DownloadRetriever extends BaseRetriever {
         }
     }
 
-    protected void performFastDownload(URL sourceUrl, File targetFile) throws IOException {
-        final URLConnection connection = sourceUrl.openConnection();
+    protected void performFastDownload(URL sourceUrl, File targetFile, ProxySettings proxySettings) throws IOException {
+        URLConnection connection;
+        if(proxySettings != null) {
+            SocketAddress socketAddress = new InetSocketAddress(proxySettings.getHost(), proxySettings.getPort());
+            Proxy proxy = new Proxy(Proxy.Type.valueOf(proxySettings.getProtocol()), socketAddress);
+            connection = sourceUrl.openConnection(proxy);
+            String encoded = new String
+                    (Base64.getEncoder().encode("username:password".getBytes()));
+            connection.setRequestProperty("Proxy-Authorization", "Basic " + encoded);
+        } else {
+            connection = sourceUrl.openConnection();
+        }
         final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
         final FileOutputStream fos = new FileOutputStream(targetFile);
 
@@ -200,9 +221,18 @@ public class DownloadRetriever extends BaseRetriever {
         System.out.println("===========================================================");
     }
 
-    protected void performSafeDownload(URI sourceUri, File targetFile) throws IOException {
+    protected void performSafeDownload(URI sourceUri, File targetFile, ProxySettings proxySettings) throws IOException {
+        RequestConfig config;
+        if(proxySettings != null) {
+            HttpHost proxy = new HttpHost(proxySettings.getHost(), proxySettings.getPort());
+            config = RequestConfig.custom().setProxy(proxy).build();
+        } else {
+            config = RequestConfig.DEFAULT;
+        }
+
         HttpGet httpget = new HttpGet(sourceUri);
-        HttpClient httpclient = new DefaultHttpClient();
+        httpget.setConfig(config);
+        HttpClient httpclient = HttpClients.createDefault();
         HttpResponse response = httpclient.execute(httpget);
 
         String reasonPhrase = response.getStatusLine().getReasonPhrase();
