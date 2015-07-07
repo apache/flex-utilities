@@ -314,6 +314,7 @@
         description="Compiles the AIR application to a SWF file and places SWF in a temp directory to be packaged.">
         <mxmlc file="${SOURCE_DIR}/${APP_NAME}.${APP_EXTENSION}"
             output="${BUILD_DIR}/${APP_NAME}.swf"
+            swf-version="23"
             static-rsls="true"
             accessible="true"
             configname="air"
