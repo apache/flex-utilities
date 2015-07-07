@@ -79,6 +79,8 @@ package org.apache.flex.ant.tags
 		
         private var urlLoader:URLLoader;
         
+        private var lastProgress:ProgressEvent;
+        
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
@@ -172,6 +174,9 @@ package org.apache.flex.ant.tags
         
         private function ioErrorEventHandler(event:IOErrorEvent):void
         {
+            if (lastProgress)
+                ant.output("ioError at: " + lastProgress.bytesLoaded + " of " + lastProgress.bytesTotal);
+            
             ant.output(event.toString());
 			if (!ignoreerrors)
 			{
