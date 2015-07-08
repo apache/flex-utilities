@@ -3509,7 +3509,7 @@ variables are not required because the locations of these pieces are known.
         {
             removeEventListener(Event.CLOSING, closeApplication);
 
-            if (currentState == "installState" && !wasAborted)
+            if (currentState == "installState" && !wasAborted && !cleanedUp)
             {
                 if (currentStep < stepLabels.length)
                 {
