@@ -42,7 +42,7 @@ public class DataSocketAccepter implements Runnable
     private Thread dataSocketReader;
     private volatile boolean listening = true;
     private final File dataDirectory;
-    private int fileCount = 0;
+    private int fileCount;
     private Socket currentSocket;
     private final String host;
     private final int dataPort;
@@ -56,7 +56,7 @@ public class DataSocketAccepter implements Runnable
      * Each new connection results in a new file created in this directory.
      */
     public DataSocketAccepter(final String host, final int dataPort, 
-            final File dataDirectory)
+            final File dataDirectory, final int fileCount)
     {
        
        if (dataDirectory == null)
@@ -65,6 +65,7 @@ public class DataSocketAccepter implements Runnable
        this.host = host;
        this.dataPort = dataPort;
        this.dataDirectory = dataDirectory;
+       this.fileCount = fileCount;
     }
     
     /**

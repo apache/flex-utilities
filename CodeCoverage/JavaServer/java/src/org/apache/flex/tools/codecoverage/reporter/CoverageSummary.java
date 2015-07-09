@@ -91,7 +91,7 @@ public class CoverageSummary
     /**
      * Summary information for all packages being reported.
      */
-    private final SummaryInfo overall = new SummaryInfo();
+    private final SummaryInfo overall = new AggregateSummaryInfo();
     
     /**
      * Association of methods in a file.

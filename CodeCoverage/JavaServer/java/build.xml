@@ -75,7 +75,7 @@
                 <attribute name="Implementation-Version" value="${manifest.Implementation-Version}"/>
                 <attribute name="Implementation-Vendor" value="${manifest.Implementation-Vendor}"/>
                 <attribute name="Main-Class" value="org.apache.flex.tools.codecoverage.server.CodeCoverageServer"/>
-                <attribute name="Class-Path" value="."/>
+                <attribute name="Class-Path" value=". external/commons-io.jar"/>
             </manifest>
         </jar>
     </target>
