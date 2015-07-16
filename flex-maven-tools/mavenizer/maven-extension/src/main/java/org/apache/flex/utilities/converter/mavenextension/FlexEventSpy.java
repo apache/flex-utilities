@@ -77,21 +77,33 @@ public class FlexEventSpy extends AbstractEventSpy {
 
                             if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                     artifact.getExtension(), artifact.getClassifier())) {
+                                logger.info("Couldn't find artifact: " + artifact.getGroupId() + ":" +
+                                        artifact.getBaseVersion() + ":" + artifact.getArtifactId() + ":" +
+                                        artifact.getExtension());
                                 initFlex(artifact.getVersion());
                             }
                         } else if (artifact.getGroupId().startsWith("com.adobe.flash")) {
                             if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                     artifact.getExtension(), artifact.getClassifier())) {
+                                logger.info("Couldn't find artifact: " + artifact.getGroupId() + ":" +
+                                        artifact.getBaseVersion() + ":" + artifact.getArtifactId() + ":" +
+                                        artifact.getExtension());
                                 initFlash(artifact.getVersion());
                             }
                         } else if (artifact.getGroupId().startsWith("com.adobe.air")) {
                             if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                     artifact.getExtension(), artifact.getClassifier())) {
+                                logger.info("Couldn't find artifact: " + artifact.getGroupId() + ":" +
+                                        artifact.getBaseVersion() + ":" + artifact.getArtifactId() + ":" +
+                                        artifact.getExtension());
                                 initAir(artifact.getVersion());
                             }
                         } else if (artifact.getGroupId().equals("com.adobe") && artifact.getArtifactId().equals("fontkit")) {
                             if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                     artifact.getExtension(), artifact.getClassifier())) {
+                                logger.info("Couldn't find artifact: " + artifact.getGroupId() + ":" +
+                                        artifact.getBaseVersion() + ":" + artifact.getArtifactId() + ":" +
+                                        artifact.getExtension());
                                 initFontkit();
                             }
                         }

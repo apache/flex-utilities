@@ -52,7 +52,7 @@ public class AirConverter extends BaseConverter implements Converter {
      */
     @Override
     protected void processDirectory() throws ConverterException {
-        if((airSdkVersion == null) || !rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
+        if ((airSdkVersion == null) || !rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
             System.out.println("Skipping AIR SDK generation.");
             return;
         }
@@ -77,16 +77,52 @@ public class AirConverter extends BaseConverter implements Converter {
 
         // Create a list of all libs that should belong to the AIR SDK compiler.
         final File directory = new File(rootSourceDirectory, "lib");
-        if(!directory.exists() || !directory.isDirectory()) {
+        if (!directory.exists() || !directory.isDirectory()) {
             throw new ConverterException("Compiler directory does not exist.");
         }
         final List<File> files = new ArrayList<File>();
         files.addAll(Arrays.asList(directory.listFiles(new AirCompilerFilter())));
 
+        // Add the smali.jar and baksmali.jar from the android/lib directory
+        // as this is needed for Android packaging.
+        File androidDir = new File(directory, "android");
+        if (androidDir.exists() && androidDir.isDirectory()) {
+            File androidLibDir = new File(androidDir, "lib");
+            if (androidLibDir.exists() && androidLibDir.isDirectory()) {
+                files.addAll(Arrays.asList(androidLibDir.listFiles(new AirCompilerFilter())));
+            }
+        }
+
         // Generate artifacts for every jar in the input directories.
-        for(final File sourceFile : files) {
+        for (final File sourceFile : files) {
             final MavenArtifact artifact = resolveArtifact(sourceFile, "com.adobe.air.compiler", airSdkVersion);
             compiler.addDependency(artifact);
+        }
+
+        // Generate the android package (android directory)
+        if (androidDir.exists() && androidDir.isDirectory()) {
+            final File androidZip = new File(rootTargetDirectory,
+                    "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
+                            File.separator + "adt-" + airSdkVersion + "-android.zip");
+            generateZip(androidDir.listFiles(), androidZip);
+        }
+
+        // Generate the ios package (aot directory)
+        File iosDir = new File(directory, "aot");
+        if (iosDir.exists() && iosDir.isDirectory()) {
+            final File iosZip = new File(rootTargetDirectory,
+                    "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
+                            File.separator + "adt-" + airSdkVersion + "-ios.zip");
+            generateZip(iosDir.listFiles(), iosZip);
+        }
+
+        // Generate the exe, dmg, deb, rpm packages (nai directory)
+        File desktopDir = new File(directory, "nai");
+        if (desktopDir.exists() && desktopDir.isDirectory()) {
+            final File desktopZip = new File(rootTargetDirectory,
+                    "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
+                            File.separator + "adt-" + airSdkVersion + "-desktop.zip");
+            generateZip(desktopDir.listFiles(), desktopZip);
         }
 
         // Write this artifact to file.
@@ -108,21 +144,21 @@ public class AirConverter extends BaseConverter implements Converter {
 
         // Create a list of all libs that should belong to the AIR SDK runtime.
         final File directory = new File(rootSourceDirectory, "bin");
-        if(!directory.exists() || !directory.isDirectory()) {
+        if (!directory.exists() || !directory.isDirectory()) {
             throw new ConverterException("Runtime directory does not exist.");
         }
         final List<File> files = new ArrayList<File>();
         files.addAll(Arrays.asList(directory.listFiles(new AirRuntimeFilter())));
 
         // Generate artifacts for every jar in the input directories (Actually this is only one file).
-        for(final File sourceFile : files) {
+        for (final File sourceFile : files) {
             final MavenArtifact artifact = resolveArtifact(sourceFile, "com.adobe.air.runtime", airSdkVersion);
             runtime.addDependency(artifact);
         }
 
         // Zip up the AIR runtime directory.
         final MavenArtifact airRuntimeArtifact = generateAirRuntimeArtifact(rootSourceDirectory);
-        if(airRuntimeArtifact != null) {
+        if (airRuntimeArtifact != null) {
             runtime.addDependency(airRuntimeArtifact);
         }
 
@@ -146,14 +182,14 @@ public class AirConverter extends BaseConverter implements Converter {
         // Create a list of all libs that should belong to the AIR SDK framework.
         final File directory =
                 new File(rootSourceDirectory, "frameworks" + File.separator + "libs" + File.separator + "air");
-        if(!directory.exists() || !directory.isDirectory()) {
+        if (!directory.exists() || !directory.isDirectory()) {
             throw new ConverterException("Framework directory does not exist.");
         }
         final List<File> files = new ArrayList<File>();
         files.addAll(Arrays.asList(directory.listFiles(new AirFrameworkFilter())));
 
         // Generate artifacts for every jar in the input directories.
-        for(final File sourceFile : files) {
+        for (final File sourceFile : files) {
             final MavenArtifact artifact = resolveArtifact(sourceFile, "com.adobe.air.framework", airSdkVersion);
             framework.addDependency(artifact);
         }
@@ -177,18 +213,18 @@ public class AirConverter extends BaseConverter implements Converter {
 
         final File runtimeRoot = new File(rootDirectory, "runtimes.air".replace(".", File.separator));
         final File[] platforms = runtimeRoot.listFiles();
-        if(platforms != null) {
+        if (platforms != null) {
             for (final File platform : platforms) {
                 if (!platform.isDirectory()) {
-                   continue;
+                    continue;
                 }
                 final String platformName = platform.getName();
                 try {
-                   final File zip = File.createTempFile("AirRuntime-" + platformName + "-" + airSdkVersion, "zip");
-                   generateZip(platform.listFiles(), zip);
-                   airRuntimeArtifact.addBinaryArtifact(platformName, zip);
+                    final File zip = File.createTempFile("AirRuntime-" + platformName + "-" + airSdkVersion, "zip");
+                    generateZip(platform.listFiles(), zip);
+                    airRuntimeArtifact.addBinaryArtifact(platformName, zip);
                 } catch (IOException e) {
-                   throw new ConverterException("Error creating runtime zip.", e);
+                    throw new ConverterException("Error creating runtime zip.", e);
                 }
             }
         } else {
@@ -199,7 +235,7 @@ public class AirConverter extends BaseConverter implements Converter {
         return airRuntimeArtifact;
     }
 
-   /**
+    /**
      * Get the version of an AIR SDK from the content of the SDK directory.
      *
      * @return version string for the current AIR SDK
@@ -214,7 +250,7 @@ public class AirConverter extends BaseConverter implements Converter {
 
         // If the descriptor is not present, return null as this FDK directory doesn't
         // seem to contain a AIR SDK.
-        if(!sdkDescriptor.exists() || !sdkDescriptor.isFile()) {
+        if (!sdkDescriptor.exists() || !sdkDescriptor.isFile()) {
             return null;
         }
 
@@ -240,7 +276,7 @@ public class AirConverter extends BaseConverter implements Converter {
 
     public static class AirCompilerFilter implements FilenameFilter {
         public boolean accept(File dir, String name) {
-            return name.equals("adt.jar");
+            return name.equals("adt.jar") || name.equals("smali.jar") || name.equals("baksmali.jar");
         }
     }
 
