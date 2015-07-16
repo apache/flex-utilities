@@ -167,7 +167,6 @@ public class XMLReportWriter implements IReportWriter
         xmlWriter.writeAttribute("name", summaryInfo.getName());
 
         outputLineCoverage(xmlWriter, summaryInfo, false);
-        outputMethodCoverage(xmlWriter, summaryInfo, false);  
         xmlWriter.writeEndElement();
     }
 

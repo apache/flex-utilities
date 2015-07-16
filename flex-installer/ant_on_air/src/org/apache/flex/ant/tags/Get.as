@@ -26,6 +26,7 @@ package org.apache.flex.ant.tags
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
+    import flash.net.LocalConnection;
     import flash.net.URLLoader;
     import flash.net.URLLoaderDataFormat;
     import flash.net.URLRequest;
@@ -79,9 +80,23 @@ package org.apache.flex.ant.tags
 		
         private var urlLoader:URLLoader;
         
+        private var lastProgress:ProgressEvent;
+        
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
+            
+            // try forcing GC before each step
+            try {
+                var lc1:LocalConnection = new LocalConnection();
+                var lc2:LocalConnection = new LocalConnection();
+                
+                lc1.connect("name");
+                lc2.connect("name");
+            }
+            catch (error:Error)
+            {
+            }
             
             if (skipexisting)
             {
@@ -172,6 +187,9 @@ package org.apache.flex.ant.tags
         
         private function ioErrorEventHandler(event:IOErrorEvent):void
         {
+            if (lastProgress)
+                ant.output("ioError at: " + lastProgress.bytesLoaded + " of " + lastProgress.bytesTotal);
+            
             ant.output(event.toString());
 			if (!ignoreerrors)
 			{
@@ -198,6 +216,7 @@ package org.apache.flex.ant.tags
         
         private function progressHandler(event:ProgressEvent):void
         {
+            lastProgress = event;
             ant.progressClass = this;
             ant.dispatchEvent(event);
         }

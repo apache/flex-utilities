@@ -27,7 +27,7 @@ import java.util.TreeSet;
  * Simple value class to record summary information on the lines executed vs the
  * total number of lines.
  * 
- * This information can be used for reporting at the package, file, and method
+ * This information can be used for reporting at the file and method
  * level.
  * 
  * 1. total executed lines 
@@ -143,10 +143,6 @@ public class SummaryInfo
         if (executedLineSet.contains(lineNumber))
             return;
 
-        // fixup method name that were not executed.
-        if (methodName == null)
-            methodName = "";
-
         if (executed)
         {
             unexecutedLineSet.remove(lineNumber);
@@ -166,7 +162,7 @@ public class SummaryInfo
 
             // ignore empty method names.
             // these are cinit and script init methods.
-            if (!methodName.isEmpty())
+            if (!methodName.isEmpty() && !executedMethodSet.contains(methodName))
                 unexecutedMethodSet.add(methodName);
         }
     }

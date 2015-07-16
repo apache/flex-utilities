@@ -40,6 +40,10 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * Main class of the Code Coverage Server.
@@ -85,6 +89,16 @@ public class CodeCoverageServer
     public static final String ERROR_RESPONSE = "-1";
     
     /**
+     * Command line options
+     */
+    
+    /**
+     * Controls whether the server removes all existing data files on startup
+     * or appends to the existing data files.
+     */
+    public static final String OPTION_APPEND = "-append";
+            
+    /**
      * Default configuration values
      */
     private static final String DEFAULT_HOST = "localhost";
@@ -107,11 +121,12 @@ public class CodeCoverageServer
     private static final boolean ADD_PRELOADSWF_KEY = true;
     private static final boolean REMOVE_PRELOADSWF_KEY = false;
 
-    private static final String CCSERVER_VERSION = "0.9";
+    private static final String CCSERVER_VERSION = "0.9.1";
     
     private static boolean start;
     private static boolean stop;
-   
+    private static boolean append = false;
+    
     /**
      * @param args
      */
@@ -137,20 +152,23 @@ public class CodeCoverageServer
         if (args.length == 0 ||
             args.length == 1 && "-help".equals(args[0]))
         {
-            System.out.println("Usage: ccserver [start | stop]");
+            System.out.println("Usage: ccserver [-append] [start | stop]");
             return ExitCode.HELP.getExitCode();
         }
 
         try
         {
-            if (!initializeProperties())
+            if (!initializeProperties() ||
+                !processArgs(args))
+            {
                 return ExitCode.INVALID_OPTIONS.getExitCode();
+            }
 
-            processArgs(args);
             if (start)
                 start();
             else if (stop)
                 stop();
+            
         }
         catch (IOException e)
         {
@@ -181,12 +199,22 @@ public class CodeCoverageServer
     {
     }
     
-    private void processArgs(final String[] args)
+    /**
+     * Process commmand line args.
+     * @param args
+     * @return true if the args are correct, false if there were errors.
+     */
+    private boolean processArgs(final String[] args)
     {
         for (final String arg : args)
         {
             switch (arg)
             {
+                case OPTION_APPEND:
+                {
+                    append = true;
+                    break;
+                }
                 case START_COMMAND:
                 {
                     start = true;
@@ -199,10 +227,17 @@ public class CodeCoverageServer
                 }
                 default:
                 {
-                    System.err.println("unexpected argument " + arg);
+                    System.err.println("unexpected argument: " + arg);
+                    return false;
                 }
             }
         }
+        
+        // start is the default action.
+        if (!start && !stop)
+            start = true;
+        
+        return true;
     }
 
     /**
@@ -238,12 +273,14 @@ public class CodeCoverageServer
             }
         }
         
+        int fileCount = initDataDirectory(dataDirectory);
+        
         // modify mm.cfg file
         updateMMCFG(ADD_PRELOADSWF_KEY);
 
         // create thread to listen for connections on the data port
         final DataSocketAccepter dataSocketAccepter = 
-                new DataSocketAccepter(host, dataPort, dataDirectory);
+                new DataSocketAccepter(host, dataPort, dataDirectory, fileCount);
         final Thread dataThread = new Thread(dataSocketAccepter);
         dataThread.start();
         
@@ -287,6 +324,51 @@ public class CodeCoverageServer
         }
         
         System.out.println("stopping Apache Flex Code Coverage Server");
+    }
+
+    /**
+     * Either remove all files or if -append is set then figure out
+     * which number to start incrementing at.
+     * 
+     * @param dataDirectory
+     * @throws IOException 
+     */
+    private int initDataDirectory(File dataDirectory) throws IOException
+    {
+        int maxFileIndex = 0;
+        Pattern filenamePattern = Pattern.compile("ccdata_(\\d+)\\.txt");
+        
+        if (append)
+        {
+            
+            String[] filenames = dataDirectory.list();
+            for (String filename : filenames)
+            {
+                Matcher matcher = filenamePattern.matcher(filename);
+                boolean matches = matcher.matches();
+                if (matches)
+                {
+                    try
+                    {
+                        String indexString = matcher.group(1);
+                        int value = Integer.parseInt(indexString);
+                        if (value >= maxFileIndex)
+                            maxFileIndex = value + 1;
+                    }
+                    catch (Exception e)
+                    {
+                        // ignore
+                    }
+                }
+            }
+            
+        }
+        else
+        {
+            FileUtils.cleanDirectory(dataDirectory);
+        }
+
+        return maxFileIndex;
     }
 
     /**

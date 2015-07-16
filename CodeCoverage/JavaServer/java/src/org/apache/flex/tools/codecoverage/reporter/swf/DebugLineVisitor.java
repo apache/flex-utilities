@@ -22,16 +22,20 @@ package org.apache.flex.tools.codecoverage.reporter.swf;
 import org.apache.flex.abc.ABCConstants;
 import org.apache.flex.abc.Pool;
 import org.apache.flex.abc.instructionlist.InstructionList;
+import org.apache.flex.abc.semantics.ClassInfo;
 import org.apache.flex.abc.semantics.ExceptionInfo;
+import org.apache.flex.abc.semantics.InstanceInfo;
 import org.apache.flex.abc.semantics.Instruction;
 import org.apache.flex.abc.semantics.Label;
 import org.apache.flex.abc.semantics.MethodBodyInfo;
 import org.apache.flex.abc.semantics.MethodInfo;
 import org.apache.flex.abc.semantics.Name;
+import org.apache.flex.abc.visitors.IClassVisitor;
 import org.apache.flex.abc.visitors.IMethodBodyVisitor;
 import org.apache.flex.abc.visitors.IMethodVisitor;
 import org.apache.flex.abc.visitors.ITraitsVisitor;
 import org.apache.flex.abc.visitors.NilABCVisitor;
+import org.apache.flex.abc.visitors.NilMethodBodyVisitor;
 import org.apache.flex.abc.visitors.NilVisitors;
 import org.apache.flex.tools.codecoverage.reporter.CoverageData;
 
@@ -46,7 +50,11 @@ public class DebugLineVisitor extends NilABCVisitor
 
     private final Pool<String> stringPool = new Pool<String>(Pool.DefaultType.HasDefaultZero);
     private final CoverageData coverageData;
-
+    
+    // The current class information
+    private String currentCtorName;
+    private boolean currentClassIsInterface;
+    
     /**
      * Constructor
      * 
@@ -57,6 +65,19 @@ public class DebugLineVisitor extends NilABCVisitor
     public DebugLineVisitor(final CoverageData coverageData)
     {
         this.coverageData = coverageData;
+    }
+
+    @Override
+    public IClassVisitor visitClass(InstanceInfo iinfo, ClassInfo cinfo)
+    {
+        currentClassIsInterface = (iinfo.flags & ABCConstants.CONSTANT_ClassInterface) != 0;
+
+        if (currentClassIsInterface)
+            currentCtorName = null;
+        else
+            currentCtorName = "/" + iinfo.name.getBaseName();
+        
+        return NilVisitors.NIL_CLASS_VISITOR;
     }
 
     @Override
@@ -89,7 +110,51 @@ public class DebugLineVisitor extends NilABCVisitor
         @Override
         public IMethodBodyVisitor visitBody(MethodBodyInfo mbInfo)
         {
-            return new MethodBodyVisitor(mbInfo);
+            MethodInfo methodInfo = mbInfo.getMethodInfo();
+            String methodName = methodInfo.getMethodName();
+            
+            // ignore class inits, scripts inits, interfaces, and
+            // constructors.
+            if (ignoreMethod(methodName))
+            {
+                return new MyNilMethodBodyVisitor(mbInfo);
+            }
+            else
+            {
+                return new MethodBodyVisitor(mbInfo);
+            }
+        }
+
+        /**
+         * Ignore class inits, script inits, interfaces, and constructors.
+         * @param methodName The name of the method.
+         * @return true to ignore the method, false otherwise.
+         */
+        private boolean ignoreMethod(String methodName)
+        {
+            return methodName == null || 
+                   methodName.length() == 0 ||
+                   currentClassIsInterface ||
+                   (currentCtorName != null &&
+                   methodName.endsWith(currentCtorName)); 
+        }
+    }
+  
+    private class MyNilMethodBodyVisitor extends NilMethodBodyVisitor
+    {
+        private final MethodBodyInfo mbInfo;
+        
+        public MyNilMethodBodyVisitor(MethodBodyInfo mbInfo)
+        {
+            this.mbInfo = mbInfo;
+        }
+
+        @Override
+        public int visitException(Label from, Label to, Label target, 
+                Name exception_type, Name catch_var)
+        {
+            return  mbInfo.addExceptionInfo(new ExceptionInfo(from, to, target,
+                        exception_type, catch_var));
         }
     }
     

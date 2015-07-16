@@ -29,7 +29,7 @@ import java.util.TreeSet;
 public class PackageSummaryInfo
 {
     private Set<String> filesInPackage = new TreeSet<String>();
-    private SummaryInfo summaryInfo = new SummaryInfo();
+    private SummaryInfo summaryInfo = new AggregateSummaryInfo();
     
     /**
      * Set of files in a package.

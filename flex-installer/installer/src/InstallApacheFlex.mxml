@@ -161,6 +161,7 @@ variables are not required because the locations of these pieces are known.
         private var _mirrorURLCGI:String;
         private var _useMirror:Boolean = true;
         private var _latestVersion:String;
+        private var installerVersion:String;
         private var loggedVersion:Boolean;
         private var logFile:String;
         private var debugMode:Boolean = false;
@@ -1157,10 +1158,10 @@ variables are not required because the locations of these pieces are known.
                 //Current version
                 var applicationDescriptor:XML = NativeApplication.nativeApplication.applicationDescriptor;
                 var xmlns:Namespace = new Namespace(applicationDescriptor.namespace());
-                var currentVersion:String = applicationDescriptor.xmlns::versionNumber.toString();
+                installerVersion = applicationDescriptor.xmlns::versionNumber.toString();
 
                 // Log the Installer version to help with any support issues that arise.
-                log("Installer version " + currentVersion + " (" + _os.os + ")", 0);
+                log("Installer version " + installerVersion + " (" + _os.os + ")", 0);
                 loggedVersion = true;
             }
         }
@@ -1994,7 +1995,8 @@ variables are not required because the locations of these pieces are known.
             {
                 if (Ant.currentAnt.project.status)
                 {
-                    tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
+                    tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, 
+                                                        _os.os + "&installerVersion=" + installerVersion);
                 }
                 if (Ant.currentAnt.project.failureMessage)
                 {
@@ -2066,7 +2068,7 @@ variables are not required because the locations of these pieces are known.
             catch (e:Error)
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK + e.toString());
             }
         }
 
@@ -2083,7 +2085,7 @@ variables are not required because the locations of these pieces are known.
             catch (e:Error)
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK + e.toString());
             }
         }
 
@@ -2100,7 +2102,7 @@ variables are not required because the locations of these pieces are known.
             catch (e:Error)
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK + e.toString());
             }
         }
 
@@ -2113,7 +2115,7 @@ variables are not required because the locations of these pieces are known.
             catch (e:Error)
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK + e.toString());
             }
 
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.COMPLETE);
@@ -2125,7 +2127,7 @@ variables are not required because the locations of these pieces are known.
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_ADOBE_AIR_SDK, StepItem.ERROR);
             log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK);
-            abortInstallation();
+            abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_AIR_SDK);
         }
 
         protected function unzipAdobeAIRSDK():void
@@ -2146,7 +2148,7 @@ variables are not required because the locations of these pieces are known.
             catch (e:Error)
             {
                 updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.ERROR);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT + e.toString());
             }
         }
 
@@ -2172,7 +2174,7 @@ variables are not required because the locations of these pieces are known.
         protected function handleAdobeAIRSDKMacUntarError(error:ProgressEvent = null):void
         {
             updateActivityStep(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT, StepItem.ERROR);
-            abortInstallation();
+            abortInstallation(_viewResourceConstants.STEP_UNZIP_AIR_RUNTIME_KIT);
         }
 
         protected function handleAdobeAIRSDKMacUntarComplete(event:Event):void
@@ -2209,7 +2211,7 @@ variables are not required because the locations of these pieces are known.
             catch (e:Error)
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ERROR);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC + e.toString());
             }
         }
 
@@ -2223,7 +2225,7 @@ variables are not required because the locations of these pieces are known.
             catch (e:Error)
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ERROR);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC + e.toString());
             }
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.COMPLETE);
             copyConfigFiles();
@@ -2233,7 +2235,7 @@ variables are not required because the locations of these pieces are known.
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_FLASH_PLAYER_GLOBAL_SWC, StepItem.ERROR);
             log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC);
-            abortInstallation();
+            abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_FLASH_PLAYER_SWC);
         }
 
         protected function changeConfig(frameworksDir:File, file:File, flashPlayerVersion:String, swfVersion:String):void
@@ -2291,7 +2293,7 @@ variables are not required because the locations of these pieces are known.
             {
                 updateActivityStep(_viewResourceConstants.STEP_INSTALL_CONFIG_FILES, StepItem.ERROR);
                 log(_viewResourceConstants.ERROR_UNABLE_TO_INSTALL_CONFIG_FILES);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_INSTALL_CONFIG_FILES);
                 aborted = true;
             }
 
@@ -2314,7 +2316,7 @@ variables are not required because the locations of these pieces are known.
             catch (e:Error)
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT + e.toString());
             }
         }
 
@@ -2330,7 +2332,7 @@ variables are not required because the locations of these pieces are known.
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
             log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
-            abortInstallation();
+            abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
         }
 
         protected function handleSWFObjectUnzipComplete(event:Event):void
@@ -2357,7 +2359,7 @@ variables are not required because the locations of these pieces are known.
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
                 log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
             }
 
         }
@@ -2366,7 +2368,7 @@ variables are not required because the locations of these pieces are known.
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_SWFOBJECT, StepItem.ERROR);
             log(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
-            abortInstallation();
+            abortInstallation(_viewResourceConstants.ERROR_UNABLE_TO_DOWNLOAD_SWF_OBJECT);
         }
 
         protected function installNextOptionalComponent():void
@@ -2697,7 +2699,7 @@ variables are not required because the locations of these pieces are known.
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF + e.toString());
             }
         }
 
@@ -2728,7 +2730,7 @@ variables are not required because the locations of these pieces are known.
             {
                 updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
                 updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
-                abortInstallation();
+                abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF + e.toString());
             }
         }
 
@@ -2736,7 +2738,7 @@ variables are not required because the locations of these pieces are known.
         {
             updateActivityStep(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, StepItem.ERROR);
             updateOptionalComponentInstallStatusAborted(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF, true);
-            abortInstallation();
+            abortInstallation(_viewResourceConstants.STEP_REQUIRED_INSTALL_OSMF);
         }
 
         protected function copyFileToOptionalLibDir(file:File):void
@@ -2819,7 +2821,8 @@ variables are not required because the locations of these pieces are known.
             }
             if (allComponentsInstalled)
             {
-                tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, _os.os);
+                tracker.trackInstallerSuccess(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION, 
+                    _os.os + "&installerVersion=" + installerVersion);
                 cleanup(false);
             }
         }
@@ -2853,7 +2856,11 @@ variables are not required because the locations of these pieces are known.
             if (isAbort)
             {
                 tracker.trackInstallerFailure(APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY, APACHE_FLEX_BIN_DISTRO_VERSION,
-                        _os.os + "&info=" + abortInfo);
+                        _os.os + "&installerversion=" + installerVersion + "&info=" + abortInfo);
+                if (_viewResourceConstants)
+                {
+                    log(_viewResourceConstants.INFO_ABORT_INSTALLATION + ": " + tracker.trackInstallerHTML.location);
+                }
             }
             else if (!wasAborted)
             {
@@ -2911,10 +2918,6 @@ variables are not required because the locations of these pieces are known.
             browseBtn.enabled = false;
             installBtn.enabled = false;
             wasAborted = true;
-            if (_viewResourceConstants)
-            {
-                log(_viewResourceConstants.INFO_ABORT_INSTALLATION);
-            }
             cleanup(true, reason);
             if (_viewResourceConstants)
             {
@@ -3506,7 +3509,7 @@ variables are not required because the locations of these pieces are known.
         {
             removeEventListener(Event.CLOSING, closeApplication);
 
-            if (currentState == "installState")
+            if (currentState == "installState" && !wasAborted && !cleanedUp)
             {
                 if (currentStep < stepLabels.length)
                 {

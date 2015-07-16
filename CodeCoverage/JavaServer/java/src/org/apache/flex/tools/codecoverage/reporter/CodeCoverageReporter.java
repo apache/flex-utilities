@@ -52,7 +52,7 @@ public class CodeCoverageReporter
     private static final String DEFAULT_REPORT_NAME = "ccreport.xml";
     private static final String DEFAULT_DATA_DIRECTORY = "ccdata";
     
-    private static final String CCREPORTER_VERSION = "0.9";
+    private static final String CCREPORTER_VERSION = "0.9.1";
     
     /**
      * CodeCovergeReporter will read code code coverage result files and
