@@ -25,6 +25,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Created by cdutz on 22.04.2014.
@@ -104,7 +105,30 @@ public class AirConverter extends BaseConverter implements Converter {
             final File androidZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-android.zip");
-            generateZip(androidDir.listFiles(), androidZip);
+            try {
+                // Add all the content to a zip-file.
+                final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(androidZip));
+                // Package all the compiler parts.
+                File[] zipfiles = androidDir.listFiles();
+                if(zipfiles != null) {
+                    for (final File file : zipfiles) {
+                        addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                    }
+                }
+                // Package all the runtime parts.
+                File runtimesDir = new File(rootSourceDirectory, "runtimes/air/android");
+                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
+                    zipfiles = runtimesDir.listFiles();
+                    if (zipfiles != null) {
+                        for (final File file : zipfiles) {
+                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                        }
+                    }
+                }
+                zipOutputStream.close();
+            } catch(IOException e) {
+                throw new ConverterException("Error generating android package zip.", e);
+            }
         }
 
         // Generate the ios package (aot directory)

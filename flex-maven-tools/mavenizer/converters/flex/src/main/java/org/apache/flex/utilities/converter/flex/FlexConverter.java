@@ -523,7 +523,7 @@ public class FlexConverter extends BaseConverter implements Converter {
         return result;
     }
 
-    private void addFileToZip(ZipOutputStream zipOutputStream, File inputFile, File rootDirectory)
+    protected void addFileToZip(ZipOutputStream zipOutputStream, File inputFile, File rootDirectory)
             throws ConverterException {
         if (inputFile == null) {
             return;
