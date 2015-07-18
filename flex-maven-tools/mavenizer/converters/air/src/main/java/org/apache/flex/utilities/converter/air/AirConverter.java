@@ -125,6 +125,20 @@ public class AirConverter extends BaseConverter implements Converter {
                         }
                     }
                 }
+                File binDir = new File(rootSourceDirectory, "bin");
+                if(binDir.exists() && binDir.isDirectory()) {
+                    zipfiles = binDir.listFiles(new FilenameFilter() {
+                        public boolean accept(File dir, String name) {
+                            return name.equals("adt") || name.equals("adt.bat") ||
+                                    name.equals("adl") || name.equals("adl.exe");
+                        }
+                    });
+                    if (zipfiles != null) {
+                        for (final File file : zipfiles) {
+                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                        }
+                    }
+                }
                 zipOutputStream.close();
             } catch(IOException e) {
                 throw new ConverterException("Error generating android package zip.", e);
@@ -137,7 +151,34 @@ public class AirConverter extends BaseConverter implements Converter {
             final File iosZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-ios.zip");
-            generateZip(iosDir.listFiles(), iosZip);
+            try {
+                // Add all the content to a zip-file.
+                final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(iosZip));
+                // Package all the compiler parts.
+                File[] zipfiles = iosDir.listFiles();
+                if(zipfiles != null) {
+                    for (final File file : zipfiles) {
+                        addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                    }
+                }
+                File binDir = new File(rootSourceDirectory, "bin");
+                if(binDir.exists() && binDir.isDirectory()) {
+                    zipfiles = binDir.listFiles(new FilenameFilter() {
+                        public boolean accept(File dir, String name) {
+                            return name.equals("adt") || name.equals("adt.bat") ||
+                                    name.equals("adl") || name.equals("adl.exe");
+                        }
+                    });
+                    if (zipfiles != null) {
+                        for (final File file : zipfiles) {
+                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                        }
+                    }
+                }
+                zipOutputStream.close();
+            } catch(IOException e) {
+                throw new ConverterException("Error generating android package zip.", e);
+            }
         }
 
         // Generate the exe, dmg, deb, rpm packages (nai directory)
@@ -146,7 +187,71 @@ public class AirConverter extends BaseConverter implements Converter {
             final File desktopZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-desktop.zip");
-            generateZip(desktopDir.listFiles(), desktopZip);
+            try {
+                // Add all the content to a zip-file.
+                final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(desktopZip));
+                // Package all the compiler parts.
+                File[] zipfiles = desktopDir.listFiles();
+                if(zipfiles != null) {
+                    for (final File file : zipfiles) {
+                        addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                    }
+                }
+                // Package all the runtime parts.
+                File runtimesDir = new File(rootSourceDirectory, "runtimes/air/win");
+                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
+                    zipfiles = runtimesDir.listFiles();
+                    if (zipfiles != null) {
+                        for (final File file : zipfiles) {
+                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                        }
+                    }
+                }
+                runtimesDir = new File(rootSourceDirectory, "runtimes/air/mac/Adobe AIR.framework/Versions/1.0");
+                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
+                    zipfiles = runtimesDir.listFiles();
+                    if (zipfiles != null) {
+                        for (final File file : zipfiles) {
+                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                        }
+                    }
+                }
+                runtimesDir = new File(rootSourceDirectory, "runtimes/air-captive/win");
+                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
+                    zipfiles = runtimesDir.listFiles();
+                    if (zipfiles != null) {
+                        for (final File file : zipfiles) {
+                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                        }
+                    }
+                }
+                runtimesDir = new File(rootSourceDirectory, "runtimes/air-captive/mac/Adobe AIR.framework/Versions/1.0");
+                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
+                    zipfiles = runtimesDir.listFiles();
+                    if (zipfiles != null) {
+                        for (final File file : zipfiles) {
+                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                        }
+                    }
+                }
+                File binDir = new File(rootSourceDirectory, "bin");
+                if(binDir.exists() && binDir.isDirectory()) {
+                    zipfiles = binDir.listFiles(new FilenameFilter() {
+                        public boolean accept(File dir, String name) {
+                            return name.equals("adt") || name.equals("adt.bat") ||
+                                    name.equals("adl") || name.equals("adl.exe");
+                        }
+                    });
+                    if (zipfiles != null) {
+                        for (final File file : zipfiles) {
+                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                        }
+                    }
+                }
+                zipOutputStream.close();
+            } catch(IOException e) {
+                throw new ConverterException("Error generating android package zip.", e);
+            }
         }
 
         // Write this artifact to file.
