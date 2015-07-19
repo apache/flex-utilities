@@ -42,8 +42,8 @@
                 <extensions>true</extensions>
                 <configuration>
                     <sourceFile>FlexJSTest_basic.mxml</sourceFile>
-                    <!--compilerName>Falcon</compilerName-->
-                    <compilerName>FlexJS</compilerName>
+                    <compilerName>Falcon</compilerName>
+                    <!--compilerName>FlexJS</compilerName-->
                     <debug>true</debug>
                 </configuration>
                 <dependencies>
