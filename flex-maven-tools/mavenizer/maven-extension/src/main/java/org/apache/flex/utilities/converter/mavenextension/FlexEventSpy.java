@@ -1,6 +1,7 @@
 package org.apache.flex.utilities.converter.mavenextension;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.flex.utilities.converter.air.AirConverter;
 import org.apache.flex.utilities.converter.flash.FlashConverter;
 import org.apache.flex.utilities.converter.flex.FlexConverter;
@@ -25,6 +26,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 
 /**
  * Maven EventSpy that listens for resolution requests and in case of Flex related
@@ -190,9 +193,22 @@ public class FlexEventSpy extends AbstractEventSpy {
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
 
-            ProxySettings proxySettings = null;
+            final ProxySettings proxySettings;
             if(mavenSession.getSettings().getActiveProxy() != null) {
                 proxySettings = getProxySettings();
+                if(!StringUtils.isEmpty(proxySettings.getUsername()) &&
+                        !StringUtils.isEmpty(proxySettings.getPassword())) {
+                    Authenticator authenticator = new Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(proxySettings.getUsername(),
+                                    proxySettings.getPassword().toCharArray());
+                        }
+                    };
+                    Authenticator.setDefault(authenticator);
+                }
+            } else {
+                proxySettings = null;
             }
 
             PlatformType platformType;

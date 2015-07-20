@@ -120,7 +120,7 @@ public class DownloadRetriever extends BaseRetriever {
 
                 return targetRootDir;
             } else {
-                final URL sourceUrl = new URL(getBinaryUrl(type, version, platformType));
+                final URL sourceUrl = new URL(getBinaryUrl(type, version, platformType, proxySettings));
                 final File targetFile = File.createTempFile(type.toString() + "-" + version +
                                 ((platformType != null) ? "-" + platformType : "") + "-",
                         sourceUrl.getFile().substring(sourceUrl.getFile().lastIndexOf(".")));
@@ -185,11 +185,8 @@ public class DownloadRetriever extends BaseRetriever {
         URLConnection connection;
         if(proxySettings != null) {
             SocketAddress socketAddress = new InetSocketAddress(proxySettings.getHost(), proxySettings.getPort());
-            Proxy proxy = new Proxy(Proxy.Type.valueOf(proxySettings.getProtocol()), socketAddress);
+            Proxy proxy = new Proxy(Proxy.Type.valueOf(proxySettings.getProtocol().toUpperCase()), socketAddress);
             connection = sourceUrl.openConnection(proxy);
-            String encoded = new String
-                    (Base64.getEncoder().encode("username:password".getBytes()));
-            connection.setRequestProperty("Proxy-Authorization", "Basic " + encoded);
         } else {
             connection = sourceUrl.openConnection();
         }
@@ -280,12 +277,22 @@ public class DownloadRetriever extends BaseRetriever {
         System.out.println("===========================================================");
     }
 
-    protected String getBinaryUrl(SdkType sdkType, String version, PlatformType platformType)
+    protected String getBinaryUrl(SdkType sdkType, String version, PlatformType platformType,
+                                  ProxySettings proxySettings)
             throws RetrieverException {
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
-            final Document doc = builder.parse(getFlexInstallerConfigUrl());
+            final URL configUrl = new URL(getFlexInstallerConfigUrl());
+            URLConnection connection;
+            if(proxySettings != null) {
+                SocketAddress socketAddress = new InetSocketAddress(proxySettings.getHost(), proxySettings.getPort());
+                Proxy proxy = new Proxy(Proxy.Type.valueOf(proxySettings.getProtocol().toUpperCase()), socketAddress);
+                connection = configUrl.openConnection(proxy);
+            } else {
+                connection = configUrl.openConnection();
+            }
+            final Document doc = builder.parse(connection.getInputStream());
 
             //Evaluate XPath against Document itself
             final String expression = getUrlXpath(sdkType, version, platformType);
