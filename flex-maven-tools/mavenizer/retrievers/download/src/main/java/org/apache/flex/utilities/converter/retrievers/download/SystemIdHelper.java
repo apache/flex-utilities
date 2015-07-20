@@ -17,7 +17,7 @@ public abstract class SystemIdHelper {
             while (nis.hasMoreElements()) {
                 NetworkInterface ni = nis.nextElement();
                 byte[] mac = ni.getHardwareAddress();
-                if(mac != null) {
+                if((mac != null) && (mac.length >= 6)) {
                     macSum[0] = (byte) ((macSum[0] + mac[0]) % 256);
                     macSum[1] = (byte) ((macSum[1] + mac[1]) % 256);
                     macSum[2] = (byte) ((macSum[2] + mac[2]) % 256);
