@@ -7,8 +7,8 @@ import org.apache.flex.utilities.converter.flash.FlashConverter;
 import org.apache.flex.utilities.converter.flex.FlexConverter;
 import org.apache.flex.utilities.converter.fontkit.FontkitConverter;
 import org.apache.flex.utilities.converter.retrievers.download.DownloadRetriever;
-import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.model.ProxySettings;
+import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 import org.apache.flex.utilities.converter.wrapper.WrapperConverter;
 import org.apache.maven.MavenExecutionException;
@@ -140,20 +140,22 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Apache Flex SDK " + version);
         try {
+            ProxySettings proxySettings = getProxySettings();
+
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
-            File sdkRoot = downloadRetriever.retrieve(SdkType.FLEX, version);
+            File sdkRoot = downloadRetriever.retrieve(SdkType.FLEX, version, null, proxySettings);
 
             // In order to create a fully functional wrapper we need to download
             // SWFObject and merge that with the fdk first.
-            File swfObjectRoot = downloadRetriever.retrieve(SdkType.SWFOBJECT);
+            File swfObjectRoot = downloadRetriever.retrieve(SdkType.SWFOBJECT, null, null, proxySettings);
             FileUtils.copyDirectory(swfObjectRoot, sdkRoot);
 
             // In order to compile some of the themes, we need to download a
             // playerglobal version.
             logger.info("In order to convert some of the skins in the Apache Flex SDK, " +
                     "a Flash SDK has to be downloaded.");
-            File flashSdkRoot = downloadRetriever.retrieve(SdkType.FLASH, "10.2");
+            File flashSdkRoot = downloadRetriever.retrieve(SdkType.FLASH, "10.2", null, proxySettings);
             FileUtils.copyDirectory(flashSdkRoot, sdkRoot);
 
             // Convert the FDK itself.
@@ -176,7 +178,7 @@ public class FlexEventSpy extends AbstractEventSpy {
         try {
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
-            File sdkRoot = downloadRetriever.retrieve(SdkType.FLASH, version);
+            File sdkRoot = downloadRetriever.retrieve(SdkType.FLASH, version, null, getProxySettings());
             FlashConverter converter = new FlashConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
         } catch (Throwable ce) {
@@ -193,31 +195,13 @@ public class FlexEventSpy extends AbstractEventSpy {
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
 
-            final ProxySettings proxySettings;
-            if(mavenSession.getSettings().getActiveProxy() != null) {
-                proxySettings = getProxySettings();
-                if(!StringUtils.isEmpty(proxySettings.getUsername()) &&
-                        !StringUtils.isEmpty(proxySettings.getPassword())) {
-                    Authenticator authenticator = new Authenticator() {
-                        @Override
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(proxySettings.getUsername(),
-                                    proxySettings.getPassword().toCharArray());
-                        }
-                    };
-                    Authenticator.setDefault(authenticator);
-                }
-            } else {
-                proxySettings = null;
-            }
-
             PlatformType platformType;
             if(System.getProperty("platform-type") == null) {
                 platformType = PlatformType.getCurrent();
             } else {
                 platformType = PlatformType.valueOf(System.getProperty("platform-type"));
             }
-            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version, platformType, proxySettings);
+            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version, platformType, getProxySettings());
             AirConverter converter = new AirConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
         } catch (Throwable ce) {
@@ -233,7 +217,7 @@ public class FlexEventSpy extends AbstractEventSpy {
         try {
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
-            File sdkRoot = downloadRetriever.retrieve(SdkType.FONTKIT);
+            File sdkRoot = downloadRetriever.retrieve(SdkType.FONTKIT, null, null, getProxySettings());
             FontkitConverter converter = new FontkitConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
         } catch (Throwable ce) {
@@ -281,14 +265,27 @@ public class FlexEventSpy extends AbstractEventSpy {
 
     protected ProxySettings getProxySettings() {
         org.apache.maven.settings.Proxy settingsProxy = mavenSession.getSettings().getActiveProxy();
-        String protocol = settingsProxy.getProtocol();
-        String host = settingsProxy.getHost();
-        int port = settingsProxy.getPort();
-        String nonProxyHost = settingsProxy.getNonProxyHosts();
-        String username = settingsProxy.getUsername();
-        String password = settingsProxy.getPassword();
+        if(settingsProxy != null) {
+            String protocol = settingsProxy.getProtocol();
+            String host = settingsProxy.getHost();
+            int port = settingsProxy.getPort();
+            String nonProxyHost = settingsProxy.getNonProxyHosts();
+            final String username = settingsProxy.getUsername();
+            final String password = settingsProxy.getPassword();
 
-        return new ProxySettings(protocol, host, port, nonProxyHost, username, password);
+            if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {
+                Authenticator authenticator = new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password.toCharArray());
+                    }
+                };
+                Authenticator.setDefault(authenticator);
+            }
+
+            return new ProxySettings(protocol, host, port, nonProxyHost, username, password);
+        }
+        return null;
     }
 
 }

@@ -289,6 +289,7 @@ public class DownloadRetriever extends BaseRetriever {
                 SocketAddress socketAddress = new InetSocketAddress(proxySettings.getHost(), proxySettings.getPort());
                 Proxy proxy = new Proxy(Proxy.Type.valueOf(proxySettings.getProtocol().toUpperCase()), socketAddress);
                 connection = configUrl.openConnection(proxy);
+                System.out.println("Using proxy: " + proxySettings.getHost());
             } else {
                 connection = configUrl.openConnection();
             }
