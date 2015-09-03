@@ -7,7 +7,7 @@ import org.apache.flex.utilities.converter.flash.FlashConverter;
 import org.apache.flex.utilities.converter.flex.FlexConverter;
 import org.apache.flex.utilities.converter.fontkit.FontkitConverter;
 import org.apache.flex.utilities.converter.retrievers.download.DownloadRetriever;
-import org.apache.flex.utilities.converter.retrievers.model.ProxySettings;
+import org.apache.flex.utilities.converter.api.ProxySettings;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 import org.apache.flex.utilities.converter.wrapper.WrapperConverter;
@@ -140,22 +140,36 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Apache Flex SDK " + version);
         try {
-            ProxySettings proxySettings = getProxySettings();
+            // Get proxy settings from the maven settings and save them in the
+            // ProxySettings "singleton".
+            final ProxySettings proxySettings = getProxySettings();
+            ProxySettings.setProxySettings(proxySettings);
+            if ((proxySettings != null) && !StringUtils.isEmpty(proxySettings.getUsername()) &&
+                    !StringUtils.isEmpty(proxySettings.getPassword())) {
+                Authenticator authenticator = new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(proxySettings.getUsername(),
+                                proxySettings.getPassword().toCharArray());
+                    }
+                };
+                Authenticator.setDefault(authenticator);
+            }
 
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
-            File sdkRoot = downloadRetriever.retrieve(SdkType.FLEX, version, null, proxySettings);
+            File sdkRoot = downloadRetriever.retrieve(SdkType.FLEX, version, null);
 
             // In order to create a fully functional wrapper we need to download
             // SWFObject and merge that with the fdk first.
-            File swfObjectRoot = downloadRetriever.retrieve(SdkType.SWFOBJECT, null, null, proxySettings);
+            File swfObjectRoot = downloadRetriever.retrieve(SdkType.SWFOBJECT, null, null);
             FileUtils.copyDirectory(swfObjectRoot, sdkRoot);
 
             // In order to compile some of the themes, we need to download a
             // playerglobal version.
             logger.info("In order to convert some of the skins in the Apache Flex SDK, " +
                     "a Flash SDK has to be downloaded.");
-            File flashSdkRoot = downloadRetriever.retrieve(SdkType.FLASH, "10.2", null, proxySettings);
+            File flashSdkRoot = downloadRetriever.retrieve(SdkType.FLASH, "10.2", null);
             FileUtils.copyDirectory(flashSdkRoot, sdkRoot);
 
             // Convert the FDK itself.
@@ -178,7 +192,7 @@ public class FlexEventSpy extends AbstractEventSpy {
         try {
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
-            File sdkRoot = downloadRetriever.retrieve(SdkType.FLASH, version, null, getProxySettings());
+            File sdkRoot = downloadRetriever.retrieve(SdkType.FLASH, version);
             FlashConverter converter = new FlashConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
         } catch (Throwable ce) {
@@ -201,7 +215,7 @@ public class FlexEventSpy extends AbstractEventSpy {
             } else {
                 platformType = PlatformType.valueOf(System.getProperty("platform-type"));
             }
-            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version, platformType, getProxySettings());
+            File sdkRoot = downloadRetriever.retrieve(SdkType.AIR, version, platformType);
             AirConverter converter = new AirConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
         } catch (Throwable ce) {
@@ -217,7 +231,7 @@ public class FlexEventSpy extends AbstractEventSpy {
         try {
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
-            File sdkRoot = downloadRetriever.retrieve(SdkType.FONTKIT, null, null, getProxySettings());
+            File sdkRoot = downloadRetriever.retrieve(SdkType.FONTKIT);
             FontkitConverter converter = new FontkitConverter(sdkRoot, localRepoBaseDir);
             converter.convert();
         } catch (Throwable ce) {
@@ -272,17 +286,6 @@ public class FlexEventSpy extends AbstractEventSpy {
             String nonProxyHost = settingsProxy.getNonProxyHosts();
             final String username = settingsProxy.getUsername();
             final String password = settingsProxy.getPassword();
-
-            if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {
-                Authenticator authenticator = new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password.toCharArray());
-                    }
-                };
-                Authenticator.setDefault(authenticator);
-            }
-
             return new ProxySettings(protocol, host, port, nonProxyHost, username, password);
         }
         return null;

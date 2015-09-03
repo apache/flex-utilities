@@ -16,22 +16,29 @@
  */
 package org.apache.flex.utilities.converter;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
+import org.apache.flex.utilities.converter.api.ProxySettings;
 import org.apache.flex.utilities.converter.exceptions.ConverterException;
 import org.apache.flex.utilities.converter.model.MavenArtifact;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jettison.json.JSONTokener;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.math.BigInteger;
-import java.net.URL;
+import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -124,79 +131,93 @@ public abstract class BaseConverter {
     }
 
     protected MavenArtifact lookupMetadataForChecksum(String checksum) throws ConverterException {
-        final String queryUrl = MAVEN_CENTRAL_SHA_1_QUERY_URL + checksum;
-
-        final Client client = Client.create();
-        final WebResource webResource = client.resource(queryUrl);
-        final ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-
-      	if (response.getStatus() != 200) {
-   		   throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-      	}
-
-        final String output = response.getEntity(String.class);
-
-        final BufferedReader reader = new BufferedReader(new StringReader(output));
-        final StringBuilder builder = new StringBuilder();
+        String output = null;
         try {
-            for (String line; (line = reader.readLine()) != null; ) {
-                builder.append(line).append("\n");
-            }
-            final JSONTokener tokener = new JSONTokener(builder.toString());
-            final JSONObject rootObject = new JSONObject(tokener);
+            final URL queryUrl = new URL(MAVEN_CENTRAL_SHA_1_QUERY_URL + checksum);
 
-            final JSONObject responseObject = (JSONObject) rootObject.get("response");
-            final int numFound = (Integer) responseObject.get("numFound");
-            if(numFound == 0) {
-                return null;
-            }
-            else if(numFound == 1) {
-                final JSONArray docs = (JSONArray) responseObject.get("docs");
-                final JSONObject firstHit = (JSONObject) docs.get(0);
-
-                final MavenArtifact artifactMetadata = new MavenArtifact();
-                artifactMetadata.setGroupId((String) firstHit.get("g"));
-                artifactMetadata.setArtifactId((String) firstHit.get("a"));
-                artifactMetadata.setVersion((String) firstHit.get("v"));
-                artifactMetadata.setPackaging((String) firstHit.get("p"));
-
-                return artifactMetadata;
+            URLConnection connection;
+            ProxySettings proxySettings = ProxySettings.getProxySettings();
+            if (proxySettings != null) {
+                SocketAddress socketAddress = new InetSocketAddress(proxySettings.getHost(), proxySettings.getPort());
+                Proxy proxy = new Proxy(Proxy.Type.valueOf(proxySettings.getProtocol().toUpperCase()), socketAddress);
+                connection = queryUrl.openConnection(proxy);
             } else {
-                long newestTimestamp = 0;
-                JSONObject newestVersion = null;
+                connection = queryUrl.openConnection();
+            }
+            final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
+            final ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+            if(rbc.read(byteBuffer) > 0) {
+                output = new String (byteBuffer.array(), "UTF-8");
+            }
+        } catch (MalformedURLException e) {
+            throw new ConverterException("Error querying maven central.", e);
+        } catch (IOException e) {
+            throw new ConverterException("Error querying maven central.", e);
+        }
 
-                JSONArray options = (JSONArray) responseObject.get("docs");
-                // if the "groupId" is "batik" then use the newer version.
-                for(int i = 0; i < numFound; i++) {
-                    final JSONObject option = (JSONObject) options.get(0);
-                    if("batik".equals(option.get("g")) && "batik-dom".equals(option.get("a")) && "jar".equals(option.get("p"))) {
-                        final long timestamp = (Long) option.get("timestamp");
-                        if(timestamp > newestTimestamp) {
-                            newestTimestamp = timestamp;
-                            newestVersion = option;
-                        }
-                    }
+        if(output != null) {
+            final BufferedReader reader = new BufferedReader(new StringReader(output));
+            final StringBuilder builder = new StringBuilder();
+            try {
+                for (String line; (line = reader.readLine()) != null; ) {
+                    builder.append(line).append("\n");
                 }
+                final JSONTokener tokener = new JSONTokener(builder.toString());
+                final JSONObject rootObject = new JSONObject(tokener);
 
-                if(newestVersion != null) {
+                final JSONObject responseObject = (JSONObject) rootObject.get("response");
+                final int numFound = (Integer) responseObject.get("numFound");
+                if (numFound == 0) {
+                    return null;
+                } else if (numFound == 1) {
+                    final JSONArray docs = (JSONArray) responseObject.get("docs");
+                    final JSONObject firstHit = (JSONObject) docs.get(0);
+
                     final MavenArtifact artifactMetadata = new MavenArtifact();
-                    artifactMetadata.setGroupId((String) newestVersion.get("g"));
-                    artifactMetadata.setArtifactId((String) newestVersion.get("a"));
-                    artifactMetadata.setVersion((String) newestVersion.get("v"));
-                    artifactMetadata.setPackaging((String) newestVersion.get("p"));
+                    artifactMetadata.setGroupId((String) firstHit.get("g"));
+                    artifactMetadata.setArtifactId((String) firstHit.get("a"));
+                    artifactMetadata.setVersion((String) firstHit.get("v"));
+                    artifactMetadata.setPackaging((String) firstHit.get("p"));
 
                     return artifactMetadata;
                 } else {
-                    System.out.println("For jar-file with checksum: " + checksum +
-                            " more than one result was returned by query: " + queryUrl);
+                    long newestTimestamp = 0;
+                    JSONObject newestVersion = null;
+
+                    JSONArray options = (JSONArray) responseObject.get("docs");
+                    // if the "groupId" is "batik" then use the newer version.
+                    for (int i = 0; i < numFound; i++) {
+                        final JSONObject option = (JSONObject) options.get(0);
+                        if ("batik".equals(option.get("g")) && "batik-dom".equals(option.get("a")) && "jar".equals(option.get("p"))) {
+                            final long timestamp = (Long) option.get("timestamp");
+                            if (timestamp > newestTimestamp) {
+                                newestTimestamp = timestamp;
+                                newestVersion = option;
+                            }
+                        }
+                    }
+
+                    if (newestVersion != null) {
+                        final MavenArtifact artifactMetadata = new MavenArtifact();
+                        artifactMetadata.setGroupId((String) newestVersion.get("g"));
+                        artifactMetadata.setArtifactId((String) newestVersion.get("a"));
+                        artifactMetadata.setVersion((String) newestVersion.get("v"));
+                        artifactMetadata.setPackaging((String) newestVersion.get("p"));
+
+                        return artifactMetadata;
+                    } else {
+                        System.out.println("For jar-file with checksum: " + checksum +
+                                " more than one result was returned by query: " +
+                                MAVEN_CENTRAL_SHA_1_QUERY_URL + checksum);
+                    }
                 }
+            } catch (IOException e) {
+                throw new ConverterException("Error processing Metadata for checksum: '" + checksum + "'", e);
+            } catch (JSONException e) {
+                throw new ConverterException("Error processing Metadata for checksum: '" + checksum + "'", e);
             }
-            return null;
-        } catch(IOException e) {
-            throw new ConverterException("Error processing Metadata for checksum: '" + checksum + "'", e);
-        } catch (JSONException e) {
-            throw new ConverterException("Error processing Metadata for checksum: '" + checksum + "'", e);
         }
+        return null;
     }
 
     protected void copyFile(File source, File target) throws ConverterException {
@@ -233,7 +254,7 @@ public abstract class BaseConverter {
     protected void createPomDocument(final MavenArtifact metadata, File outputFile) throws ConverterException {
         try {
             // Build a context to hold the model
-            Map freemarkerContext = new HashMap();
+            Map<String, Object> freemarkerContext = new HashMap<String, Object>();
             freemarkerContext.put("artifact", metadata);
 
             // Try to get a template "templates/{type}.vm".
@@ -277,27 +298,6 @@ public abstract class BaseConverter {
         } catch (IOException e) {
             throw new ConverterException("Error generating dummy resouce bundle.");
         }
-    }
-
-    protected static File findDirectory(File directory, String directoryToFind) {
-        File[] entries = directory.listFiles();
-        File founded = null;
-
-        // Go over entries
-        if(entries != null) {
-            for (File entry : entries) {
-                if (entry.isDirectory() && directoryToFind.equalsIgnoreCase(entry.getName())) {
-                    founded = entry;
-                    break;
-                }
-                if (entry.isDirectory()) {
-                    founded = findDirectory(entry, directoryToFind);
-                    if (founded != null)
-                        break;
-                }
-            }
-        }
-        return founded;
     }
 
     protected MavenArtifact resolveArtifact(File sourceFile, String defaultGroupId, String defaultVersion)
@@ -420,6 +420,42 @@ public abstract class BaseConverter {
             } catch(IOException e) {
                 throw new ConverterException("Error adding files to zip.", e);
             }
+        }
+    }
+
+    /**
+     * Get the version of an Flex SDK from the content of the SDK directory.
+     *
+     * @return version string for the current Flex SDK
+     */
+    protected String getFlexVersion(File rootDirectory) throws ConverterException {
+        final File sdkDescriptor = new File(rootDirectory, "flex-sdk-description.xml");
+
+        // If the descriptor is not present, return null as this FDK directory doesn't
+        // seem to contain a Flex SDK.
+        if(!sdkDescriptor.exists()) {
+            return null;
+        }
+
+        final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            // Parse the document
+            final DocumentBuilder db = dbf.newDocumentBuilder();
+            final Document dom = db.parse(sdkDescriptor);
+
+            // Get name, version and build nodes
+            final Element root = dom.getDocumentElement();
+            final String version = root.getElementsByTagName("version").item(0).getTextContent();
+            final String build = root.getElementsByTagName("build").item(0).getTextContent();
+
+            // In general the version consists of the content of the version element with an appended build-number.
+            return (build.equals("0")) ? version + "-SNAPSHOT" : version;
+        } catch (ParserConfigurationException pce) {
+            throw new RuntimeException(pce);
+        } catch (SAXException se) {
+            throw new RuntimeException(se);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
         }
     }
 

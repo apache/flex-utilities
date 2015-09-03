@@ -32,7 +32,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.*;
 import java.util.jar.JarOutputStream;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -521,77 +520,6 @@ public class FlexConverter extends BaseConverter implements Converter {
         bre.close();
         System.out.println("Done.");
         return result;
-    }
-
-    protected void addFileToZip(ZipOutputStream zipOutputStream, File inputFile, File rootDirectory)
-            throws ConverterException {
-        if (inputFile == null) {
-            return;
-        }
-
-        // If this is a directory, add all it's children.
-        if (inputFile.isDirectory()) {
-            final File directoryContent[] = inputFile.listFiles();
-            if (directoryContent != null) {
-                for (final File file : directoryContent) {
-                    addFileToZip(zipOutputStream, file, rootDirectory);
-                }
-            }
-        }
-        // If this is a file, add it to the zips output.
-        else {
-            byte[] buf = new byte[1024];
-            try {
-                final FileInputStream in = new FileInputStream(inputFile);
-                final String zipPath = inputFile.getAbsolutePath().substring(
-                        rootDirectory.getAbsolutePath().length() + 1).replace("\\", "/");
-                zipOutputStream.putNextEntry(new ZipEntry(zipPath));
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    zipOutputStream.write(buf, 0, len);
-                }
-                zipOutputStream.closeEntry();
-                in.close();
-            } catch(IOException e) {
-                throw new ConverterException("Error adding files to zip.", e);
-            }
-        }
-    }
-
-    /**
-     * Get the version of an Flex SDK from the content of the SDK directory.
-     *
-     * @return version string for the current Flex SDK
-     */
-    protected String getFlexVersion(File rootDirectory) throws ConverterException {
-        final File sdkDescriptor = new File(rootDirectory, "flex-sdk-description.xml");
-
-        // If the descriptor is not present, return null as this FDK directory doesn't
-        // seem to contain a Flex SDK.
-        if(!sdkDescriptor.exists()) {
-            return null;
-        }
-
-        final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        try {
-            // Parse the document
-            final DocumentBuilder db = dbf.newDocumentBuilder();
-            final Document dom = db.parse(sdkDescriptor);
-
-            // Get name, version and build nodes
-            final Element root = dom.getDocumentElement();
-            final String version = root.getElementsByTagName("version").item(0).getTextContent();
-            final String build = root.getElementsByTagName("build").item(0).getTextContent();
-
-            // In general the version consists of the content of the version element with an appended build-number.
-            return (build.equals("0")) ? version + "-SNAPSHOT" : version;
-        } catch (ParserConfigurationException pce) {
-            throw new RuntimeException(pce);
-        } catch (SAXException se) {
-            throw new RuntimeException(se);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
     }
 
     /**

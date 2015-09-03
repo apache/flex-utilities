@@ -1,9 +1,19 @@
-package org.apache.flex.utilities.converter.retrievers.model;
+package org.apache.flex.utilities.converter.api;
 
 /**
  * Created by christoferdutz on 01.07.15.
  */
 public class ProxySettings {
+
+    private static ProxySettings proxySettings = null;
+
+    public static void setProxySettings(ProxySettings proxySettings) {
+        ProxySettings.proxySettings = proxySettings;
+    }
+
+    public static ProxySettings getProxySettings() {
+        return proxySettings;
+    }
 
     private String protocol;
     private String host;

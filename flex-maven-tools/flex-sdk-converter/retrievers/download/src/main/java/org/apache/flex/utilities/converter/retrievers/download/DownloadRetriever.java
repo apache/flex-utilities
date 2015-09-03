@@ -18,9 +18,9 @@ package org.apache.flex.utilities.converter.retrievers.download;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.flex.utilities.converter.api.ProxySettings;
 import org.apache.flex.utilities.converter.retrievers.BaseRetriever;
 import org.apache.flex.utilities.converter.retrievers.exceptions.RetrieverException;
-import org.apache.flex.utilities.converter.retrievers.model.ProxySettings;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 import org.apache.flex.utilities.converter.retrievers.utils.ProgressBar;
@@ -76,11 +76,7 @@ public class DownloadRetriever extends BaseRetriever {
         return retrieve(type, version, null);
     }
 
-    public File retrieve(SdkType type, String version, PlatformType platformType) throws RetrieverException {
-        return retrieve(type, version, platformType, null);
-    }
-
-    public File retrieve(SdkType type, String version, PlatformType platformType, ProxySettings proxySettings)
+    public File retrieve(SdkType type, String version, PlatformType platformType)
             throws RetrieverException {
         try {
             if (type.equals(SdkType.FLASH) || type.equals(SdkType.AIR) || type.equals(SdkType.FONTKIT)) {
@@ -104,27 +100,27 @@ public class DownloadRetriever extends BaseRetriever {
 
                 final URI afeUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/afe.jar?format=raw");
                 final File afeFile = new File(targetDir, "afe.jar");
-                performSafeDownload(afeUri, afeFile, proxySettings);
+                performSafeDownload(afeUri, afeFile);
 
                 final URI aglj40Uri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/aglj40.jar?format=raw");
                 final File aglj40File = new File(targetDir, "aglj40.jar");
-                performSafeDownload(aglj40Uri, aglj40File, proxySettings);
+                performSafeDownload(aglj40Uri, aglj40File);
 
                 final URI rideauUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/rideau.jar?format=raw");
                 final File rideauFile = new File(targetDir, "rideau.jar");
-                performSafeDownload(rideauUri, rideauFile, proxySettings);
+                performSafeDownload(rideauUri, rideauFile);
 
                 final URI flexFontkitUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/flex-fontkit.jar?format=raw");
                 final File flexFontkitFile = new File(targetDir, "flex-fontkit.jar");
-                performSafeDownload(flexFontkitUri, flexFontkitFile, proxySettings);
+                performSafeDownload(flexFontkitUri, flexFontkitFile);
 
                 return targetRootDir;
             } else {
-                final URL sourceUrl = new URL(getBinaryUrl(type, version, platformType, proxySettings));
+                final URL sourceUrl = new URL(getBinaryUrl(type, version, platformType));
                 final File targetFile = File.createTempFile(type.toString() + "-" + version +
                                 ((platformType != null) ? "-" + platformType : "") + "-",
                         sourceUrl.getFile().substring(sourceUrl.getFile().lastIndexOf(".")));
-                performFastDownload(sourceUrl, targetFile, proxySettings);
+                performFastDownload(sourceUrl, targetFile);
 
                 ////////////////////////////////////////////////////////////////////////////////
                 // Do the extracting.
@@ -181,8 +177,9 @@ public class DownloadRetriever extends BaseRetriever {
         }
     }
 
-    protected void performFastDownload(URL sourceUrl, File targetFile, ProxySettings proxySettings) throws IOException {
+    protected void performFastDownload(URL sourceUrl, File targetFile) throws IOException {
         URLConnection connection;
+        ProxySettings proxySettings = ProxySettings.getProxySettings();
         if(proxySettings != null) {
             SocketAddress socketAddress = new InetSocketAddress(proxySettings.getHost(), proxySettings.getPort());
             Proxy proxy = new Proxy(Proxy.Type.valueOf(proxySettings.getProtocol().toUpperCase()), socketAddress);
@@ -218,8 +215,9 @@ public class DownloadRetriever extends BaseRetriever {
         System.out.println("===========================================================");
     }
 
-    protected void performSafeDownload(URI sourceUri, File targetFile, ProxySettings proxySettings) throws IOException {
+    protected void performSafeDownload(URI sourceUri, File targetFile) throws IOException {
         RequestConfig config;
+        ProxySettings proxySettings = ProxySettings.getProxySettings();
         if(proxySettings != null) {
             HttpHost proxy = new HttpHost(proxySettings.getHost(), proxySettings.getPort());
             config = RequestConfig.custom().setProxy(proxy).build();
@@ -277,14 +275,14 @@ public class DownloadRetriever extends BaseRetriever {
         System.out.println("===========================================================");
     }
 
-    protected String getBinaryUrl(SdkType sdkType, String version, PlatformType platformType,
-                                  ProxySettings proxySettings)
+    protected String getBinaryUrl(SdkType sdkType, String version, PlatformType platformType)
             throws RetrieverException {
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
             final URL configUrl = new URL(getFlexInstallerConfigUrl());
             URLConnection connection;
+            ProxySettings proxySettings = ProxySettings.getProxySettings();
             if(proxySettings != null) {
                 SocketAddress socketAddress = new InetSocketAddress(proxySettings.getHost(), proxySettings.getPort());
                 Proxy proxy = new Proxy(Proxy.Type.valueOf(proxySettings.getProtocol().toUpperCase()), socketAddress);

@@ -57,6 +57,7 @@
     </scm>
 
     <modules>
+        <module>api</module>
         <module>retrievers</module>
         <module>converters</module>
         <module>deployers</module>

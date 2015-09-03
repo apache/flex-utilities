@@ -3,6 +3,7 @@ package org.apache.flex.utilities.converter.core;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.flex.utilities.converter.air.AirConverter;
+import org.apache.flex.utilities.converter.api.ProxySettings;
 import org.apache.flex.utilities.converter.deployer.aether.AetherDeployer;
 import org.apache.flex.utilities.converter.flash.FlashConverter;
 import org.apache.flex.utilities.converter.flex.FlexConverter;
@@ -40,6 +41,13 @@ public class SdkConverterCLI {
     public static final String OPTION_REPO_URL = "repoUrl";
     public static final String OPTION_REPO_USERNAME = "repoUsername";
     public static final String OPTION_REPO_PASSWORD = "repoPassword";
+
+    public static final String OPTION_PROXY_PROTOCOL = "proxyProtocol";
+    public static final String OPTION_PROXY_HOST = "proxyHost";
+    public static final String OPTION_PROXY_PORT = "proxyPort";
+    public static final String OPTION_PROXY_NON_PROXY_HOST = "proxyNonProxyHost";
+    public static final String OPTION_PROXY_USERNAME = "proxyUsername";
+    public static final String OPTION_PROXY_PASSWORD = "proxyPassword";
 
 
     @SuppressWarnings("unchecked")
@@ -103,6 +111,36 @@ public class SdkConverterCLI {
                         "deployed to.").
                 isRequired(false).
                 create(OPTION_REPO_PASSWORD));
+        options.addOption(OptionBuilder.withArgName("protocol").hasArg().
+                withDescription("(Optional and only valid when providing a proxy host and port) protocol " +
+                        "to be used to communicate through a proxy server.").
+                isRequired(false).
+                create(OPTION_PROXY_PROTOCOL));
+        options.addOption(OptionBuilder.withArgName("host").hasArg().
+                withDescription("(Optional and only valid when providing a proxy host and port) host name " +
+                        "of the proxy server.").
+                isRequired(false).
+                create(OPTION_PROXY_HOST));
+        options.addOption(OptionBuilder.withArgName("port").hasArg().
+                withDescription("(Optional and only valid when providing a proxy host and port) port " +
+                        "of the proxy server.").
+                isRequired(false).
+                create(OPTION_PROXY_HOST));
+        options.addOption(OptionBuilder.withArgName("non-proxy-host(s)").hasArg().
+                withDescription("(Optional and only valid when providing a proxy host and port) list of " +
+                        "hosts that should not use the proxy server.").
+                isRequired(false).
+                create(OPTION_PROXY_NON_PROXY_HOST));
+        options.addOption(OptionBuilder.withArgName("username").hasArg().
+                withDescription("(Optional and only valid when providing a proxy host and port) username " +
+                        "used to authenticate at the proxy server.").
+                isRequired(false).
+                create(OPTION_PROXY_USERNAME));
+        options.addOption(OptionBuilder.withArgName("password").hasArg().
+                withDescription("(Optional and only valid when providing a proxy host and port) password " +
+                        "used to authenticate at the proxy server.").
+                isRequired(false).
+                create(OPTION_PROXY_PASSWORD));
 
         CommandLineParser parser = new BasicParser();
         try {
@@ -188,6 +226,11 @@ public class SdkConverterCLI {
             ////////////////////////////////////////////////////////////////////////////
             // Exectute operations
             ////////////////////////////////////////////////////////////////////////////
+
+            // Get proxy settings from the commandline and save them in the
+            // ProxySettings "singleton".
+            ProxySettings proxySettings = getProxySettings(cmd);
+            ProxySettings.setProxySettings(proxySettings);
 
             // Output a list of all available downloads.
             if(cmd.getArgList().contains(COMMAND_LIST)) {
@@ -369,7 +412,9 @@ public class SdkConverterCLI {
                 "Options:";
 
         HelpFormatter helpFormatter = new HelpFormatter();
-        helpFormatter.printHelp("java -jar apache-flex-sdk-converter.jar [list] [-fdkDir <fdkDir>] " +
+        helpFormatter.printHelp("java -jar apache-flex-sdk-converter.jar [-proxyProtocol <http|https|socks> " +
+                        "-proxyHost <host> -proxyPort <port> [-proxyNonProxyHost <non-proxy-host(s)>] " +
+                        "[-proxyUser <username> -proxyPassword <password>]] [list] [-fdkDir <fdkDir>] " +
                         "[-mavenDir <mavenDir>] [[-flexVersion <version>] [-flashVersions <version(s)>] " +
                         "[-airVersion <version> [-platforms <platform(s)>]] [-fontkit] download] [convert] " +
                         "[-repoUrl <url> [-repoUsername <username> -repoPassword <password>] deploy]",
@@ -385,6 +430,19 @@ public class SdkConverterCLI {
             tempDir.mkdirs();
         }
         return tempDir;
+    }
+
+    protected static ProxySettings getProxySettings(CommandLine cmd) {
+        if(cmd.hasOption(OPTION_PROXY_HOST)) {
+            String protocol = cmd.getOptionValue(OPTION_PROXY_PROTOCOL);
+            String host = cmd.getOptionValue(OPTION_PROXY_HOST);
+            String nonProxyHost = cmd.getOptionValue(OPTION_PROXY_NON_PROXY_HOST);
+            int port = cmd.hasOption(OPTION_PROXY_PORT) ? Integer.valueOf(cmd.getOptionValue(OPTION_PROXY_PORT)) : 0;
+            String username = cmd.getOptionValue(OPTION_PROXY_USERNAME);
+            String password = cmd.getOptionValue(OPTION_PROXY_PASSWORD);
+            return new ProxySettings(protocol, host, port, nonProxyHost, username, password);
+        }
+        return null;
     }
 
     protected static void mergeDirectories(File sourceDir, File targetDir) throws IOException {

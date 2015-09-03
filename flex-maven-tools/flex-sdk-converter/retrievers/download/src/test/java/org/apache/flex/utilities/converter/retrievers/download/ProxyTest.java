@@ -16,7 +16,7 @@
  */
 package org.apache.flex.utilities.converter.retrievers.download;
 
-import org.apache.flex.utilities.converter.retrievers.model.ProxySettings;
+import org.apache.flex.utilities.converter.api.ProxySettings;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 import org.mockserver.integration.ClientAndProxy;
@@ -51,8 +51,9 @@ public class ProxyTest {
     @Test
     public void simpleFastHttpNoAuthProxy() throws Exception {
         ProxySettings proxySettings = new ProxySettings("HTTP", "localhost", 3456, null, null, null);
+        ProxySettings.setProxySettings(proxySettings);
         DownloadRetriever downloadRetriever = new DownloadRetriever();
-        downloadRetriever.retrieve(SdkType.FLASH, "17.0", PlatformType.WINDOWS, proxySettings);
+        downloadRetriever.retrieve(SdkType.FLASH, "17.0", PlatformType.WINDOWS);
     }
 
     /**
@@ -61,8 +62,9 @@ public class ProxyTest {
     @Test
     public void simpleSafeHttpNoAuthProxy() throws Exception {
         ProxySettings proxySettings = new ProxySettings("HTTP", "localhost", 3456, null, null, null);
+        ProxySettings.setProxySettings(proxySettings);
         DownloadRetriever downloadRetriever = new DownloadRetriever();
-        downloadRetriever.retrieve(SdkType.FONTKIT, "1.0", PlatformType.WINDOWS, proxySettings);
+        downloadRetriever.retrieve(SdkType.FONTKIT, "1.0", PlatformType.WINDOWS);
     }
 
     /**
@@ -71,8 +73,9 @@ public class ProxyTest {
     @Test(enabled = false)
     public void simpleFastHttpWithAuthProxy() throws Exception {
         ProxySettings proxySettings = new ProxySettings("HTTP", "localhost", 3456, "testuser", "testpass", null);
+        ProxySettings.setProxySettings(proxySettings);
         DownloadRetriever downloadRetriever = new DownloadRetriever();
-        downloadRetriever.retrieve(SdkType.FLASH, "17.0", PlatformType.WINDOWS, proxySettings);
+        downloadRetriever.retrieve(SdkType.FLASH, "17.0", PlatformType.WINDOWS);
     }
 
     /**
@@ -81,8 +84,9 @@ public class ProxyTest {
     @Test(enabled = false)
     public void simpleSafeHttpWithAuthProxy() throws Exception {
         ProxySettings proxySettings = new ProxySettings("HTTP", "localhost", 3456, "testuser", "testpass", null);
+        ProxySettings.setProxySettings(proxySettings);
         DownloadRetriever downloadRetriever = new DownloadRetriever();
-        downloadRetriever.retrieve(SdkType.FONTKIT, "1.0", PlatformType.WINDOWS, proxySettings);
+        downloadRetriever.retrieve(SdkType.FONTKIT, "1.0", PlatformType.WINDOWS);
     }
 
 }
