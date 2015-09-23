@@ -73,12 +73,23 @@ public class FlexEventSpy extends AbstractEventSpy {
 
                         if (artifact.getGroupId().startsWith("org.apache.flex") &&
                                 !"rb.swc".equals(artifact.getExtension())) {
-                            // Output a cool spash-screen ... sorry for that ... couldn't resist :-)
+                            // Output a cool splash-screen ... sorry for that ... couldn't resist :-)
                             if(!flexSplashScreenShown) {
                                 showFlexSplashScreen();
                             }
 
-                            if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
+                            if("org.apache.flex.compiler".equals(artifact.getGroupId()) &&
+                                    artifact.getArtifactId().startsWith("falcon-")) {
+                                logger.info("Falcon artifacts are publicly available as Maven artifacts. " +
+                                        "Please setup your Maven configuration.\nFor more information please visit: " +
+                                        "https://cwiki.apache.org/confluence/display/FLEX/Building+Flex+applications+with+Maven");
+                            }
+                            else if("org.apache.flex.flexjs.framework".equals(artifact.getGroupId())) {
+                                logger.info("FlexJS artifacts are publicly available as Maven artifacts. " +
+                                        "Please setup your Maven configuration.\nFor more information please visit: " +
+                                        "https://cwiki.apache.org/confluence/display/FLEX/Building+Flex+applications+with+Maven");
+                            }
+                            else if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                     artifact.getExtension(), artifact.getClassifier())) {
                                 logger.info("Couldn't find artifact: " + artifact.getGroupId() + ":" +
                                         artifact.getBaseVersion() + ":" + artifact.getArtifactId() + ":" +
