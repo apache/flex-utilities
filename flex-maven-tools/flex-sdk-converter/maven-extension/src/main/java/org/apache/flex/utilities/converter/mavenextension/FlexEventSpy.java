@@ -52,6 +52,8 @@ public class FlexEventSpy extends AbstractEventSpy {
     protected boolean internalLookup = false;
     protected boolean flexSplashScreenShown = false;
 
+    protected ProxySettings proxySettings = null;
+
     public FlexEventSpy() {
     }
 
@@ -63,6 +65,31 @@ public class FlexEventSpy extends AbstractEventSpy {
     public void onEvent(Object o) throws Exception {
         if(o instanceof ExecutionEvent) {
             mavenSession = ((ExecutionEvent) o).getSession();
+
+            // Get proxy settings from the maven settings and save them in the
+            // ProxySettings "singleton".
+            org.apache.maven.settings.Proxy settingsProxy = mavenSession.getSettings().getActiveProxy();
+            if(settingsProxy != null) {
+                String protocol = settingsProxy.getProtocol();
+                String host = settingsProxy.getHost();
+                int port = settingsProxy.getPort();
+                String nonProxyHost = settingsProxy.getNonProxyHosts();
+                final String username = settingsProxy.getUsername();
+                final String password = settingsProxy.getPassword();
+                proxySettings = new ProxySettings(protocol, host, port, nonProxyHost, username, password);
+                ProxySettings.setProxySettings(proxySettings);
+                if (!StringUtils.isEmpty(proxySettings.getUsername()) &&
+                        !StringUtils.isEmpty(proxySettings.getPassword())) {
+                    Authenticator authenticator = new Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(proxySettings.getUsername(),
+                                    proxySettings.getPassword().toCharArray());
+                        }
+                    };
+                    Authenticator.setDefault(authenticator);
+                }
+            }
         } else if(o instanceof RepositoryEvent) {
             RepositoryEvent repositoryEvent = (RepositoryEvent) o;
             if(repositoryEvent.getType() == RepositoryEvent.EventType.ARTIFACT_RESOLVING) {
@@ -151,22 +178,6 @@ public class FlexEventSpy extends AbstractEventSpy {
         logger.info("===========================================================");
         logger.info(" - Installing Apache Flex SDK " + version);
         try {
-            // Get proxy settings from the maven settings and save them in the
-            // ProxySettings "singleton".
-            final ProxySettings proxySettings = getProxySettings();
-            ProxySettings.setProxySettings(proxySettings);
-            if ((proxySettings != null) && !StringUtils.isEmpty(proxySettings.getUsername()) &&
-                    !StringUtils.isEmpty(proxySettings.getPassword())) {
-                Authenticator authenticator = new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(proxySettings.getUsername(),
-                                proxySettings.getPassword().toCharArray());
-                    }
-                };
-                Authenticator.setDefault(authenticator);
-            }
-
             File localRepoBaseDir = new File(mavenSession.getLocalRepository().getBasedir());
             DownloadRetriever downloadRetriever = new DownloadRetriever();
             File sdkRoot = downloadRetriever.retrieve(SdkType.FLEX, version, null);
@@ -286,20 +297,6 @@ public class FlexEventSpy extends AbstractEventSpy {
                 "                                          .:::;:.              ;:;;::: \n" +
                 "                                           ::;,                 `,;;`  \n");
         flexSplashScreenShown = true;
-    }
-
-    protected ProxySettings getProxySettings() {
-        org.apache.maven.settings.Proxy settingsProxy = mavenSession.getSettings().getActiveProxy();
-        if(settingsProxy != null) {
-            String protocol = settingsProxy.getProtocol();
-            String host = settingsProxy.getHost();
-            int port = settingsProxy.getPort();
-            String nonProxyHost = settingsProxy.getNonProxyHosts();
-            final String username = settingsProxy.getUsername();
-            final String password = settingsProxy.getPassword();
-            return new ProxySettings(protocol, host, port, nonProxyHost, username, password);
-        }
-        return null;
     }
 
 }
