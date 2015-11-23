@@ -121,3 +121,5 @@ Squiggly/main/generated/
 flex-installer/deps
 MD5Checker/MD5CheckerLog.txt
 
+node_modules
+npm-flexjs.iml

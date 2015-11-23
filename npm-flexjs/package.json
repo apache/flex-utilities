@@ -1,0 +1,27 @@
+{
+  "name": "apache-flexjs",
+  "version": "0.5.0",
+  "description": "Apache FlexJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "flex",
+    "flexjs",
+    "apache",
+    "flexjs",
+    "actionscript",
+    "as3",
+    "mxml",
+    "angularjs",
+    "reactjs"
+  ],
+  "author": "OmPrakash Muppirala <bigosmallm@apache.org>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "prompt": "^0.2.14",
+    "request": "^2.67.0",
+    "unzip": "^0.1.11"
+  }
+}
