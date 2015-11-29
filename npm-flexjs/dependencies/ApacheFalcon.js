@@ -39,7 +39,7 @@ ApacheFalcon.handleFalconMirrorsResponse = function (error, response, body)
         console.log('Downloading Apache Falcon');
         request
             .get(falconPreferredDownloadURL)
-            .pipe(fs.createWriteStream('downloads//' + fileNameFalconBinary)
+            .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + '//' + fileNameFalconBinary)
                 .on('finish', function(){
                     console.log('Apache Falcon download complete');
                     ApacheFalcon.emit('complete');
