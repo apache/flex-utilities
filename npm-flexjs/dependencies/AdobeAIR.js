@@ -52,7 +52,6 @@ AdobeAIR.promptForAdobeAIR = function()
     };
     prompt.start();
     prompt.get(schema, function (err, result) {
-        console.log('  accept?: ' + result.accept);
         if(result.accept.toLowerCase() == 'y')
         {
             AdobeAIR.downloadAdobeAIR();
