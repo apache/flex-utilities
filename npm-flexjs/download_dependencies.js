@@ -27,6 +27,20 @@ var apacheFlexJS = require('./dependencies/ApacheFlexJS');
 var apacheFalcon = require('./dependencies/ApacheFalcon');
 var swfObject = require('./dependencies/SWFObject');
 
+var installSteps = [
+    createDownloadsDirectory,
+    installFlashPlayerGlobal,
+    installAdobeAIR,
+    installApacheFlexJS,
+    installApacheFalcon,
+    installSWFObject];
+var currentStep = 0;
+
+function start()
+{
+    installSteps[0].call();
+}
+
 function createDownloadsDirectory()
 {
     //Create downloads directory if it does not exist already
@@ -38,35 +52,54 @@ function createDownloadsDirectory()
     {
         if ( e.code != 'EEXIST' ) throw e;
     }
+    handleInstallStepComplete();
 }
 
-function handleFlashPlayerGlobalComplete(event)
+
+function handleInstallStepComplete(event)
 {
-    adobeair.on('complete', handleAdobeAIRComplete);
+    currentStep += 1;
+    if(currentStep >= installSteps.length)
+    {
+        allDownloadsComplete();
+    }
+    else
+    {
+        if(installSteps[currentStep] != undefined)
+        {
+            installSteps[currentStep].call();
+        }
+    }
+}
+
+function installFlashPlayerGlobal()
+{
+    flashplayerglobal.on('complete', handleInstallStepComplete);
+    flashplayerglobal.install();
+}
+
+function installAdobeAIR(event)
+{
+    adobeair.on('complete', handleInstallStepComplete);
     adobeair.install();
 }
 
-function handleAdobeAIRComplete(event)
+function installApacheFlexJS(event)
 {
-    apacheFlexJS.on('complete', handleApacheFlexJSComplete);
+    apacheFlexJS.on('complete', handleInstallStepComplete);
     apacheFlexJS.install();
 }
 
-function handleApacheFlexJSComplete(event)
+function installApacheFalcon(event)
 {
-    apacheFalcon.on('complete', handleApacheFalconComplete);
+    apacheFalcon.on('complete', handleInstallStepComplete);
     apacheFalcon.install();
 }
 
-function handleApacheFalconComplete(event)
+function installSWFObject(event)
 {
-    swfObject.on('complete', handleSwfObjectComplete);
+    swfObject.on('complete', handleInstallStepComplete);
     swfObject.install();
-}
-
-function handleSwfObjectComplete(event)
-{
-    allDownloadsComplete();
 }
 
 function allDownloadsComplete()
@@ -74,6 +107,4 @@ function allDownloadsComplete()
     console.log('Completed all downloads');
 }
 
-createDownloadsDirectory();
-flashplayerglobal.on('complete', handleFlashPlayerGlobalComplete);
-flashplayerglobal.install();
+start();
