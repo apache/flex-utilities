@@ -64,7 +64,7 @@ AdobeAIR.downloadAdobeAIR = function()
     console.log('Downloading Adobe AIR SDK');
     request
         .get(AdobeAIRURL + fileNameAdobeAIR)
-        .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + '//' + fileNameAdobeAIR)
+        .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameAdobeAIR)
             .on('finish', function(){
                 console.log('Adobe AIR download complete');
                 AdobeAIR.emit('complete');

@@ -71,7 +71,7 @@ FlashPlayerGlobal.downloadFlashPlayerGlobal = function()
     console.log('Downloading Adobe FlashPlayerGlobal.swc ');
     request
         .get(flashPlayerGlobalURL + fileNameFlashPlayerGlobal)
-        .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + '//' + fileNameFlashPlayerGlobal)
+        .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFlashPlayerGlobal)
             .on('finish', function(){
                 console.log('FlashPlayerGlobal download complete');
                 FlashPlayerGlobal.emit('complete');

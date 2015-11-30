@@ -55,7 +55,6 @@ function createDownloadsDirectory()
     handleInstallStepComplete();
 }
 
-
 function handleInstallStepComplete(event)
 {
     currentStep += 1;
