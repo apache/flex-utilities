@@ -21,6 +21,7 @@
 var request = require('request');
 var fs = require('fs');
 var events = require('events');
+var unzip = require('unzip');
 
 var constants = require('../dependencies/Constants');
 
@@ -39,13 +40,25 @@ ApacheFlexJS.handleFlexJSMirrorsResponse = function (error, response, body)
         console.log('Downloading Apache FlexJS');
         request
             .get(flexJSPreferredDownloadURL)
-            .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + '//' + fileNameFlexJSBinary)
+            .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFlexJSBinary)
                 .on('finish', function(){
-                console.log('Apache FlexJS download complete');
-                ApacheFlexJS.emit('complete');
-            })
+                    console.log('Apache FlexJS download complete');
+                    ApacheFlexJS.extract();
+                })
         );
     }
+};
+
+ApacheFlexJS.extract = function()
+{
+    console.log('Extracting Apache FlexJS');
+    fs.createReadStream(constants.DOWNLOADS_FOLDER + fileNameFlexJSBinary)
+        .pipe(unzip.Extract({ path: constants.NODE_MODULES_FOLDER + constants.FLEXJS_FOLDER })
+            .on('finish', function(){
+                console.log('Apache FlexJS extraction complete');
+                ApacheFlexJS.emit('complete');
+            })
+    );
 };
 
 ApacheFlexJS.install = function()

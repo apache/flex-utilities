@@ -35,7 +35,7 @@ SWFObject.downloadSwfObject = function()
     console.log('Downloading SWFObject');
     request
         .get(swfObjectURL)
-        .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + '//' + fileNameSwfObject)
+        .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameSwfObject)
             .on('finish', function(){
                 console.log('SWFObject download complete');
                 SWFObject.emit('complete');

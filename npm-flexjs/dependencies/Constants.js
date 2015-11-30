@@ -22,5 +22,7 @@ module.exports =
 {
     APACHE_MIRROR_RESOLVER_URL : 'http://www.apache.org/dyn/mirrors/mirrors.cgi/',
     REQUEST_JSON_PARAM : 'asjson=true',
-    DOWNLOADS_FOLDER : 'downloads'
+    DOWNLOADS_FOLDER : 'downloads/',
+    FLEXJS_FOLDER: 'flexjs',
+    NODE_MODULES_FOLDER: 'node_modules/'
 };
