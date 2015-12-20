@@ -53,7 +53,7 @@ ApacheFlexJS.extract = function()
 {
     console.log('Extracting Apache FlexJS');
     fs.createReadStream(constants.DOWNLOADS_FOLDER + fileNameFlexJSBinary)
-        .pipe(unzip.Extract({ path: constants.NODE_MODULES_FOLDER + constants.FLEXJS_FOLDER })
+        .pipe(unzip.Extract({ path: constants.FLEXJS_FOLDER })
             .on('finish', function(){
                 console.log('Apache FlexJS extraction complete');
                 ApacheFlexJS.emit('complete');

@@ -22,6 +22,7 @@ var request = require('request');
 var fs = require('fs');
 var events = require('events');
 var prompt = require('prompt');
+var unzip = require('unzip');
 
 var constants = require('../dependencies/Constants');
 
@@ -38,7 +39,7 @@ http://www.adobe.com/products/air/sdk-eula.html.\n\
     This license is not compatible with the Apache v2 license.\n\
 Do you want to download and install the Adobe AIR SDK? (y/n)";
 
-AdobeAIR.promptForAdobeAIR = function()
+function promptForAdobeAIR()
 {
     var schema = {
         properties: {
@@ -54,25 +55,51 @@ AdobeAIR.promptForAdobeAIR = function()
     prompt.get(schema, function (err, result) {
         if(result.accept.toLowerCase() == 'y')
         {
-            AdobeAIR.downloadAdobeAIR();
+            downloadAdobeAIR();
+        }
+        else
+        {
+            console.log('Aborting installation');
         }
     });
-};
+}
 
-AdobeAIR.downloadAdobeAIR = function()
+function downloadAdobeAIR()
 {
-    console.log('Downloading Adobe AIR SDK');
+    /*var downloadDetails = {
+        url:AdobeAIRURL,
+        remoteFileName:fileNameAdobeAIR,
+        destinationPath:constants.DOWNLOADS_FOLDER,
+        destinationFileName:'adobeair',
+        unzip:true
+    };
+    duc.on('installComplete', handleInstallComplete);
+    duc.install(downloadDetails);*/
+
+    console.log('Downloading Adobe AIR from ' + AdobeAIRURL + fileNameAdobeAIR);
     request
         .get(AdobeAIRURL + fileNameAdobeAIR)
         .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameAdobeAIR)
             .on('finish', function(){
                 console.log('Adobe AIR download complete');
+                extract();
+            })
+    );
+}
+
+function extract()
+{
+    console.log('Extracting Adobe AIR');
+    fs.createReadStream(constants.DOWNLOADS_FOLDER + fileNameAdobeAIR)
+        .pipe(unzip.Extract({ path: constants.FLEXJS_FOLDER })
+            .on('finish', function(){
+                console.log('Adobe AIR extraction complete');
                 AdobeAIR.emit('complete');
             })
     );
-};
+}
 
 AdobeAIR.install = function()
 {
-    AdobeAIR.promptForAdobeAIR();
+    promptForAdobeAIR();
 };

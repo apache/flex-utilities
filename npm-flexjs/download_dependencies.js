@@ -20,6 +20,7 @@
 'use strict';
 
 var fs = require('fs');
+var mkdirp = require('mkdirp');
 var constants = require('./dependencies/Constants');
 var adobeair = require('./dependencies/AdobeAIR');
 var flashplayerglobal = require('./dependencies/FlashPlayerGlobal');
@@ -31,9 +32,10 @@ var installSteps = [
     createDownloadsDirectory,
     installFlashPlayerGlobal,
     installAdobeAIR,
+    installSWFObject,
     installApacheFlexJS,
-    installApacheFalcon,
-    installSWFObject];
+    installApacheFalcon
+    ];
 var currentStep = 0;
 
 function start()
@@ -46,7 +48,7 @@ function createDownloadsDirectory()
     //Create downloads directory if it does not exist already
     try
     {
-        fs.mkdirSync(constants.DOWNLOADS_FOLDER);
+        mkdirp(constants.DOWNLOADS_FOLDER);
     }
     catch(e)
     {
@@ -73,37 +75,37 @@ function handleInstallStepComplete(event)
 
 function installFlashPlayerGlobal()
 {
-    flashplayerglobal.on('complete', handleInstallStepComplete);
+    flashplayerglobal.once('complete', handleInstallStepComplete);
     flashplayerglobal.install();
 }
 
 function installAdobeAIR(event)
 {
-    adobeair.on('complete', handleInstallStepComplete);
+    adobeair.once('complete', handleInstallStepComplete);
     adobeair.install();
 }
 
 function installApacheFlexJS(event)
 {
-    apacheFlexJS.on('complete', handleInstallStepComplete);
+    apacheFlexJS.once('complete', handleInstallStepComplete);
     apacheFlexJS.install();
 }
 
 function installApacheFalcon(event)
 {
-    apacheFalcon.on('complete', handleInstallStepComplete);
+    apacheFalcon.once('complete', handleInstallStepComplete);
     apacheFalcon.install();
 }
 
 function installSWFObject(event)
 {
-    swfObject.on('complete', handleInstallStepComplete);
+    swfObject.once('complete', handleInstallStepComplete);
     swfObject.install();
 }
 
 function allDownloadsComplete()
 {
-    console.log('Completed all downloads');
+    console.log('Finished all downloads');
 }
 
 start();

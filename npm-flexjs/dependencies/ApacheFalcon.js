@@ -22,6 +22,8 @@ var request = require('request');
 var fs = require('fs');
 var events = require('events');
 var unzip = require('unzip');
+var wrench = require('wrench');
+var mkdirp = require('mkdirp');
 
 var constants = require('../dependencies/Constants');
 var duc = require('../dependencies/DownloadUncompressAndCopy');
@@ -54,7 +56,7 @@ var falconDependencies = [
         remoteFileName:'commons-cli-1.2-bin.zip',
         destinationPath:constants.DOWNLOADS_FOLDER,
         destinationFileName:'',
-        pathOfFileToBeCopiedFrom:constants.DOWNLOADS_FOLDER + 'commons-cli-1.2/commons-cli-1.2.jar',
+        pathOfFileToBeCopiedFrom:'commons-cli-1.2/commons-cli-1.2.jar',
         pathOfFileToBeCopiedTo:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder + 'commons-cli.jar',
         unzip:true
     },
@@ -63,9 +65,48 @@ var falconDependencies = [
         remoteFileName:'commons-io-2.4-bin.zip',
         destinationPath:constants.DOWNLOADS_FOLDER,
         destinationFileName:'',
-        pathOfFileToBeCopiedFrom:constants.DOWNLOADS_FOLDER + 'commons-io-2.4/commons-io-2.4.jar',
+        pathOfFileToBeCopiedFrom:'commons-io-2.4/commons-io-2.4.jar',
         pathOfFileToBeCopiedTo:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder + 'commons-io.jar',
         unzip:true
+    },
+    {
+        url:'http://search.maven.org/remotecontent?filepath=/com/google/guava/guava/17.0/',
+        remoteFileName:'guava-17.0.jar',
+        destinationPath:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder,
+        destinationFileName:'guava.jar',
+        unzip:false
+    },
+    {
+        url:'http://apacheflexbuild.cloudapp.net:8080/job/flex-falcon/ws/compiler/lib/',
+        remoteFileName:'jburg.jar',
+        destinationPath:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder,
+        destinationFileName:'jburg.jar',
+        unzip:false
+    },
+    {
+        url:'http://jflex.de/',
+        remoteFileName:'jflex-1.6.0.zip',
+        destinationPath:constants.DOWNLOADS_FOLDER,
+        destinationFileName:'',
+        pathOfFileToBeCopiedFrom:'jflex-1.6.0/lib/jflex-1.6.0.jar',
+        pathOfFileToBeCopiedTo:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder + 'jflex.jar',
+        unzip:true
+    },
+    {
+        url:'http://www.java2s.com/Code/JarDownload/lzma/',
+        remoteFileName:'lzma-9.20.jar.zip',
+        destinationPath:constants.DOWNLOADS_FOLDER + 'lzma/',
+        destinationFileName:'lzma-9.20.jar.zip',
+        pathOfFileToBeCopiedFrom:'lzma-9.20.jar',
+        pathOfFileToBeCopiedTo:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder + 'lzma-sdk.jar',
+        unzip:true
+    },
+    {
+        url:'http://search.maven.org/remotecontent?filepath=/org/apache/flex/flex-tool-api/1.0.0/',
+        remoteFileName:'flex-tool-api-1.0.0.jar',
+        destinationPath:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder,
+        destinationFileName:'flex-tool-api.jar',
+        unzip:false
     }
 ];
 
@@ -130,7 +171,7 @@ ApacheFalcon.downloadNextDependency = function()
     }
     else
     {
-        duc.on("downloadComplete", handleDependencyInstallComplete);
+        duc.on("installComplete", handleDependencyInstallComplete);
         duc.install(falconDependencies[currentStep]);
     }
 };
@@ -142,8 +183,30 @@ function handleDependencyInstallComplete(event)
 
 ApacheFalcon.dependenciesComplete = function()
 {
+    duc.removeListener("installComplete", handleDependencyInstallComplete);
+    copyFiles();
     ApacheFalcon.falconInstallComplete();
 };
+
+function copyFiles()
+{
+    //Ant TODO:FIXME
+
+    //Bin
+    //Create downloads directory if it does not exist already
+    try
+    {
+        mkdirp(constants.FLEXJS_FOLDER + 'bin');
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+    wrench.copyDirSyncRecursive(constants.DOWNLOADS_FOLDER + 'falcon/compiler/generated/dist/sdk/bin',
+        constants.FLEXJS_FOLDER + 'bin', {
+            forceDelete: true
+        });
+}
 
 ApacheFalcon.falconInstallComplete = function()
 {
