@@ -27,7 +27,8 @@ var constants = require('../dependencies/Constants');
 var SWFObject = module.exports = Object.create(events.EventEmitter.prototype);
 
 //SWFObject
-var swfObjectURL = 'https://github.com/swfobject/swfobject/archive/2.2.zip';
+//var swfObjectURL = 'https://github.com/swfobject/swfobject/archive/2.2.zip';
+var swfObjectURL = 'https://swfobject.googlecode.com/files/';
 var fileNameSwfObject = 'swfobject_2_2.zip';
 
 SWFObject.downloadSwfObject = function()

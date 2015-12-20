@@ -20,8 +20,10 @@
   "author": "OmPrakash Muppirala <bigosmallm@apache.org>",
   "license": "Apache-2.0",
   "dependencies": {
+    "mkdirp": "^0.5.1",
     "prompt": "^0.2.14",
     "request": "^2.67.0",
-    "unzip": "^0.1.11"
+    "unzip": "^0.1.11",
+    "wrench": "^1.5.8"
   }
 }

@@ -24,6 +24,7 @@ var events = require('events');
 var prompt = require('prompt');
 
 var constants = require('../dependencies/Constants');
+var duc = require('../dependencies/DownloadUncompressAndCopy');
 
 var FlashPlayerGlobal = module.exports = Object.create(events.EventEmitter.prototype);
 
@@ -63,21 +64,34 @@ FlashPlayerGlobal.promptForFlashPlayerGlobal = function()
         {
             FlashPlayerGlobal.downloadFlashPlayerGlobal();
         }
+        else
+        {
+            console.log('Aborting installation');
+        }
     });
 };
 
 FlashPlayerGlobal.downloadFlashPlayerGlobal = function()
 {
     console.log('Downloading Adobe FlashPlayerGlobal.swc ');
-    request
-        .get(flashPlayerGlobalURL + fileNameFlashPlayerGlobal)
-        .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFlashPlayerGlobal)
-            .on('finish', function(){
-                console.log('FlashPlayerGlobal download complete');
-                FlashPlayerGlobal.emit('complete');
-            })
-    );
+
+    var downloadDetails = {
+        url:flashPlayerGlobalURL,
+        remoteFileName:fileNameFlashPlayerGlobal,
+        destinationPath:constants.DOWNLOADS_FOLDER,
+        destinationFileName:fileNameFlashPlayerGlobal,
+        unzip:false
+    };
+
+    duc.on('installComplete', handleInstallComplete);
+    duc.install(downloadDetails);
+
 };
+
+function handleInstallComplete(event)
+{
+    FlashPlayerGlobal.emit('complete');
+}
 
 FlashPlayerGlobal.install = function()
 {
