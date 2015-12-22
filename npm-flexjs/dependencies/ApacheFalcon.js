@@ -206,6 +206,37 @@ function copyFiles()
         constants.FLEXJS_FOLDER + 'bin', {
             forceDelete: true
         });
+
+    //Bin-legacy TODO:FIXME
+
+    //copyfiles.jx copy FalconJX files into SDK
+    try
+    {
+        mkdirp(constants.FLEXJS_FOLDER + 'js/bin');
+        mkdirp(constants.FLEXJS_FOLDER + 'js/lib');
+        mkdirp(constants.FLEXJS_FOLDER + 'js/libs');
+        mkdirp(constants.FLEXJS_FOLDER + 'externs');
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+
+    wrench.copyDirSyncRecursive(constants.DOWNLOADS_FOLDER + 'falcon/js/lib',
+        constants.FLEXJS_FOLDER + 'js/lib', {
+            forceDelete: true
+        });
+
+    wrench.copyDirSyncRecursive(constants.DOWNLOADS_FOLDER + 'falcon/js/libs',
+        constants.FLEXJS_FOLDER + 'js/libs', {
+            forceDelete: true
+        });
+
+    wrench.copyDirSyncRecursive(constants.DOWNLOADS_FOLDER + 'falcon/externs',
+        constants.FLEXJS_FOLDER + 'externs', {
+            forceDelete: true
+        });
+
 }
 
 ApacheFalcon.falconInstallComplete = function()
