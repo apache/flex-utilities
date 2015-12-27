@@ -19,9 +19,8 @@
 
 
 var request = require('request');
-var fs = require('fs');
+var fs = require('fs-extra');
 var events = require('events');
-var prompt = require('prompt');
 var unzip = require('unzip');
 var constants = require('../dependencies/Constants');
 
@@ -33,28 +32,12 @@ DownloadUncompressAndCopy.downloadFile = function(item)
     request
         .get(item.url + item.remoteFileName)
         .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + item.remoteFileName)
-            .on('finish', function(){
+            .on('close', function(){
                 console.log('Finished downloading: ' + item.url + item.remoteFileName);
                 if(item.unzip)
                 {//Unzip
                     console.log('Uncompressing:  ' + constants.DOWNLOADS_FOLDER + item.remoteFileName);
                     fs.createReadStream(constants.DOWNLOADS_FOLDER + item.remoteFileName)
-                    /*.pipe(unzip.Extract({ path: item.destinationPath + item.destinationFileName})
-                            .on('finish', function(){
-                                console.log('Finished uncompressing: ' + constants.DOWNLOADS_FOLDER + item.remoteFileName + ' to: ' + item.destinationPath + item.destinationFileName);
-                                if(item.pathOfFileToBeCopiedTo != undefined)
-                                {
-                                    fs.createReadStream(item.pathOfFileToBeCopiedFrom)
-                                        .pipe(fs.createWriteStream(item.pathOfFileToBeCopiedTo)
-                                        .on('finish',function(){
-                                        DownloadUncompressAndCopy.emit('installComplete');
-                                    }));
-                                }
-                                else
-                                {
-                                    DownloadUncompressAndCopy.emit('installComplete');
-                                }
-                            })*/
                         .pipe(unzip.Parse())
                         .on('entry', function (entry) {
                             var fileName = entry.path;
@@ -74,16 +57,19 @@ DownloadUncompressAndCopy.downloadFile = function(item)
                 }
                 else
                 {//Just copy
-                    if((constants.DOWNLOADS_FOLDER + item.remoteFileName == item.destinationPath + item.destinationFileName))
+                    if((constants.DOWNLOADS_FOLDER + item.remoteFileName === item.destinationPath + item.destinationFileName))
                     {
                         DownloadUncompressAndCopy.emit('installComplete');
                     }
-                    else {
+                    else
+                    {
                         fs.createReadStream(constants.DOWNLOADS_FOLDER + item.remoteFileName)
-                            .pipe(fs.createWriteStream(item.destinationPath + item.destinationFileName)
-                                .on('finish',function() {
-                                    DownloadUncompressAndCopy.emit('installComplete');
-                                }));
+                            .pipe(fs.createWriteStream(item.destinationPath + item.destinationFileName))
+                            .on('close', function(){
+                                console.log("Copied " + constants.DOWNLOADS_FOLDER + item.remoteFileName + " to " +
+                                    item.destinationPath + item.destinationFileName);
+                                DownloadUncompressAndCopy.emit('installComplete');
+                            });
                     }
                 }
             })

@@ -34,6 +34,8 @@ var ApacheFalcon = module.exports = Object.create(events.EventEmitter.prototype)
 var pathToFalconBinary = 'flex/falcon/0.5.0/binaries/';
 var fileNameFalconBinary = 'apache-flex-falconjx-0.5.0-bin.zip';
 var falconCompilerLibFolder = 'falcon/compiler/lib/';
+var jsLibFolder = constants.FLEXJS_FOLDER + 'js/lib/';
+var googleClosureCompilerFolder =  constants.FLEXJS_FOLDER + 'js/lib/google/closure-compiler/';
 
 //Antlr
 var antlrURL = 'http://search.maven.org/remotecontent?filepath=org/antlr/antlr-complete/3.5.2/antlr-complete-3.5.2.jar';
@@ -107,6 +109,52 @@ var falconDependencies = [
         destinationPath:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder,
         destinationFileName:'flex-tool-api.jar',
         unzip:false
+    },
+    {
+        url:'http://search.maven.org/remotecontent?filepath=/args4j/args4j/2.0.28/',
+        remoteFileName:'args4j-2.0.28.jar',
+        destinationPath:jsLibFolder,
+        destinationFileName:'args4j.jar',
+        unzip:false
+    },
+    {
+        url:'http://dl.google.com/closure-compiler/',
+        remoteFileName:'compiler-20150609.zip',
+        destinationPath:constants.DOWNLOADS_FOLDER,
+        destinationFileName:'compiler-20150609.zip',
+        pathOfFileToBeCopiedFrom:'compiler.jar',
+        pathOfFileToBeCopiedTo:googleClosureCompilerFolder + 'compiler.jar',
+        unzip:true
+    },
+    {
+        url:'http://archive.apache.org/dist/commons/io/binaries/',
+        remoteFileName:'commons-io-2.4-bin.zip',
+        destinationPath:constants.DOWNLOADS_FOLDER,
+        destinationFileName:'commons-io-2.4-bin.zip',
+        pathOfFileToBeCopiedFrom:'commons-io-2.4/commons-io-2.4.jar',
+        pathOfFileToBeCopiedTo:jsLibFolder + 'commons-io.jar',
+        unzip:true
+    },
+    {
+        url:'http://search.maven.org/remotecontent?filepath=/com/google/guava/guava/17.0/',
+        remoteFileName:'guava-17.0.jar',
+        destinationPath:jsLibFolder,
+        destinationFileName:'guava.jar',
+        unzip:false
+    },
+    {
+        url:'http://search.maven.org/remotecontent?filepath=/org/codeartisans/org.json/20131017/',
+        remoteFileName:'org.json-20131017.jar',
+        destinationPath:jsLibFolder,
+        destinationFileName:'org.json.jar',
+        unzip:false
+    },
+    {
+        url:'http://search.maven.org/remotecontent?filepath=/org/apache/flex/flex-tool-api/1.0.0/',
+        remoteFileName:'flex-tool-api-1.0.0.jar',
+        destinationPath:jsLibFolder,
+        destinationFileName:'flex-tool-api.jar',
+        unzip:false
     }
 ];
 
@@ -151,6 +199,61 @@ ApacheFalcon.prepareForFalconDependencies = function()
     {
         if ( e.code != 'EEXIST' ) throw e;
     }
+    try
+    {
+        fs.mkdirSync(googleClosureCompilerFolder);
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+
+    try
+    {
+        mkdirp(constants.FLEXJS_FOLDER + 'js/bin');
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+
+    try
+    {
+        mkdirp(constants.FLEXJS_FOLDER + 'js/lib');
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+
+    try
+    {
+        mkdirp(constants.FLEXJS_FOLDER + 'js/libs');
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+
+    try
+    {
+        mkdirp(constants.FLEXJS_FOLDER + 'externs');
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+
+    //Create downloads directory if it does not exist already
+    try
+    {
+        mkdirp(constants.FLEXJS_FOLDER + 'bin');
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+
     ApacheFalcon.downloadDependencies();
 };
 
@@ -171,7 +274,7 @@ ApacheFalcon.downloadNextDependency = function()
     }
     else
     {
-        duc.on("installComplete", handleDependencyInstallComplete);
+        duc.once("installComplete", handleDependencyInstallComplete);
         duc.install(falconDependencies[currentStep]);
     }
 };
@@ -183,61 +286,37 @@ function handleDependencyInstallComplete(event)
 
 ApacheFalcon.dependenciesComplete = function()
 {
-    duc.removeListener("installComplete", handleDependencyInstallComplete);
-    copyFiles();
+    ApacheFalcon.copyFiles();
     ApacheFalcon.falconInstallComplete();
 };
 
-function copyFiles()
+ApacheFalcon.copyFiles = function()
 {
-    //Ant TODO:FIXME
+    var mergedirs = require('merge-dirs');
 
     //Bin
-    //Create downloads directory if it does not exist already
-    try
-    {
-        mkdirp(constants.FLEXJS_FOLDER + 'bin');
-    }
-    catch(e)
-    {
-        if ( e.code != 'EEXIST' ) throw e;
-    }
-    wrench.copyDirSyncRecursive(constants.DOWNLOADS_FOLDER + 'falcon/compiler/generated/dist/sdk/bin',
-        constants.FLEXJS_FOLDER + 'bin', {
-            forceDelete: true
-        });
-
-    //Bin-legacy TODO:FIXME
+    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/compiler/generated/dist/sdk/bin',
+        constants.FLEXJS_FOLDER + 'bin',
+        'overwrite');
 
     //copyfiles.jx copy FalconJX files into SDK
-    try
-    {
-        mkdirp(constants.FLEXJS_FOLDER + 'js/bin');
-        mkdirp(constants.FLEXJS_FOLDER + 'js/lib');
-        mkdirp(constants.FLEXJS_FOLDER + 'js/libs');
-        mkdirp(constants.FLEXJS_FOLDER + 'externs');
-    }
-    catch(e)
-    {
-        if ( e.code != 'EEXIST' ) throw e;
-    }
+    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/js/lib',
+        constants.FLEXJS_FOLDER + 'js/lib',
+        'overwrite');
+    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/js/libs',
+        constants.FLEXJS_FOLDER + 'js/libs',
+        'overwrite');
 
-    wrench.copyDirSyncRecursive(constants.DOWNLOADS_FOLDER + 'falcon/js/lib',
-        constants.FLEXJS_FOLDER + 'js/lib', {
-            forceDelete: true
-        });
+    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/externs',
+        constants.FLEXJS_FOLDER + 'externs',
+        'overwrite');
 
-    wrench.copyDirSyncRecursive(constants.DOWNLOADS_FOLDER + 'falcon/js/libs',
-        constants.FLEXJS_FOLDER + 'js/libs', {
-            forceDelete: true
-        });
+// Bin-legacy TODO:FIXME
 
-    wrench.copyDirSyncRecursive(constants.DOWNLOADS_FOLDER + 'falcon/externs',
-        constants.FLEXJS_FOLDER + 'externs', {
-            forceDelete: true
-        });
+// Ant TODO:FIXME
 
-}
+};
+
 
 ApacheFalcon.falconInstallComplete = function()
 {
