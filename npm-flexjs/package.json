@@ -1,12 +1,7 @@
 {
-  "name": "apache-flexjs",
+  "name": "flexjs",
   "version": "0.5.0",
   "description": "Apache FlexJS",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "node download_dependencies.js"
-  },
   "keywords": [
     "flex",
     "flexjs",
@@ -27,5 +22,13 @@
     "request": "^2.67.0",
     "unzip": "^0.1.11",
     "wrench": "^1.5.8"
+  },
+  "scripts": {
+    "pre": "npm install",
+    "postinstall": "node dependencies/download_dependencies.js"
+  },
+  "bin": {
+    "asjsc": "./js/bin/asjsc",
+    "asjscompc": "./js/bin/asjscompc"
   }
 }

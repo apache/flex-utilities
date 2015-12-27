@@ -21,12 +21,12 @@
 
 var fs = require('fs');
 var mkdirp = require('mkdirp');
-var constants = require('./dependencies/Constants');
-var adobeair = require('./dependencies/AdobeAIR');
-var flashplayerglobal = require('./dependencies/FlashPlayerGlobal');
-var apacheFlexJS = require('./dependencies/ApacheFlexJS');
-var apacheFalcon = require('./dependencies/ApacheFalcon');
-var swfObject = require('./dependencies/SWFObject');
+var constants = require('./Constants');
+var adobeair = require('./AdobeAIR');
+var flashplayerglobal = require('./FlashPlayerGlobal');
+var apacheFlexJS = require('./ApacheFlexJS');
+var apacheFalcon = require('./ApacheFalcon');
+var swfObject = require('./SWFObject');
 
 var installSteps = [
     createDownloadsDirectory,
