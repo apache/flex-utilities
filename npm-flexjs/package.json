@@ -12,6 +12,7 @@
     "angularjs",
     "reactjs"
   ],
+  "homepage": "http://flex.apache.org",
   "author": "OmPrakash Muppirala <bigosmallm@apache.org>",
   "license": "Apache-2.0",
   "dependencies": {
@@ -24,7 +25,6 @@
     "wrench": "^1.5.8"
   },
   "scripts": {
-    "pre": "npm install",
     "postinstall": "node dependencies/download_dependencies.js"
   },
   "bin": {
