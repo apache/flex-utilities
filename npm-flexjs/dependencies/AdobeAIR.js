@@ -32,7 +32,7 @@ var AdobeAIR = module.exports = Object.create(events.EventEmitter.prototype);
 var AdobeAIRURL = 'http://airdownload.adobe.com/air/win/download/19.0/';
 var fileNameAdobeAIR = 'AdobeAIRSDK.zip';
 var adobeAirPromptText = "\
-Apache Flex SDK uses the Adobe AIR SDK to build Adobe AIR applications.\n\
+Apache FlexJS SDK uses the Adobe AIR SDK to build Adobe AIR applications.\n\
 The Adobe AIR SDK is subject to and governed by the\n\
 Adobe AIR SDK License Agreement specified here:\n\
 http://www.adobe.com/products/air/sdk-eula.html.\n\
@@ -66,21 +66,11 @@ function promptForAdobeAIR()
 
 function downloadAdobeAIR()
 {
-    /*var downloadDetails = {
-        url:AdobeAIRURL,
-        remoteFileName:fileNameAdobeAIR,
-        destinationPath:constants.DOWNLOADS_FOLDER,
-        destinationFileName:'adobeair',
-        unzip:true
-    };
-    duc.on('installComplete', handleInstallComplete);
-    duc.install(downloadDetails);*/
-
     console.log('Downloading Adobe AIR from ' + AdobeAIRURL + fileNameAdobeAIR);
     request
         .get(AdobeAIRURL + fileNameAdobeAIR)
         .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameAdobeAIR)
-            .on('finish', function(){
+            .on('close', function(){
                 console.log('Adobe AIR download complete');
                 extract();
             })
@@ -92,7 +82,7 @@ function extract()
     console.log('Extracting Adobe AIR');
     fs.createReadStream(constants.DOWNLOADS_FOLDER + fileNameAdobeAIR)
         .pipe(unzip.Extract({ path: constants.FLEXJS_FOLDER })
-            .on('finish', function(){
+            .on('close', function(){
                 console.log('Adobe AIR extraction complete');
                 AdobeAIR.emit('complete');
             })

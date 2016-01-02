@@ -41,7 +41,7 @@ ApacheFlexJS.handleFlexJSMirrorsResponse = function (error, response, body)
         request
             .get(flexJSPreferredDownloadURL)
             .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFlexJSBinary)
-                .on('finish', function(){
+                .on('close', function(){
                     console.log('Apache FlexJS download complete');
                     ApacheFlexJS.extract();
                 })
@@ -54,7 +54,7 @@ ApacheFlexJS.extract = function()
     console.log('Extracting Apache FlexJS');
     fs.createReadStream(constants.DOWNLOADS_FOLDER + fileNameFlexJSBinary)
         .pipe(unzip.Extract({ path: constants.FLEXJS_FOLDER })
-            .on('finish', function(){
+            .on('close', function(){
                 console.log('Apache FlexJS extraction complete');
                 ApacheFlexJS.emit('complete');
             })

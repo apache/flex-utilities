@@ -21,28 +21,63 @@
 var request = require('request');
 var fs = require('fs');
 var events = require('events');
+var unzip = require('unzip');
+var mkdirp = require('mkdirp');
 
 var constants = require('../dependencies/Constants');
 
 var SWFObject = module.exports = Object.create(events.EventEmitter.prototype);
 
 //SWFObject
-//var swfObjectURL = 'https://github.com/swfobject/swfobject/archive/2.2.zip';
-var swfObjectURL = 'https://swfobject.googlecode.com/files/';
-var fileNameSwfObject = 'swfobject_2_2.zip';
+var swfObjectURL = 'http://github.com/swfobject/swfobject/archive/';
+var fileNameSwfObject = '2.2.zip';
 
 SWFObject.downloadSwfObject = function()
 {
     console.log('Downloading SWFObject');
     request
-        .get(swfObjectURL)
+        .get(swfObjectURL + fileNameSwfObject)
         .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameSwfObject)
             .on('finish', function(){
                 console.log('SWFObject download complete');
-                SWFObject.emit('complete');
+                extract();
             })
     );
 };
+
+function extract()
+{
+    try
+    {
+        mkdirp(constants.FLEXJS_FOLDER + 'templates/swfobject');
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+    console.log('Extracting SWFObject');
+    fs.createReadStream(constants.DOWNLOADS_FOLDER + fileNameSwfObject)
+        .pipe(unzip.Parse())
+        .on('entry', function (entry) {
+            var fileName = entry.path;
+            var type = entry.type; // 'Directory' or 'File'
+            var size = entry.size;
+            if (fileName === 'swfobject-2.2/swfobject/expressInstall.swf') {
+                entry.pipe(fs.createWriteStream(constants.FLEXJS_FOLDER + 'templates/swfobject/expressInstall.swf'));
+            }
+            else if(fileName === 'swfobject-2.2/swfobject/swfobject.js') {
+                entry.pipe(fs.createWriteStream(constants.FLEXJS_FOLDER + 'templates/swfobject/swfobject.js'));
+            }
+            else {
+                entry.autodrain();
+            }
+        })
+        .on('finish', function(){
+            console.log('SWFObject extraction complete');
+            SWFObject.emit('complete');
+        })
+
+}
 
 SWFObject.install = function()
 {
