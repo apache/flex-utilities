@@ -31,7 +31,7 @@ var FlashPlayerGlobal = module.exports = Object.create(events.EventEmitter.proto
 var flashPlayerGlobalURL = 'http://download.macromedia.com/get/flashplayer/updaters/19/';
 var fileNameFlashPlayerGlobal = 'playerglobal19_0.swc';
 var flashPlayerGlobalPromptText = "\
-    Apache Flex SDK uses the Adobe Flash Player's playerglobal.swc to build Adobe Flash applications.\n\
+    Apache FlexJS SDK uses the Adobe Flash Player's playerglobal.swc to build Adobe Flash applications.\n\
     \n\
     The playerglobal.swc file is subject to and governed by the\n\
     Adobe Flex SDK License Agreement specified here:\n\

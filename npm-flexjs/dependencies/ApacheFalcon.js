@@ -254,6 +254,15 @@ ApacheFalcon.prepareForFalconDependencies = function()
         if ( e.code != 'EEXIST' ) throw e;
     }
 
+    try
+    {
+        mkdirp(constants.FLEXJS_FOLDER + 'lib/external');
+    }
+    catch(e)
+    {
+        if ( e.code != 'EEXIST' ) throw e;
+    }
+
     ApacheFalcon.downloadDependencies();
 };
 
@@ -311,7 +320,19 @@ ApacheFalcon.copyFiles = function()
         constants.FLEXJS_FOLDER + 'externs',
         'overwrite');
 
-// Bin-legacy TODO:FIXME
+    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/compiler/generated/dist/sdk/lib',
+        constants.FLEXJS_FOLDER + 'lib',
+        'overwrite');
+
+    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/compiler/lib',
+        constants.FLEXJS_FOLDER + 'lib/external',
+        'overwrite');
+
+/*    fs.createReadStream(constants.DOWNLOADS_FOLDER + 'falcon/compiler/generated/dist/sdk/lib/' + 'falcon-mxmlc.jar')
+        .pipe(fs.createWriteStream(jsLibFolder + 'mxmlc.jar'));
+
+    fs.createReadStream(constants.DOWNLOADS_FOLDER + 'falcon/compiler/generated/dist/sdk/lib/' + 'falcon-mxmlc.jar')
+        .pipe(fs.createWriteStream(constants.FLEXJS_FOLDER + 'lib/' + 'mxmlc.jar'));*/
 
 // Ant TODO:FIXME
 
