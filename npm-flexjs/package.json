@@ -28,7 +28,7 @@
     "postinstall": "node dependencies/download_dependencies.js"
   },
   "bin": {
-    "asjsc": "./js/bin/asjsc",
-    "asjscompc": "./js/bin/asjscompc"
+    "asjsc": "./js/bin/asjscnpm",
+    "asjscompc": "./js/bin/asjscompcnpm"
   }
 }
