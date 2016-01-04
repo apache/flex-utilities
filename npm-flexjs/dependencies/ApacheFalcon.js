@@ -165,12 +165,12 @@ ApacheFalcon.handleFalconMirrorsResponse = function (error, response, body)
     {
         var mirrors = JSON.parse(body);
         var falconPreferredDownloadURL = mirrors.preferred + pathToFalconBinary + fileNameFalconBinary;
-        console.log('Downloading Apache Falcon');
+        console.log('Downloading Apache Flex Falcon Compiler');
         request
             .get(falconPreferredDownloadURL)
             .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFalconBinary)
                 .on('finish', function(){
-                    console.log('Apache Falcon download complete');
+                    console.log('Apache Flex Falcon Compiler download complete');
                     ApacheFalcon.extract();
                 })
         );
@@ -179,11 +179,11 @@ ApacheFalcon.handleFalconMirrorsResponse = function (error, response, body)
 
 ApacheFalcon.extract = function()
 {
-    console.log('Extracting Apache Falcon');
+    console.log('Extracting Apache Flex Falcon Compiler');
     fs.createReadStream(constants.DOWNLOADS_FOLDER + fileNameFalconBinary)
         .pipe(unzip.Extract({ path: constants.DOWNLOADS_FOLDER + 'falcon'})
             .on('finish', function(){
-                console.log('Apache Falcon extraction complete');
+                console.log('Apache Flex Falcon Compiler extraction complete');
                 ApacheFalcon.prepareForFalconDependencies();
             })
     );
