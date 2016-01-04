@@ -20,6 +20,7 @@
     "merge-dirs": "^0.2.1",
     "mkdirp": "^0.5.1",
     "prompt": "^0.2.14",
+    "replace": "^0.3.0",
     "request": "^2.67.0",
     "unzip": "^0.1.11",
     "wrench": "^1.5.8"
