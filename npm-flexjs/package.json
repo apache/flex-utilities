@@ -30,6 +30,7 @@
   },
   "bin": {
     "asjsc": "./js/bin/asjscnpm",
-    "asjscompc": "./js/bin/asjscompcnpm"
+    "asjscompc": "./js/bin/asjscompcnpm",
+    "mxmlc": "./js/bin/mxmlcnpm"
   }
 }
