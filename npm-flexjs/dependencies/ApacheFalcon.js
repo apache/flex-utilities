@@ -24,6 +24,7 @@ var events = require('events');
 var unzip = require('unzip');
 var wrench = require('wrench');
 var mkdirp = require('mkdirp');
+var replace = require('replace');
 
 var constants = require('../dependencies/Constants');
 var duc = require('../dependencies/DownloadUncompressAndCopy');
@@ -296,11 +297,14 @@ function handleDependencyInstallComplete(event)
 ApacheFalcon.dependenciesComplete = function()
 {
     ApacheFalcon.copyFiles();
+    ApacheFalcon.fixConfigFiles();
     ApacheFalcon.falconInstallComplete();
 };
 
 ApacheFalcon.copyFiles = function()
 {
+    console.log('Copying lib and bin directories');
+
     var mergedirs = require('merge-dirs');
 
     //Bin
@@ -338,6 +342,68 @@ ApacheFalcon.copyFiles = function()
 
 };
 
+ApacheFalcon.fixConfigFiles = function()
+{
+
+    console.log('Updating Config files');
+
+    fs.createReadStream(constants.FLEXJS_FOLDER + 'frameworks/flex-config-template.xml')
+        .pipe(fs.createWriteStream(constants.FLEXJS_FOLDER + 'frameworks/flex-config.xml'))
+        .on('close', function(){
+            replace({
+                regex: "@playerversion@",
+                replacement: "19.0",
+                paths: [constants.FLEXJS_FOLDER + 'frameworks/flex-config.xml'],
+                recursive: false,
+                silent: false
+            });
+
+            replace({
+                regex: "@swfversion@",
+                replacement: "30",
+                paths: [constants.FLEXJS_FOLDER + 'frameworks/flex-config.xml'],
+                recursive: false,
+                silent: false
+            });
+
+            replace({
+                regex: "{playerglobalHome}",
+                replacement: "libs/player",
+                paths: [constants.FLEXJS_FOLDER + 'frameworks/flex-config.xml'],
+                recursive: false,
+                silent: false
+            });
+        });
+
+    fs.createReadStream(constants.FLEXJS_FOLDER + 'frameworks/air-config-template.xml')
+        .pipe(fs.createWriteStream(constants.FLEXJS_FOLDER + 'frameworks/air-config.xml'))
+        .on('close', function(){
+            replace({
+                regex: "@playerversion@",
+                replacement: "19.0",
+                paths: [constants.FLEXJS_FOLDER + 'frameworks/air-config.xml'],
+                recursive: false,
+                silent: false
+            });
+
+            replace({
+                regex: "@swfversion@",
+                replacement: "30",
+                paths: [constants.FLEXJS_FOLDER + 'frameworks/air-config.xml'],
+                recursive: false,
+                silent: false
+            });
+
+            replace({
+                regex: "{airHome}/frameworks/libs",
+                replacement: "libs",
+                paths: [constants.FLEXJS_FOLDER + 'frameworks/air-config.xml'],
+                recursive: false,
+                silent: false
+            });
+        });
+
+};
 
 ApacheFalcon.falconInstallComplete = function()
 {

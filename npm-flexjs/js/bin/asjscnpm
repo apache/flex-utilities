@@ -26,18 +26,8 @@
 #
 
 SCRIPT_HOME=`dirname $0`
-if [ "x${FALCON_HOME}" = "x" ]
-then
-    FALCON_HOME=${SCRIPT_HOME}/../..
-fi
-
-echo Using Falcon codebase: $FALCON_HOME
-
-if [ "x${FLEX_HOME}" = "x" ]
-then
-    FLEX_HOME=${SCRIPT_HOME}/../..
-fi
-echo Using Flex SDK: $FLEX_HOME
+FALCON_HOME=${SCRIPT_HOME}/../..
+FLEX_HOME=${SCRIPT_HOME}/../..
 
 case `uname` in
 		CYGWIN*)
