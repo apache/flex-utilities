@@ -20,6 +20,7 @@
     "merge-dirs": "^0.2.1",
     "mkdirp": "^0.5.1",
     "prompt": "^0.2.14",
+    "read-package-json": "^2.0.3",
     "replace": "^0.3.0",
     "request": "^2.67.0",
     "unzip": "^0.1.11",
@@ -32,5 +33,9 @@
     "asjsc": "./js/bin/asjscnpm",
     "asjscompc": "./js/bin/asjscompcnpm",
     "mxmlc": "./js/bin/mxmlcnpm"
+  },
+  "org_apache_flex": {
+    "flexjs_path_binary": "flex/flexjs/0.5.0/binaries/",
+    "flexjs_file_name": "apache-flex-flexjs-0.5.0-bin.zip"
   }
 }
