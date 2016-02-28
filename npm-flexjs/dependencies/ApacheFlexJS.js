@@ -22,14 +22,17 @@ var request = require('request');
 var fs = require('fs');
 var events = require('events');
 var unzip = require('unzip');
+var pjson = require('../package');
 
 var constants = require('../dependencies/Constants');
 
 var ApacheFlexJS = module.exports = Object.create(events.EventEmitter.prototype);
 
+console.error(Object.keys(pjson));
+
 //FlexJS
-var pathToFlexJSBinary = 'flex/flexjs/0.5.0/binaries/';
-var fileNameFlexJSBinary = 'apache-flex-flexjs-0.5.0-bin.zip';
+var pathToFlexJSBinary = pjson.org_apache_flex.flexjs_path_binary; //'flex/flexjs/0.5.0/binaries/';
+var fileNameFlexJSBinary = pjson.org_apache_flex.flexjs_file_name; //'apache-flex-flexjs-0.5.0-bin.zip';
 
 ApacheFlexJS.handleFlexJSMirrorsResponse = function (error, response, body)
 {
