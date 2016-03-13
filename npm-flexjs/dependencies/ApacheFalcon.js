@@ -25,6 +25,7 @@ var unzip = require('unzip');
 var wrench = require('wrench');
 var mkdirp = require('mkdirp');
 var replace = require('replace');
+var pjson = require('../package');
 
 var constants = require('../dependencies/Constants');
 var duc = require('../dependencies/DownloadUncompressAndCopy');
@@ -32,8 +33,11 @@ var duc = require('../dependencies/DownloadUncompressAndCopy');
 var ApacheFalcon = module.exports = Object.create(events.EventEmitter.prototype);
 
 //Falcon
-var pathToFalconBinary = 'flex/falcon/0.5.0/binaries/';
-var fileNameFalconBinary = 'apache-flex-falconjx-0.5.0-bin.zip';
+var pathToFalconBinary = pjson.org_apache_flex.falcon_path_binary;
+var fileNameFalconBinary = pjson.org_apache_flex.falcon_file_name;
+var playerVersion = pjson.org_apache_flex.player_version;
+var swfVersion = pjson.org_apache_flex.swf_version;
+
 var falconCompilerLibFolder = 'falcon/compiler/lib/';
 var jsLibFolder = constants.FLEXJS_FOLDER + 'js/lib/';
 var googleClosureCompilerFolder =  constants.FLEXJS_FOLDER + 'js/lib/google/closure-compiler/';
@@ -105,14 +109,14 @@ var falconDependencies = [
         unzip:true
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=/org/apache/flex/flex-tool-api/1.0.0/',
+        url:'http://search.maven.org/remotecontent?filepath=org/apache/flex/flex-tool-api/1.0.0/',
         remoteFileName:'flex-tool-api-1.0.0.jar',
         destinationPath:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder,
         destinationFileName:'flex-tool-api.jar',
         unzip:false
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=/args4j/args4j/2.0.28/',
+        url:'http://search.maven.org/remotecontent?filepath=args4j/args4j/2.0.28/',
         remoteFileName:'args4j-2.0.28.jar',
         destinationPath:jsLibFolder,
         destinationFileName:'args4j.jar',
@@ -137,21 +141,21 @@ var falconDependencies = [
         unzip:true
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=/com/google/guava/guava/17.0/',
+        url:'http://search.maven.org/remotecontent?filepath=com/google/guava/guava/17.0/',
         remoteFileName:'guava-17.0.jar',
         destinationPath:jsLibFolder,
         destinationFileName:'guava.jar',
         unzip:false
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=/org/codeartisans/org.json/20131017/',
+        url:'http://search.maven.org/remotecontent?filepath=org/codeartisans/org.json/20131017/',
         remoteFileName:'org.json-20131017.jar',
         destinationPath:jsLibFolder,
         destinationFileName:'org.json.jar',
         unzip:false
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=/org/apache/flex/flex-tool-api/1.0.0/',
+        url:'http://search.maven.org/remotecontent?filepath=org/apache/flex/flex-tool-api/1.0.0/',
         remoteFileName:'flex-tool-api-1.0.0.jar',
         destinationPath:jsLibFolder,
         destinationFileName:'flex-tool-api.jar',
@@ -352,7 +356,7 @@ ApacheFalcon.fixConfigFiles = function()
         .on('close', function(){
             replace({
                 regex: "@playerversion@",
-                replacement: "19.0",
+                replacement: playerVersion,
                 paths: [constants.FLEXJS_FOLDER + 'frameworks/flex-config.xml'],
                 recursive: false,
                 silent: false
@@ -360,7 +364,7 @@ ApacheFalcon.fixConfigFiles = function()
 
             replace({
                 regex: "@swfversion@",
-                replacement: "30",
+                replacement: swfVersion,
                 paths: [constants.FLEXJS_FOLDER + 'frameworks/flex-config.xml'],
                 recursive: false,
                 silent: false
@@ -380,7 +384,7 @@ ApacheFalcon.fixConfigFiles = function()
         .on('close', function(){
             replace({
                 regex: "@playerversion@",
-                replacement: "19.0",
+                replacement: playerVersion,
                 paths: [constants.FLEXJS_FOLDER + 'frameworks/air-config.xml'],
                 recursive: false,
                 silent: false
@@ -388,7 +392,7 @@ ApacheFalcon.fixConfigFiles = function()
 
             replace({
                 regex: "@swfversion@",
-                replacement: "30",
+                replacement: swfVersion,
                 paths: [constants.FLEXJS_FOLDER + 'frameworks/air-config.xml'],
                 recursive: false,
                 silent: false

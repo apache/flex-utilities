@@ -23,14 +23,15 @@ var fs = require('fs');
 var events = require('events');
 var unzip = require('unzip');
 var mkdirp = require('mkdirp');
+var pjson = require('../package');
 
 var constants = require('../dependencies/Constants');
 
 var SWFObject = module.exports = Object.create(events.EventEmitter.prototype);
 
 //SWFObject
-var swfObjectURL = 'http://github.com/swfobject/swfobject/archive/';
-var fileNameSwfObject = '2.2.zip';
+var swfObjectURL = pjson.org_apache_flex.swf_object_url;
+var fileNameSwfObject = pjson.org_apache_flex.swf_object_file_name;
 
 SWFObject.downloadSwfObject = function()
 {
