@@ -23,14 +23,16 @@ var fs = require('fs');
 var events = require('events');
 var prompt = require('prompt');
 var unzip = require('unzip');
+var pjson = require('../package');
 
 var constants = require('../dependencies/Constants');
 
 var AdobeAIR = module.exports = Object.create(events.EventEmitter.prototype);
 
 //Adobe AIR
-var AdobeAIRURL = 'http://airdownload.adobe.com/air/win/download/19.0/';
-var fileNameAdobeAIR = 'AdobeAIRSDK.zip';
+var AdobeAIRURL = pjson.org_apache_flex.adobe_air_url;
+var fileNameAdobeAIR = pjson.org_apache_flex.adobe_air_file_name;
+
 var adobeAirPromptText = "\
 Apache FlexJS SDK uses the Adobe AIR SDK to build Adobe AIR applications.\n\
 The Adobe AIR SDK is subject to and governed by the\n\

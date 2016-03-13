@@ -22,14 +22,15 @@ var request = require('request');
 var fs = require('fs');
 var events = require('events');
 var prompt = require('prompt');
+var pjson = require('../package');
 
 var constants = require('../dependencies/Constants');
 var duc = require('../dependencies/DownloadUncompressAndCopy');
 
 var FlashPlayerGlobal = module.exports = Object.create(events.EventEmitter.prototype);
 
-var flashPlayerGlobalURL = 'http://download.macromedia.com/get/flashplayer/updaters/19/';
-var fileNameFlashPlayerGlobal = 'playerglobal19_0.swc';
+var flashPlayerGlobalURL = pjson.org_apache_flex.flash_player_global_url;
+var fileNameFlashPlayerGlobal = pjson.org_apache_flex.flash_player_global_file_name;
 var flashPlayerGlobalPromptText = "\
     Apache FlexJS SDK uses the Adobe Flash Player's playerglobal.swc to build Adobe Flash applications.\n\
     \n\
