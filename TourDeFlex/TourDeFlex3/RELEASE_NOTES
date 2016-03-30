@@ -18,7 +18,7 @@ Bugs fixed and improvements:
 FLEX-34505 Add squiggly example to Tour De Flex
 FLEX-34501 Allow 3rd parties to provide examples for inclusion in TourDeFlex
 FLEX-34596 Tour De Flex linking is broken
-FLEX-34493 Loading bar not centred in panel
+FLEX-34493 Loading bar not centered in panel
 FLEX-34485 Improve TourDeFlex consistency and design
 
 ------------------------------------------------

@@ -89,7 +89,7 @@ public dynamic class ViewResourceConstants extends Proxy implements IEventDispat
 	
 	private var _eventDispatcher:EventDispatcher;
 	
-	private var _resourceManager:IResourceManager = ResourceManager.getInstance();;
+	private var _resourceManager:IResourceManager = ResourceManager.getInstance();
 	
 	//--------------------------------------------------------------------------
 	//

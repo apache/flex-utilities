@@ -475,7 +475,7 @@
 				<node label="MaskedTextInput" app="apache/controls/SparkRichTextEditorExample"/>
 			</node> 
 			 -->
-			 <node label="Apache Flex Squiggly" app="apache/Squiggly">
+			 <node label="Apache Flex Squiggly" app="apache/Squiggly1_1">
 				<node label="MX Spelling Example" app="apache/squiggly/SpellingExample"/>
 				<node label="Spark Spelling Example" app="apache/squiggly/SpellingExExample"/>
 			</node>

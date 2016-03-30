@@ -26,7 +26,7 @@
     <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
         <isset property="env.FLEX_HOME" />
     </condition>
-    <property name="version" value="1.1" />
+    <property name="version" value="1.2" />
 	
     <!-- additional tasks - mxmlc tag -->
     <path id="flexTasks.path">
@@ -67,16 +67,36 @@
 		</sequential>
 	</macrodef>
 	
-    <macrodef name="compile-mxml-libs">
+    <macrodef name="compile-mxml-squiggly-mx-libs">
     	 <attribute name="example"/>
         
         <sequential>
    			<mxmlc file="${basedir}/src/@{example}.mxml"
             	output="${basedir}/src/@{example}.swf" fork="true" failonerror="true">
 				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
-   	            <compiler.library-path dir="${basedir}/libs" append="true">
-   	                <include name="*.swc" />
-   	            </compiler.library-path>
+   	            <compiler.include-libraries dir="${basedir}/libs" append="true">
+   	            	<include name="ApacheFlexLinguisticUtils.swc" />
+   	            	<include name="ApacheFlexSpellingEngine.swc" />
+   	            	<include name="ApacheFlexSpellingFramework.swc" />
+   	            	<include name="ApacheFlexSpellingUI.swc" />
+   	            </compiler.include-libraries>
+			</mxmlc>
+		</sequential>
+	</macrodef>
+	
+    <macrodef name="compile-mxml-squiggly-spark-libs">
+    	 <attribute name="example"/>
+        
+        <sequential>
+   			<mxmlc file="${basedir}/src/@{example}.mxml"
+            	output="${basedir}/src/@{example}.swf" fork="true" failonerror="true">
+				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+   	            <compiler.include-libraries dir="${basedir}/libs" append="true">
+   	            	<include name="ApacheFlexLinguisticUtils.swc" />
+   	            	<include name="ApacheFlexSpellingEngine.swc" />
+   	            	<include name="ApacheFlexSpellingFramework.swc" />
+   	            	<include name="ApacheFlexSpellingUIEx.swc" />
+   	            </compiler.include-libraries>
 			</mxmlc>
 		</sequential>
 	</macrodef>	
@@ -441,13 +461,17 @@
 	<property name="download.dir" value="temp"/>
 	<property name="unpack.dir" value="squiggly"/>
 	<property name="mirror.url" value="http://flex.apache.org/single-mirror-url.cgi" />
-    <property name="squiggly.folder" value="flex/squiggly/1.0" />
+    <property name="squiggly.folder" value="flex/squiggly/1.1" />
  
-	<condition property="squiggly.file" value="apache-flex-squiggly-1.0-bin.zip">
+	<condition property="isWindows" value="true">
+    	<os family="windows" />
+    </condition>
+
+	<condition property="squiggly.file" value="apache-flex-squiggly-1.1-bin.zip">
     	<os family="windows" />
     </condition>
 	
-    <condition property="squiggly.file" value="apache-flex-squiggly-1.0-bin.tar.gz">
+    <condition property="squiggly.file" value="apache-flex-squiggly-1.1-bin.tar.gz">
     	<or>
     		<os family="mac" />
     		<os family="unix" />
@@ -455,14 +479,51 @@
     </condition>
 	
 	<target name="compile-squiggly" description="compile apache squiggly examples" depends="squiggly-download">
-		<compile-mxml-libs example="/apache/squiggly/SpellingExample"/>
-		<compile-mxml-libs example="/apache/squiggly/SpellingExExample"/>
+		<compile-mxml example="/apache/Squiggly1_1"/>
+		<compile-mxml-squiggly-mx-libs example="/apache/squiggly/SpellingExample"/>
+		<compile-mxml-squiggly-spark-libs example="/apache/squiggly/SpellingExExample"/>
 	</target>
 	
     <target name="squiggly-check" description="Checks if Squiggly has been downloaded.">
-        <available file="${basedir}/libs/ApacheflexSpellingEngine.swc" property="sqigggly.present"/>
+        <available file="${basedir}/libs/ApacheFlexSpellingEngine.swc" property="sqigggly.present"/>
     </target>
-        	
+        
+	<target name="squiggly-untar" unless="isWindows">
+    	<mkdir dir="${unpack.dir}"/>
+    	<untar dest="${unpack.dir}" src="${download.dir}/${squiggly.file}" compression="gzip" />
+	</target>
+		
+	<target name="squiggly-unzip" if="isWindows">
+    	<mkdir dir="${unpack.dir}"/>
+    	<unzip dest="${unpack.dir}" src="${download.dir}/${squiggly.file}" />
+	</target>
+	
+	<target name="copy-squiggly-dicts">
+		<!-- So squiggly works in Tour De Flex app -->
+		<mkdir dir="${basedir}/dictionaries"/>
+		<copy todir="${basedir}/dictionaries">
+			<fileset dir="${unpack.dir}/dictionaries/">
+				<include name="**" />
+			</fileset>
+		</copy>
+
+        <!-- So squiggly works in nightly builds of Tour De Flex app -->
+        <mkdir dir="${basedir}/src/dictionaries"/>
+        <copy todir="${basedir}/src/dictionaries">
+            <fileset dir="${unpack.dir}/dictionaries/">
+                <include name="**" />
+            </fileset>
+        </copy>
+
+		<!-- So squiggly works stand alone -->
+		<mkdir dir="${basedir}/src/apache/squiggly/dictionaries"/>
+		<copy todir="${basedir}/src/apache/squiggly/dictionaries/">
+			<fileset dir="${unpack.dir}/dictionaries/">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+	
     <target name="squiggly-download" depends="squiggly-check" unless="sqigggly.present" description="Downloads squiggly SDK">
     	
     	<mkdir dir="${download.dir}"/>
@@ -476,10 +537,9 @@
         <get src="${squiggly.url}/${squiggly.folder}/${squiggly.file}" 
             dest="${download.dir}/${squiggly.file}" 
             verbose="true"/>
-    	
-    	<!-- TOSO upzip on windows -->
-    	<mkdir dir="${unpack.dir}"/>
-    	<untar dest="${unpack.dir}" src="${download.dir}/${squiggly.file}" compression="gzip" />
+
+    	<ant target="squiggly-untar" />
+    	<ant target="squiggly-unzip" />
     	
     	<mkdir dir="libs"/>
     	<copy todir="libs">
@@ -488,12 +548,7 @@
     		</fileset>
     	</copy>
     	
-    	<mkdir dir="dictionaries"/>
-    	<copy todir="dictionaries">
-    		<fileset dir="${unpack.dir}/dictionaries">
-    			<include name="*.*" />
-    		</fileset>
-    	</copy>
+		<ant target="copy-squiggly-dicts" />
     </target>
 		
 	<target name="package" description="package up all source files" depends="package-dir,package-tar,package-zip">
@@ -520,7 +575,7 @@
             	<include name="src/favicon.ico" />
                 <include name="src/index.html" />
                 <include name="src/explorer.xml" />
-                <include name="src/AC_OETags.js" />
+                <include name="src/swfobject.js" />
                 <include name="**/*.mxml" />
                 <include name="**/*.as" />
                 <include name="**/*.jpg" />
@@ -533,6 +588,10 @@
                 <include name="**/*.xml" />
             	<exclude name="**/*.swf" />
             	<exclude name="installer.xml" />
+            	<exclude name="squiggly" />
+                <exclude name="dictionaries" />
+            	<exclude name="src/dictionaries" />
+            	<exclude name="src/apache/squiggly/dictionaries" />
              </tarfileset>
          </tar>
 	</target>
@@ -551,7 +610,7 @@
             	<include name="src/favicon.ico" />
                 <include name="src/index.html" />
                 <include name="src/explorer.xml" />
-                <include name="src/AC_OETags.js" />
+                <include name="src/swfobject.js" />
                 <include name="**/*.mxml" />
                 <include name="**/*.as" />
                 <include name="**/*.jpg" />
@@ -564,13 +623,27 @@
                 <include name="**/*.xml" />
                 <exclude name="**/*.swf" />
             	<exclude name="installer.xml" />
+            	<exclude name="squiggly" />
+            	<exclude name="dictionaries" />
+                <exclude name="src/dictionaries" />
+            	<exclude name="src/apache/squiggly/dictionaries" />
              </fileset>
          </zip>
 	</target>
    
+   <target name="create-md5" >
+       <echo message="Generating MD5 hashes for release artifacts"/>
+       <checksum algorithm="md5" file="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}-src.tar.gz" forceOverwrite="yes"/>
+       <checksum algorithm="md5" file="${basedir}/out/apache-flex-tour-de-flex-component-explorer-${version}-src.zip" forceOverwrite="yes"/>
+   </target>
+
     <target name="clean" description="clean up">
     	<delete>
     		<fileset dir="${basedir}" includes="**/*.swf" />
     	</delete>
+    	<delete dir="${basedir}/squiggly" />
+    	<delete dir="${basedir}/dictionaries" />
+        <delete dir="${basedir}/src/dictionaries" />
+    	<delete dir="${basedir}/src/apache/squiggly/dictionaries" />
     </target>
 </project>
