@@ -221,7 +221,7 @@
             ]]>
         </Entitlements> -->
 	<!-- Display Resolution for the app (either "standard" or "high"). Optional. Default "standard" -->
-	<!-- <requestedDisplayResolution></requestedDisplayResolution> -->
+	<requestedDisplayResolution>high</requestedDisplayResolution>
 	<!-- </iPhone> -->
 
 	<!-- Specify Android specific tags that get passed to AndroidManifest.xml file. -->
