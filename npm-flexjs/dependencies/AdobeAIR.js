@@ -38,15 +38,16 @@ Apache FlexJS SDK uses the Adobe AIR SDK to build Adobe AIR applications.\n\
 The Adobe AIR SDK is subject to and governed by the\n\
 Adobe AIR SDK License Agreement specified here:\n\
 http://www.adobe.com/products/air/sdk-eula.html.\n\
-    This license is not compatible with the Apache v2 license.\n\
-Do you want to download and install the Adobe AIR SDK? (y/n)";
+This license is not compatible with the Apache v2 license.\n\
+Do you want to download and install the Adobe AIR SDK?\
+This is a required component (y/n)";
 
 function promptForAdobeAIR()
 {
     var schema = {
         properties: {
             accept: {
-                description: adobeAirPromptText.magenta,
+                description: adobeAirPromptText.grey,
                 pattern: /^[YNyn\s]{1}$/,
                 message: 'Please respond with either y or n'.red,
                 required: true
@@ -62,6 +63,7 @@ function promptForAdobeAIR()
         else
         {
             console.log('Aborting installation');
+            AdobeAIR.emit('abort');
         }
     });
 }

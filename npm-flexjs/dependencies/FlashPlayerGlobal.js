@@ -32,20 +32,20 @@ var FlashPlayerGlobal = module.exports = Object.create(events.EventEmitter.proto
 var flashPlayerGlobalURL = pjson.org_apache_flex.flash_player_global_url;
 var fileNameFlashPlayerGlobal = pjson.org_apache_flex.flash_player_global_file_name;
 var flashPlayerGlobalPromptText = "\
-    Apache FlexJS SDK uses the Adobe Flash Player's playerglobal.swc to build Adobe Flash applications.\n\
-    \n\
-    The playerglobal.swc file is subject to and governed by the\n\
-    Adobe Flex SDK License Agreement specified here:\n\
-    http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf,\n\
-    By downloading, modifying, distributing, using and/or accessing the playerglobal.swc file\n\
-    you agree to the terms and conditions of the applicable end user license agreement.\n\
-    \n\
-    In addition to the Adobe license terms, you also agree to be bound by the third-party terms specified here:\n\
-    http://www.adobe.com/products/eula/third_party/.\n\
-    Adobe recommends that you review these third-party terms.\n\
-    \n\
-    This license is not compatible with the Apache v2 license.\n\
-    Do you want to download and install the playerglobal.swc? (y/n)";
+Apache FlexJS SDK uses the Adobe Flash Player's playerglobal.swc to build Adobe Flash applications.\n\
+The playerglobal.swc file is subject to and governed by the\n\
+Adobe Flex SDK License Agreement specified here:\n\
+http://www.adobe.com/products/eulas/pdfs/adobe_flex_software_development_kit-combined-20110916_0930.pdf,\n\
+By downloading, modifying, distributing, using and/or accessing the playerglobal.swc file\n\
+you agree to the terms and conditions of the applicable end user license agreement.\n\
+\n\
+In addition to the Adobe license terms, you also agree to be bound by the third-party terms specified here:\n\
+http://www.adobe.com/products/eula/third_party/.\n\
+Adobe recommends that you review these third-party terms.\n\
+\n\
+This license is not compatible with the Apache v2 license.\n\
+Do you want to download and install the playerglobal.swc?\n\
+This is a required component (y/n)";
 
 FlashPlayerGlobal.promptForFlashPlayerGlobal = function()
 {
@@ -68,6 +68,7 @@ FlashPlayerGlobal.promptForFlashPlayerGlobal = function()
         else
         {
             console.log('Aborting installation');
+            FlashPlayerGlobal.emit('abort');
         }
     });
 };
