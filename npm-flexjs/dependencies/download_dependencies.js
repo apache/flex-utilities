@@ -27,9 +27,11 @@ var flashplayerglobal = require('./FlashPlayerGlobal');
 var apacheFlexJS = require('./ApacheFlexJS');
 var apacheFalcon = require('./ApacheFalcon');
 var swfObject = require('./SWFObject');
+var flatUI = require('./FlatUI');
 
 var installSteps = [
     createDownloadsDirectory,
+    installFlatUI,
     installFlashPlayerGlobal,
     installAdobeAIR,
     installSWFObject,
@@ -76,12 +78,14 @@ function handleInstallStepComplete(event)
 function installFlashPlayerGlobal()
 {
     flashplayerglobal.once('complete', handleInstallStepComplete);
+    flashplayerglobal.once('abort', handleAbort);
     flashplayerglobal.install();
 }
 
 function installAdobeAIR(event)
 {
     adobeair.once('complete', handleInstallStepComplete);
+    adobeair.once('abort', handleAbort);
     adobeair.install();
 }
 
@@ -103,9 +107,20 @@ function installSWFObject(event)
     swfObject.install();
 }
 
+function installFlatUI(event)
+{
+    flatUI.once('complete', handleInstallStepComplete);
+    flatUI.install();
+}
+
 function allDownloadsComplete()
 {
-    console.log('Finished all downloads');
+    console.log('Installation complete!');
+}
+
+function handleAbort()
+{
+    process.exit(1);
 }
 
 start();
