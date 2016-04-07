@@ -53,3 +53,14 @@ Examples
 	
 	Windows: asjsc C:\Users\<username>\AppData\Roaming\npm\node_modules\flexjs\examples\native\USStatesMap\src\USStatesMap.as
 	Mac: asjsc /usr/local/lib/node_modules/flexjs/examples/native/USStatesMap/src/USStatesMap.as
+	
+	
+Note
+=================================
+    
+    Note: Apache Flex™, Flex, FlexJS and Apache™ are trademarks of The Apache Software Foundation.
+	The Apache Flex SDK product page is located here: http://flex.apache.org
+
+    Adobe Flash, Adobe AIR, and Adobe PhoneGap are either registered trademarks or trademarks 
+	of Adobe Systems Incorporated in the United States and/or other countries and are used by 
+	permission from Adobe.	
