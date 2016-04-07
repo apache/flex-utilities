@@ -34,17 +34,19 @@
     "mxmlc": "./js/bin/mxmlcnpm"
   },
   "org_apache_flex": {
-    "flexjs_path_binary": "flex/flexjs/0.5.0/binaries/",
-    "flexjs_file_name": "apache-flex-flexjs-0.5.0-bin.zip",
-    "falcon_path_binary": "flex/falcon/0.5.0/binaries/",
-    "falcon_file_name": "apache-flex-falconjx-0.5.0-bin.zip",
-    "flash_player_global_url": "http://download.macromedia.com/get/flashplayer/updaters/19/",
-    "flash_player_global_file_name": "playerglobal19_0.swc",
-    "adobe_air_url": "http://airdownload.adobe.com/air/win/download/19.0/",
+    "flexjs_path_binary": "flex/flexjs/0.6.0/binaries/",
+    "flexjs_file_name": "apache-flex-flexjs-0.6.0-bin.zip",
+    "falcon_path_binary": "flex/falcon/0.6.0/binaries/",
+    "falcon_file_name": "apache-flex-falconjx-0.6.0-bin.zip",
+    "flash_player_global_url": "http://download.macromedia.com/get/flashplayer/updaters/21/",
+    "flash_player_global_file_name": "playerglobal21_0.swc",
+    "adobe_air_url": "http://airdownload.adobe.com/air/win/download/21.0/",
     "adobe_air_file_name": "AdobeAIRSDK.zip",
-    "player_version": "19.0",
-    "swf_version": "30",
+    "player_version": "21.0",
+    "swf_version": "32",
     "swf_object_url": "http://github.com/swfobject/swfobject/archive/",
-    "swf_object_file_name": "2.2.zip"
+    "swf_object_file_name": "2.2.zip",
+    "flatui_url": "https://github.com/designmodo/Flat-UI/archive/",
+    "flatui_file_name": "2.2.2.zip"
   }
 }
