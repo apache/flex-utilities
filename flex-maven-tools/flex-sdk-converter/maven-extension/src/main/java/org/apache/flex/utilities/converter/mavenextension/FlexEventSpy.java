@@ -107,14 +107,14 @@ public class FlexEventSpy extends AbstractEventSpy {
 
                             if("org.apache.flex.compiler".equals(artifact.getGroupId()) &&
                                     artifact.getArtifactId().startsWith("falcon-")) {
-                                logger.info("Falcon artifacts are publicly available as Maven artifacts. " +
+/*                                logger.info("Falcon artifacts are publicly available as Maven artifacts. " +
                                         "Please setup your Maven configuration.\nFor more information please visit: " +
-                                        "https://cwiki.apache.org/confluence/display/FLEX/Building+Flex+applications+with+Maven");
+                                        "https://cwiki.apache.org/confluence/display/FLEX/Building+Flex+applications+with+Maven");*/
                             }
                             else if("org.apache.flex.flexjs.framework".equals(artifact.getGroupId())) {
-                                logger.info("FlexJS artifacts are publicly available as Maven artifacts. " +
+/*                                logger.info("FlexJS artifacts are publicly available as Maven artifacts. " +
                                         "Please setup your Maven configuration.\nFor more information please visit: " +
-                                        "https://cwiki.apache.org/confluence/display/FLEX/Building+Flex+applications+with+Maven");
+                                        "https://cwiki.apache.org/confluence/display/FLEX/Building+Flex+applications+with+Maven");*/
                             }
                             else if(!canResolve(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(),
                                     artifact.getExtension(), artifact.getClassifier())) {
