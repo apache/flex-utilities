@@ -19,6 +19,7 @@ package org.apache.flex.utilities.converter.retrievers.download;
 import org.apache.flex.utilities.converter.api.ProxySettings;
 import org.apache.flex.utilities.converter.retrievers.types.PlatformType;
 import org.apache.flex.utilities.converter.retrievers.types.SdkType;
+import org.junit.Ignore;
 import org.mockserver.integration.ClientAndProxy;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -59,7 +60,9 @@ public class ProxyTest {
     /**
      * Does a download using the HttpClient class
      */
+    // TODO: Re-Include this.
     @Test
+    @Ignore
     public void simpleSafeHttpNoAuthProxy() throws Exception {
         ProxySettings proxySettings = new ProxySettings("HTTP", "localhost", 3456, null, null, null);
         ProxySettings.setProxySettings(proxySettings);
