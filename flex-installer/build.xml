@@ -358,14 +358,33 @@
         </java>
     </target>
 
+    <target name="check-as3crypto-license" >
+        <condition property="found-as3crypto-license" >
+            <available file="${DEPS_DIR}/as3crypto/LICENSE.txt"/>
+        </condition>
+    </target>
+    
+    <target name="get-as3crypto-license" depends="check-as3crypto-license" unless="found-as3crypto-license">
+        <mkdir dir="${DEPS_DIR}/as3crypto/temp" />
+        <get src="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/as3crypto/Crypto.zip"
+        dest="${DEPS_DIR}/as3crypto/temp"
+        />
+        <unzip src="${DEPS_DIR}/as3crypto/temp/Crypto.zip" dest="${DEPS_DIR}/as3crypto">
+            <patternset>
+                <include name="LICENSE.txt"/>
+            </patternset>
+        </unzip>
+        <delete dir="${DEPS_DIR}/as3crypto/temp" />
+    </target>
+    
     <target name="simple-untar-license" >
         <mkdir dir="${DEPS_DIR}/as3-simple-untar" />
         <get src="https://raw.githubusercontent.com/thdtjsdn/as3-simple-untar/master/src/de/ketzler/utils/SimpleUntar.as"
         dest="${DEPS_DIR}/as3-simple-untar/LICENSE"
         />
         <replaceregexp file="${DEPS_DIR}/as3-simple-untar/LICENSE"
-            match="package .*" replace=""
-            flags="s"
+        match="package .*" replace=""
+        flags="s"
         />
     </target>
     
@@ -380,10 +399,7 @@
         <get src="https://raw.githubusercontent.com/mikechambers/as3corelib/master/README"
             dest="${DEPS_DIR}/as3corelib"
             />
-        <mkdir dir="${DEPS_DIR}/as3crypto" />
-        <get src="http://as3crypto.googlecode.com/svn/trunk/as3crypto/LICENSE.txt"
-            dest="${DEPS_DIR}/as3crypto"
-            />
+        <antcall target="get-as3crypto-license" />
         <antcall target="simple-untar-license" />
         <java jar="${ADT}" fork="true"
             failonerror="true"
