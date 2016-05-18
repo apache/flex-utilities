@@ -120,7 +120,7 @@ public class DownloadRetriever extends BaseRetriever {
                 final File targetFile = File.createTempFile(type.toString() + "-" + version +
                                 ((platformType != null) ? "-" + platformType : "") + "-",
                         sourceUrl.getFile().substring(sourceUrl.getFile().lastIndexOf(".")));
-                performFastDownload(sourceUrl, targetFile);
+                performSafeDownload(sourceUrl.toURI(), targetFile);
 
                 ////////////////////////////////////////////////////////////////////////////////
                 // Do the extracting.
