@@ -99,6 +99,7 @@ public class FlexEventSpy extends AbstractEventSpy {
                         Artifact artifact = repositoryEvent.getArtifact();
 
                         if (artifact.getGroupId().startsWith("org.apache.flex") &&
+                                !artifact.getGroupId().contains(".flexjs") &&
                                 !"rb.swc".equals(artifact.getExtension())) {
                             // Output a cool splash-screen ... sorry for that ... couldn't resist :-)
                             if(!flexSplashScreenShown) {
