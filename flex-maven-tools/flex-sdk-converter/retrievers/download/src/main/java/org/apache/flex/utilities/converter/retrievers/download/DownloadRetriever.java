@@ -59,6 +59,8 @@ public class DownloadRetriever extends BaseRetriever {
     public static final String FLEX_INSTALLER_CONFIG_URL =
             "http://flex.apache.org/installer/sdk-installer-config-4.0.xml";
 
+    public static final long MEGABYTE = 1 << 20;
+
     /**
      * Wrapper to allow simple overriding of this property.
      *
@@ -257,16 +259,21 @@ public class DownloadRetriever extends BaseRetriever {
                 content.close();
             }
         } else {
-            long transferedSize = 0L;
             if (expectedSize > 1014 * 1024) {
                 System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
             } else {
                 System.out.println("Expected size: " + (expectedSize / 1024) + "KB");
             }
             final ProgressBar progressBar = new ProgressBar(expectedSize);
-            while (transferedSize < expectedSize) {
-                transferedSize += fos.getChannel().transferFrom(rbc, transferedSize, 1 << 20);
-                progressBar.updateProgress(transferedSize);
+            long transferredSize = 0L;
+            while ((expectedSize == 0) || (transferredSize < expectedSize)) {
+                // Transfer about 1MB in each iteration.
+                long currentSize = fos.getChannel().transferFrom(rbc, transferredSize, MEGABYTE);
+                if(currentSize < MEGABYTE) {
+                    break;
+                }
+                transferredSize += currentSize;
+                progressBar.updateProgress(transferredSize);
             }
             fos.close();
             System.out.println();
