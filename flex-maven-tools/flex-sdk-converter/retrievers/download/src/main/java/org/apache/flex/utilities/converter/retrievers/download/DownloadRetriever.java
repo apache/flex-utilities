@@ -269,6 +269,7 @@ public class DownloadRetriever extends BaseRetriever {
             while ((expectedSize == 0) || (transferredSize < expectedSize)) {
                 // Transfer about 1MB in each iteration.
                 long currentSize = fos.getChannel().transferFrom(rbc, transferredSize, MEGABYTE);
+                System.out.println("Transferred " + currentSize + " bytes");
                 if(currentSize < MEGABYTE) {
                     break;
                 }
