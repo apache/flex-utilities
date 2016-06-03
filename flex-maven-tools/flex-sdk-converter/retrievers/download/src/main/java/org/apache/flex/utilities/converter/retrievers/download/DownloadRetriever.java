@@ -266,19 +266,15 @@ public class DownloadRetriever extends BaseRetriever {
             }
             final ProgressBar progressBar = new ProgressBar(expectedSize);
             long transferredSize = 0L;
-            System.out.println("DEBUG: Entering transfer loop.");
             while ((expectedSize == 0) || (transferredSize < expectedSize)) {
                 // Transfer about 1MB in each iteration.
                 long currentSize = fos.getChannel().transferFrom(rbc, transferredSize, MEGABYTE);
-                System.out.println("DEBUG: Transferred " + currentSize + " bytes.");
                 if(currentSize < MEGABYTE) {
-                    System.out.println("DEBUG: Existing loop because read less than 1MB.");
                     break;
                 }
                 transferredSize += currentSize;
                 progressBar.updateProgress(transferredSize);
             }
-            System.out.println("DEBUG: End of transfer loop.");
             fos.close();
             System.out.println();
         }
