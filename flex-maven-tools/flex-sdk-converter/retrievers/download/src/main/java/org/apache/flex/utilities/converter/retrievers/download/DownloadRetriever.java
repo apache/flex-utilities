@@ -250,7 +250,7 @@ public class DownloadRetriever extends BaseRetriever {
         final long expectedSize = entity.getContentLength();
         System.out.println("===========================================================");
         System.out.println("Downloading " + sourceUri.toString());
-        if(expectedSize < 0) {
+        if(expectedSize <= 0) {
             try {
                 System.out.println("Unknown size.");
                 IOUtils.copy(content, fos);
