@@ -419,7 +419,8 @@ public class AirConverter extends BaseConverter implements Converter {
         public boolean accept(File dir, String name) {
             return name.equals("aircore.swc") || name.equals("airglobal.swc") ||
                     name.equals("applicationupdater.swc") || name.equals("applicationupdater_ui.swc") ||
-                    name.equals("servicemonitor.swc");
+                    name.equals("servicemonitor.swc") || name.equals("crosspromotion.swc") ||
+                    name.equals("gamepad.swc");
         }
     }
 
