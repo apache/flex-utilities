@@ -25,7 +25,8 @@
 # In Windows Command Prompt, use mxmlc.bat instead.
 #
 
-SCRIPT_HOME=`dirname $0`
+SCRIPT_REAL_PATH=`readlink -f "$0"`
+SCRIPT_HOME=`dirname "$SCRIPT_REAL_PATH"`
 FALCON_HOME=${SCRIPT_HOME}/../..
 FLEX_HOME=${SCRIPT_HOME}/../..
 
@@ -53,9 +54,6 @@ elif [ $OS = "Unix" ]; then
     if [ "$isOSX" != "" -a "$HOSTTYPE" = "x86_64" -a "$check64" != "" -a "$javaVersion" = "1.6" ]; then
         D32='-d32'
     fi
-    FALCON_HOME="/usr/local/lib/node_modules/flexjs"
-    FLEX_HOME="/usr/local/lib/node_modules/flexjs"
-    SCRIPT_HOME="/usr/local/lib/node_modules/flexjs/js/bin"
 fi
 
 VMARGS="-Xmx384m -Dsun.io.useCanonCaches=false "

@@ -27,8 +27,18 @@
 
 SCRIPT_REAL_PATH=`readlink -f "$0"`
 SCRIPT_HOME=`dirname "$SCRIPT_REAL_PATH"`
-FALCON_HOME=${SCRIPT_HOME}/../..
-FLEX_HOME=${SCRIPT_HOME}/../..
+if [ "x${FALCON_HOME}" = "x" ]
+then
+    FALCON_HOME=${SCRIPT_HOME}/../..
+fi
+
+echo Using Falcon codebase: $FALCON_HOME
+
+if [ "x${FLEX_HOME}" = "x" ]
+then
+    FLEX_HOME=${SCRIPT_HOME}/../..
+fi
+echo Using Flex SDK: $FLEX_HOME
 
 case `uname` in
 		CYGWIN*)
@@ -50,12 +60,12 @@ elif [ $OS = "Unix" ]; then
     check64="`java -version 2>&1 | grep -i 64-Bit`"
     isOSX="`uname | grep -i Darwin`"
     javaVersion="`java -version 2>&1 | awk -F '[ ".]+' 'NR==1 {print $3 "." $4}'`"
-
+    
     if [ "$isOSX" != "" -a "$HOSTTYPE" = "x86_64" -a "$check64" != "" -a "$javaVersion" = "1.6" ]; then
         D32='-d32'
-    fi
+    fi	
 fi
 
 VMARGS="-Xmx384m -Dsun.io.useCanonCaches=false "
 
-java $VMARGS $D32 $SETUP_SH_VMARGS -Dflexcompiler="$FALCON_HOME" -Dflexlib="$FLEX_HOME/frameworks" -jar "$SCRIPT_HOME/../lib/compc.jar" +flexlib="$FLEX_HOME/frameworks" -js-output-type=jsc -external-library-path="$SCRIPT_HOME/../libs/js.swc" "$@"
+java $VMARGS $D32 $SETUP_SH_VMARGS -Dflexcompiler="$FALCON_HOME" -Dflexlib="$FLEX_HOME/frameworks" -jar "$SCRIPT_HOME/../lib/mxmlc.jar" +flexlib="$FLEX_HOME/frameworks" -js-output-type=FLEXJS -sdk-js-lib="$FLEX_HOME/frameworks/js/FlexJS/src" "$@"
