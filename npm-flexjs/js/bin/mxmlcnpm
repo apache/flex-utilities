@@ -25,8 +25,10 @@
 # In Windows Command Prompt, use mxmlc.bat instead.
 #
 
-SCRIPT_REAL_PATH=`readlink -f "$0"`
-SCRIPT_HOME=`dirname "$SCRIPT_REAL_PATH"`
+function abspath() { pushd . > /dev/null; if [ -d "$1" ]; then cd "$1"; dirs -l +0; else cd "`dirname \"$1\"`"; cur_dir=`dirs -l +0`; if [ "$cur_dir" == "/" ]; then echo "$cur_dir`basename \"$1\"`"; else echo "$cur_dir/`basename \"$1\"`"; fi; fi; popd > /dev/null; }
+SCRIPT_REAL_FILE=`readlink "$0" || echo "$0"`;
+SCRIPT_ABS_PATH=`abspath "$SCRIPT_REAL_FILE"`
+SCRIPT_HOME=`dirname "$SCRIPT_ABS_PATH"`
 if [ "x${FALCON_HOME}" = "x" ]
 then
     FALCON_HOME=${SCRIPT_HOME}/../..
