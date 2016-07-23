@@ -142,9 +142,13 @@ public class MavenArtifact {
 
     public File getBinaryTargetFile(File targetRootDirectory, String classifier) {
         if((binaryArtifacts != null) && (binaryArtifacts.containsKey(classifier))) {
+            File file = binaryArtifacts.get(classifier);
+            String type = ("pom".equals(packaging)) ?
+                    ((file.getName().endsWith("zip")) ? "zip" : "exe") :
+                    packaging;
             final String fileName = groupId.replace(".", File.separator) + File.separator + artifactId + File.separator +
                     version + File.separator + artifactId + "-" + version +
-                    (DEFAULT_CLASSIFIER.equals(classifier) ? "" : "-" + classifier) + "." + packaging;
+                    (DEFAULT_CLASSIFIER.equals(classifier) ? "" : "-" + classifier) + "." + type;
             return new File(targetRootDirectory, fileName);
         }
         return null;
