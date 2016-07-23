@@ -277,17 +277,23 @@ public class AirConverter extends BaseConverter implements Converter {
         adl.setGroupId("com.adobe.air.runtime");
         adl.setArtifactId("adl");
         adl.setVersion(airSdkVersion);
-        adl.setPackaging("zip");
+        // We'll use pom packaging as we don't have a default artifact to download.
+        adl.setPackaging("exe");
         final File directory = new File(rootSourceDirectory, "bin");
         if (!directory.exists() || !directory.isDirectory()) {
             throw new ConverterException("Runtime directory does not exist.");
         }
-        try {
-            File adlZip = File.createTempFile("adl-" + airSdkVersion, "zip");
-            generateZip(directory.listFiles(new AirRuntimeFilter()), adlZip);
-            adl.addDefaultBinaryArtifact(adlZip);
-        } catch (IOException e) {
-            throw new ConverterException("Error creating adl zip.", e);
+        File[] adlExecutables = directory.listFiles(new AirRuntimeFilter());
+        if(adlExecutables != null) {
+            for(File adlExecutable : adlExecutables) {
+                if(adlExecutable.getName().endsWith(".exe")) {
+                    adl.addBinaryArtifact("win", adlExecutable);
+                }
+                // TODO: Check to see how it was with linux up till AIR 2.6
+                else {
+                    adl.addBinaryArtifact("mac", adlExecutable);
+                }
+            }
         }
         runtime.addDependency(adl);
         writeArtifact(adl);
