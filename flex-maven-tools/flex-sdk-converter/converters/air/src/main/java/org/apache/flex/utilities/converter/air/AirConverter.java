@@ -61,6 +61,7 @@ public class AirConverter extends BaseConverter implements Converter {
         generateCompilerArtifacts();
         generateRuntimeArtifacts();
         generateFrameworkArtifacts();
+        generateTemplatesArtifact();
     }
 
     /**
@@ -271,19 +272,25 @@ public class AirConverter extends BaseConverter implements Converter {
         runtime.setVersion(airSdkVersion);
         runtime.setPackaging("pom");
 
-        // Create a list of all libs that should belong to the AIR SDK runtime.
+        // Generate artifacts from the adl/adl.exe files
+        MavenArtifact adl = new MavenArtifact();
+        adl.setGroupId("com.adobe.air.runtime");
+        adl.setArtifactId("adl");
+        adl.setVersion(airSdkVersion);
+        adl.setPackaging("zip");
         final File directory = new File(rootSourceDirectory, "bin");
         if (!directory.exists() || !directory.isDirectory()) {
             throw new ConverterException("Runtime directory does not exist.");
         }
-        final List<File> files = new ArrayList<File>();
-        files.addAll(Arrays.asList(directory.listFiles(new AirRuntimeFilter())));
-
-        // Generate artifacts for every jar in the input directories (Actually this is only one file).
-        for (final File sourceFile : files) {
-            final MavenArtifact artifact = resolveArtifact(sourceFile, "com.adobe.air.runtime", airSdkVersion);
-            runtime.addDependency(artifact);
+        try {
+            File adlZip = File.createTempFile("adl-" + airSdkVersion, "zip");
+            generateZip(directory.listFiles(new AirRuntimeFilter()), adlZip);
+            adl.addDefaultBinaryArtifact(adlZip);
+        } catch (IOException e) {
+            throw new ConverterException("Error creating adl zip.", e);
         }
+        runtime.addDependency(adl);
+        writeArtifact(adl);
 
         // Zip up the AIR runtime directory.
         final MavenArtifact airRuntimeArtifact = generateAirRuntimeArtifact(rootSourceDirectory);
@@ -325,6 +332,34 @@ public class AirConverter extends BaseConverter implements Converter {
 
         // Write this artifact to file.
         writeArtifact(framework);
+    }
+
+    protected void generateTemplatesArtifact() throws ConverterException {
+        // Create the root artifact.
+        final MavenArtifact templates = new MavenArtifact();
+        templates.setGroupId("com.adobe.air");
+        templates.setArtifactId("templates");
+        templates.setVersion(airSdkVersion);
+        templates.setPackaging("jar");
+
+        final File templatesDir = new File(rootSourceDirectory, "templates");
+        final File[] directories = templatesDir.listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                return pathname.isDirectory() && ("air".equals(pathname.getName()) ||
+                        "extensions".equals(pathname.getName()) || "sdk".equals(pathname.getName()));
+            }
+        });
+
+        try {
+            final File jar = File.createTempFile("air-templates-" + airSdkVersion, "jar");
+            generateZip(directories, jar);
+            templates.addDefaultBinaryArtifact(jar);
+        } catch (IOException e) {
+            throw new ConverterException("Error creating runtime zip.", e);
+        }
+
+        // Write this artifact to file.
+        writeArtifact(templates);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -411,7 +446,7 @@ public class AirConverter extends BaseConverter implements Converter {
 
     public static class AirRuntimeFilter implements FilenameFilter {
         public boolean accept(File dir, String name) {
-            return name.equalsIgnoreCase("adl.exe");
+            return name.equalsIgnoreCase("adl.exe") || name.equalsIgnoreCase("adl");
         }
     }
 

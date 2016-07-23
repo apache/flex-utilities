@@ -69,6 +69,7 @@ public class FlexConverter extends BaseConverter implements Converter {
 
         generateCompilerArtifacts();
         generateFrameworkArtifacts();
+        generateTemplatesArtifact();
     }
 
     /**
@@ -193,6 +194,31 @@ public class FlexConverter extends BaseConverter implements Converter {
         if(mxfteThemeCss.exists()){
             generateMxFteThemeArtifact(mxfteThemeCss);
         }
+    }
+
+    protected void generateTemplatesArtifact() throws ConverterException {
+        // Create the root artifact.
+        final MavenArtifact templates = new MavenArtifact();
+        templates.setGroupId("org.apache.flex");
+        templates.setArtifactId("templates");
+        templates.setVersion(flexSdkVersion);
+        templates.setPackaging("jar");
+
+        final File templatesDir = new File(rootSourceDirectory, "templates");
+        final File[] directories = templatesDir.listFiles(new FileFilter() {
+            public boolean accept(File pathname) {
+                return pathname.isDirectory() && "automation-runtimeloading-files".equals(pathname.getName());
+            }
+        });
+
+        try {
+            final File jar = File.createTempFile("flex-templates-" + flexSdkVersion, "jar");
+            generateZip(directories, jar);
+            templates.addDefaultBinaryArtifact(jar);
+        } catch (IOException e) {
+            throw new ConverterException("Error creating runtime zip.", e);
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
