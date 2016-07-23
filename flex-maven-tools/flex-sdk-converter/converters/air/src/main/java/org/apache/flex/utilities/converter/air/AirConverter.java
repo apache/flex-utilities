@@ -83,7 +83,10 @@ public class AirConverter extends BaseConverter implements Converter {
             throw new ConverterException("Compiler directory does not exist.");
         }
         final List<File> files = new ArrayList<File>();
-        files.addAll(Arrays.asList(directory.listFiles(new AirCompilerFilter())));
+        File[] compilerFiles = directory.listFiles(new AirCompilerFilter());
+        if(compilerFiles != null) {
+            files.addAll(Arrays.asList(compilerFiles));
+        }
 
         // Add the smali.jar and baksmali.jar from the android/lib directory
         // as this is needed for Android packaging.
@@ -91,7 +94,10 @@ public class AirConverter extends BaseConverter implements Converter {
         if (androidDir.exists() && androidDir.isDirectory()) {
             File androidLibDir = new File(androidDir, "lib");
             if (androidLibDir.exists() && androidLibDir.isDirectory()) {
-                files.addAll(Arrays.asList(androidLibDir.listFiles(new AirCompilerFilter())));
+                File[] compilerLibs = androidLibDir.listFiles(new AirCompilerFilter());
+                if(compilerLibs != null) {
+                    files.addAll(Arrays.asList(compilerLibs));
+                }
             }
         }
 
@@ -328,7 +334,10 @@ public class AirConverter extends BaseConverter implements Converter {
             throw new ConverterException("Framework directory does not exist.");
         }
         final List<File> files = new ArrayList<File>();
-        files.addAll(Arrays.asList(directory.listFiles(new AirFrameworkFilter())));
+        File[] frameworkFiles = directory.listFiles(new AirFrameworkFilter());
+        if(frameworkFiles != null) {
+            files.addAll(Arrays.asList(frameworkFiles));
+        }
 
         // Generate artifacts for every jar in the input directories.
         for (final File sourceFile : files) {
