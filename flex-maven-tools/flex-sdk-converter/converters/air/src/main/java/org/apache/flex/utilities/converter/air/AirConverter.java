@@ -22,9 +22,7 @@ import org.apache.flex.utilities.converter.exceptions.ConverterException;
 import org.apache.flex.utilities.converter.model.MavenArtifact;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -63,6 +61,7 @@ public class AirConverter extends BaseConverter implements Converter {
         generateRuntimeArtifacts();
         generateFrameworkArtifacts();
         generateTemplatesArtifact();
+        generateMiscArtifact();
     }
 
     /**
@@ -154,7 +153,7 @@ public class AirConverter extends BaseConverter implements Converter {
         adl.setArtifactId("adl");
         adl.setVersion(airSdkVersion);
         // We'll use pom packaging as we don't have a default artifact to download.
-        adl.setPackaging("exe");
+        adl.setPackaging("pom");
         final File directory = new File(rootSourceDirectory, "bin");
         if (!directory.exists() || !directory.isDirectory()) {
             throw new ConverterException("Runtime directory does not exist.");
@@ -174,10 +173,12 @@ public class AirConverter extends BaseConverter implements Converter {
         runtime.addDependency(adl);
         writeArtifact(adl);
 
-        // Zip up the AIR runtime directory.
-        final MavenArtifact airRuntimeArtifact = generateAirRuntimeArtifact(rootSourceDirectory);
-        if (airRuntimeArtifact != null) {
-            runtime.addDependency(airRuntimeArtifact);
+        // Add up the AIR runtimes.
+        final List<MavenArtifact> airRuntimeArtifacts = generateAirRuntimeArtifacts(rootSourceDirectory);
+        if (airRuntimeArtifacts != null) {
+            for (MavenArtifact airRuntimeArtifact : airRuntimeArtifacts) {
+                runtime.addDependency(airRuntimeArtifact);
+            }
         }
 
         // Write this artifact to file.
@@ -247,6 +248,31 @@ public class AirConverter extends BaseConverter implements Converter {
         writeArtifact(templates);
     }
 
+    /**
+     * The misc artifact contains all the other stuff that the installer used to copy
+     * but that don't have an immediate effect on the maven build.
+     * @throws ConverterException something went wrong
+     */
+    private void generateMiscArtifact() throws ConverterException {
+        // Create the root artifact.
+        final MavenArtifact misc = new MavenArtifact();
+        misc.setGroupId("com.adobe.air");
+        misc.setArtifactId("misc");
+        misc.setVersion(airSdkVersion);
+        misc.setPackaging("zip");
+
+        Collection<File> content = listAllFiles(rootSourceDirectory, new AirMiscFilter(rootSourceDirectory));
+        try {
+            final File zip = File.createTempFile("air-misc-" + airSdkVersion, "jar");
+            generateZip(rootSourceDirectory, content.toArray(new File[0]), zip);
+            misc.addDefaultBinaryArtifact(zip);
+        } catch (IOException e) {
+            throw new ConverterException("Error creating misc zip.", e);
+        }
+
+        writeArtifact(misc);
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     //
     //   Utility methods
@@ -270,35 +296,45 @@ public class AirConverter extends BaseConverter implements Converter {
         }
     }
 
-    private MavenArtifact generateAirRuntimeArtifact(File rootDirectory) throws ConverterException {
-        final MavenArtifact airRuntimeArtifact = new MavenArtifact();
-        airRuntimeArtifact.setGroupId("com.adobe.air.runtime");
-        airRuntimeArtifact.setArtifactId("air-runtime");
-        airRuntimeArtifact.setVersion(airSdkVersion);
-        airRuntimeArtifact.setPackaging("zip");
+    private List<MavenArtifact> generateAirRuntimeArtifacts(File rootDirectory) throws ConverterException {
+        List<MavenArtifact> airRuntimeArtifacts = new LinkedList<MavenArtifact>();
 
-        final File runtimeRoot = new File(rootDirectory, "runtimes.air".replace(".", File.separator));
-        final File[] platforms = runtimeRoot.listFiles();
-        if (platforms != null) {
-            for (final File platform : platforms) {
-                if (!platform.isDirectory()) {
-                    continue;
+        final File runtimeRoot = new File(rootDirectory, "runtimes");
+        final File[] runtimes = runtimeRoot.listFiles();
+        if(runtimes != null) {
+            for(File runtime : runtimes) {
+                final MavenArtifact airRuntimeArtifact = new MavenArtifact();
+                airRuntimeArtifact.setGroupId("com.adobe.air.runtime");
+                airRuntimeArtifact.setArtifactId(runtime.getName());
+                airRuntimeArtifact.setVersion(airSdkVersion);
+                // We'll use pom packaging as we don't have a default artifact to download.
+                airRuntimeArtifact.setPackaging("pom");
+
+                final File[] platforms = runtime.listFiles();
+                if (platforms != null) {
+                    for (final File platform : platforms) {
+                        if (!platform.isDirectory()) {
+                            continue;
+                        }
+                        final String platformName = platform.getName();
+                        try {
+                            final File zip = File.createTempFile("AirRuntime-" + platformName + "-" + airSdkVersion, "zip");
+                            generateZip(platform.listFiles(), zip);
+                            airRuntimeArtifact.addBinaryArtifact(platformName, zip);
+                        } catch (IOException e) {
+                            throw new ConverterException("Error creating runtime zip.", e);
+                        }
+                    }
+                } else {
+                    return null;
                 }
-                final String platformName = platform.getName();
-                try {
-                    final File zip = File.createTempFile("AirRuntime-" + platformName + "-" + airSdkVersion, "zip");
-                    generateZip(platform.listFiles(), zip);
-                    airRuntimeArtifact.addBinaryArtifact(platformName, zip);
-                } catch (IOException e) {
-                    throw new ConverterException("Error creating runtime zip.", e);
-                }
+
+                writeArtifact(airRuntimeArtifact);
+                airRuntimeArtifacts.add(airRuntimeArtifact);
             }
-        } else {
-            return null;
         }
 
-        writeArtifact(airRuntimeArtifact);
-        return airRuntimeArtifact;
+        return airRuntimeArtifacts;
     }
 
     /**
@@ -359,6 +395,41 @@ public class AirConverter extends BaseConverter implements Converter {
     private static class AirRuntimeFilter implements FilenameFilter {
         public boolean accept(File dir, String name) {
             return name.equalsIgnoreCase("adl.exe") || name.equalsIgnoreCase("adl");
+        }
+    }
+
+    private static class AirMiscFilter implements FileFilter {
+
+        private File rootSourceDirectory;
+
+        AirMiscFilter(File rootSourceDirectory) {
+            this.rootSourceDirectory = rootSourceDirectory;
+        }
+
+        public boolean accept(File pathname) {
+            // frameworks/libs/air/ (All non swf & swc)
+            // frameworks/projects/air/
+            // include/
+            // install/android/
+            // samples/
+
+            String relativePath = pathname.getAbsolutePath().substring(
+                    rootSourceDirectory.getAbsolutePath().length());
+
+            boolean result = "/AIR SDK license.pdf".equals(relativePath) ||
+                    "/AIR SDK Readme.txt".equals(relativePath) ||
+                    "/airsdk.xml".equals(relativePath) ||
+                    relativePath.startsWith("/frameworks/projects/air/") ||
+                    relativePath.startsWith("/include/") ||
+                    relativePath.startsWith("/install/") ||
+                    relativePath.startsWith("/samples/");
+
+            if(relativePath.startsWith("/frameworks/libs/air/")) {
+                result = !(pathname.getName().endsWith(".swc") || pathname.getName().endsWith(".swf"));
+            }
+
+            System.out.println(relativePath + " = " + result);
+            return result;
         }
     }
 

@@ -41,9 +41,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -372,6 +370,13 @@ public abstract class BaseConverter {
             return;
         }
         final File rootDir = sourceFiles[0].getParentFile();
+        generateZip(rootDir, sourceFiles, targetFile);
+    }
+
+    protected void generateZip(File rootDir, File[] sourceFiles, File targetFile) throws ConverterException {
+        if((sourceFiles == null) || (sourceFiles.length == 0)) {
+            return;
+        }
         final File zipInputFiles[] = new File[sourceFiles.length];
         System.arraycopy(sourceFiles, 0, zipInputFiles, 0, sourceFiles.length);
 
@@ -457,6 +462,23 @@ public abstract class BaseConverter {
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
+    }
+
+    protected Collection<File> listAllFiles(File source, FileFilter filter) {
+        if(filter.accept(source)) {
+            return Collections.singleton(source);
+        }
+        else if(source.isDirectory()) {
+            File[] dirContent = source.listFiles();
+            if(dirContent != null) {
+                Collection<File> filteredContent = new LinkedList<File>();
+                for(File child : dirContent) {
+                    filteredContent.addAll(listAllFiles(child, filter));
+                }
+                return filteredContent;
+            }
+        }
+        return Collections.emptyList();
     }
 
 }
