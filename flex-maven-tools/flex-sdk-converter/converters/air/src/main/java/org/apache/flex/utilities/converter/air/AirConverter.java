@@ -28,16 +28,17 @@ import java.util.List;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Created by cdutz on 22.04.2014.
+ * Converter to convert the Air part of Flex SDKs or the Air SDKs into
+ * Maven artifacts.
  */
 public class AirConverter extends BaseConverter implements Converter {
 
-    protected String airSdkVersion;
+    private String airSdkVersion;
 
     /**
      * @param rootSourceDirectory Path to the root of the original AIR SDK.
      * @param rootTargetDirectory Path to the root of the directory where the Maven artifacts should be generated to.
-     * @throws ConverterException
+     * @throws ConverterException something went wrong
      */
     public AirConverter(File rootSourceDirectory, File rootTargetDirectory) throws ConverterException {
         super(rootSourceDirectory, rootTargetDirectory);
@@ -49,7 +50,7 @@ public class AirConverter extends BaseConverter implements Converter {
     /**
      * Entry point for generating the Maven artifacts for an AIR SDK.
      *
-     * @throws ConverterException
+     * @throws ConverterException something went wrong
      */
     @Override
     protected void processDirectory() throws ConverterException {
@@ -67,9 +68,9 @@ public class AirConverter extends BaseConverter implements Converter {
     /**
      * This method generates those artifacts that resemble the compiler part of the AIR SDK.
      *
-     * @throws ConverterException
+     * @throws ConverterException something went wrong
      */
-    protected void generateCompilerArtifacts() throws ConverterException {
+    private void generateCompilerArtifacts() throws ConverterException {
         // Create the root artifact.
         final MavenArtifact compiler = new MavenArtifact();
         compiler.setGroupId("com.adobe.air");
@@ -88,19 +89,6 @@ public class AirConverter extends BaseConverter implements Converter {
             files.addAll(Arrays.asList(compilerFiles));
         }
 
-        // Add the smali.jar and baksmali.jar from the android/lib directory
-        // as this is needed for Android packaging.
-        File androidDir = new File(directory, "android");
-        if (androidDir.exists() && androidDir.isDirectory()) {
-            File androidLibDir = new File(androidDir, "lib");
-            if (androidLibDir.exists() && androidLibDir.isDirectory()) {
-                File[] compilerLibs = androidLibDir.listFiles(new AirCompilerFilter());
-                if(compilerLibs != null) {
-                    files.addAll(Arrays.asList(compilerLibs));
-                }
-            }
-        }
-
         // Generate artifacts for every jar in the input directories.
         for (final File sourceFile : files) {
             final MavenArtifact artifact = resolveArtifact(sourceFile, "com.adobe.air.compiler", airSdkVersion);
@@ -108,48 +96,12 @@ public class AirConverter extends BaseConverter implements Converter {
         }
 
         // Generate the android package (android directory)
+        File androidDir = new File(directory, "android");
         if (androidDir.exists() && androidDir.isDirectory()) {
             final File androidZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-android.zip");
-            try {
-                // Add all the content to a zip-file.
-                final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(androidZip));
-                // Package all the compiler parts.
-                File[] zipfiles = androidDir.listFiles();
-                if(zipfiles != null) {
-                    for (final File file : zipfiles) {
-                        addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                    }
-                }
-                // Package all the runtime parts.
-                File runtimesDir = new File(rootSourceDirectory, "runtimes/air/android");
-                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
-                    zipfiles = runtimesDir.listFiles();
-                    if (zipfiles != null) {
-                        for (final File file : zipfiles) {
-                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                        }
-                    }
-                }
-                File binDir = new File(rootSourceDirectory, "bin");
-                if(binDir.exists() && binDir.isDirectory()) {
-                    zipfiles = binDir.listFiles(new FilenameFilter() {
-                        public boolean accept(File dir, String name) {
-                            return name.equals("adt") || name.equals("adt.bat") ||
-                                    name.equals("adl") || name.equals("adl.exe");
-                        }
-                    });
-                    if (zipfiles != null) {
-                        for (final File file : zipfiles) {
-                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                        }
-                    }
-                }
-                zipOutputStream.close();
-            } catch(IOException e) {
-                throw new ConverterException("Error generating android package zip.", e);
-            }
+            generateCompilerPlatformArtifact(androidDir, androidZip);
         }
 
         // Generate the ios package (aot directory)
@@ -158,34 +110,7 @@ public class AirConverter extends BaseConverter implements Converter {
             final File iosZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-ios.zip");
-            try {
-                // Add all the content to a zip-file.
-                final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(iosZip));
-                // Package all the compiler parts.
-                File[] zipfiles = iosDir.listFiles();
-                if(zipfiles != null) {
-                    for (final File file : zipfiles) {
-                        addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                    }
-                }
-                File binDir = new File(rootSourceDirectory, "bin");
-                if(binDir.exists() && binDir.isDirectory()) {
-                    zipfiles = binDir.listFiles(new FilenameFilter() {
-                        public boolean accept(File dir, String name) {
-                            return name.equals("adt") || name.equals("adt.bat") ||
-                                    name.equals("adl") || name.equals("adl.exe");
-                        }
-                    });
-                    if (zipfiles != null) {
-                        for (final File file : zipfiles) {
-                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                        }
-                    }
-                }
-                zipOutputStream.close();
-            } catch(IOException e) {
-                throw new ConverterException("Error generating android package zip.", e);
-            }
+            generateCompilerPlatformArtifact(iosDir, iosZip);
         }
 
         // Generate the exe, dmg, deb, rpm packages (nai directory)
@@ -194,71 +119,16 @@ public class AirConverter extends BaseConverter implements Converter {
             final File desktopZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-desktop.zip");
-            try {
-                // Add all the content to a zip-file.
-                final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(desktopZip));
-                // Package all the compiler parts.
-                File[] zipfiles = desktopDir.listFiles();
-                if(zipfiles != null) {
-                    for (final File file : zipfiles) {
-                        addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                    }
-                }
-                // Package all the runtime parts.
-                File runtimesDir = new File(rootSourceDirectory, "runtimes/air/win");
-                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
-                    zipfiles = runtimesDir.listFiles();
-                    if (zipfiles != null) {
-                        for (final File file : zipfiles) {
-                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                        }
-                    }
-                }
-                runtimesDir = new File(rootSourceDirectory, "runtimes/air/mac/Adobe AIR.framework/Versions/1.0");
-                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
-                    zipfiles = runtimesDir.listFiles();
-                    if (zipfiles != null) {
-                        for (final File file : zipfiles) {
-                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                        }
-                    }
-                }
-                runtimesDir = new File(rootSourceDirectory, "runtimes/air-captive/win");
-                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
-                    zipfiles = runtimesDir.listFiles();
-                    if (zipfiles != null) {
-                        for (final File file : zipfiles) {
-                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                        }
-                    }
-                }
-                runtimesDir = new File(rootSourceDirectory, "runtimes/air-captive/mac/Adobe AIR.framework/Versions/1.0");
-                if(runtimesDir.exists() && runtimesDir.isDirectory()) {
-                    zipfiles = runtimesDir.listFiles();
-                    if (zipfiles != null) {
-                        for (final File file : zipfiles) {
-                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                        }
-                    }
-                }
-                File binDir = new File(rootSourceDirectory, "bin");
-                if(binDir.exists() && binDir.isDirectory()) {
-                    zipfiles = binDir.listFiles(new FilenameFilter() {
-                        public boolean accept(File dir, String name) {
-                            return name.equals("adt") || name.equals("adt.bat") ||
-                                    name.equals("adl") || name.equals("adl.exe");
-                        }
-                    });
-                    if (zipfiles != null) {
-                        for (final File file : zipfiles) {
-                            addFileToZip(zipOutputStream, file, rootSourceDirectory);
-                        }
-                    }
-                }
-                zipOutputStream.close();
-            } catch(IOException e) {
-                throw new ConverterException("Error generating android package zip.", e);
-            }
+            generateCompilerPlatformArtifact(desktopDir, desktopZip);
+        }
+
+        // Generate the windows packages (win directory)
+        File windowsDir = new File(directory, "win");
+        if (windowsDir.exists() && windowsDir.isDirectory()) {
+            final File windowsZip = new File(rootTargetDirectory,
+                    "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
+                            File.separator + "adt-" + airSdkVersion + "-windows.zip");
+            generateCompilerPlatformArtifact(windowsDir, windowsZip);
         }
 
         // Write this artifact to file.
@@ -268,9 +138,9 @@ public class AirConverter extends BaseConverter implements Converter {
     /**
      * This method generates those artifacts that resemble the runtime part of the AIR SDK.
      *
-     * @throws ConverterException
+     * @throws ConverterException something went wrong
      */
-    protected void generateRuntimeArtifacts() throws ConverterException {
+    private void generateRuntimeArtifacts() throws ConverterException {
         // Create the root artifact.
         final MavenArtifact runtime = new MavenArtifact();
         runtime.setGroupId("com.adobe.air");
@@ -317,9 +187,9 @@ public class AirConverter extends BaseConverter implements Converter {
     /**
      * This method generates those artifacts that resemble the framework part of the AIR SDK.
      *
-     * @throws ConverterException
+     * @throws ConverterException something went wrong
      */
-    protected void generateFrameworkArtifacts() throws ConverterException {
+    private void generateFrameworkArtifacts() throws ConverterException {
         // Create the root artifact.
         final MavenArtifact framework = new MavenArtifact();
         framework.setGroupId("com.adobe.air");
@@ -349,7 +219,7 @@ public class AirConverter extends BaseConverter implements Converter {
         writeArtifact(framework);
     }
 
-    protected void generateTemplatesArtifact() throws ConverterException {
+    private void generateTemplatesArtifact() throws ConverterException {
         // Create the root artifact.
         final MavenArtifact templates = new MavenArtifact();
         templates.setGroupId("com.adobe.air");
@@ -383,7 +253,24 @@ public class AirConverter extends BaseConverter implements Converter {
     //
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    protected MavenArtifact generateAirRuntimeArtifact(File rootDirectory) throws ConverterException {
+    private void generateCompilerPlatformArtifact(File inputDir, File outputFile) throws ConverterException {
+        try {
+            // Add all the content to a zip-file.
+            final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(outputFile));
+            // Package all the compiler parts.
+            File[] zipfiles = inputDir.listFiles();
+            if(zipfiles != null) {
+                for (final File file : zipfiles) {
+                    addFileToZip(zipOutputStream, file, rootSourceDirectory);
+                }
+            }
+            zipOutputStream.close();
+        } catch(IOException e) {
+            throw new ConverterException("Error generating android package zip.", e);
+        }
+    }
+
+    private MavenArtifact generateAirRuntimeArtifact(File rootDirectory) throws ConverterException {
         final MavenArtifact airRuntimeArtifact = new MavenArtifact();
         airRuntimeArtifact.setGroupId("com.adobe.air.runtime");
         airRuntimeArtifact.setArtifactId("air-runtime");
@@ -418,8 +305,9 @@ public class AirConverter extends BaseConverter implements Converter {
      * Get the version of an AIR SDK from the content of the SDK directory.
      *
      * @return version string for the current AIR SDK
+     * @throws ConverterException  something went wrong
      */
-    protected String getAirVersion(File rootDirectory) throws ConverterException {
+    private String getAirVersion(File rootDirectory) throws ConverterException {
         // All AIR SDKs contain a text file "AIR SDK Readme.txt" which contains a
         // Version string in the first line. Newer SDKs contain an additional "airsdk.xml"
         // which would be easier to parse, but as all SDKs contain the text-file, we'll
@@ -459,18 +347,18 @@ public class AirConverter extends BaseConverter implements Converter {
         }
     }
 
-    public static class AirRuntimeFilter implements FilenameFilter {
-        public boolean accept(File dir, String name) {
-            return name.equalsIgnoreCase("adl.exe") || name.equalsIgnoreCase("adl");
-        }
-    }
-
     public static class AirFrameworkFilter implements FilenameFilter {
         public boolean accept(File dir, String name) {
             return name.equals("aircore.swc") || name.equals("airglobal.swc") ||
                     name.equals("applicationupdater.swc") || name.equals("applicationupdater_ui.swc") ||
                     name.equals("servicemonitor.swc") || name.equals("crosspromotion.swc") ||
                     name.equals("gamepad.swc");
+        }
+    }
+
+    private static class AirRuntimeFilter implements FilenameFilter {
+        public boolean accept(File dir, String name) {
+            return name.equalsIgnoreCase("adl.exe") || name.equalsIgnoreCase("adl");
         }
     }
 
