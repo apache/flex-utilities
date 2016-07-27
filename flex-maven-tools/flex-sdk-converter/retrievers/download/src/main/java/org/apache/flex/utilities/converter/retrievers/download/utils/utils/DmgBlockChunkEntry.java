@@ -10,12 +10,12 @@ import java.util.ArrayList;
  */
 public class DmgBlockChunkEntry {
 
-    int entryType;          // Compression type used or entry type (see next table)
-    int comment;            // "+beg" or "+end", if EntryType is comment (0x7FFFFFFE). Else reserved.
-    long sectorNumber;      // Start sector of this chunk
-    long sectorCount;       // Number of sectors in this chunk
-    long compressedOffset;  // Start of chunk in data fork
-    long compressedLength;  // Count of bytes of chunk, in data fork
+    private int entryType;          // Compression type used or entry type (see next table)
+    private int comment;            // "+beg" or "+end", if EntryType is comment (0x7FFFFFFE). Else reserved.
+    private long sectorNumber;      // Start sector of this chunk
+    private long sectorCount;       // Number of sectors in this chunk
+    private long compressedOffset;  // Start of chunk in data fork
+    private long compressedLength;  // Count of bytes of chunk, in data fork
 
     public DmgBlockChunkEntry(byte[] data) {
         // Initialize the fields by parsing the input bytes.

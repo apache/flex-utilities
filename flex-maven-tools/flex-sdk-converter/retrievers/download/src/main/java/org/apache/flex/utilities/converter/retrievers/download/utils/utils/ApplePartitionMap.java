@@ -12,18 +12,18 @@ import java.io.IOException;
  */
 public class ApplePartitionMap {
 
-    public static int STATUS_ENTRY_IS_VALID                             = 0x00000001;
-    public static int STATUS_ENTRY_IS_ALLOCATED                         = 0x00000002;
-    public static int STATUS_ENTRY_IN_USE                               = 0x00000004;
-    public static int STATUS_ENTRY_CONTAINS_BOOT_INFORMATION            = 0x00000008;
-    public static int STATUS_PARTITION_IS_READABLE                      = 0x00000010;
-    public static int STATUS_PARTITION_IS_WRITABLE                      = 0x00000020;
-    public static int STATUS_BOOT_CODE_IS_POSITION_INDEPENDENT          = 0x00000040;
-    public static int STATUS_PARTITION_CONTAINS_CHAIN_COMPATIBLE_DRIVER = 0x00000100;
-    public static int STATUS_PARTITION_CONTAINS_A_REAL_DRIVER           = 0x00000200;
-    public static int STATUS_PARTITION_CONTAINS_A_CHAIN_DRIVER          = 0x00000400;
-    public static int STATUS_AUTOMATICALLY_MOUNT_AT_STARTUP             = 0x40000000;
-    public static int STATUS_THE_STARTUP_PARTITION                      = 0x80000000;
+    public static final int STATUS_ENTRY_IS_VALID                             = 0x00000001;
+    public static final int STATUS_ENTRY_IS_ALLOCATED                         = 0x00000002;
+    public static final int STATUS_ENTRY_IN_USE                               = 0x00000004;
+    public static final int STATUS_ENTRY_CONTAINS_BOOT_INFORMATION            = 0x00000008;
+    public static final int STATUS_PARTITION_IS_READABLE                      = 0x00000010;
+    public static final int STATUS_PARTITION_IS_WRITABLE                      = 0x00000020;
+    public static final int STATUS_BOOT_CODE_IS_POSITION_INDEPENDENT          = 0x00000040;
+    public static final int STATUS_PARTITION_CONTAINS_CHAIN_COMPATIBLE_DRIVER = 0x00000100;
+    public static final int STATUS_PARTITION_CONTAINS_A_REAL_DRIVER           = 0x00000200;
+    public static final int STATUS_PARTITION_CONTAINS_A_CHAIN_DRIVER          = 0x00000400;
+    public static final int STATUS_AUTOMATICALLY_MOUNT_AT_STARTUP             = 0x40000000;
+    public static final int STATUS_THE_STARTUP_PARTITION                      = 0x80000000;
 
     private int numPartitions;
     private int startingSectorOfPartition;

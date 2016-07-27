@@ -3,7 +3,6 @@ package org.apache.flex.utilities.converter.retrievers.download.utils.utils;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,9 +11,9 @@ import java.util.List;
 public class HFSPlusForkData {
 
     private long logicalSize;
-    int clumpSize;
-    int totalBlocks;
-    List<HFSPlusExtent> extents;
+    private int clumpSize;
+    private int totalBlocks;
+    private List<HFSPlusExtent> extents;
 
     public HFSPlusForkData(DataInputStream dis) {
         try {
