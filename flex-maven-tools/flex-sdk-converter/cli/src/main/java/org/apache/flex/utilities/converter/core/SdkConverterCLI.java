@@ -301,12 +301,14 @@ public class SdkConverterCLI {
 
                 String flashVersions = cmd.getOptionValue(OPTION_FLASH_VERSIONS, "");
                 if(!flashVersions.isEmpty()) {
-                    for(String flashVersion : flashVersions.split(",")) {
-                        System.out.println("- Downloading Flash SDK version: " + flashVersion +
-                                " to directory: " + fdkDir.getAbsolutePath());
-                        File flashDownloadDiretory = retriever.retrieve(SdkType.FLASH, flashVersion);
-                        // Integrate the download into  the FDK directory.
-                        mergeDirectories(flashDownloadDiretory, fdkDir);
+                    for(PlatformType platformType : platforms) {
+                        for (String flashVersion : flashVersions.split(",")) {
+                            System.out.println("- Downloading Flash SDK version: " + flashVersion +
+                                    " to directory: " + fdkDir.getAbsolutePath());
+                            File flashDownloadDirectory = retriever.retrieve(SdkType.FLASH, flashVersion, platformType);
+                            // Integrate the download into the FDK directory.
+                            mergeDirectories(flashDownloadDirectory, fdkDir);
+                        }
                     }
                 }
 

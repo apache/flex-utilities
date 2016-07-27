@@ -44,6 +44,31 @@
         </dependency>
 
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+        <!-- 7Zip with JNI Wrapper to call it from Java -->
+        <dependency>
+            <groupId>net.sf.sevenzipjbinding</groupId>
+            <artifactId>sevenzipjbinding</artifactId>
+            <version>9.20-2.00beta</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.sevenzipjbinding</groupId>
+            <artifactId>sevenzipjbinding-all-platforms</artifactId>
+            <version>9.20-2.00beta</version>
+        </dependency>
+        <!--dependency>
+            <groupId>org.catacombae</groupId>
+            <artifactId>dmgextractor</artifactId>
+            <version>0.7</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/dmgextractor-0_70-standalone.jar</systemPath>
+        </dependency-->
+
+        <dependency>
             <groupId>org.mock-server</groupId>
             <artifactId>mockserver-netty</artifactId>
             <version>RELEASE</version>

@@ -16,6 +16,10 @@
  */
 package org.apache.flex.utilities.converter.retrievers.download;
 
+import net.sf.sevenzipjbinding.ArchiveFormat;
+import net.sf.sevenzipjbinding.IInArchive;
+import net.sf.sevenzipjbinding.SevenZip;
+import net.sf.sevenzipjbinding.impl.RandomAccessFileInStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.flex.utilities.converter.api.ProxySettings;
@@ -129,6 +133,7 @@ public class DownloadRetriever extends BaseRetriever {
                 ////////////////////////////////////////////////////////////////////////////////
 
                 if (type.equals(SdkType.FLASH)) {
+                    // Initialize the framework libs.
                     final File targetDirectory = new File(targetFile.getParent(),
                             targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
                     final File libDestFile = new File(targetDirectory, "frameworks/libs/player/" + version +
@@ -139,6 +144,58 @@ public class DownloadRetriever extends BaseRetriever {
                         }
                     }
                     FileUtils.moveFile(targetFile, libDestFile);
+
+                    ///////////////////////////////////////////////////////////////
+                    // Download the Flash projector for the given flash version
+                    // NOTE: This is not part of the official Flex SDK !!!
+                    ///////////////////////////////////////////////////////////////
+
+                    // Initialize the runtime resources.
+                    String executableName = (platformType == PlatformType.WINDOWS) ? "flashplayer.exe" : "flashplayer";
+                    final File runtimeDestFile = new File(targetDirectory, "runtimes/flash/" + platformType.name() +
+                            "/" + version + "/" + executableName);
+                    final String majorVersion = version.contains(".") ?
+                            version.substring(0, version.indexOf(".")) : version;
+
+                    // The urls for downloading are:
+                    // https://fpdownload.macromedia.com/pub/flashplayer/updaters/19/flashplayer_19_sa_debug.exe
+                    // https://fpdownload.macromedia.com/pub/flashplayer/updaters/19/flashplayer_19_sa_debug.dmg
+                    // https://fpdownload.macromedia.com/pub/flashplayer/updaters/11/flashplayer_11_sa_debug.i386.tar.gz
+                    String flashplayerUrl = "https://fpdownload.macromedia.com/pub/flashplayer/updaters/" +
+                            majorVersion + "/flashplayer_" + majorVersion + "_sa_debug";
+                    String fileEnding = "";
+                    switch (platformType) {
+                        case LINUX:
+                            fileEnding = ".i386.tar.gz";
+                            break;
+                        case MAC:
+                            fileEnding = ".dmg";
+                            break;
+                        case WINDOWS:
+                            fileEnding = ".exe";
+                            break;
+                    }
+                    flashplayerUrl += fileEnding;
+                    final File runtimeTargetFile = File.createTempFile("FlashRuntime-" + version + "-" + platformType +
+                            "-", fileEnding);
+                    performFastDownload(new URL(flashplayerUrl), runtimeTargetFile);
+
+                    // The Windows version of the download is executable directly, for all others
+                    // we have to unpack the downloaded archive and extract the content.
+                    if(platformType != PlatformType.WINDOWS) {
+                        extractArchive(runtimeTargetFile, new File(runtimeTargetFile.getParentFile(), runtimeTargetFile.getName()));
+                        switch (platformType) {
+                            case LINUX:
+                                extractArchive(runtimeTargetFile, new File(runtimeTargetFile.getParentFile(), runtimeTargetFile.getName()));
+                                break;
+                            case MAC:
+                                extractArchive(runtimeTargetFile, new File(runtimeTargetFile.getParentFile(), runtimeTargetFile.getName()));
+                                break;
+                        }
+                    }
+
+
+
                     return targetDirectory;
                 } else {
                     System.out.println("Extracting archive to temp directory.");
@@ -498,5 +555,29 @@ public class DownloadRetriever extends BaseRetriever {
             e.printStackTrace();
         }
         return result;
+    }
+
+    protected void extractArchive(File archive, File targetDirectory) throws RetrieverException {
+
+    }
+
+    public static void main(String[] args) throws Exception {
+        String[] upargs = new String[] {"/Users/christoferdutz/Downloads/install_flash_player_18_osx.dmg", "/Users/christoferdutz/Temp/unpack/test.img"};
+
+        IInArchive archive;
+        RandomAccessFile randomAccessFile;
+
+        randomAccessFile = new RandomAccessFile(new File("/Users/christoferdutz/Downloads/install_flash_player_18_osx.dmg"), "r");
+
+        archive = SevenZip.openInArchive(ArchiveFormat.ISO, // null - autodetect
+                new RandomAccessFileInStream(
+                        randomAccessFile));
+
+        int numberOfItems = archive.getNumberOfItems();
+
+        archive.close();
+        randomAccessFile.close();
+
+        System.out.println(numberOfItems);
     }
 }
