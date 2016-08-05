@@ -126,7 +126,7 @@ public class AirConverter extends BaseConverter implements Converter {
         if (windowsDir.exists() && windowsDir.isDirectory()) {
             final File windowsZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
-                            File.separator + "adt-" + airSdkVersion + "-windows.zip");
+                            File.separator + "adt-" + airSdkVersion + "-win.zip");
             generateCompilerPlatformArtifact(windowsDir, windowsZip);
         }
 
