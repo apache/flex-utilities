@@ -50,6 +50,7 @@ D32=''
 
 if [ $OS = "Windows" ]; then
 
+	SCRIPT_HOME=`cygpath -m $SCRIPT_HOME`
 	FALCON_HOME=`cygpath -m $FALCON_HOME`
 	FLEX_HOME=`cygpath -m $FLEX_HOME`
 
