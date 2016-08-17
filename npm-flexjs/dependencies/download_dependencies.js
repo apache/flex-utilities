@@ -21,6 +21,7 @@
 
 var fs = require('fs');
 var mkdirp = require('mkdirp');
+var eol = require('eol');
 var constants = require('./Constants');
 var adobeair = require('./AdobeAIR');
 var flashplayerglobal = require('./FlashPlayerGlobal');
@@ -30,6 +31,7 @@ var swfObject = require('./SWFObject');
 var flatUI = require('./FlatUI');
 
 var installSteps = [
+    updateScriptEOL,
     createDownloadsDirectory,
     installFlatUI,
     installFlashPlayerGlobal,
@@ -43,6 +45,33 @@ var currentStep = 0;
 function start()
 {
     installSteps[0].call();
+}
+
+function updateScriptEOL()
+{
+    try
+    {
+        var files = 
+        [
+            'js/bin/asjscnpm',
+            'js/bin/asjscompcnpm',
+            'js/bin/mxmlcnpm'
+        ];
+        do
+        {
+            var file = files.shift();
+            var data = fs.readFileSync(file, {encoding: 'utf8'});
+            data = eol.lf(data);
+            fs.writeFileSync(file, data, {encoding: 'utf8', mode: 0o755});
+        }
+        while(files.length > 0)
+    }
+    catch(e)
+    {
+        handleAbort();
+        return;
+    }
+    handleInstallStepComplete();
 }
 
 function createDownloadsDirectory()
