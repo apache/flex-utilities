@@ -57,14 +57,18 @@ function updateScriptEOL()
         do
         {
             var filePath = files.shift();
-            if(path.extname(filePath) !== '')
-            {
-                //skip windows batch files
-                continue;
-            }
             filePath = path.resolve(dirPath, filePath);
             var data = fs.readFileSync(filePath, {encoding: 'utf8'});
-            data = eol.lf(data);
+            if(path.extname(filePath) === '.bat')
+            {
+                //windows scripts
+                data = eol.crlf(data);
+            }
+            else
+            {
+                //mac, linux, or cygwin scripts
+                data = eol.lf(data);
+            }
             fs.writeFileSync(filePath, data, {encoding: 'utf8', mode: 0o755});
         }
         while(files.length > 0)
