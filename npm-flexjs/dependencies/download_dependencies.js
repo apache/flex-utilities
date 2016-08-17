@@ -20,6 +20,7 @@
 'use strict';
 
 var fs = require('fs');
+var path = require('path');
 var mkdirp = require('mkdirp');
 var eol = require('eol');
 var constants = require('./Constants');
@@ -51,18 +52,20 @@ function updateScriptEOL()
 {
     try
     {
-        var files = 
-        [
-            'js/bin/asjscnpm',
-            'js/bin/asjscompcnpm',
-            'js/bin/mxmlcnpm'
-        ];
+        var dirPath = path.join('js', 'bin');
+        var files = fs.readdirSync(dirPath);
         do
         {
-            var file = files.shift();
-            var data = fs.readFileSync(file, {encoding: 'utf8'});
+            var filePath = files.shift();
+            if(path.extname(filePath) !== '')
+            {
+                //skip windows batch files
+                continue;
+            }
+            filePath = path.resolve(dirPath, filePath);
+            var data = fs.readFileSync(filePath, {encoding: 'utf8'});
             data = eol.lf(data);
-            fs.writeFileSync(file, data, {encoding: 'utf8', mode: 0o755});
+            fs.writeFileSync(filePath, data, {encoding: 'utf8', mode: 0o755});
         }
         while(files.length > 0)
     }
