@@ -69,7 +69,7 @@ function updateScriptEOL()
                 //mac, linux, or cygwin scripts
                 data = eol.lf(data);
             }
-            fs.writeFileSync(filePath, data, {encoding: 'utf8', mode: 0o755});
+            fs.writeFileSync(filePath, data, {encoding: 'utf8', mode: 0x755});
         }
         while(files.length > 0)
     }

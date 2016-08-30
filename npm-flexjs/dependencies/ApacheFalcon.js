@@ -39,6 +39,7 @@ var playerVersion = pjson.org_apache_flex.player_version;
 var swfVersion = pjson.org_apache_flex.swf_version;
 
 var falconCompilerLibFolder = 'falcon/compiler/lib/';
+var falconLibExternalFolder = 'lib/external/';
 var jsLibFolder = constants.FLEXJS_FOLDER + 'js/lib/';
 var googleClosureCompilerFolder =  constants.FLEXJS_FOLDER + 'js/lib/google/closure-compiler/';
 
@@ -54,7 +55,7 @@ var falconDependencies = [
     {
         url:'http://search.maven.org/remotecontent?filepath=org/antlr/antlr-complete/3.5.2/',
         remoteFileName:'antlr-complete-3.5.2.jar',
-        destinationPath:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder,
+        destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
         destinationFileName:'antlr.jar',
         unzip:false
     },
@@ -64,7 +65,7 @@ var falconDependencies = [
         destinationPath:constants.DOWNLOADS_FOLDER,
         destinationFileName:'',
         pathOfFileToBeCopiedFrom:'commons-cli-1.2/commons-cli-1.2.jar',
-        pathOfFileToBeCopiedTo:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder + 'commons-cli.jar',
+        pathOfFileToBeCopiedTo:constants.FLEXJS_FOLDER + falconLibExternalFolder + 'commons-cli.jar',
         unzip:true
     },
     {
@@ -73,20 +74,20 @@ var falconDependencies = [
         destinationPath:constants.DOWNLOADS_FOLDER,
         destinationFileName:'',
         pathOfFileToBeCopiedFrom:'commons-io-2.4/commons-io-2.4.jar',
-        pathOfFileToBeCopiedTo:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder + 'commons-io.jar',
+        pathOfFileToBeCopiedTo:constants.FLEXJS_FOLDER + falconLibExternalFolder + 'commons-io.jar',
         unzip:true
     },
     {
         url:'http://search.maven.org/remotecontent?filepath=/com/google/guava/guava/17.0/',
         remoteFileName:'guava-17.0.jar',
-        destinationPath:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder,
+        destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
         destinationFileName:'guava.jar',
         unzip:false
     },
     {
-        url:'http://apacheflexbuild.cloudapp.net:8080/job/flex-falcon/ws/compiler/lib/',
-        remoteFileName:'jburg.jar',
-        destinationPath:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder,
+        url:'http://search.maven.org/remotecontent?filepath=/net/sourceforge/jburg/jburg/1.10.2',
+        remoteFileName:'jburg-1.10.2.jar',
+        destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
         destinationFileName:'jburg.jar',
         unzip:false
     },
@@ -96,7 +97,7 @@ var falconDependencies = [
         destinationPath:constants.DOWNLOADS_FOLDER,
         destinationFileName:'',
         pathOfFileToBeCopiedFrom:'jflex-1.6.0/lib/jflex-1.6.0.jar',
-        pathOfFileToBeCopiedTo:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder + 'jflex.jar',
+        pathOfFileToBeCopiedTo:constants.FLEXJS_FOLDER + falconLibExternalFolder + 'jflex.jar',
         unzip:true
     },
     {
@@ -105,13 +106,13 @@ var falconDependencies = [
         destinationPath:constants.DOWNLOADS_FOLDER + 'lzma/',
         destinationFileName:'lzma-9.20.jar.zip',
         pathOfFileToBeCopiedFrom:'lzma-9.20.jar',
-        pathOfFileToBeCopiedTo:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder + 'lzma-sdk.jar',
+        pathOfFileToBeCopiedTo:constants.FLEXJS_FOLDER + falconLibExternalFolder + 'lzma-sdk.jar',
         unzip:true
     },
     {
         url:'http://search.maven.org/remotecontent?filepath=org/apache/flex/flex-tool-api/1.0.0/',
         remoteFileName:'flex-tool-api-1.0.0.jar',
-        destinationPath:constants.DOWNLOADS_FOLDER + falconCompilerLibFolder,
+        destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
         destinationFileName:'flex-tool-api.jar',
         unzip:false
     },
@@ -242,7 +243,7 @@ ApacheFalcon.prepareForFalconDependencies = function()
 
     try
     {
-        mkdirp(constants.FLEXJS_FOLDER + 'externs');
+        mkdirp(constants.FLEXJS_FOLDER + 'flex-typedefs');
     }
     catch(e)
     {
@@ -312,7 +313,7 @@ ApacheFalcon.copyFiles = function()
     var mergedirs = require('merge-dirs');
 
     //Bin
-    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/compiler/generated/dist/sdk/bin',
+    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/compiler/src/assembly/scripts',
         constants.FLEXJS_FOLDER + 'bin',
         'overwrite');
 
@@ -324,17 +325,19 @@ ApacheFalcon.copyFiles = function()
         constants.FLEXJS_FOLDER + 'js/libs',
         'overwrite');
 
-    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/externs',
-        constants.FLEXJS_FOLDER + 'externs',
-        'overwrite');
-
-    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/compiler/generated/dist/sdk/lib',
-        constants.FLEXJS_FOLDER + 'lib',
+    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/flex-typedefs',
+        constants.FLEXJS_FOLDER + 'flex-typedefs',
         'overwrite');
 
     mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/compiler/lib',
+        constants.FLEXJS_FOLDER + 'lib',
+        'overwrite');
+
+    /*
+    mergedirs.default(constants.DOWNLOADS_FOLDER + 'falcon/compiler/lib',
         constants.FLEXJS_FOLDER + 'lib/external',
         'overwrite');
+	*/
 
 /*    fs.createReadStream(constants.DOWNLOADS_FOLDER + 'falcon/compiler/generated/dist/sdk/lib/' + 'falcon-mxmlc.jar')
         .pipe(fs.createWriteStream(jsLibFolder + 'mxmlc.jar'));
@@ -416,5 +419,14 @@ ApacheFalcon.falconInstallComplete = function()
 
 ApacheFalcon.install = function()
 {
-    request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFalconBinary + fileNameFalconBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFalcon.handleFalconMirrorsResponse);
+    //request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFalconBinary + fileNameFalconBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFalcon.handleFalconMirrorsResponse);
+    console.log('Downloading Apache Flex Falcon Compiler');
+	request
+		.get("http://apacheflexbuild.cloudapp.net:8080/job/flex-falcon/lastSuccessfulBuild/artifact/out/apache-flex-falconjx-0.7.0-bin.zip")
+		.pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFalconBinary)
+			.on('finish', function(){
+				console.log('Apache Flex Falcon Compiler download complete');
+				ApacheFalcon.extract();
+			})
+	);
 };
