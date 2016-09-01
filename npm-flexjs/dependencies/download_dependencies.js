@@ -20,7 +20,9 @@
 'use strict';
 
 var fs = require('fs');
+var path = require('path');
 var mkdirp = require('mkdirp');
+var eol = require('eol');
 var constants = require('./Constants');
 var adobeair = require('./AdobeAIR');
 var flashplayerglobal = require('./FlashPlayerGlobal');
@@ -30,6 +32,7 @@ var swfObject = require('./SWFObject');
 var flatUI = require('./FlatUI');
 
 var installSteps = [
+    updateScriptEOL,
     createDownloadsDirectory,
     installFlatUI,
     installFlashPlayerGlobal,
@@ -43,6 +46,39 @@ var currentStep = 0;
 function start()
 {
     installSteps[0].call();
+}
+
+function updateScriptEOL()
+{
+    try
+    {
+        var dirPath = path.join('js', 'bin');
+        var files = fs.readdirSync(dirPath);
+        do
+        {
+            var filePath = files.shift();
+            filePath = path.resolve(dirPath, filePath);
+            var data = fs.readFileSync(filePath, {encoding: 'utf8'});
+            if(path.extname(filePath) === '.bat')
+            {
+                //windows scripts
+                data = eol.crlf(data);
+            }
+            else
+            {
+                //mac, linux, or cygwin scripts
+                data = eol.lf(data);
+            }
+            fs.writeFileSync(filePath, data, {encoding: 'utf8', mode: 0x755});
+        }
+        while(files.length > 0)
+    }
+    catch(e)
+    {
+        handleAbort();
+        return;
+    }
+    handleInstallStepComplete();
 }
 
 function createDownloadsDirectory()

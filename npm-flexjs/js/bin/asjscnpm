@@ -25,10 +25,16 @@
 # In Windows Command Prompt, use mxmlc.bat instead.
 #
 
-function abspath() { pushd . > /dev/null; if [ -d "$1" ]; then cd "$1"; dirs -l +0; else cd "`dirname \"$1\"`"; cur_dir=`dirs -l +0`; if [ "$cur_dir" == "/" ]; then echo "$cur_dir`basename \"$1\"`"; else echo "$cur_dir/`basename \"$1\"`"; fi; fi; popd > /dev/null; }
-SCRIPT_REAL_FILE=`readlink "$0" || echo "$0"`;
-SCRIPT_ABS_PATH=`abspath "$SCRIPT_REAL_FILE"`
-SCRIPT_HOME=`dirname "$SCRIPT_ABS_PATH"`
+SCRIPT_HOME="$0"
+# try to find the real script if $0 is a symlink
+pushd . > /dev/null
+if [ -h "$SCRIPT_HOME" ]; then
+	cd "`dirname "$SCRIPT_HOME"`"
+	SCRIPT_HOME="`readlink "\`basename $SCRIPT_HOME\`"`"
+fi
+cd "`dirname "${SCRIPT_HOME}"`"
+SCRIPT_HOME="`pwd`"
+popd > /dev/null
 FALCON_HOME=${SCRIPT_HOME}/../..
 FLEX_HOME=${SCRIPT_HOME}/../..
 
@@ -44,6 +50,7 @@ D32=''
 
 if [ $OS = "Windows" ]; then
 
+	SCRIPT_HOME=`cygpath -m $SCRIPT_HOME`
 	FALCON_HOME=`cygpath -m $FALCON_HOME`
 	FLEX_HOME=`cygpath -m $FLEX_HOME`
 
