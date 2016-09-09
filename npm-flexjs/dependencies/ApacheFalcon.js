@@ -419,14 +419,14 @@ ApacheFalcon.falconInstallComplete = function()
 
 ApacheFalcon.install = function()
 {
-    //request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFalconBinary + fileNameFalconBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFalcon.handleFalconMirrorsResponse);
+    request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFalconBinary + fileNameFalconBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFalcon.handleFalconMirrorsResponse);
     console.log('Downloading Apache Flex Falcon Compiler');
-	request
+	/*request
 		.get("http://apacheflexbuild.cloudapp.net:8080/job/flex-falcon/lastSuccessfulBuild/artifact/out/apache-flex-falconjx-0.7.0-bin.zip")
 		.pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFalconBinary)
 			.on('finish', function(){
 				console.log('Apache Flex Falcon Compiler download complete');
 				ApacheFalcon.extract();
 			})
-	);
+	);*/
 };
