@@ -32,14 +32,15 @@ var swfObject = require('./SWFObject');
 var flatUI = require('./FlatUI');
 
 var installSteps = [
-    updateScriptEOL,
     createDownloadsDirectory,
     installFlatUI,
     installFlashPlayerGlobal,
     installAdobeAIR,
     installSWFObject,
     installApacheFlexJS,
-    installApacheFalcon
+    installApacheFalcon,
+    updateScriptEOL,
+    updateScriptPermissions
     ];
 var currentStep = 0;
 
@@ -52,7 +53,7 @@ function updateScriptEOL()
 {
     try
     {
-        var dirPath = path.join('js', 'bin');
+        var dirPath = path.join(__dirname, '..', 'js', 'bin');
         var files = fs.readdirSync(dirPath);
         do
         {
@@ -70,6 +71,33 @@ function updateScriptEOL()
                 data = eol.lf(data);
             }
             fs.writeFileSync(filePath, data, {encoding: 'utf8', mode: 0x755});
+        }
+        while(files.length > 0)
+    }
+    catch(e)
+    {
+        handleAbort();
+        return;
+    }
+    handleInstallStepComplete();
+}
+
+function updateScriptPermissions()
+{
+    var mode = parseInt('755', 8);
+    try
+    {
+        var dirPath = path.join(__dirname, '..', 'js', 'bin');
+        var files = fs.readdirSync(dirPath);
+        do
+        {
+            var filePath = files.shift();
+            filePath = path.resolve(dirPath, filePath);
+            if(path.extname(filePath) !== '.bat')
+            {
+                //mac, linux, or cygwin scripts
+                fs.chmodSync(filePath, mode);
+            }
         }
         while(files.length > 0)
     }
