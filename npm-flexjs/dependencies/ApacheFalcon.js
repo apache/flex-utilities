@@ -170,7 +170,7 @@ ApacheFalcon.handleFalconMirrorsResponse = function (error, response, body)
     {
         var mirrors = JSON.parse(body);
         var falconPreferredDownloadURL = mirrors.preferred + pathToFalconBinary + fileNameFalconBinary;
-        console.log('Downloading Apache Flex Falcon Compiler');
+        console.log('Downloading Apache Flex Falcon Compiler from mirror: ' + falconPreferredDownloadURL);
         request
             .get(falconPreferredDownloadURL)
             .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFalconBinary)
