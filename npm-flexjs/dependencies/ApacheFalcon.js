@@ -289,10 +289,16 @@ ApacheFalcon.downloadNextDependency = function()
     }
     else
     {
+        duc.once("installFail", handleDependencyInstallFail);
         duc.once("installComplete", handleDependencyInstallComplete);
         duc.install(falconDependencies[currentStep]);
     }
 };
+
+function handleDependencyInstallFail(event)
+{
+    ApacheFalcon.emit('abort');
+}
 
 function handleDependencyInstallComplete(event)
 {

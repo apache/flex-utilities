@@ -162,6 +162,7 @@ function installApacheFlexJS(event)
 function installApacheFalcon(event)
 {
     apacheFalcon.once('complete', handleInstallStepComplete);
+    apacheFalcon.once('abort', handleAbort);
     apacheFalcon.install();
 }
 
