@@ -22,28 +22,28 @@
 var child_process = require("child_process");
 var path = require("path");
 
-var scriptName = "asjscompc";
+var scriptName = "externc";
 if(process.platform === "win32")
 {
-	scriptName += ".bat";
+    scriptName += ".bat";
 }
 
 var scriptPath = path.join(__dirname, scriptName);
 try
 {
-	child_process.execFileSync(scriptPath, process.argv.slice(2),
-	{
-		stdio: "inherit",
-		encoding: "utf8"
-	});
+    child_process.execFileSync(scriptPath, process.argv.slice(2),
+    {
+        stdio: "inherit",
+        encoding: "utf8"
+    });
 }
 catch(error)
 {
-	if(error.status === null)
-	{
-		console.error("Error executing " + scriptName + " with code: " + error.code);
-		process.exit(1);
-	}
-	process.exit(error.status);
+    if(error.status === null)
+    {
+        console.error("Error executing " + scriptName + " with code: " + error.code);
+        process.exit(1);
+    }
+    process.exit(error.status);
 }
 process.exit(0);

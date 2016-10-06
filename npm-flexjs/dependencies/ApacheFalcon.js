@@ -78,14 +78,14 @@ var falconDependencies = [
         unzip:true
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=/com/google/guava/guava/17.0/',
+        url:'http://search.maven.org/remotecontent?filepath=com/google/guava/guava/17.0/',
         remoteFileName:'guava-17.0.jar',
         destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
         destinationFileName:'guava.jar',
         unzip:false
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=/net/sourceforge/jburg/jburg/1.10.2',
+        url:'http://search.maven.org/remotecontent?filepath=net/sourceforge/jburg/jburg/1.10.2/',
         remoteFileName:'jburg-1.10.2.jar',
         destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
         destinationFileName:'jburg.jar',
@@ -170,7 +170,7 @@ ApacheFalcon.handleFalconMirrorsResponse = function (error, response, body)
     {
         var mirrors = JSON.parse(body);
         var falconPreferredDownloadURL = mirrors.preferred + pathToFalconBinary + fileNameFalconBinary;
-        console.log('Downloading Apache Flex Falcon Compiler');
+        console.log('Downloading Apache Flex Falcon Compiler from mirror: ' + falconPreferredDownloadURL);
         request
             .get(falconPreferredDownloadURL)
             .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFalconBinary)
@@ -289,10 +289,16 @@ ApacheFalcon.downloadNextDependency = function()
     }
     else
     {
+        duc.once("installFail", handleDependencyInstallFail);
         duc.once("installComplete", handleDependencyInstallComplete);
         duc.install(falconDependencies[currentStep]);
     }
 };
+
+function handleDependencyInstallFail(event)
+{
+    ApacheFalcon.emit('abort');
+}
 
 function handleDependencyInstallComplete(event)
 {
@@ -419,14 +425,14 @@ ApacheFalcon.falconInstallComplete = function()
 
 ApacheFalcon.install = function()
 {
-    //request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFalconBinary + fileNameFalconBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFalcon.handleFalconMirrorsResponse);
+    request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFalconBinary + fileNameFalconBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFalcon.handleFalconMirrorsResponse);
     console.log('Downloading Apache Flex Falcon Compiler');
-	request
+	/*request
 		.get("http://apacheflexbuild.cloudapp.net:8080/job/flex-falcon/lastSuccessfulBuild/artifact/out/apache-flex-falconjx-0.7.0-bin.zip")
 		.pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFalconBinary)
 			.on('finish', function(){
 				console.log('Apache Flex Falcon Compiler download complete');
 				ApacheFalcon.extract();
 			})
-	);
+	);*/
 };

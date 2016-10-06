@@ -31,49 +31,59 @@ DownloadUncompressAndCopy.downloadFile = function(item)
     console.log('Downloading: ' + item.url + item.remoteFileName);
     request
         .get(item.url + item.remoteFileName)
-        .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + item.remoteFileName)
-            .on('close', function(){
-                console.log('Finished downloading: ' + item.url + item.remoteFileName);
-                if(item.unzip)
-                {//Unzip
-                    console.log('Uncompressing:  ' + constants.DOWNLOADS_FOLDER + item.remoteFileName);
-                    fs.createReadStream(constants.DOWNLOADS_FOLDER + item.remoteFileName)
-                        .pipe(unzip.Parse())
-                        .on('entry', function (entry) {
-                            var fileName = entry.path;
-                            var type = entry.type; // 'Directory' or 'File'
-                            var size = entry.size;
-                            if (fileName === item.pathOfFileToBeCopiedFrom) {
-                                entry.pipe(fs.createWriteStream(item.pathOfFileToBeCopiedTo));
-                            } else {
-                                entry.autodrain();
-                            }
-                        })
-                        .on('finish', function(){
-                            console.log('Finished uncompressing: ' + constants.DOWNLOADS_FOLDER + item.remoteFileName + ' to: ' + item.destinationPath + item.destinationFileName);
-                            DownloadUncompressAndCopy.emit('installComplete');
-                        })
+        .on('response', function(response){
+            if(response.statusCode != 200)
+            {
+                console.log('Download failed with status code: ' + response.statusCode);
+                DownloadUncompressAndCopy.emit('installFail');
+            }
+            else
+            {
+                response.pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + item.remoteFileName)
+                    .on('close', function(){
+                        console.log('Finished downloading: ' + item.url + item.remoteFileName);
+                        if(item.unzip)
+                        {//Unzip
+                            console.log('Uncompressing:  ' + constants.DOWNLOADS_FOLDER + item.remoteFileName);
+                            fs.createReadStream(constants.DOWNLOADS_FOLDER + item.remoteFileName)
+                                .pipe(unzip.Parse())
+                                .on('entry', function (entry) {
+                                    var fileName = entry.path;
+                                    var type = entry.type; // 'Directory' or 'File'
+                                    var size = entry.size;
+                                    if (fileName === item.pathOfFileToBeCopiedFrom) {
+                                        entry.pipe(fs.createWriteStream(item.pathOfFileToBeCopiedTo));
+                                    } else {
+                                        entry.autodrain();
+                                    }
+                                })
+                                .on('finish', function(){
+                                    console.log('Finished uncompressing: ' + constants.DOWNLOADS_FOLDER + item.remoteFileName + ' to: ' + item.destinationPath + item.destinationFileName);
+                                    DownloadUncompressAndCopy.emit('installComplete');
+                                })
 
-                }
-                else
-                {//Just copy
-                    if((constants.DOWNLOADS_FOLDER + item.remoteFileName === item.destinationPath + item.destinationFileName))
-                    {
-                        DownloadUncompressAndCopy.emit('installComplete');
-                    }
-                    else
-                    {
-                        fs.createReadStream(constants.DOWNLOADS_FOLDER + item.remoteFileName)
-                            .pipe(fs.createWriteStream(item.destinationPath + item.destinationFileName))
-                            .on('close', function(){
-                                console.log("Copied " + constants.DOWNLOADS_FOLDER + item.remoteFileName + " to " +
-                                    item.destinationPath + item.destinationFileName);
+                        }
+                        else
+                        {//Just copy
+                            if((constants.DOWNLOADS_FOLDER + item.remoteFileName === item.destinationPath + item.destinationFileName))
+                            {
                                 DownloadUncompressAndCopy.emit('installComplete');
-                            });
-                    }
-                }
-            })
-    );
+                            }
+                            else
+                            {
+                                fs.createReadStream(constants.DOWNLOADS_FOLDER + item.remoteFileName)
+                                    .pipe(fs.createWriteStream(item.destinationPath + item.destinationFileName))
+                                    .on('close', function(){
+                                        console.log("Copied " + constants.DOWNLOADS_FOLDER + item.remoteFileName + " to " +
+                                            item.destinationPath + item.destinationFileName);
+                                        DownloadUncompressAndCopy.emit('installComplete');
+                                    });
+                            }
+                        }
+                    })
+            );
+            }
+        })
 };
 
 DownloadUncompressAndCopy.install = function(item)

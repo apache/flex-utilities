@@ -38,7 +38,7 @@ ApacheFlexJS.handleFlexJSMirrorsResponse = function (error, response, body)
     {
         var mirrors = JSON.parse(body);
         var flexJSPreferredDownloadURL = mirrors.preferred + pathToFlexJSBinary + fileNameFlexJSBinary;
-        console.log('Downloading Apache FlexJS');
+        console.log('Downloading Apache FlexJS from mirror: ' + flexJSPreferredDownloadURL);
         request
             .get(flexJSPreferredDownloadURL)
             .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFlexJSBinary)
@@ -64,14 +64,14 @@ ApacheFlexJS.extract = function()
 
 ApacheFlexJS.install = function()
 {
-    //request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFlexJSBinary + fileNameFlexJSBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFlexJS.handleFlexJSMirrorsResponse);
+    request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFlexJSBinary + fileNameFlexJSBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFlexJS.handleFlexJSMirrorsResponse);
     console.log('Downloading Apache FlexJS');
-	request
+	/*request
 		.get("http://apacheflexbuild.cloudapp.net:8080/job/flex-asjs/lastSuccessfulBuild/artifact/out/apache-flex-flexjs-0.7.0-bin.zip")
 		.pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFlexJSBinary)
 			.on('close', function(){
 				console.log('Apache FlexJS download complete');
 				ApacheFlexJS.extract();
 			})
-	);
+	);*/
 };

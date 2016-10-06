@@ -22,7 +22,7 @@
 var child_process = require("child_process");
 var path = require("path");
 
-var scriptName = "asjscompc";
+var scriptName = "asnodec";
 if(process.platform === "win32")
 {
 	scriptName += ".bat";

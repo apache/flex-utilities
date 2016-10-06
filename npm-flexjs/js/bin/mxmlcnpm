@@ -1,80 +1,49 @@
-#!/bin/sh
+#!/usr/bin/env node
 
-################################################################################
-##
-##  Licensed to the Apache Software Foundation (ASF) under one or more
-##  contributor license agreements.  See the NOTICE file distributed with
-##  this work for additional information regarding copyright ownership.
-##  The ASF licenses this file to You under the Apache License, Version 2.0
-##  (the "License"); you may not use this file except in compliance with
-##  the License.  You may obtain a copy of the License at
-##
-##      http://www.apache.org/licenses/LICENSE-2.0
-##
-##  Unless required by applicable law or agreed to in writing, software
-##  distributed under the License is distributed on an "AS IS" BASIS,
-##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-##  See the License for the specific language governing permissions and
-##  limitations under the License.
-##
-################################################################################
+/*
+ *
+ *  Licensed to the Apache Software Foundation (ASF) under one or more
+ *  contributor license agreements.  See the NOTICE file distributed with
+ *  this work for additional information regarding copyright ownership.
+ *  The ASF licenses this file to You under the Apache License, Version 2.0
+ *  (the "License"); you may not use this file except in compliance with
+ *  the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
 
+var child_process = require("child_process");
+var path = require("path");
 
-#
-# mxmlc shell script to launch falcon-mxmlc.jar on OSX, Unix, or Cygwin.
-# In Windows Command Prompt, use mxmlc.bat instead.
-#
+var scriptName = "mxmlc";
+if(process.platform === "win32")
+{
+    scriptName += ".bat";
+}
 
-SCRIPT_HOME="$0"
-# try to find the real script if $0 is a symlink
-pushd . > /dev/null
-if [ -h "$SCRIPT_HOME" ]; then
-    cd "`dirname "$SCRIPT_HOME"`"
-    SCRIPT_HOME="`readlink "\`basename $SCRIPT_HOME\`"`"
-fi
-cd "`dirname "${SCRIPT_HOME}"`"
-SCRIPT_HOME="`pwd`"
-popd > /dev/null
-if [ "x${FALCON_HOME}" = "x" ]
-then
-    FALCON_HOME=${SCRIPT_HOME}/../..
-fi
-
-echo Using Falcon codebase: $FALCON_HOME
-
-if [ "x${FLEX_HOME}" = "x" ]
-then
-    FLEX_HOME=${SCRIPT_HOME}/../..
-fi
-echo Using Flex SDK: $FLEX_HOME
-
-case `uname` in
-		CYGWIN*)
-			OS="Windows"
-		;;
-		*)
-			OS=Unix
-esac
-
-D32=''
-
-if [ $OS = "Windows" ]; then
-
-    SCRIPT_HOME=`cygpath -m $SCRIPT_HOME`
-	FALCON_HOME=`cygpath -m $FALCON_HOME`
-	FLEX_HOME=`cygpath -m $FLEX_HOME`
-
-elif [ $OS = "Unix" ]; then
-
-    check64="`java -version 2>&1 | grep -i 64-Bit`"
-    isOSX="`uname | grep -i Darwin`"
-    javaVersion="`java -version 2>&1 | awk -F '[ ".]+' 'NR==1 {print $3 "." $4}'`"
-    
-    if [ "$isOSX" != "" -a "$HOSTTYPE" = "x86_64" -a "$check64" != "" -a "$javaVersion" = "1.6" ]; then
-        D32='-d32'
-    fi	
-fi
-
-VMARGS="-Xmx384m -Dsun.io.useCanonCaches=false "
-
-java $VMARGS $D32 $SETUP_SH_VMARGS -Dflexcompiler="$FALCON_HOME" -Dflexlib="$FLEX_HOME/frameworks" -jar "$SCRIPT_HOME/../lib/mxmlc.jar" +flexlib="$FLEX_HOME/frameworks" -js-output-type=FLEXJS -sdk-js-lib="$FLEX_HOME/frameworks/js/FlexJS/src" "$@"
+var scriptPath = path.join(__dirname, scriptName);
+try
+{
+    child_process.execFileSync(scriptPath, process.argv.slice(2),
+    {
+        stdio: "inherit",
+        encoding: "utf8"
+    });
+}
+catch(error)
+{
+    if(error.status === null)
+    {
+        console.error("Error executing " + scriptName + " with code: " + error.code);
+        process.exit(1);
+    }
+    process.exit(error.status);
+}
+process.exit(0);

@@ -1,6 +1,6 @@
 {
   "name": "flexjs",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Apache FlexJS",
   "keywords": [
     "flex",
@@ -32,7 +32,10 @@
   "bin": {
     "asjsc": "./js/bin/asjscnpm",
     "asjscompc": "./js/bin/asjscompcnpm",
-    "mxmlc": "./js/bin/mxmlcnpm"
+    "asnodec": "./js/bin/asnodecnpm",
+    "mxmlc": "./js/bin/mxmlcnpm",
+    "compc": "./js/bin/compcnpm",
+    "externc": "./js/bin/externcnpm"
   },
   "org_apache_flex": {
     "flexjs_path_binary": "flex/flexjs/0.7.0/binaries/",
