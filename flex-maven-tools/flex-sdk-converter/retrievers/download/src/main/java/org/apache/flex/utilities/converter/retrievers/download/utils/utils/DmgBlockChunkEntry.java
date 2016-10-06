@@ -3,7 +3,6 @@ package org.apache.flex.utilities.converter.retrievers.download.utils.utils;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by christoferdutz on 25.02.16.

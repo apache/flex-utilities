@@ -41,14 +41,22 @@ public class DmgPropertyListMishBlock {
             blockDescriptors = dis.readInt();
             dis.skipBytes(24);
             byte[] checksumData = new byte[136];
-            dis.read(checksumData, 0, 136);
+            int bytesRead = dis.read(checksumData, 0, 136);
+            if(bytesRead != 136) {
+                throw new IllegalArgumentException(
+                        "Invalid DmgPropertyListMishBlock data. Expected to read 136 bytes for 'checksum'");
+            }
             checksum = new DmgUdifChecksum(checksumData);
             int numberOfBlockChunks = dis.readInt();
 
             blockChunkEntries = new ArrayList<DmgBlockChunkEntry>();
             byte[] blockChunkData = new byte[40];
             for(int i = 0; i < numberOfBlockChunks; i++) {
-                dis.read(blockChunkData);
+                bytesRead = dis.read(blockChunkData);
+                if(bytesRead != 40) {
+                    throw new IllegalArgumentException(
+                            "Invalid DmgPropertyListMishBlock data. Expected to read 40 bytes for 'dmg block chunk data'");
+                }
                 DmgBlockChunkEntry entry = new DmgBlockChunkEntry(blockChunkData);
                 // The block with the type "0xFFFFFFFF" is the end-block and contains
                 // no data we could need, so we simply end here.

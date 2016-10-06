@@ -52,19 +52,35 @@ public class DmgTrailer {
             segmentNumber = dis.readInt();
             segmentCount = dis.readInt();
             segmentID = new byte[16];
-            dis.read(segmentID, 0, 16);
+            int bytesRead = dis.read(segmentID, 0, 16);
+            if(bytesRead != 16) {
+                throw new IllegalArgumentException(
+                        "Invalid DmgTrailer data. Expected to read 16 bytes for 'segmentID'");
+            }
             dataChecksumType = dis.readInt();
             dataChecksumSize = dis.readInt();
             dataChecksum = new byte[128];
-            dis.read(dataChecksum, 0, 128);
+            bytesRead = dis.read(dataChecksum, 0, 128);
+            if(bytesRead != 128) {
+                throw new IllegalArgumentException(
+                        "Invalid DmgTrailer data. Expected to read 128 bytes for 'dataChecksum'");
+            }
             xmlOffset = dis.readLong();
             xmlLength = dis.readLong();
             byte[] reserved = new byte[120];
-            dis.read(reserved, 0, 120);
+            bytesRead = dis.read(reserved, 0, 120);
+            if(bytesRead != 120) {
+                throw new IllegalArgumentException(
+                        "Invalid DmgTrailer data. Expected to read 120 bytes reserved for future use");
+            }
             checksumType = dis.readInt();
             checksumSize = dis.readInt();
             checksum = new byte[120];
-            dis.read(checksum, 0, 120);
+            bytesRead = dis.read(checksum, 0, 120);
+            if(bytesRead != 120) {
+                throw new IllegalArgumentException(
+                        "Invalid DmgTrailer data. Expected to read 120 bytes for 'checksum'");
+            }
             imageVariant = dis.readInt();
             sectorCount = dis.readLong();
         } catch (IOException e) {

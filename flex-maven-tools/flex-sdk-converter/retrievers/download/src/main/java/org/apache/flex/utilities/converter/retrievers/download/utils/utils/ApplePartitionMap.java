@@ -51,10 +51,18 @@ public class ApplePartitionMap {
             startingSectorOfPartition = dis.readInt();
             sizeOfPartitionInSectors = dis.readInt();
             byte[] buffer = new byte[32];
-            dis.read(buffer);
+            int readBytes = dis.read(buffer);
+            if(readBytes != 32) {
+                throw new IllegalArgumentException(
+                        "Invalid ApplePartitionMap data. Expected to read 32 bytes for 'nameOfPartition'");
+            }
             nameOfPartition = DmgExtractor.getStringFromZeroTerminatedByteArray(buffer);
             buffer = new byte[32];
-            dis.read(buffer);
+            readBytes = dis.read(buffer);
+            if(readBytes != 32) {
+                throw new IllegalArgumentException(
+                        "Invalid ApplePartitionMap data. Expected to read 32 bytes for 'typeOfPartition'");
+            }
             typeOfPartition = DmgExtractor.getStringFromZeroTerminatedByteArray(buffer);
             startingSectorOfDataAreaInPartition = dis.readInt();
             sizeOfDataAreaInPartitionInSectors = dis.readInt();
@@ -67,7 +75,11 @@ public class ApplePartitionMap {
             dis.skipBytes(4);
             bootCodeChecksum = dis.readInt();
             buffer = new byte[16];
-            dis.read(buffer);
+            readBytes = dis.read(buffer);
+            if(readBytes != 16) {
+                throw new IllegalArgumentException(
+                        "Invalid ApplePartitionMap data. Expected to read 16 bytes for 'processorType'");
+            }
             processorType = DmgExtractor.getStringFromZeroTerminatedByteArray(buffer);
             dis.skipBytes(376);
         } catch (IOException e) {
