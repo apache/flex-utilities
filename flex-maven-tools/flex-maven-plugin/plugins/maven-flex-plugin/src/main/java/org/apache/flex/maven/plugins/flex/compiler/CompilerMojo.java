@@ -18,7 +18,6 @@ package org.apache.flex.maven.plugins.flex.compiler;
 
 import org.apache.flex.maven.plugins.flex.AbstractFlexMojo;
 import org.apache.maven.plugin.MojoExecution;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 
