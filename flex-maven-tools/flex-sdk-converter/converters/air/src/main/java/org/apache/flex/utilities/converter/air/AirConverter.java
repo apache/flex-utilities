@@ -416,15 +416,15 @@ public class AirConverter extends BaseConverter implements Converter {
             String relativePath = pathname.getAbsolutePath().substring(
                     rootSourceDirectory.getAbsolutePath().length());
 
-            boolean result = "/AIR SDK license.pdf".equals(relativePath) ||
-                    "/AIR SDK Readme.txt".equals(relativePath) ||
-                    "/airsdk.xml".equals(relativePath) ||
-                    relativePath.startsWith("/frameworks/projects/air/") ||
-                    relativePath.startsWith("/include/") ||
-                    relativePath.startsWith("/install/") ||
-                    relativePath.startsWith("/samples/");
+            boolean result = "/AIR SDK license.pdf".equals(relativePath) || "\\AIR SDK license.pdf".equals(relativePath) ||
+                    "/AIR SDK Readme.txt".equals(relativePath) || "\\AIR SDK Readme.txt".equals(relativePath) ||
+                    "/airsdk.xml".equals(relativePath) || "\\airsdk.xml".equals(relativePath) ||
+                    relativePath.startsWith("/frameworks/projects/air/") || relativePath.startsWith("\\frameworks\\projects\\air\\") ||
+                    relativePath.startsWith("/include/") || relativePath.startsWith("\\include\\") ||
+                    relativePath.startsWith("/install/") || relativePath.startsWith("\\install\\") ||
+                    relativePath.startsWith("/samples/") || relativePath.startsWith("\\samples\\");
 
-            if(relativePath.startsWith("/frameworks/libs/air/")) {
+            if(relativePath.startsWith("/frameworks/libs/air/") || relativePath.startsWith("\\frameworks\\libs\\air\\")) {
                 result = !(pathname.getName().endsWith(".swc") || pathname.getName().endsWith(".swf"));
             }
 
