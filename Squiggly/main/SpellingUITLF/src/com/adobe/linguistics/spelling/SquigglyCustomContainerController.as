@@ -23,19 +23,19 @@ package com.adobe.linguistics.spelling
 	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
 	import com.adobe.linguistics.spelling.framework.ui.TLFWordProcessor;
 	import com.adobe.linguistics.utils.Token;
-
+	
 	import flash.display.Sprite;
 	import flash.events.ContextMenuEvent;
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
-
+	
 	import flashx.textLayout.container.ContainerController;
 	import flashx.textLayout.elements.FlowLeafElement;
 	import flashx.textLayout.elements.ParagraphElement;
 	import flashx.textLayout.elements.TextFlow;
 
 	/** Custom container controller for populating context menu and hanlding menu item selection  */
-	internal class SquigglyCustomContainerController extends ContainerController
+	internal class SquigglyCustomContainerController extends ContainerController implements ISpellingContainerController
 	{
 		private var disableMenuItem:ContextMenuItem = new ContextMenuItem("Disable spell checking",true);
 		private var enableMenuItem:ContextMenuItem = new ContextMenuItem("Enable spell checking");		

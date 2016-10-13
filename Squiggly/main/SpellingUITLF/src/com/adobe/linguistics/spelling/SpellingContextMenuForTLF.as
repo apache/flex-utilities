@@ -23,12 +23,12 @@ package com.adobe.linguistics.spelling
 	import com.adobe.linguistics.spelling.framework.ui.IHighlighter;
 	import com.adobe.linguistics.spelling.framework.ui.IWordProcessor;
 	import com.adobe.linguistics.utils.Token;
-
+	
 	import flash.events.ContextMenuEvent;
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
 	import flash.utils.describeType;
-
+	
 	import flashx.textLayout.container.ContainerController;
 	import flashx.textLayout.elements.TextFlow;
 	import flashx.textLayout.tlf_internal;
@@ -65,6 +65,9 @@ package com.adobe.linguistics.spelling
 			for (var idx:int = 0; idx < numControllers; idx++)
 			{	
 				var containerController:ContainerController = mTextFlow.flowComposer.getControllerAt(idx);
+				// if it's already squiggly compatible don't replace it.
+				if(containerController is ISpellingContainerController)
+					continue;
 				var squigglyContainerController:SquigglyCustomContainerController = new SquigglyCustomContainerController(containerController.container, mTextHighlighter, mWordProcessor, 
 																								mSpellEngine, func, containerController.compositionWidth, containerController.compositionHeight);	
 				copyObject(containerController, squigglyContainerController);
