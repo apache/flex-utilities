@@ -18,6 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package org.apache.flex.ant.tags
 {
+    import flash.errors.IOError;
     import flash.filesystem.File;
     import flash.filesystem.FileMode;
     import flash.filesystem.FileStream;
@@ -62,6 +63,10 @@ package org.apache.flex.ant.tags
             
             try {
                 var f:File = File.applicationDirectory.resolvePath(file);
+                if(!f.exists)
+                {
+                    throw new IOError("File not found: " + f.nativePath);
+                }
             } 
             catch (e:Error)
             {
