@@ -498,7 +498,7 @@ public class FlexConverter extends BaseConverter implements Converter {
                 final File targetDirectory = targetFile.getParentFile();
                 if (!targetDirectory.exists()) {
                     if (!targetDirectory.mkdirs()) {
-                        throw new RuntimeException("Could not create directory: " + targetDirectory.getCanonicalPath());
+                        throw new ConverterException("Could not create directory: " + targetDirectory.getCanonicalPath());
                     }
                 }
 
@@ -572,11 +572,11 @@ public class FlexConverter extends BaseConverter implements Converter {
             final Element root = dom.getDocumentElement();
             return root.getElementsByTagName("build").item(0).getTextContent();
         } catch (ParserConfigurationException pce) {
-            throw new RuntimeException(pce);
+            throw new ConverterException("Error parsing flex-sdk-description.xml", pce);
         } catch (SAXException se) {
-            throw new RuntimeException(se);
+            throw new ConverterException("Error parsing flex-sdk-description.xml", se);
         } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
+            throw new ConverterException("Error parsing flex-sdk-description.xml", ioe);
         }
     }
 

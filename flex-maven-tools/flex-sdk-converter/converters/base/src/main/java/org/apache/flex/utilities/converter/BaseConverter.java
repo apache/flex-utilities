@@ -94,10 +94,9 @@ public abstract class BaseConverter {
 
     protected String calculateChecksum(File jarFile) throws ConverterException {
         // Implement the calculation of checksums for a given jar.
-        final MessageDigest digest;
         InputStream is = null;
         try {
-            digest = MessageDigest.getInstance("SHA-1");
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
 
             is = new FileInputStream(jarFile);
             final byte[] buffer = new byte[8192];
@@ -118,14 +117,12 @@ public abstract class BaseConverter {
         } catch (FileNotFoundException e) {
             throw new ConverterException("Error calculating checksum of file '" + jarFile.getPath() + "'", e);
         } finally {
-            try {
-                if(is != null) {
+            if(is != null) {
+                try {
                     is.close();
+                } catch(IOException e) {
+                    // Ignore ...
                 }
-            }
-            catch(IOException e) {
-                //noinspection ThrowFromFinallyBlock
-                throw new ConverterException("Unable to close input stream for MD5 calculation", e);
             }
         }
     }
@@ -232,7 +229,7 @@ public abstract class BaseConverter {
             final File outputDirectory = target.getParentFile();
             if(!outputDirectory.exists()) {
                 if(!outputDirectory.mkdirs()) {
-                    throw new RuntimeException("Could not create directory: " + outputDirectory.getAbsolutePath());
+                    throw new ConverterException("Could not create directory: " + outputDirectory.getAbsolutePath());
                 }
             }
 
@@ -465,11 +462,11 @@ public abstract class BaseConverter {
             // In general the version consists of the content of the version element with an appended build-number.
             return (build.equals("0")) ? version + "-SNAPSHOT" : version;
         } catch (ParserConfigurationException pce) {
-            throw new RuntimeException(pce);
+            throw new ConverterException("Error parsing flex-sdk-description.xml", pce);
         } catch (SAXException se) {
-            throw new RuntimeException(se);
+            throw new ConverterException("Error parsing flex-sdk-description.xml", se);
         } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
+            throw new ConverterException("Error parsing flex-sdk-description.xml", ioe);
         }
     }
 
