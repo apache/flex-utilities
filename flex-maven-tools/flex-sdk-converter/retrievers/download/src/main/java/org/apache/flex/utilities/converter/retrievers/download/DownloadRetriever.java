@@ -27,9 +27,9 @@ import org.apache.flex.utilities.converter.retrievers.utils.ProgressBar;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.w3c.dom.Document;
@@ -189,29 +189,47 @@ public class DownloadRetriever extends BaseRetriever {
         } else {
             connection = sourceUrl.openConnection();
         }
-        final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
-        final FileOutputStream fos = new FileOutputStream(targetFile);
+        ReadableByteChannel rbc = null;
+        FileOutputStream fos = null;
+        try {
+            rbc = Channels.newChannel(connection.getInputStream());
+            fos = new FileOutputStream(targetFile);
 
-        ////////////////////////////////////////////////////////////////////////////////
-        // Do the downloading.
-        ////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////
+                // Do the downloading.
+                ////////////////////////////////////////////////////////////////////////////////
 
-        final long expectedSize = connection.getContentLength();
-        long transferedSize = 0L;
+            final long expectedSize = connection.getContentLength();
+            long transferedSize = 0L;
 
-        System.out.println("===========================================================");
-        System.out.println("Downloading " + sourceUrl.toString());
-        if(expectedSize > 1014 * 1024) {
-            System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
-        } else {
-            System.out.println("Expected size: " + (expectedSize / 1024 ) + "KB");
+            System.out.println("===========================================================");
+            System.out.println("Downloading " + sourceUrl.toString());
+            if (expectedSize > 1014 * 1024) {
+                System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
+            } else {
+                System.out.println("Expected size: " + (expectedSize / 1024) + "KB");
+            }
+            final ProgressBar progressBar = new ProgressBar(expectedSize);
+            while (transferedSize < expectedSize) {
+                transferedSize += fos.getChannel().transferFrom(rbc, transferedSize, 1 << 20);
+                progressBar.updateProgress(transferedSize);
+            }
+        } finally {
+            if(rbc != null) {
+                try {
+                    rbc.close();
+                } catch (IOException e) {
+                    // Ignore ...
+                }
+            }
+            if(fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    // Ignore ...
+                }
+            }
         }
-        final ProgressBar progressBar = new ProgressBar(expectedSize);
-        while (transferedSize < expectedSize) {
-            transferedSize += fos.getChannel().transferFrom(rbc, transferedSize, 1 << 20);
-            progressBar.updateProgress(transferedSize);
-        }
-        fos.close();
         System.out.println();
         System.out.println("Finished downloading.");
         System.out.println("===========================================================");
@@ -227,59 +245,89 @@ public class DownloadRetriever extends BaseRetriever {
             config = RequestConfig.DEFAULT;
         }
 
-        HttpGet httpget = new HttpGet(sourceUri);
-        httpget.setConfig(config);
-        HttpClient httpclient = HttpClients.createDefault();
-        HttpResponse response = httpclient.execute(httpget);
+        CloseableHttpClient httpclient = null;
+        try {
+            HttpGet httpget = new HttpGet(sourceUri);
+            httpget.setConfig(config);
+            httpclient = HttpClients.createDefault();
+            HttpResponse response = httpclient.execute(httpget);
 
-        String reasonPhrase = response.getStatusLine().getReasonPhrase();
-        int statusCode = response.getStatusLine().getStatusCode();
-        System.out.println(String.format("statusCode: %d", statusCode));
-        System.out.println(String.format("reasonPhrase: %s", reasonPhrase));
+            String reasonPhrase = response.getStatusLine().getReasonPhrase();
+            int statusCode = response.getStatusLine().getStatusCode();
+            System.out.println(String.format("statusCode: %d", statusCode));
+            System.out.println(String.format("reasonPhrase: %s", reasonPhrase));
 
-        HttpEntity entity = response.getEntity();
-        InputStream content = entity.getContent();
+            HttpEntity entity = response.getEntity();
+            InputStream content = entity.getContent();
 
-        final ReadableByteChannel rbc = Channels.newChannel(content);
-        final FileOutputStream fos = new FileOutputStream(targetFile);
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // Do the downloading.
-        ////////////////////////////////////////////////////////////////////////////////
-
-        final long expectedSize = entity.getContentLength();
-        System.out.println("===========================================================");
-        System.out.println("Downloading " + sourceUri.toString());
-        if(expectedSize <= 0) {
+            ReadableByteChannel rbc = null;
+            FileOutputStream fos = null;
             try {
-                System.out.println("Unknown size.");
-                IOUtils.copy(content, fos);
-            } finally {
-                // close http network connection
-                content.close();
-            }
-        } else {
-            if (expectedSize > 1014 * 1024) {
-                System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
-            } else {
-                System.out.println("Expected size: " + (expectedSize / 1024) + "KB");
-            }
-            final ProgressBar progressBar = new ProgressBar(expectedSize);
-            long transferredSize = 0L;
-            while ((expectedSize == 0) || (transferredSize < expectedSize)) {
-                // Transfer about 1MB in each iteration.
-                long currentSize = fos.getChannel().transferFrom(rbc, transferredSize, MEGABYTE);
-                if(currentSize < MEGABYTE) {
-                    break;
+                rbc = Channels.newChannel(content);
+                fos = new FileOutputStream(targetFile);
+
+            ////////////////////////////////////////////////////////////////////////////////
+            // Do the downloading.
+            ////////////////////////////////////////////////////////////////////////////////
+
+                final long expectedSize = entity.getContentLength();
+                System.out.println("===========================================================");
+                System.out.println("Downloading " + sourceUri.toString());
+                if (expectedSize <= 0) {
+                    try {
+                        System.out.println("Unknown size.");
+                        IOUtils.copy(content, fos);
+                    } finally {
+                        // close http network connection
+                        content.close();
+                    }
+                } else {
+                    if (expectedSize > 1014 * 1024) {
+                        System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
+                    } else {
+                        System.out.println("Expected size: " + (expectedSize / 1024) + "KB");
+                    }
+                    final ProgressBar progressBar = new ProgressBar(expectedSize);
+                    long transferredSize = 0L;
+                    while ((expectedSize == 0) || (transferredSize < expectedSize)) {
+                        // Transfer about 1MB in each iteration.
+                        long currentSize = fos.getChannel().transferFrom(rbc, transferredSize, MEGABYTE);
+                        if (currentSize < MEGABYTE) {
+                            break;
+                        }
+                        transferredSize += currentSize;
+                        progressBar.updateProgress(transferredSize);
+                    }
+                    fos.close();
+                    System.out.println();
                 }
-                transferredSize += currentSize;
-                progressBar.updateProgress(transferredSize);
+                System.out.println("Finished downloading.");
+                System.out.println("===========================================================");
+            } finally {
+                if(rbc != null) {
+                    try {
+                        rbc.close();
+                    } catch (IOException e) {
+                        // Ignore ...
+                    }
+                }
+                if(fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        // Ignore ...
+                    }
+                }
             }
-            fos.close();
-            System.out.println();
+        } finally {
+            if(httpclient != null) {
+                try {
+                    httpclient.close();
+                } catch(IOException e) {
+                    // Ignore ...
+                }
+            }
         }
-        System.out.println("Finished downloading.");
-        System.out.println("===========================================================");
     }
 
     protected String getBinaryUrl(SdkType sdkType, String version, PlatformType platformType)

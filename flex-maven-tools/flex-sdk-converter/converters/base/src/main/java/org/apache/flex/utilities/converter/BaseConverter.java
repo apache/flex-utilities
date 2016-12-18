@@ -95,10 +95,11 @@ public abstract class BaseConverter {
     protected String calculateChecksum(File jarFile) throws ConverterException {
         // Implement the calculation of checksums for a given jar.
         final MessageDigest digest;
+        InputStream is = null;
         try {
             digest = MessageDigest.getInstance("SHA-1");
 
-            final InputStream is = new FileInputStream(jarFile);
+            is = new FileInputStream(jarFile);
             final byte[] buffer = new byte[8192];
             int read;
             try {
@@ -110,21 +111,22 @@ public abstract class BaseConverter {
                 return bigInt.toString(16);
             }
             catch(IOException e) {
-                throw new RuntimeException("Unable to process file for MD5", e);
-            }
-            finally {
-                try {
-                    is.close();
-                }
-                catch(IOException e) {
-                    //noinspection ThrowFromFinallyBlock
-                    throw new RuntimeException("Unable to close input stream for MD5 calculation", e);
-                }
+                throw new ConverterException("Unable to process file for MD5", e);
             }
         } catch (NoSuchAlgorithmException e) {
             throw new ConverterException("Error calculating checksum of file '" + jarFile.getPath() + "'", e);
         } catch (FileNotFoundException e) {
             throw new ConverterException("Error calculating checksum of file '" + jarFile.getPath() + "'", e);
+        } finally {
+            try {
+                if(is != null) {
+                    is.close();
+                }
+            }
+            catch(IOException e) {
+                //noinspection ThrowFromFinallyBlock
+                throw new ConverterException("Unable to close input stream for MD5 calculation", e);
+            }
         }
     }
 
@@ -142,10 +144,17 @@ public abstract class BaseConverter {
             } else {
                 connection = queryUrl.openConnection();
             }
-            final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
-            final ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-            if(rbc.read(byteBuffer) > 0) {
-                output = new String (byteBuffer.array(), "UTF-8");
+            ReadableByteChannel rbc = null;
+            try {
+                rbc = Channels.newChannel(connection.getInputStream());
+                final ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                if (rbc.read(byteBuffer) > 0) {
+                    output = new String(byteBuffer.array(), "UTF-8");
+                }
+            } finally {
+                if(rbc != null) {
+                    rbc.close();
+                }
             }
         } catch (MalformedURLException e) {
             throw new ConverterException("Error querying maven central.", e);

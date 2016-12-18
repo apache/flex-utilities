@@ -358,8 +358,9 @@ public class AirConverter extends BaseConverter implements Converter {
         }
 
         DataInputStream in = null;
+        FileInputStream descriptorInputStream = null;
         try {
-            final FileInputStream descriptorInputStream = new FileInputStream(sdkDescriptor);
+            descriptorInputStream = new FileInputStream(sdkDescriptor);
             in = new DataInputStream(descriptorInputStream);
             final BufferedReader br = new BufferedReader(new InputStreamReader(in));
             final String strLine = br.readLine();
@@ -371,6 +372,13 @@ public class AirConverter extends BaseConverter implements Converter {
                 try {
                     in.close();
                 } catch (IOException ioe) {
+                    // Ignore.
+                }
+            }
+            if (descriptorInputStream != null) {
+                try {
+                    descriptorInputStream.close();
+                } catch (IOException e) {
                     // Ignore.
                 }
             }
