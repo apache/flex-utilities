@@ -78,13 +78,6 @@ var falconDependencies = [
         unzip:true
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=com/google/guava/guava/17.0/',
-        remoteFileName:'guava-17.0.jar',
-        destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
-        destinationFileName:'guava.jar',
-        unzip:false
-    },
-    {
         url:'http://search.maven.org/remotecontent?filepath=net/sourceforge/jburg/jburg/1.10.2/',
         remoteFileName:'jburg-1.10.2.jar',
         destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
