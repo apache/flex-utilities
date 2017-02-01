@@ -125,7 +125,7 @@ public class SdkConverterCLI {
                 withDescription("(Optional and only valid when providing a proxy host and port) port " +
                         "of the proxy server.").
                 isRequired(false).
-                create(OPTION_PROXY_HOST));
+                create(OPTION_PROXY_PORT));
         options.addOption(OptionBuilder.withArgName("non-proxy-host(s)").hasArg().
                 withDescription("(Optional and only valid when providing a proxy host and port) list of " +
                         "hosts that should not use the proxy server.").
