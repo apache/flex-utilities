@@ -20,6 +20,8 @@ import org.apache.flex.utilities.converter.BaseConverter;
 import org.apache.flex.utilities.converter.Converter;
 import org.apache.flex.utilities.converter.exceptions.ConverterException;
 import org.apache.flex.utilities.converter.model.MavenArtifact;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
@@ -30,6 +32,8 @@ import java.util.zip.ZipOutputStream;
  * Maven artifacts.
  */
 public class AirConverter extends BaseConverter implements Converter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AirConverter.class);
 
     private String airSdkVersion;
 
@@ -53,7 +57,7 @@ public class AirConverter extends BaseConverter implements Converter {
     @Override
     protected void processDirectory() throws ConverterException {
         if ((airSdkVersion == null) || !rootSourceDirectory.exists() || !rootSourceDirectory.isDirectory()) {
-            System.out.println("Skipping AIR SDK generation.");
+            LOG.info("Skipping AIR SDK generation.");
             return;
         }
 
@@ -94,13 +98,28 @@ public class AirConverter extends BaseConverter implements Converter {
             compiler.addDependency(artifact);
         }
 
+        // Generate the common package (files from the bin directory)
+        File binDir = new File(rootSourceDirectory, "bin");
+        if (binDir.exists() && binDir.isDirectory()) {
+            final File commonZip = new File(rootTargetDirectory,
+                    "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
+                            File.separator + "adt-" + airSdkVersion + "-common.zip");
+            generateZip(binDir, commonZip, new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return "adt".equals(name) || "adt.bat".equals(name) ||
+                            "adl".equals(name) || "adl.exe".equals(name);
+                }
+            });
+        }
+
         // Generate the android package (android directory)
         File androidDir = new File(directory, "android");
         if (androidDir.exists() && androidDir.isDirectory()) {
             final File androidZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-android.zip");
-            generateCompilerPlatformArtifact(androidDir, androidZip);
+            generateZip(androidDir, androidZip);
         }
 
         // Generate the ios package (aot directory)
@@ -109,7 +128,7 @@ public class AirConverter extends BaseConverter implements Converter {
             final File iosZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-ios.zip");
-            generateCompilerPlatformArtifact(iosDir, iosZip);
+            generateZip(iosDir, iosZip);
         }
 
         // Generate the exe, dmg, deb, rpm packages (nai directory)
@@ -118,7 +137,7 @@ public class AirConverter extends BaseConverter implements Converter {
             final File desktopZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-desktop.zip");
-            generateCompilerPlatformArtifact(desktopDir, desktopZip);
+            generateZip(desktopDir, desktopZip);
         }
 
         // Generate the windows packages (win directory)
@@ -127,7 +146,7 @@ public class AirConverter extends BaseConverter implements Converter {
             final File windowsZip = new File(rootTargetDirectory,
                     "com.adobe.air.compiler.adt.".replace(".", File.separator) + airSdkVersion +
                             File.separator + "adt-" + airSdkVersion + "-win.zip");
-            generateCompilerPlatformArtifact(windowsDir, windowsZip);
+            generateZip(windowsDir, windowsZip);
         }
 
         // Write this artifact to file.
@@ -279,12 +298,17 @@ public class AirConverter extends BaseConverter implements Converter {
     //
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private void generateCompilerPlatformArtifact(File inputDir, File outputFile) throws ConverterException {
+    private void generateZip(File inputDir, File outputFile) throws ConverterException {
+        generateZip(inputDir, outputFile, null);
+    }
+
+    private void generateZip(File inputDir, File outputFile, FilenameFilter filter)
+            throws ConverterException {
         try {
             // Add all the content to a zip-file.
             final ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(outputFile));
             // Package all the compiler parts.
-            File[] zipfiles = inputDir.listFiles();
+            File[] zipfiles = (filter != null) ? inputDir.listFiles(filter) : inputDir.listFiles();
             if(zipfiles != null) {
                 for (final File file : zipfiles) {
                     addFileToZip(zipOutputStream, file, rootSourceDirectory);
@@ -436,7 +460,7 @@ public class AirConverter extends BaseConverter implements Converter {
                 result = !(pathname.getName().endsWith(".swc") || pathname.getName().endsWith(".swf"));
             }
 
-            System.out.println(relativePath + " = " + result);
+            LOG.debug(relativePath + " = " + result);
             return result;
         }
     }

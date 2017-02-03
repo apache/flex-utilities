@@ -26,6 +26,8 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jettison.json.JSONTokener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -49,6 +51,8 @@ import java.util.zip.ZipOutputStream;
  * Created by cdutz on 11.05.2012.
  */
 public abstract class BaseConverter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BaseConverter.class);
 
     protected final Map<String, MavenArtifact> checksums = new HashMap<String, MavenArtifact>();
 
@@ -210,7 +214,7 @@ public abstract class BaseConverter {
 
                         return artifactMetadata;
                     } else {
-                        System.out.println("For jar-file with checksum: " + checksum +
+                        LOG.warn("For jar-file with checksum: " + checksum +
                                 " more than one result was returned by query: " +
                                 MAVEN_CENTRAL_SHA_1_QUERY_URL + checksum);
                     }
@@ -319,7 +323,7 @@ public abstract class BaseConverter {
 
         // Reusing artifact from other sdk version.
         if(artifact != null) {
-            System.out.println("Reusing artifact (" + checksum + ") : " + artifact.getGroupId() + ":" +
+            LOG.info("Reusing artifact (" + checksum + ") : " + artifact.getGroupId() + ":" +
                     artifact.getArtifactId() + ":" + artifact.getVersion());
             return artifact;
         }
@@ -330,7 +334,7 @@ public abstract class BaseConverter {
 
             // The file was available on maven central, so use that version instead of the one coming with the sdk.
             if(artifact != null) {
-                System.out.println("Using artifact from Maven Central (" + checksum + ") : " +
+                LOG.info("Using artifact from Maven Central (" + checksum + ") : " +
                         artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
             }
             // The file was not available on maven central, so we have to add it manually.
