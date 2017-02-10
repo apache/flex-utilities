@@ -37,6 +37,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.net.ssl.SSLHandshakeException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -85,34 +86,32 @@ public class DownloadRetriever extends BaseRetriever {
                 confirmLicenseAcceptance(type);
             }
 
-            if(type.equals(SdkType.FONTKIT)) {
+            if (type.equals(SdkType.FONTKIT)) {
                 File tmpTargetFile = File.createTempFile(UUID.randomUUID().toString(), "");
                 String tempSuffix = tmpTargetFile.getName().substring(tmpTargetFile.getName().lastIndexOf("-"));
-                if(!(tmpTargetFile.delete()))
-                {
+                if (!(tmpTargetFile.delete())) {
                     throw new IOException("Could not delete temp file: " + tmpTargetFile.getAbsolutePath());
                 }
 
                 File targetRootDir = new File(tmpTargetFile.getParentFile(), type.toString() + tempSuffix);
                 File targetDir = new File(targetRootDir, "/lib/external/optional");
-                if(!(targetDir.mkdirs()))
-                {
+                if (!(targetDir.mkdirs())) {
                     throw new IOException("Could not create temp directory: " + targetDir.getAbsolutePath());
                 }
 
-                final URI afeUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/afe.jar?format=raw");
+                final URI afeUri = new URI("https://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/afe.jar?format=raw");
                 final File afeFile = new File(targetDir, "afe.jar");
                 performSafeDownload(afeUri, afeFile);
 
-                final URI aglj40Uri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/aglj40.jar?format=raw");
+                final URI aglj40Uri = new URI("https://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/aglj40.jar?format=raw");
                 final File aglj40File = new File(targetDir, "aglj40.jar");
                 performSafeDownload(aglj40Uri, aglj40File);
 
-                final URI rideauUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/rideau.jar?format=raw");
+                final URI rideauUri = new URI("https://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/rideau.jar?format=raw");
                 final File rideauFile = new File(targetDir, "rideau.jar");
                 performSafeDownload(rideauUri, rideauFile);
 
-                final URI flexFontkitUri = new URI("http://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/flex-fontkit.jar?format=raw");
+                final URI flexFontkitUri = new URI("https://sourceforge.net/adobe/flexsdk/code/HEAD/tree/trunk/lib/flex-fontkit.jar?format=raw");
                 final File flexFontkitFile = new File(targetDir, "flex-fontkit.jar");
                 performSafeDownload(flexFontkitUri, flexFontkitFile);
 
@@ -134,7 +133,7 @@ public class DownloadRetriever extends BaseRetriever {
                     final File libDestFile = new File(targetDirectory, "frameworks/libs/player/" + version +
                             "/playerglobal.swc");
                     if (!libDestFile.getParentFile().exists()) {
-                        if(!libDestFile.getParentFile().mkdirs()) {
+                        if (!libDestFile.getParentFile().mkdirs()) {
                             throw new RetrieverException("Error creating directory " + libDestFile.getParent());
                         }
                     }
@@ -144,7 +143,7 @@ public class DownloadRetriever extends BaseRetriever {
                     System.out.println("Extracting archive to temp directory.");
                     File targetDirectory = new File(targetFile.getParent(),
                             targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
-                    if(type.equals(SdkType.SWFOBJECT)) {
+                    if (type.equals(SdkType.SWFOBJECT)) {
                         unpack(targetFile, new File(targetDirectory, "templates"));
                     } else {
                         unpack(targetFile, targetDirectory);
@@ -154,7 +153,7 @@ public class DownloadRetriever extends BaseRetriever {
                     System.out.println("===========================================================");
 
                     // In case of the swfobject, delete some stuff we don't want in there.
-                    if(type.equals(SdkType.SWFOBJECT)) {
+                    if (type.equals(SdkType.SWFOBJECT)) {
                         File delFile = new File(targetDirectory, "templates/swfobject/index_dynamic.html");
                         FileUtils.deleteQuietly(delFile);
                         delFile = new File(targetDirectory, "templates/swfobject/index.html");
@@ -172,6 +171,12 @@ public class DownloadRetriever extends BaseRetriever {
             throw new RetrieverException("Error downloading archive.", e);
         } catch (FileNotFoundException e) {
             throw new RetrieverException("Error downloading archive.", e);
+        } catch (SSLHandshakeException e) {
+            throw new RetrieverException("Error downloading archive. There were problems in the SSL handshake. " +
+                    "In case of Sourceforge this is probably related to Sourceforge using strong encryption for " +
+                    "SSL and the default Oracle JDK not supporting this. If you are able to do so please install " +
+                    "the Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files 8 available " +
+                    "from http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html", e);
         } catch (IOException e) {
             throw new RetrieverException("Error downloading archive.", e);
         } catch (URISyntaxException e) {
@@ -289,7 +294,7 @@ public class DownloadRetriever extends BaseRetriever {
                     }
                     final ProgressBar progressBar = new ProgressBar(expectedSize);
                     long transferredSize = 0L;
-                    while ((expectedSize == 0) || (transferredSize < expectedSize)) {
+                    while (transferredSize < expectedSize) {
                         // Transfer about 1MB in each iteration.
                         long currentSize = fos.getChannel().transferFrom(rbc, transferredSize, MEGABYTE);
                         if (currentSize < MEGABYTE) {
