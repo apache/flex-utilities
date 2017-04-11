@@ -453,7 +453,12 @@ public class DownloadRetriever extends BaseRetriever {
         String property = "com.adobe.systemIdsForWhichTheTermsOfTheAdobeLicenseAgreementAreAccepted";
 
         // Implement the accepting the license by providing a system-id as system-property.
+        // Check a java property first ...
         String acceptedSystemIds = System.getProperty(property);
+        // Check an environment variable second ...
+        if(acceptedSystemIds == null) {
+            acceptedSystemIds = System.getenv("com.adobe.systemIdsForWhichTheTermsOfTheAdobeLicenseAgreementAreAccepted");
+        }
         if(acceptedSystemIds != null) {
             String systemId = SystemIdHelper.getSystemId();
             if(systemId != null) {
