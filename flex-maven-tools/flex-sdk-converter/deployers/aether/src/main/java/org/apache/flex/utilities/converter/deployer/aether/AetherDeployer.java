@@ -45,6 +45,8 @@ import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.transport.wagon.WagonTransporterFactory;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -61,6 +63,8 @@ import java.io.Reader;
  * Date: 03.11.13
  */
 public class AetherDeployer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AetherDeployer.class);
 
     private File directory;
     private String url;
@@ -94,13 +98,13 @@ public class AetherDeployer {
     }
 
     private static void printUsage() {
-        System.out.println("\nUsage: java -cp flex-sdk-converter-1.0.jar SDKInVMDeployer \"directory\" \"url\" [\"username\", \"password\"]\n");
-        System.out.println("The SDKDeployer needs at least 2 ordered parameters separated by spaces:");
-        System.out.println("\t1- directory: The path to the directory containing the artifacts that should be deployed.");
-        System.out.println("\t2- url: URL where the artifacts will be deployed.");
-        System.out.println("If the targeted repository requires authentication two more parameters have to be provided:");
-        System.out.println("\t3- username: The username used to authenticate on the target repository.");
-        System.out.println("\t4- password: The password used to authenticate on the target repository.");
+        LOG.error("\nUsage: java -cp flex-sdk-converter-1.0.jar SDKInVMDeployer \"directory\" \"url\" [\"username\", \"password\"]\n" +
+                "The SDKDeployer needs at least 2 ordered parameters separated by spaces:\n" +
+                "\t1- directory: The path to the directory containing the artifacts that should be deployed.\b" +
+                "\t2- url: URL where the artifacts will be deployed.\n" +
+                "If the targeted repository requires authentication two more parameters have to be provided:\n" +
+                "\t3- username: The username used to authenticate on the target repository.\n" +
+                "\t4- password: The password used to authenticate on the target repository.");
     }
 
     public void deploy() {
@@ -120,7 +124,7 @@ public class AetherDeployer {
             final RepositorySystem repositorySystem = locator.getService(RepositorySystem.class);
 
             if (repositorySystem == null) {
-                System.out.println("Couldn't initialize local maven repository system.");
+                LOG.error("Couldn't initialize local maven repository system.");
                 System.exit(0);
             } else {
                 // Setup the repository system session based upon the current maven settings.xml.
@@ -141,7 +145,7 @@ public class AetherDeployer {
                 processDir(rootDir, repositorySystem, session, remoteRepository);
             }
         } catch (Throwable e) {
-            e.printStackTrace();
+            LOG.error("Error deploying artifacts in directory: " + directory.getAbsolutePath(), e);
         }
     }
 
@@ -214,10 +218,10 @@ public class AetherDeployer {
             }
 
             // Actually install the artifact.
-            System.out.println("Installing Artifact: " + pomArtifact.getGroupId() + ":" +
+            LOG.info("Installing Artifact: " + pomArtifact.getGroupId() + ":" +
                     pomArtifact.getArtifactId() + ":" + pomArtifact.getVersion());
             for (final Artifact artifact : artifactInstallRequest.getArtifacts()) {
-                System.out.println(" - File with extension " + artifact.getExtension() +
+                LOG.info(" - File with extension " + artifact.getExtension() +
                         ((artifact.getClassifier().length() > 0) ? " and classifier " + artifact.getClassifier() : ""));
             }
 

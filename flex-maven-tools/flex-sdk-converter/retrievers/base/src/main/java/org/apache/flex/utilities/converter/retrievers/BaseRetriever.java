@@ -45,9 +45,11 @@ public abstract class BaseRetriever implements Retriever {
 
         ArchiveInputStream archiveInputStream = null;
         ArchiveEntry entry;
+        FileInputStream fileInputStream = null;
         try {
 
-            final CountingInputStream inputStream = new CountingInputStream(new FileInputStream(inputArchive));
+            fileInputStream = new FileInputStream(inputArchive);
+            final CountingInputStream inputStream = new CountingInputStream(fileInputStream);
 
             final long inputFileSize = inputArchive.length();
 
@@ -76,20 +78,28 @@ public abstract class BaseRetriever implements Retriever {
                 // Entry is a file.
                 else {
                     final byte[] data = new byte[BUFFER_MAX];
-                    final FileOutputStream fos = new FileOutputStream(outputFile);
-                    BufferedOutputStream dest = null;
+                    FileOutputStream fos = null;
                     try {
-                        dest = new BufferedOutputStream(fos, BUFFER_MAX);
+                        fos = new FileOutputStream(outputFile);
 
-                        int count;
-                        while ((count = archiveInputStream.read(data, 0, BUFFER_MAX)) != -1) {
-                            dest.write(data, 0, count);
-                            progressBar.updateProgress(inputStream.getBytesRead());
+                        BufferedOutputStream dest = null;
+                        try {
+                            dest = new BufferedOutputStream(fos, BUFFER_MAX);
+
+                            int count;
+                            while ((count = archiveInputStream.read(data, 0, BUFFER_MAX)) != -1) {
+                                dest.write(data, 0, count);
+                                progressBar.updateProgress(inputStream.getBytesRead());
+                            }
+                        } finally {
+                            if (dest != null) {
+                                dest.flush();
+                                dest.close();
+                            }
                         }
                     } finally {
-                        if(dest != null) {
-                            dest.flush();
-                            dest.close();
+                        if(fos != null) {
+                            fos.close();
                         }
                     }
                 }
@@ -106,7 +116,14 @@ public abstract class BaseRetriever implements Retriever {
             if(archiveInputStream != null) {
                 try {
                     archiveInputStream.close();
-                } catch(Exception e) {
+                } catch(IOException e) {
+                    // Ignore...
+                }
+            }
+            if(fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch(IOException e) {
                     // Ignore...
                 }
             }

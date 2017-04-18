@@ -78,8 +78,8 @@ var falconDependencies = [
         unzip:true
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=com/google/guava/guava/17.0/',
-        remoteFileName:'guava-17.0.jar',
+        url:'http://search.maven.org/remotecontent?filepath=com/google/guava/guava/20.0/',
+        remoteFileName:'guava-20.0.jar',
         destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
         destinationFileName:'guava.jar',
         unzip:false
@@ -125,9 +125,9 @@ var falconDependencies = [
     },
     {
         url:'http://dl.google.com/closure-compiler/',
-        remoteFileName:'compiler-20150609.zip',
+        remoteFileName:'compiler-20161201.zip',
         destinationPath:constants.DOWNLOADS_FOLDER,
-        destinationFileName:'compiler-20150609.zip',
+        destinationFileName:'compiler-20161201.zip',
         pathOfFileToBeCopiedFrom:'compiler.jar',
         pathOfFileToBeCopiedTo:googleClosureCompilerFolder + 'compiler.jar',
         unzip:true
@@ -142,8 +142,8 @@ var falconDependencies = [
         unzip:true
     },
     {
-        url:'http://search.maven.org/remotecontent?filepath=com/google/guava/guava/17.0/',
-        remoteFileName:'guava-17.0.jar',
+        url:'http://search.maven.org/remotecontent?filepath=com/google/guava/guava/20.0/',
+        remoteFileName:'guava-20.0.jar',
         destinationPath:jsLibFolder,
         destinationFileName:'guava.jar',
         unzip:false

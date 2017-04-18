@@ -26,6 +26,8 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jettison.json.JSONTokener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -49,6 +51,8 @@ import java.util.zip.ZipOutputStream;
  * Created by cdutz on 11.05.2012.
  */
 public abstract class BaseConverter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BaseConverter.class);
 
     protected final Map<String, MavenArtifact> checksums = new HashMap<String, MavenArtifact>();
 
@@ -94,11 +98,11 @@ public abstract class BaseConverter {
 
     protected String calculateChecksum(File jarFile) throws ConverterException {
         // Implement the calculation of checksums for a given jar.
-        final MessageDigest digest;
+        InputStream is = null;
         try {
-            digest = MessageDigest.getInstance("SHA-1");
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
 
-            final InputStream is = new FileInputStream(jarFile);
+            is = new FileInputStream(jarFile);
             final byte[] buffer = new byte[8192];
             int read;
             try {
@@ -110,21 +114,20 @@ public abstract class BaseConverter {
                 return bigInt.toString(16);
             }
             catch(IOException e) {
-                throw new RuntimeException("Unable to process file for MD5", e);
-            }
-            finally {
-                try {
-                    is.close();
-                }
-                catch(IOException e) {
-                    //noinspection ThrowFromFinallyBlock
-                    throw new RuntimeException("Unable to close input stream for MD5 calculation", e);
-                }
+                throw new ConverterException("Unable to process file for MD5", e);
             }
         } catch (NoSuchAlgorithmException e) {
             throw new ConverterException("Error calculating checksum of file '" + jarFile.getPath() + "'", e);
         } catch (FileNotFoundException e) {
             throw new ConverterException("Error calculating checksum of file '" + jarFile.getPath() + "'", e);
+        } finally {
+            if(is != null) {
+                try {
+                    is.close();
+                } catch(IOException e) {
+                    // Ignore ...
+                }
+            }
         }
     }
 
@@ -142,10 +145,17 @@ public abstract class BaseConverter {
             } else {
                 connection = queryUrl.openConnection();
             }
-            final ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
-            final ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-            if(rbc.read(byteBuffer) > 0) {
-                output = new String (byteBuffer.array(), "UTF-8");
+            ReadableByteChannel rbc = null;
+            try {
+                rbc = Channels.newChannel(connection.getInputStream());
+                final ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                if (rbc.read(byteBuffer) > 0) {
+                    output = new String(byteBuffer.array(), "UTF-8");
+                }
+            } finally {
+                if(rbc != null) {
+                    rbc.close();
+                }
             }
         } catch (MalformedURLException e) {
             throw new ConverterException("Error querying maven central.", e);
@@ -204,7 +214,7 @@ public abstract class BaseConverter {
 
                         return artifactMetadata;
                     } else {
-                        System.out.println("For jar-file with checksum: " + checksum +
+                        LOG.warn("For jar-file with checksum: " + checksum +
                                 " more than one result was returned by query: " +
                                 MAVEN_CENTRAL_SHA_1_QUERY_URL + checksum);
                     }
@@ -223,7 +233,7 @@ public abstract class BaseConverter {
             final File outputDirectory = target.getParentFile();
             if(!outputDirectory.exists()) {
                 if(!outputDirectory.mkdirs()) {
-                    throw new RuntimeException("Could not create directory: " + outputDirectory.getAbsolutePath());
+                    throw new ConverterException("Could not create directory: " + outputDirectory.getAbsolutePath());
                 }
             }
 
@@ -313,7 +323,7 @@ public abstract class BaseConverter {
 
         // Reusing artifact from other sdk version.
         if(artifact != null) {
-            System.out.println("Reusing artifact (" + checksum + ") : " + artifact.getGroupId() + ":" +
+            LOG.info("Reusing artifact (" + checksum + ") : " + artifact.getGroupId() + ":" +
                     artifact.getArtifactId() + ":" + artifact.getVersion());
             return artifact;
         }
@@ -324,7 +334,7 @@ public abstract class BaseConverter {
 
             // The file was available on maven central, so use that version instead of the one coming with the sdk.
             if(artifact != null) {
-                System.out.println("Using artifact from Maven Central (" + checksum + ") : " +
+                LOG.info("Using artifact from Maven Central (" + checksum + ") : " +
                         artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
             }
             // The file was not available on maven central, so we have to add it manually.
@@ -456,11 +466,11 @@ public abstract class BaseConverter {
             // In general the version consists of the content of the version element with an appended build-number.
             return (build.equals("0")) ? version + "-SNAPSHOT" : version;
         } catch (ParserConfigurationException pce) {
-            throw new RuntimeException(pce);
+            throw new ConverterException("Error parsing flex-sdk-description.xml", pce);
         } catch (SAXException se) {
-            throw new RuntimeException(se);
+            throw new ConverterException("Error parsing flex-sdk-description.xml", se);
         } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
+            throw new ConverterException("Error parsing flex-sdk-description.xml", ioe);
         }
     }
 

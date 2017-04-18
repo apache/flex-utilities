@@ -126,11 +126,23 @@ package org.apache.flex.ant.tags
         {
             return getAttributeValue("@outputproperty");
         }
+
+        override public function get failonerror():Boolean
+        {
+            var val:String = getNullOrAttributeValue("@failonerror");
+            //if omitted, defaults to false
+            return val == null ? false : val == "true";
+        }
         
         private var process:NativeProcess;
         
         private function exitHandler(event:NativeProcessExitEvent):void
         {
+            if(event.exitCode !== 0 && failonerror)
+            {
+                ant.project.failureMessage = "Exec task failed: " + fileName;
+                ant.project.status = false;
+            }
             dispatchEvent(new Event(Event.COMPLETE));
         }
         
