@@ -425,14 +425,29 @@ ApacheFalcon.falconInstallComplete = function()
 
 ApacheFalcon.install = function()
 {
-    request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFalconBinary + fileNameFalconBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFalcon.handleFalconMirrorsResponse);
-    console.log('Downloading Apache Flex Falcon Compiler');
-	/*request
-		.get("http://apacheflexbuild.cloudapp.net:8080/job/flex-falcon/lastSuccessfulBuild/artifact/out/apache-flex-falconjx-0.7.0-bin.zip")
-		.pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFalconBinary)
-			.on('finish', function(){
-				console.log('Apache Flex Falcon Compiler download complete');
-				ApacheFalcon.extract();
-			})
-	);*/
+    var isNightly = process.env.npm_package_config_nightly === "true";
+    if(isNightly)
+    {
+        var downloadURL = process.env.npm_package_config_falcon_nightly_url;
+    }
+    else
+    {
+        downloadURL = constants.APACHE_MIRROR_RESOLVER_URL + pathToFalconBinary + fileNameFalconBinary + '?' + constants.REQUEST_JSON_PARAM;
+    }
+    console.log('Downloading Apache Flex "Falcon" Compiler from ' + downloadURL);
+    if(isNightly)
+    {
+    	request
+    		.get(downloadURL)
+    		.pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFalconBinary)
+    			.on('finish', function(){
+    				console.log('Apache Flex Falcon Compiler download complete');
+    				ApacheFalcon.extract();
+    			})
+    	);
+    }
+    else
+    {
+        request(downloadURL, ApacheFalcon.handleFalconMirrorsResponse);
+    }
 };

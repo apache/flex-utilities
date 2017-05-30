@@ -64,14 +64,30 @@ ApacheFlexJS.extract = function()
 
 ApacheFlexJS.install = function()
 {
-    request(constants.APACHE_MIRROR_RESOLVER_URL + pathToFlexJSBinary + fileNameFlexJSBinary + '?' + constants.REQUEST_JSON_PARAM, ApacheFlexJS.handleFlexJSMirrorsResponse);
-    console.log('Downloading Apache FlexJS');
-	/*request
-		.get("http://apacheflexbuild.cloudapp.net:8080/job/flex-asjs/lastSuccessfulBuild/artifact/out/apache-flex-flexjs-0.7.0-bin.zip")
-		.pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFlexJSBinary)
-			.on('close', function(){
-				console.log('Apache FlexJS download complete');
-				ApacheFlexJS.extract();
-			})
-	);*/
+    //uncomment to test a nightly build
+    var isNightly = process.env.npm_package_config_nightly === "true";
+    if(isNightly)
+    {
+        var downloadURL = process.env.npm_package_config_flexjs_nightly_url;
+    }
+    else
+    {
+        downloadURL = constants.APACHE_MIRROR_RESOLVER_URL + pathToFlexJSBinary + fileNameFlexJSBinary + '?' + constants.REQUEST_JSON_PARAM;
+    }
+    console.log('Downloading Apache FlexJS from ' + downloadURL);
+    if(isNightly)
+    {
+    	request
+    		.get(downloadURL)
+    		.pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFlexJSBinary)
+    			.on('close', function(){
+    				console.log('Apache FlexJS download complete');
+    				ApacheFlexJS.extract();
+    			})
+        );
+    }
+    else
+    {
+        request(downloadURL, ApacheFlexJS.handleFlexJSMirrorsResponse);
+    }
 };
