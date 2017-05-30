@@ -35,9 +35,10 @@ var fileNameSwfObject = pjson.org_apache_flex.swf_object_file_name;
 
 SWFObject.downloadSwfObject = function()
 {
-    console.log('Downloading SWFObject');
+    var downloadURL = swfObjectURL + fileNameSwfObject;
+    console.log('Downloading SWFObject from ' + downloadURL);
     request
-        .get(swfObjectURL + fileNameSwfObject)
+        .get(downloadURL)
         .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameSwfObject)
             .on('finish', function(){
                 console.log('SWFObject download complete');

@@ -71,9 +71,10 @@ FlatUI.prompt = function()
 
 FlatUI.downloadFlatUI = function()
 {
-    console.log('Downloading FlatUI');
+    var downloadURL = flatUIURL + fileNameFlatUI;
+    console.log('Downloading FlatUI from ' + downloadURL);
     request
-        .get(flatUIURL + fileNameFlatUI)
+        .get(downloadURL)
         .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameFlatUI)
             .on('finish', function(){
                 console.log('FlatUI download complete');

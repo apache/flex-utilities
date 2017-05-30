@@ -75,7 +75,7 @@ FlashPlayerGlobal.promptForFlashPlayerGlobal = function()
 
 FlashPlayerGlobal.downloadFlashPlayerGlobal = function()
 {
-    console.log('Downloading Adobe FlashPlayerGlobal.swc ');
+    console.log('Downloading playerglobal.swc from ' + flashPlayerGlobalURL + fileNameFlashPlayerGlobal);
 
     var downloadDetails = {
         url:flashPlayerGlobalURL,

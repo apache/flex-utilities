@@ -70,9 +70,10 @@ function promptForAdobeAIR()
 
 function downloadAdobeAIR()
 {
-    console.log('Downloading Adobe AIR from ' + AdobeAIRURL + fileNameAdobeAIR);
+    var downloadURL = AdobeAIRURL + fileNameAdobeAIR;
+    console.log('Downloading Adobe AIR from ' + downloadURL);
     request
-        .get(AdobeAIRURL + fileNameAdobeAIR)
+        .get(downloadURL)
         .pipe(fs.createWriteStream(constants.DOWNLOADS_FOLDER + fileNameAdobeAIR)
             .on('close', function(){
                 console.log('Adobe AIR download complete');
