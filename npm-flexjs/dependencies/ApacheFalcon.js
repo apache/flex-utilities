@@ -434,17 +434,22 @@ ApacheFalcon.falconInstallComplete = function()
 
 ApacheFalcon.install = function()
 {
-    var isNightly = process.env.npm_package_config_nightly === "true";
-    if(isNightly)
+    //to test with a nightly build or another custom URL, run the following
+    //command with your custom URL
+    //npm config set falcon_custom_url http://example.com/path/to/falcon.zip
+    //example URL: http://apacheflexbuild.cloudapp.net:8080/job/flex-falcon/lastSuccessfulBuild/artifact/out/apache-flex-falconjx-0.8.0-bin.zip
+    var customURL = process.env.npm_package_config_falcon_custom_url;
+    var isCustom = typeof customURL !== "undefined";
+    if(isCustom)
     {
-        var downloadURL = process.env.npm_package_config_falcon_nightly_url;
+        var downloadURL = customURL;
     }
     else
     {
         downloadURL = constants.APACHE_MIRROR_RESOLVER_URL + pathToFalconBinary + fileNameFalconBinary + '?' + constants.REQUEST_JSON_PARAM;
     }
     console.log('Downloading Apache Flex "Falcon" Compiler from ' + downloadURL);
-    if(isNightly)
+    if(isCustom)
     {
     	request
     		.get(downloadURL)

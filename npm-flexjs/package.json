@@ -1,11 +1,6 @@
 {
   "name": "flexjs",
   "version": "0.8.0",
-  "config": {
-    "nightly": false,
-    "flexjs_nightly_url": "http://apacheflexbuild.cloudapp.net:8080/job/flex-asjs/lastSuccessfulBuild/artifact/out/apache-flex-flexjs-0.8.0-bin.zip",
-    "falcon_nightly_url": "http://apacheflexbuild.cloudapp.net:8080/job/flex-falcon/lastSuccessfulBuild/artifact/out/apache-flex-falconjx-0.8.0-bin.zip"
-  },
   "description": "Apache FlexJS",
   "keywords": [
     "flex",
