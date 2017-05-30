@@ -1,6 +1,11 @@
 {
   "name": "flexjs",
-  "version": "0.7.1",
+  "version": "0.8.0",
+  "config": {
+    "nightly": false,
+    "flexjs_nightly_url": "http://apacheflexbuild.cloudapp.net:8080/job/flex-asjs/lastSuccessfulBuild/artifact/out/apache-flex-flexjs-0.8.0-bin.zip",
+    "falcon_nightly_url": "http://apacheflexbuild.cloudapp.net:8080/job/flex-falcon/lastSuccessfulBuild/artifact/out/apache-flex-falconjx-0.8.0-bin.zip"
+  },
   "description": "Apache FlexJS",
   "keywords": [
     "flex",
@@ -38,16 +43,16 @@
     "externc": "./js/bin/externcnpm"
   },
   "org_apache_flex": {
-    "flexjs_path_binary": "flex/flexjs/0.7.0/binaries/",
-    "flexjs_file_name": "apache-flex-flexjs-0.7.0-bin.zip",
-    "falcon_path_binary": "flex/falcon/0.7.0/binaries/",
-    "falcon_file_name": "apache-flex-falconjx-0.7.0-bin.zip",
-    "flash_player_global_url": "http://download.macromedia.com/get/flashplayer/updaters/21/",
-    "flash_player_global_file_name": "playerglobal21_0.swc",
-    "adobe_air_url": "http://airdownload.adobe.com/air/win/download/21.0/",
+    "flexjs_path_binary": "flex/flexjs/0.8.0/binaries/",
+    "flexjs_file_name": "apache-flex-flexjs-0.8.0-bin.zip",
+    "falcon_path_binary": "flex/falcon/0.8.0/binaries/",
+    "falcon_file_name": "apache-flex-falconjx-0.8.0-bin.zip",
+    "flash_player_global_url": "http://download.macromedia.com/get/flashplayer/updaters/25/",
+    "flash_player_global_file_name": "playerglobal25_0.swc",
+    "adobe_air_url": "http://airdownload.adobe.com/air/win/download/25.0/",
     "adobe_air_file_name": "AdobeAIRSDK.zip",
-    "player_version": "21.0",
-    "swf_version": "32",
+    "player_version": "25.0",
+    "swf_version": "36",
     "swf_object_url": "http://github.com/swfobject/swfobject/archive/",
     "swf_object_file_name": "2.2.zip",
     "flatui_url": "https://github.com/designmodo/Flat-UI/archive/",
