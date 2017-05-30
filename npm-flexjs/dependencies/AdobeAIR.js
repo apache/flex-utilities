@@ -39,7 +39,7 @@ The Adobe AIR SDK is subject to and governed by the\n\
 Adobe AIR SDK License Agreement specified here:\n\
 http://www.adobe.com/products/air/sdk-eula.html.\n\
 This license is not compatible with the Apache v2 license.\n\
-Do you want to download and install the Adobe AIR SDK?\
+Do you want to download and install the Adobe AIR SDK?\n\
 This is a required component (y/n)";
 
 function promptForAdobeAIR()
