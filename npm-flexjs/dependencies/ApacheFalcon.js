@@ -78,6 +78,15 @@ var falconDependencies = [
         unzip:true
     },
     {
+        url:'http://archive.apache.org/dist/commons/lang/binaries/',
+        remoteFileName:'commons-lang-2.6-bin.zip',
+        destinationPath:constants.DOWNLOADS_FOLDER,
+        destinationFileName:'commons-lang-2.6-bin.zip',
+        pathOfFileToBeCopiedFrom:'commons-lang-2.6/commons-lang-2.6.jar',
+        pathOfFileToBeCopiedTo:constants.FLEXJS_FOLDER + falconLibExternalFolder + 'commons-lang-2.6.jar',
+        unzip:true
+    },
+    {
         url:'http://search.maven.org/remotecontent?filepath=com/google/guava/guava/20.0/',
         remoteFileName:'guava-20.0.jar',
         destinationPath:constants.FLEXJS_FOLDER + falconLibExternalFolder,
@@ -128,7 +137,7 @@ var falconDependencies = [
         remoteFileName:'compiler-20161201.zip',
         destinationPath:constants.DOWNLOADS_FOLDER,
         destinationFileName:'compiler-20161201.zip',
-        pathOfFileToBeCopiedFrom:'compiler.jar',
+        pathOfFileToBeCopiedFrom:'closure-compiler-v20161201.jar',
         pathOfFileToBeCopiedTo:googleClosureCompilerFolder + 'compiler.jar',
         unzip:true
     },
