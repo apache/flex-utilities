@@ -54,21 +54,21 @@ HTML5/JavaScript output)
 
 Windows:
 
-	mxmlc C:\Users\<username>\AppData\Roaming\npm\node_modules\flexjs\examples\flexjs\ChartExample\src\ChartExample.mxml
+	mxmlc C:\Users\<username>\AppData\Roaming\npm\node_modules\flexjs\examples\flexjs\ChartExample\src\main\flex\ChartExample.mxml
 
 Mac:
 
-	mxmlc /usr/local/lib/node_modules/flexjs/examples/flexjs/ChartExample/src/ChartExample.mxml
+	mxmlc /usr/local/lib/node_modules/flexjs/examples/flexjs/ChartExample/src/main/flex/ChartExample.mxml
 
 ASJSC (Write ActionScript3 targeting HTML5/SVG DOM without requiring JavaScript):
 
 Windows:
 
-	asjsc C:\Users\<username>\AppData\Roaming\npm\node_modules\flexjs\examples\native\USStatesMap\src\USStatesMap.as
+	asjsc C:\Users\<username>\AppData\Roaming\npm\node_modules\flexjs\examples\native\USStatesMap\src\main\flex\USStatesMap.as
 
 Mac:
 
-	asjsc /usr/local/lib/node_modules/flexjs/examples/native/USStatesMap/src/USStatesMap.as
+	asjsc /usr/local/lib/node_modules/flexjs/examples/native/USStatesMap/src/main/flex/USStatesMap.as
 
 You may need to copy the examples to a writeable folder because the compilation
 will generate an output folder in the example folders.
