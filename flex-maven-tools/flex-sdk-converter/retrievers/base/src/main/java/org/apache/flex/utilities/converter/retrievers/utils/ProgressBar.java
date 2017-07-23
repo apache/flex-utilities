@@ -17,11 +17,15 @@
 package org.apache.flex.utilities.converter.retrievers.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by cdutz on 24.05.2014.
  */
 public class ProgressBar {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ProgressBar.class);
 
     protected long total;
 
@@ -39,7 +43,7 @@ public class ProgressBar {
                 ((double) current / (double) total) * (double) 100);
         final int segmentsTransferred = transferredPercent / 2;
         final int segmentsRest = 50 - segmentsTransferred;
-        System.out.print("\r" + String.format(" %3d", transferredPercent) + "% [" +
+        LOG.info("\r" + String.format(" %3d", transferredPercent) + "% [" +
                 StringUtils.repeat("=", segmentsTransferred) +
                 ((segmentsRest > 0) ? ">" + StringUtils.repeat(" ", segmentsRest - 1) : "") + "] ");
     }

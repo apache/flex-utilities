@@ -32,6 +32,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -61,6 +63,8 @@ public class DownloadRetriever extends BaseRetriever {
             "http://flex.apache.org/installer/sdk-installer-config-4.0.xml";
 
     public static final long MEGABYTE = 1 << 20;
+
+    private static final Logger LOG = LoggerFactory.getLogger(DownloadRetriever.class);
 
     /**
      * Wrapper to allow simple overriding of this property.
@@ -140,7 +144,7 @@ public class DownloadRetriever extends BaseRetriever {
                     FileUtils.moveFile(targetFile, libDestFile);
                     return targetDirectory;
                 } else {
-                    System.out.println("Extracting archive to temp directory.");
+                    LOG.info("Extracting archive to temp directory.");
                     File targetDirectory = new File(targetFile.getParent(),
                             targetFile.getName().substring(0, targetFile.getName().lastIndexOf(".") - 1));
                     if (type.equals(SdkType.SWFOBJECT)) {
@@ -148,9 +152,9 @@ public class DownloadRetriever extends BaseRetriever {
                     } else {
                         unpack(targetFile, targetDirectory);
                     }
-                    System.out.println();
-                    System.out.println("Finished extracting.");
-                    System.out.println("===========================================================");
+                    LOG.info("");
+                    LOG.info("Finished extracting.");
+                    LOG.info("===========================================================");
 
                     // In case of the swfobject, delete some stuff we don't want in there.
                     if (type.equals(SdkType.SWFOBJECT)) {
@@ -207,12 +211,12 @@ public class DownloadRetriever extends BaseRetriever {
             final long expectedSize = connection.getContentLength();
             long transferedSize = 0L;
 
-            System.out.println("===========================================================");
-            System.out.println("Downloading " + sourceUrl.toString());
+            LOG.info("===========================================================");
+            LOG.info("Downloading " + sourceUrl.toString());
             if (expectedSize > 1014 * 1024) {
-                System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
+                LOG.info("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
             } else {
-                System.out.println("Expected size: " + (expectedSize / 1024) + "KB");
+                LOG.info("Expected size: " + (expectedSize / 1024) + "KB");
             }
             final ProgressBar progressBar = new ProgressBar(expectedSize);
             while (transferedSize < expectedSize) {
@@ -235,9 +239,9 @@ public class DownloadRetriever extends BaseRetriever {
                 }
             }
         }
-        System.out.println();
-        System.out.println("Finished downloading.");
-        System.out.println("===========================================================");
+        LOG.info("");
+        LOG.info("Finished downloading.");
+        LOG.info("===========================================================");
     }
 
     protected void performSafeDownload(URI sourceUri, File targetFile) throws IOException {
@@ -259,8 +263,8 @@ public class DownloadRetriever extends BaseRetriever {
 
             String reasonPhrase = response.getStatusLine().getReasonPhrase();
             int statusCode = response.getStatusLine().getStatusCode();
-            System.out.println(String.format("statusCode: %d", statusCode));
-            System.out.println(String.format("reasonPhrase: %s", reasonPhrase));
+            LOG.info(String.format("statusCode: %d", statusCode));
+            LOG.info(String.format("reasonPhrase: %s", reasonPhrase));
 
             HttpEntity entity = response.getEntity();
             InputStream content = entity.getContent();
@@ -276,11 +280,11 @@ public class DownloadRetriever extends BaseRetriever {
             ////////////////////////////////////////////////////////////////////////////////
 
                 final long expectedSize = entity.getContentLength();
-                System.out.println("===========================================================");
-                System.out.println("Downloading " + sourceUri.toString());
+                LOG.info("===========================================================");
+                LOG.info("Downloading " + sourceUri.toString());
                 if (expectedSize <= 0) {
                     try {
-                        System.out.println("Unknown size.");
+                        LOG.info("Unknown size.");
                         IOUtils.copy(content, fos);
                     } finally {
                         // close http network connection
@@ -288,9 +292,9 @@ public class DownloadRetriever extends BaseRetriever {
                     }
                 } else {
                     if (expectedSize > 1014 * 1024) {
-                        System.out.println("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
+                        LOG.info("Expected size: " + (expectedSize / 1024 / 1024) + "MB");
                     } else {
-                        System.out.println("Expected size: " + (expectedSize / 1024) + "KB");
+                        LOG.info("Expected size: " + (expectedSize / 1024) + "KB");
                     }
                     final ProgressBar progressBar = new ProgressBar(expectedSize);
                     long transferredSize = 0L;
@@ -304,10 +308,10 @@ public class DownloadRetriever extends BaseRetriever {
                         progressBar.updateProgress(transferredSize);
                     }
                     fos.close();
-                    System.out.println();
+                    LOG.info("");
                 }
-                System.out.println("Finished downloading.");
-                System.out.println("===========================================================");
+                LOG.info("Finished downloading.");
+                LOG.info("===========================================================");
             } finally {
                 if(rbc != null) {
                     try {
@@ -347,7 +351,7 @@ public class DownloadRetriever extends BaseRetriever {
                 SocketAddress socketAddress = new InetSocketAddress(proxySettings.getHost(), proxySettings.getPort());
                 Proxy proxy = new Proxy(Proxy.Type.valueOf(proxySettings.getProtocol().toUpperCase()), socketAddress);
                 connection = configUrl.openConnection(proxy);
-                System.out.println("Using proxy: " + proxySettings.getHost());
+                LOG.info("Using proxy: " + proxySettings.getHost());
             } else {
                 connection = configUrl.openConnection();
             }
