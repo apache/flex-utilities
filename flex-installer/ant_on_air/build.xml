@@ -82,15 +82,15 @@
 
     <target name="third-party" depends="get-as3commons.swc" description="downloads 3rd-party files">
         <mkdir dir="${basedir}/external/de/ketzler/utils" />
-        <get src="http://as3-simple-untar.googlecode.com/svn/trunk/src/de/ketzler/utils/SimpleUntar.as" dest="${basedir}/external/de/ketzler/utils/SimpleUntar.as" skipexisting="true" />
+        <get src="https://raw.githubusercontent.com/thdtjsdn/as3-simple-untar/master/src/de/ketzler/utils/SimpleUntar.as" dest="${basedir}/external/de/ketzler/utils/SimpleUntar.as" skipexisting="true" />
         <mkdir dir="${basedir}/external/de/ketzler/utils/untar" />
-        <get src="http://as3-simple-untar.googlecode.com/svn/trunk/src/de/ketzler/utils/untar/UntarFileInfo.as" dest="${basedir}/external/de/ketzler/utils/untar/UntarFileInfo.as" skipexisting="true" />
-        <get src="http://as3-simple-untar.googlecode.com/svn/trunk/src/de/ketzler/utils/untar/UntarHeaderBlock.as" dest="${basedir}/external/de/ketzler/utils/untar/UntarHeaderBlock.as" skipexisting="true" />
+        <get src="https://raw.githubusercontent.com/thdtjsdn/as3-simple-untar/master/src/de/ketzler/utils/untar/UntarFileInfo.as" dest="${basedir}/external/de/ketzler/utils/untar/UntarFileInfo.as" skipexisting="true" />
+        <get src="https://raw.githubusercontent.com/thdtjsdn/as3-simple-untar/master/src/de/ketzler/utils/untar/UntarHeaderBlock.as" dest="${basedir}/external/de/ketzler/utils/untar/UntarHeaderBlock.as" skipexisting="true" />
         <mkdir dir="${basedir}/external/com/probertson/utils" />
-        <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/CRC32Generator.as" dest="${basedir}/external/com/probertson/utils/CRC32Generator.as" skipexisting="true" />
-        <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/GZIPBytesEncoder.as" dest="${basedir}/external/com/probertson/utils/GZIPBytesEncoder.as" skipexisting="true" />
-        <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/GZIPEncoder.as" dest="${basedir}/external/com/probertson/utils/GZIPEncoder.as" skipexisting="true" />
-        <get src="http://ascompress.googlecode.com/svn/trunk/src/com/probertson/utils/GZIPFile.as" dest="${basedir}/external/com/probertson/utils/GZIPFile.as" skipexisting="true" />
+        <get src="https://raw.githubusercontent.com/johan/browser-gzip-encoder/master/src/com/probertson/utils/CRC32Generator.as" dest="${basedir}/external/com/probertson/utils/CRC32Generator.as" skipexisting="true" />
+        <get src="https://raw.githubusercontent.com/johan/browser-gzip-encoder/master/src/com/probertson/utils/GZIPBytesEncoder.as" dest="${basedir}/external/com/probertson/utils/GZIPBytesEncoder.as" skipexisting="true" />
+        <get src="https://raw.githubusercontent.com/johan/browser-gzip-encoder/master/src/com/probertson/utils/GZIPEncoder.as" dest="${basedir}/external/com/probertson/utils/GZIPEncoder.as" skipexisting="true" />
+        <get src="https://raw.githubusercontent.com/johan/browser-gzip-encoder/master/src/com/probertson/utils/GZIPFile.as" dest="${basedir}/external/com/probertson/utils/GZIPFile.as" skipexisting="true" />
     </target>
     
     <target name="check-as3commons.swc">
