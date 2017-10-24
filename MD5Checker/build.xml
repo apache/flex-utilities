@@ -30,10 +30,10 @@
         use the environment variable, if it exists. Else if windows, use FLEX_HOME_WIN
         else use FLEX_HOME_MAC, which are both defined in build.properties.
     -->
-    <condition property="FLEX_HOME" value="d:\flex_sdk\flex_4.16">
+    <condition property="FLEX_HOME" value="${env.FLEX_HOME}">
         <isset property="env.FLEX_HOME" />
     </condition>
-    <condition property="AIR_HOME" value="d:\flex_sdk\flex_4.16">
+    <condition property="AIR_HOME" value="${env.AIR_HOME}">
         <isset property="env.AIR_HOME" />
     </condition>
 
