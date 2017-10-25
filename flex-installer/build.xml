@@ -380,8 +380,7 @@
     <target name="simple-untar-license" >
         <mkdir dir="${DEPS_DIR}/as3-simple-untar" />
         <get src="https://raw.githubusercontent.com/thdtjsdn/as3-simple-untar/master/src/de/ketzler/utils/SimpleUntar.as"
-        dest="${DEPS_DIR}/as3-simple-untar/LICENSE"
-        />
+			 dest="${DEPS_DIR}/as3-simple-untar/LICENSE"/>
         <replaceregexp file="${DEPS_DIR}/as3-simple-untar/LICENSE"
         match="package .*" replace=""
         flags="s"
@@ -401,10 +400,12 @@
             />
         <antcall target="get-as3crypto-license" />
         <antcall target="simple-untar-license" />
+		<echo message="Run Adobe Air ADT"/>
         <java jar="${ADT}" fork="true"
             failonerror="true"
             maxmemory="512m">
             <arg value="-package"/>
+            <arg line="-tsa http://timestamp.digicert.com"/>
             <arg value="-storetype"/>
             <arg value="${STORETYPE}"/>
             <arg value="-keystore"/>

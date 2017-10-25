@@ -135,9 +135,16 @@ package org.apache.flex.ant.tags
         
         private function dounzip():void
         {
-            if (unzip(srcFile))
+            if (Capabilities.os.indexOf("Win") != -1 && srcFile.extension == "zip")
             {
-                dispatchEvent(new Event(Event.COMPLETE));
+                if (winUnzip(srcFile))
+                {
+                    dispatchEvent(new Event(Event.COMPLETE));
+                }
+            }
+            else
+            {
+                unzip(srcFile);
             }
         }
 
@@ -170,13 +177,7 @@ package org.apache.flex.ant.tags
             _process.start(startupInfo);
         }
 
-        private function unzip(fileToUnzip:File):Boolean {
-            if (Capabilities.os.indexOf("Win") != -1)
-            {
-                winUnzip(fileToUnzip);
-                return false;
-            }
-
+        private function unzip(fileToUnzip:File):void {
             var zipFileBytes:ByteArray = new ByteArray();
             var fs:FileStream = new FileStream();
             var fzip:Zip = new Zip();
@@ -191,8 +192,6 @@ package org.apache.flex.ant.tags
             
             // synchronous, so no progress events
             fzip.loadBytes(zipFileBytes);
-
-            return true;
         }
         
         private function isDirectory(f:ZipFile):Boolean {
