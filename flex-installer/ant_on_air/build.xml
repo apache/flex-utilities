@@ -71,7 +71,7 @@
     </path>
     <taskdef resource="flexTasks.tasks" classpathref="flexTasks.path"/>
     
-    <target name="main" depends="init,third-party,compile,test" />
+    <target name="main" depends="init,third-party,compile" />
     
     <target name="build" depends="init,compile"
         description="Compiles SWC"/>
