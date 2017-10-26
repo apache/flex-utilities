@@ -137,14 +137,12 @@ package org.apache.flex.ant.tags
         {
             if (Capabilities.os.indexOf("Win") != -1 && srcFile.extension == "zip")
             {
-                if (winUnzip(srcFile))
-                {
-                    dispatchEvent(new Event(Event.COMPLETE));
-                }
+                winUnzip(srcFile);
             }
             else
             {
                 unzip(srcFile);
+                dispatchEvent(new Event(Event.COMPLETE));
             }
         }
 
