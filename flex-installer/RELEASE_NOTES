@@ -18,7 +18,12 @@ limitations under the License.
 -->
 
 Apache Flex
-Copyright 2015 The Apache Software Foundation
+Copyright 2017 The Apache Software Foundation
+
+Apache Flex SDK Installer 3.3
+
+Installer Issues Resolved:
+FLEX-35295: Unable to download 4.16.0 with Air 25
 
 Apache Flex SDK Installer 3.2
 
