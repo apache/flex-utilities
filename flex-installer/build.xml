@@ -474,6 +474,7 @@
         <copy todir="${BUILD_DIR}/temp/ant_on_air/tests" includeEmptyDirs="false">
             <fileset dir="${basedir}/ant_on_air/tests">
                 <exclude name="*.swf" />
+                <exclude name="temp/" />
             </fileset>
         </copy>
 
