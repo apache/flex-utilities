@@ -53,9 +53,10 @@
 	<property name="package.suffix" value="tar.gz" />
 	
 	<property name="rat.report" value="${basedir}/rat-report.txt"/>
-	<property name="apache.rat.jar" value="apache-rat-0.8.jar" />
-	<property name="apache.rat.tasks.jar" value="apache-rat-tasks-0.8.jar" />
-	<property name="apache.rat.url" value="http://people.apache.org/~aharui/rat" />
+    <property name="apache.rat.jar" value="apache-rat-0.11.jar" />
+    <property name="apache.rat.tasks.jar" value="apache-rat-tasks-0.11.jar" />
+    <property name="apache.rat.url" value="http://search.maven.org/remotecontent?filepath=org/apache/rat/apache-rat/0.11" />
+    <property name="apache.rat.tasks.url" value="http://search.maven.org/remotecontent?filepath=org/apache/rat/apache-rat-tasks/0.11" />
 	
 	<property name="mac.text.display" value="cat" />
 	<property name="win.text.display" value="type" />
@@ -97,9 +98,13 @@
     <fail message="The release version is not set.  Specify -Drelease.version=&lt;release version (e.g. 3.1, 3.2, etc)&gt;"
     unless="release.version"/>
 
-    <fail message="The release candidate number is not set.  Specify -Drc=&lt;rc number (e.g. 1, 2, 3, etc)&gt;"
-    unless="rc"/>
-        
+    <condition property="package.url.path"
+        value="http://apacheflexbuild.cloudapp.net:8080/job/flex-sdk_installer_release-candidate/lastSuccessfulBuild/artifact/out">
+        <not>
+            <isset property="rc" />
+        </not>
+    </condition>
+
 	<property name="package.url.path" value="https://dist.apache.org/repos/dist/dev/flex/installer/${release.version}/rc${rc}" />
 	<property name="package.url.name" value="apache-flex-sdk-installer-${release.version}.0-src" />
 	
@@ -176,8 +181,12 @@
             dest="${basedir}/${package.url.name}.${package.suffix}" />
         <get src="${package.url.path}/${package.url.name}.${package.suffix}.md5"
             dest="${basedir}/${package.url.name}.${package.suffix}.md5" />
+            <antcall target="asc_get" />
+    </target>
+    
+    <target name="asc_get" if="rc" >
         <get src="${package.url.path}/${package.url.name}.${package.suffix}.asc"
-            dest="${basedir}/${package.url.name}.${package.suffix}.asc" />
+        dest="${basedir}/${package.url.name}.${package.suffix}.asc" />
     </target>
     
     <target name="check-sigs" description="check md5 and gpg sigs">
@@ -190,11 +199,16 @@
 			</not>
         </condition>
         <fail message="MD5 checksum did not match" if="MD5Invalid" />
-		<exec executable="gpg" failonerror="true">
-			<arg value="--verify" />
-			<arg value="${basedir}/${package.url.name}.${package.suffix}.asc" />
-			<arg value="${basedir}/${package.url.name}.${package.suffix}" />
-		</exec>
+        <echo>rc is ${rc}</echo>
+        <antcall target="gpg_check" />
+    </target>
+    
+    <target name="gpg_check" if="rc">
+        <exec executable="gpg" failonerror="true">
+            <arg value="--verify" />
+            <arg value="${basedir}/${package.url.name}.${package.suffix}.asc" />
+            <arg value="${basedir}/${package.url.name}.${package.suffix}" />
+        </exec>
     </target>
 
     <target name="uncompress" depends="pre-clean, untar-file, unzip-file" />
