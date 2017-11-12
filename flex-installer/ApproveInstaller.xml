@@ -53,10 +53,10 @@
 	<property name="package.suffix" value="tar.gz" />
 	
 	<property name="rat.report" value="${basedir}/rat-report.txt"/>
-    <property name="apache.rat.jar" value="apache-rat-0.11.jar" />
-    <property name="apache.rat.tasks.jar" value="apache-rat-tasks-0.11.jar" />
-    <property name="apache.rat.url" value="http://search.maven.org/remotecontent?filepath=org/apache/rat/apache-rat/0.11" />
-    <property name="apache.rat.tasks.url" value="http://search.maven.org/remotecontent?filepath=org/apache/rat/apache-rat-tasks/0.11" />
+    <property name="apache.rat.jar" value="apache-rat-0.12.jar" />
+    <property name="apache.rat.tasks.jar" value="apache-rat-tasks-0.12.jar" />
+    <property name="apache.rat.url" value="http://central.maven.org/maven2/org/apache/rat/apache-rat/0.12" />
+    <property name="apache.rat.tasks.url" value="http://central.maven.org/maven2/org/apache/rat/apache-rat-tasks/0.12" />
 	
 	<property name="mac.text.display" value="cat" />
 	<property name="win.text.display" value="type" />
@@ -144,7 +144,7 @@
 		<get src="${apache.rat.url}/${apache.rat.jar}" dest="${env.ANT_HOME}/lib/${apache.rat.jar}" />
 	</target>
 	<target name="install-rat.tasks.jar" unless="apache.rat.tasks.found">
-		<get src="${apache.rat.url}/${apache.rat.tasks.jar}" dest="${env.ANT_HOME}/lib/${apache.rat.tasks.jar}" />
+		<get src="${apache.rat.tasks.url}/${apache.rat.tasks.jar}" dest="${env.ANT_HOME}/lib/${apache.rat.tasks.jar}" />
 	</target>
 	
     <target name="rat-taskdef" description="Rat taskdef">
