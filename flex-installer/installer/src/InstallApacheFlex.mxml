@@ -3256,6 +3256,10 @@ variables are not required because the locations of these pieces are known.
 
                 progressBar.percent = percentLoaded;
             }
+            else
+            {
+                progressBar.percent = 100;
+            }
         }
 
         private function handleDownloadComplete(event:Event):void
