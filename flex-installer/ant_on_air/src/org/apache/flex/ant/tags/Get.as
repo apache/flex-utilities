@@ -31,6 +31,7 @@ package org.apache.flex.ant.tags
     import flash.net.URLLoaderDataFormat;
     import flash.net.URLRequest;
     import flash.net.URLRequestHeader;
+    import flash.system.Capabilities;
     import flash.utils.ByteArray;
     
     import mx.core.IFlexModuleFactory;
@@ -38,7 +39,8 @@ package org.apache.flex.ant.tags
     
     import org.apache.flex.ant.Ant;
     import org.apache.flex.ant.tags.supportClasses.TaskHandler;
-    
+    import org.apache.flex.utils.PowerShellFileDownloader;
+
     [ResourceBundle("ant")]
     [Mixin]
     public class Get extends TaskHandler
@@ -81,7 +83,8 @@ package org.apache.flex.ant.tags
         private var urlLoader:URLLoader;
         
         private var lastProgress:ProgressEvent;
-        
+        private var powerShellFileDownloader:PowerShellFileDownloader;
+
         override public function execute(callbackMode:Boolean, context:Object):Boolean
         {
             super.execute(callbackMode, context);
@@ -97,18 +100,20 @@ package org.apache.flex.ant.tags
             catch (error:Error)
             {
             }
-            
+
+            var destFile:File = getDestFile();
+
             if (skipexisting)
             {
-                var destFile:File = getDestFile();
                 if (destFile.exists)
                     return true;
             }
+
             var s:String = ResourceManager.getInstance().getString('ant', 'GETTING');
             s = s.replace("%1", src);
             ant.output(ant.formatOutput("get", s));
             s = ResourceManager.getInstance().getString('ant', 'GETTO');
-            s = s.replace("%1", getDestFile().nativePath);
+            s = s.replace("%1", destFile.nativePath);
             ant.output(ant.formatOutput("get", s));
             
             var actualSrc:String = src;
@@ -119,14 +124,14 @@ package org.apache.flex.ant.tags
             urlLoader = new URLLoader();
             urlLoader.load(urlRequest);
             urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
-            urlLoader.addEventListener(Event.COMPLETE, completeHandler);
+            urlLoader.addEventListener(Event.COMPLETE, urlLoaderCompleteHandler);
             urlLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, statusHandler);
             urlLoader.addEventListener(ProgressEvent.PROGRESS, progressHandler);
             urlLoader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorEventHandler);
             urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
             return false;
         }
-        
+
         private function statusHandler(event:HTTPStatusEvent):void
         {
             if (event.status >= 300 && event.status < 400)
@@ -136,7 +141,7 @@ package org.apache.flex.ant.tags
                 urlLoader.close();
                 
                 // remove handlers from old request
-                urlLoader.removeEventListener(Event.COMPLETE, completeHandler);
+                urlLoader.removeEventListener(Event.COMPLETE, urlLoaderCompleteHandler);
                 urlLoader.removeEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, statusHandler);
                 urlLoader.removeEventListener(ProgressEvent.PROGRESS, progressHandler);
                 urlLoader.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorEventHandler);
@@ -167,24 +172,54 @@ package org.apache.flex.ant.tags
                         newlocation += src.substring(DOWNLOADS_SOURCEFORGE_NET.length);
                     }
                     ant.output(ant.formatOutput("get", "Redirected to: " + newlocation));
-                    var urlRequest:URLRequest = new URLRequest(newlocation);
-                    var refHeader:URLRequestHeader = new URLRequestHeader("Referer", src);
-                    urlRequest.requestHeaders.push(refHeader);
-                    urlRequest.manageCookies = false;
-                    urlRequest.followRedirects = false;
-                    urlRequest.userAgent = "Java";	// required to get sourceforge redirects to do the right thing
-                    urlLoader = new URLLoader();
-                    urlLoader.load(urlRequest);
-                    urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
-                    urlLoader.addEventListener(Event.COMPLETE, completeHandler);
-                    urlLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, statusHandler);
-                    urlLoader.addEventListener(ProgressEvent.PROGRESS, progressHandler);
-                    urlLoader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorEventHandler);
-                    urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+
+                    if (Capabilities.os.indexOf("Win") != -1)
+                    {
+                        var destination:String = getDestFile().nativePath;
+                        powerShellFileDownloader = new PowerShellFileDownloader();
+                        powerShellFileDownloader.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+                        powerShellFileDownloader.addEventListener(Event.COMPLETE, powershellDownloadCompleteHandler);
+                        powerShellFileDownloader.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, standardErrorDataHandler);
+                        powerShellFileDownloader.addEventListener(IOErrorEvent.STANDARD_OUTPUT_IO_ERROR, ioErrorEventHandler);
+                        powerShellFileDownloader.download(newlocation, destination);
+                    }
+                    else
+                    {
+                         var urlRequest:URLRequest = new URLRequest(newlocation);
+                         var refHeader:URLRequestHeader = new URLRequestHeader("Referer", src);
+                         urlRequest.requestHeaders.push(refHeader);
+                         urlRequest.manageCookies = false;
+                         urlRequest.followRedirects = false;
+                         urlRequest.userAgent = "Java";	// required to get sourceforge redirects to do the right thing
+                         urlLoader = new URLLoader();
+                         urlLoader.load(urlRequest);
+                         urlLoader.dataFormat = URLLoaderDataFormat.BINARY;
+                         urlLoader.addEventListener(Event.COMPLETE, urlLoaderCompleteHandler);
+                         urlLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS, statusHandler);
+                         urlLoader.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+                         urlLoader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorEventHandler);
+                         urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+                    }
                 }
             }
         }
-        
+
+        private function standardErrorDataHandler(event:ProgressEvent):void
+        {
+            if (lastProgress)
+                ant.output("ioError at: " + lastProgress.bytesLoaded + " of " + lastProgress.bytesTotal);
+
+            ant.output(event.toString());
+            if (!ignoreerrors)
+            {
+                ant.project.failureMessage = ant.formatOutput("get", event.toString());
+                ant.project.status = false;
+            }
+            dispatchEvent(new Event(Event.COMPLETE));
+            event.preventDefault();
+            cleanUpPowerShellFileDownloader();
+        }
+
         private function ioErrorEventHandler(event:IOErrorEvent):void
         {
             if (lastProgress)
@@ -198,7 +233,8 @@ package org.apache.flex.ant.tags
 			}
             dispatchEvent(new Event(Event.COMPLETE));
             event.preventDefault();
-			urlLoader = null;
+            urlLoader = null;
+            cleanUpPowerShellFileDownloader();
         }
         
         private function securityErrorHandler(event:SecurityErrorEvent):void
@@ -221,7 +257,7 @@ package org.apache.flex.ant.tags
             ant.dispatchEvent(event);
         }
         
-        private function completeHandler(event:Event):void
+        private function urlLoaderCompleteHandler(event:Event):void
         {
             var destFile:File = getDestFile();
             if (destFile)
@@ -233,9 +269,28 @@ package org.apache.flex.ant.tags
             }
 
             dispatchEvent(new Event(Event.COMPLETE));
-			urlLoader = null;
+            urlLoader = null;
         }
         
+        private function powershellDownloadCompleteHandler(event:Event):void
+        {
+            ant.output("PowerShell download completed.");
+            dispatchEvent(new Event(Event.COMPLETE));
+            cleanUpPowerShellFileDownloader();
+        }
+
+        private function cleanUpPowerShellFileDownloader():void
+        {
+            if (powerShellFileDownloader)
+            {
+                powerShellFileDownloader.removeEventListener(ProgressEvent.PROGRESS, progressHandler);
+                powerShellFileDownloader.removeEventListener(Event.COMPLETE, powershellDownloadCompleteHandler);
+                powerShellFileDownloader.removeEventListener(ProgressEvent.STANDARD_ERROR_DATA, standardErrorDataHandler);
+                powerShellFileDownloader.removeEventListener(IOErrorEvent.STANDARD_OUTPUT_IO_ERROR, ioErrorEventHandler);
+                powerShellFileDownloader = null;
+            }
+        }
+
         private function getDestFile():File
         {
             try {
