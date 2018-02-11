@@ -422,13 +422,13 @@ limitations under the License.
         ]]>
     </fx:Script>
     <s:VGroup width="100%">
-        <s:DataGrid id="dg" width="100%" height="300">
+        <s:DataGrid id="dg" width="100%" height="300" editable="true">
             <s:columns>
                 <s:ArrayList>
                     <s:GridColumn dataField="label" />
                     <s:GridColumn dataField="url" />
-                    <s:GridColumn dataField="md5" />
-                    <s:GridColumn dataField="cacheID" />
+                    <s:GridColumn dataField="md5" editable="true"/>
+                    <s:GridColumn dataField="cacheID" editable="true"/>
                 </s:ArrayList>
             </s:columns>
         </s:DataGrid>
