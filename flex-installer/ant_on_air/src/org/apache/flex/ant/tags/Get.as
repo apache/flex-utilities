@@ -52,6 +52,7 @@ package org.apache.flex.ant.tags
         
         private static const DOWNLOADS_SOURCEFORGE_NET:String = "http://downloads.sourceforge.net/";
         private static const SOURCEFORGE_NET:String = "http://sourceforge.net/";
+        private static const SOURCEFORGE_NET_HTTPS:String = "https://sourceforge.net/";
         private static const DL_SOURCEFORGE_NET:String = ".dl.sourceforge.net/";
         private static const USE_MIRROR:String = "use_mirror=";
         
@@ -161,6 +162,7 @@ package org.apache.flex.ant.tags
                     var srcIndex:int = src.indexOf(DOWNLOADS_SOURCEFORGE_NET);
                     var sfIndex:int = newlocation.indexOf(SOURCEFORGE_NET);
                     var mirrorIndex:int = newlocation.indexOf(USE_MIRROR);
+                    var isSourceForge:Boolean = newlocation.indexOf(SOURCEFORGE_NET_HTTPS) > -1;
                     if (srcIndex == 0 && sfIndex == 0 && mirrorIndex != -1 && event.status == 307)
                     {
                         // SourceForge redirects AIR requests differently from Ant requests.
@@ -173,7 +175,7 @@ package org.apache.flex.ant.tags
                     }
                     ant.output(ant.formatOutput("get", "Redirected to: " + newlocation));
 
-                    if (Capabilities.os.indexOf("Win") != -1)
+                    if (Capabilities.os.indexOf("Win") != -1 && !isSourceForge)
                     {
                         var destination:String = getDestFile().nativePath;
                         powerShellFileDownloader = new PowerShellFileDownloader();
