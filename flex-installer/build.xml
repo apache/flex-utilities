@@ -627,14 +627,16 @@
         <echo message="not found in anttask.classpath"/>
     </target>
 
-    <target name="create-md5s" >
-        <checksum file="${RELEASE_DIR}/${source.kit}.zip" algorithm="md5" forceOverwrite="yes" />
-        <checksum file="${RELEASE_DIR}/${source.kit}.tar.gz" algorithm="md5" forceOverwrite="yes" />
-        <checksum file="${RELEASE_DIR}/${binary.kit}.${extension}" algorithm="md5" forceOverwrite="yes" />
-        
+    <target name="create-SHA-512" >
+        <echo message="Generating SHA-512 hashes for release artifacts"/>
+        <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${source.kit}.zip" forceOverwrite="yes"/>
+        <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${source.kit}.tar.gz" forceOverwrite="yes"/>
+        <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${binary.kit}.${extension}" forceOverwrite="yes"/>
     </target>
     
-	<target name="sign" >
+	<target name="sign" depends="create-SHA-512">
+        <echo message="Signing sources"/>
+
 		<exec executable="gpg">
 			<arg value="--armor" />
 			<arg value="--output" />
@@ -661,7 +663,9 @@
 	</target>
 
 	<target name="sign_exe" description="sign exe when on mac" >
-		<checksum file="${RELEASE_DIR}/${binary.kit}.exe" algorithm="md5" forceOverwrite="yes" />
+        <echo message="Signing exe"/>
+
+		<checksum file="${RELEASE_DIR}/${binary.kit}.exe" algorithm="SHA-512" forceOverwrite="yes" />
 
 		<exec executable="gpg">
 			<arg value="--armor" />
@@ -673,7 +677,9 @@
 	</target>
 
 	<target name="sign_dmg" description="sign dmg when on win" >
-		<checksum file="${RELEASE_DIR}/${binary.kit}.dmg" algorithm="md5" forceOverwrite="yes" />
+        <echo message="Signing dmg"/>
+        
+		<checksum file="${RELEASE_DIR}/${binary.kit}.dmg" algorithm="SHA-512" forceOverwrite="yes" />
 
 		<exec executable="gpg">
 			<arg value="--armor" />
