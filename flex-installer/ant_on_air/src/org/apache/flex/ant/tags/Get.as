@@ -162,7 +162,7 @@ package org.apache.flex.ant.tags
                     var srcIndex:int = src.indexOf(DOWNLOADS_SOURCEFORGE_NET);
                     var sfIndex:int = newlocation.indexOf(SOURCEFORGE_NET);
                     var mirrorIndex:int = newlocation.indexOf(USE_MIRROR);
-                    var isSourceForge:Boolean = newlocation.indexOf(SOURCEFORGE_NET_HTTPS) > -1;
+                    var isSourceForge:Boolean = newlocation.indexOf(SOURCEFORGE_NET_HTTPS) > -1 || newlocation.indexOf(DOWNLOADS_SOURCEFORGE_NET) > -1;
                     if (srcIndex == 0 && sfIndex == 0 && mirrorIndex != -1 && event.status == 307)
                     {
                         // SourceForge redirects AIR requests differently from Ant requests.
