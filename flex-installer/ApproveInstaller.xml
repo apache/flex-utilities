@@ -106,7 +106,7 @@
     </condition>
 
 	<property name="package.url.path" value="https://dist.apache.org/repos/dist/dev/flex/installer/${release.version}/rc${rc}" />
-	<property name="package.url.name" value="apache-flex-sdk-installer-${release.version}.0-src" />
+	<property name="package.url.name" value="apache-flex-sdk-installer-${release.version}.${build.number}-src" />
 	
     <condition property="zip.compressed">
         <equals arg1="zip" arg2="${package.suffix}" />
@@ -179,8 +179,8 @@
     <target name="download" description="download the release package">
         <get src="${package.url.path}/${package.url.name}.${package.suffix}"
             dest="${basedir}/${package.url.name}.${package.suffix}" />
-        <get src="${package.url.path}/${package.url.name}.${package.suffix}.md5"
-            dest="${basedir}/${package.url.name}.${package.suffix}.md5" />
+        <get src="${package.url.path}/${package.url.name}.${package.suffix}.sha512"
+            dest="${basedir}/${package.url.name}.${package.suffix}.sha512" />
             <antcall target="asc_get" />
     </target>
     
@@ -189,16 +189,18 @@
         dest="${basedir}/${package.url.name}.${package.suffix}.asc" />
     </target>
     
-    <target name="check-sigs" description="check md5 and gpg sigs">
-		<replace file="${basedir}/${package.url.name}.${package.suffix}.md5"
-			token=" " />
-		<checksum file="${basedir}/${package.url.name}.${package.suffix}" algorithm="md5" verifyproperty="md5.ok" />
+    <target name="check-sigs" description="check sha and gpg sigs">
+		<fixcrlf file="${basedir}/${package.url.name}.${package.suffix}.sha512" eof="remove"
+			 />
+        <move file="${basedir}/${package.url.name}.${package.suffix}.sha512" tofile="${basedir}/${package.url.name}.${package.suffix}.SHA-512" />
+		<checksum file="${basedir}/${package.url.name}.${package.suffix}" algorithm="SHA-512" verifyproperty="sha.ok" />
+        <echo>SHA.OK ${sha.ok}</echo>
         <condition property="MD5Invalid">
 			<not>
-				<equals arg1="${md5.ok}" arg2="true" />
+				<equals arg1="${sha.ok}" arg2="true" casesensitive="false" />
 			</not>
         </condition>
-        <fail message="MD5 checksum did not match" if="MD5Invalid" />
+        <fail message="SHA checksum did not match" if="MD5Invalid" />
         <echo>rc is ${rc}</echo>
         <antcall target="gpg_check" />
     </target>
