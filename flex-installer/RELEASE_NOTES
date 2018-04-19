@@ -18,7 +18,12 @@ limitations under the License.
 -->
 
 Apache Flex
-Copyright 2017 The Apache Software Foundation
+Copyright 2018 The Apache Software Foundation
+
+Apache Flex SDK Installer 3.3.1
+
+Installer Issues Resolved:
+FLEX-35381 - Apache Flex Installer download fails for OSMF
 
 Apache Flex SDK Installer 3.3
 
