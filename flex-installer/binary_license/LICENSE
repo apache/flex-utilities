@@ -225,7 +225,8 @@ as3httpclientlib bundles as3corelib, which is available under a
 “3-clause BSD” license.  For details, see deps/as3corelib/.
 
 as3httpclientlib bundles as3crypto, which is available under a
-“3-clause BSD” license.  For details, see deps/as3httpclientlib/.
+“3-clause BSD” license.  But the as3crypto classes used have been replaced
+by AIR runtime and Apache Flex implementations
 
 The Open-Sans font is available under Apache License 2.0.  For details
 see common/src/assets/fonts/open-sans/
