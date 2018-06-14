@@ -326,6 +326,7 @@
             <source-path path-element="${SOURCE_DIR}"/>
             <source-path path-element="${COMMON_SOURCE_DIR}"/>
             <external-library-path file="${AIR_HOME}/frameworks/libs/air/airglobal.swc" append="true"/>
+            <external-library-path file="${AIR_HOME}/frameworks/libs/air/applicationupdater.swc" append="true"/>
             <library-path dir="${LIBRARY_DIR}" includes="*.swc" append="true"/>
             <library-path dir="${ANT_ON_AIR_DIR}" includes="*.swc" append="true"/>
             <!--<library-path dir="${LIBRARY_DIR}/temp/as3httpclient-master/lib" includes="*.swc" append="true"/>-->
