@@ -20,6 +20,11 @@ limitations under the License.
 Apache Flex
 Copyright 2018 The Apache Software Foundation
 
+Apache Flex SDK Installer 3.3.2
+
+Installer Issues Resolved:
+FLEX-35388 - Installer fails to pull SDK
+
 Apache Flex SDK Installer 3.3.1
 
 Installer Issues Resolved:
