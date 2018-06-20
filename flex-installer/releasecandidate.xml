@@ -258,7 +258,7 @@
     <target name="svnadddmg" if="svn.dir.found">
         <exec executable="${svn}" dir="${dist.dev}/flex/installer" failonerror="false" >
             <arg value="add" />
-            <arg value="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries/apache-flex-sdk-installer-${release.version}-bin.dmg*" />
+            <arg value="${release.version}/rc${rc}/binaries/apache-flex-sdk-installer-${release.version}-bin.dmg*" />
         </exec>
     </target>
     <target name="svnaddexe" if="svn.dir.found">
