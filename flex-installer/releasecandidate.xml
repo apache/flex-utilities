@@ -316,7 +316,7 @@
 	<target name="other-platform-win" if="isWindows" >
 		<available file="${basedir}/release/apache-flex-sdk-installer-${release.version}-bin.dmg"
 		           type="file" property="other.binary" />
-		<fail message="${basedir}/release/apache-flex-sdk-installer-${release.version}-bin.dmg not found.  The windows version should be built before running this script"
+		<fail message="${basedir}/release/apache-flex-sdk-installer-${release.version}-bin.dmg not found.  The mac version should be built before running this script"
 		      unless="other.binary"/>
 		<ant antfile="build.xml" target="sign_dmg" />
 		<mkdir dir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" />
