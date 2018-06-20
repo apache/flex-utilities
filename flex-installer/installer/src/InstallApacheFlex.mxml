@@ -102,6 +102,7 @@ variables are not required because the locations of these pieces are known.
         import flash.globalization.LocaleID;
         import flash.globalization.StringTools;
 
+        import mx.controls.Alert;
         import mx.collections.ArrayCollection;
         import mx.core.IFlexDisplayObject;
         import mx.events.FlexEvent;
@@ -158,6 +159,8 @@ variables are not required because the locations of these pieces are known.
 
         private var cleanedUp:Boolean;
 
+        private var win64:Boolean;
+
         private var _mirrorURLCGI:String;
         private var _useMirror:Boolean = true;
         private var _latestVersion:String;
@@ -206,6 +209,8 @@ variables are not required because the locations of these pieces are known.
         private var APACHE_FLEX_BIN_DISTRO_VERSION:String = "";
         [Bindable]
         private var APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY:String = "";
+
+        private var APACHE_FLEX_INSTALLER_URL:String;
 
         /**
          * Adobe AIR SDK
@@ -406,6 +411,10 @@ variables are not required because the locations of these pieces are known.
                 if (s.indexOf("-install=") == 0)
                 {
                     installOverride = s.substring(9);
+                }
+                if (s.indexOf("-64-bit=") == 0)
+                {
+                    APACHE_FLEX_INSTALLER_URL = s.substring(8);
                 }
                 if (s.indexOf("-steps=") == 0)
                 {
@@ -1044,6 +1053,9 @@ variables are not required because the locations of these pieces are known.
             RIDEAU_FILE = data.fontswf.rideau.@file.toString();
             RIDEAU_URL = data.fontswf.rideau.@path.toString();
 
+            var installer:String = data.installer64.toString();
+            if (installer.length > 0)
+            APACHE_FLEX_INSTALLER_URL = installer;
 
             return keepGoing;
         }
@@ -1144,11 +1156,95 @@ variables are not required because the locations of these pieces are known.
 
         protected function main():void
         {
-
-            if (shouldUpdate())
+            if (!win64 && shouldUpdate())
             {
                 doUpdate();
             }
+            else if (_os.os.indexOf("win") != -1 && !win64)
+            {
+                //32-bit Windows.  Try to use 64-bit version
+                var app:File = new File(File.applicationStorageDirectory.nativePath + File.separator + "Win64" + File.separator + "Apache Flex SDK Installer.exe");
+                if (!app.exists)
+                {
+                    Alert.show("This is the 32-bit Installer.  It will automatically download and upgrade to the 64-bit Installer",
+                               "Upgrade to 64-bit Installer", Alert.OK, null, get64BitInstaller);
+                }
+                else
+                    launch64();
+            }
+
+        }
+
+        protected function get64BitInstaller(event:Event):void
+        {
+                var path64:String;
+                if (APACHE_FLEX_INSTALLER_URL.indexOf("://") == -1)
+                    path64 = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_INSTALLER_URL;
+                else
+                    path64 = APACHE_FLEX_INSTALLER_URL;
+                copyOrDownload(path64, handle64BitInstaller, null, handle64BitInstallerError);
+        }
+
+        protected function handle64BitInstaller(event:Event):void
+        {
+            try
+            {
+                var app:File = new File(File.applicationStorageDirectory.nativePath + File.separator + "Win64Installer.zip");
+                writeFileToDirectory(app, event.target.data);
+                _flexHomeDir = new File(File.applicationStorageDirectory.nativePath + File.separator + "Win64");
+                unzip(app, handle64BitUnzipComplete, handle64BitUnzipError);
+            }
+            catch (e:Error)
+            {
+               log("Unable to save" + app.nativePath);
+               abortInstallation("handle64BitInstaller " + e.message);
+            }
+
+            log("downloaded " + APACHE_FLEX_INSTALLER_URL);
+        }
+
+        protected function handle64BitInstallerError(event:Event):void
+        {
+            log("Unable to install " + APACHE_FLEX_INSTALLER_URL);
+            abortInstallation("Unable to install" + APACHE_FLEX_INSTALLER_URL);
+        }
+
+        private function launch64():void
+        {
+            Alert.show("This is the 32-bit Installer.  It will close and launch the 64-bit Installer",
+                        "Launch 64-bit Installer", Alert.OK, null, actuallyLaunch64);
+        }
+
+        private function actuallyLaunch64(event:Event):void
+        {
+            try
+            {
+                var app:File = new File(File.applicationStorageDirectory.nativePath + File.separator + "Win64" + File.separator + "Apache Flex SDK Installer.exe");
+                var startupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+                var args:Vector.<String> = new Vector.<String>();
+
+                startupInfo.executable = app;
+                startupInfo.arguments = args;
+
+                var process:NativeProcess = new NativeProcess();
+                process.start(startupInfo);
+                NativeApplication.nativeApplication.exit();
+            }
+            catch (e:Error)
+            {
+               log("Unable to launch" + app.nativePath);
+               abortInstallation("launch 64 " + e.message);
+            }            
+        }
+
+        protected function handle64BitUnzipComplete(event:Event):void
+        {
+            launch64();
+        }
+
+        protected function handle64BitUnzipError(error:ErrorEvent = null):void
+        {
+            abortInstallation("Unable to unzip 64-bit Installer " + error.toString());
         }
 
         private function logVersion():void
@@ -1159,9 +1255,16 @@ variables are not required because the locations of these pieces are known.
                 var applicationDescriptor:XML = NativeApplication.nativeApplication.applicationDescriptor;
                 var xmlns:Namespace = new Namespace(applicationDescriptor.namespace());
                 installerVersion = applicationDescriptor.xmlns::versionNumber.toString();
+                var arch:String = applicationDescriptor.xmlns::architecture.toString();
 
                 // Log the Installer version to help with any support issues that arise.
+                if (_os.os.indexOf("win") != -1)
+                {
+                    log("Available Memory: " + System.totalMemory + " (" + arch + "-bit)", 0);
+                    win64 = (arch == "64");
+                }
                 log("Installer version " + installerVersion + " (" + _os.os + ")", 0);
+                log("Installer path: " + File.applicationDirectory.nativePath, 0);
                 loggedVersion = true;
             }
         }
