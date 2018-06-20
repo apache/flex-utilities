@@ -62,7 +62,7 @@
     <property file="${basedir}/build.number"/>
 	<property file="${CERT_PASSWORD_FILE}"/>
 
-    <property name="installer.version" value="${release.version}.${build.number}"/>
+    <property name="installer.version" value="${release.version}"/>
     <property name="kit.prefix" value="apache-flex-sdk-installer-${installer.version}"/>
     <property name="kit.prefix64" value="apache-flex-sdk-installer-${installer.version}-64bit"/>
     <property name="source.kit" value="${kit.prefix}-src"/>
@@ -374,8 +374,6 @@
             <library-path dir="${LIBRARY_DIR}" includes="*.swc" append="true"/>
             <library-path dir="${ANT_ON_AIR_DIR}" includes="*.swc" append="true"/>
             <!--<library-path dir="${LIBRARY_DIR}/temp/as3httpclient-master/lib" includes="*.swc" append="true"/>-->
-            <define name="INSTALLER::releaseVersion" value="${release.version}"/>
-            <define name="INSTALLER::buildNumber" value="${build.number}"/>
         </mxmlc>
     </target>
 
