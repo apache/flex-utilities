@@ -680,7 +680,7 @@
         <antcall target="create-SHA-512-64bit" />
     </target>
     
-    <target name="create-SHA-512-64Bit" if="isWindows">
+    <target name="create-SHA-512-64bit" if="isWindows">
         <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${kit.prefix64}-bin.zip" forceOverwrite="yes"/>
     </target>
 
