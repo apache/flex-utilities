@@ -225,12 +225,12 @@
 		<mkdir dir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" />
 		<copy todir="${dist.dev}/flex/installer/${release.version}/rc${rc}" >
 			<fileset dir="${basedir}/release" >
-				<include name="apache-flex-sdk-installer-${release.version}.${build.number}-src*" />
+				<include name="apache-flex-sdk-installer-${release.version}-src*" />
 			</fileset>
 		</copy>
 		<copy todir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" >
 			<fileset dir="${basedir}/release" >
-				<include name="apache-flex-sdk-installer-${release.version}.${build.number}-bin*" />
+				<include name="apache-flex-sdk-installer-${release.version}-bin*" />
 			</fileset>
 		</copy>
 		<copy file="${basedir}/README" tofile="${dist.dev}/flex/installer/${release.version}/rc${rc}/READme" />
@@ -298,28 +298,28 @@
 	<target name="other-platform" depends="other-platform-mac, other-platform-win" unless="skip.other.platform" >
 	</target>
 	<target name="other-platform-mac" if="isMac" >
-		<available file="${basedir}/release/apache-flex-sdk-installer-${release.version}.${build.number}-bin.exe" 
+		<available file="${basedir}/release/apache-flex-sdk-installer-${release.version}-bin.exe"
 		           type="file" property="other.binary" />
-		<fail message="${basedir}/release/apache-flex-sdk-installer-${release.version}.${build.number}-bin.exe not found.  The windows version should be built before running this script" 
+		<fail message="${basedir}/release/apache-flex-sdk-installer-${release.version}-bin.exe not found.  The windows version should be built before running this script"
 		      unless="other.binary"/>
 		<ant antfile="build.xml" target="sign_exe" />
 		<mkdir dir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" />
 		<copy todir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" >
 			<fileset dir="${basedir}/release" >
-				<include name="apache-flex-sdk-installer-${release.version}.${build.number}-bin*" />
+				<include name="apache-flex-sdk-installer-${release.version}-bin*" />
 			</fileset>
 		</copy>
 	</target>
 	<target name="other-platform-win" if="isWindows" >
-		<available file="${basedir}/release/apache-flex-sdk-installer-${release.version}.${build.number}-bin.dmg" 
+		<available file="${basedir}/release/apache-flex-sdk-installer-${release.version}-bin.dmg"
 		           type="file" property="other.binary" />
-		<fail message="${basedir}/release/apache-flex-sdk-installer-${release.version}.${build.number}-bin.dmg not found.  The windows version should be built before running this script" 
+		<fail message="${basedir}/release/apache-flex-sdk-installer-${release.version}-bin.dmg not found.  The windows version should be built before running this script"
 		      unless="other.binary"/>
 		<ant antfile="build.xml" target="sign_dmg" />
 		<mkdir dir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" />
 		<copy todir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" >
 			<fileset dir="${basedir}/release" >
-				<include name="apache-flex-sdk-installer-${release.version}.${build.number}-bin*" />
+				<include name="apache-flex-sdk-installer-${release.version}-bin*" />
 			</fileset>
 		</copy>
 	</target>
@@ -431,13 +431,13 @@ ${my.name}
 		<mkdir dir="${dist.release}/flex/installer/${release.version}/binaries" />
 		<copy todir="${dist.release}/flex/installer/${release.version}/binaries" >
 			<fileset dir="${dist.dev}/flex/installer/rc${rc}/binaries" >
-				<include name="apache-flex-sdk-installer-${release.version}.${build.number}-bin*" />
+				<include name="apache-flex-sdk-installer-${release.version}-bin*" />
 			</fileset>
 		</copy>
 		<copy todir="${dist.release}/flex/installer/${release.version}" >
 			<fileset dir="${dist.dev}/flex/installer/rc${rc}" >
 				<include name="READme" />
-				<include name="apache-flex-sdk-installer-${release.version}.${build.number}-src*" />
+				<include name="apache-flex-sdk-installer-${release.version}-src*" />
 			</fileset>
 		</copy>
 		<exec executable="${svn}" dir="${dist.release}/flex/installer" failonerror="true" >
@@ -456,9 +456,9 @@ ${my.name}
 		<exec executable="${git}" dir="${basedir}" failonerror="true" >
 			<arg value="tag" />
 			<arg value="-a" />
-			<arg value="apache-flex-sdk-installer-${release.version}.${build.number}" />
+			<arg value="apache-flex-sdk-installer-${release.version}" />
 			<arg value="-m" />
-			<arg value="&quot;Official release of apache-flex-sdk-installer-${release.version}.${build.number}&quot;" />
+			<arg value="&quot;Official release of apache-flex-sdk-installer-${release.version}&quot;" />
 		</exec>
 		<exec executable="${git}" dir="${basedir}" failonerror="true" >
 			<arg value="push" />

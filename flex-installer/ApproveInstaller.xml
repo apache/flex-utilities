@@ -106,7 +106,7 @@
     </condition>
 
 	<property name="package.url.path" value="https://dist.apache.org/repos/dist/dev/flex/installer/${release.version}/rc${rc}" />
-	<property name="package.url.name" value="apache-flex-sdk-installer-${release.version}.${build.number}-src" />
+	<property name="package.url.name" value="apache-flex-sdk-installer-${release.version}-src" />
 	
     <condition property="zip.compressed">
         <equals arg1="zip" arg2="${package.suffix}" />
