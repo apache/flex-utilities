@@ -230,7 +230,7 @@
 		</copy>
 		<copy todir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" >
 			<fileset dir="${basedir}/release" >
-				<include name="apache-flex-sdk-installer-${release.version}-bin*" />
+				<include name="apache-flex-sdk-installer-${release.version}-*bin*" />
 			</fileset>
 		</copy>
 		<copy file="${basedir}/README" tofile="${dist.dev}/flex/installer/${release.version}/rc${rc}/READme" />

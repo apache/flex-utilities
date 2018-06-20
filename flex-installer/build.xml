@@ -679,9 +679,14 @@
         <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${source.kit}.zip" forceOverwrite="yes"/>
         <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${source.kit}.tar.gz" forceOverwrite="yes"/>
         <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${binary.kit}.${extension}" forceOverwrite="yes"/>
+        <antcall target="create-SHA-512-64bit" />
     </target>
     
-	<target name="sign" depends="create-SHA-512">
+    <target name="create-SHA-512-64Bit" if="isWindows">
+        <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${kit.prefix64}-bin.zip" forceOverwrite="yes"/>
+    </target>
+
+    <target name="sign" depends="create-SHA-512">
         <echo message="Signing sources"/>
 
 		<exec executable="gpg">
@@ -707,9 +712,20 @@
 			<arg value="--detach-sig" />
 			<arg value="${RELEASE_DIR}/${binary.kit}.${extension}" />
 		</exec>
+                <antcall target="sign64" />
 	</target>
 
-	<target name="sign_exe" description="sign exe when on mac" >
+    <target name="sign64">
+		<exec executable="gpg">
+			<arg value="--armor" />
+			<arg value="--output" />
+			<arg value="${RELEASE_DIR}/${kit.prefix64}-bin.zip.asc" />
+			<arg value="--detach-sig" />
+			<arg value="${RELEASE_DIR}/${kit.prefix64}-bin.zip" />
+		</exec>
+    </target>
+
+    <target name="sign_exe" description="sign exe when on mac" >
         <echo message="Signing exe"/>
 
 		<checksum file="${RELEASE_DIR}/${binary.kit}.exe" algorithm="SHA-512" forceOverwrite="yes" />
@@ -720,6 +736,16 @@
 			<arg value="${RELEASE_DIR}/${binary.kit}.exe.asc" />
 			<arg value="--detach-sig" />
 			<arg value="${RELEASE_DIR}/${binary.kit}.exe" />
+		</exec>
+
+		<checksum file="${RELEASE_DIR}/${kit.prefix64}-bin.zip" algorithm="SHA-512" forceOverwrite="yes" />
+
+		<exec executable="gpg">
+			<arg value="--armor" />
+			<arg value="--output" />
+			<arg value="${RELEASE_DIR}/${kit.prefix64}-bin.zip.asc" />
+			<arg value="--detach-sig" />
+			<arg value="${RELEASE_DIR}/${kit.prefix64}-bin.zip" />
 		</exec>
 	</target>
 
