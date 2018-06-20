@@ -215,12 +215,14 @@
 
     <target name="main" depends="install-rat" description="Perform required release approval steps">
 		<antcall target="check-new-version" />
-		<antcall target="other-platform" />
 		<exec executable="${git}" dir="${basedir}/.." failonerror="true" >
 			<arg value="pull" />
 			<arg value="--rebase" />
 		</exec>
 		<ant antfile="build.xml" target="release" />
+        <exec executable="${svn}" dir="${dist.dev}/flex/installer" failonerror="true" >
+            <arg value="up" />
+        </exec>
 		<mkdir dir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" />
 		<copy todir="${dist.dev}/flex/installer/${release.version}/rc${rc}" >
 			<fileset dir="${basedir}/release" >
@@ -243,6 +245,11 @@
 			<arg value="-m" />
 			<arg value="rc${rc} of Apache Flex Installer ${release.version}" />
 		</exec>
+        <antcall target="gittags" />
+        <antcall target="mail" />
+    </target>
+    
+    <target name="gittags" unless="no.tag" >
 		<exec executable="${git}" dir="${basedir}/.." failonerror="true" >
 			<arg value="tag" />
 			<arg value="-a" />
@@ -254,7 +261,6 @@
 			<arg value="push" />
 			<arg value="--tags" />
 		</exec>
-		<antcall target="mail" />
     </target>
 
     <target name="commit-and-mail" >
