@@ -674,14 +674,14 @@
 
     <target name="create-SHA-512" >
         <echo message="Generating SHA-512 hashes for release artifacts"/>
-        <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${source.kit}.zip" forceOverwrite="yes"/>
-        <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${source.kit}.tar.gz" forceOverwrite="yes"/>
-        <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${binary.kit}.${extension}" forceOverwrite="yes"/>
+        <checksum algorithm="SHA-512" fileext=".sha512" file="${RELEASE_DIR}/${source.kit}.zip" forceOverwrite="yes"/>
+        <checksum algorithm="SHA-512" fileext=".sha512" file="${RELEASE_DIR}/${source.kit}.tar.gz" forceOverwrite="yes"/>
+        <checksum algorithm="SHA-512" fileext=".sha512" file="${RELEASE_DIR}/${binary.kit}.${extension}" forceOverwrite="yes"/>
         <antcall target="create-SHA-512-64bit" />
     </target>
     
     <target name="create-SHA-512-64bit" if="isWindows">
-        <checksum algorithm="SHA-512" file="${RELEASE_DIR}/${kit.prefix64}-bin.zip" forceOverwrite="yes"/>
+        <checksum algorithm="SHA-512" fileext=".sha512" file="${RELEASE_DIR}/${kit.prefix64}-bin.zip" forceOverwrite="yes"/>
     </target>
 
     <target name="sign" depends="create-SHA-512">

@@ -221,7 +221,6 @@
 			<arg value="--rebase" />
 		</exec>
 		<ant antfile="build.xml" target="release" />
-        <ant antfile="build.xml" target="create-md5s" />
 		<mkdir dir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" />
 		<copy todir="${dist.dev}/flex/installer/${release.version}/rc${rc}" >
 			<fileset dir="${basedir}/release" >
