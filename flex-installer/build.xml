@@ -107,6 +107,10 @@
         <os family="mac"/>
     </condition>
 
+    <condition property="isWindows">
+        <os family="windows"/>
+    </condition>
+
     <condition property="LOCAL_CONFIG_URL" value="file:///${LOCAL_CONFIG_FILE}">
         <os family="windows"/>
     </condition>
@@ -192,7 +196,7 @@
         <os family="unix" />
     </condition>
 
-    <target name="build" depends="init,certificate,compile,packagenative,cleanup"
+    <target name="build" depends="init,certificate,compile,packagenative,packagebundle,cleanup"
         description="Compiles and packages application"/>
 
     <target name="release" depends="clean,build,source-package,rat-report,sign,copy-misc"
@@ -267,9 +271,48 @@
            <arg value="-package"/>
            <arg value="-target"/>
            <arg value="native"/>
-		   <arg value="${RELEASE_DIR}/${binary.kit}.${extension}"/>
+           <arg value="${RELEASE_DIR}/${binary.kit}.${extension}"/>
            <arg value="${BUILD_DIR}/${APP_NAME}.air"/>
        </java>
+   </target>
+
+    <target name="packagebundle" if="isWindows"
+       description="Packages a 64-bit Windows version">
+       <property name="BUNDLE_DIR" value="${RELEASE_DIR}/Win64" />
+       <mkdir dir="${BUNDLE_DIR}" />
+       <copy file="${SOURCE_DIR}/${APP_NAME}-app.xml" tofile="${BUILD_DIR}/${APP_NAME}-app.xml" />
+       <replace file="${BUILD_DIR}/${APP_NAME}-app.xml" token="&gt;32&lt;" value="&gt;64&lt;" />
+       <copy file="${basedir}/binary_license/LICENSE" tofile="${BUILD_DIR}/LICENSE" />
+       <copy file="${basedir}/NOTICE" tofile="${BUILD_DIR}/NOTICE" />
+       <copy todir="${BUILD_DIR}/deps">
+          <fileset dir="${DEPS_DIR}" />
+       </copy>
+       <copy todir="${BUILD_DIR}/assets">
+          <fileset dir="${ASSETS_DIR}" />
+       </copy>
+       <copy file="${SOURCE_DIR}/${APP_CONFIG_XML_NAME}.xml" tofile="${BUILD_DIR}/${APP_CONFIG_XML_NAME}.xml" />
+       <java jar="${ADT}" fork="true" dir="${BUILD_DIR}"
+           failonerror="true"
+           maxmemory="512m">
+           <arg value="-package"/>
+           <arg value="-storetype"/>
+           <arg value="${STORETYPE}"/>	
+           <arg value="-keystore"/>
+           <arg value="${KEYSTORE}"/>
+           <arg value="-storepass"/>
+           <arg value="${CERT_PASSWORD}"/>
+           <arg value="-target"/>
+           <arg value="bundle"/>
+           <arg value="${BUNDLE_DIR}"/>   
+           <arg value="${APP_NAME}-app.xml"/>
+           <arg value="${APP_NAME}.swf"/>
+           <arg value="NOTICE"/>
+           <arg value="deps"/>
+           <arg value="LICENSE"/>
+           <arg value="${APP_CONFIG_XML_NAME}.xml"/>
+           <arg value="assets"/>
+       </java>
+       <zip basedir="${BUNDLE_DIR}" destfile="${RELEASE_DIR}/Win64Installer.zip"/>
    </target>
 
     <target name="check-as3commons.swc">
@@ -391,6 +434,8 @@
     <target name="packageair"
         description="Packages the build SWF file from a temp directory to create an AIR file">
     	<echo message="Using cert ${KEYSTORE}" />
+        <echo message="Using pass ${STOREPASS}" />
+        <echo message="Using type ${STORETYPE}" />
         <mkdir dir="${DEPS_DIR}/as3httpclientlib" />
         <get src="https://raw.githubusercontent.com/quetwo/as3httpclient/as3httpclient-work/License.txt"
             dest="${DEPS_DIR}/as3httpclientlib"
@@ -725,4 +770,18 @@
             <arg value="${BUILD_DIR}/${APP_NAME}-app.xml" />
         </exec>
     </target>
+
+    <target name="debug64" >
+        <copy file="${SOURCE_DIR}/${APP_NAME}-app.xml" todir="${BUILD_DIR}" />
+        <replace file="${BUILD_DIR}/${APP_NAME}-app.xml" token="&gt;64&lt;" value="&gt;32&lt;" />
+        <mkdir dir="${BUILD_DIR}/installer" />
+        <exec executable="${AIR_HOME}/bin/${adl}" dir="${BUILD_DIR}" failonerror="true">
+            <arg value="-runtime" />
+            <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
+            <arg value="${BUILD_DIR}/${APP_NAME}-app.xml" />
+            <arg value="--" />
+            <arg value="-64-bit=file:///C:/git/apache/flex/flex-utilities/flex-installer/release/Win64Installer.zip" />
+        </exec>
+    </target>
+
 </project>
