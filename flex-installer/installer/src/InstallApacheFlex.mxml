@@ -210,7 +210,8 @@ variables are not required because the locations of these pieces are known.
         [Bindable]
         private var APACHE_FLEX_BIN_DISTRO_VERSION_DISPLAY:String = "";
 
-        private var APACHE_FLEX_INSTALLER_URL:String;
+        private var APACHE_FLEX_INSTALLER_PATH:String;
+        private var APACHE_FLEX_INSTALLER_FILE:String;
 
         /**
          * Adobe AIR SDK
@@ -412,9 +413,13 @@ variables are not required because the locations of these pieces are known.
                 {
                     installOverride = s.substring(9);
                 }
-                if (s.indexOf("-64-bit=") == 0)
+                if (s.indexOf("-64-bit-path=") == 0)
                 {
-                    APACHE_FLEX_INSTALLER_URL = s.substring(8);
+                    APACHE_FLEX_INSTALLER_PATH = s.substring(13);
+                }
+                if (s.indexOf("-64-bit-file=") == 0)
+                {
+                    APACHE_FLEX_INSTALLER_FILE = s.substring(13);
                 }
                 if (s.indexOf("-steps=") == 0)
                 {
@@ -1053,9 +1058,13 @@ variables are not required because the locations of these pieces are known.
             RIDEAU_FILE = data.fontswf.rideau.@file.toString();
             RIDEAU_URL = data.fontswf.rideau.@path.toString();
 
-            var installer:String = data.installer64.toString();
+            var installer:String = data.installer64.(@version == installerVersion).path.toString();;
             if (installer.length > 0)
-            APACHE_FLEX_INSTALLER_URL = installer;
+                APACHE_FLEX_INSTALLER_PATH = installer;
+
+            installer = data.installer64.(@version == installerVersion).file.toString();;
+            if (installer.length > 0)
+                APACHE_FLEX_INSTALLER_FILE = installer;
 
             return keepGoing;
         }
@@ -1178,10 +1187,10 @@ variables are not required because the locations of these pieces are known.
         protected function get64BitInstaller(event:Event):void
         {
                 var path64:String;
-                if (APACHE_FLEX_INSTALLER_URL.indexOf("://") == -1)
-                    path64 = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_INSTALLER_URL;
+                if (APACHE_FLEX_INSTALLER_PATH.indexOf("://") == -1)
+                    path64 = useMirrorPath(_mirrorURLUtil.mirrorURL) + APACHE_FLEX_INSTALLER_PATH + "/" + APACHE_FLEX_INSTALLER_FILE;
                 else
-                    path64 = APACHE_FLEX_INSTALLER_URL;
+                    path64 = APACHE_FLEX_INSTALLER_PATH + "/" + APACHE_FLEX_INSTALLER_FILE;
                 copyOrDownload(path64, handle64BitInstaller, null, handle64BitInstallerError);
         }
 
@@ -1189,7 +1198,7 @@ variables are not required because the locations of these pieces are known.
         {
             try
             {
-                var app:File = new File(File.applicationStorageDirectory.nativePath + File.separator + "Win64Installer.zip");
+                var app:File = new File(File.applicationStorageDirectory.nativePath + File.separator + APACHE_FLEX_INSTALLER_FILE);
                 writeFileToDirectory(app, event.target.data);
                 _flexHomeDir = new File(File.applicationStorageDirectory.nativePath + File.separator + "Win64");
                 unzip(app, handle64BitUnzipComplete, handle64BitUnzipError);
@@ -1200,13 +1209,13 @@ variables are not required because the locations of these pieces are known.
                abortInstallation("handle64BitInstaller " + e.message);
             }
 
-            log("downloaded " + APACHE_FLEX_INSTALLER_URL);
+            log("downloaded " + APACHE_FLEX_INSTALLER_PATH + "/" + APACHE_FLEX_INSTALLER_FILE);
         }
 
         protected function handle64BitInstallerError(event:Event):void
         {
-            log("Unable to install " + APACHE_FLEX_INSTALLER_URL);
-            abortInstallation("Unable to install" + APACHE_FLEX_INSTALLER_URL);
+            log("Unable to install " + APACHE_FLEX_INSTALLER_PATH + "/" + APACHE_FLEX_INSTALLER_FILE);
+            abortInstallation("Unable to install" + APACHE_FLEX_INSTALLER_PATH + "/" + APACHE_FLEX_INSTALLER_FILE);
         }
 
         private function launch64():void
