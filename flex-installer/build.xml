@@ -713,7 +713,7 @@
                 <antcall target="sign64" />
 	</target>
 
-    <target name="sign64">
+    <target name="sign64" if="isWindows">
 		<exec executable="gpg">
 			<arg value="--armor" />
 			<arg value="--output" />
