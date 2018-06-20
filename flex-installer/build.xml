@@ -64,6 +64,7 @@
 
     <property name="installer.version" value="${release.version}.${build.number}"/>
     <property name="kit.prefix" value="apache-flex-sdk-installer-${installer.version}"/>
+    <property name="kit.prefix64" value="apache-flex-sdk-installer-${installer.version}-64bit"/>
     <property name="source.kit" value="${kit.prefix}-src"/>
     <property name="binary.kit" value="${kit.prefix}-bin"/>
     <property name="LOCAL_CONFIG_FILE" value="${basedir}/src/installer/sdk-installer-config-4.0.xml" />
@@ -312,7 +313,7 @@
            <arg value="${APP_CONFIG_XML_NAME}.xml"/>
            <arg value="assets"/>
        </java>
-       <zip basedir="${BUNDLE_DIR}" destfile="${RELEASE_DIR}/Win64Installer.zip"/>
+       <zip basedir="${BUNDLE_DIR}" destfile="${RELEASE_DIR}/${kit.prefix64}-bin.zip"/>
    </target>
 
     <target name="check-as3commons.swc">
@@ -780,7 +781,8 @@
             <arg value="${AIR_HOME}/runtimes/air/${runtime}" />
             <arg value="${BUILD_DIR}/${APP_NAME}-app.xml" />
             <arg value="--" />
-            <arg value="-64-bit=file:///C:/git/apache/flex/flex-utilities/flex-installer/release/Win64Installer.zip" />
+            <arg value="-64-bit-path=file:///C:/git/apache/flex/flex-utilities/flex-installer/release" />
+            <arg value="-64-bit-file=${kit.prefix64}-bin.zip" />
         </exec>
     </target>
 

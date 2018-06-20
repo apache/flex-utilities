@@ -323,6 +323,7 @@
 		<copy todir="${dist.dev}/flex/installer/${release.version}/rc${rc}/binaries" >
 			<fileset dir="${basedir}/release" >
 				<include name="apache-flex-sdk-installer-${release.version}-bin*" />
+				<include name="apache-flex-sdk-installer-${release.version}-64bit-bin*" />
 			</fileset>
 		</copy>
 	</target>
