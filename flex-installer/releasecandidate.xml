@@ -295,8 +295,11 @@
 		</exec>
 	</target>
 	
-	<target name="other-platform" depends="other-platform-mac, other-platform-win" unless="skip.other.platform" >
+	<target name="other-platform" unless="skip.other.platform" >
+            <antcall target="other-platform-mac" />
+            <antcall target="other-platform-win" />
 	</target>
+
 	<target name="other-platform-mac" if="isMac" >
 		<available file="${basedir}/release/apache-flex-sdk-installer-${release.version}-bin.exe"
 		           type="file" property="other.binary" />
