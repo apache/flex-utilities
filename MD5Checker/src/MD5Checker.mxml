@@ -223,6 +223,7 @@ limitations under the License.
                 if (event.status >= 400) 
                 {
                     // some problem.  skip, go to next one
+                    fs.writeUTFBytes("error: " + event.toString());
                     current++;
                     checkCurrent();
                 }
@@ -297,6 +298,7 @@ limitations under the License.
             
             private function errorHandler(event:Event):void
             {
+                fs.writeUTFBytes("error: " + event.toString());
                 event.preventDefault();
                 current++;
                 checkCurrent();
