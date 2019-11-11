@@ -24,9 +24,11 @@ import org.apache.commons.lang3.StringUtils;
 public class ProgressBar {
 
     protected long total;
+    protected int curValue;
 
     public ProgressBar(long total) {
         this.total = total;
+        this.curValue = 0;
         drawOutput(0l);
     }
 
@@ -37,11 +39,14 @@ public class ProgressBar {
     protected void drawOutput(long current) {
         final int transferredPercent = (int) Math.round(
                 ((double) current / (double) total) * (double) 100);
-        final int segmentsTransferred = transferredPercent / 2;
-        final int segmentsRest = 50 - segmentsTransferred;
-        System.out.print("\r" + String.format(" %3d", transferredPercent) + "% [" +
-                StringUtils.repeat("=", segmentsTransferred) +
-                ((segmentsRest > 0) ? ">" + StringUtils.repeat(" ", segmentsRest - 1) : "") + "] ");
+        if(transferredPercent != curValue) {
+            curValue = transferredPercent;
+            final int segmentsTransferred = transferredPercent / 2;
+            final int segmentsRest = 50 - segmentsTransferred;
+            System.out.print("\r" + String.format(" %3d", transferredPercent) + "% [" +
+                    StringUtils.repeat("=", segmentsTransferred) +
+                    ((segmentsRest > 0) ? ">" + StringUtils.repeat(" ", segmentsRest - 1) : "") + "] ");
+        }
     }
 
 }
