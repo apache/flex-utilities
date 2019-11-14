@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>16</version>
+        <version>21</version>
     </parent>
 
     <groupId>org.apache.flex.utilities.converter</groupId>
@@ -34,18 +34,10 @@
     <name>Apache Flex - SDK-Converter</name>
 
     <properties>
-        <java.version>1.6</java.version>
+        <java.version>1.7</java.version>
         <mavenVersion>3.1.1</mavenVersion>
         <aetherVersion>0.9.0.M4</aetherVersion>
         <wagonVersion>2.2</wagonVersion>
-
-        <!-- URL of the ASF SonarQube server -->
-        <sonar.host.url>https://builds.apache.org/analysis</sonar.host.url>
-        <!-- Tell sonar where the coverage reports are located -->
-        <sonar.jacoco.reportPath>${project.build.directory}/coverage-reports/jacoco-ut.exec</sonar.jacoco.reportPath>
-        <sonar.jacoco.itReportPath>${project.build.directory}/coverage-reports/jacoco-it.exec</sonar.jacoco.itReportPath>
-        <!-- Exclude all generated code -->
-        <sonar.exclusions>file:**/generated-sources/**</sonar.exclusions>
     </properties>
 
     <mailingLists>
@@ -64,7 +56,6 @@
         <connection>scm:git:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/flex-utilities.git</developerConnection>
         <url>https://git-wip-us.apache.org/repos/asf/flex-utilities.git</url>
-        <tag>HEAD</tag>
     </scm>
 
     <modules>
@@ -81,173 +72,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.6.201602180812</version>
-                <executions>
-                    <!--
-                        Prepares the property pointing to the JaCoCo runtime agent which
-                        is passed as VM argument when Maven the Surefire plugin is executed.
-                    -->
-                    <execution>
-                        <id>pre-unit-test</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Sets the path to the file which contains the execution data. -->
-                            <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-                            <!--
-                                Sets the name of the property containing the settings
-                                for JaCoCo runtime agent.
-                            -->
-                            <propertyName>surefireArgLine</propertyName>
-                        </configuration>
-                    </execution>
-                    <!--
-                        Ensures that the code coverage report for unit tests is created after
-                        unit tests have been run.
-                    -->
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Sets the path to the file which contains the execution data. -->
-                            <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-                            <!-- Sets the output directory for the code coverage report. -->
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <!--
-                        Prepares the property pointing to the JaCoCo runtime agent which
-                        is passed as VM argument when Maven the Failsafe plugin is executed.
-                    -->
-                    <execution>
-                        <id>pre-integration-test</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Sets the path to the file which contains the execution data. -->
-                            <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
-                            <!--
-                                Sets the name of the property containing the settings
-                                for JaCoCo runtime agent.
-                            -->
-                            <propertyName>failsafeArgLine</propertyName>
-                        </configuration>
-                    </execution>
-                    <!--
-                        Ensures that the code coverage report for integration tests after
-                        integration tests have been run.
-                    -->
-                    <execution>
-                        <id>post-integration-test</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Sets the path to the file which contains the execution data. -->
-                            <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
-                            <!-- Sets the output directory for the code coverage report. -->
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Make the surefire execute all unit-tests -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19</version>
-                <configuration>
-                    <argLine>${surefireArgLine}</argLine>
-                    <systemPropertyVariables>
-                        <buildType>Maven</buildType>
-                        <flexVersion>${flex.version}</flexVersion>
-                        <flashVersion>${flash.version}</flashVersion>
-                        <airVersion>${air.version}</airVersion>
-                        <mavenLocalRepoDir>${settings.localRepository}</mavenLocalRepoDir>
-                    </systemPropertyVariables>
-                    <!--
-                        Currently some tests need this to be disabled,
-                        but actually this is a bug. For now I'll disable
-                        them to avoid problems during the maven migration.
-                        After this is finished, we should defnitely fix
-                        the tests so assertions can be enabled.
-                    -->
-                    <enableAssertions>false</enableAssertions>
-                </configuration>
-            </plugin>
-
-            <!-- Make the failsafe execute all integration-tests -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <argLine>${failsafeArgLine}</argLine>
-                    <systemPropertyVariables>
-                        <buildType>Maven</buildType>
-                        <flexVersion>${flex.version}</flexVersion>
-                        <flashVersion>${flash.version}</flashVersion>
-                        <airVersion>${air.version}</airVersion>
-                        <mavenLocalRepoDir>${settings.localRepository}</mavenLocalRepoDir>
-                        <FLASHPLAYER_DEBUGGER>${env.FLASHPLAYER_DEBUGGER}</FLASHPLAYER_DEBUGGER>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-
-            <!-- Plugin to detect problems with JDK incompatibilities -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>animal-sniffer-maven-plugin</artifactId>
-                <version>1.15</version>
-                <executions>
-                    <execution>
-                        <id>check-jdk-1.6</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <signature>
-                        <groupId>org.codehaus.mojo.signature</groupId>
-                        <artifactId>java16</artifactId>
-                        <version>1.1</version>
-                    </signature>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.0.2</version>
             </plugin>
         </plugins>
     </build>
