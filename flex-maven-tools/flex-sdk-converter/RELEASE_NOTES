@@ -1,9 +1,9 @@
-Apache Flex Mavenizer 1.0.0
+Apache Flex SDK Converter 1.0.0
 ===========================
 
-Apache Flex Mavenizer 1.0.0 is the first release of a tool allowing, automating
-the conversion of Apache Flex FDKs into Maven artifacts that can be used by
-FlexMojos to build Apache Flex application using Maven.
+Apache Flex SDK Converter 1.0.0 is the first release of a tool allowing, automating
+the conversion of Apache Flex FDKs into Maven artifacts that can be used by tools
+like FlexMojos to build Apache Flex application using Maven.
 
 Known Issues
 _____________

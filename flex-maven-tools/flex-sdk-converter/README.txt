@@ -62,7 +62,7 @@ Install Prerequisites
     SOFTWARE                                    ENVIRONMENT VARIABLE (absolute paths)
     ==================================================================================
 
-    Java SDK 1.6 or greater (*1)                JAVA_HOME
+    Java SDK 1.7 or greater (*1)                JAVA_HOME
 
     Maven 3.1.0 or greater (*1)                 MAVEN_HOME
 
