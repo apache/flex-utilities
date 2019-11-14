@@ -80,4 +80,48 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!--
+          This profile extends the default "apache-release" configuration with automatic checksum-
+          generation for the release source artifact. It is automatically activated during the
+          release build and only needed there.
+        -->
+        <profile>
+            <id>apache-release</id>
+            <build>
+                <plugins>
+                    <!--
+                      Create MD5 and SHA512 checksum files for the release artifacts.
+                    -->
+                    <plugin>
+                        <groupId>net.nicoulaj.maven.plugins</groupId>
+                        <artifactId>checksum-maven-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>files</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <algorithms>
+                                <algorithm>SHA-512</algorithm>
+                            </algorithms>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>${project.artifactId}-${project.version}-source-release.zip</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
