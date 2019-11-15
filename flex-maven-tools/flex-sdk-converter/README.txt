@@ -1,8 +1,9 @@
 Apache Flex SDK Converter
 =========================
-	The Mavenizer tool is used to convert the Apache and Adobe Flex SDKs and Air
-	SDKs into Maven artifacts. Automatically creating the Directories, pom-files,
-	copying and moving the resources to the correct destinations.
+	The Apache Flex SDK Converter tool is used to convert the Apache and Adobe
+	Flex SDKs and Air SDKs into Maven artifacts. Automatically creating the
+	Directories, pom-files, copying and moving the resources to the correct
+	destinations.
 
 	These artifacts can be used in Maven builds using the Flexmojos plugin
 	(Starting with version 6.x).
@@ -39,7 +40,7 @@ Getting the latest sources via git
     command:
 
 	 git clone https://git-wip-us.apache.org/repos/asf/flex-utilities.git flex-utilities
-	 cd flex-utilities/mavenizer
+	 cd flex-utilities/flex-maven-tools/flex-sdk-converter
 	 git checkout develop
 
 Building the Apache Flex SDK Converter
@@ -62,9 +63,9 @@ Install Prerequisites
     SOFTWARE                                    ENVIRONMENT VARIABLE (absolute paths)
     ==================================================================================
 
-    Java SDK 1.7 or greater (*1)                JAVA_HOME
+    Java SDK 1.7 or greater but smaller than 12 (*1) JAVA_HOME
 
-    Maven 3.1.0 or greater (*1)                 MAVEN_HOME
+    Maven 3.1.0 or greater (*1)                      MAVEN_HOME
 
     ==================================================================================
 
@@ -105,10 +106,10 @@ Building the Source in the Source Distribution
     When you have all the prerequisites in place and the environment variables
     set (see Install Prerequisites above) use
 
-        cd <mavenizer.dir>
+        cd <flax-sdk-converter.dir>
         mvn install
 
-    to download the thirdparty dependencies and build the binary from the source.
+    to download the third-party dependencies and build the binary from the source.
 
     To clean the build, of everything other than the downloaded third-party
     dependencies use
@@ -118,7 +119,7 @@ Building the Source in the Source Distribution
     The packages can be found in the "target" subdirectories.
 
     The particularly interesting one is the Standalone Command Line Interface:
-    - cli/target/apache-flex-sdk-converter-1.0.0-SNAPSHOT.jar
+    - cli/target/apache-flex-sdk-converter-1.0.0.jar
 
 
 
@@ -129,8 +130,8 @@ Using the Apache Flex SDK Converter
 	to be executed from the command-line. Assuming the Java executable is
 	available on the current systems path, it can be called using:
 
- 	cd <mavenizer.dir>/cli/target
-	java -jar apache-flex-sdk-converter-1.0.0-SNAPSHOT.jar
+ 	cd <flex-sdk-converter.dir>/cli/target
+	java -jar apache-flex-sdk-converter-1.0.0.jar
 
 	If executed without any command, it will output a list of commands and
 	available properties.
