@@ -31,9 +31,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by cdutz on 22.04.2014.
- */
 public class FlashConverter extends BaseConverter implements Converter {
 
     /**

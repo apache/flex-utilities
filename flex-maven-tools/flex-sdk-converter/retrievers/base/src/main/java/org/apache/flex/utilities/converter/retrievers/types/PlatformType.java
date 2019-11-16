@@ -18,9 +18,6 @@ package org.apache.flex.utilities.converter.retrievers.types;
 
 import org.apache.commons.lang3.SystemUtils;
 
-/**
- * Created by cdutz on 18.05.2014.
- */
 public enum PlatformType {
 
     WINDOWS,

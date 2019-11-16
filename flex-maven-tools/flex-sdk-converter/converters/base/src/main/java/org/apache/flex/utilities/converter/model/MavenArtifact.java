@@ -22,9 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by cdutz on 01.07.2012.
- */
 public class MavenArtifact {
 
     public static final String DEFAULT_CLASSIFIER = "default";

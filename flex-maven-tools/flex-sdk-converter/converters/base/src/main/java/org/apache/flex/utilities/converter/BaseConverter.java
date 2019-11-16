@@ -47,9 +47,6 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/**
- * Created by cdutz on 11.05.2012.
- */
 public abstract class BaseConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseConverter.class);

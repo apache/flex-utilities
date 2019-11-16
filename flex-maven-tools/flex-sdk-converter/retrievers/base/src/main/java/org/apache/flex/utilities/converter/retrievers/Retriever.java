@@ -22,9 +22,6 @@ import org.apache.flex.utilities.converter.retrievers.types.SdkType;
 
 import java.io.File;
 
-/**
- * Created by cdutz on 18.05.2014.
- */
 public interface Retriever {
 
     File retrieve(SdkType sdkType, String version, PlatformType platformType) throws RetrieverException;

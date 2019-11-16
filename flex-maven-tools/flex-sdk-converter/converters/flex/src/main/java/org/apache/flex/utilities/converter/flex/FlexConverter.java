@@ -34,9 +34,6 @@ import java.util.*;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipOutputStream;
 
-/**
- * Created by cdutz on 22.04.2014.
- */
 public class FlexConverter extends BaseConverter implements Converter {
 
     protected String flexSdkVersion;

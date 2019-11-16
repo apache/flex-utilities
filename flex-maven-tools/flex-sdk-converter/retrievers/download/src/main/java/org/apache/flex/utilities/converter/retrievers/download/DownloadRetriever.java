@@ -54,9 +54,6 @@ import java.nio.channels.ReadableByteChannel;
 import java.text.MessageFormat;
 import java.util.*;
 
-/**
- * Created by cdutz on 18.05.2014.
- */
 public class DownloadRetriever extends BaseRetriever {
 
     public static final String FLEX_INSTALLER_CONFIG_URL =

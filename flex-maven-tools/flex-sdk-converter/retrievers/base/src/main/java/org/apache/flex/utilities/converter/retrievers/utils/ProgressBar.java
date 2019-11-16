@@ -20,9 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Created by cdutz on 24.05.2014.
- */
 public class ProgressBar {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProgressBar.class);

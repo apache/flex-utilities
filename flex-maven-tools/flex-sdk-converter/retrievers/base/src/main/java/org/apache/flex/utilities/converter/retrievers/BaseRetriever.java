@@ -28,9 +28,6 @@ import org.apache.flex.utilities.converter.retrievers.utils.ProgressBar;
 
 import java.io.*;
 
-/**
- * Created by cdutz on 18.05.2014.
- */
 public abstract class BaseRetriever implements Retriever {
 
     public static final int KILOBYTE = 1024;

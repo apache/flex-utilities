@@ -16,9 +16,6 @@
  */
 package org.apache.flex.utilities.converter.retrievers.exceptions;
 
-/**
- * Created by cdutz on 07.05.2014.
- */
 public class RetrieverException extends Exception {
 
     public RetrieverException(String message) {
