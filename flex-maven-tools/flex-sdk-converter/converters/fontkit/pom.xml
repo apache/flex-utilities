@@ -23,18 +23,18 @@
     <parent>
         <groupId>org.apache.flex.utilities.converter</groupId>
         <artifactId>converters</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>fontkit-converter</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.flex.utilities.converter</groupId>
             <artifactId>base-converter</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
