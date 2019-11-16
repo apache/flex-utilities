@@ -58,9 +58,6 @@ import java.io.Reader;
  * system and which performs the deployment inside the VM without having to spawn new
  * VMs for each artifact in order to deploy the files using a Maven commandline
  * execution.
- *
- * Created with IntelliJ IDEA.
- * Date: 03.11.13
  */
 public class AetherDeployer {
 

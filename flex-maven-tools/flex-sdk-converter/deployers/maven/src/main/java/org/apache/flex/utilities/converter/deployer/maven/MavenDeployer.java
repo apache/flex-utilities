@@ -20,11 +20,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * Date: 11.08.12
- * Time: 18:17
- */
 public class MavenDeployer {
 
     private String directory;

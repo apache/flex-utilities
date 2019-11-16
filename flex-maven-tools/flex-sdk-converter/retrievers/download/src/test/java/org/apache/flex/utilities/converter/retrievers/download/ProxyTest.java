@@ -26,9 +26,6 @@ import org.testng.annotations.Test;
 
 import static org.mockserver.integration.ClientAndProxy.startClientAndProxy;
 
-/**
- * Created by christoferdutz on 02.07.15.
- */
 public class ProxyTest {
 
     private ClientAndProxy proxy;
