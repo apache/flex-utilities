@@ -32,7 +32,7 @@
 
     <properties>
         <powermock.version>1.6.2</powermock.version>
-        <junit.version>4.11</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <dependencies>
