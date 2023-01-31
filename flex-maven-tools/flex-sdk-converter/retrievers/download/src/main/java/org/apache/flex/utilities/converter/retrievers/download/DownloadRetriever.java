@@ -57,7 +57,7 @@ import java.util.*;
 public class DownloadRetriever extends BaseRetriever {
 
     public static final String FLEX_INSTALLER_CONFIG_URL =
-            "http://flex.apache.org/installer/sdk-installer-config-4.0.xml";
+            "https://flex.apache.org/installer/sdk-installer-config-4.0.xml";
 
     public static final long MEGABYTE = 1 << 20;
 
