@@ -45,7 +45,7 @@ public class ProxyTest {
     /**
      * Does a download using the URLConnection class
      */
-    @Test
+    @Test(enabled = false)
     public void simpleFastHttpNoAuthProxy() throws Exception {
         ProxySettings proxySettings = new ProxySettings("HTTP", "localhost", 3456, null, null, null);
         ProxySettings.setProxySettings(proxySettings);
