@@ -1,5 +1,6 @@
 Apache Flex SDK Converter
 =========================
+
 	The Apache Flex SDK Converter tool is used to convert the Apache and Adobe
 	Flex SDKs and Air SDKs into Maven artifacts. Automatically creating the
 	Directories, pom-files, copying and moving the resources to the correct
@@ -12,7 +13,7 @@ Apache Flex SDK Converter
 	and deploy a mavenized form of an Apache Flex SDK.
 
     The Converter does not simply copy all java libraries to the destination; it checks
-    if the given artifact has already been deployed to maven central or by deploying an
+    if the given artifact has already been deployed to Maven Central or by deploying an
     other FDK previously. For this check you do need an internet connection to do the
     conversion, otherwise it will probably take forever.
 
@@ -94,8 +95,6 @@ Software Dependencies
     the Apache Version 2.0 license.  You will not be prompted to acknowledge the
     download.  Most of the jars are installed in your maven local repository and
     are included in the assembly jars.
-
-TODO: Add them all here ...
 
 Building the Source in the Source Distribution
 ----------------------------------------------

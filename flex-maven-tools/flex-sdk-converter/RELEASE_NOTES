@@ -1,3 +1,15 @@
+Apache Flex Mavenizer 1.1.0
+===========================
+
+Apache Flex Mavenizer 1.1.0 fixes an HTTP to HTTPS redirect issue that causes
+Mavenized downloads to fail.
+
+Known Issues
+_____________
+
+Currently None.
+
+
 Apache Flex SDK Converter 1.0.0
 ===========================
 
