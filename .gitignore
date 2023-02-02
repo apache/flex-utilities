@@ -12,6 +12,10 @@
 *.ipr
 *.iws
 
+# vscode conf files
+.vscode/
+asconfig.json
+
 # building
 target
 [Bb]uild/
