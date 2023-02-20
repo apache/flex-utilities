@@ -34,7 +34,7 @@
     <name>Apache Flex - SDK-Converter</name>
 
     <properties>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <mavenVersion>3.1.1</mavenVersion>
         <aetherVersion>0.9.0.M4</aetherVersion>
         <wagonVersion>2.2</wagonVersion>
