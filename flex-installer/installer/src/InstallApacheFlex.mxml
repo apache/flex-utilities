@@ -3871,7 +3871,7 @@ variables are not required because the locations of these pieces are known.
                         fontFamily="openSansSemibold"
                         change="_langSelect_changeHandler(event)">
             <s:layout>
-                <s:VerticalLayout requestedRowCount="-1"/>
+                <s:VerticalLayout requestedMaxRowCount="10" horizontalAlign="contentJustify"/>
             </s:layout>
         </s:DropDownList>
     </s:HGroup>
@@ -3915,7 +3915,7 @@ variables are not required because the locations of these pieces are known.
                             fontFamily="openSansSemibold"
                             change="handleFlexVersionChange(event)">
                 <s:layout>
-                    <s:VerticalLayout requestedRowCount="-1"/>
+                    <s:VerticalLayout requestedMaxRowCount="10" horizontalAlign="contentJustify"/>
                 </s:layout>
             </s:DropDownList>
         </s:HGroup>
@@ -3927,7 +3927,7 @@ variables are not required because the locations of these pieces are known.
                             fontFamily="openSansSemibold"
                             change="handleAirVersionChange(event)">
                 <s:layout>
-                    <s:VerticalLayout requestedRowCount="-1"/>
+                    <s:VerticalLayout requestedMaxRowCount="10" horizontalAlign="contentJustify"/>
                 </s:layout>
             </s:DropDownList>
         </s:HGroup>
@@ -3939,7 +3939,7 @@ variables are not required because the locations of these pieces are known.
                             fontFamily="openSansSemibold"
                             change="handleFlashPlayerVersionChange(event)">
                 <s:layout>
-                    <s:VerticalLayout requestedRowCount="-1"/>
+                    <s:VerticalLayout requestedMaxRowCount="10" horizontalAlign="contentJustify"/>
                 </s:layout>
             </s:DropDownList>
         </s:HGroup>
