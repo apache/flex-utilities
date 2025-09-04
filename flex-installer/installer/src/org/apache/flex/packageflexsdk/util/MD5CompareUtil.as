@@ -47,7 +47,7 @@ public class MD5CompareUtil extends EventDispatcher
 	//
 	//--------------------------------------------------------------------------
 	
-	public static const MD5_DOMAIN:String = "https://www.apache.org/dist/";
+	public static const MD5_DOMAIN:String = "https://downloads.apache.org/";
 	
 	public static const MD5_POSTFIX:String = ".md5";
 	
