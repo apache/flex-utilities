@@ -4139,7 +4139,7 @@ variables are not required because the locations of these pieces are known.
         <s:Label fontFamily="openSansLightItalic" text="{_viewResourceConstants.INFO_TRACKING}"
                  styleName="linkText" maxDisplayedLines="2"
                  mouseOver="onMouseRoll(event)" mouseOut="onMouseRoll(event)"
-                 click="navigateToURL(new URLRequest('http://flex.apache.org/about-privacy.html'))"
+                 click="navigateToURL(new URLRequest('https://privacy.apache.org/policies/privacy-policy-public.html'))"
                  buttonMode="true"
                  useHandCursor="true"
                  mouseChildren="false"/>
