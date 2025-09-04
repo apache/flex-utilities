@@ -1439,6 +1439,12 @@ variables are not required because the locations of these pieces are known.
             var localeList:Array = resourceManager.localeChain;
             _installerComponentsDataProvider = new ArrayCollection();
             compList = data.component.copy();
+            if (compList.length() == 0)
+            {
+                log("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
+                abortInstallation("Unable to load " + APACHE_FLEX_BIN_INSTALLER_URL);
+                return;
+            }
             for each (var comp:XML in compList)
             {
                 var vo:InstallerComponentVO = new InstallerComponentVO(getLocalizedString(comp, "label"),
