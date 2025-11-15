@@ -71,7 +71,7 @@
         <project.encoding>UTF-8</project.encoding>
         <project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
         <jdk.version>1.6</jdk.version>
-        <maven.version>3.0.4</maven.version>
+        <maven.version>3.8.1</maven.version>
     </properties>
 
     <modules>
