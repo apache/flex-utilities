@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.maven.plugin.logging.Log;
-import org.codehaus.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.Sink;
 import org.dom4j.Document;
 import org.dom4j.Node;
 

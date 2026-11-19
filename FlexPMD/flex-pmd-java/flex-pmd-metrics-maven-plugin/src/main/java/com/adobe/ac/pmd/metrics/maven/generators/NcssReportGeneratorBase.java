@@ -49,7 +49,7 @@ package com.adobe.ac.pmd.metrics.maven.generators;
 import java.util.ResourceBundle;
 
 import org.apache.maven.plugin.logging.Log;
-import org.codehaus.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.Sink;
 
 /**
  * Base abstract class for NCSSReport classes.<br>

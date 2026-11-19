@@ -79,7 +79,7 @@ limitations under the License.
 		<plexus-utils.version>1.0.2</plexus-utils.version>
 		<release-plugin.version>2.5</release-plugin.version>
 		<gpg-plugin.version>1.0-alpha-4</gpg-plugin.version>
-		<maven-reporting-impl.version>2.0-beta-3</maven-reporting-impl.version>
+		<maven-reporting-impl.version>4.0.0</maven-reporting-impl.version>
 		<maven-plugin-api.version>3.2.3</maven-plugin-api.version>
 		<maven-plugin-testing-harness.version>1.0-beta-1</maven-plugin-testing-harness.version>
 		<ant.version>1.7.0</ant.version>
