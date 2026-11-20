@@ -30,7 +30,7 @@ import net.sourceforge.pmd.renderers.HTMLRenderer;
 import org.apache.maven.plugin.pmd.PmdFileInfo;
 import org.apache.maven.plugin.pmd.PmdReportListener;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.doxia.sink.Sink;
+import org.apache.maven.doxia.sink.Sink;
 
 import com.adobe.ac.pmd.FlexPmdParameters;
 import com.adobe.ac.pmd.FlexPmdViolations;
